@@ -24,14 +24,14 @@ import os
 import sys
 
 from flask import Blueprint, Response, request, url_for
-from flask_login import current_user
-from flask_login import login_required
+from .cw_login import current_user
 from flask_babel import get_locale
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm.attributes import flag_modified
 
 from cps.services.Metadata import Metadata
 from . import constants, logger, ub, web_server
+from .usermanagement import user_login_required
 
 # current_milli_time = lambda: int(round(time() * 1000))
 
@@ -81,7 +81,7 @@ cl = list_classes(new_list)
 
 
 @meta.route("/metadata/provider")
-@login_required
+@user_login_required
 def metadata_provider():
     active = current_user.view_settings.get("metadata", {})
     provider = list()
@@ -95,7 +95,7 @@ def metadata_provider():
 
 @meta.route("/metadata/provider", methods=["POST"])
 @meta.route("/metadata/provider/<prov_name>", methods=["POST"])
-@login_required
+@user_login_required
 def metadata_change_active_provider(prov_name):
     new_state = request.get_json()
     active = current_user.view_settings.get("metadata", {})
@@ -122,7 +122,7 @@ def metadata_change_active_provider(prov_name):
 
 
 @meta.route("/metadata/search", methods=["POST"])
-@login_required
+@user_login_required
 def metadata_search():
     query = request.form.to_dict().get("query")
     data = list()

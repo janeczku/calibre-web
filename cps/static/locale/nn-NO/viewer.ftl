@@ -51,12 +51,6 @@ pdfjs-download-button-label = Last ned
 pdfjs-bookmark-button =
     .title = Gjeldande side (sjå URL frå gjeldande side)
 pdfjs-bookmark-button-label = Gjeldande side
-# Used in Firefox for Android.
-pdfjs-open-in-app-button =
-    .title = Opne i app
-# Used in Firefox for Android.
-# Length of the translation matters since we are in a mobile context, with limited screen estate.
-pdfjs-open-in-app-button-label = Opne i app
 
 ##  Secondary toolbar and context menu
 
@@ -301,9 +295,24 @@ pdfjs-editor-ink-button-label = Teikne
 pdfjs-editor-stamp-button =
     .title = Legg til eller rediger bilde
 pdfjs-editor-stamp-button-label = Legg til eller rediger bilde
+pdfjs-editor-highlight-button =
+    .title = Markere
+pdfjs-editor-highlight-button-label = Markere
+pdfjs-highlight-floating-button1 =
+    .title = Markere
+    .aria-label = Markere
+pdfjs-highlight-floating-button-label = Markere
 
 ## Remove button for the various kind of editor.
 
+pdfjs-editor-remove-ink-button =
+    .title = Fjern teikninga
+pdfjs-editor-remove-freetext-button =
+    .title = Fjern tekst
+pdfjs-editor-remove-stamp-button =
+    .title = Fjern bildet
+pdfjs-editor-remove-highlight-button =
+    .title = Fjern utheving
 
 ##
 
@@ -316,6 +325,10 @@ pdfjs-editor-ink-opacity-input = Ugjennomskinleg
 pdfjs-editor-stamp-add-image-button =
     .title = Legg til bilde
 pdfjs-editor-stamp-add-image-button-label = Legg til bilde
+# This refers to the thickness of the line used for free highlighting (not bound to text)
+pdfjs-editor-free-highlight-thickness-input = Tjukkleik
+pdfjs-editor-free-highlight-thickness-title =
+    .title = Endre tjukn når du markerer andre element enn tekst
 pdfjs-free-text =
     .aria-label = Tekstredigering
 pdfjs-free-text-default-content = Byrje å skrive…
@@ -345,9 +358,23 @@ pdfjs-editor-alt-text-textarea =
 ## Editor resizers
 ## This is used in an aria label to help to understand the role of the resizer.
 
+pdfjs-editor-resizer-label-top-left = Øvste venstre hjørne – endre størrelse
+pdfjs-editor-resizer-label-top-middle = Øvst i midten — endre størrelse
+pdfjs-editor-resizer-label-top-right = Øvste høgre hjørne – endre størrelse
+pdfjs-editor-resizer-label-middle-right = Midt til høgre – endre størrelse
+pdfjs-editor-resizer-label-bottom-right = Nedste høgre hjørne – endre størrelse
+pdfjs-editor-resizer-label-bottom-middle = Nedst i midten — endre størrelse
+pdfjs-editor-resizer-label-bottom-left = Nedste venstre hjørne – endre størrelse
+pdfjs-editor-resizer-label-middle-left = Midt til venstre — endre størrelse
 
 ## Color picker
 
+# This means "Color used to highlight text"
+pdfjs-editor-highlight-colorpicker-label = Uthevingsfarge
+pdfjs-editor-colorpicker-button =
+    .title = Endre farge
+pdfjs-editor-colorpicker-dropdown =
+    .aria-label = Fargeval
 pdfjs-editor-colorpicker-yellow =
     .title = Gul
 pdfjs-editor-colorpicker-green =
@@ -358,3 +385,10 @@ pdfjs-editor-colorpicker-pink =
     .title = Rosa
 pdfjs-editor-colorpicker-red =
     .title = Raud
+
+## Show all highlights
+## This is a toggle button to show/hide all the highlights.
+
+pdfjs-editor-highlight-show-all-button-label = Vis alle
+pdfjs-editor-highlight-show-all-button =
+    .title = Vis alle

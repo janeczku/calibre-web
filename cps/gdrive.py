@@ -29,11 +29,11 @@ from shutil import move, copyfile
 
 from flask import Blueprint, flash, request, redirect, url_for, abort
 from flask_babel import gettext as _
-from flask_login import login_required
 
 from . import logger, gdriveutils, config, ub, calibre_db, csrf
 from .admin import admin_required
 from .file_helper import get_temp_dir
+from .usermanagement import user_login_required
 
 gdrive = Blueprint('gdrive', __name__, url_prefix='/gdrive')
 log = logger.create()
@@ -49,7 +49,7 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'  # nosec
 
 
 @gdrive.route("/authenticate")
-@login_required
+@user_login_required
 @admin_required
 def authenticate_google_drive():
     try:
@@ -76,7 +76,7 @@ def google_drive_callback():
 
 
 @gdrive.route("/watch/subscribe")
-@login_required
+@user_login_required
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
@@ -102,7 +102,7 @@ def watch_gdrive():
 
 
 @gdrive.route("/watch/revoke")
-@login_required
+@user_login_required
 @admin_required
 def revoke_watch_gdrive():
     last_watch_response = config.config_google_drive_watch_changes_response

@@ -26,12 +26,12 @@ import sqlite3
 from collections import OrderedDict
 
 import flask
-import flask_login
 import jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, constants, dep_check
 from .render_template import render_title_template
+from .usermanagement import user_login_required
 
 
 about = flask.Blueprint('about', __name__)
@@ -74,7 +74,7 @@ def collect_stats():
 
 
 @about.route("/stats")
-@flask_login.login_required
+@user_login_required
 def stats():
     counter = calibre_db.session.query(db.Books).count()
     authors = calibre_db.session.query(db.Authors).count()

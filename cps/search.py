@@ -19,7 +19,7 @@ from datetime import datetime
 
 from flask import Blueprint, request, redirect, url_for, flash
 from flask import session as flask_session
-from flask_login import current_user
+from .cw_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
@@ -29,6 +29,7 @@ from . import logger, db, calibre_db, config, ub
 from .usermanagement import login_required_if_no_ano
 from .render_template import render_title_template
 from .pagination import Pagination
+
 
 search = Blueprint('search', __name__)
 

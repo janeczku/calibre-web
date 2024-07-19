@@ -26,8 +26,8 @@ import uuid
 from flask import session as flask_session
 from binascii import hexlify
 
-from flask_login import AnonymousUserMixin, current_user
-from flask_login import user_logged_in
+from .cw_login import AnonymousUserMixin, current_user
+from .cw_login import user_logged_in
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
@@ -71,17 +71,19 @@ def signal_store_user_session(object, user):
 
 
 def store_user_session():
-    if flask_session.get('user_id', ""):
-        flask_session['_user_id'] = flask_session.get('user_id', "")
+    _user = flask_session.get('_user_id', "")
+    _id = flask_session.get('_id', "")
+    _random = flask_session.get('_random', "")
     if flask_session.get('_user_id', ""):
         try:
-            if not check_user_session(flask_session.get('_user_id', ""), flask_session.get('_id', "")):
-                user_session = User_Sessions(flask_session.get('_user_id', ""), flask_session.get('_id', ""))
+            if not check_user_session(_user, _id, _random):
+                expiry = int((datetime.datetime.now()  + datetime.timedelta(days=31)).timestamp())
+                user_session = User_Sessions(_user, _id, _random, expiry)
                 session.add(user_session)
                 session.commit()
-                log.debug("Login and store session : " + flask_session.get('_id', ""))
+                log.debug("Login and store session : " + _id)
             else:
-                log.debug("Found stored session: " + flask_session.get('_id', ""))
+                log.debug("Found stored session: " + _id)
         except (exc.OperationalError, exc.InvalidRequestError) as e:
             session.rollback()
             log.exception(e)
@@ -100,13 +102,23 @@ def delete_user_session(user_id, session_key):
         log.exception(ex)
 
 
-def check_user_session(user_id, session_key):
+def check_user_session(user_id, session_key, random):
     try:
-        return bool(session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
-                                                       User_Sessions.session_key==session_key).one_or_none())
+        found = session.query(User_Sessions).filter(User_Sessions.user_id==user_id,
+                                                    User_Sessions.session_key==session_key,
+                                                    User_Sessions.random == random,
+                                                    ).one_or_none()
+        if found is not None:
+            new_expiry = int((datetime.datetime.now()  + datetime.timedelta(days=31)).timestamp())
+            if new_expiry - found.expiry > 86400:
+                found.expiry = new_expiry
+                session.merge(found)
+                session.commit()
+        return bool(found)
     except (exc.OperationalError, exc.InvalidRequestError) as e:
         session.rollback()
         log.exception(e)
+        return False
 
 
 user_logged_in.connect(signal_store_user_session)
@@ -335,11 +347,16 @@ class User_Sessions(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     session_key = Column(String, default="")
+    random = Column(String, default="")
+    expiry = Column(Integer)
 
-    def __init__(self, user_id, session_key):
+
+    def __init__(self, user_id, session_key, random, expiry):
         super().__init__()
         self.user_id = user_id
         self.session_key = session_key
+        self.random = random
+        self.expiry = expiry
 
 
 # Baseclass representing Shelfs in calibre-web in app.db
@@ -552,39 +569,14 @@ class Thumbnail(Base):
 
 # Add missing tables during migration of database
 def add_missing_tables(engine, _session):
-    if not engine.dialect.has_table(engine.connect(), "book_read_link"):
-        ReadBook.__table__.create(bind=engine)
-    if not engine.dialect.has_table(engine.connect(), "bookmark"):
-        Bookmark.__table__.create(bind=engine)
-    if not engine.dialect.has_table(engine.connect(), "kobo_reading_state"):
-        KoboReadingState.__table__.create(bind=engine)
-    if not engine.dialect.has_table(engine.connect(), "kobo_bookmark"):
-        KoboBookmark.__table__.create(bind=engine)
-    if not engine.dialect.has_table(engine.connect(), "kobo_statistics"):
-        KoboStatistics.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "archived_book"):
         ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "thumbnail"):
         Thumbnail.__table__.create(bind=engine)
-    if not engine.dialect.has_table(engine.connect(), "registration"):
-        Registration.__table__.create(bind=engine)
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute("insert into registration (domain, allow) values('%.%',1)")
-            trans.commit()
 
 
 # migrate all settings missing in registration table
 def migrate_registration_table(engine, _session):
-    try:
-        _session.query(exists().where(Registration.allow)).scalar()
-        _session.commit()
-    except exc.OperationalError:  # Database is not compatible, some columns are missing
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE registration ADD column 'allow' INTEGER"))
-            conn.execute(text("update registration set 'allow' = 1"))
-            trans.commit()
     try:
         # Handle table exists, but no content
         cnt = _session.query(Registration).count()
@@ -598,190 +590,38 @@ def migrate_registration_table(engine, _session):
         sys.exit(2)
 
 
-# Remove login capability of user Guest
-def migrate_guest_password(engine):
+def migrate_user_session_table(engine, _session):
     try:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("UPDATE user SET password='' where name = 'Guest' and password !=''"))
-            trans.commit()
-    except exc.OperationalError:
-        print('Settings database is not writeable. Exiting...')
-        sys.exit(2)
-
-
-def migrate_shelfs(engine, _session):
-    try:
-        _session.query(exists().where(Shelf.uuid)).scalar()
-    except exc.OperationalError:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE shelf ADD column 'uuid' STRING"))
-            conn.execute(text("ALTER TABLE shelf ADD column 'created' DATETIME"))
-            conn.execute(text("ALTER TABLE shelf ADD column 'last_modified' DATETIME"))
-            conn.execute(text("ALTER TABLE book_shelf_link ADD column 'date_added' DATETIME"))
-            conn.execute(text("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false"))
-            trans.commit()
-        for shelf in _session.query(Shelf).all():
-            shelf.uuid = str(uuid.uuid4())
-            shelf.created = datetime.datetime.now()
-            shelf.last_modified = datetime.datetime.now()
-        for book_shelf in _session.query(BookShelf).all():
-            book_shelf.date_added = datetime.datetime.now()
-        _session.commit()
-
-    try:
-        _session.query(exists().where(Shelf.kobo_sync)).scalar()
-    except exc.OperationalError:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE shelf ADD column 'kobo_sync' BOOLEAN DEFAULT false"))
-            trans.commit()
-    try:
-        _session.query(exists().where(BookShelf.order)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some columns are missing
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1"))
-            trans.commit()
-
-
-def migrate_readBook(engine, _session):
-    try:
-        _session.query(exists().where(ReadBook.read_status)).scalar()
-    except exc.OperationalError:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE book_read_link ADD column 'read_status' INTEGER DEFAULT 0"))
-            conn.execute(text("UPDATE book_read_link SET 'read_status' = 1 WHERE is_read"))
-            conn.execute(text("ALTER TABLE book_read_link ADD column 'last_modified' DATETIME"))
-            conn.execute(text("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME"))
-            conn.execute(text("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0"))
-            trans.commit()
-    test = _session.query(ReadBook).filter(ReadBook.last_modified == None).all()
-    for book in test:
-        book.last_modified = datetime.datetime.utcnow()
-    _session.commit()
-
-
-def migrate_remoteAuthToken(engine, _session):
-    try:
-        _session.query(exists().where(RemoteAuthToken.token_type)).scalar()
+        _session.query(exists().where(User_Sessions.random)).scalar()
         _session.commit()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         with engine.connect() as conn:
             trans = conn.begin()
-            conn.execute(text("ALTER TABLE remote_auth_token ADD column 'token_type' INTEGER DEFAULT 0"))
-            conn.execute(text("update remote_auth_token set 'token_type' = 0"))
+            conn.execute(text("ALTER TABLE user_session ADD column 'random' String"))
+            conn.execute(text("ALTER TABLE user_session ADD column 'expiry' Integer"))
             trans.commit()
+
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
-# everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
-# rows with SQL commands
+# maybe 4/5 versions back to current should work.
+# Migration is done by checking if relevant columns are existing, and then adding rows with SQL commands
 def migrate_Database(_session):
     engine = _session.bind
     add_missing_tables(engine, _session)
     migrate_registration_table(engine, _session)
-    migrate_readBook(engine, _session)
-    migrate_remoteAuthToken(engine, _session)
-    migrate_shelfs(engine, _session)
-    try:
-        create = False
-        _session.query(exists().where(User.sidebar_view)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some columns are missing
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE user ADD column `sidebar_view` Integer DEFAULT 1"))
-            trans.commit()
-        create = True
-    try:
-        if create:
-            with engine.connect() as conn:
-                trans = conn.begin()
-                conn.execute(text("SELECT language_books FROM user"))
-                trans.commit()
-    except exc.OperationalError:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
-                     "+ series_books * :side_series + category_books * :side_category + hot_books * "
-                     ":side_hot + :side_autor + :detail_random)"),
-                     {'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE,
-                      'side_series': constants.SIDEBAR_SERIES, 'side_category': constants.SIDEBAR_CATEGORY,
-                      'side_hot': constants.SIDEBAR_HOT, 'side_autor': constants.SIDEBAR_AUTHOR,
-                      'detail_random': constants.DETAIL_RANDOM})
-            trans.commit()
-    try:
-        _session.query(exists().where(User.denied_tags)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some columns are missing
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE user ADD column `denied_tags` String DEFAULT ''"))
-            conn.execute(text("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''"))
-            conn.execute(text("ALTER TABLE user ADD column `denied_column_value` String DEFAULT ''"))
-            conn.execute(text("ALTER TABLE user ADD column `allowed_column_value` String DEFAULT ''"))
-            trans.commit()
-    try:
-        _session.query(exists().where(User.view_settings)).scalar()
-    except exc.OperationalError:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'"))
-            trans.commit()
-    try:
-        _session.query(exists().where(User.kobo_only_shelves_sync)).scalar()
-    except exc.OperationalError:
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("ALTER TABLE user ADD column `kobo_only_shelves_sync` SMALLINT DEFAULT 0"))
-            trans.commit()
-    try:
-        # check if name is in User table instead of nickname
-        _session.query(exists().where(User.name)).scalar()
-    except exc.OperationalError:
-        # Create new table user_id and copy contents of table user into it
-        with engine.connect() as conn:
-            trans = conn.begin()
-            conn.execute(text("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                     "name VARCHAR(64),"
-                     "email VARCHAR(120),"
-                     "role SMALLINT,"
-                     "password VARCHAR,"
-                     "kindle_mail VARCHAR(120),"
-                     "locale VARCHAR(2),"
-                     "sidebar_view INTEGER,"
-                     "default_language VARCHAR(3),"                     
-                     "denied_tags VARCHAR,"
-                     "allowed_tags VARCHAR,"
-                     "denied_column_value VARCHAR,"
-                     "allowed_column_value VARCHAR,"
-                     "view_settings JSON,"
-                     "kobo_only_shelves_sync SMALLINT,"                              
-                     "UNIQUE (name),"
-                     "UNIQUE (email))"))
-            conn.execute(text("INSERT INTO user_id(id, name, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
-                     "allowed_column_value, view_settings, kobo_only_shelves_sync)"
-                     "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                     "sidebar_view, default_language, denied_tags, allowed_tags, denied_column_value, "
-                     "allowed_column_value, view_settings, kobo_only_shelves_sync FROM user"))
-            # delete old user table and rename new user_id table to user:
-            conn.execute(text("DROP TABLE user"))
-            conn.execute(text("ALTER TABLE user_id RENAME TO user"))
-            trans.commit()
-    if _session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
-       is None:
-        create_anonymous_user(_session)
-
-    migrate_guest_password(engine)
+    migrate_user_session_table(engine, _session)
 
 
 def clean_database(_session):
     # Remove expired remote login tokens
     now = datetime.datetime.now()
-    _session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
-        filter(RemoteAuthToken.token_type != 1).delete()
-    _session.commit()
+    try:
+        _session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
+            filter(RemoteAuthToken.token_type != 1).delete()
+        _session.commit()
+    except exc.OperationalError:  # Database is not writeable
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(2)
 
 
 # Save downloaded books per user in calibre-web's own database

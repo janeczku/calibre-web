@@ -17,11 +17,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from flask_login import current_user
+from .cw_login import current_user
 from . import ub
 import datetime
 from sqlalchemy.sql.expression import or_, and_, true
-from sqlalchemy import exc
+# from sqlalchemy import exc
 
 
 # Add the current book id to kobo_synced_books table for current user, if entry is already present,
