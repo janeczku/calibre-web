@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-11 20:34:31</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-18 20:53:44</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-12 03:34:37</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-19 03:48:09</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 47 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 43 min</p>
         </div>
       </div>
       </div>
@@ -2009,7 +2009,7 @@
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+    elif len(results)&gt;19 and &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
 IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -2021,11 +2021,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">16</td>
-        <td class="text-center">2</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2152,31 +2152,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft18.14" class="none bg-danger">
+        <tr id='pt18.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.14')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 636, in test_edit_rating
-    self.assertEqual(1, len(books[1]))
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2208,31 +2188,11 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id="ft18.18" class="none bg-danger">
+        <tr id='pt18.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.18')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft18.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 923, in test_watch_metadata
-    self.assertTrue(button)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3340,11 +3300,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLogin</td>
         <td class="text-center">19</td>
-        <td class="text-center">18</td>
-        <td class="text-center">1</td>
+        <td class="text-center">19</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3498,31 +3458,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft35.17" class="none bg-danger">
+        <tr id='pt35.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_multi_user</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.17')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft35.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 575, in test_proxy_login_multi_user
-    self.assertTrue(&#39;&lt;input type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;name&#34; id=&#34;name&#34; value=&#34;new_user1&#34; autocomplete=&#34;off&#34;&gt;&#39; in resp.text)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5674,8 +5614,8 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>499</td>
-        <td>484</td>
-        <td>3</td>
+        <td>487</td>
+        <td>0</td>
         <td>2</td>
         <td>10</td>
         <td>&nbsp;</td>
@@ -5705,7 +5645,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-41-generic #41~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun  3 11:32:55 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.5.0-44-generic #44~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Jun 18 14:36:16 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5758,14 +5698,14 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
             </tr>
           
             <tr>
-              <th>Flask-Limiter</th>
-              <td>3.5.1</td>
+              <th>Flask-HTTPAuth</th>
+              <td>4.8.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
-              <th>Flask-Login</th>
-              <td>0.6.3</td>
+              <th>Flask-Limiter</th>
+              <td>3.5.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5891,7 +5831,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5921,7 +5861,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5951,7 +5891,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5981,7 +5921,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6029,7 +5969,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6065,7 +6005,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6107,7 +6047,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6137,7 +6077,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6209,7 +6149,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 </div>
 
 <script>
-    drawCircle(484, 3, 2, 10);
+    drawCircle(487, 0, 2, 10);
     showCase(5);
 </script>
 
