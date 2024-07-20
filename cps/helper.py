@@ -562,7 +562,7 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
             if not os.path.isdir(new_path):
                 os.makedirs(new_path)
             shutil.move(original_filepath, os.path.join(new_path, db_filename))
-            log.debug("Moving title: %s to %s/%s", original_filepath, new_path)
+            log.debug("Moving title: %s to %s", original_filepath, new_path)
         else:
             # Check new path is not valid path
             if not os.path.exists(new_path):

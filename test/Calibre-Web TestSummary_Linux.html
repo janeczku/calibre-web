@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-17 20:06:46</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-18 20:53:44</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-18 03:16:31</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-19 03:48:09</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 58 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 43 min</p>
         </div>
       </div>
       </div>
@@ -1619,13 +1619,13 @@
 
     <tr id="su" class="passClass">
         <td>TestEditAuthors</td>
-        <td class="text-center">8</td>
-        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 8)">Detail</a>
+            <a onclick="showClassDetail('c14', 9)">Detail</a>
         </td>
     </tr>
 
@@ -1687,7 +1687,7 @@
     
         <tr id='pt14.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthors - test_rename_author_accent_onupload</div>
+                <div class='testcase'>TestEditAuthors - test_rename_author_emphasis_mark_onupload</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1697,6 +1697,15 @@
         <tr id='pt14.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_rename_capital_on_upload</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt14.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAuthors - test_rename_tag_emphasis_mark_onupload</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2635,11 +2644,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">11</td>
-        <td class="text-center">1</td>
+        <td class="text-center">12</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2730,31 +2739,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft29.10" class="none bg-danger">
+        <tr id='pt29.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft29.10')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft29.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft29.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 368, in test_sync_shelf
-    self.assertEqual(1, len(data), data)
-AssertionError: 1 != 0 : []</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5624,9 +5613,9 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>498</td>
-        <td>485</td>
-        <td>1</td>
+        <td>499</td>
+        <td>487</td>
+        <td>0</td>
         <td>2</td>
         <td>10</td>
         <td>&nbsp;</td>
@@ -5656,7 +5645,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-41-generic #41~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun  3 11:32:55 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.5.0-44-generic #44~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Tue Jun 18 14:36:16 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6160,7 +6149,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 </div>
 
 <script>
-    drawCircle(485, 1, 2, 10);
+    drawCircle(487, 0, 2, 10);
     showCase(5);
 </script>
 
