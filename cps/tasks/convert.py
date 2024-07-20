@@ -269,10 +269,18 @@ class TaskConvert(CalibreTask):
                                '--with-library', library_path]
                 p = process_open(opf_command, quotes, my_env)
                 p.wait()
-                path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
-                with open(path_tmp_opf, 'w') as fd:
-                    copyfileobj(p.stdout, fd)
-
+                check = p.returncode
+                calibre_traceback = p.stderr.readlines()
+                if check == 0:
+                    path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
+                    with open(path_tmp_opf, 'w') as fd:
+                        copyfileobj(p.stdout, fd)
+                else:
+                    error_message = ""
+                    for ele in calibre_traceback:
+                        if not ele.startswith('Traceback') and not ele.startswith('  File'):
+                            error_message = N_("Calibre failed with error: %(error)s", error=ele)
+                    return check, error_message
             quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
                        (file_path + format_new_ext)]

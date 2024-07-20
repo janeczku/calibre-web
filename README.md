@@ -89,8 +89,9 @@ Refer to the Wiki for additional installation examples: [manual installation](ht
 
 ## Requirements
 
-- Python 3.5+
+- Python 3.7+
 - [Imagemagick](https://imagemagick.org/script/download.php) for cover extraction from EPUBs (Windows users may need to install [Ghostscript](https://ghostscript.com/releases/gsdnld.html) for PDF cover extraction)
+- Windows users need to install [libmagic for 32bit python](https://gnuwin32.sourceforge.net/downlinks/file.php) or [libmagic for 64bit python](https://github.com/nscaife/file-windows/releases/tag/20170108), depending on the python version; The files need to be installed in path (e.g. script folder of your Calibre-Web venv, or in the root folder of Calibre-Web
 - Optional: [Calibre desktop program](https://calibre-ebook.com/download) for on-the-fly conversion and metadata editing (set "calibre's converter tool" path on the setup page)
 - Optional: [Kepubify tool](https://github.com/pgaskin/kepubify/releases/latest) for Kobo device support (place the binary in `/opt/kepubify` on Linux or `C:\Program Files\kepubify` on Windows)
 
