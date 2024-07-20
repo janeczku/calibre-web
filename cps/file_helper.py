@@ -29,8 +29,9 @@ log = logger.create()
 
 try:
     import magic
+    error = None
 except ImportError as e:
-    log.error("Cannot import python-magic, checking uploaded file metadata will not work: %s", e)
+    error = "Cannot import python-magic, checking uploaded file metadata will not work: {}".format(e)
 
 
 def get_temp_dir():
@@ -46,6 +47,9 @@ def del_temp_dir():
 
 
 def validate_mime_type(file_buffer, allowed_extensions):
+    if error:
+        log.error(error)
+        return False
     mime = magic.Magic(mime=True)
     allowed_mimetypes = list()
     for x in allowed_extensions:
