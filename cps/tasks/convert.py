@@ -255,7 +255,7 @@ class TaskConvert(CalibreTask):
         try:
             # path_tmp_opf = self._embed_metadata()
             if config.config_embed_metadata:
-                quotes = [3, 5]
+                quotes = [5]
                 tmp_dir = get_temp_dir()
                 calibredb_binarypath = os.path.join(config.config_binariesdir, SUPPORTED_CALIBRE_BINARIES["calibredb"])
                 my_env = os.environ.copy()
