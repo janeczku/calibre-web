@@ -135,8 +135,9 @@ def edit_book(book_id):
         # handle upload other formats from local disk
         meta = upload_single_file(request, book, book_id)
         # only merge metadata if file was uploaded and no error occurred (meta equals not false or none)
+        upload_format = False
         if meta:
-            merge_metadata(to_save, meta)
+            upload_format = merge_metadata(to_save, meta)
         # handle upload covers from local disk
         cover_upload_success = upload_cover(request, book)
         if cover_upload_success:
@@ -180,7 +181,7 @@ def edit_book(book_id):
         modify_date |= edit_book_publisher(to_save['publisher'], book)
         # handle book languages
         try:
-            modify_date |= edit_book_languages(to_save['languages'], book)
+            modify_date |= edit_book_languages(to_save['languages'], book, upload_format)
         except ValueError as e:
             flash(str(e), category="error")
             edit_error = True
@@ -734,6 +735,10 @@ def merge_metadata(to_save, meta):
         to_save['author_name'] = ''
     if to_save.get('book_title', "") == _('Unknown'):
         to_save['book_title'] = ''
+    if not to_save["languages"] and meta.languages:
+        upload_language = True
+    else:
+        upload_language = False
     for s_field, m_field in [
             ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
             ('series_index', 'series_id'), ('languages', 'languages'),
@@ -741,7 +746,7 @@ def merge_metadata(to_save, meta):
         to_save[s_field] = to_save[s_field] or getattr(meta, m_field, '')
     to_save["description"] = to_save["description"] or Markup(
         getattr(meta, 'description', '')).unescape()
-
+    return upload_language
 
 def identifier_list(to_save, book):
     """Generate a list of Identifiers from form information"""
