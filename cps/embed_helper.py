@@ -28,7 +28,7 @@ log = logger.create()
 
 def do_calibre_export(book_id, book_format):
     try:
-        quotes = [3, 5, 7, 9]
+        quotes = [4, 6]
         tmp_dir = get_temp_dir()
         calibredb_binarypath = get_calibre_binarypath("calibredb")
         temp_file_name = str(uuid4())
