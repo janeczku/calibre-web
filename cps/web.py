@@ -29,7 +29,7 @@ from flask import request, redirect, send_from_directory, make_response, flash, 
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
-from flask_login import login_user, logout_user, login_required, current_user
+from .cw_login import login_user, logout_user, current_user
 from flask_limiter import RateLimitExceeded
 from flask_limiter.util import get_remote_address
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
@@ -59,6 +59,7 @@ from .kobo_sync_status import change_archived_books
 from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
+from .usermanagement import user_login_required
 
 
 feature_support = {
@@ -107,7 +108,7 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000;'
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000';
     return resp
 
 
@@ -143,14 +144,14 @@ def viewer_required(f):
 
 
 @web.route("/ajax/emailstat")
-@login_required
+@user_login_required
 def get_email_status_json():
     tasks = WorkerThread.get_instance().tasks
     return jsonify(render_task_status(tasks))
 
 
 @web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
-@login_required
+@user_login_required
 def set_bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
     ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
@@ -170,7 +171,7 @@ def set_bookmark(book_id, book_format):
 
 
 @web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
-@login_required
+@user_login_required
 def toggle_read(book_id):
     message = edit_book_read_status(book_id)
     if message:
@@ -180,7 +181,7 @@ def toggle_read(book_id):
 
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
-@login_required
+@user_login_required
 def toggle_archived(book_id):
     is_archived = change_archived_books(book_id, message="Book {} archive bit toggled".format(book_id))
     if is_archived:
@@ -204,7 +205,7 @@ def update_view():
 
 '''
 @web.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
-@login_required
+@user_login_required
 def get_comic_book(book_id, book_format, page):
     book = calibre_db.get_book(book_id)
     if not book:
@@ -816,7 +817,7 @@ def books_list(data, sort_param, book_id, page):
 
 
 @web.route("/table")
-@login_required
+@user_login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
     cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
@@ -825,7 +826,7 @@ def books_table():
 
 
 @web.route("/ajax/listbooks")
-@login_required
+@user_login_required
 def list_books():
     off = int(request.args.get("offset") or 0)
     limit = int(request.args.get("limit") or config.config_books_per_page)
@@ -906,7 +907,7 @@ def list_books():
 
 
 @web.route("/ajax/table_settings", methods=['POST'])
-@login_required
+@user_login_required
 def update_table_settings():
     current_user.view_settings['table'] = json.loads(request.data)
     try:
@@ -1339,7 +1340,6 @@ def register():
 
 def handle_login_user(user, remember, message, category):
     login_user(user, remember=remember)
-    ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
     return redirect(get_redirect_location(request.form.get('next', None), "web.index"))
@@ -1443,7 +1443,7 @@ def login_post():
 
 
 @web.route('/logout')
-@login_required
+@user_login_required
 def logout():
     if current_user is not None and current_user.is_authenticated:
         ub.delete_user_session(current_user.id, flask_session.get('_id', ""))
@@ -1451,7 +1451,14 @@ def logout():
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
     log.debug("User logged out")
-    return redirect(url_for('web.login'))
+    if config.config_anonbrowse:
+        location = get_redirect_location(request.args.get('next', None), "web.login")
+    else:
+        location = None
+    if location:
+        return redirect(location)
+    else:
+        return redirect(url_for('web.login'))
 
 
 # ################################### Users own configuration #########################################################
@@ -1521,7 +1528,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
 
 
 @web.route("/me", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def profile():
     languages = calibre_db.speaking_language()
     translations = get_available_locale()
@@ -1582,7 +1589,8 @@ def read_book(book_id, book_format):
         return render_title_template('readtxt.html', txtfile=book_id, title=book.title)
     elif book_format.lower() in ["djvu", "djv"]:
         log.debug("Start djvu reader for %d", book_id)
-        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title, extension=book_format.lower())
+        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title,
+                                     extension=book_format.lower())
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:

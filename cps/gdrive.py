@@ -29,11 +29,11 @@ from shutil import move, copyfile
 
 from flask import Blueprint, flash, request, redirect, url_for, abort
 from flask_babel import gettext as _
-from flask_login import login_required
 
 from . import logger, gdriveutils, config, ub, calibre_db, csrf
 from .admin import admin_required
 from .file_helper import get_temp_dir
+from .usermanagement import user_login_required
 
 gdrive = Blueprint('gdrive', __name__, url_prefix='/gdrive')
 log = logger.create()
@@ -45,11 +45,11 @@ except ImportError as err:
 
 current_milli_time = lambda: int(round(time() * 1000))
 
-gdrive_watch_callback_token = 'target=calibreweb-watch_files'  #nosec
+gdrive_watch_callback_token = 'target=calibreweb-watch_files'  # nosec
 
 
 @gdrive.route("/authenticate")
-@login_required
+@user_login_required
 @admin_required
 def authenticate_google_drive():
     try:
@@ -76,7 +76,7 @@ def google_drive_callback():
 
 
 @gdrive.route("/watch/subscribe")
-@login_required
+@user_login_required
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
@@ -86,11 +86,12 @@ def watch_gdrive():
         notification_id = str(uuid4())
         try:
             result = gdriveutils.watchChange(gdriveutils.Gdrive.Instance().drive, notification_id,
-                               'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
+                                 'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
+
             config.config_google_drive_watch_changes_response = result
             config.save()
         except HttpError as e:
-            reason=json.loads(e.content)['error']['errors'][0]
+            reason = json.loads(e.content)['error']['errors'][0]
             if reason['reason'] == 'push.webhookUrlUnauthorized':
                 flash(_('Callback domain is not verified, '
                         'please follow steps to verify domain in google developer console'), category="error")
@@ -101,7 +102,7 @@ def watch_gdrive():
 
 
 @gdrive.route("/watch/revoke")
-@login_required
+@user_login_required
 @admin_required
 def revoke_watch_gdrive():
     last_watch_response = config.config_google_drive_watch_changes_response
@@ -114,6 +115,7 @@ def revoke_watch_gdrive():
         config.config_google_drive_watch_changes_response = {}
         config.save()
     return redirect(url_for('admin.db_configuration'))
+
 
 try:
     @csrf.exempt
@@ -138,7 +140,7 @@ try:
             if response:
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
                 if not response['deleted'] and response['file']['title'] == 'metadata.db' \
-                    and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
+                  and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
                     tmp_dir = get_temp_dir()
 
                     log.info('Database file updated')

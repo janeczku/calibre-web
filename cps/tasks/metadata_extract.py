@@ -63,16 +63,14 @@ class TaskMetadataExtract(CalibreTask):
         try:
             cursor = conn.execute("PRAGMA table_info(media)")
             self.columns = [column[1] for column in cursor.fetchall()]
-            query = "SELECT path, duration FROM media WHERE path LIKE 'http%'"
-            if "error" in self.columns:
-                query += " AND error IS NULL"
-            else:
-                conn.execute("ALTER TABLE media ADD COLUMN error TEXT")
+            query = ("SELECT path, duration, live_status FROM media WHERE error IS NULL AND path LIKE 'http%'"
+                     if "error" in self.columns
+                     else "SELECT path, duration, live_status FROM media WHERE path LIKE 'http%'")
             rows = conn.execute(query).fetchall()
             requested_urls = {}
-            for path, duration in rows:
+            for path, duration, live_status in rows:
                 if duration is not None and duration > 0:
-                    requested_urls[path] = {"duration": duration}
+                    requested_urls[path] = {"duration": duration, "live_status": live_status}
                 else:
                     self.unavailable.append(path)
             return requested_urls
@@ -86,6 +84,7 @@ class TaskMetadataExtract(CalibreTask):
             response = requests.get(self.original_url, params={"current_user_name": self.current_user_name, "shelf_title": self.shelf_title})
             if response.status_code == 200:
                 self.shelf_id = response.json()["shelf_id"]
+                self.shelf_title = response.json()["shelf_title"]
             else:
                 log.error("Received unexpected status code %s while sending the shelf title to %s", response.status_code, self.original_url)
         except Exception as e:
@@ -126,10 +125,10 @@ class TaskMetadataExtract(CalibreTask):
         return dict(sorted(requested_urls.items(), key=lambda item: item[1]["views_per_day"], reverse=True)[:min(MAX_VIDEOS_PER_DOWNLOAD, len(requested_urls))])
 
     def _add_download_tasks_to_worker(self, requested_urls):
-        for index, requested_url in enumerate(requested_urls.keys()):
+        for index, (requested_url, url_data) in enumerate(requested_urls.items()):
             task_download = TaskDownload(_("Downloading %(url)s...", url=requested_url),
                                          requested_url, self.original_url,
-                                         self.current_user_name, self.shelf_id)
+                                         self.current_user_name, self.shelf_id, duration=str(url_data["duration"]), live_status=url_data["live_status"])
             WorkerThread.add(self.current_user_name, task_download)
             num_requested_urls = len(requested_urls)
             total_duration = sum(url_data["duration"] for url_data in requested_urls.values())
@@ -140,7 +139,14 @@ class TaskMetadataExtract(CalibreTask):
                 shelf_url = re.sub(r"/meta(?=\?|$)", r"/shelf", self.original_url) + f"/{self.shelf_id}"
                 self.message += f"<br><br>Shelf Title: <a href='{shelf_url}' target='_blank'>{self.shelf_title}</a>"
             if self.unavailable:
-                self.message += f"<br><br>Unavailable Video(s):<br>{'<br>'.join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)}"
+                self.message += "<br><br>Unavailable Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in self.unavailable)
+                upcoming_live_urls = [url for url, url_data in requested_urls.items() if url_data["live_status"] == "is_upcoming"]
+                live_urls = [url for url, url_data in requested_urls.items() if url_data["live_status"] == "is_live"]
+                if upcoming_live_urls:
+                    self.message += "<br><br>Upcoming Live Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in upcoming_live_urls)
+                if live_urls:
+                    self.message += "<br><br>Live Video(s):<br>" + "<br>".join(f'<a href="{url}" target="_blank">{url}</a>' for url in live_urls)
+
 
     def run(self, worker_thread):
         self.worker_thread = worker_thread
@@ -161,8 +167,15 @@ class TaskMetadataExtract(CalibreTask):
             self._remove_shorts_from_db(conn)
             requested_urls = self._fetch_requested_urls(conn)
             if not requested_urls:
-                self.message = f"{self.media_url_link} failed: Video not available."
-                conn.execute("DELETE FROM media WHERE path = ?", (self.media_url,))
+                if self.unavailable:
+                    self.message = f"{self.media_url_link} failed: Video not available."
+                elif error_message := conn.execute("SELECT error FROM media WHERE ? LIKE '%' || extractor_id || '%'", (self.media_url,)).fetchone()[0]:
+                    self.message = f"{self.media_url_link} failed previously with this error: {error_message}<br><br>To force a retry, submit the URL again."
+                    media_id = conn.execute("SELECT id FROM media WHERE webpath = ?", (self.media_url,)).fetchone()[0]
+                    conn.execute("DELETE FROM media WHERE webpath = ?", (self.media_url,))
+                    conn.execute("DELETE FROM captions WHERE media_id = ?", (media_id,))
+                else:
+                    self.message = f"{self.media_url_link} failed: An error occurred while trying to fetch the requested URLs."
                 self.stat = STAT_FAIL
 
             elif self.is_playlist:
@@ -183,6 +196,7 @@ class TaskMetadataExtract(CalibreTask):
             self._add_download_tasks_to_worker(requested_urls)
         conn.close()
 
+        self.progress = 1.0
         self.stat = STAT_FINISH_SUCCESS
 
     @property

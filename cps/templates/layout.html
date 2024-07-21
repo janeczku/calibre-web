@@ -62,13 +62,13 @@
               {% if g.current_theme == 1 %}
               <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu profileDropli">
-                    <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
+                    <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}" ><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
                     {% if g.allow_registration and not current_user.is_authenticated %}
                     <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
                     <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
                     {% endif %}
                     {% if not current_user.is_anonymous %}
-                    <li><a id="logout" href="{{url_for('web.logout')}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
+                    <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
                     {% endif %}
                 </ul>
               </li>
@@ -97,9 +97,9 @@
                 <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
               {% endif %}
               {% if g.current_theme == 0 %}
-              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
+              <li><a id="top_user" data-text="{{_('Account')}}" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
                 {% if not current_user.is_anonymous %}
-                <li><a id="logout" href="{{url_for('web.logout')}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
+                <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
                 {% endif %}
               {% endif %}
             {% endif %}

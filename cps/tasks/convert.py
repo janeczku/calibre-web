@@ -44,9 +44,11 @@ log = logger.create()
 
 current_milli_time = lambda: int(round(time() * 1000))
 
+
 class TaskConvert(CalibreTask):
     def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None):
         super(TaskConvert, self).__init__(task_message)
+        self.worker_thread = None
         self.file_path = file_path
         self.book_id = book_id
         self.title = ""
@@ -67,12 +69,13 @@ class TaskConvert(CalibreTask):
                                                      data.name + "." + self.settings['old_book_format'].lower())
             df_cover = gdriveutils.getFileFromEbooksFolder(cur_book.path, "cover.jpg")
             if df:
+                datafile_cover = None
                 datafile = os.path.join(config.get_book_path(),
                                         cur_book.path,
                                         data.name + "." + self.settings['old_book_format'].lower())
                 if df_cover:
                     datafile_cover = os.path.join(config.get_book_path(),
-                                            cur_book.path, "cover.jpg")
+                                                  cur_book.path, "cover.jpg")
                 if not os.path.exists(os.path.join(config.get_book_path(), cur_book.path)):
                     os.makedirs(os.path.join(config.get_book_path(), cur_book.path))
                 df.GetContentFile(datafile)
@@ -85,7 +88,7 @@ class TaskConvert(CalibreTask):
                                   format=self.settings['old_book_format'],
                                   fn=data.name + "." + self.settings['old_book_format'].lower())
                 worker_db.session.close()
-                return self._handleError(self, error_message)
+                return self._handleError(error_message)
 
         filename = self._convert_ebook_format()
         if config.config_use_google_drive:
@@ -102,17 +105,19 @@ class TaskConvert(CalibreTask):
                 # if we're sending to E-Reader after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    EmailText = N_("%(book)s send to E-Reader", book=escape(self.title))
-                    worker_thread.add(self.user, TaskEmail(self.settings['subject'],
-                                                           self.results["path"],
-                                                           filename,
-                                                           self.settings,
-                                                           self.ereader_mail,
-                                                           EmailText,
-                                                           self.settings['body'],
-                                                           id=self.book_id,
-                                                           internal=True)
-                                      )
+                    EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))                    
+                    for email in self.ereader_mail.split(','):
+                        email = email.strip()
+                        worker_thread.add(self.user, TaskEmail(self.settings['subject'],
+                                                               self.results["path"],
+                                                               filename,
+                                                               self.settings,
+                                                               email,
+                                                               EmailText,
+                                                               self.settings['body'],
+                                                               id=self.book_id,
+                                                               internal=True)
+                                          )
                 except Exception as ex:
                     return self._handleError(str(ex))
 
@@ -242,10 +247,11 @@ class TaskConvert(CalibreTask):
                 os.unlink(converted_file[0])
             else:
                 return 1, N_("Converted file not found or more than one file in folder %(folder)s",
-                            folder=os.path.dirname(file_path))
+                             folder=os.path.dirname(file_path))
         return check, None
 
     def _convert_calibre(self, file_path, format_old_ext, format_new_ext, has_cover):
+        path_tmp_opf = None
         try:
             # path_tmp_opf = self._embed_metadata()
             if config.config_embed_metadata:
@@ -263,10 +269,18 @@ class TaskConvert(CalibreTask):
                                '--with-library', library_path]
                 p = process_open(opf_command, quotes, my_env)
                 p.wait()
-                path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
-                with open(path_tmp_opf, 'w') as fd:
-                    copyfileobj(p.stdout, fd)
-
+                check = p.returncode
+                calibre_traceback = p.stderr.readlines()
+                if check == 0:
+                    path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
+                    with open(path_tmp_opf, 'w') as fd:
+                        copyfileobj(p.stdout, fd)
+                else:
+                    error_message = ""
+                    for ele in calibre_traceback:
+                        if not ele.startswith('Traceback') and not ele.startswith('  File'):
+                            error_message = N_("Calibre failed with error: %(error)s", error=ele)
+                    return check, error_message
             quotes = [1, 2, 4, 6]
             command = [config.config_converterpath, (file_path + format_old_ext),
                        (file_path + format_new_ext)]

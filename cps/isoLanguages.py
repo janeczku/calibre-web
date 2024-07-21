@@ -82,7 +82,6 @@ def get_language_codes(locale, language_names, remainder=None):
     return lang
 
 
-
 def get_valid_language_codes(locale, language_names, remainder=None):
     lang = list()
     if "" in language_names:

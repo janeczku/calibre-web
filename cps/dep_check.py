@@ -58,6 +58,8 @@ def load_dependencies(optional=False):
 
 def dependency_check(optional=False):
     d = list()
+    dep_version_int = None
+    low_check = None
     deps = load_dependencies(optional)
     for dep in deps:
         try:

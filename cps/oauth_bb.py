@@ -30,8 +30,9 @@ from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
 from oauthlib.oauth2 import TokenExpiredError, InvalidGrantError
-from flask_login import login_user, current_user, login_required
+from .cw_login import login_user, current_user
 from sqlalchemy.orm.exc import NoResultFound
+from .usermanagement import user_login_required
 
 from . import constants, logger, config, app, ub
 
@@ -135,7 +136,7 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
         if oauth_entry.user:
             login_user(oauth_entry.user)
             log.debug("You are now logged in as: '%s'", oauth_entry.user.name)
-            flash(_("Success! You are now logged in as: %(nickname)s", nickname= oauth_entry.user.name),
+            flash(_("Success! You are now logged in as: %(nickname)s", nickname=oauth_entry.user.name),
                   category="success")
             return redirect(url_for('web.index'))
         else:
@@ -204,6 +205,7 @@ def unlink_oauth(provider):
         log.warning("oauth %s for user %d not found", provider, current_user.id)
         flash(_("Not Linked to %(oauth)s", oauth=provider), category="error")
     return redirect(url_for('web.profile'))
+
 
 def generate_oauth_blueprints():
     if not ub.session.query(ub.OAuthProvider).count():
@@ -291,6 +293,7 @@ if ub.oauth_support:
         return oauth_update_token(str(oauthblueprints[1]['id']), token, google_user_id)
 
 
+
     # notify on OAuth provider error
     @oauth_error.connect_via(oauthblueprints[0]['blueprint'])
     def github_error(blueprint, error, error_description=None, error_uri=None):
@@ -338,7 +341,7 @@ def github_login():
 
 
 @oauth.route('/unlink/github', methods=["GET"])
-@login_required
+@user_login_required
 def github_login_unlink():
     return unlink_oauth(oauthblueprints[0]['id'])
 
@@ -362,6 +365,6 @@ def google_login():
 
 
 @oauth.route('/unlink/google', methods=["GET"])
-@login_required
+@user_login_required
 def google_login_unlink():
     return unlink_oauth(oauthblueprints[1]['id'])

@@ -19,12 +19,11 @@
 from flask import render_template, g, abort, request
 from flask_babel import gettext as _
 from werkzeug.local import LocalProxy
-from flask_login import current_user
+from .cw_login import current_user
 from sqlalchemy.sql.expression import or_
 
 from . import config, constants, logger, ub
 from .ub import User
-
 
 
 log = logger.create()
@@ -112,7 +111,7 @@ def render_title_template(*args, **kwargs):
     sidebar, simple = get_sidebar_config(kwargs)
     try:
         return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
-                               accept=constants.EXTENSIONS_UPLOAD,
+                               accept=config.config_upload_formats.split(','),
                                *args, **kwargs)
     except PermissionError:
         log.error("No permission to access {} file.".format(args[0]))

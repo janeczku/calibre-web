@@ -65,12 +65,14 @@ from os import urandom
 from functools import wraps
 
 from flask import g, Blueprint, abort, request
-from flask_login import login_user, current_user, login_required
+from .cw_login import login_user, current_user
 from flask_babel import gettext as _
 from flask_limiter import RateLimitExceeded
 
 from . import logger, config, calibre_db, db, helper, ub, lm, limiter
 from .render_template import render_title_template
+from .usermanagement import user_login_required
+
 
 log = logger.create()
 
@@ -78,7 +80,7 @@ kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 
 
 @kobo_auth.route("/generate_auth_token/<int:user_id>")
-@login_required
+@user_login_required
 def generate_auth_token(user_id):
     warning = False
     host_list = request.host.rsplit(':')
@@ -115,12 +117,12 @@ def generate_auth_token(user_id):
         "generate_kobo_auth_url.html",
         title=_("Kobo Setup"),
         auth_token=auth_token.auth_token,
-        warning = warning
+        warning=warning
     )
 
 
 @kobo_auth.route("/deleteauthtoken/<int:user_id>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_auth_token(user_id):
     # Invalidate any previously generated Kobo Auth token for this user
     ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == user_id)\

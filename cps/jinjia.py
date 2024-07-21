@@ -27,10 +27,9 @@ import datetime
 import mimetypes
 from uuid import uuid4
 
-# from babel.dates import format_date
 from flask import Blueprint, request, url_for
 from flask_babel import format_date
-from flask_login import current_user
+from .cw_login import current_user
 
 from . import constants, logger
 

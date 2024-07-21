@@ -21,7 +21,6 @@ import os
 import errno
 import signal
 import socket
-import asyncio
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -97,7 +96,8 @@ class WebServer(object):
                 log.warning('Cert path: %s', certfile_path)
                 log.warning('Key path:  %s', keyfile_path)
 
-    def _make_gevent_socket_activated(self):
+    @staticmethod
+    def _make_gevent_socket_activated():
         # Reuse an already open socket on fd=SD_LISTEN_FDS_START
         SD_LISTEN_FDS_START = 3
         return GeventSocket(fileno=SD_LISTEN_FDS_START)
@@ -139,8 +139,8 @@ class WebServer(object):
             return ((self.listen_address, self.listen_port),
                     _readable_listen_address(self.listen_address, self.listen_port))
 
+        address = ('::', self.listen_port)
         try:
-            address = ('::', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
         except socket.error as ex:
             log.error('%s', ex)
@@ -301,7 +301,6 @@ class WebServer(object):
         log.info("Performing restart of Calibre-Web")
         args = self._get_args_for_reloading()
         os.execv(args[0].lstrip('"').rstrip('"'), args)
-        return True
 
     @staticmethod
     def shutdown_scheduler():
