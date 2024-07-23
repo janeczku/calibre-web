@@ -54,7 +54,7 @@ class TaskDownload(CalibreTask):
                 complete_progress_cycle = 0
 
                 last_progress_time = datetime.now()
-                fragment_stuck_timeout = 60  # seconds
+                fragment_stuck_timeout = 120  # seconds
 
                 self.message = f"Downloading {self.media_url_link}..."
                 if self.live_status == "was_live":
