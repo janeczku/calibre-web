@@ -463,8 +463,8 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
             except OSError as ex:
                 log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
                 log.debug(ex, exc_info=True)
-                return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                         src=old_author_path, dest=new_author_path, error=str(ex))
+                raise Exception(_("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                         src=old_author_path, dest=new_author_path, error=str(ex)))
     return new_authordir
 
 # Moves files in file storage during author/title rename, or from temp dir to file storage
