@@ -1,4 +1,4 @@
-# LAST UPDATED: June 23, 2024
+# LAST UPDATED: July 25, 2024
 
 # USAGE: https://github.com/iiab/calibre-web/wiki#wrench-installation
 
@@ -8,10 +8,8 @@ runcmd:
     cat >> /etc/iiab/local_vars.yml << EOF
     calibreweb_install: True
     calibreweb_enabled: True
-    calibreweb_repo_url: https://github.com/iiab/calibre-web
-    calibreweb_version: master
-    kalite_install: False
-    kalite_enabled: False
+    kolibri_install: False
+    kolibri_enabled: False
     kiwix_install: False
     kiwix_enabled: False
     osm_vector_maps_install: False
