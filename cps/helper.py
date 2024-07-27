@@ -413,36 +413,6 @@ def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdriv
         file_format.name = all_new_name
 
 
-'''def rename_all_authors(first_author, renamed_author, calibre_path="", localbook=None, gdrive=False):
-    # Create new_author_dir from parameter or from database
-    # Create new title_dir from database and add id
-    if first_author:
-        new_authordir = get_valid_filename(first_author, chars=96)
-        for r in renamed_author:
-            new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
-            old_author_dir = get_valid_filename(r, chars=96)
-            new_author_rename_dir = get_valid_filename(new_author.name, chars=96)
-            if gdrive:
-                g_file = gd.getFileFromEbooksFolder(None, old_author_dir)
-                if g_file:
-                    gd.moveGdriveFolderRemote(g_file, new_author_rename_dir)
-                    gd.updateDatabaseOnEdit(g_file['id'], new_author_rename_dir)
-            else:
-                if os.path.isdir(os.path.join(calibre_path, old_author_dir)):
-                    old_author_path = os.path.join(calibre_path, old_author_dir)
-                    new_author_path = os.path.join(calibre_path, new_author_rename_dir)
-                    try:
-                        shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
-                    except OSError as ex:
-                        log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
-                        log.debug(ex, exc_info=True)
-                        return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                                 src=old_author_path, dest=new_author_path, error=str(ex))
-    else:
-        new_authordir = get_valid_filename(localbook.authors[0].name, chars=96)
-    return new_authordir'''
-
-
 def rename_author_path(first_author, old_author_dir, renamed_author, calibre_path="", gdrive=False):
     # Create new_author_dir from parameter or from database
     # Create new title_dir from database and add id
@@ -459,12 +429,15 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
             old_author_path = os.path.join(calibre_path, old_author_dir)
             new_author_path = os.path.join(calibre_path, new_author_rename_dir)
             try:
-                shutil.move(old_author_path, new_author_path)
-            except OSError as ex:
-                log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
-                log.debug(ex, exc_info=True)
-                raise Exception(_("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                         src=old_author_path, dest=new_author_path, error=str(ex)))
+                os.rename(old_author_path, new_author_path)
+            except OSError:
+                try:
+                    shutil.move(old_author_path, new_author_path)
+                except OSError as ex:
+                    log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
+                    log.error_or_exception(ex)
+                    raise Exception(_("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                             src=old_author_path, dest=new_author_path, error=str(ex)))
     return new_authordir
 
 # Moves files in file storage during author/title rename, or from temp dir to file storage
