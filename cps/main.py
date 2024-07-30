@@ -20,7 +20,6 @@ import sys
 
 from . import create_app, limiter
 from .jinjia import jinjia
-from .remotelogin import remotelogin
 from flask import request
 
 
@@ -42,6 +41,7 @@ def main():
     from .shelf import shelf
     from .tasks_status import tasks
     from .error_handler import init_errorhandler
+    from .remotelogin import remotelogin
     try:
         from .kobo import kobo, get_kobo_activated
         from .kobo_auth import kobo_auth

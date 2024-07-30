@@ -70,7 +70,6 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         self.log = logger.create()
         self.book_id = book_id
         self.app_db_session = ub.get_new_session_instance()
-        # self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
         self.cache = fs.FileSystem()
         self.resolutions = [
             constants.COVER_THUMBNAIL_SMALL,
