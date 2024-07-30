@@ -81,13 +81,24 @@ def adv_search_custom_columns(cc, term, q):
             if custom_end:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                     func.datetime(db.cc_classes[c.id].value) <= func.datetime(custom_end)))
+        elif c.datatype in ["int", "float"]:
+            custom_low = term.get('custom_column_' + str(c.id) + '_low')
+            custom_high = term.get('custom_column_' + str(c.id) + '_high')
+            if custom_low:
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value >= custom_low))
+            if custom_high:
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value <= custom_high))
         else:
             custom_query = term.get('custom_column_' + str(c.id))
-            if custom_query != '' and custom_query is not None:
-                if c.datatype == 'bool':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == (custom_query == "True")))
-                elif c.datatype == 'int' or c.datatype == 'float':
+            if c.datatype == 'bool' and custom_query != "Any":
+                # ToDo:
+                q = q.filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value == (custom_query == "True")))
+            elif custom_query != '' and custom_query is not None:
+                if c.datatype == 'int' or c.datatype == 'float':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == custom_query))
                 elif c.datatype == 'rating':
@@ -275,9 +286,18 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 cc_present = True
             if column_end:
                 search_term.extend(["{} <= {}".format(c.name,
-                                                       format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
+                                                      format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
                                                                    format='medium')
                                                        )])
+                cc_present = True
+        if c.datatype in ["int", "float"]:
+            column_low = term.get('custom_column_' + str(c.id) + '_low')
+            column_high = term.get('custom_column_' + str(c.id) + '_high')
+            if column_low:
+                search_term.extend(["{} >= {}".format(c.name, column_low)])
+                cc_present = True
+            if column_high:
+                search_term.extend(["{} <= {}".format(c.name,column_high)])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
             search_term.extend([("{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
