@@ -24,6 +24,7 @@ from flask_babel import format_date
 from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
+from sqlalchemy import exists
 
 from . import logger, db, calibre_db, config, ub
 from .usermanagement import login_required_if_no_ano
@@ -92,16 +93,16 @@ def adv_search_custom_columns(cc, term, q):
                     db.cc_classes[c.id].value <= custom_high))
         else:
             custom_query = term.get('custom_column_' + str(c.id))
-            if c.datatype == 'bool' and custom_query != "Any":
-                # ToDo:
-                q = q.filter(coalesce(db.cc_classes[config.config_read_column].value, False) != True)
-                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                    db.cc_classes[c.id].value == (custom_query == "True")))
+            if c.datatype == 'bool':
+                if custom_query != "Any":
+                    if custom_query == "":
+                        q = q.filter(~getattr(db.Books, 'custom_column_' + str(c.id)).
+                                     any(db.cc_classes[c.id].value >= 0))
+                    else:
+                        q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                            db.cc_classes[c.id].value == bool(custom_query == "True")))
             elif custom_query != '' and custom_query is not None:
-                if c.datatype == 'int' or c.datatype == 'float':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == custom_query))
-                elif c.datatype == 'rating':
+                if c.datatype == 'rating':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == int(float(custom_query) * 2)))
                 else:
@@ -140,10 +141,10 @@ def adv_search_read_status(read_status):
             db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
     else:
         try:
-            if read_status == "True":
-                db_filter = db.cc_classes[config.config_read_column].value == True
+            if read_status == "":
+                db_filter = coalesce(db.cc_classes[config.config_read_column].value, 2) == 2
             else:
-                db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
+                db_filter = db.cc_classes[config.config_read_column].value == bool(read_status == "True")
         except (KeyError, AttributeError, IndexError):
             log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
             flash(_("Custom Column No.%(column)d does not exist in calibre database",
@@ -298,6 +299,10 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 cc_present = True
             if column_high:
                 search_term.extend(["{} <= {}".format(c.name,column_high)])
+                cc_present = True
+        elif c.datatype == "bool":
+            if term.get('custom_column_' + str(c.id)) != "Any":
+                search_term.extend([("{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
             search_term.extend([("{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
