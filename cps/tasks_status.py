@@ -82,6 +82,7 @@ def render_task_status(tasklist):
             ret['task_id'] = task.id
             ret['stat'] = task.stat
             ret['is_cancellable'] = task.is_cancellable
+            ret['error'] = task.error
 
             rendered_tasklist.append(ret)
 
