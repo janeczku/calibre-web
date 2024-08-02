@@ -81,6 +81,14 @@ $(function() {
                 $("#merge_books").addClass("disabled");
                 $("#merge_books").attr("aria-disabled", true);
             }
+            if (selections.length >= 1) {
+                $("#delete_selected_books").removeClass("disabled");
+                $("#delete_selected_books").attr("aria-disabled", false);
+            } else {
+                $("#delete_selected_books").addClass("disabled");
+                $("#delete_selected_books").attr("aria-disabled", true);
+
+            }
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
                 $("#delete_selection").attr("aria-disabled", true);
@@ -131,6 +139,42 @@ $(function() {
                 });
                 $("#merge_to").text("- " + booTitles.to);
 
+            }
+        });
+    });
+
+    $("#delete_selected_books").click(function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#delete_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/simulatedeleteselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#selected-books");
+                });
+
+            }
+        });
+    });
+
+    $("#delete_selected_confirm").click(function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/deleteselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
             }
         });
     });
