@@ -36,6 +36,8 @@
         <div class="row form-group">
           <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">{{_('Merge selected books')}}</div>
           <div class="btn btn-default disabled" id="delete_selected_books" aria-disabled="true">{{_('Delete selected books')}}</div>
+          <div class="btn btn-default disabled" id="archive_selected_books" aria-disabled="true">{{_('Archive selected books')}}</div>
+          <div class="btn btn-default disabled" id="unarchive_selected_books" aria-disabled="true">{{_('Unarchive selected books')}}</div>
           <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>
         </div>
         <div class="row form-group">
@@ -103,6 +105,7 @@
         </tr>
       </thead>
     </table>
+
 {% endblock %}
 {% block modal %}
 {{ delete_book(current_user.role_delete_books()) }}
@@ -141,17 +144,58 @@
         <p></p>
             <div class="text-left">{{_('The following books will be deleted:')}}</div>
         <p></p>
-            <div class="text-left" id="selected-books"></div>
+            <div class="text-left" id="display-delete-selected-books"></div>
       <div class="modal-footer">
         <input id="delete_selected_confirm" type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_selected_confirm" id="delete_selected_confirm" data-dismiss="modal">
         <button id="delete_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="archive_selected_modal" role="dialog" aria-labelledby="metaArchiveSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be archived:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-archive-selected-books"></div>
+      <div class="modal-footer">
+        <input id="archive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Archive')}}" name="archive_selected_confirm" id="archive_selected_confirm" data-dismiss="modal">
+        <button id="archive_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="unarchive_selected_modal" role="dialog" aria-labelledby="metaUnArchiveSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be unarchived:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-unarchive-selected-books"></div>
+      <div class="modal-footer">
+        <input id="unarchive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Archive')}}" name="unarchive_selected_confirm" id="unarchive_selected_confirm" data-dismiss="modal">
+        <button id="unarchive_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
       </div>
     </div>
   </div>
 </div>
 {% endif %}
-
 {% endblock %}
+
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>

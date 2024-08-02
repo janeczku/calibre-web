@@ -472,7 +472,6 @@ def get_sorted_entry(field, bookid):
                 return json.dumps({'authors': " & ".join([a.name for a in calibre_db.order_authors([book])])})
     return ""
 
-
 @editbook.route("/ajax/simulatemerge", methods=['POST'])
 @user_login_required
 @edit_required
@@ -488,16 +487,31 @@ def simulate_merge_list_book():
             return json.dumps({'to': to_book, 'from': from_book})
     return ""
 
-@editbook.route("/ajax/simulatedeleteselectedbooks", methods=['POST'])
+@editbook.route("/ajax/displayselectedbooks", methods=['POST'])
 @user_login_required
 @edit_required
-def simulate_delete_selected_books():
+def display_selected_books():
     vals = request.get_json().get('selections')
     books = []
     if vals:
         for book_id in vals:
             books.append(calibre_db.get_book(book_id).title)
         return json.dumps({'books': books})
+    return ""
+
+@editbook.route("/ajax/archiveselectedbooks", methods=['POST'])
+@login_required_if_no_ano
+@edit_required
+def archive_selected_books():
+    vals = request.get_json().get('selections')
+    state = request.get_json().get('archive')
+    if vals:
+        for book_id in vals:
+            is_archived = change_archived_books(book_id, state,
+                                                message="Book {} archive bit set to: {}".format(book_id, state))
+            if is_archived:
+                kobo_sync_status.remove_synced_book(book_id)
+        return json.dumps({'success': True})
     return ""
 
 @editbook.route("/ajax/deleteselectedbooks", methods=['POST'])
