@@ -16,6 +16,7 @@
             <th data-halign="right" data-align="right" data-field="progress" data-sortable="true" data-sorter="elementSorter">{{_('Progress')}}</th>
             <th data-halign="right" data-align="right" data-field="runtime" data-sortable="true" data-sort-name="rt">{{_('Run Time')}}</th>
             <th data-halign="right" data-align="right" data-field="starttime" data-sortable="true" data-sort-name="id">{{_('Start Time')}}</th>
+            <th data-halign="right" data-align="right" data-field="error" data-sortable="true">{{_('Message')}}</th>
             {% if current_user.role_admin() %}
             <th data-halign="right" data-align="right" data-formatter="TaskActions" data-switchable="false">{{_('Actions')}}</th>
             {% endif %}
