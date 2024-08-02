@@ -525,6 +525,27 @@ def delete_selected_books():
         return json.dumps({'success': True})
     return ""
 
+@editbook.route("/ajax/readselectedbooks", methods=['POST'])
+@user_login_required
+@edit_required
+def read_selected_books():
+    vals = request.get_json().get('selections')
+    markAsRead = request.get_json().get('markAsRead')
+    if vals:
+        try:
+            for book_id in vals:
+                ret = helper.edit_book_read_status(book_id, markAsRead)
+
+        except (OperationalError, IntegrityError, StaleDataError) as e:
+            calibre_db.session.rollback()
+            log.error_or_exception("Database error: {}".format(e))
+            ret = Response(json.dumps({'success': False,
+                    'msg': 'Database error: {}'.format(e.orig if hasattr(e, "orig") else e)}),
+                    mimetype='application/json')
+
+        return json.dumps({'success': True})
+    return ""
+
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @user_login_required
 @edit_required

@@ -90,6 +90,12 @@ $(function() {
 
                 $("#unarchive_selected_books").removeClass("disabled");
                 $("#unarchive_selected_books").attr("aria-disabled", false);
+
+                $("#read_selected_books").removeClass("disabled");
+                $("#read_selected_books").attr("aria-disabled", false);
+
+                $("#unread_selected_books").removeClass("disabled");
+                $("#unread_selected_books").attr("aria-disabled", false);
             } else {
                 $("#delete_selected_books").addClass("disabled");
                 $("#delete_selected_books").attr("aria-disabled", true);
@@ -99,6 +105,12 @@ $(function() {
 
                 $("#unarchive_selected_books").addClass("disabled");
                 $("#unarchive_selected_books").attr("aria-disabled", true);
+
+                $("#read_selected_books").addClass("disabled");
+                $("#read_selected_books").attr("aria-disabled", true);
+
+                $("#unread_selected_books").addClass("disabled");
+                $("#unread_selected_books").attr("aria-disabled", true);
             }
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
@@ -154,7 +166,7 @@ $(function() {
         });
     });
 
-    $("#archive_selected_books").click(function(event) {
+    $(document).on('click', '#archive_selected_books', function(event) {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
@@ -176,7 +188,7 @@ $(function() {
         });
     });
 
-    $("#archive_selected_confirm").click(function(event) {
+    $(document).on('click', '#archive_selected_confirm', function(event) {
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
@@ -190,7 +202,7 @@ $(function() {
         });
     });
 
-    $("#unarchive_selected_books").click(function(event) {
+    $(document).on('click', '#unarchive_selected_books', function(event) {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
@@ -212,7 +224,7 @@ $(function() {
         });
     });
 
-    $("#unarchive_selected_confirm").click(function(event) {
+    $(document).on('click', '#unarchive_selected_confirm', function(event) {
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
@@ -226,7 +238,7 @@ $(function() {
         });
     });
 
-    $("#delete_selected_books").click(function(event) {
+    $(document).on('click', '#delete_selected_books', function(event) {
         if ($(this).hasClass("disabled")) {
             event.stopPropagation()
         } else {
@@ -248,13 +260,85 @@ $(function() {
         });
     });
 
-    $("#delete_selected_confirm").click(function(event) {
+    $(document).on('click', '#delete_selected_confirm', function(event) {
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: window.location.pathname + "/../ajax/deleteselectedbooks",
             data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });
+
+    $(document).on('click', '#read_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#read_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-read-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-read-selected-books");
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click', '#read_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/readselectedbooks",
+            data: JSON.stringify({"selections":selections, "markAsRead": true}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });
+
+    $(document).on('click', '#unread_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#unread_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-unread-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-unread-selected-books");
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click', '#unread_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../ajax/readselectedbooks",
+            data: JSON.stringify({"selections":selections, "markAsRead": false}),
             success: function success(booTitles) {
                 $("#books-table").bootstrapTable("refresh");
                 $("#books-table").bootstrapTable("uncheckAll");
