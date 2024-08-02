@@ -19,6 +19,12 @@
     {% if sort %}data-sortable="true" {% endif %}
     data-visible="{{visiblility.get(parameter)}}"
     data-formatter="bookCheckboxFormatter">
+    {% if parameter == "is_archived"%}
+        <div class="btn btn-default disabled" id="archive_selected_books" aria-disabled="true">{{_('Archive selected books')}}</div>
+        <br>
+        <div class="btn btn-default disabled" id="unarchive_selected_books" aria-disabled="true">{{_('Unarchive selected books')}}</div>
+        <br>
+    {% endif %}
     {{show_text}}
 </th>
 {%- endmacro %}
@@ -35,10 +41,7 @@
       <div class="col-xs-12 col-sm-6">
         <div class="row form-group">
           <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">{{_('Merge selected books')}}</div>
-          <div class="btn btn-default disabled" id="delete_selected_books" aria-disabled="true">{{_('Delete selected books')}}</div>
-          <div class="btn btn-default disabled" id="archive_selected_books" aria-disabled="true">{{_('Archive selected books')}}</div>
-          <div class="btn btn-default disabled" id="unarchive_selected_books" aria-disabled="true">{{_('Unarchive selected books')}}</div>
-          <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>
+          <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">{{_('Clear selections')}}</div>
         </div>
         <div class="row form-group">
             <div class="btn btn-default disabled" id="table_xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span>{{_('Exchange author and title')}}</div>
@@ -100,7 +103,7 @@
               {% endif %}
             {% endfor %}
           {% if current_user.role_delete_books() and current_user.role_edit()%}
-            <th data-align="right" data-formatter="EbookActions" data-switchable="false">{{_('Delete')}}</th>
+            <th data-align="right" data-formatter="EbookActions" data-switchable="false"><div class="btn btn-default disabled" id="delete_selected_books" aria-disabled="true">{{_('Delete selected books')}}</div><br>{{_('Delete')}}</th>
           {% endif %}
         </tr>
       </thead>
