@@ -96,6 +96,9 @@ $(function() {
 
                 $("#unread_selected_books").removeClass("disabled");
                 $("#unread_selected_books").attr("aria-disabled", false);
+
+                $("#edit_selected_books").removeClass("disabled");
+                $("#edit_selected_books").attr("aria-disabled", false);
             } else {
                 $("#delete_selected_books").addClass("disabled");
                 $("#delete_selected_books").attr("aria-disabled", true);
@@ -111,6 +114,9 @@ $(function() {
 
                 $("#unread_selected_books").addClass("disabled");
                 $("#unread_selected_books").attr("aria-disabled", true);
+
+                $("#edit_selected_books").addClass("disabled");
+                $("#edit_selected_books").attr("aria-disabled", true);
             }
             if (selections.length < 1) {
                 $("#delete_selection").addClass("disabled");
@@ -164,6 +170,68 @@ $(function() {
 
             }
         });
+    });
+
+    $("#edit_selected_books").click(function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#edit_selected_modal').modal("show");
+        }
+    });
+
+    $("#edit_selected_confirm").click(function(event) {
+        let title = $("#title_input").val()
+        let title_sort = $("#title_sort_input").val()
+        let author_sort = $("#author_sort_input").val()
+        let authors = $("#authors_input").val()
+        let categories = $("#categories_input").val()
+        let series = $("#series_input").val()
+        let languages = $("#languages_input").val()
+        let publishers = $("#publishers_input").val()
+        let comments = $("#comments_input").val().toString()
+
+        function loopThrough(param, value)
+        {
+            selections.forEach((book_id)  => {
+                $.ajax({
+                    method: "post",
+                    url: getPath() + "/ajax/editbooks/" + param,
+                    data: { pk: book_id, value: value },
+                    error: function (data) {
+                        handleListServerResponse([
+                            { type: "danger", message: data.responseText },
+                        ]);
+                    },
+                    success: function success(booTitles) {
+                        $("#books-table").bootstrapTable("refresh");
+                        $("#books-table").bootstrapTable("uncheckAll");
+
+                        $("#title_input").value = "";
+                        $("#title_sort_input").value = "";
+                        $("#author_sort_input").value = "";
+                        $("#authors_input").value = "";
+                        $("#categories_input").value = "";
+                        $("#series_input").value = "";
+                        $("#languages_input").value = "";
+                        $("#publishers_input").value = "";
+                        $("#comments_input").value = "";
+
+                        handleListServerResponse;
+                    },
+                });
+            })
+        }
+
+        if (title) loopThrough('title', title);
+        if (title_sort) loopThrough('title_sort', title_sort);
+        if (author_sort) loopThrough('author_sort', author_sort);
+        if (authors) loopThrough('authors', authors);
+        if (categories) loopThrough('tags', categories);
+        if (series) loopThrough('series', series);
+        if (languages) loopThrough('languages', languages);
+        if (publishers) loopThrough('publishers', publishers);
+        if (comments) loopThrough('comments', comments);
     });
 
     $(document).on('click', '#archive_selected_books', function(event) {

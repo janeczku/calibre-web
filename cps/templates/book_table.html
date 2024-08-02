@@ -58,6 +58,9 @@
           <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">
             {{_('Clear selections')}}
           </div>
+          <div class="btn btn-default disabled" id="edit_selected_books" aria-disabled="true">
+            {{_('Edit selected books')}}
+          </div>
         </div>
         <div class="row form-group">
             <div class="btn btn-default disabled" id="table_xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span>{{_('Exchange author and title')}}</div>
@@ -253,6 +256,61 @@
       <div class="modal-footer">
         <input id="unread_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as unread')}}" name="unread_selected_confirm" data-dismiss="modal">
         <button id="read_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit_selected_modal" role="dialog" aria-labelledby="metaEditSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+          <span>{{_('Edit Metadata')}}</span>
+      </div>
+      <div class="modal-body">
+        <div class="text-left">{{_('Edit the fields you want changed. Blank fields will be ignored:')}}</div>
+            <br>
+            Title:
+            <input class="form-control" id="title_input">
+            <p></p>
+
+            Title Sort:
+            <input class="form-control" id="title_sort_input">
+            <p></p>
+
+            Author Sort:
+            <input class="form-control" id="author_sort_input">
+            <p></p>
+
+            Authors:
+            <input class="form-control" id="authors_input">
+            <p></p>
+
+            Categories:
+            <input class="form-control" id="categories_input">
+            <p></p>
+
+            Series:
+            <input class="form-control" id="series_input">
+            <p></p>
+
+            Languages:
+            <input class="form-control" id="languages_input">
+            <p></p>
+
+            Publishers:
+            <input class="form-control" id="publishers_input">
+            <p></p>
+
+            Comments:
+            <input class="form-control" id="comments_input">
+            <p></p>
+      </div>
+
+      <div class="modal-footer">
+        <input id="edit_selected_confirm" type="button" class="btn btn-danger" value="{{_('Edit')}}" name="edit_selected_confirm" id="edit_selected_confirm" data-dismiss="modal">
+        <button id="edit_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>
