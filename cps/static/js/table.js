@@ -224,7 +224,7 @@ $(function() {
         }
 
         if (title) loopThrough('title', title);
-        if (title_sort) loopThrough('title_sort', title_sort);
+        if (title_sort) loopThrough('sort', title_sort);
         if (author_sort) loopThrough('author_sort', author_sort);
         if (authors) loopThrough('authors', authors);
         if (categories) loopThrough('tags', categories);
