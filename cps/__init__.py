@@ -125,7 +125,7 @@ def create_app():
     config_sql.load_configuration(ub.session, encrypt_key)
     config.init_config(ub.session, encrypt_key, cli_param)
 
-    # Initialize Flask-Images
+    # Initialize Flask-Image-Resizer
     Images(app)
 
     if error:
