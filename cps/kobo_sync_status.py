@@ -54,10 +54,10 @@ def remove_synced_book(book_id, all=False, session=None):
 def change_archived_books(book_id, state=None, message=None):
     archived_book = ub.session.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
                                                                   ub.ArchivedBook.book_id == book_id)).first()
-    if not archived_book:
+    if not archived_book and state == True:
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
 
-    archived_book.is_archived = state if state else not archived_book.is_archived
+    archived_book.is_archived = state if state != None else not archived_book.is_archived
     archived_book.last_modified = datetime.datetime.utcnow()        # toDo. Check utc timestamp
 
     ub.session.merge(archived_book)
