@@ -26,12 +26,13 @@ import os
 import mimetypes
 
 from flask import Flask
+from flask_image_resizer import Images
+
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
 
 from . import logger
 from .cli import CliParameter
-from .constants import CONFIG_DIR
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
@@ -123,6 +124,9 @@ def create_app():
 
     config_sql.load_configuration(ub.session, encrypt_key)
     config.init_config(ub.session, encrypt_key, cli_param)
+
+    # Initialize Flask-Images
+    Images(app)
 
     if error:
         log.error(error)
