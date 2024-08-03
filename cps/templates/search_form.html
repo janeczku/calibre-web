@@ -158,21 +158,41 @@
     {% if cc|length > 0 %}
     {% for c in cc %}
     <div class="form-group">
+      <!--input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value=""-->
       <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
       {% if c.datatype == 'bool' %}
       <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
-        <option value="" selected></option>
+        <option value="Any" selected>{{_('Any')}}</option>
+        <option value="">{{_('Empty')}}</option>
         <option value="True" >{{_('Yes')}}</option>
         <option value="False" >{{_('No')}}</option>
       </select>
       {% endif %}
 
       {% if c.datatype == 'int' %}
-      <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label for="{{ 'custom_column_' ~ c.id }}_low">{{_('From:')}}</label>
+              <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}_low" id="{{ 'custom_column_' ~ c.id }}_low" value="">
+            </div>
+          <div class="form-group col-sm-6">
+            <label for="{{ 'custom_column_' ~ c.id }}_high">{{_('To:')}}</label>
+              <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}_high" id="{{ 'custom_column_' ~ c.id }}_high" value="">
+          </div>
+        </div>
       {% endif %}
-
       {% if c.datatype == 'float' %}
-      <input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label for="{{ 'custom_column_' ~ c.id }}_low">{{_('From:')}}</label>
+              <input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}_low" id="{{ 'custom_column_' ~ c.id }}_low" value="">
+            </div>
+          <div class="form-group col-sm-6">
+            <label for="{{ 'custom_column_' ~ c.id }}_high">{{_('To:')}}</label>
+              <input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}_high" id="{{ 'custom_column_' ~ c.id }}_high" value="">
+          </div>
+        </div>
+      <!--input type="number" step="0.01" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value=""-->
       {% endif %}
 
       {% if c.datatype == 'datetime' %}
