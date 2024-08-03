@@ -368,8 +368,6 @@ def edit_selected_books():
     publishers = d.get('publishers')
     comments = d.get('comments')
 
-
-
     if len(selections) != 0:
         for book_id in selections:
             vals = {
@@ -403,7 +401,6 @@ def edit_selected_books():
             if comments:
                 vals['value'] = comments
                 edit_book_param('comments', vals)
-
         return json.dumps({'success': True})
     return ""
 

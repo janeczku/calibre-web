@@ -203,7 +203,6 @@ $(function() {
     });
 
     $("#edit_selected_confirm").click(function(event) {
-
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
