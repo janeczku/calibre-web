@@ -29,8 +29,6 @@ from flask import request, redirect, send_from_directory, make_response, flash, 
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
-from flask_image_resizer import resized_img_src
-
 from .cw_login import login_user, logout_user, current_user
 from flask_limiter import RateLimitExceeded
 from flask_limiter.util import get_remote_address
@@ -1149,17 +1147,6 @@ def category_list():
 @web.route("/cover/<int:book_id>/<string:resolution>")
 @login_required_if_no_ano
 def get_cover(book_id, resolution=None):
-    return redirect(
-        resized_img_src(
-            url_for("web.get_raw_cover", book_id=book_id, resolution=resolution)
-        )
-    )
-
-
-@web.route("/raw_cover/<int:book_id>")
-@web.route("/raw_cover/<int:book_id>/<string:resolution>")
-@login_required_if_no_ano
-def get_raw_cover(book_id, resolution=None):
     resolutions = {
         'og': constants.COVER_THUMBNAIL_ORIGINAL,
         'sm': constants.COVER_THUMBNAIL_SMALL,
@@ -1174,17 +1161,6 @@ def get_raw_cover(book_id, resolution=None):
 @web.route("/series_cover/<int:series_id>/<string:resolution>")
 @login_required_if_no_ano
 def get_series_cover(series_id, resolution=None):
-    return redirect(
-        resized_img_src(
-            url_for("web.get_raw_series_cover", series_id=series_id, resolution=resolution)
-        )
-    )
-
-
-@web.route("/raw_series_cover/<int:series_id>")
-@web.route("/raw_series_cover/<int:series_id>/<string:resolution>")
-@login_required_if_no_ano
-def get_raw_series_cover(series_id, resolution=None):
     resolutions = {
         'og': constants.COVER_THUMBNAIL_ORIGINAL,
         'sm': constants.COVER_THUMBNAIL_SMALL,

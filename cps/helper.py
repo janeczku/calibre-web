@@ -30,12 +30,10 @@ import requests
 import unidecode
 from uuid import uuid4
 
-from flask import send_from_directory, make_response, abort, url_for, Response, redirect
+from flask import send_from_directory, make_response, abort, url_for, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
-from flask_image_resizer import resized_img_src
-
 from .cw_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -751,8 +749,6 @@ def get_book_cover_with_uuid(book_uuid, resolution=None):
 
 
 def get_book_cover_internal(book, resolution=None):
-    """returns an optimized version of the cover, unless using google drive"""
-
     if book and book.has_cover:
 
         # Send the book cover thumbnail if it exists in cache
@@ -761,13 +757,8 @@ def get_book_cover_internal(book, resolution=None):
             if thumbnail:
                 cache = fs.FileSystem()
                 if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
-                    return redirect(resized_img_src(
-                        os.path.join(
-                            cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
-                            thumbnail.filename
-                        ),
-                        format="webp"
-                    ))
+                    return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                               thumbnail.filename)
 
         # Send the book cover from Google Drive if configured
         if config.config_use_google_drive:
@@ -786,9 +777,9 @@ def get_book_cover_internal(book, resolution=None):
 
         # Send the book cover from the Calibre directory
         else:
-            cover_file_path = os.path.join(config.get_book_path(), book.path, "cover.jpg")
-            if os.path.isfile(cover_file_path):
-                return redirect(resized_img_src(cover_file_path, format="webp"))
+            cover_file_path = os.path.join(config.get_book_path(), book.path)
+            if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
+                return send_from_directory(cover_file_path, "cover.jpg")
             else:
                 return get_cover_on_failure()
     else:
@@ -829,13 +820,8 @@ def get_series_cover_internal(series_id, resolution=None):
         if thumbnail:
             cache = fs.FileSystem()
             if cache.get_cache_file_exists(thumbnail.filename, CACHE_TYPE_THUMBNAILS):
-                return redirect(resized_img_src(
-                    os.path.join(
-                        cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
-                        thumbnail.filename
-                    ),
-                    format="webp"
-                ))
+                return send_from_directory(cache.get_cache_file_dir(thumbnail.filename, CACHE_TYPE_THUMBNAILS),
+                                           thumbnail.filename)
 
     return get_series_thumbnail_on_failure(series_id, resolution)
 

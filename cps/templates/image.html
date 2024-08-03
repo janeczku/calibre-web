@@ -4,7 +4,7 @@
     {% set srcset = book|get_cover_srcset %}
     <img
         srcset="{{ srcset }}"
-        src="{{ url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified) }}"
+        src="{{ resized_img_src(url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified), format='webp') }}"
         alt="{{ image_alt }}"
         loading="lazy"
     />
@@ -15,7 +15,7 @@
     {% set srcset = series|get_series_srcset %}
     <img
         srcset="{{ srcset }}"
-        src="{{ url_for('web.get_series_cover', series_id=series.id, resolution='og', c='day'|cache_timestamp) }}"
+        src="{{ resized_img_src(url_for('web.get_series_cover', series_id=series.id, resolution='og', c='day'|cache_timestamp), format='webp') }}"
         alt="{{ book_title }}"
         loading="lazy"
     />
