@@ -207,15 +207,15 @@ $(function() {
                         $("#books-table").bootstrapTable("refresh");
                         $("#books-table").bootstrapTable("uncheckAll");
 
-                        $("#title_input").value = "";
-                        $("#title_sort_input").value = "";
-                        $("#author_sort_input").value = "";
-                        $("#authors_input").value = "";
-                        $("#categories_input").value = "";
-                        $("#series_input").value = "";
-                        $("#languages_input").value = "";
-                        $("#publishers_input").value = "";
-                        $("#comments_input").value = "";
+                        $("#title_input").val("");
+                        $("#title_sort_input").val("");
+                        $("#author_sort_input").val("");
+                        $("#authors_input").val("");
+                        $("#categories_input").val("");
+                        $("#series_input").val("");
+                        $("#languages_input").val("");
+                        $("#publishers_input").val("");
+                        $("#comments_input").val("");
 
                         handleListServerResponse;
                     },
