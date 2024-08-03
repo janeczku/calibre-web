@@ -130,7 +130,29 @@ $(function() {
                 $("#table_xchange").attr("aria-disabled", false);
 
             }
+
         });
+
+    // Small block to initialize the state of the author/title sort inputs in metadata form
+    {
+        let checkA = $('#autoupdate_authorsort').prop('checked');
+        $('#author_sort_input').prop('disabled', checkA);
+        let checkT = $('#autoupdate_titlesort').prop('checked');
+        $('#title_sort_input').prop('disabled', checkT);
+    }
+
+    // Disable/enable author and title sort input in respect to auto-update title/author sort being checked on or not
+    $("#autoupdate_authorsort").on('change', function(event) {
+            let checkA = $('#autoupdate_authorsort').prop('checked');
+            $('#author_sort_input').prop('disabled', checkA);
+    })
+
+    $("#autoupdate_titlesort").on('change', function(event) {
+            let checkT = $('#autoupdate_titlesort').prop('checked');
+            $('#title_sort_input').prop('disabled', checkT);
+    })
+    /////
+
     $("#delete_selection").click(function() {
         $("#books-table").bootstrapTable("uncheckAll");
     });
