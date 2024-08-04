@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-02 21:21:17</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-03 20:30:20</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-03 04:29:18</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-04 04:01:30</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 53 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 17 min</p>
         </div>
       </div>
       </div>
@@ -702,12 +702,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertCalibre</td>
         <td class="text-center">15</td>
-        <td class="text-center">12</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">15</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c8', 15)">Detail</a>
@@ -716,33 +716,11 @@
 
     
     
-        <tr id="ft8.1" class="none bg-danger">
+        <tr id='pt8.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_calibre_log</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft8.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft8.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft8.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 702, in test_calibre_log
-    task_len, ret1 = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -774,31 +752,11 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id="et8.5" class="none bg-info">
+        <tr id='pt8.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et8.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et8.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et8.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 442, in test_convert_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -848,33 +806,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft8.11" class="none bg-danger">
+        <tr id='pt8.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibre - test_email_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft8.11')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft8.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft8.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert.py&#34;, line 482, in test_email_only
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -916,12 +852,12 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c9', 7)">Detail</a>
@@ -930,95 +866,29 @@ AssertionError: 1 != 2</pre>
 
     
     
-        <tr id="ft9.1" class="none bg-danger">
+        <tr id='pt9.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft9.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft9.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 224, in test_convert_email
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et9.2" class="none bg-info">
+        <tr id='pt9.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_failed_and_email</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et9.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et9.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et9.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 254, in test_convert_failed_and_email
-    select.select_by_visible_text(&#39;AZW3&#39;)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/select.py&#34;, line 134, in select_by_visible_text
-    raise NoSuchElementException(f&#34;Could not locate element with visible text: {text}&#34;)
-selenium.common.exceptions.NoSuchElementException: Message: Could not locate element with visible text: AZW3</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="ft9.3" class="none bg-danger">
+        <tr id='pt9.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft9.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft9.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 412, in test_convert_only
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1041,33 +911,11 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id="ft9.6" class="none bg-danger">
+        <tr id='pt9.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft9.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft9.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 450, in test_email_only
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1082,12 +930,12 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c10', 3)">Detail</a>
@@ -1105,31 +953,11 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id="et10.2" class="none bg-info">
+        <tr id='pt10.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et10.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et10.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify.py&#34;, line 154, in test_convert_only
-    self.assertEqual(ret[-1][&#39;result&#39;], &#39;Finished&#39;)
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1184,11 +1012,11 @@ IndexError: list index out of range</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 212, in test_convert_only
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 239, in test_convert_only
     task_len, ret = self.wait_tasks(tasks, 1)
   File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
     self.assertEqual(expected, task_len)
-AssertionError: 1 != 0</pre>
+AssertionError: 1 != 3</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2378,8 +2206,8 @@ NameError: name &#39;SMB_LIB&#39; is not defined</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif len(results)&gt;19 and &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 69, in test_load_metadata
+    if &#39;https://comicvine.gamespot.com/&#39; == results[10][&#39;source&#39;]:
 IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -2391,12 +2219,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">16</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c19', 18)">Detail</a>
@@ -2459,86 +2287,20 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="et19.7" class="none bg-info">
+        <tr id='pt19.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et19.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et19.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 753, in test_edit_custom_float
-    self.assertEqual(len(self.adv_search({u&#39;custom_column_8&#39;: u&#39;-2.5&#39;})), 0)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 2172, in adv_search
-    ele = self.driver.find_element(By.XPATH,
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: //input[@value = &#39;-2.5&#39; and starts-with(@id, &#39;custom_column_8&#39;) ]/..
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et19.8" class="none bg-info">
+        <tr id='pt19.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et19.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et19.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 769, in test_edit_custom_int
-    self.assertEqual(len(self.adv_search({u&#39;custom_column_4&#39;: u&#39;0&#39;})), 0)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 2172, in adv_search
-    ele = self.driver.find_element(By.XPATH,
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: //input[@value = &#39;0&#39; and starts-with(@id, &#39;custom_column_4&#39;) ]/..
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2634,11 +2396,11 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadataScholar</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2648,21 +2410,41 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id="ft20.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft20.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft20.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_metadata_scholar.py&#34;, line 74, in test_load_metadata
+    self.assertEqual(30, len(results))
+AssertionError: 30 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestSTARTTLS</td>
         <td class="text-center">3</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2672,11 +2454,33 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id="ft21.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft21.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft21.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_STARTTLS.py&#34;, line 83, in test_STARTTLS
+    task_len, ret = self.wait_tasks(tasks, 1)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
+    self.assertEqual(expected, task_len)
+AssertionError: 1 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2700,12 +2504,12 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestSSL</td>
         <td class="text-center">7</td>
-        <td class="text-center">3</td>
-        <td class="text-center">1</td>
-        <td class="text-center">3</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c22', 7)">Detail</a>
@@ -2741,201 +2545,38 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id="ft22.4" class="none bg-danger">
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_non_admin_user</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft22.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft22.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft22.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 199, in test_SSL_non_admin_user
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et22.5" class="none bg-info">
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et22.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et22.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 72, in test_SSL_only
-    self.setup_server(False, {&#39;mail_use_ssl&#39;: &#39;SSL/TLS&#39;})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 727, in setup_server
-    select = Select(cls.driver.find_element(By.ID, key))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;mail_use_ssl&#34;]
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et22.6" class="none bg-info">
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et22.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et22.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 146, in test_email_limit
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/support/wait.py&#34;, line 95, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et22.7" class="none bg-info">
+        <tr id='pt22.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_filepicker_two_file</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et22.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et22.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 229, in test_filepicker_two_file
-    accordions[0].click()
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c23', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="et23.1" class="none bg-info">
-            <td>
-                <div class='testcase'>tearDownClass (test_email_ssl)</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et23.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et23.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et23.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 60, in tearDownClass
-    cls.stop_calibre_web()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 480, in stop_calibre_web
-    cls.driver.find_element(By.ID, &#39;admin_stop&#39;).click()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;admin_stop&#34;]
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2949,13 +2590,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 6)">Detail</a>
+            <a onclick="showClassDetail('c23', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_file_embed_metadata</div>
             </td>
@@ -2964,7 +2605,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2973,7 +2614,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt24.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_check_metadata</div>
             </td>
@@ -2982,7 +2623,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt24.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_kepub_embed_metadata</div>
             </td>
@@ -2991,7 +2632,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt24.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_permissions_missing_file</div>
             </td>
@@ -3000,7 +2641,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt24.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_email_epub_embed_metadata</div>
             </td>
@@ -3018,13 +2659,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 4)">Detail</a>
+            <a onclick="showClassDetail('c24', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_file_embed_metadata</div>
             </td>
@@ -3033,7 +2674,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_kepub_embed_metadata</div>
             </td>
@@ -3042,7 +2683,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt25.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_check_metadata</div>
             </td>
@@ -3051,7 +2692,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt25.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_kepub_embed_metadata</div>
             </td>
@@ -3069,13 +2710,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 1)">Detail</a>
+            <a onclick="showClassDetail('c25', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBookDatabase - test_invalid_book_path</div>
             </td>
@@ -3093,13 +2734,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 2)">Detail</a>
+            <a onclick="showClassDetail('c26', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_column</div>
             </td>
@@ -3108,7 +2749,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt27.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_read_column</div>
             </td>
@@ -3126,13 +2767,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 3)">Detail</a>
+            <a onclick="showClassDetail('c27', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
             </td>
@@ -3141,19 +2782,19 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id="st28.2" class="none bg-warning">
+        <tr id="st27.2" class="none bg-warning">
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st28.2')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st28.2" class="popup_window test_output" style="display:none;">
+                <div id="div_st27.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st28.2').style.display='none'"><span
+                                onclick="document.getElementById('div_st27.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3167,7 +2808,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_two_filepickers</div>
             </td>
@@ -3185,13 +2826,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 1)">Detail</a>
+            <a onclick="showClassDetail('c28', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -3209,13 +2850,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 3)">Detail</a>
+            <a onclick="showClassDetail('c29', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -3224,7 +2865,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -3233,7 +2874,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -3251,13 +2892,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 12)">Detail</a>
+            <a onclick="showClassDetail('c30', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -3266,7 +2907,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -3275,7 +2916,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_limit</div>
             </td>
@@ -3284,7 +2925,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_no_download</div>
             </td>
@@ -3293,7 +2934,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
@@ -3302,7 +2943,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -3311,7 +2952,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -3320,7 +2961,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -3329,7 +2970,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.9' class='hiddenRow bg-success'>
+        <tr id='pt30.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -3338,7 +2979,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.10' class='hiddenRow bg-success'>
+        <tr id='pt30.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -3347,7 +2988,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.11' class='hiddenRow bg-success'>
+        <tr id='pt30.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -3356,7 +2997,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt31.12' class='hiddenRow bg-success'>
+        <tr id='pt30.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -3374,13 +3015,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 6)">Detail</a>
+            <a onclick="showClassDetail('c31', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id='pt31.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
@@ -3389,7 +3030,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt32.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
@@ -3398,7 +3039,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt32.3' class='hiddenRow bg-success'>
+        <tr id='pt31.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
@@ -3407,7 +3048,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt32.4' class='hiddenRow bg-success'>
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
@@ -3416,7 +3057,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt32.5' class='hiddenRow bg-success'>
+        <tr id='pt31.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
@@ -3425,7 +3066,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt32.6' class='hiddenRow bg-success'>
+        <tr id='pt31.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
@@ -3443,13 +3084,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 13)">Detail</a>
+            <a onclick="showClassDetail('c32', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt33.1' class='hiddenRow bg-success'>
+        <tr id='pt32.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -3458,7 +3099,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.2' class='hiddenRow bg-success'>
+        <tr id='pt32.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -3467,7 +3108,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.3' class='hiddenRow bg-success'>
+        <tr id='pt32.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -3476,7 +3117,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id='pt32.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -3485,7 +3126,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.5' class='hiddenRow bg-success'>
+        <tr id='pt32.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -3494,7 +3135,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.6' class='hiddenRow bg-success'>
+        <tr id='pt32.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -3503,7 +3144,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.7' class='hiddenRow bg-success'>
+        <tr id='pt32.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -3512,7 +3153,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.8' class='hiddenRow bg-success'>
+        <tr id='pt32.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -3521,7 +3162,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.9' class='hiddenRow bg-success'>
+        <tr id='pt32.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -3530,7 +3171,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.10' class='hiddenRow bg-success'>
+        <tr id='pt32.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -3539,7 +3180,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.11' class='hiddenRow bg-success'>
+        <tr id='pt32.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -3548,7 +3189,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.12' class='hiddenRow bg-success'>
+        <tr id='pt32.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -3557,7 +3198,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt33.13' class='hiddenRow bg-success'>
+        <tr id='pt32.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -3575,13 +3216,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c34', 5)">Detail</a>
+            <a onclick="showClassDetail('c33', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id='pt33.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_login_limit</div>
             </td>
@@ -3590,7 +3231,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt34.2' class='hiddenRow bg-success'>
+        <tr id='pt33.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_opds_limit</div>
             </td>
@@ -3599,7 +3240,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt34.3' class='hiddenRow bg-success'>
+        <tr id='pt33.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_password_strength</div>
             </td>
@@ -3608,7 +3249,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt34.4' class='hiddenRow bg-success'>
+        <tr id='pt33.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_redis_backend</div>
             </td>
@@ -3617,7 +3258,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt34.5' class='hiddenRow bg-success'>
+        <tr id='pt33.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_register_limit</div>
             </td>
@@ -3635,13 +3276,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 16)">Detail</a>
+            <a onclick="showClassDetail('c34', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt35.1' class='hiddenRow bg-success'>
+        <tr id='pt34.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_author_sort</div>
             </td>
@@ -3650,7 +3291,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.2' class='hiddenRow bg-success'>
+        <tr id='pt34.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_download_sort</div>
             </td>
@@ -3659,7 +3300,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.3' class='hiddenRow bg-success'>
+        <tr id='pt34.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_format_sort</div>
             </td>
@@ -3668,7 +3309,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.4' class='hiddenRow bg-success'>
+        <tr id='pt34.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_formats_click_none</div>
             </td>
@@ -3677,7 +3318,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.5' class='hiddenRow bg-success'>
+        <tr id='pt34.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_lang_sort</div>
             </td>
@@ -3686,7 +3327,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.6' class='hiddenRow bg-success'>
+        <tr id='pt34.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_language_click_none</div>
             </td>
@@ -3695,7 +3336,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.7' class='hiddenRow bg-success'>
+        <tr id='pt34.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_authors_all_links</div>
             </td>
@@ -3704,7 +3345,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.8' class='hiddenRow bg-success'>
+        <tr id='pt34.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_series_all_links</div>
             </td>
@@ -3713,7 +3354,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.9' class='hiddenRow bg-success'>
+        <tr id='pt34.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_click_none</div>
             </td>
@@ -3722,7 +3363,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.10' class='hiddenRow bg-success'>
+        <tr id='pt34.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_sort</div>
             </td>
@@ -3731,7 +3372,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.11' class='hiddenRow bg-success'>
+        <tr id='pt34.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_click_none</div>
             </td>
@@ -3740,7 +3381,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.12' class='hiddenRow bg-success'>
+        <tr id='pt34.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_sort</div>
             </td>
@@ -3749,7 +3390,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.13' class='hiddenRow bg-success'>
+        <tr id='pt34.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_click_none</div>
             </td>
@@ -3758,7 +3399,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.14' class='hiddenRow bg-success'>
+        <tr id='pt34.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_sort</div>
             </td>
@@ -3767,7 +3408,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.15' class='hiddenRow bg-success'>
+        <tr id='pt34.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_click_none</div>
             </td>
@@ -3776,7 +3417,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt35.16' class='hiddenRow bg-success'>
+        <tr id='pt34.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_sort</div>
             </td>
@@ -3794,13 +3435,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 9)">Detail</a>
+            <a onclick="showClassDetail('c35', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt36.1' class='hiddenRow bg-success'>
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -3809,7 +3450,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.2' class='hiddenRow bg-success'>
+        <tr id='pt35.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -3818,7 +3459,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.3' class='hiddenRow bg-success'>
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debuginfo_download</div>
             </td>
@@ -3827,7 +3468,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.4' class='hiddenRow bg-success'>
+        <tr id='pt35.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -3836,19 +3477,19 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id="st36.5" class="none bg-warning">
+        <tr id="st35.5" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st36.5')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st35.5')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st36.5" class="popup_window test_output" style="display:none;">
+                <div id="div_st35.5" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st36.5').style.display='none'"><span
+                                onclick="document.getElementById('div_st35.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3862,7 +3503,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.6' class='hiddenRow bg-success'>
+        <tr id='pt35.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logbook_download</div>
             </td>
@@ -3871,7 +3512,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.7' class='hiddenRow bg-success'>
+        <tr id='pt35.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -3880,7 +3521,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.8' class='hiddenRow bg-success'>
+        <tr id='pt35.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -3889,7 +3530,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt36.9' class='hiddenRow bg-success'>
+        <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -3907,13 +3548,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 19)">Detail</a>
+            <a onclick="showClassDetail('c36', 19)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt37.1' class='hiddenRow bg-success'>
+        <tr id='pt36.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -3922,7 +3563,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.2' class='hiddenRow bg-success'>
+        <tr id='pt36.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -3931,7 +3572,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.3' class='hiddenRow bg-success'>
+        <tr id='pt36.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_cookie_steal</div>
             </td>
@@ -3940,7 +3581,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.4' class='hiddenRow bg-success'>
+        <tr id='pt36.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -3949,7 +3590,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.5' class='hiddenRow bg-success'>
+        <tr id='pt36.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -3958,7 +3599,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.6' class='hiddenRow bg-success'>
+        <tr id='pt36.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -3967,7 +3608,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.7' class='hiddenRow bg-success'>
+        <tr id='pt36.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_log_hack</div>
             </td>
@@ -3976,7 +3617,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.8' class='hiddenRow bg-success'>
+        <tr id='pt36.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -3985,7 +3626,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.9' class='hiddenRow bg-success'>
+        <tr id='pt36.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -3994,7 +3635,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.10' class='hiddenRow bg-success'>
+        <tr id='pt36.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -4003,7 +3644,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.11' class='hiddenRow bg-success'>
+        <tr id='pt36.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -4012,7 +3653,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.12' class='hiddenRow bg-success'>
+        <tr id='pt36.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -4021,7 +3662,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.13' class='hiddenRow bg-success'>
+        <tr id='pt36.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -4030,7 +3671,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.14' class='hiddenRow bg-success'>
+        <tr id='pt36.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -4039,7 +3680,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.15' class='hiddenRow bg-success'>
+        <tr id='pt36.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_password_policy</div>
             </td>
@@ -4048,7 +3689,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.16' class='hiddenRow bg-success'>
+        <tr id='pt36.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
@@ -4057,7 +3698,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.17' class='hiddenRow bg-success'>
+        <tr id='pt36.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_multi_user</div>
             </td>
@@ -4066,7 +3707,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.18' class='hiddenRow bg-success'>
+        <tr id='pt36.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_opds</div>
             </td>
@@ -4075,7 +3716,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt37.19' class='hiddenRow bg-success'>
+        <tr id='pt36.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -4093,13 +3734,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 2)">Detail</a>
+            <a onclick="showClassDetail('c37', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
@@ -4108,7 +3749,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt38.2' class='hiddenRow bg-success'>
+        <tr id='pt37.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -4126,13 +3767,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 2)">Detail</a>
+            <a onclick="showClassDetail('c38', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt39.1' class='hiddenRow bg-success'>
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -4141,7 +3782,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt39.2' class='hiddenRow bg-success'>
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -4159,13 +3800,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 26)">Detail</a>
+            <a onclick="showClassDetail('c39', 26)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt40.1' class='hiddenRow bg-success'>
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_guest</div>
             </td>
@@ -4174,7 +3815,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.2' class='hiddenRow bg-success'>
+        <tr id='pt39.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_user</div>
             </td>
@@ -4183,7 +3824,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.3' class='hiddenRow bg-success'>
+        <tr id='pt39.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -4192,7 +3833,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.4' class='hiddenRow bg-success'>
+        <tr id='pt39.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -4201,7 +3842,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.5' class='hiddenRow bg-success'>
+        <tr id='pt39.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -4210,7 +3851,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.6' class='hiddenRow bg-success'>
+        <tr id='pt39.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -4219,7 +3860,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.7' class='hiddenRow bg-success'>
+        <tr id='pt39.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -4228,7 +3869,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.8' class='hiddenRow bg-success'>
+        <tr id='pt39.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -4237,7 +3878,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.9' class='hiddenRow bg-success'>
+        <tr id='pt39.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -4246,7 +3887,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.10' class='hiddenRow bg-success'>
+        <tr id='pt39.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -4255,7 +3896,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.11' class='hiddenRow bg-success'>
+        <tr id='pt39.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -4264,7 +3905,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.12' class='hiddenRow bg-success'>
+        <tr id='pt39.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -4273,7 +3914,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.13' class='hiddenRow bg-success'>
+        <tr id='pt39.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -4282,7 +3923,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.14' class='hiddenRow bg-success'>
+        <tr id='pt39.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -4291,7 +3932,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.15' class='hiddenRow bg-success'>
+        <tr id='pt39.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -4300,7 +3941,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.16' class='hiddenRow bg-success'>
+        <tr id='pt39.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -4309,7 +3950,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.17' class='hiddenRow bg-success'>
+        <tr id='pt39.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -4318,7 +3959,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.18' class='hiddenRow bg-success'>
+        <tr id='pt39.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -4327,7 +3968,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.19' class='hiddenRow bg-success'>
+        <tr id='pt39.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -4336,7 +3977,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.20' class='hiddenRow bg-success'>
+        <tr id='pt39.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -4345,7 +3986,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.21' class='hiddenRow bg-success'>
+        <tr id='pt39.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -4354,7 +3995,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.22' class='hiddenRow bg-success'>
+        <tr id='pt39.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
@@ -4363,7 +4004,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.23' class='hiddenRow bg-success'>
+        <tr id='pt39.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -4372,7 +4013,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.24' class='hiddenRow bg-success'>
+        <tr id='pt39.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -4381,7 +4022,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.25' class='hiddenRow bg-success'>
+        <tr id='pt39.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -4390,7 +4031,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt40.26' class='hiddenRow bg-success'>
+        <tr id='pt39.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -4408,13 +4049,13 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 1)">Detail</a>
+            <a onclick="showClassDetail('c40', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt41.1' class='hiddenRow bg-success'>
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
@@ -4424,50 +4065,43 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestPipInstall</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 1)">Detail</a>
+            <a onclick="showClassDetail('c41', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et42.1" class="none bg-info">
+        <tr id='pt41.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_pip_install</div>
+                <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et42.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et42.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et42.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
-    from build_release import make_release
-ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_module_start</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4481,13 +4115,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 8)">Detail</a>
+            <a onclick="showClassDetail('c42', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='st43.1' class='none bg-warning'>
+        <tr id='st42.1' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestReader - test_cb7_reader</div>
             </td>
@@ -4496,7 +4130,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.2' class='hiddenRow bg-success'>
+        <tr id='pt42.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_MACOS_files</div>
             </td>
@@ -4505,7 +4139,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.3' class='hiddenRow bg-success'>
+        <tr id='pt42.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -4514,7 +4148,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.4' class='hiddenRow bg-success'>
+        <tr id='pt42.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -4523,7 +4157,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.5' class='hiddenRow bg-success'>
+        <tr id='pt42.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -4532,7 +4166,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.6' class='hiddenRow bg-success'>
+        <tr id='pt42.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_single_file_comic</div>
             </td>
@@ -4541,7 +4175,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.7' class='hiddenRow bg-success'>
+        <tr id='pt42.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -4550,7 +4184,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt43.8' class='hiddenRow bg-success'>
+        <tr id='pt42.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -4568,13 +4202,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 1)">Detail</a>
+            <a onclick="showClassDetail('c43', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id='pt43.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReadOnlyDatabase - test_readonly_path</div>
             </td>
@@ -4592,13 +4226,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 8)">Detail</a>
+            <a onclick="showClassDetail('c44', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -4607,7 +4241,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.2' class='hiddenRow bg-success'>
+        <tr id='pt44.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
@@ -4616,7 +4250,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.3' class='hiddenRow bg-success'>
+        <tr id='pt44.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -4625,7 +4259,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.4' class='hiddenRow bg-success'>
+        <tr id='pt44.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -4634,7 +4268,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.5' class='hiddenRow bg-success'>
+        <tr id='pt44.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -4643,7 +4277,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.6' class='hiddenRow bg-success'>
+        <tr id='pt44.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -4652,7 +4286,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.7' class='hiddenRow bg-success'>
+        <tr id='pt44.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -4661,7 +4295,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.8' class='hiddenRow bg-success'>
+        <tr id='pt44.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -4679,13 +4313,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 4)">Detail</a>
+            <a onclick="showClassDetail('c45', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt45.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_logout</div>
             </td>
@@ -4694,7 +4328,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt45.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_move_page</div>
             </td>
@@ -4703,7 +4337,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt45.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_next</div>
             </td>
@@ -4712,7 +4346,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -4730,13 +4364,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 16)">Detail</a>
+            <a onclick="showClassDetail('c46', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt46.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_access_shelf</div>
             </td>
@@ -4745,7 +4379,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.2' class='hiddenRow bg-success'>
+        <tr id='pt46.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -4754,7 +4388,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.3' class='hiddenRow bg-success'>
+        <tr id='pt46.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
@@ -4763,7 +4397,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.4' class='hiddenRow bg-success'>
+        <tr id='pt46.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -4772,7 +4406,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.5' class='hiddenRow bg-success'>
+        <tr id='pt46.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf</div>
             </td>
@@ -4781,7 +4415,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.6' class='hiddenRow bg-success'>
+        <tr id='pt46.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
@@ -4790,7 +4424,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.7' class='hiddenRow bg-success'>
+        <tr id='pt46.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -4799,7 +4433,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.8' class='hiddenRow bg-success'>
+        <tr id='pt46.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -4808,7 +4442,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.9' class='hiddenRow bg-success'>
+        <tr id='pt46.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -4817,7 +4451,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.10' class='hiddenRow bg-success'>
+        <tr id='pt46.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -4826,7 +4460,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.11' class='hiddenRow bg-success'>
+        <tr id='pt46.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -4835,7 +4469,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.12' class='hiddenRow bg-success'>
+        <tr id='pt46.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -4844,7 +4478,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.13' class='hiddenRow bg-success'>
+        <tr id='pt46.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -4853,19 +4487,19 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id="st47.14" class="none bg-warning">
+        <tr id="st46.14" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st47.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st46.14')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st47.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st46.14" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st47.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st46.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4879,7 +4513,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.15' class='hiddenRow bg-success'>
+        <tr id='pt46.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -4888,7 +4522,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt47.16' class='hiddenRow bg-success'>
+        <tr id='pt46.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
@@ -4906,13 +4540,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 1)">Detail</a>
+            <a onclick="showClassDetail('c47', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSocket - test_socket_communication</div>
             </td>
@@ -4930,13 +4564,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c49', 7)">Detail</a>
+            <a onclick="showClassDetail('c48', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_change_ebook</div>
             </td>
@@ -4945,7 +4579,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt49.2' class='hiddenRow bg-success'>
+        <tr id='pt48.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_convert_ebook</div>
             </td>
@@ -4954,7 +4588,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt49.3' class='hiddenRow bg-success'>
+        <tr id='pt48.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_download_book</div>
             </td>
@@ -4963,7 +4597,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt49.4' class='hiddenRow bg-success'>
+        <tr id='pt48.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_email_ebook</div>
             </td>
@@ -4972,7 +4606,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt49.5' class='hiddenRow bg-success'>
+        <tr id='pt48.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_kobo</div>
             </td>
@@ -4981,7 +4615,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt49.6' class='hiddenRow bg-success'>
+        <tr id='pt48.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_thumbnails</div>
             </td>
@@ -4990,7 +4624,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt49.7' class='hiddenRow bg-success'>
+        <tr id='pt48.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_upload_ebook</div>
             </td>
@@ -5008,13 +4642,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c50', 1)">Detail</a>
+            <a onclick="showClassDetail('c49', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt50.1' class='hiddenRow bg-success'>
+        <tr id='pt49.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSystemdActivation - test_systemd_activation</div>
             </td>
@@ -5032,13 +4666,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c51', 1)">Detail</a>
+            <a onclick="showClassDetail('c50', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt51.1' class='hiddenRow bg-success'>
+        <tr id='pt50.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
@@ -5056,13 +4690,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c52', 8)">Detail</a>
+            <a onclick="showClassDetail('c51', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt52.1' class='hiddenRow bg-success'>
+        <tr id='pt51.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
@@ -5071,7 +4705,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.2' class='hiddenRow bg-success'>
+        <tr id='pt51.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
@@ -5080,7 +4714,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id='pt51.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
@@ -5089,7 +4723,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id='pt51.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
@@ -5098,7 +4732,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='st52.5' class='none bg-warning'>
+        <tr id='st51.5' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_for_series</div>
             </td>
@@ -5107,7 +4741,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id='pt51.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
@@ -5116,7 +4750,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.7' class='hiddenRow bg-success'>
+        <tr id='pt51.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
@@ -5125,7 +4759,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.8' class='hiddenRow bg-success'>
+        <tr id='pt51.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
@@ -5143,13 +4777,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c53', 9)">Detail</a>
+            <a onclick="showClassDetail('c52', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt53.1' class='hiddenRow bg-success'>
+        <tr id='pt52.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -5158,7 +4792,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.2' class='hiddenRow bg-success'>
+        <tr id='pt52.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -5167,7 +4801,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.3' class='hiddenRow bg-success'>
+        <tr id='pt52.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -5176,7 +4810,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.4' class='hiddenRow bg-success'>
+        <tr id='pt52.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -5185,7 +4819,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.5' class='hiddenRow bg-success'>
+        <tr id='pt52.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -5194,7 +4828,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.6' class='hiddenRow bg-success'>
+        <tr id='pt52.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -5203,19 +4837,19 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id="st53.7" class="none bg-warning">
+        <tr id="st52.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st53.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st52.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st53.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st52.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st53.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st52.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -5229,7 +4863,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.8' class='hiddenRow bg-success'>
+        <tr id='pt52.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -5238,7 +4872,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.9' class='hiddenRow bg-success'>
+        <tr id='pt52.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
@@ -5256,13 +4890,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c54', 6)">Detail</a>
+            <a onclick="showClassDetail('c53', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt54.1' class='hiddenRow bg-success'>
+        <tr id='pt53.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_comments</div>
             </td>
@@ -5271,7 +4905,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.2' class='hiddenRow bg-success'>
+        <tr id='pt53.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -5280,7 +4914,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.3' class='hiddenRow bg-success'>
+        <tr id='pt53.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
@@ -5289,7 +4923,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.4' class='hiddenRow bg-success'>
+        <tr id='pt53.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -5298,7 +4932,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.5' class='hiddenRow bg-success'>
+        <tr id='pt53.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -5307,7 +4941,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.6' class='hiddenRow bg-success'>
+        <tr id='pt53.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -5317,21 +4951,21 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUserList</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c55', 18)">Detail</a>
+            <a onclick="showClassDetail('c54', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt55.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -5340,7 +4974,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -5349,7 +4983,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -5358,7 +4992,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -5367,7 +5001,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -5376,7 +5010,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -5385,16 +5019,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.7' class='hiddenRow bg-success'>
+        <tr id="ft54.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft54.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft54.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft54.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_user_list.py&#34;, line 161, in test_user_list_edit_button
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;user_delete_selection&#34;)), &#34;Press cancel in User edit leads not back to user table&#34;)
+AssertionError: False is not true : Press cancel in User edit leads not back to user table</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt55.8' class='hiddenRow bg-success'>
+        <tr id='pt54.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -5403,7 +5057,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.9' class='hiddenRow bg-success'>
+        <tr id='pt54.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -5412,7 +5066,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.10' class='hiddenRow bg-success'>
+        <tr id='pt54.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -5421,7 +5075,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.11' class='hiddenRow bg-success'>
+        <tr id='pt54.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -5430,7 +5084,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.12' class='hiddenRow bg-success'>
+        <tr id='pt54.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -5439,7 +5093,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.13' class='hiddenRow bg-success'>
+        <tr id='pt54.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -5448,7 +5102,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.14' class='hiddenRow bg-success'>
+        <tr id='pt54.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -5457,7 +5111,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.15' class='hiddenRow bg-success'>
+        <tr id='pt54.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -5466,7 +5120,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.16' class='hiddenRow bg-success'>
+        <tr id='pt54.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -5475,7 +5129,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.17' class='hiddenRow bg-success'>
+        <tr id='pt54.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -5484,7 +5138,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.18' class='hiddenRow bg-success'>
+        <tr id='pt54.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -5502,13 +5156,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c56', 1)">Detail</a>
+            <a onclick="showClassDetail('c55', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt56.1' class='hiddenRow bg-success'>
+        <tr id='pt55.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -5526,13 +5180,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c57', 21)">Detail</a>
+            <a onclick="showClassDetail('c56', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt57.1' class='hiddenRow bg-success'>
+        <tr id='pt56.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -5541,7 +5195,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.2' class='hiddenRow bg-success'>
+        <tr id='pt56.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -5550,7 +5204,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.3' class='hiddenRow bg-success'>
+        <tr id='pt56.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -5559,7 +5213,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.4' class='hiddenRow bg-success'>
+        <tr id='pt56.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -5568,7 +5222,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.5' class='hiddenRow bg-success'>
+        <tr id='pt56.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -5577,7 +5231,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.6' class='hiddenRow bg-success'>
+        <tr id='pt56.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -5586,7 +5240,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.7' class='hiddenRow bg-success'>
+        <tr id='pt56.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -5595,7 +5249,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.8' class='hiddenRow bg-success'>
+        <tr id='pt56.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -5604,7 +5258,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.9' class='hiddenRow bg-success'>
+        <tr id='pt56.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -5613,7 +5267,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.10' class='hiddenRow bg-success'>
+        <tr id='pt56.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -5622,7 +5276,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.11' class='hiddenRow bg-success'>
+        <tr id='pt56.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -5631,7 +5285,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.12' class='hiddenRow bg-success'>
+        <tr id='pt56.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -5640,7 +5294,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.13' class='hiddenRow bg-success'>
+        <tr id='pt56.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -5649,7 +5303,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.14' class='hiddenRow bg-success'>
+        <tr id='pt56.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -5658,7 +5312,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.15' class='hiddenRow bg-success'>
+        <tr id='pt56.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -5667,7 +5321,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.16' class='hiddenRow bg-success'>
+        <tr id='pt56.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -5676,7 +5330,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.17' class='hiddenRow bg-success'>
+        <tr id='pt56.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -5685,7 +5339,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.18' class='hiddenRow bg-success'>
+        <tr id='pt56.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -5694,7 +5348,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.19' class='hiddenRow bg-success'>
+        <tr id='pt56.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -5703,7 +5357,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.20' class='hiddenRow bg-success'>
+        <tr id='pt56.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -5712,7 +5366,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.21' class='hiddenRow bg-success'>
+        <tr id='pt56.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -5722,21 +5376,21 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">35</td>
-        <td class="text-center">35</td>
-        <td class="text-center">0</td>
+        <td class="text-center">34</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c58', 35)">Detail</a>
+            <a onclick="showClassDetail('c57', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt58.1' class='hiddenRow bg-success'>
+        <tr id='pt57.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -5745,7 +5399,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.2' class='hiddenRow bg-success'>
+        <tr id='pt57.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -5754,16 +5408,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.3' class='hiddenRow bg-success'>
+        <tr id="ft57.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft57.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft57.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft57.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 480, in test_admin_add_user
+    self.assertIsNone(&#34;Error creating new users&#34;)
+AssertionError: &#39;Error creating new users&#39; is not None</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt58.4' class='hiddenRow bg-success'>
+        <tr id='pt57.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -5772,7 +5446,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.5' class='hiddenRow bg-success'>
+        <tr id='pt57.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -5781,7 +5455,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.6' class='hiddenRow bg-success'>
+        <tr id='pt57.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -5790,7 +5464,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.7' class='hiddenRow bg-success'>
+        <tr id='pt57.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -5799,7 +5473,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.8' class='hiddenRow bg-success'>
+        <tr id='pt57.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -5808,7 +5482,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.9' class='hiddenRow bg-success'>
+        <tr id='pt57.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -5817,7 +5491,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.10' class='hiddenRow bg-success'>
+        <tr id='pt57.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -5826,7 +5500,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.11' class='hiddenRow bg-success'>
+        <tr id='pt57.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -5835,7 +5509,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.12' class='hiddenRow bg-success'>
+        <tr id='pt57.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -5844,7 +5518,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.13' class='hiddenRow bg-success'>
+        <tr id='pt57.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -5853,7 +5527,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.14' class='hiddenRow bg-success'>
+        <tr id='pt57.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -5862,7 +5536,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.15' class='hiddenRow bg-success'>
+        <tr id='pt57.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -5871,7 +5545,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.16' class='hiddenRow bg-success'>
+        <tr id='pt57.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -5880,7 +5554,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.17' class='hiddenRow bg-success'>
+        <tr id='pt57.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -5889,7 +5563,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.18' class='hiddenRow bg-success'>
+        <tr id='pt57.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -5898,7 +5572,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.19' class='hiddenRow bg-success'>
+        <tr id='pt57.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -5907,7 +5581,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.20' class='hiddenRow bg-success'>
+        <tr id='pt57.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -5916,7 +5590,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.21' class='hiddenRow bg-success'>
+        <tr id='pt57.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -5925,7 +5599,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.22' class='hiddenRow bg-success'>
+        <tr id='pt57.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -5934,7 +5608,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.23' class='hiddenRow bg-success'>
+        <tr id='pt57.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -5943,7 +5617,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.24' class='hiddenRow bg-success'>
+        <tr id='pt57.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -5952,7 +5626,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.25' class='hiddenRow bg-success'>
+        <tr id='pt57.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5961,7 +5635,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.26' class='hiddenRow bg-success'>
+        <tr id='pt57.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5970,7 +5644,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.27' class='hiddenRow bg-success'>
+        <tr id='pt57.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5979,7 +5653,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.28' class='hiddenRow bg-success'>
+        <tr id='pt57.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5988,7 +5662,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.29' class='hiddenRow bg-success'>
+        <tr id='pt57.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5997,7 +5671,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.30' class='hiddenRow bg-success'>
+        <tr id='pt57.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -6006,7 +5680,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.31' class='hiddenRow bg-success'>
+        <tr id='pt57.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -6015,7 +5689,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.32' class='hiddenRow bg-success'>
+        <tr id='pt57.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -6024,7 +5698,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.33' class='hiddenRow bg-success'>
+        <tr id='pt57.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -6033,7 +5707,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.34' class='hiddenRow bg-success'>
+        <tr id='pt57.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -6042,7 +5716,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.35' class='hiddenRow bg-success'>
+        <tr id='pt57.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -6060,13 +5734,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c59', 16)">Detail</a>
+            <a onclick="showClassDetail('c58', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt59.1' class='hiddenRow bg-success'>
+        <tr id='pt58.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -6075,7 +5749,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.2' class='hiddenRow bg-success'>
+        <tr id='pt58.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -6084,7 +5758,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.3' class='hiddenRow bg-success'>
+        <tr id='pt58.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -6093,7 +5767,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.4' class='hiddenRow bg-success'>
+        <tr id='pt58.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -6102,7 +5776,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.5' class='hiddenRow bg-success'>
+        <tr id='pt58.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -6111,7 +5785,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.6' class='hiddenRow bg-success'>
+        <tr id='pt58.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -6120,7 +5794,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.7' class='hiddenRow bg-success'>
+        <tr id='pt58.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -6129,7 +5803,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.8' class='hiddenRow bg-success'>
+        <tr id='pt58.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -6138,7 +5812,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.9' class='hiddenRow bg-success'>
+        <tr id='pt58.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -6147,7 +5821,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.10' class='hiddenRow bg-success'>
+        <tr id='pt58.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -6156,7 +5830,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.11' class='hiddenRow bg-success'>
+        <tr id='pt58.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -6165,7 +5839,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.12' class='hiddenRow bg-success'>
+        <tr id='pt58.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -6174,7 +5848,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.13' class='hiddenRow bg-success'>
+        <tr id='pt58.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -6183,7 +5857,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.14' class='hiddenRow bg-success'>
+        <tr id='pt58.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -6192,7 +5866,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.15' class='hiddenRow bg-success'>
+        <tr id='pt58.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -6201,7 +5875,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.16' class='hiddenRow bg-success'>
+        <tr id='pt58.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -6212,10 +5886,10 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>509</td>
-        <td>477</td>
-        <td>7</td>
-        <td>15</td>
+        <td>510</td>
+        <td>490</td>
+        <td>5</td>
+        <td>5</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -6748,7 +6422,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 </div>
 
 <script>
-    drawCircle(477, 7, 15, 10);
+    drawCircle(490, 5, 5, 10);
     showCase(5);
 </script>
 
