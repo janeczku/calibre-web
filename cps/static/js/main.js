@@ -285,6 +285,9 @@ $("#back").click(function() {
    }
    sessionStorage.removeItem("back");
    sessionStorage.removeItem("search");
+   if (param === null) {
+       param = "";
+   }
    window.location.href = loc + param;
 
 });

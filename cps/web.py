@@ -183,9 +183,9 @@ def toggle_read(book_id):
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
 @user_login_required
 def toggle_archived(book_id):
-    is_archived = change_archived_books(book_id, message="Book {} archive bit toggled".format(book_id))
-    if is_archived:
-        remove_synced_book(book_id)
+    change_archived_books(book_id, message="Book {} archive bit toggled".format(book_id))
+    # Remove book from syncd books list to force resync (?)
+    remove_synced_book(book_id)
     return ""
 
 
