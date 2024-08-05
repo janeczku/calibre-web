@@ -26,6 +26,7 @@ from markupsafe import escape
 import datetime
 import mimetypes
 from uuid import uuid4
+import re
 
 from flask import Blueprint, request, url_for
 from flask_babel import format_date
@@ -112,7 +113,10 @@ def yesno(value, yes, no):
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
     value = 0 if not value else value
-    return ('{0:.' + str(decimals) + 'f}').format(value).rstrip('0').rstrip('.')
+    formated_value = ('{0:.' + str(decimals) + 'f}').format(value)
+    if formated_value.endswith('.' + "0" * decimals):
+        formated_value = formated_value.rstrip('0').rstrip('.')
+    return formated_value
 
 
 @jinjia.app_template_filter('formatseriesindex')
