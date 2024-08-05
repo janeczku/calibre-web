@@ -26,8 +26,6 @@ import os
 import mimetypes
 
 from flask import Flask
-from flask_image_resizer import Images
-
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
 
@@ -124,9 +122,6 @@ def create_app():
 
     config_sql.load_configuration(ub.session, encrypt_key)
     config.init_config(ub.session, encrypt_key, cli_param)
-
-    # Initialize Flask-Image-Resizer
-    Images(app)
 
     if error:
         log.error(error)
