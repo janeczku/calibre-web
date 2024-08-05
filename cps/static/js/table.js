@@ -484,6 +484,7 @@ $(function() {
         searchOnEnterKey: true,
         checkboxHeader: false,
         maintainMetaData: true,
+        multipleSelectRow: true,
         responseHandler: responseHandler,
         columns: column,
         formatNoMatches: function () {
