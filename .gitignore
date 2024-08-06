@@ -35,3 +35,7 @@ gdrive_credentials
 client_secrets.json
 gmail.json
 /.key
+.env
+.github
+library
+library/metadata.db
