@@ -84,7 +84,7 @@ app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Strict',
-    REMEMBER_COOKIE_SAMESITE='Strict',  # will be available in flask-login 0.5.1 earliest
+    REMEMBER_COOKIE_SAMESITE='Strict',
     WTF_CSRF_SSL_STRICT=False,
     SESSION_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "session",
     REMEMBER_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "remember_token"

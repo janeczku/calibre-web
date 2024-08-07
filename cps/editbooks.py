@@ -21,7 +21,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from datetime import datetime
+from datetime import datetime, UTC
 import json
 from shutil import copyfile
 from uuid import uuid4
@@ -707,8 +707,8 @@ def create_book_on_upload(modify_date, meta):
         pubdate = datetime(101, 1, 1)
 
     # Calibre adds books with utc as timezone
-    db_book = db.Books(title, "", sort_authors, datetime.utcnow(), pubdate,
-                       '1', datetime.utcnow(), path, meta.cover, db_author, [], "")
+    db_book = db.Books(title, "", sort_authors, datetime.now(UTC), pubdate,
+                       '1', datetime.now(UTC), path, meta.cover, db_author, [], "")
 
     modify_date |= modify_database_object(input_authors, db_book.authors, db.Authors, calibre_db.session,
                                           'author')
