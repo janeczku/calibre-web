@@ -20,7 +20,7 @@
 import atexit
 import os
 import sys
-import datetime
+from datetime import datetime, UTC
 import itertools
 import uuid
 from flask import session as flask_session
@@ -495,11 +495,11 @@ def receive_before_flush(session, flush_context, instances):
     for change in itertools.chain(session.new, session.dirty):
         if isinstance(change, (ReadBook, KoboStatistics, KoboBookmark)):
             if change.kobo_reading_state:
-                change.kobo_reading_state.last_modified = datetime.datetime.utcnow()
+                change.kobo_reading_state.last_modified = datetime.now(UTC)
     # Maintain the last_modified bit for the Shelf table.
     for change in itertools.chain(session.new, session.deleted):
         if isinstance(change, BookShelf):
-            change.ub_shelf.last_modified = datetime.datetime.utcnow()
+            change.ub_shelf.last_modified = datetime.now(UTC)
 
 
 # Baseclass representing Downloads from calibre-web in app.db
@@ -563,7 +563,7 @@ class Thumbnail(Base):
     type = Column(SmallInteger, default=constants.THUMBNAIL_TYPE_COVER)
     resolution = Column(SmallInteger, default=constants.COVER_THUMBNAIL_SMALL)
     filename = Column(String, default=filename)
-    generated_at = Column(DateTime, default=lambda: datetime.datetime.utcnow())
+    generated_at = Column(DateTime, default=lambda: datetime.now(UTC))
     expiration = Column(DateTime, nullable=True)
 
 
