@@ -123,7 +123,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             .query(ub.Thumbnail) \
             .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_COVER) \
             .filter(ub.Thumbnail.entity_id == book_id) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC))) \
             .all()
 
     def create_book_cover_thumbnails(self, book):
@@ -165,7 +165,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             self.app_db_session.rollback()
 
     def update_book_cover_thumbnail(self, book, thumbnail):
-        thumbnail.generated_at = datetime.utcnow()
+        thumbnail.generated_at = datetime.now(UTC)
 
         try:
             self.app_db_session.commit()
@@ -326,7 +326,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             .query(ub.Thumbnail) \
             .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_SERIES) \
             .filter(ub.Thumbnail.entity_id == series_id) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC))) \
             .all()
 
     def create_series_thumbnail(self, series, series_books, resolution):
@@ -346,7 +346,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             self.app_db_session.rollback()
 
     def update_series_thumbnail(self, series_books, thumbnail):
-        thumbnail.generated_at = datetime.utcnow()
+        thumbnail.generated_at = datetime.now(UTC)
 
         try:
             self.app_db_session.commit()

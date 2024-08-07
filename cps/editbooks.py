@@ -200,7 +200,7 @@ def edit_book(book_id):
             book.pubdate = db.Books.DEFAULT_PUBDATE
 
         if modify_date:
-            book.last_modified = datetime.utcnow()
+            book.last_modified = datetime.now(UTC)
             kobo_sync_status.remove_synced_book(edited_books_id, all=True)
             calibre_db.set_metadata_dirty(book.id)
 
@@ -440,7 +440,7 @@ def edit_list_book(param):
                                mimetype='application/json')
         else:
             return _("Parameter not found"), 400
-        book.last_modified = datetime.utcnow()
+        book.last_modified = datetime.now(UTC)
 
         calibre_db.session.commit()
         # revert change for sort if automatic fields link is deactivated
@@ -556,7 +556,7 @@ def table_xchange_author_title():
                 # toDo: Handle error
                 edit_error = helper.update_dir_structure(edited_books_id, config.get_book_path(), input_authors[0])
             if modify_date:
-                book.last_modified = datetime.utcnow()
+                book.last_modified = datetime.now(UTC)
                 calibre_db.set_metadata_dirty(book.id)
             try:
                 calibre_db.session.commit()

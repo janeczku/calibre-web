@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 from datetime import timedelta
 import hashlib
 
@@ -496,7 +496,7 @@ class LoginManager:
             duration = timedelta(seconds=duration)
 
         try:
-            expires = datetime.utcnow() + duration
+            expires = datetime.now(UTC) + duration
         except TypeError as e:
             raise Exception(
                 "REMEMBER_COOKIE_DURATION must be a datetime.timedelta,"

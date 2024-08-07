@@ -25,7 +25,7 @@ import re
 import regex
 import shutil
 import socket
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 import requests
 import unidecode
 from uuid import uuid4
@@ -793,7 +793,7 @@ def get_book_cover_thumbnail(book, resolution):
             .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
             .filter(ub.Thumbnail.entity_id == book.id) \
             .filter(ub.Thumbnail.resolution == resolution) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC)) \
             .first()
 
 
@@ -832,7 +832,7 @@ def get_series_thumbnail(series_id, resolution):
         .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
         .filter(ub.Thumbnail.entity_id == series_id) \
         .filter(ub.Thumbnail.resolution == resolution) \
-        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC))) \
         .first()
 
 
