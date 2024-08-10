@@ -788,24 +788,23 @@ def get_book_cover_internal(book, resolution=None):
 
 def get_book_cover_thumbnail(book, resolution):
     if book and book.has_cover:
-        return ub.session \
-            .query(ub.Thumbnail) \
-            .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
-            .filter(ub.Thumbnail.entity_id == book.id) \
-            .filter(ub.Thumbnail.resolution == resolution) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC)) \
-            .first()
+        return (ub.session
+                .query(ub.Thumbnail)
+                .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER)
+                .filter(ub.Thumbnail.entity_id == book.id)
+                .filter(ub.Thumbnail.resolution == resolution)
+                .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC)))
+                .first())
 
 
 def get_series_thumbnail_on_failure(series_id, resolution):
-    book = calibre_db.session \
-        .query(db.Books) \
-        .join(db.books_series_link) \
-        .join(db.Series) \
-        .filter(db.Series.id == series_id) \
-        .filter(db.Books.has_cover == 1) \
-        .first()
-
+    book = (calibre_db.session
+        .query(db.Books)
+        .join(db.books_series_link)
+        .join(db.Series)
+        .filter(db.Series.id == series_id)
+        .filter(db.Books.has_cover == 1)
+        .first())
     return get_book_cover_internal(book, resolution=resolution)
 
 
@@ -827,13 +826,13 @@ def get_series_cover_internal(series_id, resolution=None):
 
 
 def get_series_thumbnail(series_id, resolution):
-    return ub.session \
-        .query(ub.Thumbnail) \
-        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
-        .filter(ub.Thumbnail.entity_id == series_id) \
-        .filter(ub.Thumbnail.resolution == resolution) \
-        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC))) \
-        .first()
+    return (ub.session
+        .query(ub.Thumbnail)
+        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES)
+        .filter(ub.Thumbnail.entity_id == series_id)
+        .filter(ub.Thumbnail.resolution == resolution)
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC)))
+        .first())
 
 
 # saves book cover from url

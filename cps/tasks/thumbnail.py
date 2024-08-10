@@ -20,14 +20,13 @@ import os
 from shutil import copyfile, copyfileobj
 from urllib.request import urlopen
 from io import BytesIO
+from datetime import datetime, UTC
 
 from .. import constants
 from cps import config, db, fs, gdriveutils, logger, ub
 from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
-from datetime import datetime
 from sqlalchemy import func, text, or_
 from flask_babel import lazy_gettext as N_
-
 try:
     from wand.image import Image
     use_IM = True
@@ -322,12 +321,12 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             .all()
 
     def get_series_thumbnails(self, series_id):
-        return self.app_db_session \
-            .query(ub.Thumbnail) \
-            .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_SERIES) \
-            .filter(ub.Thumbnail.entity_id == series_id) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC))) \
-            .all()
+        return (self.app_db_session
+            .query(ub.Thumbnail)
+            .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_SERIES)
+            .filter(ub.Thumbnail.entity_id == series_id)
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC)))
+            .all())
 
     def create_series_thumbnail(self, series, series_books, resolution):
         thumbnail = ub.Thumbnail()
