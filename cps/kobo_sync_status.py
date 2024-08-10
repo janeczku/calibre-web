@@ -19,7 +19,7 @@
 
 from .cw_login import current_user
 from . import ub
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 from sqlalchemy.sql.expression import or_, and_, true
 # from sqlalchemy import exc
 
@@ -58,7 +58,7 @@ def change_archived_books(book_id, state=None, message=None):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
 
     archived_book.is_archived = state if state else not archived_book.is_archived
-    archived_book.last_modified = datetime.now(UTC)        # toDo. Check utc timestamp
+    archived_book.last_modified = datetime.now(timezone.utc)        # toDo. Check utc timestamp
 
     ub.session.merge(archived_book)
     ub.session_commit(message)

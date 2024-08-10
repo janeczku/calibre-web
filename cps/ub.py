@@ -20,7 +20,7 @@
 import atexit
 import os
 import sys
-from datetime import datetime, UTC, timedelta
+from datetime import datetime, timezone, timedelta
 import itertools
 import uuid
 from flask import session as flask_session
@@ -370,8 +370,8 @@ class Shelf(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     kobo_sync = Column(Boolean, default=False)
     books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
-    created = Column(DateTime, default=lambda: datetime.now(UTC))
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
+    created = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
 
     def __repr__(self):
         return '<Shelf %d:%r>' % (self.id, self.name)
@@ -385,7 +385,7 @@ class BookShelf(Base):
     book_id = Column(Integer)
     order = Column(Integer)
     shelf = Column(Integer, ForeignKey('shelf.id'))
-    date_added = Column(DateTime, default=lambda: datetime.now(UTC))
+    date_added = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     def __repr__(self):
         return '<Book %r>' % self.id
@@ -398,7 +398,7 @@ class ShelfArchive(Base):
     id = Column(Integer, primary_key=True)
     uuid = Column(String)
     user_id = Column(Integer, ForeignKey('user.id'))
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class ReadBook(Base):
@@ -418,7 +418,7 @@ class ReadBook(Base):
                                       cascade="all",
                                       backref=backref("book_read_link",
                                                       uselist=False))
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     last_time_started_reading = Column(DateTime, nullable=True)
     times_started_reading = Column(Integer, default=0, nullable=False)
 
@@ -441,7 +441,7 @@ class ArchivedBook(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     book_id = Column(Integer)
     is_archived = Column(Boolean, unique=False)
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
 
 class KoboSyncedBooks(Base):
@@ -460,8 +460,8 @@ class KoboReadingState(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     book_id = Column(Integer)
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
-    priority_timestamp = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    priority_timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all, delete")
     statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all, delete")
 
@@ -471,7 +471,7 @@ class KoboBookmark(Base):
 
     id = Column(Integer, primary_key=True)
     kobo_reading_state_id = Column(Integer, ForeignKey('kobo_reading_state.id'))
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     location_source = Column(String)
     location_type = Column(String)
     location_value = Column(String)
@@ -484,7 +484,7 @@ class KoboStatistics(Base):
 
     id = Column(Integer, primary_key=True)
     kobo_reading_state_id = Column(Integer, ForeignKey('kobo_reading_state.id'))
-    last_modified = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     remaining_time_minutes = Column(Integer)
     spent_reading_minutes = Column(Integer)
 
@@ -495,11 +495,11 @@ def receive_before_flush(session, flush_context, instances):
     for change in itertools.chain(session.new, session.dirty):
         if isinstance(change, (ReadBook, KoboStatistics, KoboBookmark)):
             if change.kobo_reading_state:
-                change.kobo_reading_state.last_modified = datetime.now(UTC)
+                change.kobo_reading_state.last_modified = datetime.now(timezone.utc)
     # Maintain the last_modified_bit for the Shelf table.
     for change in itertools.chain(session.new, session.deleted):
         if isinstance(change, BookShelf):
-            change.ub_shelf.last_modified = datetime.now(UTC)
+            change.ub_shelf.last_modified = datetime.now(timezone.utc)
 
 
 # Baseclass representing Downloads from calibre-web in app.db
@@ -563,7 +563,7 @@ class Thumbnail(Base):
     type = Column(SmallInteger, default=constants.THUMBNAIL_TYPE_COVER)
     resolution = Column(SmallInteger, default=constants.COVER_THUMBNAIL_SMALL)
     filename = Column(String, default=filename)
-    generated_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    generated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     expiration = Column(DateTime, nullable=True)
 
 

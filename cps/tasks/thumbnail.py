@@ -20,7 +20,7 @@ import os
 from shutil import copyfile, copyfileobj
 from urllib.request import urlopen
 from io import BytesIO
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 from .. import constants
 from cps import config, db, fs, gdriveutils, logger, ub
@@ -122,7 +122,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             .query(ub.Thumbnail) \
             .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_COVER) \
             .filter(ub.Thumbnail.entity_id == book_id) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC))) \
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(timezone.utc))) \
             .all()
 
     def create_book_cover_thumbnails(self, book):
@@ -164,7 +164,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
             self.app_db_session.rollback()
 
     def update_book_cover_thumbnail(self, book, thumbnail):
-        thumbnail.generated_at = datetime.now(UTC)
+        thumbnail.generated_at = datetime.now(timezone.utc)
 
         try:
             self.app_db_session.commit()
@@ -325,7 +325,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             .query(ub.Thumbnail)
             .filter(ub.Thumbnail.type == constants.THUMBNAIL_TYPE_SERIES)
             .filter(ub.Thumbnail.entity_id == series_id)
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(UTC)))
+            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(timezone.utc)))
             .all())
 
     def create_series_thumbnail(self, series, series_books, resolution):
@@ -345,7 +345,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             self.app_db_session.rollback()
 
     def update_series_thumbnail(self, series_books, thumbnail):
-        thumbnail.generated_at = datetime.now(UTC)
+        thumbnail.generated_at = datetime.now(timezone.utc)
 
         try:
             self.app_db_session.commit()
