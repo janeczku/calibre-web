@@ -246,8 +246,12 @@ def upload():
                 modify_date = False
                 # create the function for sorting...
                 calibre_db.update_title_sort(config)
-                calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
-
+                try:
+                    # sqlalchemy 2.0
+                    uuid_func = calibre_db.session.connection().connection.driver_connection
+                except AttributeError:
+                    uuid_func = calibre_db.session.connection().connection.connection
+                uuid_func.create_function('uuid4', 0,lambda: str(uuid4()))
                 meta, error = file_handling_on_upload(requested_file)
                 if error:
                     return error
