@@ -21,7 +21,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 
 from flask import Blueprint, flash, redirect, request, url_for, abort
 from flask_babel import gettext as _
@@ -80,7 +80,7 @@ def add_to_shelf(shelf_id, book_id):
         return "%s is a invalid Book Id. Could not be added to Shelf" % book_id, 400
 
     shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
-    shelf.last_modified = datetime.now(UTC)
+    shelf.last_modified = datetime.now(timezone.utc)
     try:
         ub.session.merge(shelf)
         ub.session.commit()
@@ -139,7 +139,7 @@ def search_to_shelf(shelf_id):
         for book in books_for_shelf:
             maxOrder += 1
             shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
-        shelf.last_modified = datetime.now(UTC)
+        shelf.last_modified = datetime.now(timezone.utc)
         try:
             ub.session.merge(shelf)
             ub.session.commit()
@@ -185,7 +185,7 @@ def remove_from_shelf(shelf_id, book_id):
 
         try:
             ub.session.delete(book_shelf)
-            shelf.last_modified = datetime.now(UTC)
+            shelf.last_modified = datetime.now(timezone.utc)
             ub.session.commit()
         except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
@@ -271,7 +271,7 @@ def order_shelf(shelf_id):
             for book in books_in_shelf:
                 setattr(book, 'order', to_save[str(book.book_id)])
                 counter += 1
-                # if order different from before -> shelf.last_modified = datetime.now(UTC)
+                # if order different from before -> shelf.last_modified = datetime.now(timezone.utc)
             try:
                 ub.session.commit()
             except (OperationalError, InvalidRequestError) as e:

@@ -18,7 +18,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import base64
-from datetime import datetime, UTC
+from datetime import datetime, timezone
 import os
 import uuid
 import zipfile
@@ -131,7 +131,7 @@ def convert_to_kobo_timestamp_string(timestamp):
         return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
     except AttributeError as exc:
         log.debug("Timestamp not valid: {}".format(exc))
-        return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 @kobo.route("/v1/library/sync")
@@ -375,7 +375,7 @@ def create_book_entitlement(book, archived):
     book_uuid = str(book.uuid)
     return {
         "Accessibility": "Full",
-        "ActivePeriod": {"From": convert_to_kobo_timestamp_string(datetime.now(UTC))},
+        "ActivePeriod": {"From": convert_to_kobo_timestamp_string(datetime.now(timezone.utc))},
         "Created": convert_to_kobo_timestamp_string(book.timestamp),
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
@@ -795,7 +795,7 @@ def HandleStateRequest(book_uuid):
                 if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS \
                         and new_book_read_status != book_read.read_status:
                     book_read.times_started_reading += 1
-                    book_read.last_time_started_reading = datetime.now(UTC)
+                    book_read.last_time_started_reading = datetime.now(timezone.utc)
                 book_read.read_status = new_book_read_status
                 update_results_response["StatusInfoResult"] = {"Result": "Success"}
         except (KeyError, TypeError, ValueError, StatementError):
