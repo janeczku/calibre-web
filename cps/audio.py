@@ -80,10 +80,10 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
     elif original_file_extension in [".aac"]:
-        title = audio_file.tags.get('Title').value if "title" in audio_file else None
-        author = audio_file.tags.get('Artist').value if "artist" in audio_file else None
-        comments = None # audio_file.tags.get('COMM', None)
-        tags = ""
+        title = audio_file.tags.get('Title').value if "Title" in audio_file else None
+        author = audio_file.tags.get('Artist').value if "Artist" in audio_file else None
+        comments = audio_file.tags.get('Comment').value if "Comment" in audio_file else None
+        tags = audio_file.tags.get('Genre').value if "Genre" in audio_file else None
         series = audio_file.tags.get('Album').value if "Album" in audio_file else None
         series_id = audio_file.tags.get('Track').value if "Track" in audio_file else None
         publisher = audio_file.tags.get('Label').value if "Label" in audio_file else None
@@ -94,15 +94,15 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data.value.split(b"\x00",1)[1])
     elif original_file_extension in [".asf"]:
-        title = audio_file.tags.get('Title')[0].value if "title" in audio_file else None
-        author = audio_file.tags.get('Artist')[0].value if "artist" in audio_file else None
-        comments = None  # audio_file.tags.get('COMM', None)
-        tags = ""
+        title = audio_file.tags.get('Title')[0].value if "Title" in audio_file else None
+        author = audio_file.tags.get('Artist')[0].value if "Artist" in audio_file else None
+        comments = audio_file.tags.get('Comments')[0].value if "Comments" in audio_file else None
+        tags = audio_file.tags.get('Genre')[0].value if "Genre" in audio_file else None
         series = audio_file.tags.get('Album')[0].value if "Album" in audio_file else None
         series_id = audio_file.tags.get('Track')[0].value if "Track" in audio_file else None
         publisher = audio_file.tags.get('Label')[0].value if "Label" in audio_file else None
         pubdate = audio_file.tags.get('Year')[0].value if "Year" in audio_file else None
-        cover_data = audio_file.tags['WM/Picture']
+        cover_data = audio_file.tags.get('WM/Picture', None)
         if cover_data:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             with open(tmp_cover_name, "wb") as cover_file:
