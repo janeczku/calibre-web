@@ -74,7 +74,8 @@ def send_debug():
         for fp in file_list:
             zf.write(fp, os.path.basename(fp))
     memory_zip.seek(0)
-    if int(__version__.split('.')[0]) < 2:
+    version = importlib.metadata.version("flask")
+    if int(version.split('.')[0]) < 2:
         return send_file(memory_zip,
                          as_attachment=True,
                          attachment_filename="Calibre-Web-debug-pack.zip")

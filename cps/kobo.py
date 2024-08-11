@@ -150,15 +150,15 @@ def HandleSyncRequest():
 
     # if no books synced don't respect sync_token
     if not ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.user_id == current_user.id).count():
-        sync_token.books_last_modified = datetime.datetime.min
-        sync_token.books_last_created = datetime.datetime.min
-        sync_token.reading_state_last_modified = datetime.datetime.min
+        sync_token.books_last_modified = datetime.min
+        sync_token.books_last_created = datetime.min
+        sync_token.reading_state_last_modified = datetime.min
 
     new_books_last_modified = sync_token.books_last_modified  # needed for sync selected shelfs only
     new_books_last_created = sync_token.books_last_created  # needed to distinguish between new and changed entitlement
     new_reading_state_last_modified = sync_token.reading_state_last_modified
 
-    new_archived_last_modified = datetime.datetime.min
+    new_archived_last_modified = datetime.min
     sync_results = []
 
     # We reload the book database so that the user gets a fresh view of the library

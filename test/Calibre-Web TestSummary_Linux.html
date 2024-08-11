@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-03 20:30:20</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-10 21:08:57</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-04 04:01:30</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-11 04:24:46</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 17 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 0 min</p>
         </div>
       </div>
       </div>
@@ -852,11 +852,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -911,11 +911,33 @@
     
     
     
-        <tr id='pt9.6' class='hiddenRow bg-success'>
+        <tr id="ft9.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_email_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft9.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft9.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 452, in test_email_only
+    task_len, ret = self.wait_tasks(tasks, 1)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
+    self.assertEqual(expected, task_len)
+AssertionError: 1 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -972,11 +994,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertGDriveKepubify</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -995,33 +1017,11 @@
     
     
     
-        <tr id="ft11.2" class="none bg-danger">
+        <tr id='pt11.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertGDriveKepubify - test_convert_only</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.2')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft11.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft11.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify_gdrive.py&#34;, line 239, in test_convert_only
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 3</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1248,11 +1248,11 @@ AssertionError: 1 != 3</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooks</td>
         <td class="text-center">38</td>
-        <td class="text-center">36</td>
-        <td class="text-center">0</td>
+        <td class="text-center">31</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -1334,47 +1334,154 @@ AssertionError: 1 != 3</pre>
     
     
     
-        <tr id='pt13.9' class='hiddenRow bg-success'>
+        <tr id="ft13.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_float</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 634, in test_edit_custom_float
+    self.assertEqual(u&#39;-2.5&#39;, vals[&#39;cust_columns&#39;][0][&#39;value&#39;])
+AssertionError: &#39;-2.5&#39; != &#39;-2.50&#39;
+- -2.5
++ -2.50
+?     +</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.10' class='hiddenRow bg-success'>
+        <tr id="ft13.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_int</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 668, in test_edit_custom_int
+    self.assertEqual(0, len(vals[&#39;cust_columns&#39;]))
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.11' class='hiddenRow bg-success'>
+        <tr id="ft13.11" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_rating</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.11')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 550, in test_edit_custom_rating
+    self.assertEqual(0, len(vals[&#39;cust_columns&#39;]))
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.12' class='hiddenRow bg-success'>
+        <tr id="ft13.12" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_single_select</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.12')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 559, in test_edit_custom_single_select
+    self.assertEqual(u&#39;人物&#39;, vals[&#39;cust_columns&#39;][0][&#39;value&#39;])
+AssertionError: &#39;人物&#39; != &#39;-2.50&#39;
+- 人物
++ -2.50</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.13' class='hiddenRow bg-success'>
+        <tr id="ft13.13" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_text</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.13')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 577, in test_edit_custom_text
+    self.assertEqual(u&#39;Lulu 人 Ä&#39;, vals[&#39;cust_columns&#39;][0][&#39;value&#39;])
+AssertionError: &#39;Lulu 人 Ä&#39; != &#39;-2.50&#39;
+- Lulu 人 Ä
++ -2.50</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1639,12 +1746,12 @@ AssertionError: 1 != 3</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditAuthors</td>
         <td class="text-center">9</td>
-        <td class="text-center">5</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
-        <td class="text-center">4</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c14', 9)">Detail</a>
@@ -1662,118 +1769,38 @@ AssertionError: 1 != 3</pre>
     
     
     
-        <tr id="et14.2" class="none bg-info">
+        <tr id='pt14.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_one_author_one_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et14.2')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et14.2" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et14.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author.py&#34;, line 62, in test_change_capital_one_author_one_book
-    self.assertFalse(&#39;Leo Baskerville&#39; in os.listdir(SMB_LIB))
-NameError: name &#39;SMB_LIB&#39; is not defined</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et14.3" class="none bg-info">
+        <tr id='pt14.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_one_author_two_books</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et14.3')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et14.3" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et14.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author.py&#34;, line 111, in test_change_capital_one_author_two_books
-    self.assertFalse(&#39;Peter Parker&#39; in os.listdir(SMB_LIB))
-NameError: name &#39;SMB_LIB&#39; is not defined</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et14.4" class="none bg-info">
+        <tr id='pt14.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_one_author_two_books_coauthor</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et14.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et14.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et14.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author.py&#34;, line 164, in test_change_capital_one_author_two_books_coauthor
-    self.assertFalse(&#39;Norbert Halagal&#39; in os.listdir(SMB_LIB))
-NameError: name &#39;SMB_LIB&#39; is not defined</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et14.5" class="none bg-info">
+        <tr id='pt14.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_rename_co_author</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et14.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et14.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et14.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author.py&#34;, line 294, in test_change_capital_rename_co_author
-    self.assertFalse(&#39;Hector Gonçalves&#39; in os.listdir(SMB_LIB))
-NameError: name &#39;SMB_LIB&#39; is not defined</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2206,8 +2233,8 @@ NameError: name &#39;SMB_LIB&#39; is not defined</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 69, in test_load_metadata
-    if &#39;https://comicvine.gamespot.com/&#39; == results[10][&#39;source&#39;]:
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
+    elif len(results)&gt;19 and &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
 IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -2219,11 +2246,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">13</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2287,47 +2314,154 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id="ft19.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 759, in test_edit_custom_float
+    self.assertEqual(u&#39;-2.5&#39;, vals[&#39;cust_columns&#39;][0][&#39;value&#39;])
+AssertionError: &#39;-2.5&#39; != &#39;-2.50&#39;
+- -2.5
++ -2.50
+?     +</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt19.8' class='hiddenRow bg-success'>
+        <tr id="ft19.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 793, in test_edit_custom_int
+    self.assertEqual(0, len(vals[&#39;cust_columns&#39;]))
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt19.9' class='hiddenRow bg-success'>
+        <tr id="ft19.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 700, in test_edit_custom_rating
+    self.assertEqual(0, len(vals[&#39;cust_columns&#39;]))
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt19.10' class='hiddenRow bg-success'>
+        <tr id="ft19.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 708, in test_edit_custom_single_select
+    self.assertEqual(u&#39;人物&#39;, vals[&#39;cust_columns&#39;][0][&#39;value&#39;])
+AssertionError: &#39;人物&#39; != &#39;-2.50&#39;
+- 人物
++ -2.50</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt19.11' class='hiddenRow bg-success'>
+        <tr id="ft19.11" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.11')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 724, in test_edit_custom_text
+    self.assertEqual(u&#39;Lulu 人 Ä&#39;, vals[&#39;cust_columns&#39;][0][&#39;value&#39;])
+AssertionError: &#39;Lulu 人 Ä&#39; != &#39;-2.50&#39;
+- Lulu 人 Ä
++ -2.50</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2396,11 +2530,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLoadMetadataScholar</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2410,41 +2544,21 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id="ft20.1" class="none bg-danger">
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft20.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft20.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_metadata_scholar.py&#34;, line 74, in test_load_metadata
-    self.assertEqual(30, len(results))
-AssertionError: 30 != 0</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestSTARTTLS</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2454,33 +2568,11 @@ AssertionError: 30 != 0</pre>
 
     
     
-        <tr id="ft21.1" class="none bg-danger">
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft21.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft21.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_STARTTLS.py&#34;, line 83, in test_STARTTLS
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2884,11 +2976,11 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">4</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2898,11 +2990,35 @@ AssertionError: 1 != 2</pre>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id="ft30.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 611, in test_book_download
+    data = self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2934,29 +3050,101 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt30.5' class='hiddenRow bg-success'>
+        <tr id="ft30.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 630, in test_kobo_sync_selected_shelfs
+    data = self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id="ft30.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 464, in test_shelves_add_remove_books
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt30.7' class='hiddenRow bg-success'>
+        <tr id="ft30.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 293, in test_sync_changed_book
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2970,48 +3158,144 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt30.9' class='hiddenRow bg-success'>
+        <tr id="ft30.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 532, in test_sync_reading_state
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt30.10' class='hiddenRow bg-success'>
+        <tr id="ft30.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 312, in test_sync_shelf
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt30.11' class='hiddenRow bg-success'>
+        <tr id="ft30.11" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.11')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 258, in test_sync_unchanged
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt30.12' class='hiddenRow bg-success'>
+        <tr id="ft30.12" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.12')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 272, in test_sync_upload
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 123, in inital_sync
+    return self.sync_request(session)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 135, in sync_request
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
         <td class="text-center">0</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3021,56 +3305,188 @@ AssertionError: 1 != 2</pre>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id="ft31.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 484, in test_download_cover
+    books = self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 129, in inital_sync
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id="ft31.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 359, in test_kobo_sync_multi_user
+    self.inital_sync(user1_kobo)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 129, in inital_sync
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id="ft31.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 277, in test_kobo_sync_selected_shelves
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 129, in inital_sync
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id="ft31.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 179, in test_sync_changed_book
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 129, in inital_sync
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id="ft31.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 254, in test_sync_reading_state
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 129, in inital_sync
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id="ft31.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 210, in test_sync_shelf
+    self.inital_sync()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 129, in inital_sync
+    self.assertEqual(r.status_code, 200)
+AssertionError: 500 != 200</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3427,11 +3843,11 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestLogging</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
+        <td class="text-center">7</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -3459,11 +3875,33 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt35.3' class='hiddenRow bg-success'>
+        <tr id="ft35.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLogging - test_debuginfo_download</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft35.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft35.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_logging.py&#34;, line 256, in test_debuginfo_download
+    self.assertEqual(resp.headers[&#39;Content-Type&#39;], &#39;application/zip&#39;)
+AssertionError: &#39;text/html; charset=utf-8&#39; != &#39;application/zip&#39;
+- text/html; charset=utf-8
++ application/zip</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4882,6 +5320,55 @@ AssertionError: 1 != 2</pre>
     
 
 
+    <tr id="su" class="errorClass">
+        <td>_FailedTest</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c53', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="et53.1" class="none bg-info">
+            <td>
+                <div class='testcase'>_FailedTest - test_upload_audio</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et53.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et53.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et53.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_upload_audio
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 17, in &lt;module&gt;
+    import mutagen
+ModuleNotFoundError: No module named &#39;mutagen&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
     <tr id="su" class="passClass">
         <td>TestUploadEPubs</td>
         <td class="text-center">6</td>
@@ -4890,13 +5377,13 @@ AssertionError: 1 != 2</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c53', 6)">Detail</a>
+            <a onclick="showClassDetail('c54', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt53.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_comments</div>
             </td>
@@ -4905,7 +5392,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt53.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -4914,7 +5401,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt53.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
@@ -4923,7 +5410,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt53.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -4932,7 +5419,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt53.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -4941,7 +5428,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt53.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4951,21 +5438,21 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestUserList</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
-        <td class="text-center">1</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c54', 18)">Detail</a>
+            <a onclick="showClassDetail('c55', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt54.1' class='hiddenRow bg-success'>
+        <tr id='pt55.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -4974,7 +5461,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt54.2' class='hiddenRow bg-success'>
+        <tr id='pt55.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -4983,7 +5470,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt54.3' class='hiddenRow bg-success'>
+        <tr id='pt55.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -4992,7 +5479,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt54.4' class='hiddenRow bg-success'>
+        <tr id='pt55.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -5001,7 +5488,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt54.5' class='hiddenRow bg-success'>
+        <tr id='pt55.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -5010,7 +5497,7 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id='pt54.6' class='hiddenRow bg-success'>
+        <tr id='pt55.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -5019,36 +5506,16 @@ AssertionError: 1 != 2</pre>
     
     
     
-        <tr id="ft54.7" class="none bg-danger">
+        <tr id='pt55.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft54.7')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft54.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft54.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_user_list.py&#34;, line 161, in test_user_list_edit_button
-    self.assertTrue(self.check_element_on_page((By.ID, &#34;user_delete_selection&#34;)), &#34;Press cancel in User edit leads not back to user table&#34;)
-AssertionError: False is not true : Press cancel in User edit leads not back to user table</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt54.8' class='hiddenRow bg-success'>
+        <tr id='pt55.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -5057,7 +5524,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.9' class='hiddenRow bg-success'>
+        <tr id='pt55.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -5066,7 +5533,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.10' class='hiddenRow bg-success'>
+        <tr id='pt55.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -5075,7 +5542,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.11' class='hiddenRow bg-success'>
+        <tr id='pt55.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -5084,7 +5551,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.12' class='hiddenRow bg-success'>
+        <tr id='pt55.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -5093,7 +5560,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.13' class='hiddenRow bg-success'>
+        <tr id='pt55.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -5102,7 +5569,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.14' class='hiddenRow bg-success'>
+        <tr id='pt55.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -5111,7 +5578,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.15' class='hiddenRow bg-success'>
+        <tr id='pt55.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -5120,7 +5587,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.16' class='hiddenRow bg-success'>
+        <tr id='pt55.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -5129,7 +5596,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.17' class='hiddenRow bg-success'>
+        <tr id='pt55.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -5138,7 +5605,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt54.18' class='hiddenRow bg-success'>
+        <tr id='pt55.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -5156,13 +5623,13 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c55', 1)">Detail</a>
+            <a onclick="showClassDetail('c56', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt55.1' class='hiddenRow bg-success'>
+        <tr id='pt56.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -5180,13 +5647,13 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c56', 21)">Detail</a>
+            <a onclick="showClassDetail('c57', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt56.1' class='hiddenRow bg-success'>
+        <tr id='pt57.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -5195,7 +5662,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.2' class='hiddenRow bg-success'>
+        <tr id='pt57.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -5204,7 +5671,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.3' class='hiddenRow bg-success'>
+        <tr id='pt57.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -5213,7 +5680,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.4' class='hiddenRow bg-success'>
+        <tr id='pt57.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -5222,7 +5689,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.5' class='hiddenRow bg-success'>
+        <tr id='pt57.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -5231,7 +5698,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.6' class='hiddenRow bg-success'>
+        <tr id='pt57.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -5240,7 +5707,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.7' class='hiddenRow bg-success'>
+        <tr id='pt57.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -5249,7 +5716,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.8' class='hiddenRow bg-success'>
+        <tr id='pt57.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -5258,7 +5725,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.9' class='hiddenRow bg-success'>
+        <tr id='pt57.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -5267,7 +5734,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.10' class='hiddenRow bg-success'>
+        <tr id='pt57.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -5276,7 +5743,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.11' class='hiddenRow bg-success'>
+        <tr id='pt57.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -5285,7 +5752,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.12' class='hiddenRow bg-success'>
+        <tr id='pt57.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -5294,7 +5761,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.13' class='hiddenRow bg-success'>
+        <tr id='pt57.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -5303,7 +5770,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.14' class='hiddenRow bg-success'>
+        <tr id='pt57.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -5312,7 +5779,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.15' class='hiddenRow bg-success'>
+        <tr id='pt57.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -5321,7 +5788,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.16' class='hiddenRow bg-success'>
+        <tr id='pt57.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -5330,7 +5797,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.17' class='hiddenRow bg-success'>
+        <tr id='pt57.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -5339,7 +5806,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.18' class='hiddenRow bg-success'>
+        <tr id='pt57.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -5348,7 +5815,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.19' class='hiddenRow bg-success'>
+        <tr id='pt57.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -5357,7 +5824,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.20' class='hiddenRow bg-success'>
+        <tr id='pt57.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -5366,7 +5833,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt56.21' class='hiddenRow bg-success'>
+        <tr id='pt57.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -5379,18 +5846,18 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     <tr id="su" class="failClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">35</td>
-        <td class="text-center">34</td>
-        <td class="text-center">1</td>
+        <td class="text-center">33</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c57', 35)">Detail</a>
+            <a onclick="showClassDetail('c58', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt57.1' class='hiddenRow bg-success'>
+        <tr id='pt58.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -5399,7 +5866,7 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id='pt57.2' class='hiddenRow bg-success'>
+        <tr id='pt58.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -5408,26 +5875,209 @@ AssertionError: False is not true : Press cancel in User edit leads not back to 
     
     
     
-        <tr id="ft57.3" class="none bg-danger">
+        <tr id='pt58.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.21' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt58.22' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft58.23" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
+            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft57.3')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft58.23')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft57.3" class="popup_window test_output" style="display:block;">
+                <div id="div_ft58.23" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft57.3').style.display='none'"><span
+                                onclick="document.getElementById('div_ft58.23').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 480, in test_admin_add_user
-    self.assertIsNone(&#34;Error creating new users&#34;)
-AssertionError: &#39;Error creating new users&#39; is not None</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 993, in test_hide_custom_column
+    self.assertEqual(details[&#39;cust_columns&#39;][4][&#39;value&#39;], &#39;3.5&#39;)
+AssertionError: &#39;3.50&#39; != &#39;3.5&#39;
+- 3.50
+?    -
++ 3.5</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -5437,196 +6087,38 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.11' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.12' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.13' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.14' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.15' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.16' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.17' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.18' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.19' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.20' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.21' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.22' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.23' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt57.24' class='hiddenRow bg-success'>
+        <tr id="ft58.24" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft58.24')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft58.24" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft58.24').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 821, in test_link_column_to_read_status
+    self.assertEqual(details[&#39;cust_columns&#39;][0][&#39;value&#39;], &#39;remove&#39;)
+AssertionError: &#39;5&#39; != &#39;remove&#39;
+- 5
++ remove</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt57.25' class='hiddenRow bg-success'>
+        <tr id='pt58.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5635,7 +6127,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.26' class='hiddenRow bg-success'>
+        <tr id='pt58.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5644,7 +6136,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.27' class='hiddenRow bg-success'>
+        <tr id='pt58.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5653,7 +6145,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.28' class='hiddenRow bg-success'>
+        <tr id='pt58.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5662,7 +6154,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.29' class='hiddenRow bg-success'>
+        <tr id='pt58.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5671,7 +6163,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.30' class='hiddenRow bg-success'>
+        <tr id='pt58.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -5680,7 +6172,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.31' class='hiddenRow bg-success'>
+        <tr id='pt58.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -5689,7 +6181,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.32' class='hiddenRow bg-success'>
+        <tr id='pt58.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -5698,7 +6190,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.33' class='hiddenRow bg-success'>
+        <tr id='pt58.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -5707,7 +6199,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.34' class='hiddenRow bg-success'>
+        <tr id='pt58.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -5716,7 +6208,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt57.35' class='hiddenRow bg-success'>
+        <tr id='pt58.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -5734,13 +6226,13 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c58', 16)">Detail</a>
+            <a onclick="showClassDetail('c59', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt58.1' class='hiddenRow bg-success'>
+        <tr id='pt59.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -5749,7 +6241,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.2' class='hiddenRow bg-success'>
+        <tr id='pt59.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -5758,7 +6250,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.3' class='hiddenRow bg-success'>
+        <tr id='pt59.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -5767,7 +6259,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.4' class='hiddenRow bg-success'>
+        <tr id='pt59.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -5776,7 +6268,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.5' class='hiddenRow bg-success'>
+        <tr id='pt59.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -5785,7 +6277,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.6' class='hiddenRow bg-success'>
+        <tr id='pt59.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -5794,7 +6286,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.7' class='hiddenRow bg-success'>
+        <tr id='pt59.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -5803,7 +6295,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.8' class='hiddenRow bg-success'>
+        <tr id='pt59.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -5812,7 +6304,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.9' class='hiddenRow bg-success'>
+        <tr id='pt59.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -5821,7 +6313,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.10' class='hiddenRow bg-success'>
+        <tr id='pt59.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -5830,7 +6322,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.11' class='hiddenRow bg-success'>
+        <tr id='pt59.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -5839,7 +6331,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.12' class='hiddenRow bg-success'>
+        <tr id='pt59.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -5848,7 +6340,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.13' class='hiddenRow bg-success'>
+        <tr id='pt59.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -5857,7 +6349,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.14' class='hiddenRow bg-success'>
+        <tr id='pt59.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -5866,7 +6358,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.15' class='hiddenRow bg-success'>
+        <tr id='pt59.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -5875,7 +6367,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
     
     
     
-        <tr id='pt58.16' class='hiddenRow bg-success'>
+        <tr id='pt59.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -5886,10 +6378,10 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>510</td>
-        <td>490</td>
-        <td>5</td>
-        <td>5</td>
+        <td>511</td>
+        <td>471</td>
+        <td>28</td>
+        <td>2</td>
         <td>10</td>
         <td>&nbsp;</td>
     </tr>
@@ -5941,8 +6433,8 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
             </tr>
           
             <tr>
-              <th>Babel</th>
-              <td>2.15.0</td>
+              <th>babel</th>
+              <td>2.16.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5954,7 +6446,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>chardet</th>
-              <td>4.0.0</td>
+              <td>5.2.0</td>
               <td>Basic</td>
             </tr>
           
@@ -6056,7 +6548,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.31</td>
+              <td>2.0.32</td>
               <td>Basic</td>
             </tr>
           
@@ -6086,7 +6578,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6110,13 +6602,13 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6140,13 +6632,13 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6170,13 +6662,13 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6200,7 +6692,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6218,13 +6710,13 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>py7zr</th>
-              <td>0.21.1</td>
+              <td>0.22.0</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6248,7 +6740,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6260,7 +6752,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6284,7 +6776,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6302,7 +6794,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6326,13 +6818,13 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.139.0</td>
+              <td>2.140.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6356,7 +6848,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6422,7 +6914,7 @@ AssertionError: &#39;Error creating new users&#39; is not None</pre>
 </div>
 
 <script>
-    drawCircle(490, 5, 5, 10);
+    drawCircle(471, 28, 2, 10);
     showCase(5);
 </script>
 
