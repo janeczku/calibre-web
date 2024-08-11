@@ -26,7 +26,6 @@ from markupsafe import escape
 import datetime
 import mimetypes
 from uuid import uuid4
-import re
 
 from flask import Blueprint, request, url_for
 from flask_babel import format_date

@@ -68,6 +68,13 @@ except ImportError as e:
     log.debug('Cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
+try:
+    from . import audio
+    use_audio_meta = True
+except ImportError as e:
+    log.debug('Cannot import mutagen, extracting audio metadata will not work: %s', e)
+    use_audio_meta = False
+
 
 def process(tmp_file_path, original_file_name, original_file_extension, rar_executable):
     meta = default_meta(tmp_file_path, original_file_name, original_file_extension)
@@ -84,6 +91,8 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
                                         original_file_name,
                                         original_file_extension,
                                         rar_executable)
+        elif extension_upper in [".MP3", ".OGG", ".FLAC", ".WAV", ".AAC", ".AIFF", ".ASF", ".MP4"] and use_audio_meta:
+            meta = audio.get_audio_file_info(tmp_file_path, original_file_extension, original_file_name)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 

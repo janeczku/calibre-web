@@ -20,7 +20,7 @@
 import os
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
 from weakref import WeakSet
@@ -378,10 +378,10 @@ class Books(Base):
     title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')
     sort = Column(String(collation='NOCASE'))
     author_sort = Column(String(collation='NOCASE'))
-    timestamp = Column(TIMESTAMP, default=datetime.utcnow)
+    timestamp = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     pubdate = Column(TIMESTAMP, default=DEFAULT_PUBDATE)
     series_index = Column(String, nullable=False, default="1.0")
-    last_modified = Column(TIMESTAMP, default=datetime.utcnow)
+    last_modified = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     path = Column(String, default="", nullable=False)
     has_cover = Column(Integer, default=0)
     uuid = Column(String)
@@ -1029,10 +1029,10 @@ class CalibreDB:
             return title.strip()
 
         try:
-            # sqlalchemy <1.4.24
+            # sqlalchemy <1.4.24 and sqlalchemy 2.0
             conn = conn or self.session.connection().connection.driver_connection
         except AttributeError:
-            # sqlalchemy >1.4.24 and sqlalchemy 2.0
+            # sqlalchemy >1.4.24
             conn = conn or self.session.connection().connection.connection
         try:
             conn.create_function("title_sort", 1, _title_sort)
