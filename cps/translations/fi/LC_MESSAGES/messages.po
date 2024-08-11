@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-05 18:41+0200\n"
+"POT-Creation-Date: 2024-08-11 08:41+0200\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
 
-#: cps/about.py:84
+#: cps/about.py:88
 msgid "Statistics"
 msgstr "Tilastot"
 
@@ -45,9 +45,9 @@ msgstr ""
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Kirja lisätty onnistuneeksi lähetettäväksi osoitteeseen %(eReadermail)s"
 
-#: cps/admin.py:207 cps/editbooks.py:575 cps/editbooks.py:577
-#: cps/editbooks.py:621 cps/editbooks.py:664 cps/editbooks.py:1286
-#: cps/updater.py:615 cps/uploader.py:93 cps/uploader.py:102
+#: cps/admin.py:207 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:625 cps/editbooks.py:668 cps/editbooks.py:1290
+#: cps/updater.py:615 cps/uploader.py:102 cps/uploader.py:111
 msgid "Unknown"
 msgstr "Tuntematon"
 
@@ -130,7 +130,7 @@ msgstr ""
 msgid "No Valid Book Language Given"
 msgstr ""
 
-#: cps/admin.py:535 cps/editbooks.py:442
+#: cps/admin.py:535 cps/editbooks.py:446
 msgid "Parameter not found"
 msgstr ""
 
@@ -295,7 +295,7 @@ msgstr ""
 
 #: cps/admin.py:1322 cps/admin.py:1325 cps/admin.py:1710 cps/admin.py:1855
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
-#: cps/editbooks.py:305 cps/editbooks.py:1248 cps/shelf.py:90 cps/shelf.py:150
+#: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:468 cps/tasks/convert.py:155 cps/web.py:1527
 #, python-format
@@ -540,16 +540,16 @@ msgstr ""
 msgid "None"
 msgstr "Ei mitään"
 
-#: cps/editbooks.py:109 cps/editbooks.py:935 cps/web.py:530 cps/web.py:1568
+#: cps/editbooks.py:109 cps/editbooks.py:939 cps/web.py:530 cps/web.py:1568
 #: cps/web.py:1613 cps/web.py:1658
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Virhe eKirjan avaamisessa. Tiedostoa ei ole tai se ei ole saatavilla:"
 
-#: cps/editbooks.py:153 cps/editbooks.py:1269
+#: cps/editbooks.py:153 cps/editbooks.py:1273
 msgid "User has no rights to upload cover"
 msgstr ""
 
-#: cps/editbooks.py:173 cps/editbooks.py:750
+#: cps/editbooks.py:173 cps/editbooks.py:754
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
@@ -561,94 +561,94 @@ msgstr "Metadata päivitetty onnistuneesti"
 msgid "Error editing book: {}"
 msgstr ""
 
-#: cps/editbooks.py:291
+#: cps/editbooks.py:295
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Tiedosto %(file)s tallennettu"
 
-#: cps/editbooks.py:319
+#: cps/editbooks.py:323
 msgid "Source or destination format for conversion missing"
 msgstr "Lähteen tai kohteen tiedostomuoto puuttuu"
 
-#: cps/editbooks.py:327
+#: cps/editbooks.py:331
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kirja lisätty muutosjonoon muotoon %(book_format)s"
 
-#: cps/editbooks.py:331
+#: cps/editbooks.py:335
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Kirjan muunnoksessa tapahtui virhe: %(res)s"
 
-#: cps/editbooks.py:668
+#: cps/editbooks.py:672
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr ""
 
-#: cps/editbooks.py:724 cps/editbooks.py:1055
+#: cps/editbooks.py:728 cps/editbooks.py:1059
 #, fuzzy, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s ei ole kelvollinen kieli"
 
-#: cps/editbooks.py:762 cps/editbooks.py:1198
+#: cps/editbooks.py:766 cps/editbooks.py:1202
 #, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "Tiedostopääte '%(ext)s' ei ole sallittujen palvelimelle ladattavien listalla"
 
-#: cps/editbooks.py:768 cps/editbooks.py:1208
+#: cps/editbooks.py:772 cps/editbooks.py:1212
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Tiedostopääte '%(ext)s' ei ole sallittujen palvelimelle ladattavien listalla"
 
-#: cps/editbooks.py:772 cps/editbooks.py:1212
+#: cps/editbooks.py:776 cps/editbooks.py:1216
 msgid "File to be uploaded must have an extension"
 msgstr "Ladattavalla tiedostolla on oltava tiedostopääte"
 
-#: cps/editbooks.py:780
+#: cps/editbooks.py:784
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr ""
 
-#: cps/editbooks.py:800
+#: cps/editbooks.py:804
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:857 cps/editbooks.py:859
+#: cps/editbooks.py:861 cps/editbooks.py:863
 msgid "Book Format Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:866 cps/editbooks.py:868
+#: cps/editbooks.py:870 cps/editbooks.py:872
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:920
+#: cps/editbooks.py:924
 msgid "You are missing permissions to delete books"
 msgstr ""
 
-#: cps/editbooks.py:970
+#: cps/editbooks.py:974
 msgid "edit metadata"
 msgstr "muokkaa metadataa"
 
-#: cps/editbooks.py:1019
+#: cps/editbooks.py:1023
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1203
+#: cps/editbooks.py:1207
 msgid "User has no rights to upload additional file formats"
 msgstr ""
 
-#: cps/editbooks.py:1224
+#: cps/editbooks.py:1228
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Polun %(path)s luonti epäonnistui (Ei oikeutta)."
 
-#: cps/editbooks.py:1230
+#: cps/editbooks.py:1234
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Tiedoston %(file)s tallennus epäonnistui."
 
-#: cps/editbooks.py:1254
+#: cps/editbooks.py:1258
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Tiedostoformaatti %(ext)s lisätty %(book)s"
@@ -779,82 +779,82 @@ msgstr ""
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:848
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:858
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:861
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:864
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr ""
 
-#: cps/helper.py:874
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:890
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:901
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:913
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:917
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:989 cps/helper.py:1146
+#: cps/helper.py:988 cps/helper.py:1145
 #, fuzzy
 msgid "Cover"
 msgstr "Löydä"
 
-#: cps/helper.py:1006
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr ""
 
-#: cps/helper.py:1017
+#: cps/helper.py:1016
 msgid "Error executing UnRar"
 msgstr ""
 
-#: cps/helper.py:1025
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1028
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1042
+#: cps/helper.py:1041
 msgid "Calibre binaries not viable"
 msgstr ""
 
-#: cps/helper.py:1051
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1052
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1058
+#: cps/helper.py:1057
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1148 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -1556,21 +1556,21 @@ msgstr ""
 msgid "Backing up Metadata"
 msgstr "muokkaa metadataa"
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:95
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:229 cps/tasks/thumbnail.py:442
-#: cps/tasks/thumbnail.py:510
+#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
+#: cps/tasks/thumbnail.py:509
 msgid "Cover Thumbnails"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:288
+#: cps/tasks/thumbnail.py:287
 msgid "Generated {0} series thumbnails"
 msgstr ""
 
-#: cps/tasks/thumbnail.py:453
+#: cps/tasks/thumbnail.py:452
 msgid "Clearing cover thumbnail cache"
 msgstr ""
 

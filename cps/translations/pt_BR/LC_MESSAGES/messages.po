@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-05 18:41+0200\n"
+"POT-Creation-Date: 2024-08-11 08:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: br\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
 
-#: cps/about.py:84
+#: cps/about.py:88
 msgid "Statistics"
 msgstr "Estatísticas"
 
@@ -42,9 +42,9 @@ msgstr "Comando desconhecido"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "E-mail de teste enfileirado para envio para %(email)s, verifique o resultado em Tarefas"
 
-#: cps/admin.py:207 cps/editbooks.py:575 cps/editbooks.py:577
-#: cps/editbooks.py:621 cps/editbooks.py:664 cps/editbooks.py:1286
-#: cps/updater.py:615 cps/uploader.py:93 cps/uploader.py:102
+#: cps/admin.py:207 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:625 cps/editbooks.py:668 cps/editbooks.py:1290
+#: cps/updater.py:615 cps/uploader.py:102 cps/uploader.py:111
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -126,7 +126,7 @@ msgstr "Nenhum Idioma Válido Fornecido"
 msgid "No Valid Book Language Given"
 msgstr "Nenhum Idioma do Livro Válido Fornecido"
 
-#: cps/admin.py:535 cps/editbooks.py:442
+#: cps/admin.py:535 cps/editbooks.py:446
 msgid "Parameter not found"
 msgstr "Parametro não encontrado"
 
@@ -287,7 +287,7 @@ msgstr ""
 
 #: cps/admin.py:1322 cps/admin.py:1325 cps/admin.py:1710 cps/admin.py:1855
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
-#: cps/editbooks.py:305 cps/editbooks.py:1248 cps/shelf.py:90 cps/shelf.py:150
+#: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:468 cps/tasks/convert.py:155 cps/web.py:1527
 #, python-format
@@ -529,16 +529,16 @@ msgstr "A Coluna Personalizada No.%(column)d não existe no banco de dados do ca
 msgid "None"
 msgstr "Nenhum"
 
-#: cps/editbooks.py:109 cps/editbooks.py:935 cps/web.py:530 cps/web.py:1568
+#: cps/editbooks.py:109 cps/editbooks.py:939 cps/web.py:530 cps/web.py:1568
 #: cps/web.py:1613 cps/web.py:1658
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Oops! O Livro selecionado não está disponível. O arquivo não existe ou não é acessível"
 
-#: cps/editbooks.py:153 cps/editbooks.py:1269
+#: cps/editbooks.py:153 cps/editbooks.py:1273
 msgid "User has no rights to upload cover"
 msgstr "Usuário não tem permissão para fazer upload da capa"
 
-#: cps/editbooks.py:173 cps/editbooks.py:750
+#: cps/editbooks.py:173 cps/editbooks.py:754
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Os identificadores não diferenciam maiúsculas de minúsculas, substituindo o identificador antigo"
 
@@ -550,94 +550,94 @@ msgstr "Metadados atualizados com sucesso"
 msgid "Error editing book: {}"
 msgstr "Erro ao editar o livro: {}"
 
-#: cps/editbooks.py:291
+#: cps/editbooks.py:295
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Arquivo %(file)s enviado"
 
-#: cps/editbooks.py:319
+#: cps/editbooks.py:323
 msgid "Source or destination format for conversion missing"
 msgstr "Formato de origem ou destino para conversão ausente"
 
-#: cps/editbooks.py:327
+#: cps/editbooks.py:331
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Livro enfileirado com sucesso para conversão em %(book_format)s"
 
-#: cps/editbooks.py:331
+#: cps/editbooks.py:335
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Ocorreu um erro ao converter este livro: %(res)s"
 
-#: cps/editbooks.py:668
+#: cps/editbooks.py:672
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "O livro carregado provavelmente existe na biblioteca, considere alterar antes de carregar novo: "
 
-#: cps/editbooks.py:724 cps/editbooks.py:1055
+#: cps/editbooks.py:728 cps/editbooks.py:1059
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s não é um idioma válido"
 
-#: cps/editbooks.py:762 cps/editbooks.py:1198
+#: cps/editbooks.py:766 cps/editbooks.py:1202
 #, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "A extensão de arquivo '%(ext)s' não pode ser enviada para este servidor"
 
-#: cps/editbooks.py:768 cps/editbooks.py:1208
+#: cps/editbooks.py:772 cps/editbooks.py:1212
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "A extensão de arquivo '%(ext)s' não pode ser enviada para este servidor"
 
-#: cps/editbooks.py:772 cps/editbooks.py:1212
+#: cps/editbooks.py:776 cps/editbooks.py:1216
 msgid "File to be uploaded must have an extension"
 msgstr "O arquivo a ser carregado deve ter uma extensão"
 
-#: cps/editbooks.py:780
+#: cps/editbooks.py:784
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "O arquivo %(filename)s não pôde ser salvo no diretório temporário"
 
-#: cps/editbooks.py:800
+#: cps/editbooks.py:804
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Falha ao mover arquivo de capa %(file)s: %(error)s"
 
-#: cps/editbooks.py:857 cps/editbooks.py:859
+#: cps/editbooks.py:861 cps/editbooks.py:863
 msgid "Book Format Successfully Deleted"
 msgstr "Formato do Livro Apagado com Sucesso"
 
-#: cps/editbooks.py:866 cps/editbooks.py:868
+#: cps/editbooks.py:870 cps/editbooks.py:872
 msgid "Book Successfully Deleted"
 msgstr "Livro Apagado com Sucesso"
 
-#: cps/editbooks.py:920
+#: cps/editbooks.py:924
 msgid "You are missing permissions to delete books"
 msgstr "Você não tem permissão para apagar livros"
 
-#: cps/editbooks.py:970
+#: cps/editbooks.py:974
 msgid "edit metadata"
 msgstr "editar metadados"
 
-#: cps/editbooks.py:1019
+#: cps/editbooks.py:1023
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s não é um número válido, ignorando"
 
-#: cps/editbooks.py:1203
+#: cps/editbooks.py:1207
 msgid "User has no rights to upload additional file formats"
 msgstr "Usuário não tem direitos para fazer upload de formatos de arquivo adicionais"
 
-#: cps/editbooks.py:1224
+#: cps/editbooks.py:1228
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Falha ao criar o caminho %(path)s (Permission denied)."
 
-#: cps/editbooks.py:1230
+#: cps/editbooks.py:1234
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Falha ao armazenar o arquivo %(file)s."
 
-#: cps/editbooks.py:1254
+#: cps/editbooks.py:1258
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Formato de arquivo %(ext)s adicionado a %(book)s"
@@ -768,85 +768,85 @@ msgstr "Formato de endereço de e-mail inválido"
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:848
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "O módulo Python 'advocate' não está instalado, mas é necessário para uploads de capa"
 
-#: cps/helper.py:858
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr "Erro ao Baixar a capa"
 
-#: cps/helper.py:861
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr "Erro de Formato da Capa"
 
-#: cps/helper.py:864
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Você não tem permissão para acessar localhost ou a rede local para uploads de capa"
 
-#: cps/helper.py:874
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr "Falha em criar caminho para a capa"
 
-#: cps/helper.py:890
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "O arquivo de capa não é um arquivo de imagem válido, ou não pôde ser armazenado"
 
-#: cps/helper.py:901
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Apenas arquivos jpg/jpeg/png/webp/bmp são suportados como arquivos de capa"
 
-#: cps/helper.py:913
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr "Conteúdo do arquivo de capa inválido"
 
-#: cps/helper.py:917
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Apenas arquivos jpg/jpeg são suportados como arquivos de capa"
 
-#: cps/helper.py:989 cps/helper.py:1146
+#: cps/helper.py:988 cps/helper.py:1145
 #, fuzzy
 msgid "Cover"
 msgstr "Capa"
 
-#: cps/helper.py:1006
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr "Binário UnRar não encontrado"
 
-#: cps/helper.py:1017
+#: cps/helper.py:1016
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "Erro excecutando UnRar"
 
-#: cps/helper.py:1025
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1028
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1042
+#: cps/helper.py:1041
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "DB não é gravável"
 
-#: cps/helper.py:1051
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1052
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Faltam as permissões de execução"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1057
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "Erro excecutando UnRar"
 
-#: cps/helper.py:1148 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -1546,21 +1546,21 @@ msgstr "E-mail"
 msgid "Backing up Metadata"
 msgstr "Cópia de segurança de metadados"
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:95
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Gerado %(count)s miniaturas de capa"
 
-#: cps/tasks/thumbnail.py:229 cps/tasks/thumbnail.py:442
-#: cps/tasks/thumbnail.py:510
+#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
+#: cps/tasks/thumbnail.py:509
 msgid "Cover Thumbnails"
 msgstr "Miniatura da Capa"
 
-#: cps/tasks/thumbnail.py:288
+#: cps/tasks/thumbnail.py:287
 msgid "Generated {0} series thumbnails"
 msgstr "Gerado {0} miniaturas de série"
 
-#: cps/tasks/thumbnail.py:453
+#: cps/tasks/thumbnail.py:452
 msgid "Clearing cover thumbnail cache"
 msgstr "Limpando o cache de miniaturas da capa"
 
