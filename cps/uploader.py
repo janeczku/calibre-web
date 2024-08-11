@@ -23,7 +23,7 @@ from flask_babel import gettext as _
 from . import logger, comic, isoLanguages
 from .constants import BookMeta
 from .helper import split_authors
-from .file_helper import get_temp_dir, validate_mime_type
+from .file_helper import get_temp_dir
 
 log = logger.create()
 
@@ -91,7 +91,8 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
                                         original_file_name,
                                         original_file_extension,
                                         rar_executable)
-        elif extension_upper in [".MP3", ".OGG", ".FLAC", ".WAV", ".AAC", ".AIFF", ".ASF", ".MP4"] and use_audio_meta:
+        elif extension_upper in [".MP3", ".OGG", ".FLAC", ".WAV", ".AAC", ".AIFF", ".ASF", ".MP4",
+                                 ".M4A", ".M4B", ".OGV", ".OPUS"] and use_audio_meta:
             meta = audio.get_audio_file_info(tmp_file_path, original_file_extension, original_file_name)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
