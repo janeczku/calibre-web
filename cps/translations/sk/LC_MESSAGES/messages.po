@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-05 18:41+0200\n"
+"POT-Creation-Date: 2024-08-11 08:41+0200\n"
 "PO-Revision-Date: 2023-11-01 06:12+0100\n"
 "Last-Translator: Branislav Hanáček <brango@brango.sk>\n"
 "Language: sk_SK\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.13.1\n"
 
-#: cps/about.py:84
+#: cps/about.py:88
 msgid "Statistics"
 msgstr "Štatistika"
 
@@ -42,9 +42,9 @@ msgstr "Neznámy príkaz"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Úspech! Knihy boli zaradená do zálohovania metadát, skontrolujte si Úlohy na kontrolu"
 
-#: cps/admin.py:207 cps/editbooks.py:575 cps/editbooks.py:577
-#: cps/editbooks.py:621 cps/editbooks.py:664 cps/editbooks.py:1286
-#: cps/updater.py:615 cps/uploader.py:93 cps/uploader.py:102
+#: cps/admin.py:207 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/editbooks.py:625 cps/editbooks.py:668 cps/editbooks.py:1290
+#: cps/updater.py:615 cps/uploader.py:102 cps/uploader.py:111
 msgid "Unknown"
 msgstr "Neznámy"
 
@@ -126,7 +126,7 @@ msgstr "Nebolo poskytnuté platné nastavenie jazyka"
 msgid "No Valid Book Language Given"
 msgstr "Nebolo poskytnuté platné jazykové nastavenie pre knihu"
 
-#: cps/admin.py:535 cps/editbooks.py:442
+#: cps/admin.py:535 cps/editbooks.py:446
 msgid "Parameter not found"
 msgstr "Parameter sa nenašiel"
 
@@ -287,7 +287,7 @@ msgstr "Úspech! Gmail konto bolo verifikované."
 
 #: cps/admin.py:1322 cps/admin.py:1325 cps/admin.py:1710 cps/admin.py:1855
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
-#: cps/editbooks.py:305 cps/editbooks.py:1248 cps/shelf.py:90 cps/shelf.py:150
+#: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:468 cps/tasks/convert.py:155 cps/web.py:1527
 #, python-format
@@ -528,16 +528,16 @@ msgstr "Používateľom definovaný stĺpec č. %(column)d v Calibre databáze n
 msgid "None"
 msgstr "Žiadne"
 
-#: cps/editbooks.py:109 cps/editbooks.py:935 cps/web.py:530 cps/web.py:1568
+#: cps/editbooks.py:109 cps/editbooks.py:939 cps/web.py:530 cps/web.py:1568
 #: cps/web.py:1613 cps/web.py:1658
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Vybraná kniha nie je dostupná. Súbor neexistuje alebo sa k nemu nedá pristupovať"
 
-#: cps/editbooks.py:153 cps/editbooks.py:1269
+#: cps/editbooks.py:153 cps/editbooks.py:1273
 msgid "User has no rights to upload cover"
 msgstr "Používateľ nemá práva nahrať obálku knihy"
 
-#: cps/editbooks.py:173 cps/editbooks.py:750
+#: cps/editbooks.py:173 cps/editbooks.py:754
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Identifikátory nerozlišujú malé a veľké písmená, prepisuje sa starý identifikátor"
 
@@ -549,94 +549,94 @@ msgstr "Metadáta boli úspešne aktualizované"
 msgid "Error editing book: {}"
 msgstr "Chyba pri úprave knihy: {}"
 
-#: cps/editbooks.py:291
+#: cps/editbooks.py:295
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Súbor %(file)s bol nahraný"
 
-#: cps/editbooks.py:319
+#: cps/editbooks.py:323
 msgid "Source or destination format for conversion missing"
 msgstr "Chýba zdrojový alebo cieľový formát pre prevod"
 
-#: cps/editbooks.py:327
+#: cps/editbooks.py:331
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kniha bola úspešne zaradená na prevod do %(book_format)s"
 
-#: cps/editbooks.py:331
+#: cps/editbooks.py:335
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Vyskytla sa chyba pri prevode tejto knihy: %(res)s"
 
-#: cps/editbooks.py:668
+#: cps/editbooks.py:672
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Nahrávaná kniha pravdepodobne existuje v knižnici, zvážte zmenu pred nahraním novej: "
 
-#: cps/editbooks.py:724 cps/editbooks.py:1055
+#: cps/editbooks.py:728 cps/editbooks.py:1059
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s' nie je platný jazyk"
 
-#: cps/editbooks.py:762 cps/editbooks.py:1198
+#: cps/editbooks.py:766 cps/editbooks.py:1202
 #, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "Prípona súboru '%(ext)s' nemôže byť nahraná na tento server"
 
-#: cps/editbooks.py:768 cps/editbooks.py:1208
+#: cps/editbooks.py:772 cps/editbooks.py:1212
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Prípona súboru '%(ext)s' nemôže byť nahraná na tento server"
 
-#: cps/editbooks.py:772 cps/editbooks.py:1212
+#: cps/editbooks.py:776 cps/editbooks.py:1216
 msgid "File to be uploaded must have an extension"
 msgstr "Súbor ktorý sa má nahrať musí mať príponu"
 
-#: cps/editbooks.py:780
+#: cps/editbooks.py:784
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Súbor %(filename)s nebolo možné uložiť do dočasného adresára"
 
-#: cps/editbooks.py:800
+#: cps/editbooks.py:804
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Zlyhal presun súboru obalky %(file)s: %(error)s"
 
-#: cps/editbooks.py:857 cps/editbooks.py:859
+#: cps/editbooks.py:861 cps/editbooks.py:863
 msgid "Book Format Successfully Deleted"
 msgstr "Kniha s formátom bola úspešne zmazaná"
 
-#: cps/editbooks.py:866 cps/editbooks.py:868
+#: cps/editbooks.py:870 cps/editbooks.py:872
 msgid "Book Successfully Deleted"
 msgstr "Kniha bola úspešne zmazaná"
 
-#: cps/editbooks.py:920
+#: cps/editbooks.py:924
 msgid "You are missing permissions to delete books"
 msgstr "Nemáte oprávnenia na mazanie kníh"
 
-#: cps/editbooks.py:970
+#: cps/editbooks.py:974
 msgid "edit metadata"
 msgstr "upraviť metadáta"
 
-#: cps/editbooks.py:1019
+#: cps/editbooks.py:1023
 #, python-format
 msgid "%(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s nie je platné číslo, preskakuje sa"
 
-#: cps/editbooks.py:1203
+#: cps/editbooks.py:1207
 msgid "User has no rights to upload additional file formats"
 msgstr "Používateľ nemá práva na nahranie dodatočných súborových formátov"
 
-#: cps/editbooks.py:1224
+#: cps/editbooks.py:1228
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nebolo možné vytvoriť cestu %(path)s (Povolenie zamietnuté)."
 
-#: cps/editbooks.py:1230
+#: cps/editbooks.py:1234
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Zlyhalo uloženie súboru: %(file)s."
 
-#: cps/editbooks.py:1254
+#: cps/editbooks.py:1258
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Súborový formát %(ext)s bol pridaný k %(book)s"
@@ -763,83 +763,83 @@ msgstr "Neplatný formát poštovej adresy"
 msgid "Password doesn't comply with password validation rules"
 msgstr "Heslo nedodržiava pravidlá validácie"
 
-#: cps/helper.py:848
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Python modul 'advocate' nie je nainštalovaný ale je potrebný pre nahrávanie obálok kníh"
 
-#: cps/helper.py:858
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr "Chyba pri sťahovaní obálky knihy"
 
-#: cps/helper.py:861
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr "Chyba formátu obálky knihy"
 
-#: cps/helper.py:864
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Nemáte povolené pristupovať na lokálneho hostiteľa alebo lokálnu sieť na pre nahrávanie obálok kníh"
 
-#: cps/helper.py:874
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr "Vytváranie cesty k obálke knihy zlyhalo"
 
-#: cps/helper.py:890
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Súbor obálky knihy nie je platný súbor s obrázkom alebo nie je uložený"
 
-#: cps/helper.py:901
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Ako súbor obálky knihy sú podporované iba súbory jpg/jpeg/png/webp/bmp"
 
-#: cps/helper.py:913
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr "Neplatný obsah súboru obalky knihy"
 
-#: cps/helper.py:917
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Ako súbor obálky knihy sú podporované iba súbory jpg/jpeg"
 
-#: cps/helper.py:989 cps/helper.py:1146
+#: cps/helper.py:988 cps/helper.py:1145
 msgid "Cover"
 msgstr "Obálka knihy"
 
-#: cps/helper.py:1006
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr "Binárny súbor pre UnRar sa nenašiel"
 
-#: cps/helper.py:1017
+#: cps/helper.py:1016
 msgid "Error executing UnRar"
 msgstr "Chyba pri spustení UnRar"
 
-#: cps/helper.py:1025
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1028
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1042
+#: cps/helper.py:1041
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "Do databázy nie je možné zapisovať"
 
-#: cps/helper.py:1051
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1052
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Chýba právo na vykonanie"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1057
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "Chyba pri spustení UnRar"
 
-#: cps/helper.py:1148 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Zaradiť všetky knihy na zálohovanie metadát"
 
@@ -1521,21 +1521,21 @@ msgstr "E-mail"
 msgid "Backing up Metadata"
 msgstr "Zálohovať metadáta"
 
-#: cps/tasks/thumbnail.py:96
+#: cps/tasks/thumbnail.py:95
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Bolo vygenerovaných %(count)s náhľadov obálok kníh"
 
-#: cps/tasks/thumbnail.py:229 cps/tasks/thumbnail.py:442
-#: cps/tasks/thumbnail.py:510
+#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
+#: cps/tasks/thumbnail.py:509
 msgid "Cover Thumbnails"
 msgstr "Náhľad obálky knihy"
 
-#: cps/tasks/thumbnail.py:288
+#: cps/tasks/thumbnail.py:287
 msgid "Generated {0} series thumbnails"
 msgstr "Bolo vygenerovaných {0} náhľadov pre série"
 
-#: cps/tasks/thumbnail.py:453
+#: cps/tasks/thumbnail.py:452
 msgid "Clearing cover thumbnail cache"
 msgstr "Vyrovnávacia pamäť pre obálky kníh sa vyprázdňuje"
 
