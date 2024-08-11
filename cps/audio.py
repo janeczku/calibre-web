@@ -60,8 +60,8 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
     elif original_file_extension in [".ogg", ".flac"]:
         title = audio_file.tags.get('TITLE')[0] if "TITLE" in audio_file else None
         author = audio_file.tags.get('ARTIST')[0] if "ARTIST" in audio_file else None
-        comments = None # audio_file.tags.get('COMM', None)
-        tags = ""
+        comments = audio_file.tags.get('COMMENTS')[0] if "COMMENTS" in audio_file else None
+        tags = audio_file.tags.get('GENRE')[0] if "GENRE" in audio_file else None # Genre
         series = audio_file.tags.get('ALBUM')[0] if "ALBUM" in audio_file else None
         series_id = audio_file.tags.get('TRACKNUMBER')[0] if "TRACKNUMBER" in audio_file else None
         publisher = audio_file.tags.get('LABEL')[0] if "LABEL" in audio_file else None
@@ -69,12 +69,16 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         cover_data = audio_file.tags.get('METADATA_BLOCK_PICTURE')
         if cover_data:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
-            with open(tmp_cover_name, "wb") as cover_file:
-                cover_file.write(mutagen.flac.Picture(base64.b64decode(cover_data[0])).data)
+            cover_info = mutagen.flac.Picture(base64.b64decode(cover_data[0]))
+            cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
         if hasattr(audio_file, "pictures"):
+            cover_info = audio_file.pictures[0]
+            for dat in audio_file.pictures:
+                if dat.type == mutagen.id3.PictureType.COVER_FRONT:
+                    cover_info = dat
+                    break
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
-            with open(tmp_cover_name, "wb") as cover_file:
-                cover_file.write(audio_file.pictures[0].data)
+            cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
     elif original_file_extension in [".aac"]:
         title = audio_file.tags.get('Title').value if "title" in audio_file else None
         author = audio_file.tags.get('Artist').value if "artist" in audio_file else None
