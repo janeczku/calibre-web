@@ -20,10 +20,11 @@ import os
 
 import mutagen
 import base64
-from . import cover
+from . import cover, logger
 
 from cps.constants import BookMeta
 
+log = logger.create()
 
 def get_audio_file_info(tmp_file_path, original_file_extension, original_file_name):
     tmp_cover_name = None
@@ -57,7 +58,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
                     cover_info = dat
                     break
             cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
-    elif original_file_extension in [".ogg", ".flac"]:
+    elif original_file_extension in [".ogg", ".flac", ".opus", ".ogv"]:
         title = audio_file.tags.get('TITLE')[0] if "TITLE" in audio_file else None
         author = audio_file.tags.get('ARTIST')[0] if "ARTIST" in audio_file else None
         comments = audio_file.tags.get('COMMENTS')[0] if "COMMENTS" in audio_file else None
@@ -119,9 +120,20 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         cover_data = audio_file.tags.get('covr', None)
         if cover_data:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
-            if cover_data[0].imageformat ==  mutagen.mp4.AtomDataType.JPEG:
-                with open(tmp_cover_name, "wb") as cover_file:
-                    cover_file.write(audio_file.tags['covr'][0])
+            cover_type = None
+            for c in cover_data:
+                if c.imageformat == mutagen.mp4.AtomDataType.JPEG:
+                    cover_type =".jpg"
+                    cover_bin = c
+                    break
+                elif c.imageformat == mutagen.mp4.AtomDataType.PNG:
+                    cover_type = ".png"
+                    cover_bin = c
+                    break
+            if cover_type:
+                cover.cover_processing(tmp_file_path, cover_bin, cover_type)
+            else:
+                logger.error("Unknown covertype in file {} ".format(original_file_name))
 
     return BookMeta(
         file_path=tmp_file_path,
