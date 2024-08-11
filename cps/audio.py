@@ -20,10 +20,11 @@ import os
 
 import mutagen
 import base64
-from . import cover
+from . import cover, logger
 
 from cps.constants import BookMeta
 
+log = logger.create()
 
 def get_audio_file_info(tmp_file_path, original_file_extension, original_file_name):
     tmp_cover_name = None
@@ -57,7 +58,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
                     cover_info = dat
                     break
             cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
-    elif original_file_extension in [".ogg", ".flac"]:
+    elif original_file_extension in [".ogg", ".flac", ".opus", ".ogv"]:
         title = audio_file.tags.get('TITLE')[0] if "TITLE" in audio_file else None
         author = audio_file.tags.get('ARTIST')[0] if "ARTIST" in audio_file else None
         comments = audio_file.tags.get('COMMENTS')[0] if "COMMENTS" in audio_file else None
@@ -80,10 +81,10 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
     elif original_file_extension in [".aac"]:
-        title = audio_file.tags.get('Title').value if "title" in audio_file else None
-        author = audio_file.tags.get('Artist').value if "artist" in audio_file else None
-        comments = None # audio_file.tags.get('COMM', None)
-        tags = ""
+        title = audio_file.tags.get('Title').value if "Title" in audio_file else None
+        author = audio_file.tags.get('Artist').value if "Artist" in audio_file else None
+        comments = audio_file.tags.get('Comment').value if "Comment" in audio_file else None
+        tags = audio_file.tags.get('Genre').value if "Genre" in audio_file else None
         series = audio_file.tags.get('Album').value if "Album" in audio_file else None
         series_id = audio_file.tags.get('Track').value if "Track" in audio_file else None
         publisher = audio_file.tags.get('Label').value if "Label" in audio_file else None
@@ -94,21 +95,45 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data.value.split(b"\x00",1)[1])
     elif original_file_extension in [".asf"]:
-        title = audio_file.tags.get('Title')[0].value if "title" in audio_file else None
-        author = audio_file.tags.get('Artist')[0].value if "artist" in audio_file else None
-        comments = None  # audio_file.tags.get('COMM', None)
-        tags = ""
+        title = audio_file.tags.get('Title')[0].value if "Title" in audio_file else None
+        author = audio_file.tags.get('Artist')[0].value if "Artist" in audio_file else None
+        comments = audio_file.tags.get('Comments')[0].value if "Comments" in audio_file else None
+        tags = audio_file.tags.get('Genre')[0].value if "Genre" in audio_file else None
         series = audio_file.tags.get('Album')[0].value if "Album" in audio_file else None
         series_id = audio_file.tags.get('Track')[0].value if "Track" in audio_file else None
         publisher = audio_file.tags.get('Label')[0].value if "Label" in audio_file else None
         pubdate = audio_file.tags.get('Year')[0].value if "Year" in audio_file else None
-        cover_data = audio_file.tags['WM/Picture']
+        cover_data = audio_file.tags.get('WM/Picture', None)
         if cover_data:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data[0].value)
-
-
+    elif original_file_extension in [".mp4", ".m4a", ".m4b"]:
+        title = audio_file.tags.get('©nam')[0] if "©nam" in audio_file.tags else None
+        author = audio_file.tags.get('©ART')[0] if "©ART" in audio_file.tags else None
+        comments = audio_file.tags.get('©cmt')[0] if "©cmt" in audio_file.tags else None
+        tags = audio_file.tags.get('©gen')[0] if "©gen" in audio_file.tags else None
+        series = audio_file.tags.get('©alb')[0] if "©alb" in audio_file.tags else None
+        series_id = str(audio_file.tags.get('trkn')[0][0]) if "trkn" in audio_file.tags else None
+        publisher = ""
+        pubdate = audio_file.tags.get('©day')[0] if "©day" in audio_file.tags else None
+        cover_data = audio_file.tags.get('covr', None)
+        if cover_data:
+            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
+            cover_type = None
+            for c in cover_data:
+                if c.imageformat == mutagen.mp4.AtomDataType.JPEG:
+                    cover_type =".jpg"
+                    cover_bin = c
+                    break
+                elif c.imageformat == mutagen.mp4.AtomDataType.PNG:
+                    cover_type = ".png"
+                    cover_bin = c
+                    break
+            if cover_type:
+                cover.cover_processing(tmp_file_path, cover_bin, cover_type)
+            else:
+                logger.error("Unknown covertype in file {} ".format(original_file_name))
 
     return BookMeta(
         file_path=tmp_file_path,
