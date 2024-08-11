@@ -1020,7 +1020,7 @@ def edit_book_series_index(series_index, book):
     modify_date = False
     series_index = series_index or '1'
     if not series_index.replace('.', '', 1).isdigit():
-        flash(_("%(seriesindex)s is not a valid number, skipping", seriesindex=series_index), category="warning")
+        flash(_("Seriesindex: %(seriesindex)s is not a valid number, skipping", seriesindex=series_index), category="warning")
         return False
     if str(book.series_index) != series_index:
         book.series_index = series_index
