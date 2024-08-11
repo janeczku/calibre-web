@@ -107,8 +107,21 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data[0].value)
-
-
+    elif original_file_extension in [".mp4", ".m4a", ".m4b"]:
+        title = audio_file.tags.get('©nam')[0] if "©nam" in audio_file.tags else None
+        author = audio_file.tags.get('©ART')[0] if "©ART" in audio_file.tags else None
+        comments = audio_file.tags.get('©cmt')[0] if "©cmt" in audio_file.tags else None
+        tags = audio_file.tags.get('©gen')[0] if "©gen" in audio_file.tags else None
+        series = audio_file.tags.get('©alb')[0] if "©alb" in audio_file.tags else None
+        series_id = str(audio_file.tags.get('trkn')[0][0]) if "trkn" in audio_file.tags else None
+        publisher = ""
+        pubdate = audio_file.tags.get('©day')[0] if "©day" in audio_file.tags else None
+        cover_data = audio_file.tags.get('covr', None)
+        if cover_data:
+            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
+            if cover_data[0].imageformat ==  mutagen.mp4.AtomDataType.JPEG:
+                with open(tmp_cover_name, "wb") as cover_file:
+                    cover_file.write(audio_file.tags['covr'][0])
 
     return BookMeta(
         file_path=tmp_file_path,
