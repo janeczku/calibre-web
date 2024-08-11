@@ -91,7 +91,8 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
                                         original_file_name,
                                         original_file_extension,
                                         rar_executable)
-        elif extension_upper in [".MP3", ".OGG", ".FLAC", ".WAV", ".AAC", ".AIFF", ".ASF", ".MP4"] and use_audio_meta:
+        elif extension_upper in [".MP3", ".OGG", ".FLAC", ".WAV", ".AAC", ".AIFF", ".ASF", ".MP4",
+                                 ".M4A", ".M4B"] and use_audio_meta:
             meta = audio.get_audio_file_info(tmp_file_path, original_file_extension, original_file_name)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
