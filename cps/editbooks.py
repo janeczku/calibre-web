@@ -47,7 +47,7 @@ from .kobo_sync_status import change_archived_books
 from .redirect import get_redirect_location
 from .file_helper import validate_mime_type
 from .usermanagement import user_login_required, login_required_if_no_ano
-
+from .string_helper import strip_whitespaces
 
 editbook = Blueprint('edit-book', __name__)
 log = logger.create()
@@ -979,7 +979,7 @@ def render_edit_book(book_id):
 
 def edit_book_ratings(to_save, book):
     changed = False
-    if to_save.get("rating", "").strip():
+    if strip_whitespaces(to_save.get("rating", "")):
         old_rating = False
         if len(book.ratings) > 0:
             old_rating = book.ratings[0].rating
@@ -1003,14 +1003,14 @@ def edit_book_ratings(to_save, book):
 
 def edit_book_tags(tags, book):
     input_tags = tags.split(',')
-    input_tags = list(map(lambda it: it.strip(), input_tags))
+    input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
     # Remove duplicates
     input_tags = helper.uniq(input_tags)
     return modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
 
 
 def edit_book_series(series, book):
-    input_series = [series.strip()]
+    input_series = [strip_whitespaces(series)]
     input_series = [x for x in input_series if x != '']
     return modify_database_object(input_series, book.series, db.Series, calibre_db.session, 'series')
 
@@ -1072,7 +1072,7 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
 def edit_book_publisher(publishers, book):
     changed = False
     if publishers:
-        publisher = publishers.rstrip().strip()
+        publisher = strip_whitespaces(publishers)
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
             changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,
                                               'publisher')
@@ -1119,7 +1119,7 @@ def edit_cc_data_string(book, c, to_save, cc_db_value, cc_string):
     changed = False
     if c.datatype == 'rating':
         to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
-    if to_save[cc_string].strip() != cc_db_value:
+    if strip_whitespaces(to_save[cc_string]) != cc_db_value:
         if cc_db_value is not None:
             # remove old cc_val
             del_cc = getattr(book, cc_string)[0]
@@ -1129,15 +1129,15 @@ def edit_cc_data_string(book, c, to_save, cc_db_value, cc_string):
                 changed = True
         cc_class = db.cc_classes[c.id]
         new_cc = calibre_db.session.query(cc_class).filter(
-            cc_class.value == to_save[cc_string].strip()).first()
+            cc_class.value == strip_whitespaces(to_save[cc_string])).first()
         # if no cc val is found add it
         if new_cc is None:
-            new_cc = cc_class(value=to_save[cc_string].strip())
+            new_cc = cc_class(value=strip_whitespaces(to_save[cc_string]))
             calibre_db.session.add(new_cc)
             changed = True
             calibre_db.session.flush()
             new_cc = calibre_db.session.query(cc_class).filter(
-                cc_class.value == to_save[cc_string].strip()).first()
+                cc_class.value == strip_whitespaces(to_save[cc_string])).first()
         # add cc value to book
         getattr(book, cc_string).append(new_cc)
     return changed, to_save
@@ -1165,7 +1165,7 @@ def edit_cc_data(book_id, book, to_save, cc):
                 cc_db_value = getattr(book, cc_string)[0].value
             else:
                 cc_db_value = None
-            if to_save[cc_string].strip():
+            if strip_whitespaces(to_save[cc_string]):
                 if c.datatype in ['int', 'bool', 'float', "datetime", "comments"]:
                     change, to_save = edit_cc_data_value(book_id, book, c, to_save, cc_db_value, cc_string)
                 else:
@@ -1181,7 +1181,7 @@ def edit_cc_data(book_id, book, to_save, cc):
                         changed = True
         else:
             input_tags = to_save[cc_string].split(',')
-            input_tags = list(map(lambda it: it.strip(), input_tags))
+            input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
             changed |= modify_database_object(input_tags,
                                               getattr(book, cc_string),
                                               db.cc_classes[c.id],
@@ -1284,7 +1284,7 @@ def upload_cover(cover_request, book):
 
 def handle_title_on_edit(book, book_title):
     # handle book title
-    book_title = book_title.rstrip().strip()
+    book_title = strip_whitespaces(book_title)
     if book.title != book_title:
         if book_title == '':
             book_title = _(u'Unknown')

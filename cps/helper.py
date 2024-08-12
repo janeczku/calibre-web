@@ -52,6 +52,7 @@ except ImportError:
     UnacceptableAddressException = MissingSchema = BaseException
 
 from . import calibre_db, cli_param
+from .string_helper import strip_whitespaces
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
@@ -118,7 +119,7 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 # Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(ereader_mail, user_name):
     for email in ereader_mail.split(','):
-        email = email.strip()
+        email = strip_whitespaces(email)
         WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
                          config.get_mail_settings(), email, N_("Test Email"),
                                               _('This Email has been sent via Calibre-Web.')))
@@ -228,7 +229,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
             email_text = N_("%(book)s send to eReader", book=link)
             for email in ereader_mail.split(','):
-                email = email.strip()
+                email = strip_whitespaces(email)
                 WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                                  config.get_mail_settings(), email,
                                  email_text, _('This Email has been sent via Calibre-Web.'), book.id))
@@ -252,7 +253,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', ',', value, flags=re.U)
 
-    value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
+    value = strip_whitespaces(value.encode('utf-8')[:chars].decode('utf-8', errors='ignore'))
 
     if not value:
         raise ValueError("Filename cannot be empty")
@@ -267,11 +268,11 @@ def split_authors(values):
             commas = author.count(',')
             if commas == 1:
                 author_split = author.split(',')
-                authors_list.append(author_split[1].strip() + ' ' + author_split[0].strip())
+                authors_list.append(strip_whitespaces(author_split[1]) + ' ' + strip_whitespaces(author_split[0]))
             elif commas > 1:
-                authors_list.extend([x.strip() for x in author.split(',')])
+                authors_list.extend([strip_whitespaces(x) for x in author.split(',')])
             else:
-                authors_list.append(author.strip())
+                authors_list.append(strip_whitespaces(author))
     return authors_list
 
 
@@ -661,7 +662,7 @@ def check_email(email):
 
 
 def check_username(username):
-    username = username.strip()
+    username = strip_whitespaces(username)
     if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
         log.error("This username is already taken")
         raise Exception(_("This username is already taken"))
@@ -670,14 +671,14 @@ def check_username(username):
 
 def valid_email(emails):
     for email in emails.split(','):
-	    email = email.strip()
-	    # if email is not deleted
-	    if email:
-	        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-	        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-	                         email):
-	            log.error("Invalid Email address format")
-	            raise Exception(_("Invalid Email address format"))
+        email = strip_whitespaces(email)
+        # if email is not deleted
+        if email:
+            # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+            if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                             email):
+                log.error("Invalid Email address format")
+                raise Exception(_("Invalid Email address format"))
     return email
 
 

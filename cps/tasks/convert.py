@@ -39,6 +39,7 @@ from cps.file_helper import get_temp_dir
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils, helper
 from cps.constants import SUPPORTED_CALIBRE_BINARIES
+from cps.string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -107,7 +108,7 @@ class TaskConvert(CalibreTask):
                 try:
                     EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))                    
                     for email in self.ereader_mail.split(','):
-                        email = email.strip()
+                        email = strip_whitespaces(email)
                         worker_thread.add(self.user, TaskEmail(self.settings['subject'],
                                                                self.results["path"],
                                                                filename,

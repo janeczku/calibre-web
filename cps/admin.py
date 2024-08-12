@@ -54,6 +54,7 @@ from .services.worker import WorkerThread
 from .usermanagement import user_login_required
 from .babel import get_available_translations, get_available_locale, get_user_locale_language
 from . import debug_info
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -463,9 +464,9 @@ def edit_list_user(param):
                 if 'value[]' in vals:
                     setattr(user, param, prepare_tags(user, vals['action'][0], param, vals['value[]']))
                 else:
-                    setattr(user, param, vals['value'].strip())
+                    setattr(user, param, strip_whitespaces(vals['value']))
             else:
-                vals['value'] = vals['value'].strip()
+                vals['value'] = strip_whitespaces(vals['value'])
                 if param == 'name':
                     if user.name == "Guest":
                         raise Exception(_("Guest Name can't be changed"))
@@ -690,7 +691,7 @@ def delete_domain():
 def list_domain(allow):
     answer = ub.session.query(ub.Registration).filter(ub.Registration.allow == allow).all()
     json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
-    js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
+    js = json.dumps(json_dumps.replace('"', "'")).strip('"')
     response = make_response(js.replace("'", '"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -1100,7 +1101,7 @@ def _config_checkbox_int(to_save, x):
 
 
 def _config_string(to_save, x):
-    return config.set_from_dictionary(to_save, x, lambda y: y.strip().strip(u'\u200B\u200C\u200D\ufeff') if y else y)
+    return config.set_from_dictionary(to_save, x, lambda y: strip_whitespaces(y) if y else y)
 
 
 def _configuration_gdrive_helper(to_save):
@@ -1311,9 +1312,9 @@ def update_mailsettings():
         if to_save.get("mail_password_e", ""):
             _config_string(to_save, "mail_password_e")
         _config_int(to_save, "mail_size", lambda y: int(y) * 1024 * 1024)
-        config.mail_server = to_save.get('mail_server', "").strip()
-        config.mail_from = to_save.get('mail_from', "").strip()
-        config.mail_login = to_save.get('mail_login', "").strip()
+        config.mail_server = strip_whitespaces(to_save.get('mail_server', ""))
+        config.mail_from = strip_whitespaces(to_save.get('mail_from', ""))
+        config.mail_login = strip_whitespaces(to_save.get('mail_login', ""))
     try:
         config.save()
     except (OperationalError, InvalidRequestError) as e:
@@ -1678,10 +1679,10 @@ def cancel_task():
 def _db_simulate_change():
     param = request.form.to_dict()
     to_save = dict()
-    to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
+    to_save['config_calibre_dir'] = strip_whitespaces(re.sub(r'[\\/]metadata\.db$',
                                            '',
                                            param['config_calibre_dir'],
-                                           flags=re.IGNORECASE).strip()
+                                           flags=re.IGNORECASE))
     db_valid, db_change = calibre_db.check_valid_db(to_save["config_calibre_dir"],
                                                     ub.app_DB_path,
                                                     config.config_calibre_uuid)
@@ -1775,9 +1776,8 @@ def _configuration_update_helper():
 
         if "config_upload_formats" in to_save:
             to_save["config_upload_formats"] = ','.join(
-                helper.uniq([x.lstrip().rstrip().lower() for x in to_save["config_upload_formats"].split(',')]))
+                helper.uniq([x.strip().lower() for x in to_save["config_upload_formats"].split(',')]))
             _config_string(to_save, "config_upload_formats")
-            # constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_binariesdir")

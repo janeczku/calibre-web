@@ -54,7 +54,7 @@ from sqlalchemy.orm import backref, relationship, sessionmaker, Session, scoped_
 from werkzeug.security import generate_password_hash
 
 from . import constants, logger
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -196,19 +196,19 @@ class UserBase:
 
     def list_denied_tags(self):
         mct = self.denied_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_tags(self):
         mct = self.allowed_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_denied_column_values(self):
         mct = self.denied_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_column_values(self):
         mct = self.allowed_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def get_view_property(self, page, prop):
         if not self.view_settings.get(page):

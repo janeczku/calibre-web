@@ -25,6 +25,7 @@ from . import config, logger
 from .helper import split_authors
 from .epub_helper import get_content_opf, default_ns
 from .constants import BookMeta
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -90,7 +91,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             elif s == 'date':
                 epub_metadata[s] = tmp[0][:10]
             else:
-                epub_metadata[s] = tmp[0].strip()
+                epub_metadata[s] = strip_whitespaces(tmp[0])
         else:
             epub_metadata[s] = 'Unknown'
 
