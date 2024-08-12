@@ -48,7 +48,7 @@ from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -875,10 +875,11 @@ class CalibreDB:
             authors_ordered = list()
             # error = False
             for auth in sort_authors:
-                results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
+                auth = strip_whitespaces(auth)
+                results = self.session.query(Authors).filter(Authors.sort == auth).all()
                 # ToDo: How to handle not found author name
                 if not len(results):
-                    log.error("Author {} not found to display name in right order".format(auth.strip()))
+                    log.error("Author {} not found to display name in right order".format(auth))
                     # error = True
                     break
                 for r in results:
@@ -918,7 +919,7 @@ class CalibreDB:
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     def search_query(self, term, config, *join):
-        term.strip().lower()
+        strip_whitespaces(term).lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         author_terms = re.split("[, ]+", term)
@@ -1026,7 +1027,7 @@ class CalibreDB:
             if match:
                 prep = match.group(1)
                 title = title[len(prep):] + ', ' + prep
-            return title.strip()
+            return strip_whitespaces(title)
 
         try:
             # sqlalchemy <1.4.24 and sqlalchemy 2.0

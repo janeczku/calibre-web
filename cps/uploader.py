@@ -24,6 +24,7 @@ from . import logger, comic, isoLanguages
 from .constants import BookMeta
 from .helper import split_authors
 from .file_helper import get_temp_dir
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -97,9 +98,9 @@ def process(tmp_file_path, original_file_name, original_file_extension, rar_exec
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
-    if not meta.title.strip():
+    if not strip_whitespaces(meta.title):
         meta = meta._replace(title=original_file_name)
-    if not meta.author.strip() or meta.author.lower() == 'unknown':
+    if not strip_whitespaces(meta.author) or meta.author.lower() == 'unknown':
         meta = meta._replace(author=_('Unknown'))
     return meta
 
