@@ -3495,7 +3495,7 @@ msgid "Reset user Password"
 msgstr "사용자 비밀번호 초기화"
 
 #: cps/templates/user_edit.html:28
-msgid "Send to eReader Email Address. Use comma to seperate emails for multiple eReaders"
+msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
 msgstr ""
 
 #: cps/templates/user_edit.html:43
