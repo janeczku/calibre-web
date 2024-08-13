@@ -438,3 +438,7 @@ div.log {
 .error-list {
     margin-top: 5px;
   }
+
+.rating-input {
+  padding: 0;
+}
