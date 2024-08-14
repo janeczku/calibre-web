@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-11 08:41+0200\n"
+"POT-Creation-Date: 2024-08-14 19:28+0200\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -22,441 +22,441 @@ msgstr ""
 msgid "Statistics"
 msgstr "Statisztika"
 
-#: cps/admin.py:150
+#: cps/admin.py:151
 #, fuzzy
 msgid "Server restarted, please reload page."
 msgstr "A kiszolgáló újraindult, tölts be újra az oldalt!"
 
-#: cps/admin.py:152
+#: cps/admin.py:153
 #, fuzzy
 msgid "Performing Server shutdown, please close window."
 msgstr "A kiszolgáló leállítása folyamatban, zárd be ezt az ablakot"
 
-#: cps/admin.py:160
+#: cps/admin.py:161
 msgid "Success! Database Reconnected"
 msgstr ""
 
-#: cps/admin.py:163
+#: cps/admin.py:164
 msgid "Unknown command"
 msgstr ""
 
-#: cps/admin.py:174
+#: cps/admin.py:175
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:207 cps/editbooks.py:579 cps/editbooks.py:581
+#: cps/admin.py:208 cps/editbooks.py:579 cps/editbooks.py:581
 #: cps/editbooks.py:625 cps/editbooks.py:668 cps/editbooks.py:1290
-#: cps/updater.py:615 cps/uploader.py:102 cps/uploader.py:111
+#: cps/updater.py:615 cps/uploader.py:104 cps/uploader.py:113
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: cps/admin.py:232
+#: cps/admin.py:233
 msgid "Admin page"
 msgstr "Rendszergazda oldala"
 
-#: cps/admin.py:252
+#: cps/admin.py:253
 msgid "Basic Configuration"
 msgstr "Alapvető beállítások"
 
-#: cps/admin.py:290
+#: cps/admin.py:291
 msgid "UI Configuration"
 msgstr "Felhasználói felület beállításai"
 
-#: cps/admin.py:324 cps/templates/admin.html:51
+#: cps/admin.py:325 cps/templates/admin.html:51
 #, fuzzy
 msgid "Edit Users"
 msgstr "Rendszergazda felhasználó"
 
-#: cps/admin.py:368 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr ""
 
-#: cps/admin.py:395 cps/admin.py:1414
+#: cps/admin.py:396 cps/admin.py:1415
 msgid "User not found"
 msgstr ""
 
-#: cps/admin.py:409
+#: cps/admin.py:410
 msgid "{} users deleted successfully"
 msgstr ""
 
-#: cps/admin.py:432 cps/templates/config_view_edit.html:133
+#: cps/admin.py:433 cps/templates/config_view_edit.html:133
 #: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
 msgid "Show All"
 msgstr "Mindent mutass"
 
-#: cps/admin.py:453 cps/admin.py:459
+#: cps/admin.py:454 cps/admin.py:460
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:471 cps/admin.py:2046
+#: cps/admin.py:472 cps/admin.py:2046
 msgid "Guest Name can't be changed"
 msgstr ""
 
-#: cps/admin.py:483
+#: cps/admin.py:484
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:495 cps/admin.py:2000
+#: cps/admin.py:496 cps/admin.py:2000
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
-#: cps/admin.py:499 cps/admin.py:513
+#: cps/admin.py:500 cps/admin.py:514
 msgid "Value has to be true or false"
 msgstr ""
 
-#: cps/admin.py:501
+#: cps/admin.py:502
 msgid "Invalid role"
 msgstr ""
 
-#: cps/admin.py:505
+#: cps/admin.py:506
 msgid "Guest can't have this view"
 msgstr ""
 
-#: cps/admin.py:515
+#: cps/admin.py:516
 msgid "Invalid view"
 msgstr ""
 
-#: cps/admin.py:518
+#: cps/admin.py:519
 msgid "Guest's Locale is determined automatically and can't be set"
 msgstr ""
 
-#: cps/admin.py:522
+#: cps/admin.py:523
 msgid "No Valid Locale Given"
 msgstr ""
 
-#: cps/admin.py:533
+#: cps/admin.py:534
 msgid "No Valid Book Language Given"
 msgstr ""
 
-#: cps/admin.py:535 cps/editbooks.py:446
+#: cps/admin.py:536 cps/editbooks.py:446
 msgid "Parameter not found"
 msgstr ""
 
-#: cps/admin.py:572
+#: cps/admin.py:573
 msgid "Invalid Read Column"
 msgstr ""
 
-#: cps/admin.py:578
+#: cps/admin.py:579
 msgid "Invalid Restricted Column"
 msgstr ""
 
-#: cps/admin.py:598 cps/admin.py:1871
+#: cps/admin.py:599 cps/admin.py:1871
 msgid "Calibre-Web configuration updated"
 msgstr "A Calibre-Web konfigurációja frissítve."
 
-#: cps/admin.py:610
+#: cps/admin.py:611
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
 
-#: cps/admin.py:612
+#: cps/admin.py:613
 msgid "Do you really want to delete this domain?"
 msgstr ""
 
-#: cps/admin.py:614
+#: cps/admin.py:615
 msgid "Do you really want to delete this user?"
 msgstr ""
 
-#: cps/admin.py:616
+#: cps/admin.py:617
 msgid "Are you sure you want to delete this shelf?"
 msgstr "Valóban törölni akarod a polcot?"
 
-#: cps/admin.py:618
+#: cps/admin.py:619
 #, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Valóban törölni akarod a polcot?"
 
-#: cps/admin.py:620
+#: cps/admin.py:621
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr ""
 
-#: cps/admin.py:622
+#: cps/admin.py:623
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr ""
 
-#: cps/admin.py:624
+#: cps/admin.py:625
 #, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
 msgstr "Valóban törölni akarod a polcot?"
 
-#: cps/admin.py:626
+#: cps/admin.py:627
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr ""
 
-#: cps/admin.py:629
+#: cps/admin.py:630
 #, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
 msgstr "Valóban törölni akarod a polcot?"
 
-#: cps/admin.py:631
+#: cps/admin.py:632
 #, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Valóban le akarod állítani a Calibre-Web-et?"
 
-#: cps/admin.py:633
+#: cps/admin.py:634
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
 msgstr ""
 
-#: cps/admin.py:636
+#: cps/admin.py:637
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
 msgstr ""
 
-#: cps/admin.py:879 cps/admin.py:885 cps/admin.py:895 cps/admin.py:905
+#: cps/admin.py:880 cps/admin.py:886 cps/admin.py:896 cps/admin.py:906
 #: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
 #: cps/templates/user_table.html:58
 msgid "Deny"
 msgstr ""
 
-#: cps/admin.py:881 cps/admin.py:887 cps/admin.py:897 cps/admin.py:907
+#: cps/admin.py:882 cps/admin.py:888 cps/admin.py:898 cps/admin.py:908
 #: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
 #: cps/templates/user_table.html:61
 msgid "Allow"
 msgstr ""
 
-#: cps/admin.py:940
+#: cps/admin.py:941
 msgid "{} sync entries deleted"
 msgstr ""
 
-#: cps/admin.py:981
+#: cps/admin.py:982
 msgid "Tag not found"
 msgstr ""
 
-#: cps/admin.py:993
+#: cps/admin.py:994
 msgid "Invalid Action"
 msgstr ""
 
-#: cps/admin.py:1120
+#: cps/admin.py:1121
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr ""
 
-#: cps/admin.py:1165
+#: cps/admin.py:1166
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1171
+#: cps/admin.py:1172
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1205
+#: cps/admin.py:1206
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr ""
 
-#: cps/admin.py:1211
+#: cps/admin.py:1212
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr ""
 
-#: cps/admin.py:1214
+#: cps/admin.py:1215
 msgid "Please Enter a LDAP Service Account"
 msgstr ""
 
-#: cps/admin.py:1219
+#: cps/admin.py:1220
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1221
+#: cps/admin.py:1222
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1225
+#: cps/admin.py:1226
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1227
+#: cps/admin.py:1228
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1234
+#: cps/admin.py:1235
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1236
+#: cps/admin.py:1237
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1243
+#: cps/admin.py:1244
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1274 cps/templates/admin.html:53
+#: cps/admin.py:1275 cps/templates/admin.html:53
 msgid "Add New User"
 msgstr ""
 
-#: cps/admin.py:1283 cps/templates/admin.html:100
+#: cps/admin.py:1284 cps/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr "SMTP beállítások változtatása"
 
-#: cps/admin.py:1302
+#: cps/admin.py:1303
 msgid "Success! Gmail Account Verified."
 msgstr ""
 
-#: cps/admin.py:1322 cps/admin.py:1325 cps/admin.py:1710 cps/admin.py:1855
+#: cps/admin.py:1323 cps/admin.py:1326 cps/admin.py:1711 cps/admin.py:1855
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
 #: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:468 cps/tasks/convert.py:155 cps/web.py:1527
+#: cps/shelf.py:468 cps/tasks/convert.py:156 cps/web.py:1528
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr ""
 
-#: cps/admin.py:1332
+#: cps/admin.py:1333
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1335
+#: cps/admin.py:1336
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Hiba történt a teszt levél küldése során: %(res)s"
 
-#: cps/admin.py:1337
+#: cps/admin.py:1338
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:1339
+#: cps/admin.py:1340
 msgid "Email Server Settings updated"
 msgstr "Az e-mail kiszolgáló beállításai frissítve."
 
-#: cps/admin.py:1362 cps/templates/admin.html:195
+#: cps/admin.py:1363 cps/templates/admin.html:195
 msgid "Edit Scheduled Tasks Settings"
 msgstr ""
 
-#: cps/admin.py:1374
+#: cps/admin.py:1375
 msgid "Invalid start time for task specified"
 msgstr ""
 
-#: cps/admin.py:1379
+#: cps/admin.py:1380
 msgid "Invalid duration for task specified"
 msgstr ""
 
-#: cps/admin.py:1389
+#: cps/admin.py:1390
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1399 cps/admin.py:1448 cps/admin.py:2070 cps/web.py:1317
+#: cps/admin.py:1400 cps/admin.py:1449 cps/admin.py:2070 cps/web.py:1318
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
-#: cps/admin.py:1403
+#: cps/admin.py:1404
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1433 cps/admin.py:2062
+#: cps/admin.py:1434 cps/admin.py:2062
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr " A felhasználó szerkesztése: %(nick)s"
 
-#: cps/admin.py:1445
+#: cps/admin.py:1446
 #, fuzzy, python-format
 msgid "Success! Password for user %(user)s reset"
 msgstr "A(z) %(user)s felhasználó jelszavának alaphelyzetbe állítása"
 
-#: cps/admin.py:1451
+#: cps/admin.py:1452
 #, fuzzy
 msgid "Oops! Please configure the SMTP mail settings."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
-#: cps/admin.py:1462
+#: cps/admin.py:1463
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:1528
+#: cps/admin.py:1529
 msgid "Requesting update package"
 msgstr "Frissítési csomag kérése"
 
-#: cps/admin.py:1529
+#: cps/admin.py:1530
 msgid "Downloading update package"
 msgstr "Frissítési csomag letöltése"
 
-#: cps/admin.py:1530
+#: cps/admin.py:1531
 msgid "Unzipping update package"
 msgstr "Frissítési csomag kitömörítése"
 
-#: cps/admin.py:1531
+#: cps/admin.py:1532
 msgid "Replacing files"
 msgstr "Fájlok cserélése"
 
-#: cps/admin.py:1532
+#: cps/admin.py:1533
 msgid "Database connections are closed"
 msgstr "Adatbázis kapcsolatok lezárva"
 
-#: cps/admin.py:1533
+#: cps/admin.py:1534
 msgid "Stopping server"
 msgstr "Szerver leállítása"
 
-#: cps/admin.py:1534
+#: cps/admin.py:1535
 msgid "Update finished, please press okay and reload page"
 msgstr "A frissítés települt, kattints az OK-ra és újra tölt az oldal"
 
-#: cps/admin.py:1535 cps/admin.py:1536 cps/admin.py:1537 cps/admin.py:1538
-#: cps/admin.py:1539 cps/admin.py:1540
+#: cps/admin.py:1536 cps/admin.py:1537 cps/admin.py:1538 cps/admin.py:1539
+#: cps/admin.py:1540 cps/admin.py:1541
 msgid "Update failed:"
 msgstr "A frissítés nem sikerült:"
 
-#: cps/admin.py:1535 cps/updater.py:391 cps/updater.py:626 cps/updater.py:628
+#: cps/admin.py:1536 cps/updater.py:391 cps/updater.py:626 cps/updater.py:628
 msgid "HTTP Error"
 msgstr "HTTP hiba"
 
-#: cps/admin.py:1536 cps/updater.py:393 cps/updater.py:630
+#: cps/admin.py:1537 cps/updater.py:393 cps/updater.py:630
 msgid "Connection error"
 msgstr "Kapcsolódási hiba"
 
-#: cps/admin.py:1537 cps/updater.py:395 cps/updater.py:632
+#: cps/admin.py:1538 cps/updater.py:395 cps/updater.py:632
 msgid "Timeout while establishing connection"
 msgstr "Időtúllépés a kapcsolódás során"
 
-#: cps/admin.py:1538 cps/updater.py:397 cps/updater.py:634
+#: cps/admin.py:1539 cps/updater.py:397 cps/updater.py:634
 msgid "General error"
 msgstr "Általános hiba"
 
-#: cps/admin.py:1539
+#: cps/admin.py:1540
 msgid "Update file could not be saved in temp dir"
 msgstr ""
 
-#: cps/admin.py:1540
+#: cps/admin.py:1541
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1564
+#: cps/admin.py:1565
 msgid "Failed to extract at least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1609
+#: cps/admin.py:1610
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1622
+#: cps/admin.py:1623
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1626
+#: cps/admin.py:1627
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1662
+#: cps/admin.py:1663
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1664
+#: cps/admin.py:1665
 msgid "{} User Successfully Imported"
 msgstr ""
 
-#: cps/admin.py:1722
+#: cps/admin.py:1723
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1742
+#: cps/admin.py:1743
 msgid "DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1758
+#: cps/admin.py:1759
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1762
+#: cps/admin.py:1763
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
@@ -474,7 +474,7 @@ msgstr "Az e-mail kiszolgáló beállításai frissítve."
 msgid "Database Configuration"
 msgstr "Funkciók beállítása"
 
-#: cps/admin.py:1917 cps/web.py:1291
+#: cps/admin.py:1917 cps/web.py:1292
 msgid "Oops! Please complete all fields."
 msgstr "Az összes mezőt ki kell tölteni!"
 
@@ -509,7 +509,7 @@ msgstr ""
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:2040 cps/web.py:1476
+#: cps/admin.py:2040 cps/web.py:1477
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
@@ -526,21 +526,21 @@ msgstr "nincs telepítve"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:767 cps/search.py:150 cps/web.py:748
+#: cps/db.py:767 cps/search.py:150 cps/web.py:749
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
-#: cps/db.py:1007 cps/templates/config_edit.html:203
+#: cps/db.py:1008 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:563 cps/web.py:597 cps/web.py:642 cps/web.py:682 cps/web.py:709
-#: cps/web.py:990 cps/web.py:1020 cps/web.py:1065 cps/web.py:1093
-#: cps/web.py:1132
+#: cps/web.py:564 cps/web.py:598 cps/web.py:643 cps/web.py:683 cps/web.py:710
+#: cps/web.py:991 cps/web.py:1021 cps/web.py:1066 cps/web.py:1094
+#: cps/web.py:1133
 msgid "None"
 msgstr "Nincs"
 
-#: cps/editbooks.py:109 cps/editbooks.py:939 cps/web.py:530 cps/web.py:1568
-#: cps/web.py:1613 cps/web.py:1658
+#: cps/editbooks.py:109 cps/editbooks.py:939 cps/web.py:531 cps/web.py:1569
+#: cps/web.py:1614 cps/web.py:1659
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
 
@@ -630,7 +630,7 @@ msgstr "Metaadatok szerkesztése"
 
 #: cps/editbooks.py:1023
 #, python-format
-msgid "%(seriesindex)s is not a valid number, skipping"
+msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
 #: cps/editbooks.py:1207
@@ -660,200 +660,200 @@ msgstr "A Google Drive beállítása nem fejeződött be, próbáld kikapcsolni 
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "A visszahívási tartomány nem ellenőrzött, kövesd az alábbi lépéseket a tartomány ellenőrzéséhez a Google Developer Console-ban:"
 
-#: cps/helper.py:86
+#: cps/helper.py:87
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "A(z) %(format)s formátum nem található a következő könyvhöz: %(book)d"
 
-#: cps/helper.py:93 cps/tasks/convert.py:89
+#: cps/helper.py:94 cps/tasks/convert.py:90
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s nem található a Google Drive-on: %(fn)s"
 
-#: cps/helper.py:98
+#: cps/helper.py:99
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s nem található: %(fn)s"
 
-#: cps/helper.py:103 cps/helper.py:232 cps/templates/detail.html:58
+#: cps/helper.py:104 cps/helper.py:233 cps/templates/detail.html:58
 #, fuzzy
 msgid "Send to eReader"
 msgstr "Küldés Kindle-re"
 
-#: cps/helper.py:104 cps/helper.py:124 cps/helper.py:234
+#: cps/helper.py:105 cps/helper.py:125 cps/helper.py:235
 #, fuzzy
 msgid "This Email has been sent via Calibre-Web."
 msgstr "Ez az e-mail a Calibre-Web-en keresztül lett küldve."
 
-#: cps/helper.py:122
+#: cps/helper.py:123
 #, fuzzy
 msgid "Calibre-Web Test Email"
 msgstr "Calibre-Web teszt e-mail"
 
-#: cps/helper.py:123
+#: cps/helper.py:124
 #, fuzzy
 msgid "Test Email"
 msgstr "Teszt e-mail"
 
-#: cps/helper.py:140
+#: cps/helper.py:141
 msgid "Get Started with Calibre-Web"
 msgstr "Kezdő lépések a Calibre-Web-bel"
 
-#: cps/helper.py:145
+#: cps/helper.py:146
 #, fuzzy, python-format
 msgid "Registration Email for user: %(name)s"
 msgstr "Regisztrációs e-mail a következő felhasználóhoz: %(name)s"
 
-#: cps/helper.py:156 cps/helper.py:162
+#: cps/helper.py:157 cps/helper.py:163
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "%(orig)s konvertálása %(format)s-ra és küldés Kindle-re"
 
-#: cps/helper.py:181 cps/helper.py:185 cps/helper.py:189
+#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "%(format)s küldése Kindle-re"
 
-#: cps/helper.py:229
+#: cps/helper.py:230
 #, fuzzy, python-format
 msgid "%(book)s send to eReader"
 msgstr "Küldés Kindle-re"
 
-#: cps/helper.py:236
+#: cps/helper.py:237
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "A kért fájl nem olvasható. Esetleg jogosultsági probléma lenne?"
 
-#: cps/helper.py:351
+#: cps/helper.py:352
 msgid "Read status could not set: {}"
 msgstr ""
 
-#: cps/helper.py:374
+#: cps/helper.py:375
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
 msgstr ""
 
-#: cps/helper.py:380
+#: cps/helper.py:381
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr ""
 
-#: cps/helper.py:391
+#: cps/helper.py:392
 #, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:440
+#: cps/helper.py:441
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "A cím átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
 
-#: cps/helper.py:511 cps/helper.py:520
+#: cps/helper.py:512 cps/helper.py:521
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "A \"%(file)s\" fájl nem található a Google Drive-on"
 
-#: cps/helper.py:561
+#: cps/helper.py:562
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "A cím átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
 
-#: cps/helper.py:599
+#: cps/helper.py:600
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "A könyv elérési útja (\"%(path)s\") nem található a Google Drive-on"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Found an existing account for this Email address"
 msgstr ""
 
-#: cps/helper.py:667
+#: cps/helper.py:668
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/helper.py:680
+#: cps/helper.py:681
 msgid "Invalid Email address format"
 msgstr ""
 
-#: cps/helper.py:701
+#: cps/helper.py:702
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:847
+#: cps/helper.py:848
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:857
+#: cps/helper.py:858
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:860
+#: cps/helper.py:861
 msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:863
+#: cps/helper.py:864
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr ""
 
-#: cps/helper.py:873
+#: cps/helper.py:874
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:889
+#: cps/helper.py:890
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:900
+#: cps/helper.py:901
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:912
+#: cps/helper.py:913
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:916
+#: cps/helper.py:917
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:988 cps/helper.py:1145
+#: cps/helper.py:989 cps/helper.py:1146
 #, fuzzy
 msgid "Cover"
 msgstr "Felfedezés"
 
-#: cps/helper.py:1005
+#: cps/helper.py:1006
 msgid "UnRar binary file not found"
 msgstr ""
 
-#: cps/helper.py:1016
+#: cps/helper.py:1017
 msgid "Error executing UnRar"
 msgstr ""
 
-#: cps/helper.py:1024
+#: cps/helper.py:1025
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1027
+#: cps/helper.py:1028
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1041
+#: cps/helper.py:1042
 msgid "Calibre binaries not viable"
 msgstr ""
 
-#: cps/helper.py:1050
+#: cps/helper.py:1051
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1052
+#: cps/helper.py:1053
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1057
+#: cps/helper.py:1058
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1147 cps/templates/admin.html:216
+#: cps/helper.py:1148 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -937,7 +937,7 @@ msgstr ""
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:67
 #: cps/templates/layout.html:101 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1353
+#: cps/templates/login.html:21 cps/web.py:1354
 msgid "Login"
 msgstr "Belépés"
 
@@ -953,7 +953,7 @@ msgstr "A token érvényessége lejárt."
 msgid "Success! Please return to your device"
 msgstr "Sikerült! Újra használható az eszköz."
 
-#: cps/render_template.py:41 cps/web.py:419
+#: cps/render_template.py:41 cps/web.py:420
 msgid "Books"
 msgstr ""
 
@@ -978,7 +978,7 @@ msgstr ""
 msgid "Show Downloaded Books"
 msgstr ""
 
-#: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:434
+#: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:435
 msgid "Top Rated Books"
 msgstr "Legjobb könyvek"
 
@@ -987,7 +987,7 @@ msgid "Show Top Rated Books"
 msgstr "Legjobbra értékelt könyvek mutatása"
 
 #: cps/render_template.py:61 cps/templates/index.xml:63
-#: cps/templates/index.xml:67 cps/web.py:767
+#: cps/templates/index.xml:67 cps/web.py:768
 msgid "Read Books"
 msgstr "Olvasott könyvek"
 
@@ -997,7 +997,7 @@ msgid "Show Read and Unread"
 msgstr "Mutassa az olvasva/olvasatlan állapotot"
 
 #: cps/render_template.py:65 cps/templates/index.xml:70
-#: cps/templates/index.xml:74 cps/web.py:770
+#: cps/templates/index.xml:74 cps/web.py:771
 msgid "Unread Books"
 msgstr "Olvasatlan könyvek"
 
@@ -1015,7 +1015,7 @@ msgid "Show Random Books"
 msgstr "Mutass könyveket találomra"
 
 #: cps/render_template.py:71 cps/templates/book_table.html:67
-#: cps/templates/index.xml:97 cps/web.py:1136
+#: cps/templates/index.xml:97 cps/web.py:1137
 msgid "Categories"
 msgstr "Címkék"
 
@@ -1026,7 +1026,7 @@ msgstr "Címke választó mutatása"
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:91
 #: cps/templates/book_table.html:68 cps/templates/index.xml:106
-#: cps/templates/search_form.html:70 cps/web.py:1026 cps/web.py:1038
+#: cps/templates/search_form.html:70 cps/web.py:1027 cps/web.py:1039
 msgid "Series"
 msgstr "Sorozatok"
 
@@ -1046,7 +1046,7 @@ msgid "Show Author Section"
 msgstr "Szerző választó mutatása"
 
 #: cps/render_template.py:81 cps/templates/book_table.html:72
-#: cps/templates/index.xml:88 cps/web.py:994
+#: cps/templates/index.xml:88 cps/web.py:995
 msgid "Publishers"
 msgstr "Kiadók"
 
@@ -1057,7 +1057,7 @@ msgstr "Kiadó választó mutatása"
 
 #: cps/render_template.py:84 cps/templates/book_table.html:70
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
-#: cps/web.py:1108
+#: cps/web.py:1109
 msgid "Languages"
 msgstr "Nyelvek"
 
@@ -1084,7 +1084,7 @@ msgstr ""
 msgid "Show File Formats Section"
 msgstr "Sorozat választó mutatása"
 
-#: cps/render_template.py:95 cps/web.py:793
+#: cps/render_template.py:95 cps/web.py:794
 msgid "Archived Books"
 msgstr ""
 
@@ -1093,7 +1093,7 @@ msgstr ""
 msgid "Show Archived Books"
 msgstr "Legutóbbi könyvek mutatása"
 
-#: cps/render_template.py:100 cps/web.py:824
+#: cps/render_template.py:100 cps/web.py:825
 msgid "Books List"
 msgstr ""
 
@@ -1317,175 +1317,175 @@ msgstr "Új frissítés érhető el. Kattints az alábbi gombra a frissítéshez
 msgid "No release information available"
 msgstr "Nincs információ a kiadásról."
 
-#: cps/templates/index.html:6 cps/web.py:446
+#: cps/templates/index.html:6 cps/web.py:447
 msgid "Discover (Random Books)"
 msgstr "Felfedezés (könyvek találomra)"
 
-#: cps/web.py:482
+#: cps/web.py:483
 msgid "Hot Books (Most Downloaded)"
 msgstr "Kelendő könyvek (legtöbbet letöltöttek)"
 
-#: cps/web.py:513
+#: cps/web.py:514
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr ""
 
-#: cps/web.py:546
+#: cps/web.py:547
 #, python-format
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:582
+#: cps/web.py:583
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Kiadó: %(name)s"
 
-#: cps/web.py:610
+#: cps/web.py:611
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Sorozat: %(serie)s"
 
-#: cps/web.py:624
+#: cps/web.py:625
 msgid "Rating: None"
 msgstr ""
 
-#: cps/web.py:633
+#: cps/web.py:634
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr ""
 
-#: cps/web.py:664
+#: cps/web.py:665
 #, python-format
 msgid "File format: %(format)s"
 msgstr ""
 
-#: cps/web.py:699
+#: cps/web.py:700
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Címke: %(name)s"
 
-#: cps/web.py:728
+#: cps/web.py:729
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Nyelv: %(name)s"
 
-#: cps/templates/admin.html:16 cps/web.py:966
+#: cps/templates/admin.html:16 cps/web.py:967
 msgid "Downloads"
 msgstr "Letöltések"
 
-#: cps/web.py:1068
+#: cps/web.py:1069
 msgid "Ratings list"
 msgstr ""
 
-#: cps/web.py:1095
+#: cps/web.py:1096
 msgid "File formats list"
 msgstr ""
 
-#: cps/web.py:1250
+#: cps/web.py:1251
 #, fuzzy
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
-#: cps/web.py:1257
+#: cps/web.py:1258
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(eReadermail)s"
 
-#: cps/web.py:1260
+#: cps/web.py:1261
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Hiba történt a könyv küldésekor: %(res)s"
 
-#: cps/web.py:1262
+#: cps/web.py:1263
 #, fuzzy
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Először be kell állítani a kindle e-mail címet..."
 
-#: cps/web.py:1278
+#: cps/web.py:1279
 msgid "Please wait one minute to register next user"
 msgstr ""
 
 #: cps/templates/layout.html:68 cps/templates/layout.html:102
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1279
-#: cps/web.py:1283 cps/web.py:1288 cps/web.py:1292 cps/web.py:1298
-#: cps/web.py:1318 cps/web.py:1322 cps/web.py:1335 cps/web.py:1338
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1280
+#: cps/web.py:1284 cps/web.py:1289 cps/web.py:1293 cps/web.py:1299
+#: cps/web.py:1319 cps/web.py:1323 cps/web.py:1336 cps/web.py:1339
 msgid "Register"
 msgstr "Regisztrálás"
 
-#: cps/web.py:1282 cps/web.py:1385
+#: cps/web.py:1283 cps/web.py:1386
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1287 cps/web.py:1334
+#: cps/web.py:1288 cps/web.py:1335
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr ""
 
-#: cps/web.py:1320
+#: cps/web.py:1321
 msgid "Oops! Your Email is not allowed."
 msgstr "Nem engedélyezett a megadott e-mail cím bejegyzése"
 
-#: cps/web.py:1323
+#: cps/web.py:1324
 msgid "Success! Confirmation Email has been sent."
 msgstr "Jóváhagyó levél elküldve az email címedre."
 
-#: cps/web.py:1368 cps/web.py:1391
+#: cps/web.py:1369 cps/web.py:1392
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1381
+#: cps/web.py:1382
 msgid "Please wait one minute before next login"
 msgstr ""
 
-#: cps/web.py:1400
+#: cps/web.py:1401
 #, fuzzy, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
 
-#: cps/web.py:1407
+#: cps/web.py:1408
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1412
+#: cps/web.py:1413
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1416 cps/web.py:1441
+#: cps/web.py:1417 cps/web.py:1442
 #, fuzzy
 msgid "Wrong Username or Password"
 msgstr "Rossz felhasználó név vagy jelszó!"
 
-#: cps/web.py:1423
+#: cps/web.py:1424
 msgid "New Password was sent to your email address"
 msgstr ""
 
-#: cps/web.py:1427
+#: cps/web.py:1428
 #, fuzzy
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
-#: cps/web.py:1429
+#: cps/web.py:1430
 #, fuzzy
 msgid "Please enter valid username to reset password"
 msgstr "Rossz felhasználó név vagy jelszó!"
 
-#: cps/web.py:1437
+#: cps/web.py:1438
 #, fuzzy, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
 
-#: cps/web.py:1502 cps/web.py:1552
+#: cps/web.py:1503 cps/web.py:1553
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s profilja"
 
-#: cps/web.py:1518
+#: cps/web.py:1519
 #, fuzzy
 msgid "Success! Profile Updated"
 msgstr "A profil frissítve."
 
-#: cps/web.py:1522
+#: cps/web.py:1523
 #, fuzzy
 msgid "Oops! An account already exists for this Email."
 msgstr "Már létezik felhasználó ehhez az e-mail címhez."
@@ -1498,46 +1498,46 @@ msgstr ""
 msgid "Delete temp folder contents"
 msgstr ""
 
-#: cps/tasks/convert.py:108
+#: cps/tasks/convert.py:109
 #, fuzzy, python-format
 msgid "%(book)s send to E-Reader"
 msgstr "Küldés Kindle-re"
 
-#: cps/tasks/convert.py:172
+#: cps/tasks/convert.py:173
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
 msgstr ""
 
-#: cps/tasks/convert.py:206
+#: cps/tasks/convert.py:207
 #, python-format
 msgid "%(format)s format not found on disk"
 msgstr ""
 
-#: cps/tasks/convert.py:210
+#: cps/tasks/convert.py:211
 msgid "Ebook converter failed with unknown error"
 msgstr ""
 
-#: cps/tasks/convert.py:229
+#: cps/tasks/convert.py:230
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:250
+#: cps/tasks/convert.py:251
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""
 
-#: cps/tasks/convert.py:282 cps/tasks/convert.py:324
+#: cps/tasks/convert.py:283 cps/tasks/convert.py:325
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:301
+#: cps/tasks/convert.py:302
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Az e-könyv átalakítás nem sikerült: %(error)s"
 
-#: cps/tasks/convert.py:329
+#: cps/tasks/convert.py:330
 msgid "Convert"
 msgstr ""
 
@@ -1545,7 +1545,7 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:278
+#: cps/tasks/mail.py:279
 msgid "E-mail"
 msgstr ""
 
@@ -3500,7 +3500,7 @@ msgid "Reset user Password"
 msgstr "Felhasználó jelszavának alaphelyzetbe állítása"
 
 #: cps/templates/user_edit.html:28
-msgid "Send to eReader Email Address. Use comma to seperate emails for multiple eReaders"
+msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
 msgstr ""
 
 #: cps/templates/user_edit.html:43
