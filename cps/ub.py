@@ -311,7 +311,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.view_settings = data.view_settings
         self.kobo_only_shelves_sync = data.kobo_only_shelves_sync
 
-
     def role_admin(self):
         return False
 

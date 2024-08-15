@@ -47,7 +47,7 @@ import requests
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
 from . import isoLanguages
 from .epub import get_epub_layout
-from .constants import COVER_THUMBNAIL_SMALL
+from .constants import COVER_THUMBNAIL_SMALL, COVER_THUMBNAIL_MEDIUM, COVER_THUMBNAIL_LARGE
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
 from .web import download_required
@@ -903,7 +903,12 @@ def get_current_bookmark_response(current_bookmark):
 @requires_kobo_auth
 def HandleCoverImageRequest(book_uuid, width, height, Quality, isGreyscale):
     try:
-        resolution = None if int(height) > 1000 else COVER_THUMBNAIL_SMALL
+        if int(height) > 1000:
+            resolution = COVER_THUMBNAIL_LARGE
+        elif int(height) > 500:
+            resolution = COVER_THUMBNAIL_MEDIUM
+        else:
+            resolution = COVER_THUMBNAIL_SMALL
     except ValueError:
         log.error("Requested height %s of book %s is invalid" % (book_uuid, height))
         resolution = COVER_THUMBNAIL_SMALL
