@@ -612,6 +612,8 @@ $(function() {
         $("#auth_za").toggleClass("disabled");
         $("#pub_new").toggleClass("disabled");
         $("#pub_old").toggleClass("disabled");
+        $("#shelf_new").toggleClass("disabled");
+        $("#shelf_old").toggleClass("disabled");
         var alternative_text = $("#toggle_order_shelf").data('alt-text');
         $("#toggle_order_shelf").data('alt-text', $("#toggle_order_shelf").html());
         $("#toggle_order_shelf").html(alternative_text);

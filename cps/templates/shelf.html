@@ -25,6 +25,8 @@
           <a data-toggle="tooltip" title="{{_('Sort authors in reverse alphabetical order')}}" id="auth_za" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='authza')}}"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
           <a data-toggle="tooltip" title="{{_('Sort according to publishing date, newest first')}}" id="pub_new" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
           <a data-toggle="tooltip" title="{{_('Sort according to publishing date, oldest first')}}" id="pub_old" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort according to book added to shelf, newest first')}}" id="shelf_new" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='shelfnew')}}"><span class="glyphicon glyphicon-list"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+          <a data-toggle="tooltip" title="{{_('Sort according to book added to shelf, oldest first')}}" id="shelf_old" class="btn btn-primary disabled" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='shelfold')}}"><span class="glyphicon glyphicon-list"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
         </div>
       {% endif %}
     {% endif %}
