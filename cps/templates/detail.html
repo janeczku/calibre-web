@@ -20,7 +20,7 @@
                                         {{ _('Download') }} :
                                     </button>
                                     {% for format in entry.data %}
-                                        <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}"
+                                        <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}"
                                            id="btnGroupDrop1{{ format.format|lower }}" class="btn btn-primary"
                                            role="button">
                                             <span class="glyphicon glyphicon-download"></span>{{ format.format }}
@@ -36,7 +36,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         {% for format in entry.data %}
                                             <li>
-                                                <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}">{{ format.format }}
+                                                <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}">{{ format.format }}
                                                     ({{ format.uncompressed_size|filesizeformat }})</a></li>
                                         {% endfor %}
                                     </ul>

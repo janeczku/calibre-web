@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-14 19:34:04</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-15 19:27:26</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-15 02:42:49</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-16 02:42:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 0 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 5 min</p>
         </div>
       </div>
       </div>
@@ -852,11 +852,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -920,11 +920,31 @@
     
     
     
-        <tr id='pt9.7' class='hiddenRow bg-success'>
+        <tr id="ft9.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_thumbnail_cache</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft9.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft9.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 495, in test_thumbnail_cache
+    self.assertEqual(count_files(thumbnail_cache_path), 20)
+AssertionError: 25 != 20</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2878,11 +2898,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2892,11 +2912,31 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id="ft31.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 482, in test_download_cover
+    self.assertEqual(count_files(thumbnail_cache_path), (BOOK_COUNT+10)*2)
+AssertionError: 4590 != 3060</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4487,11 +4527,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnailsEnv</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4501,11 +4541,31 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id="ft49.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft49.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft49.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft49.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnail_env.py&#34;, line 72, in test_cover_cache_env_on_database_change
+    self.assertEqual(count_files(thumbnail_cache_path), 110*2)
+AssertionError: 330 != 220</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4514,8 +4574,8 @@ IndexError: list index out of range</pre>
     <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
         <td class="text-center">1</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4534,29 +4594,89 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt50.2' class='hiddenRow bg-success'>
+        <tr id="ft50.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 192, in test_cache_of_deleted_book
+    self.assertEqual(book_thumbnail_reference, 2)
+AssertionError: 3 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.3' class='hiddenRow bg-success'>
+        <tr id="ft50.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 89, in test_cover_cache_on_database_change
+    self.assertEqual(count_files(thumbnail_cache_path), 110*2)
+AssertionError: 333 != 220</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.4' class='hiddenRow bg-success'>
+        <tr id="ft50.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 131, in test_cover_change_on_upload_new_cover
+    self.assertEqual(110*2, count_files(thumbnail_cache_path))
+AssertionError: 220 != 333</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4570,20 +4690,60 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt50.6' class='hiddenRow bg-success'>
+        <tr id="ft50.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 253, in test_cover_on_upload_book
+    self.assertEqual(book_thumbnail_reference+2, count_files(thumbnail_cache_path))
+AssertionError: 335 != 336</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.7' class='hiddenRow bg-success'>
+        <tr id="ft50.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 169, in test_remove_cover_from_cache
+    self.assertEqual(book_thumbnail_reference - 2, count_files(thumbnail_cache_path))
+AssertionError: 334 != 333</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4605,9 +4765,9 @@ IndexError: list index out of range</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 316, in test_sideloaded_book
-    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
-AssertionError: 0.006716588857765329 != 0.0 within 0.0001 delta (0.006716588857765329 difference)</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 281, in test_sideloaded_book
+    self.assertEqual(book_thumbnail_reference, count_files(thumbnail_cache_path))
+AssertionError: 300 != 336</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -4618,11 +4778,11 @@ AssertionError: 0.006716588857765329 != 0.0 within 0.0001 delta (0.0067165888577
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestUpdater</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
+        <td class="text-center">7</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4668,11 +4828,31 @@ AssertionError: 0.006716588857765329 != 0.0 within 0.0001 delta (0.0067165888577
     
     
     
-        <tr id='pt51.5' class='hiddenRow bg-success'>
+        <tr id="ft51.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft51.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft51.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 375, in test_perform_update
+    self.assertEqual(20, count_files(thumbnail_cache_path))
+AssertionError: 20 != 30</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5959,8 +6139,8 @@ AssertionError: 0.006623550004797241 != 0.0058 within 0.0001 delta (0.0008235500
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>517</td>
-        <td>497</td>
-        <td>8</td>
+        <td>488</td>
+        <td>17</td>
         <td>3</td>
         <td>9</td>
         <td>&nbsp;</td>
@@ -5990,7 +6170,7 @@ AssertionError: 0.006623550004797241 != 0.0058 within 0.0001 delta (0.0008235500
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-45-generic #45~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Jul 15 16:40:02 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-40-generic #40~22.04.3-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 30 17:30:19 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6158,7 +6338,7 @@ AssertionError: 0.006623550004797241 != 0.0058 within 0.0001 delta (0.0008235500
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6500,7 +6680,7 @@ AssertionError: 0.006623550004797241 != 0.0058 within 0.0001 delta (0.0008235500
 </div>
 
 <script>
-    drawCircle(497, 8, 3, 9);
+    drawCircle(488, 17, 3, 9);
     showCase(5);
 </script>
 
