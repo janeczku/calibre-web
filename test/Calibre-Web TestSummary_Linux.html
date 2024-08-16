@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-12 18:42:30</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-15 19:27:26</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-13 01:57:45</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-16 02:42:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 1 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 5 min</p>
         </div>
       </div>
       </div>
@@ -852,11 +852,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -920,53 +920,114 @@
     
     
     
-        <tr id='pt9.7' class='hiddenRow bg-success'>
+        <tr id="ft9.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_thumbnail_cache</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft9.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft9.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 495, in test_thumbnail_cache
+    self.assertEqual(count_files(thumbnail_cache_path), 20)
+AssertionError: 25 != 20</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestEbookConvertKepubify</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
+    <tr id="su" class="errorClass">
+        <td>_FailedTest</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c10', 3)">Detail</a>
+            <a onclick="showClassDetail('c10', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt10.1' class='hiddenRow bg-success'>
+        <tr id="et10.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertKepubify - test_convert_deactivate</div>
+                <div class='testcase'>_FailedTest - test_ebook_convert_kepubify</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et10.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_ebook_convert_kepubify
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify.py&#34;, line 10, in &lt;module&gt;
+    from StringIO import StringIO
+ModuleNotFoundError: No module named &#39;StringIO&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt10.2' class='hiddenRow bg-success'>
+        <tr id="et10.2" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertKepubify - test_convert_only</div>
+                <div class='testcase'>_FailedTest - test_pip_install</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt10.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEbookConvertKepubify - test_convert_wrong_excecutable</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et10.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
+    from build_release import make_release
+ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2837,11 +2898,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2851,11 +2912,31 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id="ft31.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 482, in test_download_cover
+    self.assertEqual(count_files(thumbnail_cache_path), (BOOK_COUNT+10)*2)
+AssertionError: 4590 != 3060</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3895,55 +3976,6 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c41', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id="et41.1" class="none bg-info">
-            <td>
-                <div class='testcase'>_FailedTest - test_pip_install</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et41.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et41.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et41.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
-    from build_release import make_release
-ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
     <tr id="su" class="skipClass">
         <td>TestReader</td>
         <td class="text-center">8</td>
@@ -3952,13 +3984,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 8)">Detail</a>
+            <a onclick="showClassDetail('c41', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='st42.1' class='none bg-warning'>
+        <tr id='st41.1' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestReader - test_cb7_reader</div>
             </td>
@@ -3967,7 +3999,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.2' class='hiddenRow bg-success'>
+        <tr id='pt41.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_MACOS_files</div>
             </td>
@@ -3976,7 +4008,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.3' class='hiddenRow bg-success'>
+        <tr id='pt41.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -3985,7 +4017,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.4' class='hiddenRow bg-success'>
+        <tr id='pt41.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -3994,7 +4026,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.5' class='hiddenRow bg-success'>
+        <tr id='pt41.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -4003,7 +4035,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.6' class='hiddenRow bg-success'>
+        <tr id='pt41.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_single_file_comic</div>
             </td>
@@ -4012,7 +4044,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.7' class='hiddenRow bg-success'>
+        <tr id='pt41.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -4021,7 +4053,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt42.8' class='hiddenRow bg-success'>
+        <tr id='pt41.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -4039,13 +4071,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 1)">Detail</a>
+            <a onclick="showClassDetail('c42', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt43.1' class='hiddenRow bg-success'>
+        <tr id='pt42.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReadOnlyDatabase - test_readonly_path</div>
             </td>
@@ -4063,13 +4095,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 8)">Detail</a>
+            <a onclick="showClassDetail('c43', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id='pt43.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -4078,7 +4110,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.2' class='hiddenRow bg-success'>
+        <tr id='pt43.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
@@ -4087,7 +4119,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.3' class='hiddenRow bg-success'>
+        <tr id='pt43.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -4096,7 +4128,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.4' class='hiddenRow bg-success'>
+        <tr id='pt43.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -4105,7 +4137,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.5' class='hiddenRow bg-success'>
+        <tr id='pt43.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -4114,7 +4146,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.6' class='hiddenRow bg-success'>
+        <tr id='pt43.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -4123,7 +4155,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.7' class='hiddenRow bg-success'>
+        <tr id='pt43.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -4132,7 +4164,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt44.8' class='hiddenRow bg-success'>
+        <tr id='pt43.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -4150,13 +4182,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 4)">Detail</a>
+            <a onclick="showClassDetail('c44', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_logout</div>
             </td>
@@ -4165,7 +4197,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.2' class='hiddenRow bg-success'>
+        <tr id='pt44.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_move_page</div>
             </td>
@@ -4174,7 +4206,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.3' class='hiddenRow bg-success'>
+        <tr id='pt44.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_next</div>
             </td>
@@ -4183,7 +4215,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt45.4' class='hiddenRow bg-success'>
+        <tr id='pt44.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -4201,13 +4233,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 16)">Detail</a>
+            <a onclick="showClassDetail('c45', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt45.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_access_shelf</div>
             </td>
@@ -4216,7 +4248,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt45.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -4225,7 +4257,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt45.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
@@ -4234,7 +4266,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -4243,7 +4275,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.5' class='hiddenRow bg-success'>
+        <tr id='pt45.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf</div>
             </td>
@@ -4252,7 +4284,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.6' class='hiddenRow bg-success'>
+        <tr id='pt45.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
@@ -4261,7 +4293,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.7' class='hiddenRow bg-success'>
+        <tr id='pt45.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -4270,7 +4302,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.8' class='hiddenRow bg-success'>
+        <tr id='pt45.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -4279,7 +4311,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.9' class='hiddenRow bg-success'>
+        <tr id='pt45.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -4288,7 +4320,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.10' class='hiddenRow bg-success'>
+        <tr id='pt45.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -4297,7 +4329,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.11' class='hiddenRow bg-success'>
+        <tr id='pt45.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -4306,7 +4338,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.12' class='hiddenRow bg-success'>
+        <tr id='pt45.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -4315,7 +4347,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.13' class='hiddenRow bg-success'>
+        <tr id='pt45.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -4324,19 +4356,19 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id="st46.14" class="none bg-warning">
+        <tr id="st45.14" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st46.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st45.14')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st46.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st45.14" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st46.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st45.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4350,7 +4382,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.15' class='hiddenRow bg-success'>
+        <tr id='pt45.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -4359,7 +4391,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt46.16' class='hiddenRow bg-success'>
+        <tr id='pt45.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
@@ -4377,13 +4409,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 1)">Detail</a>
+            <a onclick="showClassDetail('c46', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt46.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSocket - test_socket_communication</div>
             </td>
@@ -4401,13 +4433,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 7)">Detail</a>
+            <a onclick="showClassDetail('c47', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_change_ebook</div>
             </td>
@@ -4416,7 +4448,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.2' class='hiddenRow bg-success'>
+        <tr id='pt47.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_convert_ebook</div>
             </td>
@@ -4425,7 +4457,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.3' class='hiddenRow bg-success'>
+        <tr id='pt47.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_download_book</div>
             </td>
@@ -4434,7 +4466,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.4' class='hiddenRow bg-success'>
+        <tr id='pt47.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_email_ebook</div>
             </td>
@@ -4443,7 +4475,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.5' class='hiddenRow bg-success'>
+        <tr id='pt47.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_kobo</div>
             </td>
@@ -4452,7 +4484,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.6' class='hiddenRow bg-success'>
+        <tr id='pt47.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_thumbnails</div>
             </td>
@@ -4461,7 +4493,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.7' class='hiddenRow bg-success'>
+        <tr id='pt47.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_upload_ebook</div>
             </td>
@@ -4479,13 +4511,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c49', 1)">Detail</a>
+            <a onclick="showClassDetail('c48', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSystemdActivation - test_systemd_activation</div>
             </td>
@@ -4495,45 +4527,65 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnailsEnv</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c50', 1)">Detail</a>
+            <a onclick="showClassDetail('c49', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id="ft49.1" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft49.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft49.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft49.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnail_env.py&#34;, line 72, in test_cover_cache_env_on_database_change
+    self.assertEqual(count_files(thumbnail_cache_path), 110*2)
+AssertionError: 330 != 220</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="failClass">
+        <td>TestThumbnails</td>
+        <td class="text-center">8</td>
+        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c50', 8)">Detail</a>
         </td>
     </tr>
 
     
     
         <tr id='pt50.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="skipClass">
-        <td>TestThumbnails</td>
-        <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c51', 8)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt51.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
@@ -4542,34 +4594,94 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt51.2' class='hiddenRow bg-success'>
+        <tr id="ft50.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 192, in test_cache_of_deleted_book
+    self.assertEqual(book_thumbnail_reference, 2)
+AssertionError: 3 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt51.3' class='hiddenRow bg-success'>
+        <tr id="ft50.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 89, in test_cover_cache_on_database_change
+    self.assertEqual(count_files(thumbnail_cache_path), 110*2)
+AssertionError: 333 != 220</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt51.4' class='hiddenRow bg-success'>
+        <tr id="ft50.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 131, in test_cover_change_on_upload_new_cover
+    self.assertEqual(110*2, count_files(thumbnail_cache_path))
+AssertionError: 220 != 333</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='st51.5' class='none bg-warning'>
+        <tr id='st50.5' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_for_series</div>
             </td>
@@ -4578,49 +4690,109 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt51.6' class='hiddenRow bg-success'>
+        <tr id="ft50.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 253, in test_cover_on_upload_book
+    self.assertEqual(book_thumbnail_reference+2, count_files(thumbnail_cache_path))
+AssertionError: 335 != 336</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt51.7' class='hiddenRow bg-success'>
+        <tr id="ft50.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 169, in test_remove_cover_from_cache
+    self.assertEqual(book_thumbnail_reference - 2, count_files(thumbnail_cache_path))
+AssertionError: 334 != 333</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt51.8' class='hiddenRow bg-success'>
+        <tr id="ft50.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 281, in test_sideloaded_book
+    self.assertEqual(book_thumbnail_reference, count_files(thumbnail_cache_path))
+AssertionError: 300 != 336</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestUpdater</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
+        <td class="text-center">7</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c52', 9)">Detail</a>
+            <a onclick="showClassDetail('c51', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt52.1' class='hiddenRow bg-success'>
+        <tr id='pt51.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -4629,7 +4801,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.2' class='hiddenRow bg-success'>
+        <tr id='pt51.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -4638,7 +4810,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id='pt51.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -4647,7 +4819,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id='pt51.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -4656,16 +4828,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id="ft51.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft51.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft51.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 375, in test_perform_update
+    self.assertEqual(20, count_files(thumbnail_cache_path))
+AssertionError: 20 != 30</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id='pt51.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -4674,19 +4866,19 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id="st52.7" class="none bg-warning">
+        <tr id="st51.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st52.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st51.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st52.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st51.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st52.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st51.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4700,7 +4892,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.8' class='hiddenRow bg-success'>
+        <tr id='pt51.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -4709,7 +4901,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt52.9' class='hiddenRow bg-success'>
+        <tr id='pt51.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
@@ -4719,21 +4911,21 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadAudio</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c53', 12)">Detail</a>
+            <a onclick="showClassDetail('c52', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt53.1' class='hiddenRow bg-success'>
+        <tr id='pt52.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_aac</div>
             </td>
@@ -4742,16 +4934,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.2' class='hiddenRow bg-success'>
+        <tr id="ft52.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_aiff</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 242, in test_upload_aiff
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt53.3' class='hiddenRow bg-success'>
+        <tr id='pt52.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_asf</div>
             </td>
@@ -4760,16 +4972,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.4' class='hiddenRow bg-success'>
+        <tr id="ft52.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_flac</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 370, in test_upload_flac
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt53.5' class='hiddenRow bg-success'>
+        <tr id='pt52.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_m4a</div>
             </td>
@@ -4778,7 +5010,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.6' class='hiddenRow bg-success'>
+        <tr id='pt52.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_m4b</div>
             </td>
@@ -4787,34 +5019,94 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.7' class='hiddenRow bg-success'>
+        <tr id="ft52.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_mp3</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 111, in test_upload_mp3
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt53.8' class='hiddenRow bg-success'>
+        <tr id="ft52.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_mp4</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 516, in test_upload_mp4
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt53.9' class='hiddenRow bg-success'>
+        <tr id="ft52.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_oggvorbis</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 307, in test_upload_oggvorbis
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt53.10' class='hiddenRow bg-success'>
+        <tr id='pt52.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_ogv</div>
             </td>
@@ -4823,16 +5115,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt53.11' class='hiddenRow bg-success'>
+        <tr id="ft52.11" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_opus</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.11')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 646, in test_upload_opus
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt53.12' class='hiddenRow bg-success'>
+        <tr id='pt52.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_wav</div>
             </td>
@@ -4842,21 +5154,21 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadEPubs</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c54', 6)">Detail</a>
+            <a onclick="showClassDetail('c53', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt54.1' class='hiddenRow bg-success'>
+        <tr id='pt53.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_comments</div>
             </td>
@@ -4865,7 +5177,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.2' class='hiddenRow bg-success'>
+        <tr id='pt53.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -4874,16 +5186,36 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.3' class='hiddenRow bg-success'>
+        <tr id="ft53.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft53.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft53.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft53.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 213, in test_upload_epub_cover_formats
+    self.assertAlmostEqual(diff(BytesIO(original), BytesIO(cover_image), delete_diff_file=True), 0.0058,
+AssertionError: 0.006623550004797241 != 0.0058 within 0.0001 delta (0.0008235500047972417 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt54.4' class='hiddenRow bg-success'>
+        <tr id='pt53.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -4892,7 +5224,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.5' class='hiddenRow bg-success'>
+        <tr id='pt53.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -4901,7 +5233,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt54.6' class='hiddenRow bg-success'>
+        <tr id='pt53.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4919,13 +5251,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c55', 18)">Detail</a>
+            <a onclick="showClassDetail('c54', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt55.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -4934,7 +5266,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -4943,7 +5275,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -4952,7 +5284,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -4961,7 +5293,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -4970,7 +5302,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -4979,7 +5311,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.7' class='hiddenRow bg-success'>
+        <tr id='pt54.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -4988,7 +5320,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.8' class='hiddenRow bg-success'>
+        <tr id='pt54.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -4997,7 +5329,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.9' class='hiddenRow bg-success'>
+        <tr id='pt54.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -5006,7 +5338,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.10' class='hiddenRow bg-success'>
+        <tr id='pt54.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -5015,7 +5347,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.11' class='hiddenRow bg-success'>
+        <tr id='pt54.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -5024,7 +5356,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.12' class='hiddenRow bg-success'>
+        <tr id='pt54.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -5033,7 +5365,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.13' class='hiddenRow bg-success'>
+        <tr id='pt54.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -5042,7 +5374,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.14' class='hiddenRow bg-success'>
+        <tr id='pt54.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -5051,7 +5383,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.15' class='hiddenRow bg-success'>
+        <tr id='pt54.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -5060,7 +5392,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.16' class='hiddenRow bg-success'>
+        <tr id='pt54.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -5069,7 +5401,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.17' class='hiddenRow bg-success'>
+        <tr id='pt54.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -5078,7 +5410,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt55.18' class='hiddenRow bg-success'>
+        <tr id='pt54.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -5096,13 +5428,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c56', 1)">Detail</a>
+            <a onclick="showClassDetail('c55', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt56.1' class='hiddenRow bg-success'>
+        <tr id='pt55.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -5120,13 +5452,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c57', 21)">Detail</a>
+            <a onclick="showClassDetail('c56', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt57.1' class='hiddenRow bg-success'>
+        <tr id='pt56.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -5135,7 +5467,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.2' class='hiddenRow bg-success'>
+        <tr id='pt56.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -5144,7 +5476,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.3' class='hiddenRow bg-success'>
+        <tr id='pt56.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -5153,7 +5485,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.4' class='hiddenRow bg-success'>
+        <tr id='pt56.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -5162,7 +5494,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.5' class='hiddenRow bg-success'>
+        <tr id='pt56.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -5171,7 +5503,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.6' class='hiddenRow bg-success'>
+        <tr id='pt56.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -5180,7 +5512,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.7' class='hiddenRow bg-success'>
+        <tr id='pt56.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -5189,7 +5521,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.8' class='hiddenRow bg-success'>
+        <tr id='pt56.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -5198,7 +5530,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.9' class='hiddenRow bg-success'>
+        <tr id='pt56.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -5207,7 +5539,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.10' class='hiddenRow bg-success'>
+        <tr id='pt56.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -5216,7 +5548,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.11' class='hiddenRow bg-success'>
+        <tr id='pt56.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -5225,7 +5557,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.12' class='hiddenRow bg-success'>
+        <tr id='pt56.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -5234,7 +5566,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.13' class='hiddenRow bg-success'>
+        <tr id='pt56.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -5243,7 +5575,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.14' class='hiddenRow bg-success'>
+        <tr id='pt56.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -5252,7 +5584,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.15' class='hiddenRow bg-success'>
+        <tr id='pt56.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -5261,7 +5593,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.16' class='hiddenRow bg-success'>
+        <tr id='pt56.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -5270,7 +5602,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.17' class='hiddenRow bg-success'>
+        <tr id='pt56.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -5279,7 +5611,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.18' class='hiddenRow bg-success'>
+        <tr id='pt56.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -5288,7 +5620,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.19' class='hiddenRow bg-success'>
+        <tr id='pt56.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -5297,7 +5629,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.20' class='hiddenRow bg-success'>
+        <tr id='pt56.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -5306,7 +5638,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt57.21' class='hiddenRow bg-success'>
+        <tr id='pt56.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -5324,13 +5656,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c58', 35)">Detail</a>
+            <a onclick="showClassDetail('c57', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt58.1' class='hiddenRow bg-success'>
+        <tr id='pt57.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -5339,7 +5671,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.2' class='hiddenRow bg-success'>
+        <tr id='pt57.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -5348,7 +5680,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.3' class='hiddenRow bg-success'>
+        <tr id='pt57.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -5357,7 +5689,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.4' class='hiddenRow bg-success'>
+        <tr id='pt57.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -5366,7 +5698,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.5' class='hiddenRow bg-success'>
+        <tr id='pt57.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -5375,7 +5707,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.6' class='hiddenRow bg-success'>
+        <tr id='pt57.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -5384,7 +5716,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.7' class='hiddenRow bg-success'>
+        <tr id='pt57.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -5393,7 +5725,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.8' class='hiddenRow bg-success'>
+        <tr id='pt57.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -5402,7 +5734,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.9' class='hiddenRow bg-success'>
+        <tr id='pt57.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -5411,7 +5743,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.10' class='hiddenRow bg-success'>
+        <tr id='pt57.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -5420,7 +5752,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.11' class='hiddenRow bg-success'>
+        <tr id='pt57.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -5429,7 +5761,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.12' class='hiddenRow bg-success'>
+        <tr id='pt57.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -5438,7 +5770,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.13' class='hiddenRow bg-success'>
+        <tr id='pt57.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -5447,7 +5779,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.14' class='hiddenRow bg-success'>
+        <tr id='pt57.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -5456,7 +5788,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.15' class='hiddenRow bg-success'>
+        <tr id='pt57.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -5465,7 +5797,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.16' class='hiddenRow bg-success'>
+        <tr id='pt57.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -5474,7 +5806,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.17' class='hiddenRow bg-success'>
+        <tr id='pt57.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -5483,7 +5815,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.18' class='hiddenRow bg-success'>
+        <tr id='pt57.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -5492,7 +5824,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.19' class='hiddenRow bg-success'>
+        <tr id='pt57.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -5501,7 +5833,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.20' class='hiddenRow bg-success'>
+        <tr id='pt57.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -5510,7 +5842,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.21' class='hiddenRow bg-success'>
+        <tr id='pt57.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -5519,7 +5851,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.22' class='hiddenRow bg-success'>
+        <tr id='pt57.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -5528,7 +5860,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.23' class='hiddenRow bg-success'>
+        <tr id='pt57.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -5537,7 +5869,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.24' class='hiddenRow bg-success'>
+        <tr id='pt57.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -5546,7 +5878,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.25' class='hiddenRow bg-success'>
+        <tr id='pt57.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5555,7 +5887,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.26' class='hiddenRow bg-success'>
+        <tr id='pt57.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5564,7 +5896,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.27' class='hiddenRow bg-success'>
+        <tr id='pt57.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5573,7 +5905,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.28' class='hiddenRow bg-success'>
+        <tr id='pt57.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5582,7 +5914,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.29' class='hiddenRow bg-success'>
+        <tr id='pt57.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5591,7 +5923,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.30' class='hiddenRow bg-success'>
+        <tr id='pt57.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -5600,7 +5932,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.31' class='hiddenRow bg-success'>
+        <tr id='pt57.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -5609,7 +5941,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.32' class='hiddenRow bg-success'>
+        <tr id='pt57.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -5618,7 +5950,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.33' class='hiddenRow bg-success'>
+        <tr id='pt57.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -5627,7 +5959,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.34' class='hiddenRow bg-success'>
+        <tr id='pt57.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -5636,7 +5968,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt58.35' class='hiddenRow bg-success'>
+        <tr id='pt57.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -5654,13 +5986,13 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c59', 16)">Detail</a>
+            <a onclick="showClassDetail('c58', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt59.1' class='hiddenRow bg-success'>
+        <tr id='pt58.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -5669,7 +6001,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.2' class='hiddenRow bg-success'>
+        <tr id='pt58.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -5678,7 +6010,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.3' class='hiddenRow bg-success'>
+        <tr id='pt58.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -5687,7 +6019,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.4' class='hiddenRow bg-success'>
+        <tr id='pt58.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -5696,7 +6028,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.5' class='hiddenRow bg-success'>
+        <tr id='pt58.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -5705,7 +6037,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.6' class='hiddenRow bg-success'>
+        <tr id='pt58.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -5714,7 +6046,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.7' class='hiddenRow bg-success'>
+        <tr id='pt58.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -5723,7 +6055,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.8' class='hiddenRow bg-success'>
+        <tr id='pt58.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -5732,7 +6064,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.9' class='hiddenRow bg-success'>
+        <tr id='pt58.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -5741,7 +6073,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.10' class='hiddenRow bg-success'>
+        <tr id='pt58.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -5750,7 +6082,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.11' class='hiddenRow bg-success'>
+        <tr id='pt58.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -5759,7 +6091,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.12' class='hiddenRow bg-success'>
+        <tr id='pt58.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -5768,7 +6100,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.13' class='hiddenRow bg-success'>
+        <tr id='pt58.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -5777,7 +6109,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.14' class='hiddenRow bg-success'>
+        <tr id='pt58.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -5786,7 +6118,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.15' class='hiddenRow bg-success'>
+        <tr id='pt58.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -5795,7 +6127,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt59.16' class='hiddenRow bg-success'>
+        <tr id='pt58.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -5806,10 +6138,10 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>519</td>
-        <td>508</td>
-        <td>0</td>
-        <td>2</td>
+        <td>517</td>
+        <td>488</td>
+        <td>17</td>
+        <td>3</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -5838,7 +6170,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-45-generic #45~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Jul 15 16:40:02 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-40-generic #40~22.04.3-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 30 17:30:19 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6006,7 +6338,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6036,7 +6368,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6066,7 +6398,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6096,7 +6428,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6144,7 +6476,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6180,7 +6512,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6222,7 +6554,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6252,7 +6584,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.140.0</td>
+              <td>2.141.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6348,7 +6680,7 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 </div>
 
 <script>
-    drawCircle(508, 0, 2, 9);
+    drawCircle(488, 17, 3, 9);
     showCase(5);
 </script>
 
