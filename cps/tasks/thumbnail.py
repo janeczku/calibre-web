@@ -35,7 +35,7 @@ except (ImportError, RuntimeError) as e:
 
 
 def get_resize_height(resolution):
-    return int(225 * resolution)
+    return int(255 * resolution)
 
 
 def get_resize_width(resolution, original_width, original_height):
@@ -72,7 +72,8 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         self.cache = fs.FileSystem()
         self.resolutions = [
             constants.COVER_THUMBNAIL_SMALL,
-            constants.COVER_THUMBNAIL_MEDIUM
+            constants.COVER_THUMBNAIL_MEDIUM,
+            constants.COVER_THUMBNAIL_LARGE
         ]
 
     def run(self, worker_thread):

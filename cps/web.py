@@ -60,6 +60,7 @@ from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 from .usermanagement import user_login_required
+from .string_helper import strip_whitespaces
 
 
 feature_support = {
@@ -1286,7 +1287,7 @@ def register_post():
     if not config.get_mail_server_configured():
         flash(_("Oops! Email server is not configured, please contact your administrator."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
-    nickname = to_save.get("email", "").strip() if config.config_register_email else to_save.get('name')
+    nickname = strip_whitespaces(to_save.get("email", "")) if config.config_register_email else to_save.get('name')
     if not nickname or not to_save.get("email"):
         flash(_("Oops! Please complete all fields."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
@@ -1311,7 +1312,7 @@ def register_post():
             ub.session.commit()
             if feature_support['oauth']:
                 register_user_with_oauth(content)
-            send_registration_mail(to_save.get("email", "").strip(), nickname, password)
+            send_registration_mail(strip_whitespaces(to_save.get("email", "")), nickname, password)
         except Exception:
             ub.session.rollback()
             flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
@@ -1370,11 +1371,11 @@ def login():
 
 
 @web.route('/login', methods=['POST'])
-@limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
-@limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
+@limiter.limit("40/day", key_func=lambda: strip_whitespaces(request.form.get('username', "")).lower())
+@limiter.limit("3/minute", key_func=lambda: strip_whitespaces(request.form.get('username', "")).lower())
 def login_post():
     form = request.form.to_dict()
-    username = form.get('username', "").strip().lower().replace("\n","").replace("\r","")
+    username = strip_whitespaces(form.get('username', "")).lower().replace("\n","").replace("\r","")
     try:
         limiter.check()
     except RateLimitExceeded:
