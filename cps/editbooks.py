@@ -131,18 +131,12 @@ def edit_book(book_id):
             calibre_db.session.rollback()
             book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
 
-        # handle upload other formats from local disk
-        meta = upload_single_file(request, book, book_id)
-        # only merge metadata if file was uploaded and no error occurred (meta equals not false or none)
-        upload_format = False
-        if meta:
-            upload_format = merge_metadata(to_save, meta)
         # handle upload covers from local disk
         cover_upload_success = upload_cover(request, book)
         if cover_upload_success:
             book.has_cover = 1
             modify_date = True
-
+        meta ={}
         # upload new covers or new file formats to google drive
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
@@ -180,7 +174,7 @@ def edit_book(book_id):
         modify_date |= edit_book_publisher(to_save['publisher'], book)
         # handle book languages
         try:
-            modify_date |= edit_book_languages(to_save['languages'], book, upload_format)
+            modify_date |= edit_book_languages(to_save['languages'], book)
         except ValueError as e:
             flash(str(e), category="error")
             edit_error = True
@@ -238,9 +232,31 @@ def edit_book(book_id):
 @login_required_if_no_ano
 @upload_required
 def upload():
-    if not config.config_uploading:
-        abort(404)
-    if request.method == 'POST' and 'btn-upload' in request.files:
+    if len(request.files.getlist("btn-upload-format")):
+        # create the function for sorting...
+        calibre_db.update_title_sort(config)
+        book_id = request.form.get('book_id', -1)
+
+        book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
+        # Book not found
+        if not book:
+            flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
+                  category="error")
+            return redirect(url_for("web.index"))
+
+        # handle upload other formats from local disk
+        for requested_file in request.files.getlist("btn-upload-format"):
+            meta = upload_single_file(requested_file, book, book_id)
+            # save data to database, reread data
+            calibre_db.session.commit()
+
+        resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
+        return Response(json.dumps(resp), mimetype='application/json')
+
+        # only merge metadata if file was uploaded and no error occurred (meta equals not false or none)
+
+
+    elif len(request.files.getlist("btn-upload")):
         for requested_file in request.files.getlist("btn-upload"):
             try:
                 modify_date = False
@@ -309,6 +325,7 @@ def upload():
                 flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
                       category="error")
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+    abort(404)
 
 
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
@@ -1192,9 +1209,9 @@ def edit_cc_data(book_id, book, to_save, cc):
 
 # returns None if no file is uploaded
 # returns False if an error occurs, in all other cases the ebook metadata is returned
-def upload_single_file(file_request, book, book_id):
+def upload_single_file(requested_file, book, book_id):
     # Check and handle Uploaded file
-    requested_file = file_request.files.get('btn-upload-format', None)
+    # requested_file = file_request.files.get('btn-upload-format', None)
     allowed_extensions = config.config_upload_formats.split(',')
     if requested_file:
         if config.config_check_extensions and allowed_extensions != ['']:
