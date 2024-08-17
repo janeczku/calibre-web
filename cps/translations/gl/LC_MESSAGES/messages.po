@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-14 19:28+0200\n"
+"POT-Creation-Date: 2024-08-17 13:50+0200\n"
 "PO-Revision-Date: 2022-08-11 16:46+0200\n"
 "Last-Translator: pollitor <pollitor@gmx.com>\n"
 "Language: gl\n"
@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:88
 msgid "Statistics"
@@ -290,7 +290,7 @@ msgstr ""
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
 #: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:468 cps/tasks/convert.py:156 cps/web.py:1528
+#: cps/shelf.py:471 cps/tasks/convert.py:156 cps/web.py:1528
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Error na base de datos: %(error)s."
@@ -1236,12 +1236,12 @@ msgstr "Xa existe un andel público co nome '%(title)s'."
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Xa existe un andel privado co nome '%(title)s'."
 
-#: cps/shelf.py:473
+#: cps/shelf.py:476
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Andel: '%(name)s'"
 
-#: cps/shelf.py:477
+#: cps/shelf.py:480
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Erro ao abrir un andel. O andel non existe ou non se pode acceder"
 
@@ -1546,21 +1546,21 @@ msgstr "Correo electrónico"
 msgid "Backing up Metadata"
 msgstr "editar metadatos"
 
-#: cps/tasks/thumbnail.py:95
+#: cps/tasks/thumbnail.py:96
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Xeradas %(count)s miniaturas de cubertas"
 
-#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
-#: cps/tasks/thumbnail.py:509
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Miniaturas de cubertas"
 
-#: cps/tasks/thumbnail.py:287
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "Xeradas {0} miniaturas de series"
 
-#: cps/tasks/thumbnail.py:452
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Limpando caché de miniaturas de cubertas"
 
@@ -1868,7 +1868,7 @@ msgstr "Ordear pola data de publicación, máis antigo primeiro"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:55
+#: cps/templates/search.html:67 cps/templates/shelf.html:57
 msgid "reduce"
 msgstr "reducir"
 
@@ -3396,6 +3396,16 @@ msgstr "Desactivar o cambio de orde"
 #: cps/templates/shelf.html:18
 msgid "Enable Change order"
 msgstr "Activar o cambio de orde"
+
+#: cps/templates/shelf.html:28
+#, fuzzy
+msgid "Sort according to book added to shelf, newest first"
+msgstr "Ordear pola data do libro, máis recente primeiro"
+
+#: cps/templates/shelf.html:29
+#, fuzzy
+msgid "Sort according to book added to shelf, oldest first"
+msgstr "Ordear pola data do libro, máis antigo primeiro"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"
