@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-14 19:28+0200\n"
+"POT-Creation-Date: 2024-08-17 13:50+0200\n"
 "PO-Revision-Date: 2024-08-06 06:34+0200\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:88
 msgid "Statistics"
@@ -289,7 +289,7 @@ msgstr "Tutto OK! Account Gmail verificato."
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
 #: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:468 cps/tasks/convert.py:156 cps/web.py:1528
+#: cps/shelf.py:471 cps/tasks/convert.py:156 cps/web.py:1528
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Errore nel database: %(error)s."
@@ -1217,12 +1217,12 @@ msgstr "Esiste già uno scaffale pubblico con il nome '%(title)s'."
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Esiste già uno scaffale privato con il nome '%(title)s'."
 
-#: cps/shelf.py:473
+#: cps/shelf.py:476
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Scaffale: '%(name)s'"
 
-#: cps/shelf.py:477
+#: cps/shelf.py:480
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Errore nell'apertura dello scaffale. Lo scaffale non esiste o non è accessibile"
 
@@ -1517,21 +1517,21 @@ msgstr "E-mail"
 msgid "Backing up Metadata"
 msgstr "Backup dei metadati"
 
-#: cps/tasks/thumbnail.py:95
+#: cps/tasks/thumbnail.py:96
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Sono state generate %(count)s miniature delle copertine"
 
-#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
-#: cps/tasks/thumbnail.py:509
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Miniature delle copertine"
 
-#: cps/tasks/thumbnail.py:287
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "Sono state generate {0} miniature delle serie"
 
-#: cps/tasks/thumbnail.py:452
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Cancellazione della cache delle miniature delle copertine"
 
@@ -1838,7 +1838,7 @@ msgstr "Ordina secondo la data di pubblicazione, prima i più vecchi"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:55
+#: cps/templates/search.html:67 cps/templates/shelf.html:57
 msgid "reduce"
 msgstr "riduci"
 
@@ -3351,6 +3351,16 @@ msgstr "Disabilita la modifica della disposizione"
 #: cps/templates/shelf.html:18
 msgid "Enable Change order"
 msgstr "Abilita la modifica della disposizione"
+
+#: cps/templates/shelf.html:28
+#, fuzzy
+msgid "Sort according to book added to shelf, newest first"
+msgstr "Ordina secondo la data dei libri, prima i più recenti"
+
+#: cps/templates/shelf.html:29
+#, fuzzy
+msgid "Sort according to book added to shelf, oldest first"
+msgstr "Ordina secondo la data dei libri, prima i più vecchi"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"

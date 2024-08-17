@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-14 19:28+0200\n"
-"PO-Revision-Date: 2024-08-05 18:35+0200\n"
+"POT-Creation-Date: 2024-08-17 13:50+0200\n"
+"PO-Revision-Date: 2024-08-17 13:49+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:88
 msgid "Statistics"
@@ -289,7 +289,7 @@ msgstr "G-Mail Konto verifiziert."
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
 #: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:468 cps/tasks/convert.py:156 cps/web.py:1528
+#: cps/shelf.py:471 cps/tasks/convert.py:156 cps/web.py:1528
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Datenbankfehler: %(error)s."
@@ -617,9 +617,9 @@ msgid "edit metadata"
 msgstr "Metadaten editieren"
 
 #: cps/editbooks.py:1023
-#, fuzzy, python-format
+#, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
-msgstr "%(seriesindex)s ist keine gültige Zahl, Eintrag wird ignoriert"
+msgstr "Serien index %(seriesindex)s ist keine gültige Zahl, Eintrag wird ignoriert"
 
 #: cps/editbooks.py:1207
 msgid "User has no rights to upload additional file formats"
@@ -1217,12 +1217,12 @@ msgstr "Es existiert bereit ein öffentliches Bücherregal mit dem Name '%(title
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Es existiert bereit ein privates Bücherregal mit dem Name '%(title)s'."
 
-#: cps/shelf.py:473
+#: cps/shelf.py:476
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Bücherregal: '%(name)s'"
 
-#: cps/shelf.py:477
+#: cps/shelf.py:480
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Fehler beim Öffnen des Bücherregals. Bücherregal exisitert nicht oder ist nicht zugänglich"
 
@@ -1517,21 +1517,21 @@ msgstr "E-Mail"
 msgid "Backing up Metadata"
 msgstr "Metadaten Backup läuft"
 
-#: cps/tasks/thumbnail.py:95
+#: cps/tasks/thumbnail.py:96
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "%(count)s Cover Miniaturansichten erzeugt"
 
-#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
-#: cps/tasks/thumbnail.py:509
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Cover Miniaturansichtern"
 
-#: cps/tasks/thumbnail.py:287
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "{0} Serien Miniaturansichten erzeugt"
 
-#: cps/tasks/thumbnail.py:452
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Cover Miniaturansichten Cache wird gelöscht"
 
@@ -1838,7 +1838,7 @@ msgstr "Sortiere nach Herausgabedatum, Älteste zuerst"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:55
+#: cps/templates/search.html:67 cps/templates/shelf.html:57
 msgid "reduce"
 msgstr "Reduzieren"
 
@@ -3052,44 +3052,39 @@ msgstr "Schriftgröße"
 
 #: cps/templates/read.html:105
 msgid "Font"
-msgstr ""
+msgstr "Schriftart"
 
 #: cps/templates/read.html:106
-#, fuzzy
 msgid "Default"
-msgstr "Löschen"
+msgstr "Standard"
 
 #: cps/templates/read.html:107
 msgid "Yahei"
-msgstr ""
+msgstr "Yahei"
 
 #: cps/templates/read.html:108
 msgid "SimSun"
-msgstr ""
+msgstr "SimSun"
 
 #: cps/templates/read.html:109
-#, fuzzy
 msgid "KaiTi"
-msgstr "Wartend"
+msgstr "KaiTi"
 
 #: cps/templates/read.html:110
-#, fuzzy
 msgid "Arial"
-msgstr "Vertikal"
+msgstr "Arial"
 
 #: cps/templates/read.html:113
-#, fuzzy
 msgid "Spread"
-msgstr "Gelesen"
+msgstr "Aufteilung"
 
 #: cps/templates/read.html:114
 msgid "Two columns"
-msgstr ""
+msgstr "Zwei Spalten"
 
 #: cps/templates/read.html:115
-#, fuzzy
 msgid "One column"
-msgstr "Ungültige Lese Spalte"
+msgstr "Eine Spalte"
 
 #: cps/templates/readcbr.html:8
 msgid "Comic Reader"
@@ -3357,6 +3352,14 @@ msgstr "Manuelles Sortieren deaktivieren"
 msgid "Enable Change order"
 msgstr "Manuelles Sortieren aktivieren"
 
+#: cps/templates/shelf.html:28
+msgid "Sort according to book added to shelf, newest first"
+msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, Neuestes zuerst"
+
+#: cps/templates/shelf.html:29
+msgid "Sort according to book added to shelf, oldest first"
+msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, Ältestes zuerst"
+
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"
 msgstr "Bücherregal mit anderen Benutzern teilen"
@@ -3426,9 +3429,8 @@ msgid "Run Time"
 msgstr "Laufzeit"
 
 #: cps/templates/tasks.html:19
-#, fuzzy
 msgid "Message"
-msgstr "Zusammenführen"
+msgstr "Meldung"
 
 #: cps/templates/tasks.html:21
 msgid "Actions"
@@ -3448,7 +3450,7 @@ msgstr "Benutzerpasswort zurücksetzen"
 
 #: cps/templates/user_edit.html:28
 msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
-msgstr ""
+msgstr "An die E-Mail-Adresse des E-Readers senden. Kommas verwenden, um E-Mails für mehrere E-Reader zu trennen"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
