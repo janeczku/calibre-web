@@ -567,7 +567,7 @@ def update_view_configuration():
     _config_string(to_save, "config_calibre_web_title")
     _config_string(to_save, "config_columns_to_ignore")
     if _config_string(to_save, "config_title_regex"):
-        calibre_db.update_title_sort(config)
+        calibre_db.create_functions(config)
 
     if not check_valid_read_column(to_save.get("config_read_column", "0")):
         flash(_("Invalid Read Column"), category="error")

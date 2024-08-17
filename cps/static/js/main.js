@@ -130,7 +130,7 @@ $(".container-fluid").bind('drop', function (e) {
             }
         });
         if (dt.files.length) {
-            if($("btn-upload-format").length) {
+            if($("#btn-upload-format").length) {
                 $("#btn-upload-format")[0].files = dt.files;
                 $("#form-upload-format").submit();
             } else {
