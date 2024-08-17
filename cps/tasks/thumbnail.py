@@ -197,8 +197,10 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                             img.format = thumbnail.format
                             img.save(filename=filename)
                         else:
-                            with open(filename, 'rb') as fd:
+                            stream.seek(0)
+                            with open(filename, 'wb') as fd:
                                 copyfileobj(stream, fd)
+
 
                 except Exception as ex:
                     # Bubble exception to calling function
