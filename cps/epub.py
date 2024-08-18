@@ -66,7 +66,7 @@ def get_epub_layout(book, book_data):
         return layout[0]
 
 
-def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
+def get_epub_info(tmp_file_path, original_file_name, original_file_extension, no_cover_processing):
     ns = {
         'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
         'pkg': 'http://www.idpf.org/2007/opf',
@@ -117,7 +117,10 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
     epub_zip = zipfile.ZipFile(tmp_file_path)
-    cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
+    if not no_cover_processing:
+        cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
+    else:
+        cover_file = None
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
