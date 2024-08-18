@@ -258,14 +258,14 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         tags['include_' + element] = term.get('include_' + element)
         tags['exclude_' + element] = term.get('exclude_' + element)
 
-    author_name = term.get("author_name")
-    book_title = term.get("book_title")
+    author_name = term.get("authors")
+    book_title = term.get("title")
     publisher = term.get("publisher")
     pub_start = term.get("publishstart")
     pub_end = term.get("publishend")
     rating_low = term.get("ratinghigh")
     rating_high = term.get("ratinglow")
-    description = term.get("comment")
+    description = term.get("comments")
     read_status = term.get("read_status")
     if author_name:
         author_name = strip_whitespaces(author_name).lower().replace(',', '|')

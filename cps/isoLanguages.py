@@ -18,6 +18,7 @@
 
 from .iso_language_names import LANGUAGE_NAMES as _LANGUAGE_NAMES
 from . import logger
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -69,20 +70,20 @@ def get_language_name(locale, lang_code):
     return name
 
 
-def get_language_codes(locale, language_names, remainder=None):
-    language_names = set(x.strip().lower() for x in language_names if x)
+def get_language_code_from_name(locale, language_names, remainder=None):
+    language_names = set(strip_whitespaces(x).lower() for x in language_names if x)
     lang = list()
-    for k, v in get_language_names(locale).items():
-        v = v.lower()
-        if v in language_names:
-            lang.append(k)
-            language_names.remove(v)
+    for key, val in get_language_names(locale).items():
+        val = val.lower()
+        if val in language_names:
+            lang.append(key)
+            language_names.remove(val)
     if remainder is not None and language_names:
         remainder.extend(language_names)
     return lang
 
 
-def get_valid_language_codes(locale, language_names, remainder=None):
+def get_valid_language_codes_from_code(locale, language_names, remainder=None):
     lang = list()
     if "" in language_names:
         language_names.remove("")

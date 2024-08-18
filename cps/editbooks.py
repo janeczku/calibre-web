@@ -455,13 +455,13 @@ def do_edit_book(book_id, upload_formats=None):
         # Update folder of book on local disk
         edited_books_id = None
         title_author_error = None
-        upload_format = False
+        upload_mode = False
         # handle book title change
-        if "book_title" in to_save:
-            title_change = handle_title_on_edit(book, to_save["book_title"])
+        if "title" in to_save:
+            title_change = handle_title_on_edit(book, to_save["title"])
         # handle book author change
         if not upload_formats:
-            input_authors, author_change = handle_author_on_edit(book, to_save["author_name"])
+            input_authors, author_change = handle_author_on_edit(book, to_save["authors"])
             if author_change or title_change:
                 edited_books_id = book.id
                 modify_date = True
@@ -475,10 +475,9 @@ def do_edit_book(book_id, upload_formats=None):
 
             # handle book ratings
             modify_date |= edit_book_ratings(to_save, book)
-            meta = True
         else:
             # handle upload other formats from local disk
-            to_save, upload_format = upload_book_formats(upload_formats, book, book_id, book.has_cover)
+            to_save, edit_error = upload_book_formats(upload_formats, book, book_id, book.has_cover)
         # handle upload covers from local disk
         cover_upload_success = upload_cover(request, book)
         if cover_upload_success or to_save.get("format_cover"):
@@ -507,7 +506,7 @@ def do_edit_book(book_id, upload_formats=None):
         # Add default series_index to book
         modify_date |= edit_book_series_index(to_save.get("series_index"), book)
         # Handle book comments/description
-        modify_date |= edit_book_comments(Markup(to_save.get('description')).unescape(), book)
+        modify_date |= edit_book_comments(Markup(to_save.get('comments')).unescape(), book)
         # Handle identifiers
         input_identifiers = identifier_list(to_save, book)
         modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
@@ -522,7 +521,12 @@ def do_edit_book(book_id, upload_formats=None):
         modify_date |= edit_book_publisher(to_save.get('publisher'), book)
         # handle book languages
         try:
-            modify_date |= edit_book_languages(to_save.get('languages'), book, upload_format)
+            invalid = []
+            modify_date |= edit_book_languages(to_save.get('languages'), book, upload_mode=upload_formats,
+                                               invalid=invalid)
+            if invalid:
+                for lang in invalid:
+                    flash(_("'%(langname)s' is not a valid language", langname=lang), category="warning")
         except ValueError as e:
             flash(str(e), category="error")
             edit_error = True
@@ -549,9 +553,7 @@ def do_edit_book(book_id, upload_formats=None):
         calibre_db.session.commit()
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
-        # if format is upladed and something goes wrong to_save is set to empty dictonary
-        if (len(to_save)
-          and edit_error is not True and title_author_error is not True and cover_upload_success is not False):
+        if edit_error is not True and title_author_error is not True and cover_upload_success is not False:
             flash(_("Metadata successfully updated"), category="success")
 
         if upload_formats:
@@ -579,19 +581,20 @@ def do_edit_book(book_id, upload_formats=None):
         return redirect(url_for('web.show_book', book_id=book.id))
 
 
-def merge_metadata(to_save, meta):
-    if not to_save.get("languages") and meta.languages:
-        upload_language = True
-    else:
-        upload_language = False
+def merge_metadata(book, meta, to_save):
+    if meta.cover:
+        to_save['cover_format'] = meta.cover
     for s_field, m_field in [
-            ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
+            ('tags', 'tags'), ('authors', 'author'), ('series', 'series'),
             ('series_index', 'series_id'), ('languages', 'languages'),
-            ('book_title', 'title'), ('description', 'description'),('format_cover', 'cover')]:
-        val = getattr(meta, m_field, '')
+            ('title', 'title'), ('comments', 'description')]:
+        try:
+            val = None if len(getattr(book, s_field)) else getattr(meta, m_field, '')
+        except TypeError:
+            val = None if len(str(getattr(book, s_field))) else getattr(meta, m_field, '')
         if val:
             to_save[s_field] = val
-    return upload_language
+
 
 def identifier_list(to_save, book):
     """Generate a list of Identifiers from form information"""
@@ -1054,10 +1057,7 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
     if languages:
         input_languages = languages.split(',')
         unknown_languages = []
-        if not upload_mode:
-            input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
-        else:
-            input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
+        input_l = isoLanguages.get_language_code_from_name(get_locale(), input_languages, unknown_languages)
         for lang in unknown_languages:
             log.error("'%s' is not a valid language", lang)
             if isinstance(invalid, list):
@@ -1071,7 +1071,7 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
             if input_l[0] != current_user.filter_language() and current_user.filter_language() != "all":
                 input_l[0] = calibre_db.session.query(db.Languages). \
                     filter(db.Languages.lang_code == current_user.filter_language()).first().lang_code
-        # Remove duplicates
+        # Remove duplicates from normalized langcodes
         input_l = helper.uniq(input_l)
         return modify_database_object(input_l, book.languages, db.Languages, calibre_db.session, 'languages')
     return False
@@ -1200,37 +1200,35 @@ def edit_cc_data(book_id, book, to_save, cc):
     return changed
 
 
-# returns None if no file is uploaded
-# returns False if an error occurs, in all other cases the ebook metadata is returned
+# returns False if an error occurs or no book is uploaded, in all other cases the ebook metadata to change is returned
 def upload_book_formats(requested_files, book, book_id, no_cover=True):
     # Check and handle Uploaded file
     to_save = dict()
-    upload_format = False
+    error = False
     allowed_extensions = config.config_upload_formats.split(',')
     for requested_file in requested_files:
         current_filename = requested_file.filename
         if config.config_check_extensions and allowed_extensions != ['']:
             if not validate_mime_type(requested_file, allowed_extensions):
                 flash(_("File type isn't allowed to be uploaded to this server"), category="error")
+                error = True
                 continue
-                # return False
-        # check for empty request
         if current_filename != '':
             if not current_user.role_upload():
                 flash(_("User has no rights to upload additional file formats"), category="error")
+                error = True
                 continue
-                # return False
             if '.' in current_filename:
                 file_ext = current_filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in allowed_extensions and '' not in allowed_extensions:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
+                    error = True
                     continue
-                    # return False
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
+                error = True
                 continue
-                # return False
 
             file_name = book.path.rsplit('/', 1)[-1]
             filepath = os.path.normpath(os.path.join(config.get_book_path(), book.path))
@@ -1243,14 +1241,14 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
                 except OSError:
                     flash(_("Failed to create path %(path)s (Permission denied).", path=filepath),
                           category="error")
+                    error = True
                     continue
-                    # return False
             try:
                 requested_file.save(saved_filename)
             except OSError:
                 flash(_("Failed to store file %(file)s.", file=saved_filename), category="error")
+                error = True
                 continue
-                # return False
 
             file_size = os.path.getsize(saved_filename)
 
@@ -1268,8 +1266,8 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
                     log.error_or_exception("Database error: {}".format(e))
                     flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
                           category="error")
+                    error = True
                     continue
-                    # return False  # return redirect(url_for('web.show_book', book_id=book.id))
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
@@ -1280,8 +1278,13 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
                 *os.path.splitext(current_filename),
                 rar_executable=config.config_rarfile_location,
                 no_cover=no_cover)
-            upload_format |= merge_metadata(to_save, meta)
-    return to_save if len(to_save) else False, upload_format
+            merge_metadata(book, meta, to_save)
+    if to_save.get('languages'):
+        langs = []
+        for lang_code in to_save['languages']:
+            langs.append(isoLanguages.get_language_name(get_locale(), lang_code))
+        to_save['languages'] = ",".join(langs)
+    return to_save, error
 
 
 def upload_cover(cover_request, book):
@@ -1315,7 +1318,6 @@ def handle_title_on_edit(book, book_title):
 
 def handle_author_on_edit(book, author_name, update_stored=True):
     change = False
-    # handle author(s)
     input_authors = prepare_authors(author_name, config.get_book_path(), config.config_use_google_drive)
 
     # Search for each author if author is in database, if not, author name and sorted author name is generated new
@@ -1345,7 +1347,6 @@ def search_objects_remove(db_book_object, db_type, input_elements):
         if db_type == 'custom':
             type_elements = c_elements.value
         else:
-            # type_elements = c_elements.name
             type_elements = c_elements
         for inp_element in input_elements:
             if type_elements == inp_element:
