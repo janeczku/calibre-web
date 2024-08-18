@@ -130,7 +130,7 @@ def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
     return cover.cover_processing(tmp_file_name, cover_data, extension)
 
 
-def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable):
+def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable, no_cover_processing):
     if use_comic_meta:
         try:
             archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
@@ -155,14 +155,17 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
 
             lang = loaded_metadata.language or ""
             loaded_metadata.language = isoLanguages.get_lang3(lang)
-
+            if not no_cover_processing:
+                cover_file = _extract_cover(tmp_file_path, original_file_extension, rar_executable)
+            else:
+                cover_file = None
             return BookMeta(
                 file_path=tmp_file_path,
                 extension=original_file_extension,
                 title=loaded_metadata.title or original_file_name,
                 author=" & ".join([credit["person"]
                                    for credit in loaded_metadata.credits if credit["role"] == "Writer"]) or 'Unknown',
-                cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
+                cover=cover_file,
                 description=loaded_metadata.comments or "",
                 tags="",
                 series=loaded_metadata.series or "",
@@ -171,13 +174,17 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
                 publisher="",
                 pubdate="",
                 identifiers=[])
+    if not no_cover_processing:
+        cover_file = _extract_cover(tmp_file_path, original_file_extension, rar_executable)
+    else:
+        cover_file = None
 
     return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
         author='Unknown',
-        cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
+        cover=cover_file,
         description="",
         tags="",
         series="",

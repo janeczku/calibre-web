@@ -140,9 +140,7 @@ def upload():
                                                         input_authors[0],
                                                         meta.file_path,
                                                         title_dir + meta.extension.lower())
-
                 move_coverfile(meta, db_book)
-
                 if modify_date:
                     calibre_db.set_metadata_dirty(book_id)
                 # save data to database, reread data
@@ -480,13 +478,10 @@ def do_edit_book(book_id, upload_formats=None):
             meta = True
         else:
             # handle upload other formats from local disk
-            meta = upload_single_file(upload_formats, book, book_id)
-            # only merge metadata if file was uploaded and no error occurred (meta equals not false or none)
-            if meta:
-                upload_format = merge_metadata(to_save, meta)
+            to_save, upload_format = upload_book_formats(upload_formats, book, book_id, book.has_cover)
         # handle upload covers from local disk
         cover_upload_success = upload_cover(request, book)
-        if cover_upload_success:
+        if cover_upload_success or to_save.get("format_cover"):
             book.has_cover = 1
             modify_date = True
 
@@ -494,7 +489,7 @@ def do_edit_book(book_id, upload_formats=None):
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
 
-        if to_save.get("cover_url", None):
+        if to_save.get("cover_url",):
             if not current_user.role_upload():
                 edit_error = True
                 flash(_("User has no rights to upload cover"), category="error")
@@ -554,13 +549,15 @@ def do_edit_book(book_id, upload_formats=None):
         calibre_db.session.commit()
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
+        # if format is upladed and something goes wrong to_save is set to empty dictonary
+        if (len(to_save)
+          and edit_error is not True and title_author_error is not True and cover_upload_success is not False):
+            flash(_("Metadata successfully updated"), category="success")
+
         if upload_formats:
             resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
             return Response(json.dumps(resp), mimetype='application/json')
 
-        # if meta is not False \
-        if edit_error is not True and title_author_error is not True and cover_upload_success is not False:
-            flash(_("Metadata successfully updated"), category="success")
         if "detail_view" in to_save:
             return redirect(url_for('web.show_book', book_id=book.id))
         else:
@@ -590,7 +587,7 @@ def merge_metadata(to_save, meta):
     for s_field, m_field in [
             ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
             ('series_index', 'series_id'), ('languages', 'languages'),
-            ('book_title', 'title'), ('description', 'description'),]:
+            ('book_title', 'title'), ('description', 'description'),('format_cover', 'cover')]:
         val = getattr(meta, m_field, '')
         if val:
             to_save[s_field] = val
@@ -1205,26 +1202,26 @@ def edit_cc_data(book_id, book, to_save, cc):
 
 # returns None if no file is uploaded
 # returns False if an error occurs, in all other cases the ebook metadata is returned
-def upload_single_file(requested_files, book, book_id):
+def upload_book_formats(requested_files, book, book_id, no_cover=True):
     # Check and handle Uploaded file
-    # requested_file = file_request.files.get('btn-upload-format', None)
-    # ToDo: Handle multiple files
-    meta = {}
+    to_save = dict()
+    upload_format = False
     allowed_extensions = config.config_upload_formats.split(',')
     for requested_file in requested_files:
+        current_filename = requested_file.filename
         if config.config_check_extensions and allowed_extensions != ['']:
             if not validate_mime_type(requested_file, allowed_extensions):
                 flash(_("File type isn't allowed to be uploaded to this server"), category="error")
                 continue
                 # return False
         # check for empty request
-        if requested_file.filename != '':
+        if current_filename != '':
             if not current_user.role_upload():
                 flash(_("User has no rights to upload additional file formats"), category="error")
                 continue
                 # return False
-            if '.' in requested_file.filename:
-                file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+            if '.' in current_filename:
+                file_ext = current_filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in allowed_extensions and '' not in allowed_extensions:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
@@ -1256,10 +1253,9 @@ def upload_single_file(requested_files, book, book_id):
                 # return False
 
             file_size = os.path.getsize(saved_filename)
-            is_format = calibre_db.get_book_format(book_id, file_ext.upper())
 
             # Format entry already exists, no need to update the database
-            if is_format:
+            if calibre_db.get_book_format(book_id, file_ext.upper()):
                 log.warning('Book format %s already existing', file_ext.upper())
             else:
                 try:
@@ -1279,11 +1275,13 @@ def upload_single_file(requested_files, book, book_id):
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
             upload_text = N_("File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=link)
             WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(book.title)))
-
-            return uploader.process(
-                saved_filename, *os.path.splitext(requested_file.filename),
-                rar_executable=config.config_rarfile_location)
-    return meta if len(meta) else False
+            meta = uploader.process(
+                saved_filename,
+                *os.path.splitext(current_filename),
+                rar_executable=config.config_rarfile_location,
+                no_cover=no_cover)
+            upload_format |= merge_metadata(to_save, meta)
+    return to_save if len(to_save) else False, upload_format
 
 
 def upload_cover(cover_request, book):
