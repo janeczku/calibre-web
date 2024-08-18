@@ -38,11 +38,11 @@ $(function () {
     }
 
     function populateForm (book) {
-        tinymce.get("comments").setContent(book.comments);
+        tinymce.get("comments").setContent(book.description);
         var uniqueTags = getUniqueValues('tags', book)
         var uniqueLanguages = getUniqueValues('languages', book)
         var ampSeparatedAuthors = (book.authors || []).join(" & ");
-        $("#bookAuthor").val(ampSeparatedAuthors);
+        $("#authors").val(ampSeparatedAuthors);
         $("#title").val(book.title);
         $("#tags").val(uniqueTags.join(", "));
         $("#languages").val(uniqueLanguages.join(", "));

@@ -37,6 +37,7 @@ beautifulsoup4>=4.0.1,<4.13.0
 faust-cchardet>=2.1.18,<2.1.20
 py7zr>=0.15.0,<0.21.0
 mutagen>=1.40.0,<1.50.0
+pycountry>=20.0.0,<25.0.0
 
 # Comics
 natsort>=2.2.0,<8.5.0

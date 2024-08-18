@@ -27,7 +27,6 @@ import importlib
 from collections import OrderedDict
 
 import flask
-import jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, constants, dep_check

@@ -93,7 +93,7 @@ var authors = new Bloodhound({
     },
 });
 
-$(".form-group #bookAuthor").typeahead(
+$(".form-group #authors").typeahead(
     {
         highlight: true,
         minLength: 1,
@@ -262,7 +262,7 @@ $("#btn-upload-cover").on("change", function () {
 $("#xchange").click(function () {
     this.blur();
     var title = $("#title").val();
-    $("#title").val($("#bookAuthor").val());
-    $("#bookAuthor").val(title);
+    $("#title").val($("#authors").val());
+    $("#authors").val(title);
 });
 

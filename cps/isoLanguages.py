@@ -15,6 +15,7 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
+import sys
 
 from .iso_language_names import LANGUAGE_NAMES as _LANGUAGE_NAMES
 from . import logger
@@ -24,16 +25,20 @@ log = logger.create()
 
 
 try:
-    from iso639 import languages, __version__
+    from iso639 import languages
+    # iso_version = importlib.metadata.version("iso639")
     get = languages.get
-except ImportError:
-    from pycountry import languages as pyc_languages
     try:
-        import pkg_resources
-        __version__ = pkg_resources.get_distribution('pycountry').version + ' (PyCountry)'
-        del pkg_resources
-    except (ImportError, Exception):
-        __version__ = "? (PyCountry)"
+        if sys.version_info >= (3, 12):
+            import pkg_resources
+    except ImportError:
+        print("Python 3.12 isn't compatible with iso-639. Please install pycountry.")
+except ImportError as ex:
+    from pycountry import languages as pyc_languages
+    #try:
+    #    iso_version = importlib.metadata.version("pycountry") + ' (PyCountry)'
+    #except (ImportError, Exception):
+    #    iso_version = "?" + ' (PyCountry)'
 
     def _copy_fields(l):
         l.part1 = getattr(l, 'alpha_2', None)
