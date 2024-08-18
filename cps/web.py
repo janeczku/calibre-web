@@ -29,7 +29,7 @@ from flask import request, redirect, send_from_directory, make_response, flash, 
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
-from flask_login import login_user, logout_user, login_required, current_user
+from .cw_login import login_user, logout_user, current_user
 from flask_limiter import RateLimitExceeded
 from flask_limiter.util import get_remote_address
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
@@ -59,6 +59,8 @@ from .kobo_sync_status import change_archived_books
 from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
+from .usermanagement import user_login_required
+from .string_helper import strip_whitespaces
 
 
 feature_support = {
@@ -88,21 +90,21 @@ except ImportError:
 def add_security_headers(resp):
     default_src = ([host.strip() for host in config.config_trustedhosts.split(',') if host] +
                    ["'self'", "'unsafe-inline'", "'unsafe-eval'"])
-    csp = "default-src " + ' '.join(default_src) + "; "
-    csp += "font-src 'self' data:"
+    csp = "default-src " + ' '.join(default_src)
+    if request.endpoint == "web.read_book" and config.config_use_google_drive:
+        csp +=" blob: "
+    csp += "; font-src 'self' data:"
     if request.endpoint == "web.read_book":
-        csp += " blob:"
+        csp += " blob: "
     csp += "; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
         csp += " images.gr-assets.com i.gr-assets.com s.gr-assets.com"
     csp += " data:"
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
-        csp += " *;"
-    elif request.endpoint == "web.read_book":
-        csp += " blob:; style-src-elem 'self' blob: 'unsafe-inline';"
-    else:
-        csp += ";"
-    csp += " object-src 'none';"
+        csp += " *"
+    if request.endpoint == "web.read_book":
+        csp += " blob: ; style-src-elem 'self' blob: 'unsafe-inline'"
+    csp += "; object-src 'none';"
     resp.headers['Content-Security-Policy'] = csp
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
@@ -143,14 +145,14 @@ def viewer_required(f):
 
 
 @web.route("/ajax/emailstat")
-@login_required
+@user_login_required
 def get_email_status_json():
     tasks = WorkerThread.get_instance().tasks
     return jsonify(render_task_status(tasks))
 
 
 @web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
-@login_required
+@user_login_required
 def set_bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
     ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
@@ -170,7 +172,7 @@ def set_bookmark(book_id, book_format):
 
 
 @web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
-@login_required
+@user_login_required
 def toggle_read(book_id):
     message = edit_book_read_status(book_id)
     if message:
@@ -180,11 +182,11 @@ def toggle_read(book_id):
 
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
-@login_required
+@user_login_required
 def toggle_archived(book_id):
-    is_archived = change_archived_books(book_id, message="Book {} archive bit toggled".format(book_id))
-    if is_archived:
-        remove_synced_book(book_id)
+    change_archived_books(book_id, message="Book {} archive bit toggled".format(book_id))
+    # Remove book from syncd books list to force resync (?)
+    remove_synced_book(book_id)
     return ""
 
 
@@ -204,7 +206,7 @@ def update_view():
 
 '''
 @web.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
-@login_required
+@user_login_required
 def get_comic_book(book_id, book_format, page):
     book = calibre_db.get_book(book_id)
     if not book:
@@ -816,7 +818,7 @@ def books_list(data, sort_param, book_id, page):
 
 
 @web.route("/table")
-@login_required
+@user_login_required
 def books_table():
     visibility = current_user.view_settings.get('table', {})
     cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
@@ -825,7 +827,7 @@ def books_table():
 
 
 @web.route("/ajax/listbooks")
-@login_required
+@user_login_required
 def list_books():
     off = int(request.args.get("offset") or 0)
     limit = int(request.args.get("limit") or config.config_books_per_page)
@@ -906,7 +908,7 @@ def list_books():
 
 
 @web.route("/ajax/table_settings", methods=['POST'])
-@login_required
+@user_login_required
 def update_table_settings():
     current_user.view_settings['table'] = json.loads(request.data)
     try:
@@ -1285,7 +1287,7 @@ def register_post():
     if not config.get_mail_server_configured():
         flash(_("Oops! Email server is not configured, please contact your administrator."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
-    nickname = to_save.get("email", "").strip() if config.config_register_email else to_save.get('name')
+    nickname = strip_whitespaces(to_save.get("email", "")) if config.config_register_email else to_save.get('name')
     if not nickname or not to_save.get("email"):
         flash(_("Oops! Please complete all fields."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
@@ -1310,7 +1312,7 @@ def register_post():
             ub.session.commit()
             if feature_support['oauth']:
                 register_user_with_oauth(content)
-            send_registration_mail(to_save.get("email", "").strip(), nickname, password)
+            send_registration_mail(strip_whitespaces(to_save.get("email", "")), nickname, password)
         except Exception:
             ub.session.rollback()
             flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
@@ -1339,7 +1341,6 @@ def register():
 
 def handle_login_user(user, remember, message, category):
     login_user(user, remember=remember)
-    ub.store_user_session()
     flash(message, category=category)
     [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
     return redirect(get_redirect_location(request.form.get('next', None), "web.index"))
@@ -1370,11 +1371,11 @@ def login():
 
 
 @web.route('/login', methods=['POST'])
-@limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
-@limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
+@limiter.limit("40/day", key_func=lambda: strip_whitespaces(request.form.get('username', "")).lower())
+@limiter.limit("3/minute", key_func=lambda: strip_whitespaces(request.form.get('username', "")).lower())
 def login_post():
     form = request.form.to_dict()
-    username = form.get('username', "").strip().lower().replace("\n","").replace("\r","")
+    username = strip_whitespaces(form.get('username', "")).lower().replace("\n","").replace("\r","")
     try:
         limiter.check()
     except RateLimitExceeded:
@@ -1443,7 +1444,7 @@ def login_post():
 
 
 @web.route('/logout')
-@login_required
+@user_login_required
 def logout():
     if current_user is not None and current_user.is_authenticated:
         ub.delete_user_session(current_user.id, flask_session.get('_id', ""))
@@ -1528,7 +1529,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
 
 
 @web.route("/me", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def profile():
     languages = calibre_db.speaking_language()
     translations = get_available_locale()

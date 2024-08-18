@@ -34,10 +34,9 @@ from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory, g, Response
 from markupsafe import Markup
-from flask_login import login_required, current_user, logout_user
+from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
-from flask import session as flask_session
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
@@ -52,8 +51,10 @@ from .embed_helper import get_calibre_binarypath
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
+from .usermanagement import user_login_required
 from .babel import get_available_translations, get_available_locale, get_user_locale_language
 from . import debug_info
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -103,13 +104,13 @@ def admin_required(f):
 
 @admi.before_app_request
 def before_request():
-    try:
-        if not ub.check_user_session(current_user.id,
-                                     flask_session.get('_id')) and 'opds' not in request.path \
-          and config.config_session == 1:
-            logout_user()
-    except AttributeError:
-        pass    # ? fails on requesting /ajax/emailstat during restart ?
+    #try:
+        #if not ub.check_user_session(current_user.id,
+        #                             flask_session.get('_id')) and 'opds' not in request.path \
+        #  and config.config_session == 1:
+        #    logout_user()
+    #except AttributeError:
+    #    pass    # ? fails on requesting /ajax/emailstat during restart ?
     g.constants = constants
     g.google_site_verification = os.getenv('GOOGLE_SITE_VERIFICATION', '')
     g.allow_registration = config.config_public_reg
@@ -129,14 +130,14 @@ def before_request():
         return redirect(url_for('admin.db_configuration'))
 
 
-@admi.route("/admin")
-@login_required
-def admin_forbidden():
-    abort(403)
+#@admi.route("/admin")
+#@user_login_required
+#def admin_forbidden():
+#    abort(403)
 
 
 @admi.route("/shutdown", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def shutdown():
     task = request.get_json().get('parameter', -1)
@@ -165,7 +166,7 @@ def shutdown():
 
 
 @admi.route("/metadata_backup", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def queue_metadata_backup():
     show_text = {}
@@ -189,7 +190,7 @@ def reconnect():
 
 @admi.route("/ajax/updateThumbnails", methods=['POST'])
 @admin_required
-@login_required
+@user_login_required
 def update_thumbnails():
     content = config.get_scheduled_task_settings()
     if content['schedule_generate_book_covers']:
@@ -199,7 +200,7 @@ def update_thumbnails():
 
 
 @admi.route("/admin/view")
-@login_required
+@user_login_required
 @admin_required
 def admin():
     version = updater_thread.get_current_version_info()
@@ -233,7 +234,7 @@ def admin():
 
 
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
-@login_required
+@user_login_required
 @admin_required
 def db_configuration():
     if request.method == "POST":
@@ -242,7 +243,7 @@ def db_configuration():
 
 
 @admi.route("/admin/config", methods=["GET"])
-@login_required
+@user_login_required
 @admin_required
 def configuration():
     return render_title_template("config_edit.html",
@@ -253,28 +254,28 @@ def configuration():
 
 
 @admi.route("/admin/ajaxconfig", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def ajax_config():
     return _configuration_update_helper()
 
 
 @admi.route("/admin/ajaxdbconfig", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def ajax_db_config():
     return _db_configuration_update_helper()
 
 
 @admi.route("/admin/alive", methods=["GET"])
-@login_required
+@user_login_required
 @admin_required
 def calibreweb_alive():
     return "", 200
 
 
 @admi.route("/admin/viewconfig")
-@login_required
+@user_login_required
 @admin_required
 def view_configuration():
     read_column = calibre_db.session.query(db.CustomColumns) \
@@ -291,7 +292,7 @@ def view_configuration():
 
 
 @admi.route("/admin/usertable")
-@login_required
+@user_login_required
 @admin_required
 def edit_user_table():
     visibility = current_user.view_settings.get('useredit', {})
@@ -326,7 +327,7 @@ def edit_user_table():
 
 
 @admi.route("/ajax/listusers")
-@login_required
+@user_login_required
 @admin_required
 def list_users():
     off = int(request.args.get("offset") or 0)
@@ -377,7 +378,7 @@ def list_users():
 
 
 @admi.route("/ajax/deleteuser", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def delete_user():
     user_ids = request.form.to_dict(flat=False)
@@ -412,7 +413,7 @@ def delete_user():
 
 
 @admi.route("/ajax/getlocale")
-@login_required
+@user_login_required
 @admin_required
 def table_get_locale():
     locale = get_available_locale()
@@ -424,7 +425,7 @@ def table_get_locale():
 
 
 @admi.route("/ajax/getdefaultlanguage")
-@login_required
+@user_login_required
 @admin_required
 def table_get_default_lang():
     languages = calibre_db.speaking_language()
@@ -436,7 +437,7 @@ def table_get_default_lang():
 
 
 @admi.route("/ajax/editlistusers/<param>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def edit_list_user(param):
     vals = request.form.to_dict(flat=False)
@@ -463,9 +464,9 @@ def edit_list_user(param):
                 if 'value[]' in vals:
                     setattr(user, param, prepare_tags(user, vals['action'][0], param, vals['value[]']))
                 else:
-                    setattr(user, param, vals['value'].strip())
+                    setattr(user, param, strip_whitespaces(vals['value']))
             else:
-                vals['value'] = vals['value'].strip()
+                vals['value'] = strip_whitespaces(vals['value'])
                 if param == 'name':
                     if user.name == "Guest":
                         raise Exception(_("Guest Name can't be changed"))
@@ -541,7 +542,7 @@ def edit_list_user(param):
 
 
 @admi.route("/ajax/user_table_settings", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def update_table_settings():
     current_user.view_settings['useredit'] = json.loads(request.data)
@@ -558,7 +559,7 @@ def update_table_settings():
 
 
 @admi.route("/admin/viewconfig", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def update_view_configuration():
     to_save = request.form.to_dict()
@@ -603,7 +604,7 @@ def update_view_configuration():
 
 
 @admi.route("/ajax/loaddialogtexts/<element_id>", methods=['POST'])
-@login_required
+@user_login_required
 def load_dialogtexts(element_id):
     texts = {"header": "", "main": "", "valid": 1}
     if element_id == "config_delete_kobo_token":
@@ -639,7 +640,7 @@ def load_dialogtexts(element_id):
 
 
 @admi.route("/ajax/editdomain/<int:allow>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def edit_domain(allow):
     # POST /post
@@ -653,7 +654,7 @@ def edit_domain(allow):
 
 
 @admi.route("/ajax/adddomain/<int:allow>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def add_domain(allow):
     domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
@@ -667,7 +668,7 @@ def add_domain(allow):
 
 
 @admi.route("/ajax/deletedomain", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def delete_domain():
     try:
@@ -685,12 +686,12 @@ def delete_domain():
 
 
 @admi.route("/ajax/domainlist/<int:allow>")
-@login_required
+@user_login_required
 @admin_required
 def list_domain(allow):
     answer = ub.session.query(ub.Registration).filter(ub.Registration.allow == allow).all()
     json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
-    js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
+    js = json.dumps(json_dumps.replace('"', "'")).strip('"')
     response = make_response(js.replace("'", '"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -698,7 +699,7 @@ def list_domain(allow):
 
 @admi.route("/ajax/editrestriction/<int:res_type>", defaults={"user_id": 0}, methods=['POST'])
 @admi.route("/ajax/editrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def edit_restriction(res_type, user_id):
     element = request.form.to_dict()
@@ -764,14 +765,14 @@ def edit_restriction(res_type, user_id):
 
 
 @admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def add_user_0_restriction(res_type):
     return add_restriction(res_type, 0)
 
 
 @admi.route("/ajax/addrestriction/<int:res_type>/<int:user_id>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def add_restriction(res_type, user_id):
     element = request.form.to_dict()
@@ -817,14 +818,14 @@ def add_restriction(res_type, user_id):
 
 
 @admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def delete_user_0_restriction(res_type):
     return delete_restriction(res_type, 0)
 
 
 @admi.route("/ajax/deleterestriction/<int:res_type>/<int:user_id>", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def delete_restriction(res_type, user_id):
     element = request.form.to_dict()
@@ -872,7 +873,7 @@ def delete_restriction(res_type, user_id):
 
 @admi.route("/ajax/listrestriction/<int:res_type>", defaults={"user_id": 0})
 @admi.route("/ajax/listrestriction/<int:res_type>/<int:user_id>")
-@login_required
+@user_login_required
 @admin_required
 def list_restriction(res_type, user_id):
     if res_type == 0:  # Tags as template
@@ -916,20 +917,20 @@ def list_restriction(res_type, user_id):
 
 
 @admi.route("/ajax/fullsync", methods=["POST"])
-@login_required
+@user_login_required
 def ajax_self_fullsync():
     return do_full_kobo_sync(current_user.id)
 
 
 @admi.route("/ajax/fullsync/<int:userid>", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def ajax_fullsync(userid):
     return do_full_kobo_sync(userid)
 
 
 @admi.route("/ajax/pathchooser/")
-@login_required
+@user_login_required
 @admin_required
 def ajax_pathchooser():
     return pathchooser()
@@ -1100,7 +1101,7 @@ def _config_checkbox_int(to_save, x):
 
 
 def _config_string(to_save, x):
-    return config.set_from_dictionary(to_save, x, lambda y: y.strip().strip(u'\u200B\u200C\u200D\ufeff') if y else y)
+    return config.set_from_dictionary(to_save, x, lambda y: strip_whitespaces(y) if y else y)
 
 
 def _configuration_gdrive_helper(to_save):
@@ -1246,7 +1247,7 @@ def _configuration_ldap_helper(to_save):
 
 
 @admi.route("/ajax/simulatedbchange", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def simulatedbchange():
     db_change, db_valid = _db_simulate_change()
@@ -1254,7 +1255,7 @@ def simulatedbchange():
 
 
 @admi.route("/admin/user/new", methods=["GET", "POST"])
-@login_required
+@user_login_required
 @admin_required
 def new_user():
     content = ub.User()
@@ -1276,7 +1277,7 @@ def new_user():
 
 
 @admi.route("/admin/mailsettings", methods=["GET"])
-@login_required
+@user_login_required
 @admin_required
 def edit_mailsettings():
     content = config.get_mail_settings()
@@ -1285,7 +1286,7 @@ def edit_mailsettings():
 
 
 @admi.route("/admin/mailsettings", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def update_mailsettings():
     to_save = request.form.to_dict()
@@ -1311,9 +1312,9 @@ def update_mailsettings():
         if to_save.get("mail_password_e", ""):
             _config_string(to_save, "mail_password_e")
         _config_int(to_save, "mail_size", lambda y: int(y) * 1024 * 1024)
-        config.mail_server = to_save.get('mail_server', "").strip()
-        config.mail_from = to_save.get('mail_from', "").strip()
-        config.mail_login = to_save.get('mail_login', "").strip()
+        config.mail_server = strip_whitespaces(to_save.get('mail_server', ""))
+        config.mail_from = strip_whitespaces(to_save.get('mail_from', ""))
+        config.mail_login = strip_whitespaces(to_save.get('mail_login', ""))
     try:
         config.save()
     except (OperationalError, InvalidRequestError) as e:
@@ -1342,7 +1343,7 @@ def update_mailsettings():
 
 
 @admi.route("/admin/scheduledtasks")
-@login_required
+@user_login_required
 @admin_required
 def edit_scheduledtasks():
     content = config.get_scheduled_task_settings()
@@ -1363,7 +1364,7 @@ def edit_scheduledtasks():
 
 
 @admi.route("/admin/scheduledtasks", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def update_scheduledtasks():
     error = False
@@ -1406,7 +1407,7 @@ def update_scheduledtasks():
 
 
 @admi.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 @admin_required
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
@@ -1435,7 +1436,7 @@ def edit_user(user_id):
 
 
 @admi.route("/admin/resetpassword/<int:user_id>", methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def reset_user_password(user_id):
     if current_user is not None and current_user.is_authenticated:
@@ -1453,7 +1454,7 @@ def reset_user_password(user_id):
 
 
 @admi.route("/admin/logfile")
-@login_required
+@user_login_required
 @admin_required
 def view_logfile():
     logfiles = {0: logger.get_logfile(config.config_logfile),
@@ -1467,7 +1468,7 @@ def view_logfile():
 
 
 @admi.route("/ajax/log/<int:logtype>")
-@login_required
+@user_login_required
 @admin_required
 def send_logfile(logtype):
     if logtype == 1:
@@ -1483,7 +1484,7 @@ def send_logfile(logtype):
 
 
 @admi.route("/admin/logdownload/<int:logtype>")
-@login_required
+@user_login_required
 @admin_required
 def download_log(logtype):
     if logtype == 0:
@@ -1498,14 +1499,14 @@ def download_log(logtype):
 
 
 @admi.route("/admin/debug")
-@login_required
+@user_login_required
 @admin_required
 def download_debug():
     return debug_info.send_debug()
 
 
 @admi.route("/get_update_status", methods=['GET'])
-@login_required
+@user_login_required
 @admin_required
 def get_update_status():
     if feature_support['updater']:
@@ -1516,7 +1517,7 @@ def get_update_status():
 
 
 @admi.route("/get_updater_status", methods=['GET', 'POST'])
-@login_required
+@user_login_required
 @admin_required
 def get_updater_status():
     status = {}
@@ -1611,7 +1612,7 @@ def ldap_import_create_user(user, user_data):
 
 
 @admi.route('/import_ldap_users', methods=["POST"])
-@login_required
+@user_login_required
 @admin_required
 def import_ldap_users():
     showtext = {}
@@ -1666,7 +1667,7 @@ def import_ldap_users():
 
 
 @admi.route("/ajax/canceltask", methods=['POST'])
-@login_required
+@user_login_required
 @admin_required
 def cancel_task():
     task_id = request.get_json().get('task_id', None)
@@ -1678,10 +1679,10 @@ def cancel_task():
 def _db_simulate_change():
     param = request.form.to_dict()
     to_save = dict()
-    to_save['config_calibre_dir'] = re.sub(r'[\\/]metadata\.db$',
+    to_save['config_calibre_dir'] = strip_whitespaces(re.sub(r'[\\/]metadata\.db$',
                                            '',
                                            param['config_calibre_dir'],
-                                           flags=re.IGNORECASE).strip()
+                                           flags=re.IGNORECASE))
     db_valid, db_change = calibre_db.check_valid_db(to_save["config_calibre_dir"],
                                                     ub.app_DB_path,
                                                     config.config_calibre_uuid)
@@ -1775,9 +1776,8 @@ def _configuration_update_helper():
 
         if "config_upload_formats" in to_save:
             to_save["config_upload_formats"] = ','.join(
-                helper.uniq([x.lstrip().rstrip().lower() for x in to_save["config_upload_formats"].split(',')]))
+                helper.uniq([x.strip().lower() for x in to_save["config_upload_formats"].split(',')]))
             _config_string(to_save, "config_upload_formats")
-            # constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_binariesdir")

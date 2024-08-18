@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-07-10 20:16:18</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-15 19:27:26</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-07-11 03:24:32</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-16 02:42:05</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>5h 56 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 5 min</p>
         </div>
       </div>
       </div>
@@ -852,11 +852,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -920,53 +920,114 @@
     
     
     
-        <tr id='pt9.7' class='hiddenRow bg-success'>
+        <tr id="ft9.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_thumbnail_cache</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft9.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft9.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 495, in test_thumbnail_cache
+    self.assertEqual(count_files(thumbnail_cache_path), 20)
+AssertionError: 25 != 20</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestEbookConvertKepubify</td>
-        <td class="text-center">3</td>
-        <td class="text-center">3</td>
+    <tr id="su" class="errorClass">
+        <td>_FailedTest</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c10', 3)">Detail</a>
+            <a onclick="showClassDetail('c10', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt10.1' class='hiddenRow bg-success'>
+        <tr id="et10.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertKepubify - test_convert_deactivate</div>
+                <div class='testcase'>_FailedTest - test_ebook_convert_kepubify</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et10.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_ebook_convert_kepubify
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_kepubify.py&#34;, line 10, in &lt;module&gt;
+    from StringIO import StringIO
+ModuleNotFoundError: No module named &#39;StringIO&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt10.2' class='hiddenRow bg-success'>
+        <tr id="et10.2" class="none bg-info">
             <td>
-                <div class='testcase'>TestEbookConvertKepubify - test_convert_only</div>
+                <div class='testcase'>_FailedTest - test_pip_install</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt10.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEbookConvertKepubify - test_convert_wrong_excecutable</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et10.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et10.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
+Traceback (most recent call last):
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
+    __import__(name)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
+    from build_release import make_release
+ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1228,13 +1289,13 @@
 
     <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
-        <td class="text-center">38</td>
+        <td class="text-center">37</td>
         <td class="text-center">36</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 38)">Detail</a>
+            <a onclick="showClassDetail('c13', 37)">Detail</a>
         </td>
     </tr>
 
@@ -1437,33 +1498,7 @@
     
     
     
-        <tr id="st13.21" class="none bg-warning">
-            <td>
-                <div class='testcase'>TestEditBooks - test_rename_uppercase_lowercase</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.21')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st13.21" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st13.21').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Not Implemented</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.22' class='hiddenRow bg-success'>
+        <tr id='pt13.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_author</div>
             </td>
@@ -1472,7 +1507,7 @@
     
     
     
-        <tr id='pt13.23' class='hiddenRow bg-success'>
+        <tr id='pt13.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_functions</div>
             </td>
@@ -1481,7 +1516,7 @@
     
     
     
-        <tr id='pt13.24' class='hiddenRow bg-success'>
+        <tr id='pt13.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_language</div>
             </td>
@@ -1490,7 +1525,7 @@
     
     
     
-        <tr id='pt13.25' class='hiddenRow bg-success'>
+        <tr id='pt13.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_publisher</div>
             </td>
@@ -1499,7 +1534,7 @@
     
     
     
-        <tr id='pt13.26' class='hiddenRow bg-success'>
+        <tr id='pt13.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_series</div>
             </td>
@@ -1508,7 +1543,7 @@
     
     
     
-        <tr id='pt13.27' class='hiddenRow bg-success'>
+        <tr id='pt13.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_typeahead_tag</div>
             </td>
@@ -1517,7 +1552,7 @@
     
     
     
-        <tr id='pt13.28' class='hiddenRow bg-success'>
+        <tr id='pt13.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cb7</div>
             </td>
@@ -1526,7 +1561,7 @@
     
     
     
-        <tr id='pt13.29' class='hiddenRow bg-success'>
+        <tr id='pt13.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbr</div>
             </td>
@@ -1535,7 +1570,7 @@
     
     
     
-        <tr id='pt13.30' class='hiddenRow bg-success'>
+        <tr id='pt13.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbt</div>
             </td>
@@ -1544,7 +1579,7 @@
     
     
     
-        <tr id='pt13.31' class='hiddenRow bg-success'>
+        <tr id='pt13.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_cbz</div>
             </td>
@@ -1553,7 +1588,7 @@
     
     
     
-        <tr id='pt13.32' class='hiddenRow bg-success'>
+        <tr id='pt13.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_epub</div>
             </td>
@@ -1562,7 +1597,7 @@
     
     
     
-        <tr id='pt13.33' class='hiddenRow bg-success'>
+        <tr id='pt13.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_fb2</div>
             </td>
@@ -1571,7 +1606,7 @@
     
     
     
-        <tr id='pt13.34' class='hiddenRow bg-success'>
+        <tr id='pt13.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_lit</div>
             </td>
@@ -1580,7 +1615,7 @@
     
     
     
-        <tr id='pt13.35' class='hiddenRow bg-success'>
+        <tr id='pt13.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_mobi</div>
             </td>
@@ -1589,7 +1624,7 @@
     
     
     
-        <tr id='pt13.36' class='hiddenRow bg-success'>
+        <tr id='pt13.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_book_pdf</div>
             </td>
@@ -1598,7 +1633,7 @@
     
     
     
-        <tr id='pt13.37' class='hiddenRow bg-success'>
+        <tr id='pt13.36' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cbz_coverformats</div>
             </td>
@@ -1607,7 +1642,7 @@
     
     
     
-        <tr id='pt13.38' class='hiddenRow bg-success'>
+        <tr id='pt13.37' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_upload_cover_hdd</div>
             </td>
@@ -1792,14 +1827,14 @@
 
 
     <tr id="su" class="passClass">
-        <td>TestEditBooksList</td>
-        <td class="text-center">19</td>
-        <td class="text-center">19</td>
+        <td>TestEditAuthorsSmb</td>
+        <td class="text-center">9</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 19)">Detail</a>
+            <a onclick="showClassDetail('c16', 9)">Detail</a>
         </td>
     </tr>
 
@@ -1807,7 +1842,7 @@
     
         <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_booklist_xss</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_change_capital_co_author</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1816,7 +1851,7 @@
     
         <tr id='pt16.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_change_capital_one_author_one_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1825,7 +1860,7 @@
     
         <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_change_capital_one_author_two_books</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1834,7 +1869,7 @@
     
         <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_change_capital_one_author_two_books_coauthor</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1843,7 +1878,7 @@
     
         <tr id='pt16.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_change_capital_rename_co_author</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1852,7 +1887,7 @@
     
         <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_change_capital_rename_two_co_authors</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1861,7 +1896,7 @@
     
         <tr id='pt16.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_rename_author_emphasis_mark_onupload</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1870,7 +1905,7 @@
     
         <tr id='pt16.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
+                <div class='testcase'>TestEditAuthorsSmb - test_rename_capital_on_upload</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1879,6 +1914,102 @@
     
         <tr id='pt16.9' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestEditAuthorsSmb - test_rename_tag_emphasis_mark_onupload</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestEditBooksList</td>
+        <td class="text-center">19</td>
+        <td class="text-center">19</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c17', 19)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt17.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_booklist_xss</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.9' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_int</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -1886,7 +2017,7 @@
     
     
     
-        <tr id='pt16.10' class='hiddenRow bg-success'>
+        <tr id='pt17.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_ratings</div>
             </td>
@@ -1895,7 +2026,7 @@
     
     
     
-        <tr id='pt16.11' class='hiddenRow bg-success'>
+        <tr id='pt17.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_text</div>
             </td>
@@ -1904,7 +2035,7 @@
     
     
     
-        <tr id='pt16.12' class='hiddenRow bg-success'>
+        <tr id='pt17.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
             </td>
@@ -1913,7 +2044,7 @@
     
     
     
-        <tr id='pt16.13' class='hiddenRow bg-success'>
+        <tr id='pt17.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
             </td>
@@ -1922,7 +2053,7 @@
     
     
     
-        <tr id='pt16.14' class='hiddenRow bg-success'>
+        <tr id='pt17.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
             </td>
@@ -1931,7 +2062,7 @@
     
     
     
-        <tr id='pt16.15' class='hiddenRow bg-success'>
+        <tr id='pt17.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
             </td>
@@ -1940,7 +2071,7 @@
     
     
     
-        <tr id='pt16.16' class='hiddenRow bg-success'>
+        <tr id='pt17.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
             </td>
@@ -1949,7 +2080,7 @@
     
     
     
-        <tr id='pt16.17' class='hiddenRow bg-success'>
+        <tr id='pt17.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
@@ -1958,7 +2089,7 @@
     
     
     
-        <tr id='pt16.18' class='hiddenRow bg-success'>
+        <tr id='pt17.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
             </td>
@@ -1967,7 +2098,7 @@
     
     
     
-        <tr id='pt16.19' class='hiddenRow bg-success'>
+        <tr id='pt17.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_search_books_list</div>
             </td>
@@ -1985,31 +2116,31 @@
         <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 1)">Detail</a>
+            <a onclick="showClassDetail('c18', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et17.1" class="none bg-info">
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et17.1" class="popup_window test_output" style="display:block;">
+                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et17.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
+    elif len(results)&gt;19 and &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
 IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -2029,13 +2160,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 18)">Detail</a>
+            <a onclick="showClassDetail('c19', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_download_book</div>
             </td>
@@ -2044,7 +2175,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_author</div>
             </td>
@@ -2053,7 +2184,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt19.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_category</div>
             </td>
@@ -2062,7 +2193,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.4' class='hiddenRow bg-success'>
+        <tr id='pt19.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_comments</div>
             </td>
@@ -2071,7 +2202,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.5' class='hiddenRow bg-success'>
+        <tr id='pt19.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_bool</div>
             </td>
@@ -2080,7 +2211,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.6' class='hiddenRow bg-success'>
+        <tr id='pt19.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_categories</div>
             </td>
@@ -2089,7 +2220,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.7' class='hiddenRow bg-success'>
+        <tr id='pt19.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_float</div>
             </td>
@@ -2098,7 +2229,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.8' class='hiddenRow bg-success'>
+        <tr id='pt19.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_int</div>
             </td>
@@ -2107,7 +2238,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.9' class='hiddenRow bg-success'>
+        <tr id='pt19.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_rating</div>
             </td>
@@ -2116,7 +2247,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.10' class='hiddenRow bg-success'>
+        <tr id='pt19.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_single_select</div>
             </td>
@@ -2125,7 +2256,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.11' class='hiddenRow bg-success'>
+        <tr id='pt19.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_custom_text</div>
             </td>
@@ -2134,7 +2265,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.12' class='hiddenRow bg-success'>
+        <tr id='pt19.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
@@ -2143,7 +2274,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.13' class='hiddenRow bg-success'>
+        <tr id='pt19.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_publisher</div>
             </td>
@@ -2152,7 +2283,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.14' class='hiddenRow bg-success'>
+        <tr id='pt19.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
@@ -2161,7 +2292,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.15' class='hiddenRow bg-success'>
+        <tr id='pt19.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_series</div>
             </td>
@@ -2170,7 +2301,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.16' class='hiddenRow bg-success'>
+        <tr id='pt19.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_title</div>
             </td>
@@ -2179,7 +2310,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.17' class='hiddenRow bg-success'>
+        <tr id='pt19.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
             </td>
@@ -2188,7 +2319,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt18.18' class='hiddenRow bg-success'>
+        <tr id='pt19.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
@@ -2206,13 +2337,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 1)">Detail</a>
+            <a onclick="showClassDetail('c20', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
@@ -2230,13 +2361,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 3)">Detail</a>
+            <a onclick="showClassDetail('c21', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS</div>
             </td>
@@ -2245,7 +2376,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_SSL_setup_error</div>
             </td>
@@ -2254,7 +2385,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt20.3' class='hiddenRow bg-success'>
+        <tr id='pt21.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSTARTTLS - test_STARTTLS_resend_password</div>
             </td>
@@ -2272,13 +2403,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c21', 7)">Detail</a>
+            <a onclick="showClassDetail('c22', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt21.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_None_setup_error</div>
             </td>
@@ -2287,7 +2418,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_STARTTLS_setup_error</div>
             </td>
@@ -2296,7 +2427,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_logging_email</div>
             </td>
@@ -2305,7 +2436,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.4' class='hiddenRow bg-success'>
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_non_admin_user</div>
             </td>
@@ -2314,7 +2445,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.5' class='hiddenRow bg-success'>
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_SSL_only</div>
             </td>
@@ -2323,7 +2454,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.6' class='hiddenRow bg-success'>
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
@@ -2332,7 +2463,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt21.7' class='hiddenRow bg-success'>
+        <tr id='pt22.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_filepicker_two_file</div>
             </td>
@@ -2350,13 +2481,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c22', 6)">Detail</a>
+            <a onclick="showClassDetail('c23', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt22.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_file_embed_metadata</div>
             </td>
@@ -2365,7 +2496,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2374,7 +2505,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_check_metadata</div>
             </td>
@@ -2383,7 +2514,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_kepub_embed_metadata</div>
             </td>
@@ -2392,7 +2523,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_download_permissions_missing_file</div>
             </td>
@@ -2401,7 +2532,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_email_epub_embed_metadata</div>
             </td>
@@ -2419,13 +2550,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 4)">Detail</a>
+            <a onclick="showClassDetail('c24', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt24.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_file_embed_metadata</div>
             </td>
@@ -2434,7 +2565,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt24.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_convert_kepub_embed_metadata</div>
             </td>
@@ -2443,7 +2574,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt24.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_check_metadata</div>
             </td>
@@ -2452,7 +2583,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.4' class='hiddenRow bg-success'>
+        <tr id='pt24.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadataGdrive - test_download_kepub_embed_metadata</div>
             </td>
@@ -2470,13 +2601,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 1)">Detail</a>
+            <a onclick="showClassDetail('c25', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt25.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBookDatabase - test_invalid_book_path</div>
             </td>
@@ -2494,13 +2625,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c25', 2)">Detail</a>
+            <a onclick="showClassDetail('c26', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt25.1' class='hiddenRow bg-success'>
+        <tr id='pt26.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_column</div>
             </td>
@@ -2509,7 +2640,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt25.2' class='hiddenRow bg-success'>
+        <tr id='pt26.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestErrorReadColumn - test_invalid_custom_read_column</div>
             </td>
@@ -2527,13 +2658,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c26', 3)">Detail</a>
+            <a onclick="showClassDetail('c27', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt26.1' class='hiddenRow bg-success'>
+        <tr id='pt27.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_limited_file</div>
             </td>
@@ -2542,19 +2673,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="st26.2" class="none bg-warning">
+        <tr id="st27.2" class="none bg-warning">
             <td>
                 <div class='testcase'>TestFilePicker - test_filepicker_new_file</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st26.2')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st27.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st26.2" class="popup_window test_output" style="display:none;">
+                <div id="div_st27.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st26.2').style.display='none'"><span
+                                onclick="document.getElementById('div_st27.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -2568,7 +2699,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt26.3' class='hiddenRow bg-success'>
+        <tr id='pt27.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestFilePicker - test_two_filepickers</div>
             </td>
@@ -2586,13 +2717,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c27', 1)">Detail</a>
+            <a onclick="showClassDetail('c28', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt27.1' class='hiddenRow bg-success'>
+        <tr id='pt28.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSetupGdrive - test_config_gdrive</div>
             </td>
@@ -2610,13 +2741,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c28', 3)">Detail</a>
+            <a onclick="showClassDetail('c29', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt28.1' class='hiddenRow bg-success'>
+        <tr id='pt29.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page</div>
             </td>
@@ -2625,7 +2756,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.2' class='hiddenRow bg-success'>
+        <tr id='pt29.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_author_page_invalid</div>
             </td>
@@ -2634,7 +2765,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt28.3' class='hiddenRow bg-success'>
+        <tr id='pt29.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestGoodreads - test_goodreads_about</div>
             </td>
@@ -2652,13 +2783,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c29', 12)">Detail</a>
+            <a onclick="showClassDetail('c30', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt29.1' class='hiddenRow bg-success'>
+        <tr id='pt30.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_book_download</div>
             </td>
@@ -2667,7 +2798,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.2' class='hiddenRow bg-success'>
+        <tr id='pt30.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_about</div>
             </td>
@@ -2676,7 +2807,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.3' class='hiddenRow bg-success'>
+        <tr id='pt30.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_limit</div>
             </td>
@@ -2685,7 +2816,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.4' class='hiddenRow bg-success'>
+        <tr id='pt30.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_no_download</div>
             </td>
@@ -2694,7 +2825,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.5' class='hiddenRow bg-success'>
+        <tr id='pt30.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
@@ -2703,7 +2834,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id='pt30.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
@@ -2712,7 +2843,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.7' class='hiddenRow bg-success'>
+        <tr id='pt30.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
@@ -2721,7 +2852,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.8' class='hiddenRow bg-success'>
+        <tr id='pt30.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_invalid</div>
             </td>
@@ -2730,7 +2861,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.9' class='hiddenRow bg-success'>
+        <tr id='pt30.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
@@ -2739,7 +2870,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.10' class='hiddenRow bg-success'>
+        <tr id='pt30.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
@@ -2748,7 +2879,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.11' class='hiddenRow bg-success'>
+        <tr id='pt30.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_unchanged</div>
             </td>
@@ -2757,7 +2888,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt29.12' class='hiddenRow bg-success'>
+        <tr id='pt30.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
@@ -2767,30 +2898,50 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 6)">Detail</a>
+            <a onclick="showClassDetail('c31', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt30.1' class='hiddenRow bg-success'>
+        <tr id="ft31.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_download_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 482, in test_download_cover
+    self.assertEqual(count_files(thumbnail_cache_path), (BOOK_COUNT+10)*2)
+AssertionError: 4590 != 3060</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt30.2' class='hiddenRow bg-success'>
+        <tr id='pt31.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_multi_user</div>
             </td>
@@ -2799,7 +2950,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.3' class='hiddenRow bg-success'>
+        <tr id='pt31.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_kobo_sync_selected_shelves</div>
             </td>
@@ -2808,7 +2959,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.4' class='hiddenRow bg-success'>
+        <tr id='pt31.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_changed_book</div>
             </td>
@@ -2817,7 +2968,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.5' class='hiddenRow bg-success'>
+        <tr id='pt31.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_reading_state</div>
             </td>
@@ -2826,7 +2977,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.6' class='hiddenRow bg-success'>
+        <tr id='pt31.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
@@ -2844,13 +2995,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c31', 13)">Detail</a>
+            <a onclick="showClassDetail('c32', 13)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id='pt32.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
             </td>
@@ -2859,7 +3010,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.2' class='hiddenRow bg-success'>
+        <tr id='pt32.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
@@ -2868,7 +3019,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.3' class='hiddenRow bg-success'>
+        <tr id='pt32.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
             </td>
@@ -2877,7 +3028,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.4' class='hiddenRow bg-success'>
+        <tr id='pt32.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
             </td>
@@ -2886,7 +3037,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.5' class='hiddenRow bg-success'>
+        <tr id='pt32.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
             </td>
@@ -2895,7 +3046,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.6' class='hiddenRow bg-success'>
+        <tr id='pt32.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
@@ -2904,7 +3055,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.7' class='hiddenRow bg-success'>
+        <tr id='pt32.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
             </td>
@@ -2913,7 +3064,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.8' class='hiddenRow bg-success'>
+        <tr id='pt32.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
             </td>
@@ -2922,7 +3073,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.9' class='hiddenRow bg-success'>
+        <tr id='pt32.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_about</div>
             </td>
@@ -2931,7 +3082,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.10' class='hiddenRow bg-success'>
+        <tr id='pt32.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
             </td>
@@ -2940,7 +3091,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.11' class='hiddenRow bg-success'>
+        <tr id='pt32.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
             </td>
@@ -2949,7 +3100,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.12' class='hiddenRow bg-success'>
+        <tr id='pt32.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_anonymous</div>
             </td>
@@ -2958,7 +3109,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt31.13' class='hiddenRow bg-success'>
+        <tr id='pt32.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
             </td>
@@ -2976,13 +3127,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c32', 5)">Detail</a>
+            <a onclick="showClassDetail('c33', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id='pt33.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_login_limit</div>
             </td>
@@ -2991,7 +3142,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.2' class='hiddenRow bg-success'>
+        <tr id='pt33.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_opds_limit</div>
             </td>
@@ -3000,7 +3151,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.3' class='hiddenRow bg-success'>
+        <tr id='pt33.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_password_strength</div>
             </td>
@@ -3009,7 +3160,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.4' class='hiddenRow bg-success'>
+        <tr id='pt33.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_redis_backend</div>
             </td>
@@ -3018,7 +3169,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt32.5' class='hiddenRow bg-success'>
+        <tr id='pt33.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_register_limit</div>
             </td>
@@ -3036,13 +3187,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 16)">Detail</a>
+            <a onclick="showClassDetail('c34', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt33.1' class='hiddenRow bg-success'>
+        <tr id='pt34.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_author_sort</div>
             </td>
@@ -3051,7 +3202,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.2' class='hiddenRow bg-success'>
+        <tr id='pt34.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_download_sort</div>
             </td>
@@ -3060,7 +3211,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.3' class='hiddenRow bg-success'>
+        <tr id='pt34.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_format_sort</div>
             </td>
@@ -3069,7 +3220,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id='pt34.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_formats_click_none</div>
             </td>
@@ -3078,7 +3229,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.5' class='hiddenRow bg-success'>
+        <tr id='pt34.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_lang_sort</div>
             </td>
@@ -3087,7 +3238,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.6' class='hiddenRow bg-success'>
+        <tr id='pt34.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_language_click_none</div>
             </td>
@@ -3096,7 +3247,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.7' class='hiddenRow bg-success'>
+        <tr id='pt34.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_authors_all_links</div>
             </td>
@@ -3105,7 +3256,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.8' class='hiddenRow bg-success'>
+        <tr id='pt34.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_series_all_links</div>
             </td>
@@ -3114,7 +3265,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.9' class='hiddenRow bg-success'>
+        <tr id='pt34.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_click_none</div>
             </td>
@@ -3123,7 +3274,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.10' class='hiddenRow bg-success'>
+        <tr id='pt34.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_sort</div>
             </td>
@@ -3132,7 +3283,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.11' class='hiddenRow bg-success'>
+        <tr id='pt34.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_click_none</div>
             </td>
@@ -3141,7 +3292,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.12' class='hiddenRow bg-success'>
+        <tr id='pt34.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_ratings_sort</div>
             </td>
@@ -3150,7 +3301,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.13' class='hiddenRow bg-success'>
+        <tr id='pt34.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_click_none</div>
             </td>
@@ -3159,7 +3310,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.14' class='hiddenRow bg-success'>
+        <tr id='pt34.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_series_sort</div>
             </td>
@@ -3168,7 +3319,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.15' class='hiddenRow bg-success'>
+        <tr id='pt34.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_click_none</div>
             </td>
@@ -3177,7 +3328,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt33.16' class='hiddenRow bg-success'>
+        <tr id='pt34.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_tags_sort</div>
             </td>
@@ -3195,13 +3346,13 @@ IndexError: list index out of range</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c34', 9)">Detail</a>
+            <a onclick="showClassDetail('c35', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt34.1' class='hiddenRow bg-success'>
+        <tr id='pt35.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_access_log_recover</div>
             </td>
@@ -3210,7 +3361,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.2' class='hiddenRow bg-success'>
+        <tr id='pt35.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debug_log</div>
             </td>
@@ -3219,7 +3370,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.3' class='hiddenRow bg-success'>
+        <tr id='pt35.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_debuginfo_download</div>
             </td>
@@ -3228,7 +3379,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.4' class='hiddenRow bg-success'>
+        <tr id='pt35.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_failed_login</div>
             </td>
@@ -3237,19 +3388,19 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="st34.5" class="none bg-warning">
+        <tr id="st35.5" class="none bg-warning">
             <td>
                 <div class='testcase'>TestLogging - test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st34.5')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st35.5')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st34.5" class="popup_window test_output" style="display:none;">
+                <div id="div_st35.5" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st34.5').style.display='none'"><span
+                                onclick="document.getElementById('div_st35.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -3263,7 +3414,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.6' class='hiddenRow bg-success'>
+        <tr id='pt35.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logbook_download</div>
             </td>
@@ -3272,7 +3423,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.7' class='hiddenRow bg-success'>
+        <tr id='pt35.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_change</div>
             </td>
@@ -3281,7 +3432,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.8' class='hiddenRow bg-success'>
+        <tr id='pt35.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logfile_recover</div>
             </td>
@@ -3290,7 +3441,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.9' class='hiddenRow bg-success'>
+        <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogging - test_logviewer</div>
             </td>
@@ -3300,21 +3451,21 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestLogin</td>
         <td class="text-center">19</td>
-        <td class="text-center">18</td>
-        <td class="text-center">1</td>
+        <td class="text-center">19</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 19)">Detail</a>
+            <a onclick="showClassDetail('c36', 19)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt35.1' class='hiddenRow bg-success'>
+        <tr id='pt36.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_digest_login</div>
             </td>
@@ -3323,7 +3474,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.2' class='hiddenRow bg-success'>
+        <tr id='pt36.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_capital_letters_user_unicode_password</div>
             </td>
@@ -3332,7 +3483,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.3' class='hiddenRow bg-success'>
+        <tr id='pt36.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_cookie_steal</div>
             </td>
@@ -3341,7 +3492,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.4' class='hiddenRow bg-success'>
+        <tr id='pt36.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_delete_admin</div>
             </td>
@@ -3350,7 +3501,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.5' class='hiddenRow bg-success'>
+        <tr id='pt36.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_empty_password</div>
             </td>
@@ -3359,7 +3510,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.6' class='hiddenRow bg-success'>
+        <tr id='pt36.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_locale_select</div>
             </td>
@@ -3368,7 +3519,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.7' class='hiddenRow bg-success'>
+        <tr id='pt36.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_log_hack</div>
             </td>
@@ -3377,7 +3528,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.8' class='hiddenRow bg-success'>
+        <tr id='pt36.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
@@ -3386,7 +3537,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.9' class='hiddenRow bg-success'>
+        <tr id='pt36.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_remember_me</div>
             </td>
@@ -3395,7 +3546,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.10' class='hiddenRow bg-success'>
+        <tr id='pt36.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_rename_user</div>
             </td>
@@ -3404,7 +3555,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.11' class='hiddenRow bg-success'>
+        <tr id='pt36.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_unicode_user_space_end_password</div>
             </td>
@@ -3413,7 +3564,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.12' class='hiddenRow bg-success'>
+        <tr id='pt36.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_login_user_with_space_password_end_space</div>
             </td>
@@ -3422,7 +3573,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.13' class='hiddenRow bg-success'>
+        <tr id='pt36.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_magic_remote_login</div>
             </td>
@@ -3431,7 +3582,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.14' class='hiddenRow bg-success'>
+        <tr id='pt36.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
@@ -3440,7 +3591,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.15' class='hiddenRow bg-success'>
+        <tr id='pt36.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_password_policy</div>
             </td>
@@ -3449,7 +3600,7 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt35.16' class='hiddenRow bg-success'>
+        <tr id='pt36.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login</div>
             </td>
@@ -3458,36 +3609,16 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft35.17" class="none bg-danger">
+        <tr id='pt36.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_multi_user</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft35.17')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft35.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft35.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 575, in test_proxy_login_multi_user
-    self.assertTrue(&#39;&lt;input type=&#34;text&#34; class=&#34;form-control&#34; name=&#34;name&#34; id=&#34;name&#34; value=&#34;new_user1&#34; autocomplete=&#34;off&#34;&gt;&#39; in resp.text)
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='pt35.18' class='hiddenRow bg-success'>
+        <tr id='pt36.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_proxy_login_opds</div>
             </td>
@@ -3496,7 +3627,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt35.19' class='hiddenRow bg-success'>
+        <tr id='pt36.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_robots</div>
             </td>
@@ -3514,13 +3645,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c36', 2)">Detail</a>
+            <a onclick="showClassDetail('c37', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt36.1' class='hiddenRow bg-success'>
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
@@ -3529,7 +3660,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt36.2' class='hiddenRow bg-success'>
+        <tr id='pt37.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -3547,13 +3678,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 2)">Detail</a>
+            <a onclick="showClassDetail('c38', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt37.1' class='hiddenRow bg-success'>
+        <tr id='pt38.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -3562,7 +3693,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt37.2' class='hiddenRow bg-success'>
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -3580,13 +3711,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 26)">Detail</a>
+            <a onclick="showClassDetail('c39', 26)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_guest</div>
             </td>
@@ -3595,7 +3726,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.2' class='hiddenRow bg-success'>
+        <tr id='pt39.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_user</div>
             </td>
@@ -3604,7 +3735,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.3' class='hiddenRow bg-success'>
+        <tr id='pt39.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -3613,7 +3744,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.4' class='hiddenRow bg-success'>
+        <tr id='pt39.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -3622,7 +3753,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.5' class='hiddenRow bg-success'>
+        <tr id='pt39.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -3631,7 +3762,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.6' class='hiddenRow bg-success'>
+        <tr id='pt39.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -3640,7 +3771,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.7' class='hiddenRow bg-success'>
+        <tr id='pt39.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -3649,7 +3780,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.8' class='hiddenRow bg-success'>
+        <tr id='pt39.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -3658,7 +3789,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.9' class='hiddenRow bg-success'>
+        <tr id='pt39.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -3667,7 +3798,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.10' class='hiddenRow bg-success'>
+        <tr id='pt39.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -3676,7 +3807,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.11' class='hiddenRow bg-success'>
+        <tr id='pt39.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -3685,7 +3816,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.12' class='hiddenRow bg-success'>
+        <tr id='pt39.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -3694,7 +3825,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.13' class='hiddenRow bg-success'>
+        <tr id='pt39.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -3703,7 +3834,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.14' class='hiddenRow bg-success'>
+        <tr id='pt39.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -3712,7 +3843,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.15' class='hiddenRow bg-success'>
+        <tr id='pt39.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -3721,7 +3852,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.16' class='hiddenRow bg-success'>
+        <tr id='pt39.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -3730,7 +3861,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.17' class='hiddenRow bg-success'>
+        <tr id='pt39.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -3739,7 +3870,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.18' class='hiddenRow bg-success'>
+        <tr id='pt39.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -3748,7 +3879,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.19' class='hiddenRow bg-success'>
+        <tr id='pt39.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -3757,7 +3888,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.20' class='hiddenRow bg-success'>
+        <tr id='pt39.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -3766,7 +3897,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.21' class='hiddenRow bg-success'>
+        <tr id='pt39.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -3775,7 +3906,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.22' class='hiddenRow bg-success'>
+        <tr id='pt39.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
@@ -3784,7 +3915,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.23' class='hiddenRow bg-success'>
+        <tr id='pt39.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -3793,7 +3924,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.24' class='hiddenRow bg-success'>
+        <tr id='pt39.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -3802,7 +3933,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.25' class='hiddenRow bg-success'>
+        <tr id='pt39.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -3811,7 +3942,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt38.26' class='hiddenRow bg-success'>
+        <tr id='pt39.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -3829,66 +3960,17 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt39.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
             <a onclick="showClassDetail('c40', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et40.1" class="none bg-info">
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_pip_install</div>
+                <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et40.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et40.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et40.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 14, in &lt;module&gt;
-    from build_release import make_release
-ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4445,11 +4527,11 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnailsEnv</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4459,21 +4541,41 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id="ft49.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft49.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft49.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft49.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnail_env.py&#34;, line 72, in test_cover_cache_env_on_database_change
+    self.assertEqual(count_files(thumbnail_cache_path), 110*2)
+AssertionError: 330 != 220</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4492,29 +4594,89 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt50.2' class='hiddenRow bg-success'>
+        <tr id="ft50.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 192, in test_cache_of_deleted_book
+    self.assertEqual(book_thumbnail_reference, 2)
+AssertionError: 3 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.3' class='hiddenRow bg-success'>
+        <tr id="ft50.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 89, in test_cover_cache_on_database_change
+    self.assertEqual(count_files(thumbnail_cache_path), 110*2)
+AssertionError: 333 != 220</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.4' class='hiddenRow bg-success'>
+        <tr id="ft50.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 131, in test_cover_change_on_upload_new_cover
+    self.assertEqual(110*2, count_files(thumbnail_cache_path))
+AssertionError: 220 != 333</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4528,29 +4690,89 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt50.6' class='hiddenRow bg-success'>
+        <tr id="ft50.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 253, in test_cover_on_upload_book
+    self.assertEqual(book_thumbnail_reference+2, count_files(thumbnail_cache_path))
+AssertionError: 335 != 336</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.7' class='hiddenRow bg-success'>
+        <tr id="ft50.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 169, in test_remove_cover_from_cache
+    self.assertEqual(book_thumbnail_reference - 2, count_files(thumbnail_cache_path))
+AssertionError: 334 != 333</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt50.8' class='hiddenRow bg-success'>
+        <tr id="ft50.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft50.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft50.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 281, in test_sideloaded_book
+    self.assertEqual(book_thumbnail_reference, count_files(thumbnail_cache_path))
+AssertionError: 300 != 336</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4559,8 +4781,8 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     <tr id="su" class="failClass">
         <td>TestUpdater</td>
         <td class="text-center">9</td>
-        <td class="text-center">6</td>
-        <td class="text-center">2</td>
+        <td class="text-center">7</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4606,40 +4828,40 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt51.5' class='hiddenRow bg-success'>
+        <tr id="ft51.5" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id="ft51.6" class="none bg-danger">
-            <td>
-                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
-            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.6')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.5')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft51.6" class="popup_window test_output" style="display:block;">
+                <div id="div_ft51.5" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft51.6').style.display='none'"><span
+                                onclick="document.getElementById('div_ft51.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 347, in test_perform_update_stable_errors
-    self.assertTrue(&#39;Connection&#39; in self.check_element_on_page((By.ID, &#34;DialogContent&#34;)).text)
-AssertionError: False is not true</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 375, in test_perform_update
+    self.assertEqual(20, count_files(thumbnail_cache_path))
+AssertionError: 20 != 30</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <!--css div popup end-->
             </td>
+        </tr>
+    
+    
+    
+        <tr id='pt51.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4679,26 +4901,59 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft51.9" class="none bg-danger">
+        <tr id='pt51.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="failClass">
+        <td>TestUploadAudio</td>
+        <td class="text-center">12</td>
+        <td class="text-center">6</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c52', 12)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt52.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_aac</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft52.2" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_aiff</div>
+            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.9')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.2')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft51.9" class="popup_window test_output" style="display:block;">
+                <div id="div_ft52.2" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft51.9').style.display='none'"><span
+                                onclick="document.getElementById('div_ft52.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 431, in test_update_write_protect
-    self.assertTrue(self.check_element_on_page((By.ID, &#34;message&#34;)))
-AssertionError: False is not true</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 242, in test_upload_aiff
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -4707,23 +4962,213 @@ AssertionError: False is not true</pre>
         </tr>
     
     
+    
+        <tr id='pt52.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_asf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft52.4" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_flac</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 370, in test_upload_flac
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt52.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_m4a</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt52.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_m4b</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft52.7" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_mp3</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 111, in test_upload_mp3
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft52.8" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_mp4</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 516, in test_upload_mp4
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft52.9" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_oggvorbis</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 307, in test_upload_oggvorbis
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt52.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_ogv</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft52.11" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_opus</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.11')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_audio.py&#34;, line 646, in test_upload_opus
+    self.assertAlmostEqual(diff(BytesIO(ref_picture), BytesIO(cover_image), delete_diff_file=True), 0.007, delta=0.003)
+AssertionError: 0.01706571669701246 != 0.007 within 0.003 delta (0.01006571669701246 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt52.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestUploadAudio - test_upload_wav</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadEPubs</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c52', 6)">Detail</a>
+            <a onclick="showClassDetail('c53', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt52.1' class='hiddenRow bg-success'>
+        <tr id='pt53.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_comments</div>
             </td>
@@ -4732,7 +5177,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.2' class='hiddenRow bg-success'>
+        <tr id='pt53.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -4741,16 +5186,36 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id="ft53.3" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft53.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft53.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft53.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 213, in test_upload_epub_cover_formats
+    self.assertAlmostEqual(diff(BytesIO(original), BytesIO(cover_image), delete_diff_file=True), 0.0058,
+AssertionError: 0.006623550004797241 != 0.0058 within 0.0001 delta (0.0008235500047972417 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id='pt53.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -4759,7 +5224,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id='pt53.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -4768,7 +5233,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id='pt53.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -4786,13 +5251,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c53', 18)">Detail</a>
+            <a onclick="showClassDetail('c54', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt53.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -4801,7 +5266,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -4810,7 +5275,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -4819,7 +5284,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -4828,7 +5293,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -4837,7 +5302,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -4846,7 +5311,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.7' class='hiddenRow bg-success'>
+        <tr id='pt54.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -4855,7 +5320,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.8' class='hiddenRow bg-success'>
+        <tr id='pt54.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -4864,7 +5329,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.9' class='hiddenRow bg-success'>
+        <tr id='pt54.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -4873,7 +5338,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.10' class='hiddenRow bg-success'>
+        <tr id='pt54.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -4882,7 +5347,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.11' class='hiddenRow bg-success'>
+        <tr id='pt54.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -4891,7 +5356,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.12' class='hiddenRow bg-success'>
+        <tr id='pt54.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -4900,7 +5365,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.13' class='hiddenRow bg-success'>
+        <tr id='pt54.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -4909,7 +5374,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.14' class='hiddenRow bg-success'>
+        <tr id='pt54.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -4918,7 +5383,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.15' class='hiddenRow bg-success'>
+        <tr id='pt54.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -4927,7 +5392,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.16' class='hiddenRow bg-success'>
+        <tr id='pt54.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -4936,7 +5401,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.17' class='hiddenRow bg-success'>
+        <tr id='pt54.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -4945,7 +5410,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt53.18' class='hiddenRow bg-success'>
+        <tr id='pt54.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -4963,13 +5428,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c54', 1)">Detail</a>
+            <a onclick="showClassDetail('c55', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt54.1' class='hiddenRow bg-success'>
+        <tr id='pt55.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -4987,13 +5452,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c55', 21)">Detail</a>
+            <a onclick="showClassDetail('c56', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt55.1' class='hiddenRow bg-success'>
+        <tr id='pt56.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -5002,7 +5467,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.2' class='hiddenRow bg-success'>
+        <tr id='pt56.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -5011,7 +5476,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.3' class='hiddenRow bg-success'>
+        <tr id='pt56.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -5020,7 +5485,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.4' class='hiddenRow bg-success'>
+        <tr id='pt56.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -5029,7 +5494,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.5' class='hiddenRow bg-success'>
+        <tr id='pt56.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -5038,7 +5503,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.6' class='hiddenRow bg-success'>
+        <tr id='pt56.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -5047,7 +5512,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.7' class='hiddenRow bg-success'>
+        <tr id='pt56.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -5056,7 +5521,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.8' class='hiddenRow bg-success'>
+        <tr id='pt56.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -5065,7 +5530,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.9' class='hiddenRow bg-success'>
+        <tr id='pt56.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -5074,7 +5539,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.10' class='hiddenRow bg-success'>
+        <tr id='pt56.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -5083,7 +5548,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.11' class='hiddenRow bg-success'>
+        <tr id='pt56.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -5092,7 +5557,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.12' class='hiddenRow bg-success'>
+        <tr id='pt56.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -5101,7 +5566,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.13' class='hiddenRow bg-success'>
+        <tr id='pt56.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -5110,7 +5575,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.14' class='hiddenRow bg-success'>
+        <tr id='pt56.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -5119,7 +5584,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.15' class='hiddenRow bg-success'>
+        <tr id='pt56.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -5128,7 +5593,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.16' class='hiddenRow bg-success'>
+        <tr id='pt56.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -5137,7 +5602,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.17' class='hiddenRow bg-success'>
+        <tr id='pt56.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -5146,7 +5611,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.18' class='hiddenRow bg-success'>
+        <tr id='pt56.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -5155,7 +5620,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.19' class='hiddenRow bg-success'>
+        <tr id='pt56.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -5164,7 +5629,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.20' class='hiddenRow bg-success'>
+        <tr id='pt56.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -5173,7 +5638,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt55.21' class='hiddenRow bg-success'>
+        <tr id='pt56.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -5191,13 +5656,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c56', 35)">Detail</a>
+            <a onclick="showClassDetail('c57', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt56.1' class='hiddenRow bg-success'>
+        <tr id='pt57.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -5206,7 +5671,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.2' class='hiddenRow bg-success'>
+        <tr id='pt57.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -5215,7 +5680,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.3' class='hiddenRow bg-success'>
+        <tr id='pt57.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -5224,7 +5689,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.4' class='hiddenRow bg-success'>
+        <tr id='pt57.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -5233,7 +5698,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.5' class='hiddenRow bg-success'>
+        <tr id='pt57.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -5242,7 +5707,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.6' class='hiddenRow bg-success'>
+        <tr id='pt57.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -5251,7 +5716,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.7' class='hiddenRow bg-success'>
+        <tr id='pt57.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -5260,7 +5725,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.8' class='hiddenRow bg-success'>
+        <tr id='pt57.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -5269,7 +5734,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.9' class='hiddenRow bg-success'>
+        <tr id='pt57.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -5278,7 +5743,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.10' class='hiddenRow bg-success'>
+        <tr id='pt57.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -5287,7 +5752,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.11' class='hiddenRow bg-success'>
+        <tr id='pt57.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -5296,7 +5761,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.12' class='hiddenRow bg-success'>
+        <tr id='pt57.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -5305,7 +5770,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.13' class='hiddenRow bg-success'>
+        <tr id='pt57.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -5314,7 +5779,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.14' class='hiddenRow bg-success'>
+        <tr id='pt57.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -5323,7 +5788,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.15' class='hiddenRow bg-success'>
+        <tr id='pt57.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -5332,7 +5797,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.16' class='hiddenRow bg-success'>
+        <tr id='pt57.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -5341,7 +5806,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.17' class='hiddenRow bg-success'>
+        <tr id='pt57.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -5350,7 +5815,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.18' class='hiddenRow bg-success'>
+        <tr id='pt57.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -5359,7 +5824,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.19' class='hiddenRow bg-success'>
+        <tr id='pt57.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -5368,7 +5833,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.20' class='hiddenRow bg-success'>
+        <tr id='pt57.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -5377,7 +5842,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.21' class='hiddenRow bg-success'>
+        <tr id='pt57.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -5386,7 +5851,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.22' class='hiddenRow bg-success'>
+        <tr id='pt57.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -5395,7 +5860,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.23' class='hiddenRow bg-success'>
+        <tr id='pt57.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -5404,7 +5869,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.24' class='hiddenRow bg-success'>
+        <tr id='pt57.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -5413,7 +5878,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.25' class='hiddenRow bg-success'>
+        <tr id='pt57.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5422,7 +5887,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.26' class='hiddenRow bg-success'>
+        <tr id='pt57.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5431,7 +5896,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.27' class='hiddenRow bg-success'>
+        <tr id='pt57.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5440,7 +5905,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.28' class='hiddenRow bg-success'>
+        <tr id='pt57.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -5449,7 +5914,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.29' class='hiddenRow bg-success'>
+        <tr id='pt57.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -5458,7 +5923,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.30' class='hiddenRow bg-success'>
+        <tr id='pt57.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -5467,7 +5932,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.31' class='hiddenRow bg-success'>
+        <tr id='pt57.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -5476,7 +5941,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.32' class='hiddenRow bg-success'>
+        <tr id='pt57.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -5485,7 +5950,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.33' class='hiddenRow bg-success'>
+        <tr id='pt57.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -5494,7 +5959,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.34' class='hiddenRow bg-success'>
+        <tr id='pt57.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -5503,7 +5968,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt56.35' class='hiddenRow bg-success'>
+        <tr id='pt57.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -5521,13 +5986,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c57', 16)">Detail</a>
+            <a onclick="showClassDetail('c58', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt57.1' class='hiddenRow bg-success'>
+        <tr id='pt58.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -5536,7 +6001,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.2' class='hiddenRow bg-success'>
+        <tr id='pt58.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -5545,7 +6010,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.3' class='hiddenRow bg-success'>
+        <tr id='pt58.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -5554,7 +6019,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.4' class='hiddenRow bg-success'>
+        <tr id='pt58.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -5563,7 +6028,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.5' class='hiddenRow bg-success'>
+        <tr id='pt58.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -5572,7 +6037,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.6' class='hiddenRow bg-success'>
+        <tr id='pt58.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -5581,7 +6046,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.7' class='hiddenRow bg-success'>
+        <tr id='pt58.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -5590,7 +6055,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.8' class='hiddenRow bg-success'>
+        <tr id='pt58.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -5599,7 +6064,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.9' class='hiddenRow bg-success'>
+        <tr id='pt58.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -5608,7 +6073,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.10' class='hiddenRow bg-success'>
+        <tr id='pt58.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -5617,7 +6082,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.11' class='hiddenRow bg-success'>
+        <tr id='pt58.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -5626,7 +6091,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.12' class='hiddenRow bg-success'>
+        <tr id='pt58.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -5635,7 +6100,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.13' class='hiddenRow bg-success'>
+        <tr id='pt58.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -5644,7 +6109,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.14' class='hiddenRow bg-success'>
+        <tr id='pt58.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -5653,7 +6118,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.15' class='hiddenRow bg-success'>
+        <tr id='pt58.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -5662,7 +6127,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt57.16' class='hiddenRow bg-success'>
+        <tr id='pt58.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -5673,11 +6138,11 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>499</td>
-        <td>484</td>
+        <td>517</td>
+        <td>488</td>
+        <td>17</td>
         <td>3</td>
-        <td>2</td>
-        <td>10</td>
+        <td>9</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -5705,7 +6170,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.5.0-41-generic #41~22.04.2-Ubuntu SMP PREEMPT_DYNAMIC Mon Jun  3 11:32:55 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-40-generic #40~22.04.3-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 30 17:30:19 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5728,8 +6193,8 @@ AssertionError: False is not true</pre>
             </tr>
           
             <tr>
-              <th>Babel</th>
-              <td>2.15.0</td>
+              <th>babel</th>
+              <td>2.16.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5741,13 +6206,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>chardet</th>
-              <td>4.0.0</td>
+              <td>5.2.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Flask</th>
-              <td>2.3.3</td>
+              <td>3.0.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5758,14 +6223,14 @@ AssertionError: False is not true</pre>
             </tr>
           
             <tr>
-              <th>Flask-Limiter</th>
-              <td>3.5.1</td>
+              <th>Flask-HTTPAuth</th>
+              <td>4.8.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
-              <th>Flask-Login</th>
-              <td>0.6.3</td>
+              <th>Flask-Limiter</th>
+              <td>3.8.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5843,7 +6308,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.31</td>
+              <td>2.0.32</td>
               <td>Basic</td>
             </tr>
           
@@ -5867,13 +6332,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>2.3.8</td>
+              <td>3.0.3</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -5891,19 +6356,19 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -5921,19 +6386,19 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -5951,19 +6416,19 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -5981,13 +6446,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6005,13 +6470,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>py7zr</th>
-              <td>0.21.1</td>
+              <td>0.22.0</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6029,13 +6494,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6047,7 +6512,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6065,13 +6530,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6089,7 +6554,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6107,19 +6572,19 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.137.0</td>
+              <td>2.141.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6137,13 +6602,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.19.0</td>
+              <td>1.20.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.1</td>
+              <td>6.0.2</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6201,6 +6666,12 @@ AssertionError: False is not true</pre>
               <td>TestOAuthLogin</td>
             </tr>
           
+            <tr>
+              <th>mutagen</th>
+              <td>1.47.0</td>
+              <td>TestUploadAudio</td>
+            </tr>
+          
           </tbody>
         </table>
       </div>
@@ -6209,7 +6680,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(484, 3, 2, 10);
+    drawCircle(488, 17, 3, 9);
     showCase(5);
 </script>
 

@@ -17,7 +17,7 @@
 from markupsafe import escape
 
 from flask import Blueprint, jsonify
-from flask_login import login_required, current_user
+from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import format_datetime
 from babel.units import format_unit
@@ -26,6 +26,7 @@ from . import logger
 from .render_template import render_title_template
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, STAT_ENDED, \
     STAT_CANCELLED
+from .usermanagement import user_login_required
 
 tasks = Blueprint('tasks', __name__)
 
@@ -33,14 +34,14 @@ log = logger.create()
 
 
 @tasks.route("/ajax/emailstat")
-@login_required
+@user_login_required
 def get_email_status_json():
     tasks = WorkerThread.get_instance().tasks
     return jsonify(render_task_status(tasks))
 
 
 @tasks.route("/tasks")
-@login_required
+@user_login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     return render_title_template('tasks.html', title=_("Tasks"), page="tasks")
@@ -81,6 +82,7 @@ def render_task_status(tasklist):
             ret['task_id'] = task.id
             ret['stat'] = task.stat
             ret['is_cancellable'] = task.is_cancellable
+            ret['error'] = task.error
 
             rendered_tasklist.append(ret)
 

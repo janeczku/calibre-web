@@ -20,9 +20,10 @@
 import os
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
+from weakref import WeakSet
 
 from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
@@ -40,16 +41,14 @@ except ImportError:
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
-from flask_login import current_user
+from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale
 from flask import flash
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
-
-from weakref import WeakSet
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -379,10 +378,10 @@ class Books(Base):
     title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')
     sort = Column(String(collation='NOCASE'))
     author_sort = Column(String(collation='NOCASE'))
-    timestamp = Column(TIMESTAMP, default=datetime.utcnow)
+    timestamp = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     pubdate = Column(TIMESTAMP, default=DEFAULT_PUBDATE)
     series_index = Column(String, nullable=False, default="1.0")
-    last_modified = Column(TIMESTAMP, default=datetime.utcnow)
+    last_modified = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     path = Column(String, default="", nullable=False)
     has_cover = Column(Integer, default=0)
     uuid = Column(String)
@@ -876,10 +875,11 @@ class CalibreDB:
             authors_ordered = list()
             # error = False
             for auth in sort_authors:
-                results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
+                auth = strip_whitespaces(auth)
+                results = self.session.query(Authors).filter(Authors.sort == auth).all()
                 # ToDo: How to handle not found author name
                 if not len(results):
-                    log.error("Author {} not found to display name in right order".format(auth.strip()))
+                    log.error("Author {} not found to display name in right order".format(auth))
                     # error = True
                     break
                 for r in results:
@@ -919,7 +919,7 @@ class CalibreDB:
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     def search_query(self, term, config, *join):
-        term.strip().lower()
+        strip_whitespaces(term).lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         author_terms = re.split("[, ]+", term)
@@ -1027,13 +1027,13 @@ class CalibreDB:
             if match:
                 prep = match.group(1)
                 title = title[len(prep):] + ', ' + prep
-            return title.strip()
+            return strip_whitespaces(title)
 
         try:
-            # sqlalchemy <1.4.24
+            # sqlalchemy <1.4.24 and sqlalchemy 2.0
             conn = conn or self.session.connection().connection.driver_connection
         except AttributeError:
-            # sqlalchemy >1.4.24 and sqlalchemy 2.0
+            # sqlalchemy >1.4.24
             conn = conn or self.session.connection().connection.connection
         try:
             conn.create_function("title_sort", 1, _title_sort)

@@ -160,15 +160,21 @@ $(document).ready(function() {
 
 $(".session").click(function() {
     window.sessionStorage.setItem("back", window.location.pathname);
+    window.sessionStorage.setItem("search", window.location.search);
 });
 
 $("#back").click(function() {
    var loc = sessionStorage.getItem("back");
+   var param = sessionStorage.getItem("search");
    if (!loc) {
        loc = $(this).data("back");
    }
    sessionStorage.removeItem("back");
-   window.location.href = loc;
+   sessionStorage.removeItem("search");
+   if (param === null) {
+       param = "";
+   }
+   window.location.href = loc + param;
 
 });
 
@@ -606,6 +612,8 @@ $(function() {
         $("#auth_za").toggleClass("disabled");
         $("#pub_new").toggleClass("disabled");
         $("#pub_old").toggleClass("disabled");
+        $("#shelf_new").toggleClass("disabled");
+        $("#shelf_old").toggleClass("disabled");
         var alternative_text = $("#toggle_order_shelf").data('alt-text');
         $("#toggle_order_shelf").data('alt-text', $("#toggle_order_shelf").html());
         $("#toggle_order_shelf").html(alternative_text);

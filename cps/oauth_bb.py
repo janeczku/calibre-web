@@ -30,8 +30,9 @@ from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.github import make_github_blueprint, github
 from flask_dance.contrib.google import make_google_blueprint, google
 from oauthlib.oauth2 import TokenExpiredError, InvalidGrantError
-from flask_login import login_user, current_user, login_required
+from .cw_login import login_user, current_user
 from sqlalchemy.orm.exc import NoResultFound
+from .usermanagement import user_login_required
 
 from . import constants, logger, config, app, ub
 
@@ -340,7 +341,7 @@ def github_login():
 
 
 @oauth.route('/unlink/github', methods=["GET"])
-@login_required
+@user_login_required
 def github_login_unlink():
     return unlink_oauth(oauthblueprints[0]['id'])
 
@@ -364,6 +365,6 @@ def google_login():
 
 
 @oauth.route('/unlink/google', methods=["GET"])
-@login_required
+@user_login_required
 def google_login_unlink():
     return unlink_oauth(oauthblueprints[1]['id'])

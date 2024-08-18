@@ -23,15 +23,16 @@
 import sys
 import platform
 import sqlite3
+import importlib
 from collections import OrderedDict
 
 import flask
-import flask_login
 import jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, constants, dep_check
 from .render_template import render_title_template
+from .usermanagement import user_login_required
 
 
 about = flask.Blueprint('about', __name__)
@@ -41,8 +42,11 @@ req = dep_check.load_dependencies(False)
 opt = dep_check.load_dependencies(True)
 for i in (req + opt):
     modules[i[1]] = i[0]
-modules['Jinja2'] = jinja2.__version__
-modules['pySqlite'] = sqlite3.version
+modules['Jinja2'] = importlib.metadata.version("jinja2")
+try:
+    modules['pySqlite'] = sqlite3.version
+except Exception:
+    pass
 modules['SQLite'] = sqlite3.sqlite_version
 sorted_modules = OrderedDict((sorted(modules.items(), key=lambda x: x[0].casefold())))
 
@@ -74,7 +78,7 @@ def collect_stats():
 
 
 @about.route("/stats")
-@flask_login.login_required
+@user_login_required
 def stats():
     counter = calibre_db.session.query(db.Books).count()
     authors = calibre_db.session.query(db.Authors).count()

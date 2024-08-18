@@ -53,7 +53,6 @@ class Amazon(Metadata):
     def search(
         self, query: str, generic_cover: str = "", locale: str = "en"
     ) -> Optional[List[MetaRecord]]:
-        #timer=time()
         def inner(link, index) -> [dict, int]:
             with self.session as session:
                 try:
@@ -61,11 +60,11 @@ class Amazon(Metadata):
                     r.raise_for_status()
                 except Exception as ex:
                     log.warning(ex)
-                    return None
+                    return []
                 long_soup = BS(r.text, "lxml")  #~4sec :/
                 soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-books-ppd_csm_instrumentation_wrapper"})
                 if soup2 is None:
-                    return None
+                    return []
                 try:
                     match = MetaRecord(
                         title = "",
@@ -88,7 +87,7 @@ class Amazon(Metadata):
                             soup2.find("div", attrs={"data-feature-name": "bookDescription"}).stripped_strings)\
                                                 .replace("\xa0"," ")[:-9].strip().strip("\n")
                     except (AttributeError, TypeError):
-                        return None  # if there is no description it is not a book and therefore should be ignored
+                        return []  # if there is no description it is not a book and therefore should be ignored
                     try:
                         match.title = soup2.find("span", attrs={"id": "productTitle"}).text
                     except (AttributeError, TypeError):
@@ -113,7 +112,7 @@ class Amazon(Metadata):
                     return match, index
                 except Exception as e:
                     log.error_or_exception(e)
-                    return None
+                    return []
 
         val = list()
         if self.active:
@@ -134,6 +133,6 @@ class Amazon(Metadata):
                           soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
                 fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:5])}
-                val = list(map(lambda x : x.result() ,concurrent.futures.as_completed(fut)))
+                val = list(map(lambda x : x.result(), concurrent.futures.as_completed(fut)))
         result = list(filter(lambda x: x, val))
         return [x[0] for x in sorted(result, key=itemgetter(1))] #sort by amazons listing order for best relevance

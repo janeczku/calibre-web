@@ -17,11 +17,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from flask_login import current_user
+from .cw_login import current_user
 from . import ub
-import datetime
+from datetime import datetime, timezone
 from sqlalchemy.sql.expression import or_, and_, true
-from sqlalchemy import exc
+# from sqlalchemy import exc
 
 
 # Add the current book id to kobo_synced_books table for current user, if entry is already present,
@@ -58,7 +58,7 @@ def change_archived_books(book_id, state=None, message=None):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
 
     archived_book.is_archived = state if state else not archived_book.is_archived
-    archived_book.last_modified = datetime.datetime.utcnow()        # toDo. Check utc timestamp
+    archived_book.last_modified = datetime.now(timezone.utc)        # toDo. Check utc timestamp
 
     ub.session.merge(archived_book)
     ub.session_commit(message)

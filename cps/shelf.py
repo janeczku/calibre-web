@@ -21,17 +21,17 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 
 from flask import Blueprint, flash, redirect, request, url_for, abort
 from flask_babel import gettext as _
-from flask_login import current_user, login_required
+from .cw_login import current_user
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import func, true
 
 from . import calibre_db, config, db, logger, ub
 from .render_template import render_title_template
-from .usermanagement import login_required_if_no_ano
+from .usermanagement import login_required_if_no_ano, user_login_required
 
 log = logger.create()
 
@@ -39,7 +39,7 @@ shelf = Blueprint('shelf', __name__)
 
 
 @shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def add_to_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -80,7 +80,7 @@ def add_to_shelf(shelf_id, book_id):
         return "%s is a invalid Book Id. Could not be added to Shelf" % book_id, 400
 
     shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
-    shelf.last_modified = datetime.utcnow()
+    shelf.last_modified = datetime.now(timezone.utc)
     try:
         ub.session.merge(shelf)
         ub.session.commit()
@@ -103,7 +103,7 @@ def add_to_shelf(shelf_id, book_id):
 
 
 @shelf.route("/shelf/massadd/<int:shelf_id>", methods=["POST"])
-@login_required
+@user_login_required
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
@@ -139,7 +139,7 @@ def search_to_shelf(shelf_id):
         for book in books_for_shelf:
             maxOrder += 1
             shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
-        shelf.last_modified = datetime.utcnow()
+        shelf.last_modified = datetime.now(timezone.utc)
         try:
             ub.session.merge(shelf)
             ub.session.commit()
@@ -155,7 +155,7 @@ def search_to_shelf(shelf_id):
 
 
 @shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def remove_from_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -185,7 +185,7 @@ def remove_from_shelf(shelf_id, book_id):
 
         try:
             ub.session.delete(book_shelf)
-            shelf.last_modified = datetime.utcnow()
+            shelf.last_modified = datetime.now(timezone.utc)
             ub.session.commit()
         except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
@@ -212,14 +212,14 @@ def remove_from_shelf(shelf_id, book_id):
 
 
 @shelf.route("/shelf/create", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def create_shelf():
     shelf = ub.Shelf()
     return create_edit_shelf(shelf, page_title=_("Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not check_shelf_edit_permissions(shelf):
@@ -229,7 +229,7 @@ def edit_shelf(shelf_id):
 
 
 @shelf.route("/shelf/delete/<int:shelf_id>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     try:
@@ -259,7 +259,7 @@ def show_shelf(shelf_id, sort_param, page):
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def order_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf and check_shelf_view_permissions(shelf):
@@ -271,7 +271,7 @@ def order_shelf(shelf_id):
             for book in books_in_shelf:
                 setattr(book, 'order', to_save[str(book.book_id)])
                 counter += 1
-                # if order different from before -> shelf.last_modified = datetime.utcnow()
+                # if order different from before -> shelf.last_modified = datetime.now(timezone.utc)
             try:
                 ub.session.commit()
             except (OperationalError, InvalidRequestError) as e:
@@ -422,11 +422,14 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     # check user is allowed to access shelf
     if shelf and check_shelf_view_permissions(shelf):
         if shelf_type == 1:
-            # order = [ub.BookShelf.order.asc()]
             if sort_param == 'pubnew':
                 change_shelf_order(shelf_id, [db.Books.pubdate.desc()])
             if sort_param == 'pubold':
                 change_shelf_order(shelf_id, [db.Books.pubdate])
+            if sort_param == 'shelfnew':
+                change_shelf_order(shelf_id, [ub.BookShelf.date_added.desc()])
+            if sort_param == 'shelfold':
+                change_shelf_order(shelf_id, [ub.BookShelf.date_added])
             if sort_param == 'abc':
                 change_shelf_order(shelf_id, [db.Books.sort])
             if sort_param == 'zyx':
@@ -453,7 +456,7 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                                                            [ub.BookShelf.order.asc()],
                                                            True, config.config_read_column,
                                                            ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
-        # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
+        # delete shelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
         wrong_entries = calibre_db.session.query(ub.BookShelf) \
             .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
             .filter(db.Books.id == None).all()

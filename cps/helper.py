@@ -25,7 +25,7 @@ import re
 import regex
 import shutil
 import socket
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 import unidecode
 from uuid import uuid4
@@ -34,7 +34,7 @@ from flask import send_from_directory, make_response, abort, url_for, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
-from flask_login import current_user
+from .cw_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from werkzeug.datastructures import Headers
@@ -52,6 +52,7 @@ except ImportError:
     UnacceptableAddressException = MissingSchema = BaseException
 
 from . import calibre_db, cli_param
+from .string_helper import strip_whitespaces
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
@@ -118,7 +119,7 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 # Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(ereader_mail, user_name):
     for email in ereader_mail.split(','):
-        email = email.strip()
+        email = strip_whitespaces(email)
         WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
                          config.get_mail_settings(), email, N_("Test Email"),
                                               _('This Email has been sent via Calibre-Web.')))
@@ -228,7 +229,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
             email_text = N_("%(book)s send to eReader", book=link)
             for email in ereader_mail.split(','):
-                email = email.strip()
+                email = strip_whitespaces(email)
                 WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                                  config.get_mail_settings(), email,
                                  email_text, _('This Email has been sent via Calibre-Web.'), book.id))
@@ -252,7 +253,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', ',', value, flags=re.U)
 
-    value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
+    value = strip_whitespaces(value.encode('utf-8')[:chars].decode('utf-8', errors='ignore'))
 
     if not value:
         raise ValueError("Filename cannot be empty")
@@ -267,11 +268,11 @@ def split_authors(values):
             commas = author.count(',')
             if commas == 1:
                 author_split = author.split(',')
-                authors_list.append(author_split[1].strip() + ' ' + author_split[0].strip())
+                authors_list.append(strip_whitespaces(author_split[1]) + ' ' + strip_whitespaces(author_split[0]))
             elif commas > 1:
-                authors_list.extend([x.strip() for x in author.split(',')])
+                authors_list.extend([strip_whitespaces(x) for x in author.split(',')])
             else:
-                authors_list.append(author.strip())
+                authors_list.append(strip_whitespaces(author))
     return authors_list
 
 
@@ -413,36 +414,6 @@ def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdriv
         file_format.name = all_new_name
 
 
-'''def rename_all_authors(first_author, renamed_author, calibre_path="", localbook=None, gdrive=False):
-    # Create new_author_dir from parameter or from database
-    # Create new title_dir from database and add id
-    if first_author:
-        new_authordir = get_valid_filename(first_author, chars=96)
-        for r in renamed_author:
-            new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == r).first()
-            old_author_dir = get_valid_filename(r, chars=96)
-            new_author_rename_dir = get_valid_filename(new_author.name, chars=96)
-            if gdrive:
-                g_file = gd.getFileFromEbooksFolder(None, old_author_dir)
-                if g_file:
-                    gd.moveGdriveFolderRemote(g_file, new_author_rename_dir)
-                    gd.updateDatabaseOnEdit(g_file['id'], new_author_rename_dir)
-            else:
-                if os.path.isdir(os.path.join(calibre_path, old_author_dir)):
-                    old_author_path = os.path.join(calibre_path, old_author_dir)
-                    new_author_path = os.path.join(calibre_path, new_author_rename_dir)
-                    try:
-                        shutil.move(os.path.normcase(old_author_path), os.path.normcase(new_author_path))
-                    except OSError as ex:
-                        log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
-                        log.debug(ex, exc_info=True)
-                        return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                                 src=old_author_path, dest=new_author_path, error=str(ex))
-    else:
-        new_authordir = get_valid_filename(localbook.authors[0].name, chars=96)
-    return new_authordir'''
-
-
 def rename_author_path(first_author, old_author_dir, renamed_author, calibre_path="", gdrive=False):
     # Create new_author_dir from parameter or from database
     # Create new title_dir from database and add id
@@ -459,12 +430,15 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
             old_author_path = os.path.join(calibre_path, old_author_dir)
             new_author_path = os.path.join(calibre_path, new_author_rename_dir)
             try:
-                shutil.move(old_author_path, new_author_path)
-            except OSError as ex:
-                log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
-                log.debug(ex, exc_info=True)
-                return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
-                         src=old_author_path, dest=new_author_path, error=str(ex))
+                os.rename(old_author_path, new_author_path)
+            except OSError:
+                try:
+                    shutil.move(old_author_path, new_author_path)
+                except OSError as ex:
+                    log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
+                    log.error_or_exception(ex)
+                    raise Exception(_("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                             src=old_author_path, dest=new_author_path, error=str(ex)))
     return new_authordir
 
 # Moves files in file storage during author/title rename, or from temp dir to file storage
@@ -688,7 +662,7 @@ def check_email(email):
 
 
 def check_username(username):
-    username = username.strip()
+    username = strip_whitespaces(username)
     if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
         log.error("This username is already taken")
         raise Exception(_("This username is already taken"))
@@ -697,14 +671,14 @@ def check_username(username):
 
 def valid_email(emails):
     for email in emails.split(','):
-	    email = email.strip()
-	    # if email is not deleted
-	    if email:
-	        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-	        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-	                         email):
-	            log.error("Invalid Email address format")
-	            raise Exception(_("Invalid Email address format"))
+        email = strip_whitespaces(email)
+        # if email is not deleted
+        if email:
+            # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+            if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                             email):
+                log.error("Invalid Email address format")
+                raise Exception(_("Invalid Email address format"))
     return email
 
 
@@ -815,24 +789,23 @@ def get_book_cover_internal(book, resolution=None):
 
 def get_book_cover_thumbnail(book, resolution):
     if book and book.has_cover:
-        return ub.session \
-            .query(ub.Thumbnail) \
-            .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
-            .filter(ub.Thumbnail.entity_id == book.id) \
-            .filter(ub.Thumbnail.resolution == resolution) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
-            .first()
+        return (ub.session
+                .query(ub.Thumbnail)
+                .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER)
+                .filter(ub.Thumbnail.entity_id == book.id)
+                .filter(ub.Thumbnail.resolution == resolution)
+                .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(timezone.utc)))
+                .first())
 
 
 def get_series_thumbnail_on_failure(series_id, resolution):
-    book = calibre_db.session \
-        .query(db.Books) \
-        .join(db.books_series_link) \
-        .join(db.Series) \
-        .filter(db.Series.id == series_id) \
-        .filter(db.Books.has_cover == 1) \
-        .first()
-
+    book = (calibre_db.session
+        .query(db.Books)
+        .join(db.books_series_link)
+        .join(db.Series)
+        .filter(db.Series.id == series_id)
+        .filter(db.Books.has_cover == 1)
+        .first())
     return get_book_cover_internal(book, resolution=resolution)
 
 
@@ -854,13 +827,13 @@ def get_series_cover_internal(series_id, resolution=None):
 
 
 def get_series_thumbnail(series_id, resolution):
-    return ub.session \
-        .query(ub.Thumbnail) \
-        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
-        .filter(ub.Thumbnail.entity_id == series_id) \
-        .filter(ub.Thumbnail.resolution == resolution) \
-        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
-        .first()
+    return (ub.session
+        .query(ub.Thumbnail)
+        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES)
+        .filter(ub.Thumbnail.entity_id == series_id)
+        .filter(ub.Thumbnail.resolution == resolution)
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(timezone.utc)))
+        .first())
 
 
 # saves book cover from url

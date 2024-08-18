@@ -20,11 +20,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from flask_login import LoginManager, confirm_login
-from flask import session, current_app
-from flask_login.utils import decode_cookie
-from flask_login.signals import user_loaded_from_cookie
+from .cw_login import LoginManager
+from flask import session
 
 
 class MyLoginManager(LoginManager):
@@ -36,18 +33,5 @@ class MyLoginManager(LoginManager):
             return super(). _session_protection_failed()
         return False
 
-    def _load_user_from_remember_cookie(self, cookie):
-        user_id = decode_cookie(cookie)
-        if user_id is not None:
-            session["_user_id"] = user_id
-            session["_fresh"] = False
-            user = None
-            if self._user_callback:
-                user = self._user_callback(user_id)
-            if user is not None:
-                app = current_app._get_current_object()
-                user_loaded_from_cookie.send(app, user=user)
-                # if session was restored from remember me cookie make login valid
-                confirm_login()
-                return user
-        return None
+
+
