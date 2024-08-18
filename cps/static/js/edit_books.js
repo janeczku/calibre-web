@@ -3,9 +3,9 @@
  */
 /* global Bloodhound, language, Modernizr, tinymce, getPath */
 
-if ($("#description").length) {
+if ($("#comments").length) {
     tinymce.init({
-        selector: "#description",
+        selector: "#comments",
         plugins: 'code',
         branding: false,
         menubar: "edit view format",
@@ -261,8 +261,8 @@ $("#btn-upload-cover").on("change", function () {
 
 $("#xchange").click(function () {
     this.blur();
-    var title = $("#book_title").val();
-    $("#book_title").val($("#bookAuthor").val());
+    var title = $("#title").val();
+    $("#title").val($("#bookAuthor").val());
     $("#bookAuthor").val(title);
 });
 

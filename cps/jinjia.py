@@ -27,7 +27,7 @@ import datetime
 import mimetypes
 from uuid import uuid4
 
-from flask import Blueprint, request, url_for
+from flask import Blueprint, request, url_for, g
 from flask_babel import format_date
 from .cw_login import current_user
 
@@ -182,3 +182,12 @@ def get_cover_srcset(series):
         url = url_for('web.get_series_cover', series_id=series.id, resolution=shortname, c=cache_timestamp())
         srcset.append(f'{url} {resolution}x')
     return ', '.join(srcset)
+
+
+@jinjia.app_template_filter('music')
+def contains_music(book_formats):
+    result = False
+    for format in book_formats:
+        if format.format.lower() in g.constants.EXTENSIONS_AUDIO:
+            result = True
+    return result
