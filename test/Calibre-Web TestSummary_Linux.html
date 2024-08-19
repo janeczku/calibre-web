@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-16 21:16:11</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-20 20:27:17</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-17 04:31:06</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-21 03:36:02</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 5 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 2 min</p>
         </div>
       </div>
       </div>
@@ -852,11 +852,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEbookConvertCalibreGDrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -920,31 +920,11 @@
     
     
     
-        <tr id="ft9.7" class="none bg-danger">
+        <tr id='pt9.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEbookConvertCalibreGDrive - test_thumbnail_cache</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft9.7')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft9.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft9.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ebook_convert_gdrive.py&#34;, line 495, in test_thumbnail_cache
-    self.assertEqual(count_files(thumbnail_cache_path), 30)
-AssertionError: 25 != 30</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1043,12 +1023,12 @@ AssertionError: 25 != 30</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">20</td>
-        <td class="text-center">16</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 20)">Detail</a>
@@ -1084,76 +1064,20 @@ AssertionError: 25 != 30</pre>
     
     
     
-        <tr id="et12.4" class="none bg-info">
+        <tr id='pt12.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 765, in test_delete_role
-    submit.click()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 93, in click
-    self._execute(Command.CLICK_ELEMENT)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 403, in _execute
-    return self._parent.execute(command, params)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.ElementClickInterceptedException: Message: Element &lt;button id=&#34;submit&#34; class=&#34;btn btn-default&#34; type=&#34;submit&#34;&gt; is not clickable at point (688,665) because another element &lt;div class=&#34;modal-backdrop fade in&#34;&gt; obscures it
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-ElementClickInterceptedError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:337:5
-webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:177:11
-interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:136:11
-clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:205:29
-receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:85:31</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.5" class="none bg-info">
+        <tr id='pt12.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_details_popup</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 918, in test_details_popup
-    books[1][0][&#39;ele&#39;].click()
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1772,11 +1696,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditAuthorsGdrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1840,38 +1764,11 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id="ft15.7" class="none bg-danger">
+        <tr id='pt15.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.7')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft15.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft15.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 608, in test_rename_capital_on_upload
-    self.assertEqual([&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Liu Yang&#39;, &#39;Hector Gonçalves&#39;], details[&#39;author&#39;])
-AssertionError: Lists differ: [&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Liu Yang&#39;, &#39;Hector Gonçalves&#39;] != []
-
-First list contains 4 additional elements.
-First extra element 0:
-&#39;Frodo Beutlin&#39;
-
-- [&#39;Frodo Beutlin&#39;, &#39;Norbert Halagal&#39;, &#39;Liu Yang&#39;, &#39;Hector Gonçalves&#39;]
-+ []</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2203,11 +2100,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2370,11 +2267,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.18' class='hiddenRow bg-success'>
+        <tr id="ft19.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 936, in test_watch_metadata
+    self.assertTrue(button)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2524,11 +2441,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEmbedMetadata</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2583,11 +2500,33 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt23.6' class='hiddenRow bg-success'>
+        <tr id="ft23.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_email_epub_embed_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft23.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft23.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_embed_metadata.py&#34;, line 271, in test_email_epub_embed_metadata
+    task_len, ret = self.wait_tasks(tasks, 1)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
+    self.assertEqual(expected, task_len)
+AssertionError: 1 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4007,50 +3946,43 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_FailedTest</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestPipInstall</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 1)">Detail</a>
+            <a onclick="showClassDetail('c41', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et41.1" class="none bg-info">
+        <tr id='pt41.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>_FailedTest - test_pip_install</div>
+                <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et41.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et41.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et41.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_pip_install
-Traceback (most recent call last):
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File &#34;/usr/lib/python3.10/unittest/loader.py&#34;, line 377, in _get_module_from_name
-    __import__(name)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 23, in &lt;module&gt;
-    from build_release import make_release
-ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_module_start</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4167,88 +4099,53 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
-        <td>TestRegister</td>
-        <td class="text-center">8</td>
-        <td class="text-center">8</td>
+    <tr id="su" class="errorClass">
+        <td>_ErrorHolder</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 8)">Detail</a>
+            <a onclick="showClassDetail('c44', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id="et44.1" class="none bg-info">
             <td>
-                <div class='testcase'>TestRegister - test_forgot_password</div>
+                <div class='testcase'>setUpClass (test_register)</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_illegal_email</div>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et44.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et44.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et44.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 37, in setUpClass
+    cls.email_server.start()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 88, in start
+    raise self._thread_exception
+  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 65, in _run
+    self.server = self.loop.run_until_complete(
+  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 649, in run_until_complete
+    return future.result()
+  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 1519, in create_server
+    raise OSError(err.errno, &#39;error while attempting &#39;
+OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#39;, 1025): address already in use</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
             </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_limit_domain</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_register_no_server</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_registering_only_email</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_registering_user</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_registering_user_fail</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt44.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestRegister - test_user_change_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4505,12 +4402,12 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestSplitLibrary</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c48', 7)">Detail</a>
@@ -4546,11 +4443,39 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
     
     
-        <tr id='pt48.4' class='hiddenRow bg-success'>
+        <tr id="et48.4" class="none bg-info">
             <td>
                 <div class='testcase'>TestSplitLibrary - test_email_ebook</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et48.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et48.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et48.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_split_library.py&#34;, line 102, in test_email_ebook
+    self.email_server.start()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 88, in start
+    raise self._thread_exception
+  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 65, in _run
+    self.server = self.loop.run_until_complete(
+  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 649, in run_until_complete
+    return future.result()
+  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 1519, in create_server
+    raise OSError(err.errno, &#39;error while attempting &#39;
+OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#39;, 1025): address already in use</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4607,11 +4532,11 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestThumbnailsEnv</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4621,41 +4546,21 @@ ModuleNotFoundError: No module named &#39;build_release&#39;</pre>
 
     
     
-        <tr id="ft50.1" class="none bg-danger">
+        <tr id='pt50.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft50.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft50.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft50.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnail_env.py&#34;, line 85, in test_cover_cache_env_on_database_change
-    self.assertEqual(count_files(thumbnail_cache_path), 20)
-AssertionError: 30 != 20</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4728,21 +4633,41 @@ AssertionError: 30 != 20</pre>
     
     
     
-        <tr id='pt51.8' class='hiddenRow bg-success'>
+        <tr id="ft51.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft51.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft51.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 327, in test_sideloaded_book
+    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
+AssertionError: 0.039521531544059706 not greater than or equal to 0.04</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestUpdater</td>
         <td class="text-center">9</td>
-        <td class="text-center">7</td>
-        <td class="text-center">1</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4788,31 +4713,11 @@ AssertionError: 30 != 20</pre>
     
     
     
-        <tr id="ft52.5" class="none bg-danger">
+        <tr id='pt52.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.5')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft52.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft52.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 375, in test_perform_update
-    self.assertEqual(20, count_files(thumbnail_cache_path))
-AssertionError: 20 != 30</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5958,10 +5863,10 @@ AssertionError: 20 != 30</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>520</td>
-        <td>503</td>
-        <td>4</td>
-        <td>4</td>
+        <td>515</td>
+        <td>500</td>
+        <td>3</td>
+        <td>3</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -6158,7 +6063,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6188,7 +6093,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6218,7 +6123,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6248,7 +6153,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6296,7 +6201,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6332,7 +6237,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6374,7 +6279,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6404,7 +6309,7 @@ AssertionError: 20 != 30</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.141.0</td>
+              <td>2.142.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6500,7 +6405,7 @@ AssertionError: 20 != 30</pre>
 </div>
 
 <script>
-    drawCircle(503, 4, 4, 9);
+    drawCircle(500, 3, 3, 9);
     showCase(5);
 </script>
 

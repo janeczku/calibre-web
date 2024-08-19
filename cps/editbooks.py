@@ -455,7 +455,7 @@ def do_edit_book(book_id, upload_formats=None):
         # Update folder of book on local disk
         edited_books_id = None
         title_author_error = None
-        upload_mode = False
+        # upload_mode = False
         # handle book title change
         if "title" in to_save:
             title_change = handle_title_on_edit(book, to_save["title"])
@@ -1005,7 +1005,7 @@ def edit_book_ratings(to_save, book):
 
 
 def edit_book_tags(tags, book):
-    if tags:
+    if tags is not None:
         input_tags = tags.split(',')
         input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
         # Remove duplicates
@@ -1014,7 +1014,7 @@ def edit_book_tags(tags, book):
     return False
 
 def edit_book_series(series, book):
-    if series:
+    if series is not None:
         input_series = [strip_whitespaces(series)]
         input_series = [x for x in input_series if x != '']
         return modify_database_object(input_series, book.series, db.Series, calibre_db.session, 'series')
@@ -1054,10 +1054,13 @@ def edit_book_comments(comments, book):
 
 
 def edit_book_languages(languages, book, upload_mode=False, invalid=None):
-    if languages:
+    if languages is not None:
         input_languages = languages.split(',')
         unknown_languages = []
-        input_l = isoLanguages.get_language_code_from_name(get_locale(), input_languages, unknown_languages)
+        if not upload_mode:
+            input_l = isoLanguages.get_language_code_from_name(get_locale(), input_languages, unknown_languages)
+        else:
+            input_l = isoLanguages.get_valid_language_codes_from_code(get_locale(), input_languages, unknown_languages)
         for lang in unknown_languages:
             log.error("'%s' is not a valid language", lang)
             if isinstance(invalid, list):
@@ -1078,7 +1081,7 @@ def edit_book_languages(languages, book, upload_mode=False, invalid=None):
 
 
 def edit_book_publisher(publishers, book):
-    if publishers:
+    if publishers is not None:
         changed = False
         if publishers:
             publisher = strip_whitespaces(publishers)
@@ -1169,7 +1172,7 @@ def edit_cc_data(book_id, book, to_save, cc):
     changed = False
     for c in cc:
         cc_string = "custom_column_" + str(c.id)
-        if to_save.get(cc_string):
+        if to_save.get(cc_string) is not None:
             if not c.is_multiple:
                 if len(getattr(book, cc_string)) > 0:
                     cc_db_value = getattr(book, cc_string)[0].value
@@ -1279,11 +1282,11 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
                 rar_executable=config.config_rarfile_location,
                 no_cover=no_cover)
             merge_metadata(book, meta, to_save)
-    if to_save.get('languages'):
-        langs = []
-        for lang_code in to_save['languages']:
-            langs.append(isoLanguages.get_language_name(get_locale(), lang_code))
-        to_save['languages'] = ",".join(langs)
+    #if to_save.get('languages'):
+    #    langs = []
+    #    for lang_code in to_save['languages'].split(','):
+    #        langs.append(isoLanguages.get_language_name(get_locale(), lang_code))
+    #    to_save['languages'] = ",".join(langs)
     return to_save, error
 
 

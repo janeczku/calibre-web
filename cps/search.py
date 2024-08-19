@@ -265,7 +265,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     pub_end = term.get("publishend")
     rating_low = term.get("ratinghigh")
     rating_high = term.get("ratinglow")
-    description = term.get("comments")
+    description = term.get("comment")
     read_status = term.get("read_status")
     if author_name:
         author_name = strip_whitespaces(author_name).lower().replace(',', '|')
