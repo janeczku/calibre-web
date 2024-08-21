@@ -26,7 +26,7 @@ from cps.constants import BookMeta
 
 log = logger.create()
 
-def get_audio_file_info(tmp_file_path, original_file_extension, original_file_name):
+def get_audio_file_info(tmp_file_path, original_file_extension, original_file_name, no_cover_processing):
     tmp_cover_name = None
     audio_file = mutagen.File(tmp_file_path)
     comments = None
@@ -50,7 +50,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             pubdate = str(audio_file.tags.get('TDRC').text[0]) if "TDRC" in audio_file.tags else None
             if not pubdate:
                 pubdate = str(audio_file.tags.get('TDOR').text[0]) if "TDOR" in audio_file.tags else None
-        if cover_data:
+        if cover_data and not no_cover_processing:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             cover_info = cover_data[0]
             for dat in cover_data:
@@ -68,18 +68,19 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         publisher = audio_file.tags.get('LABEL')[0] if "LABEL" in audio_file else None
         pubdate = audio_file.tags.get('DATE')[0] if "DATE" in audio_file else None
         cover_data = audio_file.tags.get('METADATA_BLOCK_PICTURE')
-        if cover_data:
-            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
-            cover_info = mutagen.flac.Picture(base64.b64decode(cover_data[0]))
-            cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
-        if hasattr(audio_file, "pictures"):
-            cover_info = audio_file.pictures[0]
-            for dat in audio_file.pictures:
-                if dat.type == mutagen.id3.PictureType.COVER_FRONT:
-                    cover_info = dat
-                    break
-            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
-            cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
+        if not no_cover_processing:
+            if cover_data:
+                tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
+                cover_info = mutagen.flac.Picture(base64.b64decode(cover_data[0]))
+                cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
+            if hasattr(audio_file, "pictures"):
+                cover_info = audio_file.pictures[0]
+                for dat in audio_file.pictures:
+                    if dat.type == mutagen.id3.PictureType.COVER_FRONT:
+                        cover_info = dat
+                        break
+                tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
+                cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
     elif original_file_extension in [".aac"]:
         title = audio_file.tags.get('Title').value if "Title" in audio_file else None
         author = audio_file.tags.get('Artist').value if "Artist" in audio_file else None
@@ -90,7 +91,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         publisher = audio_file.tags.get('Label').value if "Label" in audio_file else None
         pubdate = audio_file.tags.get('Year').value if "Year" in audio_file else None
         cover_data = audio_file.tags['Cover Art (Front)']
-        if cover_data:
+        if cover_data and not no_cover_processing:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data.value.split(b"\x00",1)[1])
@@ -104,7 +105,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         publisher = audio_file.tags.get('Label')[0].value if "Label" in audio_file else None
         pubdate = audio_file.tags.get('Year')[0].value if "Year" in audio_file else None
         cover_data = audio_file.tags.get('WM/Picture', None)
-        if cover_data:
+        if cover_data and not no_cover_processing:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data[0].value)
@@ -118,7 +119,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         publisher = ""
         pubdate = audio_file.tags.get('©day')[0] if "©day" in audio_file.tags else None
         cover_data = audio_file.tags.get('covr', None)
-        if cover_data:
+        if cover_data and not no_cover_processing:
             tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             cover_type = None
             for c in cover_data:

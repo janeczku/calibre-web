@@ -130,8 +130,13 @@ $(".container-fluid").bind('drop', function (e) {
             }
         });
         if (dt.files.length) {
-            $("#btn-upload")[0].files = dt.files;
-            $("#form-upload").submit();
+            if($("#btn-upload-format").length) {
+                $("#btn-upload-format")[0].files = dt.files;
+                $("#form-upload-format").submit();
+            } else {
+                $("#btn-upload")[0].files = dt.files;
+                $("#form-upload").submit();
+            }
         }
     }
 });
@@ -140,13 +145,27 @@ $("#btn-upload").change(function() {
     $("#form-upload").submit();
 });
 
-$("#form-upload").uploadprogress({
-    redirect_url: getPath() + "/", //"{{ url_for('web.index')}}",
-    uploadedMsg: $("#form-upload").data("message"), //"{{_('Upload done, processing, please wait...')}}",
-    modalTitle: $("#form-upload").data("title"), //"{{_('Uploading...')}}",
-    modalFooter: $("#form-upload").data("footer"), //"{{_('Close')}}",
-    modalTitleFailed: $("#form-upload").data("failed") //"{{_('Error')}}"
+$("#btn-upload-format").change(function() {
+    $("#form-upload-format").submit();
 });
+
+
+$("#form-upload").uploadprogress({
+    redirect_url: getPath() + "/",
+    uploadedMsg: $("#form-upload").data("message"),
+    modalTitle: $("#form-upload").data("title"),
+    modalFooter: $("#form-upload").data("footer"),
+    modalTitleFailed: $("#form-upload").data("failed")
+});
+
+$("#form-upload-format").uploadprogress({
+    redirect_url: getPath() + "/",
+    uploadedMsg: $("#form-upload-format").data("message"),
+    modalTitle: $("#form-upload-format").data("title"),
+    modalFooter: $("#form-upload-format").data("footer"),
+    modalTitleFailed: $("#form-upload-format").data("failed")
+});
+
 
 $(document).ready(function() {
     var inp = $('#query').first()

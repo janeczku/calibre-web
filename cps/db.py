@@ -24,6 +24,7 @@ from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
 from weakref import WeakSet
+from uuid import uuid4
 
 from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
@@ -533,7 +534,7 @@ class CalibreDB:
     def init_session(self, expire_on_commit=True):
         self.session = self.session_factory()
         self.session.expire_on_commit = expire_on_commit
-        self.update_title_sort(self.config)
+        self.create_functions(self.config)
 
     @classmethod
     def setup_db_cc_classes(cls, cc):
@@ -901,7 +902,8 @@ class CalibreDB:
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
-        self.session.connection().connection.connection.create_function("lower", 1, lcase)
+        self.create_functions()
+        # self.session.connection().connection.connection.create_function("lower", 1, lcase)
         entries = self.session.query(database).filter(tag_filter). \
             filter(func.lower(database.name).ilike("%" + query + "%")).all()
         # json_dumps = json.dumps([dict(name=escape(r.name.replace(*replace))) for r in entries])
@@ -909,7 +911,8 @@ class CalibreDB:
         return json_dumps
 
     def check_exists_book(self, authr, title):
-        self.session.connection().connection.connection.create_function("lower", 1, lcase)
+        self.create_functions()
+        # self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         author_terms = re.split(r'\s*&\s*', authr)
         for author_term in author_terms:
@@ -920,7 +923,8 @@ class CalibreDB:
 
     def search_query(self, term, config, *join):
         strip_whitespaces(term).lower()
-        self.session.connection().connection.connection.create_function("lower", 1, lcase)
+        self.create_functions()
+        # self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         author_terms = re.split("[, ]+", term)
         for author_term in author_terms:
@@ -1018,7 +1022,7 @@ class CalibreDB:
                 lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
             return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
 
-    def update_title_sort(self, config, conn=None):
+    def create_functions(self, config=None):
         # user defined sort function for calibre databases (Series, etc.)
         def _title_sort(title):
             # calibre sort stuff
@@ -1031,12 +1035,15 @@ class CalibreDB:
 
         try:
             # sqlalchemy <1.4.24 and sqlalchemy 2.0
-            conn = conn or self.session.connection().connection.driver_connection
+            conn = self.session.connection().connection.driver_connection
         except AttributeError:
             # sqlalchemy >1.4.24
-            conn = conn or self.session.connection().connection.connection
+            conn = self.session.connection().connection.connection
         try:
-            conn.create_function("title_sort", 1, _title_sort)
+            if config:
+                conn.create_function("title_sort", 1, _title_sort)
+            conn.create_function('uuid4', 0, lambda: str(uuid4()))
+            conn.create_function("lower", 1, lcase)
         except sqliteOperationalError:
             pass
 

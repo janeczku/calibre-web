@@ -244,7 +244,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     pagination = None
 
     cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
-    calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    calibre_db.create_functions()
+    # calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
     q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)\
         .outerjoin(db.Series)\
@@ -257,8 +258,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         tags['include_' + element] = term.get('include_' + element)
         tags['exclude_' + element] = term.get('exclude_' + element)
 
-    author_name = term.get("author_name")
-    book_title = term.get("book_title")
+    author_name = term.get("authors")
+    book_title = term.get("title")
     publisher = term.get("publisher")
     pub_start = term.get("publishstart")
     pub_end = term.get("publishend")

@@ -5,12 +5,12 @@
   <form role="form" id="search" action="{{ url_for('search.advanced_search_form') }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
-      <label for="book_title">{{_('Book Title')}}</label>
-      <input type="text" class="form-control" name="book_title" id="book_title" value="">
+      <label for="title">{{_('Book Title')}}</label>
+      <input type="text" class="form-control" name="title" id="title" value="">
     </div>
     <div class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
-      <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="" autocomplete="off">
+      <input type="text" class="form-control typeahead" name="authors" id="authors" value="" autocomplete="off">
     </div>
     <div class="form-group">
       <label for="Publisher">{{_('Publisher')}}</label>

@@ -201,6 +201,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                             with open(filename, 'wb') as fd:
                                 copyfileobj(stream, fd)
 
+
                 except Exception as ex:
                     # Bubble exception to calling function
                     self.log.debug('Error generating thumbnail file: ' + str(ex))
