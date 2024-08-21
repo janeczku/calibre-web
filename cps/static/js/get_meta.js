@@ -38,12 +38,12 @@ $(function () {
     }
 
     function populateForm (book) {
-        tinymce.get("description").setContent(book.description);
+        tinymce.get("comments").setContent(book.description);
         var uniqueTags = getUniqueValues('tags', book)
         var uniqueLanguages = getUniqueValues('languages', book)
         var ampSeparatedAuthors = (book.authors || []).join(" & ");
-        $("#bookAuthor").val(ampSeparatedAuthors);
-        $("#book_title").val(book.title);
+        $("#authors").val(ampSeparatedAuthors);
+        $("#title").val(book.title);
         $("#tags").val(uniqueTags.join(", "));
         $("#languages").val(uniqueLanguages.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
@@ -172,7 +172,7 @@ $(function () {
 
     $("#get_meta").click(function () {
         populate_provider();
-        var bookTitle = $("#book_title").val();
+        var bookTitle = $("#title").val();
         $("#keyword").val(bookTitle);
         keyword = bookTitle;
         doSearch(bookTitle);
