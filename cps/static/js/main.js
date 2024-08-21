@@ -166,7 +166,6 @@ $("#form-upload-format").uploadprogress({
     modalTitleFailed: $("#form-upload-format").data("failed")
 });
 
-
 $(document).ready(function() {
     var inp = $('#query').first()
     if (inp.length) {
@@ -623,6 +622,7 @@ $(function() {
     });
 
     $("#toggle_order_shelf").click(function() {
+        $("#toggle_order_shelf").toggleClass("dummy");
         $("#new").toggleClass("disabled");
         $("#old").toggleClass("disabled");
         $("#asc").toggleClass("disabled");
@@ -634,8 +634,17 @@ $(function() {
         $("#shelf_new").toggleClass("disabled");
         $("#shelf_old").toggleClass("disabled");
         var alternative_text = $("#toggle_order_shelf").data('alt-text');
+        var status = $("#toggle_order_shelf").hasClass("dummy") ? "on" : "off";
         $("#toggle_order_shelf").data('alt-text', $("#toggle_order_shelf").html());
         $("#toggle_order_shelf").html(alternative_text);
+
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/view",
+            data: "{\"shelf\": {\"man\": \"" + status + "\"}}",
+        });
     });
 
     $("#btndeluser").click(function() {
