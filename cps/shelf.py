@@ -250,7 +250,7 @@ def show_simpleshelf(shelf_id):
     return render_show_shelf(2, shelf_id, 1, None)
 
 
-@shelf.route("/shelf/<int:shelf_id>", defaults={"sort_param": "order", 'page': 1})
+@shelf.route("/shelf/<int:shelf_id>", defaults={"sort_param": "stored", 'page': 1})
 @shelf.route("/shelf/<int:shelf_id>/<sort_param>", defaults={'page': 1})
 @shelf.route("/shelf/<int:shelf_id>/<sort_param>/<int:page>")
 @login_required_if_no_ano
@@ -418,32 +418,37 @@ def change_shelf_order(shelf_id, order):
 
 def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-
+    status = current_user.get_view_property("shelf", 'man')
     # check user is allowed to access shelf
     if shelf and check_shelf_view_permissions(shelf):
         if shelf_type == 1:
-            if sort_param == 'pubnew':
-                change_shelf_order(shelf_id, [db.Books.pubdate.desc()])
-            if sort_param == 'pubold':
-                change_shelf_order(shelf_id, [db.Books.pubdate])
-            if sort_param == 'shelfnew':
-                change_shelf_order(shelf_id, [ub.BookShelf.date_added.desc()])
-            if sort_param == 'shelfold':
-                change_shelf_order(shelf_id, [ub.BookShelf.date_added])
-            if sort_param == 'abc':
-                change_shelf_order(shelf_id, [db.Books.sort])
-            if sort_param == 'zyx':
-                change_shelf_order(shelf_id, [db.Books.sort.desc()])
-            if sort_param == 'new':
-                change_shelf_order(shelf_id, [db.Books.timestamp.desc()])
-            if sort_param == 'old':
-                change_shelf_order(shelf_id, [db.Books.timestamp])
-            if sort_param == 'authaz':
-                change_shelf_order(shelf_id, [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index])
-            if sort_param == 'authza':
-                change_shelf_order(shelf_id, [db.Books.author_sort.desc(),
-                                              db.Series.name.desc(),
-                                              db.Books.series_index.desc()])
+            if status != 'on':
+                if sort_param == 'stored':
+                    sort_param = current_user.get_view_property("shelf", 'stored')
+                else:
+                    current_user.set_view_property("shelf", 'stored', sort_param)
+                if sort_param == 'pubnew':
+                    change_shelf_order(shelf_id, [db.Books.pubdate.desc()])
+                if sort_param == 'pubold':
+                    change_shelf_order(shelf_id, [db.Books.pubdate])
+                if sort_param == 'shelfnew':
+                    change_shelf_order(shelf_id, [ub.BookShelf.date_added.desc()])
+                if sort_param == 'shelfold':
+                    change_shelf_order(shelf_id, [ub.BookShelf.date_added])
+                if sort_param == 'abc':
+                    change_shelf_order(shelf_id, [db.Books.sort])
+                if sort_param == 'zyx':
+                    change_shelf_order(shelf_id, [db.Books.sort.desc()])
+                if sort_param == 'new':
+                    change_shelf_order(shelf_id, [db.Books.timestamp.desc()])
+                if sort_param == 'old':
+                    change_shelf_order(shelf_id, [db.Books.timestamp])
+                if sort_param == 'authaz':
+                    change_shelf_order(shelf_id, [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index])
+                if sort_param == 'authza':
+                    change_shelf_order(shelf_id, [db.Books.author_sort.desc(),
+                                                  db.Series.name.desc(),
+                                                  db.Books.series_index.desc()])
             page = "shelf.html"
             pagesize = 0
         else:
@@ -475,7 +480,9 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                                      pagination=pagination,
                                      title=_("Shelf: '%(name)s'", name=shelf.name),
                                      shelf=shelf,
-                                     page="shelf")
+                                     page="shelf",
+                                     status=status,
+                                     order=sort_param)
     else:
         flash(_("Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
