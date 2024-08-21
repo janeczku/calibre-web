@@ -670,6 +670,7 @@ def check_username(username):
 
 
 def valid_email(emails):
+    valid_emails = []
     for email in emails.split(','):
         email = strip_whitespaces(email)
         # if email is not deleted
@@ -677,9 +678,10 @@ def valid_email(emails):
             # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
             if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
                              email):
-                log.error("Invalid Email address format")
+                log.error("Invalid Email address format for {}".format(email))
                 raise Exception(_("Invalid Email address format"))
-    return email
+            valid_emails.append(email)
+    return ",".join(valid_emails)
 
 
 def valid_password(check_password):
