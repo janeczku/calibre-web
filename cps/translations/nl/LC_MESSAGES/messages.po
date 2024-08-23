@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-14 19:28+0200\n"
+"POT-Creation-Date: 2024-08-17 13:50+0200\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton.me>\n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:88
 msgid "Statistics"
@@ -298,7 +298,7 @@ msgstr "Gelukt! Gmail account geverifieerd."
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
 #: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:468 cps/tasks/convert.py:156 cps/web.py:1528
+#: cps/shelf.py:471 cps/tasks/convert.py:156 cps/web.py:1528
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Database fout: %(error)s."
@@ -1255,12 +1255,12 @@ msgstr "Een openbare boekenplank met de naam '%(title)s' bestaat al."
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Een persoonlijke boekenplank met de naam '%(title)s' bestaat al."
 
-#: cps/shelf.py:473
+#: cps/shelf.py:476
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Boekenplank: '%(name)s'"
 
-#: cps/shelf.py:477
+#: cps/shelf.py:480
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Kan boekenplank niet openen: de boekenplank bestaat niet of is ontoegankelijk"
 
@@ -1566,21 +1566,21 @@ msgstr "E-mail"
 msgid "Backing up Metadata"
 msgstr "metagegevens bewerken"
 
-#: cps/tasks/thumbnail.py:95
+#: cps/tasks/thumbnail.py:96
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "%{count}s omslagminiaturen gegenereerd"
 
-#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
-#: cps/tasks/thumbnail.py:509
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Omslag miniaturen"
 
-#: cps/tasks/thumbnail.py:287
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "{0} serieminiaturen gegenereerd"
 
-#: cps/tasks/thumbnail.py:452
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Cache met omslagminiaturen aan het opschonen"
 
@@ -1890,7 +1890,7 @@ msgstr "Sorteren op publicatiedatum, oudste boeken eerst"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:55
+#: cps/templates/search.html:67 cps/templates/shelf.html:57
 msgid "reduce"
 msgstr "beperken"
 
@@ -3434,6 +3434,16 @@ msgstr "Schakel verandering van de volgorde uit"
 #: cps/templates/shelf.html:18
 msgid "Enable Change order"
 msgstr "Schakel verandering van de volgorde in"
+
+#: cps/templates/shelf.html:28
+#, fuzzy
+msgid "Sort according to book added to shelf, newest first"
+msgstr "Sorteren op datum, nieuwste boeken eerst"
+
+#: cps/templates/shelf.html:29
+#, fuzzy
+msgid "Sort according to book added to shelf, oldest first"
+msgstr "Sorteren op datum, oudste boeken eerst"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"

@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-20 20:27:17</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-08-21 19:35:06</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-21 03:36:02</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-08-22 02:49:49</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 2 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
         </div>
       </div>
       </div>
@@ -2056,12 +2056,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2070,26 +2070,28 @@
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id="ft18.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 90, in test_load_metadata
-    elif len(results)&gt;19 and &#39;https://amazon.com/&#39; == results[20][&#39;source&#39;]:
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 100, in test_load_metadata
+    self.assertEqual(&#39;https://amazon.com/&#39;, results[am][&#39;source&#39;])
+AssertionError: &#39;https://amazon.com/&#39; != &#39;https://comicvine.gamespot.com/&#39;
+- https://amazon.com/
++ https://comicvine.gamespot.com/</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2284,9 +2286,9 @@ IndexError: list index out of range</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 936, in test_watch_metadata
-    self.assertTrue(button)
-AssertionError: False is not true</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 976, in test_watch_metadata
+    self.assertNotIn(&#39;series&#39;, book)
+AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1724266889&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2441,11 +2443,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEmbedMetadata</td>
         <td class="text-center">6</td>
-        <td class="text-center">5</td>
-        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2500,33 +2502,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id="ft23.6" class="none bg-danger">
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEmbedMetadata - test_email_epub_embed_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft23.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft23.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft23.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_embed_metadata.py&#34;, line 271, in test_email_epub_embed_metadata
-    task_len, ret = self.wait_tasks(tasks, 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1636, in wait_tasks
-    self.assertEqual(expected, task_len)
-AssertionError: 1 != 2</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4099,53 +4079,88 @@ AssertionError: 1 != 2</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestRegister</td>
+        <td class="text-center">8</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 1)">Detail</a>
+            <a onclick="showClassDetail('c44', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et44.1" class="none bg-info">
+        <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>setUpClass (test_register)</div>
+                <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et44.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et44.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et44.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_register.py&#34;, line 37, in setUpClass
-    cls.email_server.start()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 88, in start
-    raise self._thread_exception
-  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 65, in _run
-    self.server = self.loop.run_until_complete(
-  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 649, in run_until_complete
-    return future.result()
-  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 1519, in create_server
-    raise OSError(err.errno, &#39;error while attempting &#39;
-OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#39;, 1025): address already in use</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_limit_domain</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_register_no_server</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_registering_only_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_registering_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_registering_user_fail</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt44.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestRegister - test_user_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4202,15 +4217,15 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestShelf</td>
-        <td class="text-center">16</td>
+        <td class="text-center">17</td>
         <td class="text-center">15</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 16)">Detail</a>
+            <a onclick="showClassDetail('c46', 17)">Detail</a>
         </td>
     </tr>
 
@@ -4234,11 +4249,44 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id="et46.3" class="none bg-info">
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et46.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et46.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et46.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 562, in test_adv_search_shelf
+    self.assertEqual(len(self.adv_search({u&#39;include_shelf&#39;: u&#39;Search&#39;, &#39;book_title&#39;: &#39;book&#39;})), 2)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 2173, in adv_search
+    ele = self.driver.find_element(By.XPATH,
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
+    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: //input[@value = &#39;book&#39; and starts-with(@id, &#39;book_title&#39;) ]/..
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4370,6 +4418,15 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
         <tr id='pt46.16' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>TestShelf - test_shelf_order</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt46.17' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -4402,12 +4459,12 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestSplitLibrary</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
+        <td class="text-center">7</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c48', 7)">Detail</a>
@@ -4443,39 +4500,11 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
     
     
-        <tr id="et48.4" class="none bg-info">
+        <tr id='pt48.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_email_ebook</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et48.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et48.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et48.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_split_library.py&#34;, line 102, in test_email_ebook
-    self.email_server.start()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 88, in start
-    raise self._thread_exception
-  File &#34;/home/ozzie/Development/calibre-web-test/test/aiosmtpd/controller.py&#34;, line 65, in _run
-    self.server = self.loop.run_until_complete(
-  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 649, in run_until_complete
-    return future.result()
-  File &#34;/usr/lib/python3.10/asyncio/base_events.py&#34;, line 1519, in create_server
-    raise OSError(err.errno, &#39;error while attempting &#39;
-OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#39;, 1025): address already in use</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4556,11 +4585,11 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4633,31 +4662,11 @@ OSError: [Errno 98] error while attempting to bind on address (&#39;127.0.0.1&#3
     
     
     
-        <tr id="ft51.8" class="none bg-danger">
+        <tr id='pt51.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft51.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft51.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 327, in test_sideloaded_book
-    self.assertGreaterEqual(diff(BytesIO(list_cover), BytesIO(new_list_cover), delete_diff_file=True), 0.04)
-AssertionError: 0.039521531544059706 not greater than or equal to 0.04</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5863,10 +5872,10 @@ AssertionError: 0.039521531544059706 not greater than or equal to 0.04</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>515</td>
-        <td>500</td>
-        <td>3</td>
-        <td>3</td>
+        <td>523</td>
+        <td>511</td>
+        <td>2</td>
+        <td>1</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -6405,7 +6414,7 @@ AssertionError: 0.039521531544059706 not greater than or equal to 0.04</pre>
 </div>
 
 <script>
-    drawCircle(500, 3, 3, 9);
+    drawCircle(511, 2, 1, 9);
     showCase(5);
 </script>
 

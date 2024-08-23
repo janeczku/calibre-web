@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-08-14 19:28+0200\n"
+"POT-Creation-Date: 2024-08-17 13:50+0200\n"
 "PO-Revision-Date: 2023-11-01 06:12+0100\n"
 "Last-Translator: Branislav Hanáček <brango@brango.sk>\n"
 "Language: sk_SK\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:88
 msgid "Statistics"
@@ -289,7 +289,7 @@ msgstr "Úspech! Gmail konto bolo verifikované."
 #: cps/admin.py:1953 cps/admin.py:2074 cps/editbooks.py:228
 #: cps/editbooks.py:309 cps/editbooks.py:1252 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:468 cps/tasks/convert.py:156 cps/web.py:1528
+#: cps/shelf.py:471 cps/tasks/convert.py:156 cps/web.py:1528
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Chyba databázy: %(error)s."
@@ -1220,12 +1220,12 @@ msgstr "Verejná polica s názvom '%(title)s' už existuje."
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Súkromná polica s názvom '%(title)s' už existuje."
 
-#: cps/shelf.py:473
+#: cps/shelf.py:476
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Polica: '%(name)s'"
 
-#: cps/shelf.py:477
+#: cps/shelf.py:480
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Chyba pri otváraní police. Polica neexistuje alebo je neprístupná"
 
@@ -1521,21 +1521,21 @@ msgstr "E-mail"
 msgid "Backing up Metadata"
 msgstr "Zálohovať metadáta"
 
-#: cps/tasks/thumbnail.py:95
+#: cps/tasks/thumbnail.py:96
 #, python-format
 msgid "Generated %(count)s cover thumbnails"
 msgstr "Bolo vygenerovaných %(count)s náhľadov obálok kníh"
 
-#: cps/tasks/thumbnail.py:228 cps/tasks/thumbnail.py:441
-#: cps/tasks/thumbnail.py:509
+#: cps/tasks/thumbnail.py:230 cps/tasks/thumbnail.py:443
+#: cps/tasks/thumbnail.py:511
 msgid "Cover Thumbnails"
 msgstr "Náhľad obálky knihy"
 
-#: cps/tasks/thumbnail.py:287
+#: cps/tasks/thumbnail.py:289
 msgid "Generated {0} series thumbnails"
 msgstr "Bolo vygenerovaných {0} náhľadov pre série"
 
-#: cps/tasks/thumbnail.py:452
+#: cps/tasks/thumbnail.py:454
 msgid "Clearing cover thumbnail cache"
 msgstr "Vyrovnávacia pamäť pre obálky kníh sa vyprázdňuje"
 
@@ -1842,7 +1842,7 @@ msgstr "Triediť podľa dátumu vydania, najstaršie najskôr"
 
 #: cps/templates/author.html:56 cps/templates/author.html:115
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:55
+#: cps/templates/search.html:67 cps/templates/shelf.html:57
 msgid "reduce"
 msgstr "znížiť"
 
@@ -3364,6 +3364,16 @@ msgstr "Znemožniť zmenu poradia"
 #: cps/templates/shelf.html:18
 msgid "Enable Change order"
 msgstr "Povoloť zmenu poradia"
+
+#: cps/templates/shelf.html:28
+#, fuzzy
+msgid "Sort according to book added to shelf, newest first"
+msgstr "Triediť podľa dátumu knihy, najnovšie najskôr"
+
+#: cps/templates/shelf.html:29
+#, fuzzy
+msgid "Sort according to book added to shelf, oldest first"
+msgstr "Triediť podľa dátumu knihy, najstaršie najskôr"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"

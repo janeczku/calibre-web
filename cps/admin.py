@@ -1716,6 +1716,13 @@ def _db_configuration_update_helper():
             db_change = True
     except Exception as ex:
         return _db_configuration_result('{}'.format(ex), gdrive_error)
+    config.config_calibre_split = to_save.get('config_calibre_split', 0) == "on"
+    if config.config_calibre_split:
+        split_dir = to_save.get("config_calibre_split_dir")
+        if not os.path.exists(split_dir):
+            return _db_configuration_result(_("Books path not valid"), gdrive_error)
+        else:
+            _config_string(to_save, "config_calibre_split_dir")
 
     if db_change or not db_valid or not config.db_configured \
       or config.config_calibre_dir != to_save["config_calibre_dir"]:
@@ -1741,8 +1748,6 @@ def _db_configuration_update_helper():
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_("DB is not Writeable"), category="warning")
-    _config_string(to_save, "config_calibre_split_dir")
-    config.config_calibre_split = to_save.get('config_calibre_split', 0) == "on"
     calibre_db.update_config(config)
     config.save()
     return _db_configuration_result(None, gdrive_error)
