@@ -182,26 +182,6 @@ class _Settings(_Base):
 class ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self):
-        '''self.config_calibre_uuid = None
-        self.config_calibre_split_dir = None
-        self.dirty = None
-        self.config_logfile = None
-        self.config_upload_formats = None
-        self.mail_gmail_token = None
-        self.mail_server_type = None
-        self.mail_server = None
-        self.config_log_level = None
-        self.config_allowed_column_value = None
-        self.config_denied_column_value = None
-        self.config_allowed_tags = None
-        self.config_denied_tags = None
-        self.config_default_show = None
-        self.config_default_role = None
-        self.config_keyfile = None
-        self.config_certfile = None
-        self.config_rarfile_location = None
-        self.config_kepubifypath = None
-        self.config_binariesdir = None'''
         self.__dict__["dirty"] = list()
 
     def init_config(self, session, secret_key, cli):
