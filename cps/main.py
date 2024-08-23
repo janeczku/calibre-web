@@ -31,6 +31,7 @@ def main():
     app = create_app()
 
     from .web import web
+    from .basic import basic
     from .opds import opds
     from .admin import admi
     from .gdrive import gdrive
@@ -64,6 +65,7 @@ def main():
     app.register_blueprint(search)
     app.register_blueprint(tasks)
     app.register_blueprint(web)
+    app.register_blueprint(basic)
     app.register_blueprint(opds)
     limiter.limit("3/minute", key_func=request_username)(opds)
     app.register_blueprint(jinjia)
