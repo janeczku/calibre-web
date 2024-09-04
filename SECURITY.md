@@ -48,6 +48,7 @@ To receive fixes for security vulnerabilities it is required to always upgrade t
 | V 0.6.22      | Upload mimetype is checked to prevent malicious file content in the books library                                              ||
 | V 0.6.22      | Cross-site scripting (XSS) stored in comments section is prevented better (switching from lxml to bleach for sanitizing strings) ||
 | V 0.6.23      | Cookies are no longer stored for opds basic authentication and proxy authentication                                            ||
+| V 0.6.24      | Switching from bleach to nh3 due to deprecation ||
 
 
 
