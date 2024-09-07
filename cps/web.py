@@ -36,6 +36,7 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
+from sqlalchemy import __version__ as sql_version
 
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -84,6 +85,9 @@ try:
     from natsort import natsorted as sort
 except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
+
+
+sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 
 @app.after_request
