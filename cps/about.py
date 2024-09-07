@@ -52,9 +52,9 @@ sorted_modules = OrderedDict((sorted(modules.items(), key=lambda x: x[0].casefol
 
 def collect_stats():
     if constants.NIGHTLY_VERSION[0] == "$Format:%H$":
-        calibre_web_version = constants.STABLE_VERSION['version'].replace("b", " Beta")
+        calibre_web_version = constants.STABLE_VERSION.replace("b", " Beta")
     else:
-        calibre_web_version = (constants.STABLE_VERSION['version'].replace("b", " Beta") + ' - '
+        calibre_web_version = (constants.STABLE_VERSION.replace("b", " Beta") + ' - '
                                + constants.NIGHTLY_VERSION[0].replace('%', '%%') + ' - '
                                + constants.NIGHTLY_VERSION[1].replace('%', '%%'))
 
