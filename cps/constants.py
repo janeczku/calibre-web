@@ -175,7 +175,7 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
                                   'series_id, languages, publisher, pubdate, identifiers')
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
-STABLE_VERSION = {'version': '0.6.23b'}
+STABLE_VERSION = {'version': '0.6.24b'}
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
@@ -193,7 +193,7 @@ THUMBNAIL_TYPE_AUTHOR    = 3
 COVER_THUMBNAIL_ORIGINAL = 0
 COVER_THUMBNAIL_SMALL    = 1
 COVER_THUMBNAIL_MEDIUM   = 2
-COVER_THUMBNAIL_LARGE    = 3
+COVER_THUMBNAIL_LARGE    = 4
 
 # clean-up the module namespace
 del sys, os, namedtuple

@@ -35,7 +35,7 @@ except ImportError:
 
 from . import constants, logger
 from .subproc_wrapper import process_wait
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 _Base = declarative_base()
@@ -182,26 +182,6 @@ class _Settings(_Base):
 class ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self):
-        '''self.config_calibre_uuid = None
-        self.config_calibre_split_dir = None
-        self.dirty = None
-        self.config_logfile = None
-        self.config_upload_formats = None
-        self.mail_gmail_token = None
-        self.mail_server_type = None
-        self.mail_server = None
-        self.config_log_level = None
-        self.config_allowed_column_value = None
-        self.config_denied_column_value = None
-        self.config_allowed_tags = None
-        self.config_denied_tags = None
-        self.config_default_show = None
-        self.config_default_role = None
-        self.config_keyfile = None
-        self.config_certfile = None
-        self.config_rarfile_location = None
-        self.config_kepubifypath = None
-        self.config_binariesdir = None'''
         self.__dict__["dirty"] = list()
 
     def init_config(self, session, secret_key, cli):
@@ -288,19 +268,19 @@ class ConfigSQL(object):
 
     def list_denied_tags(self):
         mct = self.config_denied_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_tags(self):
         mct = self.config_allowed_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_denied_column_values(self):
         mct = self.config_denied_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_column_values(self):
         mct = self.config_allowed_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def get_log_level(self):
         return logger.get_level_name(self.config_log_level)
@@ -372,7 +352,7 @@ class ConfigSQL(object):
             db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        # constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        
         from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)

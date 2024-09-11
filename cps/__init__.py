@@ -72,6 +72,9 @@ mimetypes.add_type('application/mpeg', '.mpeg')
 mimetypes.add_type('audio/mpeg', '.mp3')
 mimetypes.add_type('audio/x-m4a', '.m4a')
 mimetypes.add_type('audio/x-m4a', '.m4b')
+mimetypes.add_type('audio/x-hx-aac-adts', '.aac')
+mimetypes.add_type('audio/vnd.dolby.dd-raw', '.ac3')
+mimetypes.add_type('video/x-ms-asf', '.asf')
 mimetypes.add_type('audio/ogg', '.ogg')
 mimetypes.add_type('application/ogg', '.oga')
 mimetypes.add_type('text/css', '.css')
@@ -84,8 +87,10 @@ app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Strict',
-    REMEMBER_COOKIE_SAMESITE='Strict',  # will be available in flask-login 0.5.1 earliest
-    WTF_CSRF_SSL_STRICT=False
+    REMEMBER_COOKIE_SAMESITE='Strict',
+    WTF_CSRF_SSL_STRICT=False,
+    SESSION_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "session",
+    REMEMBER_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "remember_token"
 )
 
 lm = MyLoginManager()

@@ -25,7 +25,7 @@ import re
 import regex
 import shutil
 import socket
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 import unidecode
 from uuid import uuid4
@@ -52,6 +52,7 @@ except ImportError:
     UnacceptableAddressException = MissingSchema = BaseException
 
 from . import calibre_db, cli_param
+from .string_helper import strip_whitespaces
 from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
@@ -118,7 +119,7 @@ def convert_book_format(book_id, calibre_path, old_book_format, new_book_format,
 # Texts are not lazy translated as they are supposed to get send out as is
 def send_test_mail(ereader_mail, user_name):
     for email in ereader_mail.split(','):
-        email = email.strip()
+        email = strip_whitespaces(email)
         WorkerThread.add(user_name, TaskEmail(_('Calibre-Web Test Email'), None, None,
                          config.get_mail_settings(), email, N_("Test Email"),
                                               _('This Email has been sent via Calibre-Web.')))
@@ -228,7 +229,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(book.title))
             email_text = N_("%(book)s send to eReader", book=link)
             for email in ereader_mail.split(','):
-                email = email.strip()
+                email = strip_whitespaces(email)
                 WorkerThread.add(user_id, TaskEmail(_("Send to eReader"), book.path, converted_file_name,
                                  config.get_mail_settings(), email,
                                  email_text, _('This Email has been sent via Calibre-Web.'), book.id))
@@ -252,7 +253,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
         # pipe has to be replaced with comma
         value = re.sub(r'[|]+', ',', value, flags=re.U)
 
-    value = value.encode('utf-8')[:chars].decode('utf-8', errors='ignore').strip()
+    value = strip_whitespaces(value.encode('utf-8')[:chars].decode('utf-8', errors='ignore'))
 
     if not value:
         raise ValueError("Filename cannot be empty")
@@ -267,11 +268,11 @@ def split_authors(values):
             commas = author.count(',')
             if commas == 1:
                 author_split = author.split(',')
-                authors_list.append(author_split[1].strip() + ' ' + author_split[0].strip())
+                authors_list.append(strip_whitespaces(author_split[1]) + ' ' + strip_whitespaces(author_split[0]))
             elif commas > 1:
-                authors_list.extend([x.strip() for x in author.split(',')])
+                authors_list.extend([strip_whitespaces(x) for x in author.split(',')])
             else:
-                authors_list.append(author.strip())
+                authors_list.append(strip_whitespaces(author))
     return authors_list
 
 
@@ -327,7 +328,7 @@ def edit_book_read_status(book_id, read_status=None):
         ub.session_commit("Book {} readbit toggled".format(book_id))
     else:
         try:
-            calibre_db.update_title_sort(config)
+            calibre_db.create_functions(config)
             book = calibre_db.get_filtered_book(book_id)
             book_read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
             if len(book_read_status):
@@ -661,7 +662,7 @@ def check_email(email):
 
 
 def check_username(username):
-    username = username.strip()
+    username = strip_whitespaces(username)
     if ub.session.query(ub.User).filter(func.lower(ub.User.name) == username.lower()).scalar():
         log.error("This username is already taken")
         raise Exception(_("This username is already taken"))
@@ -669,16 +670,18 @@ def check_username(username):
 
 
 def valid_email(emails):
+    valid_emails = []
     for email in emails.split(','):
-	    email = email.strip()
-	    # if email is not deleted
-	    if email:
-	        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-	        if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-	                         email):
-	            log.error("Invalid Email address format")
-	            raise Exception(_("Invalid Email address format"))
-    return email
+        email = strip_whitespaces(email)
+        # if email is not deleted
+        if email:
+            # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+            if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
+                             email):
+                log.error("Invalid Email address format for {}".format(email))
+                raise Exception(_("Invalid Email address format"))
+            valid_emails.append(email)
+    return ",".join(valid_emails)
 
 
 def valid_password(check_password):
@@ -788,24 +791,23 @@ def get_book_cover_internal(book, resolution=None):
 
 def get_book_cover_thumbnail(book, resolution):
     if book and book.has_cover:
-        return ub.session \
-            .query(ub.Thumbnail) \
-            .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER) \
-            .filter(ub.Thumbnail.entity_id == book.id) \
-            .filter(ub.Thumbnail.resolution == resolution) \
-            .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
-            .first()
+        return (ub.session
+                .query(ub.Thumbnail)
+                .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_COVER)
+                .filter(ub.Thumbnail.entity_id == book.id)
+                .filter(ub.Thumbnail.resolution == resolution)
+                .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(timezone.utc)))
+                .first())
 
 
 def get_series_thumbnail_on_failure(series_id, resolution):
-    book = calibre_db.session \
-        .query(db.Books) \
-        .join(db.books_series_link) \
-        .join(db.Series) \
-        .filter(db.Series.id == series_id) \
-        .filter(db.Books.has_cover == 1) \
-        .first()
-
+    book = (calibre_db.session
+        .query(db.Books)
+        .join(db.books_series_link)
+        .join(db.Series)
+        .filter(db.Series.id == series_id)
+        .filter(db.Books.has_cover == 1)
+        .first())
     return get_book_cover_internal(book, resolution=resolution)
 
 
@@ -827,13 +829,13 @@ def get_series_cover_internal(series_id, resolution=None):
 
 
 def get_series_thumbnail(series_id, resolution):
-    return ub.session \
-        .query(ub.Thumbnail) \
-        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES) \
-        .filter(ub.Thumbnail.entity_id == series_id) \
-        .filter(ub.Thumbnail.resolution == resolution) \
-        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.utcnow())) \
-        .first()
+    return (ub.session
+        .query(ub.Thumbnail)
+        .filter(ub.Thumbnail.type == THUMBNAIL_TYPE_SERIES)
+        .filter(ub.Thumbnail.entity_id == series_id)
+        .filter(ub.Thumbnail.resolution == resolution)
+        .filter(or_(ub.Thumbnail.expiration.is_(None), ub.Thumbnail.expiration > datetime.now(timezone.utc)))
+        .first())
 
 
 # saves book cover from url

@@ -26,6 +26,7 @@ from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
 from . import logger, db, calibre_db, config, ub
+from .string_helper import strip_whitespaces
 from .usermanagement import login_required_if_no_ano
 from .render_template import render_title_template
 from .pagination import Pagination
@@ -81,16 +82,27 @@ def adv_search_custom_columns(cc, term, q):
             if custom_end:
                 q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                     func.datetime(db.cc_classes[c.id].value) <= func.datetime(custom_end)))
+        elif c.datatype in ["int", "float"]:
+            custom_low = term.get('custom_column_' + str(c.id) + '_low')
+            custom_high = term.get('custom_column_' + str(c.id) + '_high')
+            if custom_low:
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value >= custom_low))
+            if custom_high:
+                q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                    db.cc_classes[c.id].value <= custom_high))
         else:
             custom_query = term.get('custom_column_' + str(c.id))
-            if custom_query != '' and custom_query is not None:
-                if c.datatype == 'bool':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == (custom_query == "True")))
-                elif c.datatype == 'int' or c.datatype == 'float':
-                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == custom_query))
-                elif c.datatype == 'rating':
+            if c.datatype == 'bool':
+                if custom_query != "Any":
+                    if custom_query == "":
+                        q = q.filter(~getattr(db.Books, 'custom_column_' + str(c.id)).
+                                     any(db.cc_classes[c.id].value >= 0))
+                    else:
+                        q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                            db.cc_classes[c.id].value == bool(custom_query == "True")))
+            elif custom_query != '' and custom_query is not None:
+                if c.datatype == 'rating':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == int(float(custom_query) * 2)))
                 else:
@@ -129,10 +141,10 @@ def adv_search_read_status(read_status):
             db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
     else:
         try:
-            if read_status == "True":
-                db_filter = db.cc_classes[config.config_read_column].value == True
+            if read_status == "":
+                db_filter = coalesce(db.cc_classes[config.config_read_column].value, 2) == 2
             else:
-                db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
+                db_filter = db.cc_classes[config.config_read_column].value == bool(read_status == "True")
         except (KeyError, AttributeError, IndexError):
             log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
             flash(_("Custom Column No.%(column)d does not exist in calibre database",
@@ -232,7 +244,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     pagination = None
 
     cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
-    calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    calibre_db.create_functions()
+    # calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
     q = query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)\
         .outerjoin(db.Series)\
@@ -245,8 +258,8 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         tags['include_' + element] = term.get('include_' + element)
         tags['exclude_' + element] = term.get('exclude_' + element)
 
-    author_name = term.get("author_name")
-    book_title = term.get("book_title")
+    author_name = term.get("authors")
+    book_title = term.get("title")
     publisher = term.get("publisher")
     pub_start = term.get("publishstart")
     pub_end = term.get("publishend")
@@ -255,11 +268,11 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
     description = term.get("comment")
     read_status = term.get("read_status")
     if author_name:
-        author_name = author_name.strip().lower().replace(',', '|')
+        author_name = strip_whitespaces(author_name).lower().replace(',', '|')
     if book_title:
-        book_title = book_title.strip().lower()
+        book_title = strip_whitespaces(book_title).lower()
     if publisher:
-        publisher = publisher.strip().lower()
+        publisher = strip_whitespaces(publisher).lower()
 
     search_term = []
     cc_present = False
@@ -275,9 +288,22 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                 cc_present = True
             if column_end:
                 search_term.extend(["{} <= {}".format(c.name,
-                                                       format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
+                                                      format_date(datetime.strptime(column_end, "%Y-%m-%d").date(),
                                                                    format='medium')
                                                        )])
+                cc_present = True
+        if c.datatype in ["int", "float"]:
+            column_low = term.get('custom_column_' + str(c.id) + '_low')
+            column_high = term.get('custom_column_' + str(c.id) + '_high')
+            if column_low:
+                search_term.extend(["{} >= {}".format(c.name, column_low)])
+                cc_present = True
+            if column_high:
+                search_term.extend(["{} <= {}".format(c.name,column_high)])
+                cc_present = True
+        elif c.datatype == "bool":
+            if term.get('custom_column_' + str(c.id)) != "Any":
+                search_term.extend([("{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])
                 cc_present = True
         elif term.get('custom_column_' + str(c.id)):
             search_term.extend([("{}: {}".format(c.name, term.get('custom_column_' + str(c.id))))])

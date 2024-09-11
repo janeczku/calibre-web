@@ -15,6 +15,6 @@
     <img
         srcset="{{ srcset }}"
         src="{{ url_for('web.get_series_cover', series_id=series.id, resolution='og', c='day'|cache_timestamp) }}"
-        alt="{{ book_title }}"
+        alt="{{ title }}"
     />
 {%- endmacro %}

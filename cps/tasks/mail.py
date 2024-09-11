@@ -34,6 +34,7 @@ from cps.services import gmail
 from cps.embed_helper import do_calibre_export
 from cps import logger, config
 from cps import gdriveutils
+from cps.string_helper import strip_whitespaces
 import uuid
 
 log = logger.create()
@@ -127,9 +128,9 @@ class TaskEmail(CalibreTask):
         try:
             # Parse out the address from the From line, and then the domain from that
             from_email = parseaddr(self.settings["mail_from"])[1]
-            msgid_domain = from_email.partition('@')[2].strip()
+            msgid_domain = strip_whitespaces(from_email.partition('@')[2])
             # This can sometimes sneak through parseaddr if the input is malformed
-            msgid_domain = msgid_domain.rstrip('>').strip()
+            msgid_domain = strip_whitespaces(msgid_domain.rstrip('>'))
         except Exception:
             msgid_domain = ''
         return msgid_domain or 'calibre-web.com'

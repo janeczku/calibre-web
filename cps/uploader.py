@@ -23,7 +23,8 @@ from flask_babel import gettext as _
 from . import logger, comic, isoLanguages
 from .constants import BookMeta
 from .helper import split_authors
-from .file_helper import get_temp_dir, validate_mime_type
+from .file_helper import get_temp_dir
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -68,28 +69,39 @@ except ImportError as e:
     log.debug('Cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
+try:
+    from . import audio
+    use_audio_meta = True
+except ImportError as e:
+    log.debug('Cannot import mutagen, extracting audio metadata will not work: %s', e)
+    use_audio_meta = False
 
-def process(tmp_file_path, original_file_name, original_file_extension, rar_executable):
+
+def process(tmp_file_path, original_file_name, original_file_extension, rar_executable, no_cover=False):
     meta = default_meta(tmp_file_path, original_file_name, original_file_extension)
     extension_upper = original_file_extension.upper()
     try:
         if ".PDF" == extension_upper:
-            meta = pdf_meta(tmp_file_path, original_file_name, original_file_extension)
+            meta = pdf_meta(tmp_file_path, original_file_name, original_file_extension, no_cover)
         elif extension_upper in [".KEPUB", ".EPUB"] and use_epub_meta is True:
-            meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
+            meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension, no_cover)
         elif ".FB2" == extension_upper and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
         elif extension_upper in ['.CBZ', '.CBT', '.CBR', ".CB7"]:
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,
-                                        rar_executable)
+                                        rar_executable,
+                                        no_cover)
+        elif extension_upper in [".MP3", ".OGG", ".FLAC", ".WAV", ".AAC", ".AIFF", ".ASF", ".MP4",
+                                 ".M4A", ".M4B", ".OGV", ".OPUS"] and use_audio_meta:
+            meta = audio.get_audio_file_info(tmp_file_path, original_file_extension, original_file_name, no_cover)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
-    if not meta.title.strip():
+    if not strip_whitespaces(meta.title):
         meta = meta._replace(title=original_file_name)
-    if not meta.author.strip() or meta.author.lower() == 'unknown':
+    if not strip_whitespaces(meta.author) or meta.author.lower() == 'unknown':
         meta = meta._replace(author=_('Unknown'))
     return meta
 
@@ -157,7 +169,7 @@ def parse_xmp(pdf_file):
                 }
 
 
-def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
+def pdf_meta(tmp_file_path, original_file_name, original_file_extension, no_cover_processing):
     doc_info = None
     xmp_info = None
 
@@ -205,7 +217,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         extension=original_file_extension,
         title=title,
         author=author,
-        cover=pdf_preview(tmp_file_path, original_file_name),
+        cover=pdf_preview(tmp_file_path, original_file_name) if not no_cover_processing else None,
         description=subject,
         tags=tags,
         series="",
@@ -220,7 +232,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
     if use_generic_pdf_cover:
         return None
     try:
-        cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
+        cover_file_name = os.path.join(os.path.dirname(tmp_file_path), "cover.jpg")
         with Image() as img:
             img.options["pdf:use-cropbox"] = "true"
             img.read(filename=tmp_file_path + '[0]', resolution=150)

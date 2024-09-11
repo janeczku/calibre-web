@@ -47,26 +47,41 @@
       </form>
   </div>
 {% endif %}
+{% if current_user.role_upload() and g.allow_upload %}
 
+  <div class="text-center more-stuff"><!--h4 aria-label="Upload new book format"></h4-->
+  <form id="form-upload-format" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
+    <div class="text-center">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="book_id" value="{{ book.id }}">
+      <div role="group" aria-label="Upload new book format">
+        <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload Format') }}</label>
+        <div class="upload-format-input-text" id="upload-format"></div>
+        <input id="btn-upload-format" name="btn-upload-format" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple>
+      </div>
+    </div>
+  </form>
   </div>
+{% endif %}
+</div>
 <form role="form" action="{{ url_for('edit-book.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
-      <label for="book_title">{{_('Book Title')}}</label>
-      <input type="text" class="form-control" name="book_title" id="book_title" value="{{book.title}}">
+      <label for="title">{{_('Book Title')}}</label>
+      <input type="text" class="form-control" name="title" id="title" value="{{book.title}}">
     </div>
     <div class="text-center">
         <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
     </div>
     <div id="author_div" class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
-      <input type="text" class="form-control typeahead" autocomplete="off" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}">
+      <input type="text" class="form-control typeahead" autocomplete="off" name="authors" id="authors" value="{{' & '.join(authors)}}">
     </div>
 
     <div class="form-group">
-      <label for="description">{{_('Description')}}</label>
-      <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
+      <label for="comments">{{_('Description')}}</label>
+      <textarea class="form-control" name="comments" id="comments" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
     </div>
 
     <div class="form-group">
@@ -196,13 +211,6 @@
           </div>
         {% endfor %}
       {% endif %}
-      {% if current_user.role_upload() and g.allow_upload %}
-          <div role="group" aria-label="Upload new book format">
-            <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload Format') }}</label>
-            <div class="upload-format-input-text" id="upload-format"></div>
-            <input id="btn-upload-format" name="btn-upload-format" type="file">
-          </div>
-      {% endif %}
 
     <div class="checkbox">
       <label>
@@ -288,7 +296,7 @@
     'no_result': {{_('No Result(s) found! Please try another keyword.')|safe|tojson}},
     'author': {{_('Author')|safe|tojson}},
     'publisher': {{_('Publisher')|safe|tojson}},
-    'description': {{_('Description')|safe|tojson}},
+    'comments': {{_('Description')|safe|tojson}},
     'source': {{_('Source')|safe|tojson}},
   };
   var language = '{{ current_user.locale }}';
