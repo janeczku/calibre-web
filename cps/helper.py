@@ -535,7 +535,12 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
         if original_filepath:
             if not os.path.isdir(new_path):
                 os.makedirs(new_path)
-            shutil.move(original_filepath, os.path.join(new_path, db_filename))
+            try:
+                shutil.move(original_filepath, os.path.join(new_path, db_filename))
+            except OSError:
+                log.error("Rename title from {} to {} failed with error, trying to "
+                          "move without metadata".format(path, new_path))
+                shutil.move(original_filepath, os.path.join(new_path, db_filename), copy_function=shutil.copy)
             log.debug("Moving title: %s to %s", original_filepath, new_path)
         else:
             # Check new path is not valid path
