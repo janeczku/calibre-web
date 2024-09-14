@@ -418,8 +418,6 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
     # Create new_author_dir from parameter or from database
     # Create new title_dir from database and add id
     new_authordir = get_valid_filename(first_author, chars=96)
-    # new_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == renamed_author).first()
-    # old_author_dir = get_valid_filename(old_author_name, chars=96)
     new_author_rename_dir = get_valid_filename(renamed_author, chars=96)
     if gdrive:
         g_file = gd.getFileFromEbooksFolder(None, old_author_dir)
@@ -468,7 +466,6 @@ def update_dir_structure_file(book_id, calibre_path, original_filepath, new_auth
                                      db_filename,
                                      original_filepath,
                                      path)
-        # old_path = os.path.join(calibre_path, author_dir, new_title_dir).replace('\\', '/')
         new_path = os.path.join(calibre_path, new_author_dir, new_title_dir).replace('\\', '/')
         all_new_name = get_valid_filename(local_book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_author, chars=42)
@@ -477,8 +474,6 @@ def update_dir_structure_file(book_id, calibre_path, original_filepath, new_auth
 
         if error:
             return error
-
-    # Rename all files from old names to new names
     return False
 
 
@@ -490,7 +485,7 @@ def upload_new_file_gdrive(book_id, first_author, title, title_dir, original_fil
                                title_dir + " (" + str(book_id) + ")")
     book.path = gdrive_path.replace("\\", "/")
     gd.uploadFileToEbooksFolder(os.path.join(gdrive_path, file_name).replace("\\", "/"), original_filepath)
-    return False # rename_files_on_change(first_author, renamed_author, local_book=book, gdrive=True)
+    return False
 
 
 def update_dir_structure_gdrive(book_id, first_author):
@@ -523,19 +518,21 @@ def update_dir_structure_gdrive(book_id, first_author):
         all_new_name = get_valid_filename(book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_authordir, chars=42)
         rename_all_files_on_change(book, book.path, book.path, all_new_name, gdrive=True)  # todo: Move filenames on gdrive
-    # change location in database to new author/title path
-    # book.path = os.path.join(authordir, new_titledir).replace('\\', '/')
     return False
 
 
 def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, db_filename, original_filepath, path):
     new_path = os.path.join(calibre_path, new_author_dir, new_titledir)
-    # new_name = get_valid_filename(localbook.title, chars=96) + ' - ' + new_author_dir
     try:
         if original_filepath:
             if not os.path.isdir(new_path):
                 os.makedirs(new_path)
-            shutil.move(original_filepath, os.path.join(new_path, db_filename))
+            try:
+                shutil.move(original_filepath, os.path.join(new_path, db_filename))
+            except OSError:
+                log.error("Rename title from {} to {} failed with error, trying to "
+                          "move without metadata".format(path, new_path))
+                shutil.move(original_filepath, os.path.join(new_path, db_filename), copy_function=shutil.copy)
             log.debug("Moving title: %s to %s", original_filepath, new_path)
         else:
             # Check new path is not valid path

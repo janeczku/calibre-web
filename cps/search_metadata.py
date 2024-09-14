@@ -33,7 +33,6 @@ from cps.services.Metadata import Metadata
 from . import constants, logger, ub, web_server
 from .usermanagement import user_login_required
 
-# current_milli_time = lambda: int(round(time() * 1000))
 
 meta = Blueprint("metadata", __name__)
 
@@ -130,7 +129,7 @@ def metadata_search():
     locale = get_locale()
     if query:
         static_cover = url_for("static", filename="generic_cover.jpg")
-        # start = current_milli_time()
+        # ret = cl[0].search(query, static_cover, locale)
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             meta = {
                 executor.submit(c.search, query, static_cover, locale): c
@@ -139,5 +138,4 @@ def metadata_search():
             }
             for future in concurrent.futures.as_completed(meta):
                 data.extend([asdict(x) for x in future.result() if x])
-    # log.info({'Time elapsed {}'.format(current_milli_time()-start)})
     return Response(json.dumps(data), mimetype="application/json")
