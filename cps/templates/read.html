@@ -135,19 +135,23 @@
         window.themes = {
             "darkTheme": {
                 "bgColor": "#202124",
-                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}"
+                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}",
+                "title-color": "#fff"
             },
             "lightTheme": {
                 "bgColor": "white",
-                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}"
+                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}",
+                "title-color": "#4f4f4f"
             },
             "sepiaTheme": {
                 "bgColor": "#ece1ca",
-                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}"
+                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}",
+                "title-color": "#4f4f4f"
             },
             "blackTheme": {
                 "bgColor": "black",
-                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}"
+                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}",
+                "title-color": "#fff"
             },
         };
 
@@ -170,6 +174,7 @@
 
             // Apply theme to rest of the page. 
             document.getElementById("main").style.backgroundColor = themes[id]["bgColor"];
+            document.getElementById("titlebar").style.color = themes[id]["title-color"] || "#fff";
         }
 
         // font size settings logic
