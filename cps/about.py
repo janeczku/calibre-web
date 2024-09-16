@@ -42,10 +42,8 @@ opt = dep_check.load_dependencies(True)
 for i in (req + opt):
     modules[i[1]] = i[0]
 modules['Jinja2'] = importlib.metadata.version("jinja2")
-try:
+if sys.version_info < (3, 12):
     modules['pySqlite'] = sqlite3.version
-except Exception:
-    pass
 modules['SQLite'] = sqlite3.sqlite_version
 sorted_modules = OrderedDict((sorted(modules.items(), key=lambda x: x[0].casefold())))
 
