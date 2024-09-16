@@ -25,25 +25,13 @@ log = logger.create()
 
 
 try:
-    from iso639 import languages
-    # iso_version = importlib.metadata.version("iso639")
-    get = languages.get
-    try:
-        if sys.version_info >= (3, 12):
-            import pkg_resources
-    except ImportError:
-        print("Python 3.12 isn't compatible with iso-639. Please install pycountry.")
-except ImportError as ex:
     from pycountry import languages as pyc_languages
-    #try:
-    #    iso_version = importlib.metadata.version("pycountry") + ' (PyCountry)'
-    #except (ImportError, Exception):
-    #    iso_version = "?" + ' (PyCountry)'
 
     def _copy_fields(l):
         l.part1 = getattr(l, 'alpha_2', None)
         l.part3 = getattr(l, 'alpha_3', None)
         return l
+
 
     def get(name=None, part1=None, part3=None):
         if part3 is not None:
@@ -52,6 +40,11 @@ except ImportError as ex:
             return _copy_fields(pyc_languages.get(alpha_2=part1))
         if name is not None:
             return _copy_fields(pyc_languages.get(name=name))
+except ImportError as ex:
+    if sys.version_info >= (3, 12):
+        print("Python 3.12 isn't compatible with iso-639. Please install pycountry.")
+    from iso639 import languages
+    get = languages.get
 
 
 def get_language_names(locale):
