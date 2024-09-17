@@ -224,7 +224,7 @@ def edit_selected_books():
     selections = d.get('selections')
     title = d.get('title')
     title_sort = d.get('title_sort')
-    author_sort = d.get('author_sortj')
+    author_sort = d.get('author_sort')
     authors = d.get('authors')
     categories = d.get('categories')
     series = d.get('series')
