@@ -219,6 +219,7 @@ $(function() {
                 "languages": $("#languages_input").val(),
                 "publishers": $("#publishers_input").val(),
                 "comments": $("#comments_input").val().toString(),
+                "checkA": $('#autoupdate_authorsort').prop('checked').toString()
             }),
             success: function success(booTitles) {
                 $("#books-table").bootstrapTable("refresh");

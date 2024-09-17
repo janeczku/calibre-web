@@ -231,12 +231,14 @@ def edit_selected_books():
     languages = d.get('languages')
     publishers = d.get('publishers')
     comments = d.get('comments')
+    checkA = d.get('checkA')
 
     if len(selections) != 0:
         for book_id in selections:
             vals = {
                 "pk": book_id,
                 "value": None,
+                "checkA": checkA,
             }
             if title:
                 vals['value'] = title
