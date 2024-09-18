@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-18 19:11+0200\n"
+"POT-Creation-Date: 2024-09-14 10:51+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_TW\n"
@@ -741,122 +741,122 @@ msgstr "刪除書籍 %(id)s失敗：%(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "僅從數據庫中刪除書籍 %(id)s，數據庫中的書籍路徑無效： %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:441
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "將標題從“%(src)s”改為“%(dest)s”時失敗，錯誤錯信息：%(error)s"
 
-#: cps/helper.py:507 cps/helper.py:516
+#: cps/helper.py:512 cps/helper.py:521
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive上找不到文件 %(file)s"
 
-#: cps/helper.py:559
+#: cps/helper.py:567
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "將標題從“%(src)s”改為“%(dest)s”時失敗，錯誤錯信息：%(error)s"
 
-#: cps/helper.py:597
+#: cps/helper.py:605
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive上找不到書籍路徑 %(path)s"
 
-#: cps/helper.py:657
+#: cps/helper.py:665
 msgid "Found an existing account for this Email address"
 msgstr ""
 
-#: cps/helper.py:665
+#: cps/helper.py:673
 msgid "This username is already taken"
 msgstr "此用戶名已被使用"
 
-#: cps/helper.py:679
+#: cps/helper.py:687
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "無效的郵件地址格式"
 
-#: cps/helper.py:701
+#: cps/helper.py:709
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:847
+#: cps/helper.py:855
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:857
+#: cps/helper.py:865
 msgid "Error Downloading Cover"
 msgstr "下載封面時出錯"
 
-#: cps/helper.py:860
+#: cps/helper.py:868
 msgid "Cover Format Error"
 msgstr "封面格式出錯"
 
-#: cps/helper.py:863
+#: cps/helper.py:871
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr ""
 
-#: cps/helper.py:873
+#: cps/helper.py:881
 msgid "Failed to create path for cover"
 msgstr "創建封面路徑失敗"
 
-#: cps/helper.py:889
+#: cps/helper.py:897
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "封面文件不是有效的圖片文件，或者無法儲存"
 
-#: cps/helper.py:900
+#: cps/helper.py:908
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "封面文件只支持jpg/jpeg/png/webp/bmp格式文件"
 
-#: cps/helper.py:912
+#: cps/helper.py:920
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:916
+#: cps/helper.py:924
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "僅將jpg、jpeg文件作為封面文件"
 
-#: cps/helper.py:988 cps/helper.py:1145
+#: cps/helper.py:996 cps/helper.py:1153
 #, fuzzy
 msgid "Cover"
 msgstr "發現"
 
-#: cps/helper.py:1005
+#: cps/helper.py:1013
 msgid "UnRar binary file not found"
 msgstr "找不到UnRar執行文件"
 
-#: cps/helper.py:1016
+#: cps/helper.py:1024
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "執行UnRar時出錯"
 
-#: cps/helper.py:1024
+#: cps/helper.py:1032
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1027
+#: cps/helper.py:1035
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1041
+#: cps/helper.py:1049
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "數據庫不可寫入"
 
-#: cps/helper.py:1050
+#: cps/helper.py:1058
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1052
+#: cps/helper.py:1060
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "缺少執行權限"
 
-#: cps/helper.py:1057
+#: cps/helper.py:1065
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "執行UnRar時出錯"
 
-#: cps/helper.py:1147 cps/templates/admin.html:216
+#: cps/helper.py:1155 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
