@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-14 10:51+0200\n"
+"POT-Creation-Date: 2024-09-18 19:50+0200\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language: no\n"
@@ -746,121 +746,121 @@ msgstr "Sletting av bok %(id)s mislyktes: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Sletter bok %(id)s kun fra databasen, bokbanen i databasen er ikke gyldig: %(path)s"
 
-#: cps/helper.py:441
+#: cps/helper.py:439
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Endre navn på forfatter fra: '%(src)s' til '%(dest)s' mislyktes med feil: %(error)s"
 
-#: cps/helper.py:512 cps/helper.py:521
+#: cps/helper.py:507 cps/helper.py:516
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Fil %(file)s ikke funnet på Google Disk"
 
-#: cps/helper.py:567
+#: cps/helper.py:559
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Endre navn på tittel fra: '%(src)s' til '%(dest)s' mislyktes med feil: %(error)s"
 
-#: cps/helper.py:605
+#: cps/helper.py:597
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Finner ikke bokbane %(path)s på Google Disk"
 
-#: cps/helper.py:665
+#: cps/helper.py:657
 #, fuzzy
 msgid "Found an existing account for this Email address"
 msgstr "Fant en eksisterende konto for denne e-postadressen"
 
-#: cps/helper.py:673
+#: cps/helper.py:665
 msgid "This username is already taken"
 msgstr "Dette brukernavnet er allerede tatt"
 
-#: cps/helper.py:687
+#: cps/helper.py:679
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "Ugyldig format for e-postadresse"
 
-#: cps/helper.py:709
+#: cps/helper.py:701
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:855
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Python-modulen 'advocate' er ikke installert, men er nødvendig for omslagsopplastinger"
 
-#: cps/helper.py:865
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr "Feil ved nedlasting av cover"
 
-#: cps/helper.py:868
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr "Omslagsformatfeil"
 
-#: cps/helper.py:871
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Du har ikke tilgang til localhost eller det lokale nettverket for coveropplastinger"
 
-#: cps/helper.py:881
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr "Kunne ikke opprette bane for dekning"
 
-#: cps/helper.py:897
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Cover-filen er ikke en gyldig bildefil, eller kunne ikke lagres"
 
-#: cps/helper.py:908
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Bare jpg/jpeg/png/webp/bmp-filer støttes som coverfile"
 
-#: cps/helper.py:920
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr "Ugyldig omslagsfilinnhold"
 
-#: cps/helper.py:924
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Bare jpg/jpeg-filer støttes som coverfile"
 
-#: cps/helper.py:996 cps/helper.py:1153
+#: cps/helper.py:988 cps/helper.py:1145
 msgid "Cover"
 msgstr "Dekke"
 
-#: cps/helper.py:1013
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr "UnRar binær fil ikke funnet"
 
-#: cps/helper.py:1024
+#: cps/helper.py:1016
 msgid "Error executing UnRar"
 msgstr "Feil ved kjøring av UnRar"
 
-#: cps/helper.py:1032
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1035
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1049
+#: cps/helper.py:1041
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "DB er ikke skrivbar"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1060
+#: cps/helper.py:1052
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Utførelsestillatelser mangler"
 
-#: cps/helper.py:1065
+#: cps/helper.py:1057
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "Feil ved kjøring av UnRar"
 
-#: cps/helper.py:1155 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Sett alle bøker i kø for sikkerhetskopiering av metadata"
 
