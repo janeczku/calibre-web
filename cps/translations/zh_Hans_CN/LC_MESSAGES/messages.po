@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-14 10:51+0200\n"
+"POT-Creation-Date: 2024-09-18 19:11+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -731,119 +731,119 @@ msgstr "删除书籍 %(id)s 失败：%(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "仅从数据库中删除书籍 %(id)s，数据库中的书籍路径无效： %(path)s"
 
-#: cps/helper.py:441
+#: cps/helper.py:439
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将作者从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:512 cps/helper.py:521
+#: cps/helper.py:507 cps/helper.py:516
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive 上找不到文件 %(file)s"
 
-#: cps/helper.py:567
+#: cps/helper.py:559
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将标题从“%(src)s”改为“%(dest)s”时失败，出错信息：%(error)s"
 
-#: cps/helper.py:605
+#: cps/helper.py:597
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive 上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:665
+#: cps/helper.py:657
 msgid "Found an existing account for this Email address"
 msgstr "已存在使用此邮箱的账户"
 
-#: cps/helper.py:673
+#: cps/helper.py:665
 msgid "This username is already taken"
 msgstr "此用户名已被使用"
 
-#: cps/helper.py:687
+#: cps/helper.py:679
 msgid "Invalid Email address format"
 msgstr "无效的邮箱格式"
 
-#: cps/helper.py:709
+#: cps/helper.py:701
 msgid "Password doesn't comply with password validation rules"
 msgstr "密码不符合密码验证规则"
 
-#: cps/helper.py:855
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "上传封面所需的 Python 模块 'advocate' 未安装"
 
-#: cps/helper.py:865
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr "下载封面时出错"
 
-#: cps/helper.py:868
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr "封面格式出错"
 
-#: cps/helper.py:871
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "您没有访问本地主机或本地网络进行封面上传"
 
-#: cps/helper.py:881
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr "创建封面路径失败"
 
-#: cps/helper.py:897
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "封面文件不是有效的图片文件，或者无法存储它"
 
-#: cps/helper.py:908
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "封面文件只支持 jpg、jpeg、png、webp、bmp 文件"
 
-#: cps/helper.py:920
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr "封面文件内容无效"
 
-#: cps/helper.py:924
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
-#: cps/helper.py:996 cps/helper.py:1153
+#: cps/helper.py:988 cps/helper.py:1145
 msgid "Cover"
 msgstr "封面"
 
-#: cps/helper.py:1013
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr "找不到 UnRar 执行文件"
 
-#: cps/helper.py:1024
+#: cps/helper.py:1016
 msgid "Error executing UnRar"
 msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:1032
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1035
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1049
+#: cps/helper.py:1041
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "数据库不可写入"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1060
+#: cps/helper.py:1052
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "缺少执行权限"
 
-#: cps/helper.py:1065
+#: cps/helper.py:1057
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:1155 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "将所有书籍加入元数据备份队列"
 
