@@ -43,10 +43,10 @@ from markupsafe import escape
 from urllib.parse import quote
 
 try:
-    import advocate
-    from advocate.exceptions import UnacceptableAddressException
+    from . import cw_advocate
+    from .cw_advocate.exceptions import UnacceptableAddressException
     use_advocate = True
-except ImportError:
+except ImportError as e:
     use_advocate = False
     advocate = requests
     UnacceptableAddressException = MissingSchema = BaseException
@@ -841,7 +841,7 @@ def save_cover_from_url(url, book_path):
         if cli_param.allow_localhost:
             img = requests.get(url, timeout=(10, 200), allow_redirects=False)  # ToDo: Error Handling
         elif use_advocate:
-            img = advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
+            img = cw_advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
         else:
             log.error("python module advocate is not installed but is needed")
             return False, _("Python module 'advocate' is not installed but is needed for cover uploads")

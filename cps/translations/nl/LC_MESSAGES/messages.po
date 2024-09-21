@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-14 10:51+0200\n"
+"POT-Creation-Date: 2024-09-21 12:05+0200\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton.me>\n"
 "Language: nl\n"
@@ -750,122 +750,122 @@ msgstr "Verwijderen van boek %(id)s mislukt: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Verwijder boek %(id)s alleen uit database, boek pad is ongeldig: %(path)s"
 
-#: cps/helper.py:441
+#: cps/helper.py:439
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
 
-#: cps/helper.py:512 cps/helper.py:521
+#: cps/helper.py:507 cps/helper.py:516
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Bestand '%(file)s' niet aangetroffen op Google Drive"
 
-#: cps/helper.py:567
+#: cps/helper.py:559
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
 
-#: cps/helper.py:605
+#: cps/helper.py:597
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Boeken locatie '%(path)s' niet aangetroffen op Google Drive"
 
-#: cps/helper.py:665
+#: cps/helper.py:657
 msgid "Found an existing account for this Email address"
 msgstr "Bestaand account gevondne met dit e-mailadres"
 
-#: cps/helper.py:673
+#: cps/helper.py:665
 msgid "This username is already taken"
 msgstr "Deze gebruikersnaam is al in gebruik"
 
-#: cps/helper.py:687
+#: cps/helper.py:679
 #, fuzzy
 msgid "Invalid Email address format"
 msgstr "Ongeldig E-Mail adres"
 
-#: cps/helper.py:709
+#: cps/helper.py:701
 msgid "Password doesn't comply with password validation rules"
 msgstr "Het wachtwoord voldoet niet aan de validatieregels"
 
-#: cps/helper.py:855
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Pythonmodule 'advocate' is niet geïnstalleerd maar is nodig omslag uploads"
 
-#: cps/helper.py:865
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr "Fout bij downloaden omslag"
 
-#: cps/helper.py:868
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr "Onjuist omslagformaat"
 
-#: cps/helper.py:871
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Toegang tot localhost of het lokale netwerk niet toegestaant voor omslag uploaden"
 
-#: cps/helper.py:881
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr "Locatie aanmaken voor omslag mislukt"
 
-#: cps/helper.py:897
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Omslag-bestand is geen afbeelding of kon niet opgeslagen worden"
 
-#: cps/helper.py:908
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Alleen jpg/jpeg/png/webp/bmp bestanden worden ondersteund als omslag"
 
-#: cps/helper.py:920
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr "Ongeldig omslagbestand"
 
-#: cps/helper.py:924
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Alleen jpg/jpeg bestanden zijn toegestaan als omslag"
 
-#: cps/helper.py:996 cps/helper.py:1153
+#: cps/helper.py:988 cps/helper.py:1145
 #, fuzzy
 msgid "Cover"
 msgstr "Willekeurige boeken"
 
-#: cps/helper.py:1013
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr "UnRar executable niet gevonden"
 
-#: cps/helper.py:1024
+#: cps/helper.py:1016
 #, fuzzy
 msgid "Error executing UnRar"
 msgstr "Fout bij het uitvoeren van UnRar"
 
-#: cps/helper.py:1032
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1035
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1049
+#: cps/helper.py:1041
 #, fuzzy
 msgid "Calibre binaries not viable"
 msgstr "Kan niet schrijven naar database"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1060
+#: cps/helper.py:1052
 #, fuzzy, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Kan programma niet uitvoeren"
 
-#: cps/helper.py:1065
+#: cps/helper.py:1057
 #, fuzzy
 msgid "Error executing Calibre"
 msgstr "Fout bij het uitvoeren van UnRar"
 
-#: cps/helper.py:1155 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Voeg alle boeken toe aan de wachtrij voor het maken van een metagegevens backup"
 

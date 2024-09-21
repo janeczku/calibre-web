@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-14 10:51+0200\n"
+"POT-Creation-Date: 2024-09-21 12:05+0200\n"
 "PO-Revision-Date: 2024-08-17 13:49+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -730,117 +730,117 @@ msgstr "Löschen von Buch %(id)s fehlgeschlagen: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Lösche Buch %(id)s nur aus Datenbank, Pfad zum Buch in Datenbank ist nicht gültig: %(path)s"
 
-#: cps/helper.py:441
+#: cps/helper.py:439
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Umbenennen des Autors '%(src)s' zu '%(dest)s' schlug fehl: %(error)s"
 
-#: cps/helper.py:512 cps/helper.py:521
+#: cps/helper.py:507 cps/helper.py:516
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Datei %(file)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:567
+#: cps/helper.py:559
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Umbenennen des Titels '%(src)s' zu '%(dest)s' schlug fehl: %(error)s"
 
-#: cps/helper.py:605
+#: cps/helper.py:597
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Buchpfad %(path)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:665
+#: cps/helper.py:657
 msgid "Found an existing account for this Email address"
 msgstr "Es existiert bereits ein Benutzerkonto für diese E-Mail Adresse"
 
-#: cps/helper.py:673
+#: cps/helper.py:665
 msgid "This username is already taken"
 msgstr "Benutzername ist schon vorhanden"
 
-#: cps/helper.py:687
+#: cps/helper.py:679
 msgid "Invalid Email address format"
 msgstr "Ungültiges E-Mail Adressformat"
 
-#: cps/helper.py:709
+#: cps/helper.py:701
 msgid "Password doesn't comply with password validation rules"
 msgstr "Passwort stimmt nicht mit den Passwortregln überein"
 
-#: cps/helper.py:855
+#: cps/helper.py:847
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Python Module 'advocate' ist nicht installiert, wird aber für das Cover hochladen benötigt"
 
-#: cps/helper.py:865
+#: cps/helper.py:857
 msgid "Error Downloading Cover"
 msgstr "Fehler beim Herunterladen des Covers"
 
-#: cps/helper.py:868
+#: cps/helper.py:860
 msgid "Cover Format Error"
 msgstr "Coverdatei fehlerhaft"
 
-#: cps/helper.py:871
+#: cps/helper.py:863
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "Keine Berechtigung Cover von Localhost oder dem lokalen Netzwerk hochzuladen"
 
-#: cps/helper.py:881
+#: cps/helper.py:873
 msgid "Failed to create path for cover"
 msgstr "Fehler beim Erzeugen des Ordners für die Coverdatei"
 
-#: cps/helper.py:897
+#: cps/helper.py:889
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Cover Datei ist keine gültige Bilddatei, kann nicht gespeichert werden"
 
-#: cps/helper.py:908
+#: cps/helper.py:900
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Nur jpg/jpeg/png/webp/bmp Dateien werden als Coverdatei unterstützt"
 
-#: cps/helper.py:920
+#: cps/helper.py:912
 msgid "Invalid cover file content"
 msgstr "Ungültiger Cover Dateiinhalt"
 
-#: cps/helper.py:924
+#: cps/helper.py:916
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Es werden nur jpg/jpeg Dateien als Cover untertützt"
 
-#: cps/helper.py:996 cps/helper.py:1153
+#: cps/helper.py:988 cps/helper.py:1145
 msgid "Cover"
 msgstr "Titelbild"
 
-#: cps/helper.py:1013
+#: cps/helper.py:1005
 msgid "UnRar binary file not found"
 msgstr "UnRar Programm nicht gefunden"
 
-#: cps/helper.py:1024
+#: cps/helper.py:1016
 msgid "Error executing UnRar"
 msgstr "Fehler beim Ausführen von UnRar"
 
-#: cps/helper.py:1032
+#: cps/helper.py:1024
 msgid "Could not find the specified directory"
 msgstr "Angegebener Ordner konnte nicht gefunden werden"
 
-#: cps/helper.py:1035
+#: cps/helper.py:1027
 msgid "Please specify a directory, not a file"
 msgstr "Bitte keine Datei sondern einen Ordner angeben"
 
-#: cps/helper.py:1049
+#: cps/helper.py:1041
 msgid "Calibre binaries not viable"
 msgstr "Calibre Programm ist nicht nutzbar"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "Fehlende Calibre Binärdateien: %(missing)s"
 
-#: cps/helper.py:1060
+#: cps/helper.py:1052
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Ausführeberechtigung fehlt: %(missing)s"
 
-#: cps/helper.py:1065
+#: cps/helper.py:1057
 msgid "Error executing Calibre"
 msgstr "Fehler beim Ausführen von Calibre"
 
-#: cps/helper.py:1155 cps/templates/admin.html:216
+#: cps/helper.py:1147 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Alle Bücher für Metadaten Backup einreihen"
 
