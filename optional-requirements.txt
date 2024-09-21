@@ -17,7 +17,7 @@ google-api-python-client>=1.7.11,<2.200.0
 
 # goodreads
 goodreads>=0.3.2,<0.4.0
-python-Levenshtein>=0.12.0,<0.26.0
+python-Levenshtein>=0.12.0,<0.27.0
 
 # ldap login
 python-ldap>=3.0.0,<3.5.0
