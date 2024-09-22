@@ -2642,7 +2642,7 @@ msgstr "허용/거부 사용자 정의 열 값 추가"
 
 #: cps/templates/detail.html:77 cps/templates/detail.html:91
 msgid "Read in Browser"
-msgstr "부라우저에서 보기"
+msgstr "브라우저에서 보기"
 
 #: cps/templates/detail.html:100 cps/templates/detail.html:120
 msgid "Listen in Browser"
