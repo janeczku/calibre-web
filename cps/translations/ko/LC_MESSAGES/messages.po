@@ -2709,7 +2709,7 @@ msgstr "(공개)"
 
 #: cps/templates/detail.html:340
 msgid "Edit Metadata"
-msgstr "메타정보보 편집"
+msgstr "메타정보 편집"
 
 #: cps/templates/email_edit.html:13
 msgid "Email Account Type"
