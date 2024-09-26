@@ -15,10 +15,28 @@
 {%- endmacro %}
 
 {% macro book_checkbox_row(parameter, show_text, sort) -%}
-<th data-name="{{parameter}}" data-field="{{parameter}}"
+<th data-name="{{parameter}}" data-field="{{parameter}}" data-switchable="false"
     {% if sort %}data-sortable="true" {% endif %}
     data-visible="{{visiblility.get(parameter)}}"
     data-formatter="bookCheckboxFormatter">
+    {% if parameter == "is_archived" %}
+        <div class="btn btn-default disabled" id="archive_selected_books" aria-disabled="true">
+          {{_('Archive selected books')}}
+        </div>
+        <br>
+        <div class="btn btn-default disabled" id="unarchive_selected_books" aria-disabled="true">
+          {{_('Unarchive selected books')}}
+        </div>
+        <br>
+    {% elif parameter == "read_status" %}
+        <div class="btn btn-default disabled" id="read_selected_books" aria-disabled="true">
+          {{_('Mark selected books as read')}}
+        </div>
+        <br>
+        <div class="btn btn-default disabled" id="unread_selected_books" aria-disabled="true">
+          {{_('Mark selected books as unread')}}</div>
+        <br>
+    {% endif %}
     {{show_text}}
 </th>
 {%- endmacro %}
@@ -34,8 +52,15 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="col-xs-12 col-sm-6">
         <div class="row form-group">
-          <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">{{_('Merge selected books')}}</div>
-          <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>
+          <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">
+            {{_('Merge selected books')}}
+          </div>
+          <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">
+            {{_('Clear selections')}}
+          </div>
+          <div class="btn btn-default disabled" id="edit_selected_books" aria-disabled="true">
+            {{_('Edit selected books')}}
+          </div>
         </div>
         <div class="row form-group">
             <div class="btn btn-default disabled" id="table_xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span>{{_('Exchange author and title')}}</div>
@@ -97,11 +122,18 @@
               {% endif %}
             {% endfor %}
           {% if current_user.role_delete_books() and current_user.role_edit()%}
-            <th data-align="right" data-formatter="EbookActions" data-switchable="false">{{_('Delete')}}</th>
+            <th data-align="right" data-formatter="EbookActions" data-switchable="false">
+                <div class="btn btn-default disabled" id="delete_selected_books" aria-disabled="true">
+                    {{_('Delete selected books')}}
+                </div>
+                <br>
+                {{_('Delete')}}
+            </th>
           {% endif %}
         </tr>
       </thead>
     </table>
+
 {% endblock %}
 {% block modal %}
 {{ delete_book(current_user.role_delete_books()) }}
@@ -123,15 +155,170 @@
             <div class="text-left" id="merge_to"></div>
         </div>
       <div class="modal-footer">
-        <input id="merge_confirm"  type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" id="merge_confirm" data-dismiss="modal">
+        <input id="merge_confirm" type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" data-dismiss="modal">
         <button id="merge_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
 </div>
-{% endif %}
 
+<div class="modal fade" id="delete_selected_modal" role="dialog" aria-labelledby="metaDeleteSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be deleted:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-delete-selected-books"></div>
+      <div class="modal-footer">
+        <input id="delete_selected_confirm" type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_selected_confirm" data-dismiss="modal">
+        <button id="delete_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="archive_selected_modal" role="dialog" aria-labelledby="metaArchiveSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be archived:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-archive-selected-books"></div>
+      <div class="modal-footer">
+        <input id="archive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Archive')}}" name="archive_selected_confirm" data-dismiss="modal">
+        <button id="archive_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="unarchive_selected_modal" role="dialog" aria-labelledby="metaUnArchiveSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be unarchived:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-unarchive-selected-books"></div>
+      <div class="modal-footer">
+        <input id="unarchive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Unarchive')}}" name="unarchive_selected_confirm" data-dismiss="modal">
+        <button id="unarchive_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="read_selected_modal" role="dialog" aria-labelledby="metaReadSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be marked read:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-read-selected-books"></div>
+      <div class="modal-footer">
+        <input id="read_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as read')}}" name="read_selected_confirm" data-dismiss="modal">
+        <button id="read_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="unread_selected_modal" role="dialog" aria-labelledby="metaReadSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+      <div class="modal-body">
+        <p></p>
+            <div class="text-left">{{_('The following books will be marked unread:')}}</div>
+        <p></p>
+            <div class="text-left" id="display-unread-selected-books"></div>
+      <div class="modal-footer">
+        <input id="unread_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as unread')}}" name="unread_selected_confirm" data-dismiss="modal">
+        <button id="read_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit_selected_modal" role="dialog" aria-labelledby="metaEditSelectedLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+          <span>{{_('Edit Metadata')}}</span>
+      </div>
+      <div class="modal-body">
+        <div class="text-left">{{_('Edit the fields you want changed. Blank fields will be ignored:')}}</div>
+            <br>
+            Title:
+            <input class="form-control" id="title_input">
+            <p></p>
+
+            Title Sort:
+            <input class="form-control" id="title_sort_input">
+            <p></p>
+
+            Author Sort:
+            <input class="form-control" id="author_sort_input">
+            <p></p>
+
+            Authors:
+            <input class="form-control" id="authors_input">
+            <p></p>
+
+            Categories:
+            <input class="form-control" id="categories_input">
+            <p></p>
+
+            Series:
+            <input class="form-control" id="series_input">
+            <p></p>
+
+            Languages:
+            <input class="form-control" id="languages_input">
+            <p></p>
+
+            Publishers:
+            <input class="form-control" id="publishers_input">
+            <p></p>
+
+            Comments:
+            <input class="form-control" id="comments_input">
+            <p></p>
+      </div>
+
+      <div class="modal-footer">
+        <input id="edit_selected_confirm" type="button" class="btn btn-danger" value="{{_('Edit')}}" name="edit_selected_confirm" id="edit_selected_confirm" data-dismiss="modal">
+        <button id="edit_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
 {% endblock %}
+
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
