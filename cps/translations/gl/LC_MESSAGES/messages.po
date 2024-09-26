@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-21 12:05+0200\n"
+"POT-Creation-Date: 2024-09-26 19:43+0200\n"
 "PO-Revision-Date: 2022-08-11 16:46+0200\n"
 "Last-Translator: pollitor <pollitor@gmx.com>\n"
 "Language: gl\n"
@@ -43,8 +43,8 @@ msgstr "Orde descoñecida"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Posto en cola un correo electrónico de proba enviado a %(email)s, por favor, comproba o resultado nas Tarefas"
 
-#: cps/admin.py:208 cps/editbooks.py:628 cps/editbooks.py:671
-#: cps/editbooks.py:1316 cps/updater.py:615 cps/uploader.py:105
+#: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:105
 #: cps/uploader.py:114
 msgid "Unknown"
 msgstr "Descoñecido"
@@ -288,7 +288,7 @@ msgstr ""
 
 #: cps/admin.py:1323 cps/admin.py:1326 cps/admin.py:1711 cps/admin.py:1860
 #: cps/admin.py:1958 cps/admin.py:2079 cps/editbooks.py:168
-#: cps/editbooks.py:575 cps/editbooks.py:1270 cps/shelf.py:90 cps/shelf.py:150
+#: cps/editbooks.py:576 cps/editbooks.py:1271 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:476 cps/tasks/convert.py:156 cps/web.py:1529
 #, python-format
@@ -553,96 +553,96 @@ msgstr "Libro posto na cola para a súa conversión a %(book_format)s"
 msgid "There was an error converting this book: %(res)s"
 msgstr "Houbo un erro ao convertir este libro: %(res)s"
 
-#: cps/editbooks.py:448 cps/editbooks.py:942 cps/web.py:532 cps/web.py:1570
+#: cps/editbooks.py:448 cps/editbooks.py:943 cps/web.py:532 cps/web.py:1570
 #: cps/web.py:1615 cps/web.py:1660
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "oh, oh, o libro seleccionado non está disponible. O arquivo non existe ou non está accesible"
 
-#: cps/editbooks.py:494 cps/editbooks.py:1299
+#: cps/editbooks.py:494 cps/editbooks.py:1300
 msgid "User has no rights to upload cover"
 msgstr "O usuario non ten permisos para subir a cuberta"
 
-#: cps/editbooks.py:514 cps/editbooks.py:757
+#: cps/editbooks.py:515 cps/editbooks.py:758
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Os identificadores non distinguen entre maiúsculas e minúsculas, sobrescribindo o identificador antigo"
 
-#: cps/editbooks.py:529 cps/editbooks.py:731 cps/editbooks.py:1069
+#: cps/editbooks.py:530 cps/editbooks.py:732 cps/editbooks.py:1070
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "%(langname)s non é unha lingua válida"
 
-#: cps/editbooks.py:557
+#: cps/editbooks.py:558
 msgid "Metadata successfully updated"
 msgstr "Metadatos actualizados con éxito"
 
-#: cps/editbooks.py:580
+#: cps/editbooks.py:581
 msgid "Error editing book: {}"
 msgstr "Erro editando libro: {}"
 
-#: cps/editbooks.py:675
+#: cps/editbooks.py:676
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "O libro cargado probablemente existe na biblioteca, considera cambialo antes de subilo outra vez: "
 
-#: cps/editbooks.py:769 cps/editbooks.py:1216
+#: cps/editbooks.py:770 cps/editbooks.py:1217
 #, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "Non se permite subir arquivos coa extensión '%(ext)s' a este servidor"
 
-#: cps/editbooks.py:775 cps/editbooks.py:1227
+#: cps/editbooks.py:776 cps/editbooks.py:1228
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Non se permite subir arquivos coa extensión '%(ext)s' a este servidor"
 
-#: cps/editbooks.py:779 cps/editbooks.py:1232
+#: cps/editbooks.py:780 cps/editbooks.py:1233
 msgid "File to be uploaded must have an extension"
 msgstr "O arquivo que se vai cargar debe ter unha extensión"
 
-#: cps/editbooks.py:787
+#: cps/editbooks.py:788
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "El archivo %(filename)s non puido gravarse no directorio temporal (Temp Dir)"
 
-#: cps/editbooks.py:807
+#: cps/editbooks.py:808
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Fallo ao mover o arquivo de cuberta %(file)s: %(error)s"
 
-#: cps/editbooks.py:864 cps/editbooks.py:866
+#: cps/editbooks.py:865 cps/editbooks.py:867
 msgid "Book Format Successfully Deleted"
 msgstr "Formato de libro eliminado con éxito"
 
-#: cps/editbooks.py:873 cps/editbooks.py:875
+#: cps/editbooks.py:874 cps/editbooks.py:876
 msgid "Book Successfully Deleted"
 msgstr "Libro eliminado con éxito"
 
-#: cps/editbooks.py:927
+#: cps/editbooks.py:928
 msgid "You are missing permissions to delete books"
 msgstr "Vostede non ten permisos para borrar libros"
 
-#: cps/editbooks.py:977
+#: cps/editbooks.py:978
 msgid "edit metadata"
 msgstr "editar metadatos"
 
-#: cps/editbooks.py:1030
+#: cps/editbooks.py:1031
 #, fuzzy, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s non é un número válido, saltando"
 
-#: cps/editbooks.py:1221
+#: cps/editbooks.py:1222
 msgid "User has no rights to upload additional file formats"
 msgstr "O usuario non ten permisos para cargar formatos de ficheiro adicionais"
 
-#: cps/editbooks.py:1245
+#: cps/editbooks.py:1246
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Fallo ao crear a ruta %(path)s (permiso denegado)"
 
-#: cps/editbooks.py:1252
+#: cps/editbooks.py:1253
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Fallo ao gardar o arquivo %(file)s."
 
-#: cps/editbooks.py:1277
+#: cps/editbooks.py:1278
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Arquivo con formato %(ext)s engadido a %(book)s"
