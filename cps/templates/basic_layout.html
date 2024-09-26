@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="{{ current_user.locale }}">
+
+<head>
+<title>{{instance}} | {{title}}</title>
+<meta charset="utf-8">
+<meta name='viewport' content='initial-scale=1,maximum-scale=5,user-scalable=no' />
+<style>
+body {
+  margin: 0;
+}
+
+nav {
+  height: 75px;
+  padding: 5px 20px;
+  width: 100%;
+  display: table;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+}
+
+nav > * {
+  display: inline-block;
+  display: table-cell;
+  vertical-align: middle;
+  float: none;
+  text-align: center;
+  width: auto;
+}
+
+nav > *:first-child {
+  text-align: left;
+  width: 1%;
+}
+
+nav > *:last-child {
+  text-align: right;
+  width: 1%;
+}
+
+nav > a {
+  color: black;
+  margin: 0 20px;
+}
+
+.search {
+  margin: auto auto;
+}
+
+form > input {
+  width: 18ch;
+  padding-left: 4px;
+}
+
+form > * {
+  height: 50px;
+  background-color: white;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+form > span {
+  margin-left: -5px;
+}
+
+button {
+  border: none;
+  padding: 0 10px;
+  margin: 0;
+  width: 160px;
+  height: 100%;
+  background-color: white;
+}
+
+.body {
+  padding: 5px 20px;
+}
+
+a {
+  color: black;
+}
+
+img {
+  width: 150px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.listing {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+
+.pagination {
+  padding: 10px 0;
+  height: 20px;
+  font-weight: 700;
+}
+
+.pagination > div {
+  float: left;
+}
+
+.pagination > div:last-child {
+  float: right;
+}
+</style>
+</head>
+
+<body>
+  <div>
+    <div>
+      {% if current_user.is_authenticated or g.allow_anonymous %}
+        <nav>
+          <a href="/basic">
+            <span><h1>{{_('Home')}}</h1></span>
+          </a>
+          <div class="search">
+            <form role="search" action="{{url_for('basic.index')}}" method="GET">
+              <input type="text" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
+              <span>
+                <button type="submit" id="query_submit">{{_('Search')}}</button>
+              </span>
+            </form>
+          </div>
+          {% if not current_user.is_anonymous %}
+            <a href="{{url_for('web.logout')}}">
+              <span>{{_('Logout')}}</span>
+            </a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    </div>
+  </div>
+  <div class="body">
+    {% block body %}
+    {% endblock %}
+  </div>
+</body>
+
+</html>
