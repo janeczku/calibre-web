@@ -39,17 +39,20 @@ except (ImportError, RuntimeError) as e:
 
 try:
     from pypdf import PdfReader
+    from pypdf.generic import NullObject
     use_pdf_meta = True
 except ImportError as ex:
     log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
     try:
         from PyPDF2 import PdfReader
+        from pypdf.generic import NullObject
         use_pdf_meta = True
     except ImportError as ex:
         log.debug('PyPDF is recommended for best performance in metadata extracting from pdf files: %s', ex)
         log.debug('PyPdf2 is also possible for metadata extracting from pdf files, but not recommended anymore')
         try:
             from PyPDF3 import PdfFileReader as PdfReader
+            from pypdf.generic import NullObject
             use_pdf_meta = True
         except ImportError as e:
             log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
@@ -205,10 +208,12 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension, no_cove
         if subject == '':
             subject = doc_info.subject or ""
         if tags == '' and '/Keywords' in doc_info:
-            if isinstance(doc_info['/Keywords'], bytes):
-                tags = doc_info['/Keywords'].decode('utf-8')
-            else:
-                tags = doc_info['/Keywords']
+            keywords = doc_info['/Keywords']
+            if not isinstance(keywords, NullObject):
+                if isinstance(keywords, bytes):
+                    tags = keywords.decode('utf-8')
+                else:
+                    tags = keywords
     else:
         title = original_file_name
 
