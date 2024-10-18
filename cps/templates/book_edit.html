@@ -108,7 +108,7 @@
     </div>
     <div class="form-group">
       <label for="series_index">{{_('Series ID')}}</label>
-      <input type="number" step="0.01" min="0" placeholder="1" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
+      <input type="number" step="0.01" min="0" placeholder="1" class="form-control" name="series_index" id="series_index" value="{{book.series_index|formatfloat(2)}}">
     </div>
     <div class="form-group">
       <label for="rating">{{_('Rating')}}</label>
