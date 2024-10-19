@@ -1,0 +1,81 @@
+{% extends "basic_layout.html" %}
+
+{% block body %}
+<div>
+
+<h2 id="title">{{ entry.title }}</h2>
+<div>
+  {% for author in entry.ordered_authors %}
+    <p>{{ author.name.replace("|",",") }}</p>
+  {% endfor %}
+</div>
+
+<div class="cover">
+    <img title="{{ entry.title }}" src="{{ url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified) }}"/>
+</div>
+
+{% if current_user.role_download() %}
+  {% if entry.data|length %}
+    <div>
+      <h2>Download</h2>
+        {% for format in entry.data %}
+          <p>
+            <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}">
+              {{ format.format }} ({{ format.uncompressed_size|filesizeformat }})</a>
+          </p>
+        {% endfor %}
+    </div>
+  {% endif %}
+{% endif %}
+
+<h2>Details</h2>
+
+{% if entry.series|length > 0 %}
+  <p>{{ _("Book %(index)s of %(range)s", index=entry.series_index | formatfloat(2), range=(entry.series[0].name)|safe) }}</p>
+{% endif %}
+
+{% if entry.languages|length > 0 %}
+  <div>
+    <p>
+      <span>
+        {{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}
+      </span>
+    </p>
+  </div>
+{% endif %}
+
+{% if entry.identifiers|length > 0 %}
+  <div>
+    <p>
+      <span></span>
+      {% for identifier in entry.identifiers %}
+          <p>{{ identifier.format_type() }}: {{ identifier|escape }}</p>
+      {% endfor %}
+    </p>
+  </div>
+{% endif %}
+
+{% if entry.publishers|length > 0 %}
+  <div>
+    <p>
+      <span>{{ _('Publisher') }}:
+        <span>{{ entry.publishers[0].name }}</span>
+      </span>
+    </p>
+  </div>
+{% endif %}
+
+{% if (entry.pubdate|string)[:10] != '0101-01-01' %}
+  <div>
+    <p>{{ _('Published') }}: {{ entry.pubdate|formatdate }} </p>
+  </div>
+{% endif %}
+
+{% if entry.comments|length > 0 and entry.comments[0].text|length > 0 %}
+    <div>
+        <h2 id="decription">{{ _('Description:') }}</h2>
+        {{ entry.comments[0].text|safe }}
+    </div>
+{% endif %}
+</div>
+{% endblock %}
