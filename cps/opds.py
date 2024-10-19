@@ -424,11 +424,8 @@ def feed_shelf(book_id):
 @requires_basic_auth_if_no_ano
 def opds_download_link(book_id, book_format):
     if not auth.current_user().role_download():
-        return abort(403)
-    if "Kobo" in request.headers.get('User-Agent'):
-        client = "kobo"
-    else:
-        client = ""
+        return abort(401)
+    client = "kobo" if "Kobo" in request.headers.get('User-Agent') else ""
     return get_download_link(book_id, book_format.lower(), client)
 
 
