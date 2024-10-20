@@ -1,0 +1,120 @@
+msgid "Show Ratings Section"
+msgstr ""
+
+msgid "File formats"
+msgstr ""
+
+msgid "Show File Formats Section"
+msgstr ""
+
+msgid "Archived Books"
+msgstr ""
+
+msgid "Show Archived Books"
+msgstr ""
+
+msgid "Books List"
+msgstr ""
+
+msgid "Show Books List"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Published after "
+msgstr ""
+
+msgid "Published before "
+msgstr ""
+
+msgid "Rating <= %(rating)s"
+msgstr ""
+
+msgid "Rating >= %(rating)s"
+msgstr ""
+
+msgid "Read Status = '%(status)s'"
+msgstr ""
+
+msgid "Error on search for custom columns, please restart Calibre-Web"
+msgstr ""
+
+msgid "Advanced Search"
+msgstr ""
+
+msgid "Invalid shelf specified"
+msgstr ""
+
+msgid "Sorry you are not allowed to add a book to that shelf"
+msgstr ""
+
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr ""
+
+msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
+msgstr ""
+
+msgid "Book has been added to shelf: %(sname)s"
+msgstr ""
+
+msgid "You are not allowed to add a book to the shelf"
+msgstr ""
+
+msgid "Books are already part of the shelf: %(name)s"
+msgstr ""
+
+msgid "Books have been added to shelf: %(sname)s"
+msgstr ""
+
+msgid "Could not add books to shelf: %(sname)s"
+msgstr ""
+
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr ""
+
+msgid "Sorry you are not allowed to remove a book from this shelf"
+msgstr ""
+
+msgid "Create a Shelf"
+msgstr ""
+
+msgid "Sorry you are not allowed to edit this shelf"
+msgstr ""
+
+msgid "Edit a shelf"
+msgstr ""
+
+msgid "Error deleting Shelf"
+msgstr ""
+
+msgid "Shelf successfully deleted"
+msgstr ""
+
+msgid "Change order of Shelf: '%(name)s'"
+msgstr ""
+
+msgid "Sorry you are not allowed to create a public shelf"
+msgstr ""
+
+msgid "Shelf %(title)s created"
+msgstr ""
+
+msgid "Shelf %(title)s changed"
+msgstr ""
+
+msgid "There was an error"
+msgstr ""
+
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr ""
+
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr ""
+
+msgid "Shelf: '%(name)s'"
+msgstr ""
+
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr ""
+

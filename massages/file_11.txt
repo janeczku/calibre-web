@@ -1,0 +1,120 @@
+msgid "Version"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Current Version"
+msgstr ""
+
+msgid "Check for Update"
+msgstr ""
+
+msgid "Perform Update"
+msgstr ""
+
+msgid "Are you sure you want to restart?"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Are you sure you want to shutdown?"
+msgstr ""
+
+msgid "Updating, please do not reload this page"
+msgstr ""
+
+msgid "via"
+msgstr ""
+
+msgid "In Library"
+msgstr ""
+
+msgid "Sort according to book date, newest first"
+msgstr ""
+
+msgid "Sort according to book date, oldest first"
+msgstr ""
+
+msgid "Sort title in alphabetical order"
+msgstr ""
+
+msgid "Sort title in reverse alphabetical order"
+msgstr ""
+
+msgid "Sort according to publishing date, newest first"
+msgstr ""
+
+msgid "Sort according to publishing date, oldest first"
+msgstr ""
+
+msgid "reduce"
+msgstr ""
+
+msgid "More by"
+msgstr ""
+
+msgid "Delete Book"
+msgstr ""
+
+msgid "Delete formats:"
+msgstr ""
+
+msgid "Convert book format:"
+msgstr ""
+
+msgid "Convert from:"
+msgstr ""
+
+msgid "select an option"
+msgstr ""
+
+msgid "Convert to:"
+msgstr ""
+
+msgid "Convert book"
+msgstr ""
+
+msgid "Uploading..."
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Upload done, processing, please wait..."
+msgstr ""
+
+msgid "Upload Format"
+msgstr ""
+
+msgid "Book Title"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Identifiers"
+msgstr ""
+
+msgid "Identifier Type"
+msgstr ""
+
+msgid "Identifier Value"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Add Identifier"
+msgstr ""
+

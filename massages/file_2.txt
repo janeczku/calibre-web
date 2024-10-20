@@ -1,0 +1,120 @@
+msgid ""
+msgstr ""
+
+msgid "Are you sure you want to change Calibre library location?"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Deny"
+msgstr ""
+
+msgid "Allow"
+msgstr ""
+
+msgid "{} sync entries deleted"
+msgstr ""
+
+msgid "Tag not found"
+msgstr ""
+
+msgid "Invalid Action"
+msgstr ""
+
+msgid "client_secrets.json Is Not Configured For Web Application"
+msgstr ""
+
+msgid "Logfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
+msgstr ""
+
+msgid "Please Enter a LDAP Service Account and Password"
+msgstr ""
+
+msgid "Please Enter a LDAP Service Account"
+msgstr ""
+
+msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
+msgstr ""
+
+msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+msgid "LDAP User Object Filter Has Unmatched Parenthesis"
+msgstr ""
+
+msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+msgid "LDAP Member User Filter Has Unmatched Parenthesis"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Add New User"
+msgstr ""
+
+msgid "Edit Email Server Settings"
+msgstr ""
+
+msgid "Success! Gmail Account Verified."
+msgstr ""
+
+msgid "Oops! Database Error: %(error)s."
+msgstr ""
+
+msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
+msgstr ""
+
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr ""
+
+msgid "Please configure your e-mail address first..."
+msgstr ""
+
+msgid "Email Server Settings updated"
+msgstr ""
+
+msgid "Edit Scheduled Tasks Settings"
+msgstr ""
+
+msgid "Invalid start time for task specified"
+msgstr ""
+
+msgid "Invalid duration for task specified"
+msgstr ""
+
+msgid "Scheduled tasks settings updated"
+msgstr ""
+
+msgid "Oops! An unknown error occurred. Please try again later."
+msgstr ""
+
+msgid "Settings DB is not Writeable"
+msgstr ""
+
+msgid "Edit User %(nick)s"
+msgstr ""
+
+msgid "Success! Password for user %(user)s reset"
+msgstr ""
+
+msgid "Oops! Please configure the SMTP mail settings."
+msgstr ""
+
+msgid "Logfile viewer"
+msgstr ""
+

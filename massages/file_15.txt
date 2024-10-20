@@ -1,0 +1,120 @@
+msgid "Location of Unrar binary"
+msgstr ""
+
+msgid "Security Settings"
+msgstr ""
+
+msgid "Limit failed login attempts"
+msgstr ""
+
+msgid "Configure Backend for Limiter"
+msgstr ""
+
+msgid "Options for Limiter Backend"
+msgstr ""
+
+msgid "Check if file extensions matches file content on upload"
+msgstr ""
+
+msgid "Session protection"
+msgstr ""
+
+msgid "Basic"
+msgstr ""
+
+msgid "Strong"
+msgstr ""
+
+msgid "User Password policy"
+msgstr ""
+
+msgid "Minimum password length"
+msgstr ""
+
+msgid "Enforce number"
+msgstr ""
+
+msgid "Enforce lowercase characters"
+msgstr ""
+
+msgid "Enforce uppercase characters"
+msgstr ""
+
+msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
+msgstr ""
+
+msgid "Enforce special characters"
+msgstr ""
+
+msgid "View Configuration"
+msgstr ""
+
+msgid "No. of Random Books to Display"
+msgstr ""
+
+msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "Standard Theme"
+msgstr ""
+
+msgid "caliBlur! Dark Theme"
+msgstr ""
+
+msgid "Regular Expression for Ignoring Columns"
+msgstr ""
+
+msgid "Link Read/Unread Status to Calibre Column"
+msgstr ""
+
+msgid "View Restrictions based on Calibre column"
+msgstr ""
+
+msgid "Regular Expression for Title Sorting"
+msgstr ""
+
+msgid "Default Settings for New Users"
+msgstr ""
+
+msgid "Admin User"
+msgstr ""
+
+msgid "Allow Downloads"
+msgstr ""
+
+msgid "Allow eBook Viewer"
+msgstr ""
+
+msgid "Allow Uploads"
+msgstr ""
+
+msgid "Allow Edit"
+msgstr ""
+
+msgid "Allow Delete Books"
+msgstr ""
+
+msgid "Allow Changing Password"
+msgstr ""
+
+msgid "Allow Editing Public Shelves"
+msgstr ""
+
+msgid "Default Language"
+msgstr ""
+
+msgid "Default Visible Language of Books"
+msgstr ""
+
+msgid "Default Visibilities for New Users"
+msgstr ""
+
+msgid "Show Random Books in Detail View"
+msgstr ""
+
+msgid "Add Allowed/Denied Tags"
+msgstr ""
+

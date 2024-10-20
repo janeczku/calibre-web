@@ -1,0 +1,120 @@
+msgid "Installed Version"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Task"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "Run Time"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "This task will be cancelled. Any progress made by this task will be saved."
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Reset user Password"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Language of Books"
+msgstr ""
+
+msgid "OAuth Settings"
+msgstr ""
+
+msgid "Link"
+msgstr ""
+
+msgid "Unlink"
+msgstr ""
+
+msgid "Kobo Sync Token"
+msgstr ""
+
+msgid "Create/View"
+msgstr ""
+
+msgid "Force full kobo sync"
+msgstr ""
+
+msgid "Add allowed/Denied Custom Column Values"
+msgstr ""
+
+msgid "Sync only books in selected shelves with Kobo"
+msgstr ""
+
+msgid "Delete User"
+msgstr ""
+
+msgid "Generate Kobo Auth URL"
+msgstr ""
+
+msgid "Select..."
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Enter Username"
+msgstr ""
+
+msgid "Enter Email"
+msgstr ""
+
+msgid "Enter eReader Email"
+msgstr ""
+
+msgid "eReader Email"
+msgstr ""
+
+msgid "Locale"
+msgstr ""
+
+msgid "Visible Book Languages"
+msgstr ""
+
+msgid "Edit Allowed Tags"
+msgstr ""
+
+msgid "Allowed Tags"
+msgstr ""
+
+msgid "Edit Denied Tags"
+msgstr ""
+
+msgid "Denied Tags"
+msgstr ""
+
+msgid "Edit Allowed Column Values"
+msgstr ""
+
+msgid "Allowed Column Values"
+msgstr ""
+
+msgid "Edit Denied Column Values"
+msgstr ""
+
+msgid "Denied Column Values"
+msgstr ""
+
+msgid "Change Password"
+msgstr ""
+

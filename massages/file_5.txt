@@ -1,0 +1,120 @@
+msgid "%(book)s send to eReader"
+msgstr ""
+
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr ""
+
+msgid "Read status could not set: {}"
+msgstr ""
+
+msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
+msgstr ""
+
+msgid "Deleting book %(id)s failed: %(message)s"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr ""
+
+msgid "File %(file)s not found on Google Drive"
+msgstr ""
+
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr ""
+
+msgid "Book path %(path)s not found on Google Drive"
+msgstr ""
+
+msgid "Found an existing account for this Email address"
+msgstr ""
+
+msgid "This username is already taken"
+msgstr ""
+
+msgid "Invalid Email address format"
+msgstr ""
+
+msgid "Password doesn't comply with password validation rules"
+msgstr ""
+
+msgid "Python module 'advocate' is not installed but is needed for cover uploads"
+msgstr ""
+
+msgid "Error Downloading Cover"
+msgstr ""
+
+msgid "Cover Format Error"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Failed to create path for cover"
+msgstr ""
+
+msgid "Cover-file is not a valid image file, or could not be stored"
+msgstr ""
+
+msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
+msgstr ""
+
+msgid "Invalid cover file content"
+msgstr ""
+
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+msgid "Cover"
+msgstr ""
+
+msgid "UnRar binary file not found"
+msgstr ""
+
+msgid "Error executing UnRar"
+msgstr ""
+
+msgid "Could not find the specified directory"
+msgstr ""
+
+msgid "Please specify a directory, not a file"
+msgstr ""
+
+msgid "Calibre binaries not viable"
+msgstr ""
+
+msgid "Missing calibre binaries: %(missing)s"
+msgstr ""
+
+msgid "Missing executable permissions: %(missing)s"
+msgstr ""
+
+msgid "Error executing Calibre"
+msgstr ""
+
+msgid "Queue all books for metadata backup"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Kobo Setup"
+msgstr ""
+
+msgid "Register with %(provider)s"
+msgstr ""
+
+msgid "Success! You are now logged in as: %(nickname)s"
+msgstr ""
+
+msgid "Link to %(oauth)s Succeeded"
+msgstr ""
+
+msgid "Login failed, No User Linked With OAuth Account"
+msgstr ""
+
+msgid "Unlink to %(oauth)s Succeeded"
+msgstr ""
+
