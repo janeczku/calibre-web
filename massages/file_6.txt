@@ -1,0 +1,120 @@
+msgid "Unlink to %(oauth)s Failed"
+msgstr ""
+
+msgid "Not Linked to %(oauth)s"
+msgstr ""
+
+msgid "Failed to log in with GitHub."
+msgstr ""
+
+msgid "Failed to fetch user info from GitHub."
+msgstr ""
+
+msgid "Failed to log in with Google."
+msgstr ""
+
+msgid "Failed to fetch user info from Google."
+msgstr ""
+
+msgid "GitHub Oauth error, please retry later."
+msgstr ""
+
+msgid "GitHub Oauth error: {}"
+msgstr ""
+
+msgid "Google Oauth error, please retry later."
+msgstr ""
+
+msgid "Google Oauth error: {}"
+msgstr ""
+
+msgid "{} Stars"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Token not found"
+msgstr ""
+
+msgid "Token has expired"
+msgstr ""
+
+msgid "Success! Please return to your device"
+msgstr ""
+
+msgid "Books"
+msgstr ""
+
+msgid "Show recent books"
+msgstr ""
+
+msgid "Hot Books"
+msgstr ""
+
+msgid "Show Hot Books"
+msgstr ""
+
+msgid "Downloaded Books"
+msgstr ""
+
+msgid "Show Downloaded Books"
+msgstr ""
+
+msgid "Top Rated Books"
+msgstr ""
+
+msgid "Show Top Rated Books"
+msgstr ""
+
+msgid "Read Books"
+msgstr ""
+
+msgid "Show Read and Unread"
+msgstr ""
+
+msgid "Unread Books"
+msgstr ""
+
+msgid "Show unread"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "Show Random Books"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Show Category Section"
+msgstr ""
+
+msgid "Series"
+msgstr ""
+
+msgid "Show Series Section"
+msgstr ""
+
+msgid "Authors"
+msgstr ""
+
+msgid "Show Author Section"
+msgstr ""
+
+msgid "Publishers"
+msgstr ""
+
+msgid "Show Publisher Section"
+msgstr ""
+
+msgid "Languages"
+msgstr ""
+
+msgid "Show Language Section"
+msgstr ""
+
+msgid "Ratings"
+msgstr ""
+

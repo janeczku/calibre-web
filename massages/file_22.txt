@@ -1,0 +1,11 @@
+msgid "View"
+msgstr ""
+
+msgid "Edit Public Shelves"
+msgstr ""
+
+msgid "Sync selected Shelves with Kobo"
+msgstr ""
+
+msgid "Show Read/Unread Section"
+msgstr ""

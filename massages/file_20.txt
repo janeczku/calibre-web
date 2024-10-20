@@ -1,0 +1,120 @@
+msgid "Magic Link - Authorise New Device"
+msgstr ""
+
+msgid "On another device, login and visit:"
+msgstr ""
+
+msgid "Once verified, you will automatically be logged in on this device."
+msgstr ""
+
+msgid "This verification link will expire in 10 minutes."
+msgstr ""
+
+msgid "Generate Series Cover Thumbnails"
+msgstr ""
+
+msgid "No Results Found"
+msgstr ""
+
+msgid "Search Term:"
+msgstr ""
+
+msgid "Results for:"
+msgstr ""
+
+msgid "Published Date From"
+msgstr ""
+
+msgid "Published Date To"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "Empty"
+msgstr ""
+
+msgid "Exclude Tags"
+msgstr ""
+
+msgid "Exclude Series"
+msgstr ""
+
+msgid "Exclude Shelves"
+msgstr ""
+
+msgid "Exclude Languages"
+msgstr ""
+
+msgid "Extensions"
+msgstr ""
+
+msgid "Exclude Extensions"
+msgstr ""
+
+msgid "Rating Above"
+msgstr ""
+
+msgid "Rating Below"
+msgstr ""
+
+msgid "From:"
+msgstr ""
+
+msgid "To:"
+msgstr ""
+
+msgid "Delete this Shelf"
+msgstr ""
+
+msgid "Edit Shelf Properties"
+msgstr ""
+
+msgid "Arrange books manually"
+msgstr ""
+
+msgid "Disable Change order"
+msgstr ""
+
+msgid "Enable Change order"
+msgstr ""
+
+msgid "Sort according to book added to shelf, newest first"
+msgstr ""
+
+msgid "Sort according to book added to shelf, oldest first"
+msgstr ""
+
+msgid "Share with Everyone"
+msgstr ""
+
+msgid "Sync this shelf with Kobo device"
+msgstr ""
+
+msgid "Drag to Rearrange Order"
+msgstr ""
+
+msgid "Hidden Book"
+msgstr ""
+
+msgid "Library Statistics"
+msgstr ""
+
+msgid "Books in this Library"
+msgstr ""
+
+msgid "Authors in this Library"
+msgstr ""
+
+msgid "Categories in this Library"
+msgstr ""
+
+msgid "Series in this Library"
+msgstr ""
+
+msgid "System Statistics"
+msgstr ""
+
+msgid "Program"
+msgstr ""
+

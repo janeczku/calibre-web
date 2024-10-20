@@ -1,0 +1,120 @@
+msgid "Comments"
+msgstr ""
+
+msgid "Archive Status"
+msgstr ""
+
+msgid "Read Status"
+msgstr ""
+
+msgid "Enter "
+msgstr ""
+
+msgid "Are you really sure?"
+msgstr ""
+
+msgid "Books with Title will be merged from:"
+msgstr ""
+
+msgid "Into Book with Title:"
+msgstr ""
+
+msgid "Merge"
+msgstr ""
+
+msgid "Location of Calibre Database"
+msgstr ""
+
+msgid "Separate Book Files from Library"
+msgstr ""
+
+msgid "Use Google Drive?"
+msgstr ""
+
+msgid "Authenticate Google Drive"
+msgstr ""
+
+msgid "Google Drive Calibre folder"
+msgstr ""
+
+msgid "Metadata Watch Channel ID"
+msgstr ""
+
+msgid "Revoke"
+msgstr ""
+
+msgid "New db location is invalid, please enter valid path"
+msgstr ""
+
+msgid "Server Configuration"
+msgstr ""
+
+msgid "Server Port"
+msgstr ""
+
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr ""
+
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr ""
+
+msgid "Update Channel"
+msgstr ""
+
+msgid "Stable"
+msgstr ""
+
+msgid "Nightly"
+msgstr ""
+
+msgid "Trusted Hosts (Comma Separated)"
+msgstr ""
+
+msgid "Logfile Configuration"
+msgstr ""
+
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr ""
+
+msgid "Enable Access Log"
+msgstr ""
+
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr ""
+
+msgid "Feature Configuration"
+msgstr ""
+
+msgid "Convert non-English characters in title and author while saving to disk"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Enable Uploads"
+msgstr ""
+
+msgid "(Please ensure that users also have upload permissions)"
+msgstr ""
+
+msgid "Allowed Upload Fileformats"
+msgstr ""
+
+msgid "Enable Anonymous Browsing"
+msgstr ""
+
+msgid "Enable Public Registration"
+msgstr ""
+
+msgid "Use Email as Username"
+msgstr ""
+
+msgid "Enable Magic Link Remote Login"
+msgstr ""
+
+msgid "Enable Kobo sync"
+msgstr ""
+
+msgid "Proxy unknown requests to Kobo Store"
+msgstr ""
+

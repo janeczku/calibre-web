@@ -1,0 +1,120 @@
+msgid "One column"
+msgstr ""
+
+msgid "Comic Reader"
+msgstr ""
+
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+msgid "Previous Page"
+msgstr ""
+
+msgid "Next Page"
+msgstr ""
+
+msgid "Single Page Display"
+msgstr ""
+
+msgid "Long Strip Display"
+msgstr ""
+
+msgid "Scale to Best"
+msgstr ""
+
+msgid "Scale to Width"
+msgstr ""
+
+msgid "Scale to Height"
+msgstr ""
+
+msgid "Scale to Native"
+msgstr ""
+
+msgid "Rotate Right"
+msgstr ""
+
+msgid "Rotate Left"
+msgstr ""
+
+msgid "Flip Image"
+msgstr ""
+
+msgid "Display"
+msgstr ""
+
+msgid "Single Page"
+msgstr ""
+
+msgid "Long Strip"
+msgstr ""
+
+msgid "Scale"
+msgstr ""
+
+msgid "Best"
+msgstr ""
+
+msgid "Width"
+msgstr ""
+
+msgid "Height"
+msgstr ""
+
+msgid "Native"
+msgstr ""
+
+msgid "Rotate"
+msgstr ""
+
+msgid "Flip"
+msgstr ""
+
+msgid "Horizontal"
+msgstr ""
+
+msgid "Vertical"
+msgstr ""
+
+msgid "Direction"
+msgstr ""
+
+msgid "Left to Right"
+msgstr ""
+
+msgid "Right to Left"
+msgstr ""
+
+msgid "Reset to Top"
+msgstr ""
+
+msgid "Remember Position"
+msgstr ""
+
+msgid "Scrollbar"
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Hide"
+msgstr ""
+
+msgid "DJVU Reader"
+msgstr ""
+
+msgid "PDF Reader"
+msgstr ""
+
+msgid "txt Reader"
+msgstr ""
+
+msgid "Register New Account"
+msgstr ""
+
+msgid "Choose a username"
+msgstr ""
+
+msgid "Your Email"
+msgstr ""
+

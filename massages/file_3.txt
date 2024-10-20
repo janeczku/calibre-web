@@ -1,0 +1,120 @@
+msgid "Requesting update package"
+msgstr ""
+
+msgid "Downloading update package"
+msgstr ""
+
+msgid "Unzipping update package"
+msgstr ""
+
+msgid "Replacing files"
+msgstr ""
+
+msgid "Database connections are closed"
+msgstr ""
+
+msgid "Stopping server"
+msgstr ""
+
+msgid "Update finished, please press okay and reload page"
+msgstr ""
+
+msgid "Update failed:"
+msgstr ""
+
+msgid "HTTP Error"
+msgstr ""
+
+msgid "Connection error"
+msgstr ""
+
+msgid "Timeout while establishing connection"
+msgstr ""
+
+msgid "General error"
+msgstr ""
+
+msgid "Update file could not be saved in temp dir"
+msgstr ""
+
+msgid "Files could not be replaced during update"
+msgstr ""
+
+msgid "Failed to extract at least One LDAP User"
+msgstr ""
+
+msgid "Failed to Create at Least One LDAP User"
+msgstr ""
+
+msgid "Error: %(ldaperror)s"
+msgstr ""
+
+msgid "Error: No user returned in response of LDAP server"
+msgstr ""
+
+msgid "At Least One LDAP User Not Found in Database"
+msgstr ""
+
+msgid "{} User Successfully Imported"
+msgstr ""
+
+msgid "Books path not valid"
+msgstr ""
+
+msgid "DB Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+msgid "DB is not Writeable"
+msgstr ""
+
+msgid "Keyfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+msgid "Certfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+msgid "Password length has to be between 1 and 40"
+msgstr ""
+
+msgid "Database Settings updated"
+msgstr ""
+
+msgid "Database Configuration"
+msgstr ""
+
+msgid "Oops! Please complete all fields."
+msgstr ""
+
+msgid "E-mail is not from valid domain"
+msgstr ""
+
+msgid "Add new user"
+msgstr ""
+
+msgid "User '%(user)s' created"
+msgstr ""
+
+msgid "Oops! An account already exists for this Email. or name."
+msgstr ""
+
+msgid "User '%(nick)s' deleted"
+msgstr ""
+
+msgid "Can't delete Guest User"
+msgstr ""
+
+msgid "No admin user remaining, can't delete user"
+msgstr ""
+
+msgid "Email can't be empty and has to be a valid Email"
+msgstr ""
+
+msgid "User '%(nick)s' updated"
+msgstr ""
+
+msgid "not installed"
+msgstr ""
+
+msgid "Execution permissions missing"
+msgstr ""
+

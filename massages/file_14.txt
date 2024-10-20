@@ -1,0 +1,120 @@
+msgid "Server External Port (for port forwarded API calls)"
+msgstr ""
+
+msgid "Use Goodreads"
+msgstr ""
+
+msgid "Goodreads API Key"
+msgstr ""
+
+msgid "Allow Reverse Proxy Authentication"
+msgstr ""
+
+msgid "Login type"
+msgstr ""
+
+msgid "Use Standard Authentication"
+msgstr ""
+
+msgid "Use LDAP Authentication"
+msgstr ""
+
+msgid "Use OAuth"
+msgstr ""
+
+msgid "LDAP Server Host Name or IP Address"
+msgstr ""
+
+msgid "LDAP Server Port"
+msgstr ""
+
+msgid "LDAP Encryption"
+msgstr ""
+
+msgid "TLS"
+msgstr ""
+
+msgid "SSL"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+msgid "LDAP Authentication"
+msgstr ""
+
+msgid "Anonymous"
+msgstr ""
+
+msgid "Unauthenticated"
+msgstr ""
+
+msgid "Simple"
+msgstr ""
+
+msgid "LDAP Administrator Username"
+msgstr ""
+
+msgid "LDAP Administrator Password"
+msgstr ""
+
+msgid "LDAP Distinguished Name (DN)"
+msgstr ""
+
+msgid "LDAP User Object Filter"
+msgstr ""
+
+msgid "LDAP Server is OpenLDAP?"
+msgstr ""
+
+msgid "Following Settings are Needed For User Import"
+msgstr ""
+
+msgid "LDAP Group Object Filter"
+msgstr ""
+
+msgid "LDAP Group Name"
+msgstr ""
+
+msgid "LDAP Group Members Field"
+msgstr ""
+
+msgid "LDAP Member User Filter Detection"
+msgstr ""
+
+msgid "Autodetect"
+msgstr ""
+
+msgid "Custom Filter"
+msgstr ""
+
+msgid "LDAP Member User Filter"
+msgstr ""
+
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr ""
+
+msgid "%(provider)s OAuth Client Id"
+msgstr ""
+
+msgid "%(provider)s OAuth Client Secret"
+msgstr ""
+
+msgid "External binaries"
+msgstr ""
+
+msgid "Path to Calibre Binaries"
+msgstr ""
+
+msgid "Calibre E-Book Converter Settings"
+msgstr ""
+
+msgid "Path to Kepubify E-Book Converter"
+msgstr ""
+

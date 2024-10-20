@@ -1,0 +1,120 @@
+msgid "Custom Column No.%(column)d does not exist in calibre database"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "File %(file)s uploaded"
+msgstr ""
+
+msgid "Source or destination format for conversion missing"
+msgstr ""
+
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr ""
+
+msgid "There was an error converting this book: %(res)s"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "User has no rights to upload cover"
+msgstr ""
+
+msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
+msgstr ""
+
+msgid "'%(langname)s' is not a valid language"
+msgstr ""
+
+msgid "Metadata successfully updated"
+msgstr ""
+
+msgid "Error editing book: {}"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "File type isn't allowed to be uploaded to this server"
+msgstr ""
+
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr ""
+
+msgid "File to be uploaded must have an extension"
+msgstr ""
+
+msgid "File %(filename)s could not saved to temp dir"
+msgstr ""
+
+msgid "Failed to Move Cover File %(file)s: %(error)s"
+msgstr ""
+
+msgid "Book Format Successfully Deleted"
+msgstr ""
+
+msgid "Book Successfully Deleted"
+msgstr ""
+
+msgid "You are missing permissions to delete books"
+msgstr ""
+
+msgid "edit metadata"
+msgstr ""
+
+msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
+msgstr ""
+
+msgid "User has no rights to upload additional file formats"
+msgstr ""
+
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr ""
+
+msgid "Failed to store file %(file)s."
+msgstr ""
+
+msgid "File format %(ext)s added to %(book)s"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr ""
+
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr ""
+
+msgid "%(format)s not found: %(fn)s"
+msgstr ""
+
+msgid "Send to eReader"
+msgstr ""
+
+msgid "This Email has been sent via Calibre-Web."
+msgstr ""
+
+msgid "Calibre-Web Test Email"
+msgstr ""
+
+msgid "Test Email"
+msgstr ""
+
+msgid "Get Started with Calibre-Web"
+msgstr ""
+
+msgid "Registration Email for user: %(name)s"
+msgstr ""
+
+msgid "Convert %(orig)s to %(format)s and send to eReader"
+msgstr ""
+
+msgid "Send %(format)s to eReader"
+msgstr ""
+

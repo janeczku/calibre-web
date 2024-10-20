@@ -1,0 +1,120 @@
+msgid ""
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Server restarted, please reload page."
+msgstr ""
+
+msgid "Performing Server shutdown, please close window."
+msgstr ""
+
+msgid "Success! Database Reconnected"
+msgstr ""
+
+msgid "Unknown command"
+msgstr ""
+
+msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "Admin page"
+msgstr ""
+
+msgid "Basic Configuration"
+msgstr ""
+
+msgid "UI Configuration"
+msgstr ""
+
+msgid "Edit Users"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "User not found"
+msgstr ""
+
+msgid "{} users deleted successfully"
+msgstr ""
+
+msgid "Show All"
+msgstr ""
+
+msgid "Malformed request"
+msgstr ""
+
+msgid "Guest Name can't be changed"
+msgstr ""
+
+msgid "Guest can't have this role"
+msgstr ""
+
+msgid "No admin user remaining, can't remove admin role"
+msgstr ""
+
+msgid "Value has to be true or false"
+msgstr ""
+
+msgid "Invalid role"
+msgstr ""
+
+msgid "Guest can't have this view"
+msgstr ""
+
+msgid "Invalid view"
+msgstr ""
+
+msgid "Guest's Locale is determined automatically and can't be set"
+msgstr ""
+
+msgid "No Valid Locale Given"
+msgstr ""
+
+msgid "No Valid Book Language Given"
+msgstr ""
+
+msgid "Parameter not found"
+msgstr ""
+
+msgid "Invalid Read Column"
+msgstr ""
+
+msgid "Invalid Restricted Column"
+msgstr ""
+
+msgid "Calibre-Web configuration updated"
+msgstr ""
+
+msgid "Do you really want to delete the Kobo Token?"
+msgstr ""
+
+msgid "Do you really want to delete this domain?"
+msgstr ""
+
+msgid "Do you really want to delete this user?"
+msgstr ""
+
+msgid "Are you sure you want to delete this shelf?"
+msgstr ""
+
+msgid "Are you sure you want to change locales of selected user(s)?"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid ""
+msgstr ""
+
