@@ -1,0 +1,120 @@
+msgid "Please wait one minute before next login"
+msgstr ""
+
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Could not login: %(message)s"
+msgstr ""
+
+msgid "Wrong Username or Password"
+msgstr ""
+
+msgid "New Password was sent to your email address"
+msgstr ""
+
+msgid "An unknown error occurred. Please try again later."
+msgstr ""
+
+msgid "Please enter valid username to reset password"
+msgstr ""
+
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr ""
+
+msgid "%(name)s's Profile"
+msgstr ""
+
+msgid "Success! Profile Updated"
+msgstr ""
+
+msgid "Oops! An account already exists for this Email."
+msgstr ""
+
+msgid "Found no valid gmail.json file with OAuth information"
+msgstr ""
+
+msgid "Delete temp folder contents"
+msgstr ""
+
+msgid "%(book)s send to E-Reader"
+msgstr ""
+
+msgid "Calibre ebook-convert %(tool)s not found"
+msgstr ""
+
+msgid "%(format)s format not found on disk"
+msgstr ""
+
+msgid "Ebook converter failed with unknown error"
+msgstr ""
+
+msgid "Kepubify-converter failed: %(error)s"
+msgstr ""
+
+msgid "Converted file not found or more than one file in folder %(folder)s"
+msgstr ""
+
+msgid "Calibre failed with error: %(error)s"
+msgstr ""
+
+msgid "Ebook-converter failed: %(error)s"
+msgstr ""
+
+msgid "Convert"
+msgstr ""
+
+msgid "Reconnecting Calibre database"
+msgstr ""
+
+msgid "E-mail"
+msgstr ""
+
+msgid "Backing up Metadata"
+msgstr ""
+
+msgid "Generated %(count)s cover thumbnails"
+msgstr ""
+
+msgid "Cover Thumbnails"
+msgstr ""
+
+msgid "Generated {0} series thumbnails"
+msgstr ""
+
+msgid "Clearing cover thumbnail cache"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Send to eReader Email"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "View Books"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+

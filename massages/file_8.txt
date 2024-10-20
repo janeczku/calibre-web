@@ -1,0 +1,120 @@
+msgid "Tasks"
+msgstr ""
+
+msgid "Waiting"
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Started"
+msgstr ""
+
+msgid "Finished"
+msgstr ""
+
+msgid "Ended"
+msgstr ""
+
+msgid "Cancelled"
+msgstr ""
+
+msgid "Unknown Status"
+msgstr ""
+
+msgid "Unexpected data while reading update information"
+msgstr ""
+
+msgid "No update available. You already have the latest version installed"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Could not fetch update information"
+msgstr ""
+
+msgid "Click on the button below to update to the latest stable version."
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "No release information available"
+msgstr ""
+
+msgid "Discover (Random Books)"
+msgstr ""
+
+msgid "Hot Books (Most Downloaded)"
+msgstr ""
+
+msgid "Downloaded books by %(user)s"
+msgstr ""
+
+msgid "Author: %(name)s"
+msgstr ""
+
+msgid "Publisher: %(name)s"
+msgstr ""
+
+msgid "Series: %(serie)s"
+msgstr ""
+
+msgid "Rating: None"
+msgstr ""
+
+msgid "Rating: %(rating)s stars"
+msgstr ""
+
+msgid "File format: %(format)s"
+msgstr ""
+
+msgid "Category: %(name)s"
+msgstr ""
+
+msgid "Language: %(name)s"
+msgstr ""
+
+msgid "Downloads"
+msgstr ""
+
+msgid "Ratings list"
+msgstr ""
+
+msgid "File formats list"
+msgstr ""
+
+msgid "Please configure the SMTP mail settings first..."
+msgstr ""
+
+msgid "Success! Book queued for sending to %(eReadermail)s"
+msgstr ""
+
+msgid "Oops! There was an error sending book: %(res)s"
+msgstr ""
+
+msgid "Oops! Please update your profile with a valid eReader Email."
+msgstr ""
+
+msgid "Please wait one minute to register next user"
+msgstr ""
+
+msgid "Register"
+msgstr ""
+
+msgid "Connection error to limiter backend, please contact your administrator"
+msgstr ""
+
+msgid "Oops! Email server is not configured, please contact your administrator."
+msgstr ""
+
+msgid "Oops! Your Email is not allowed."
+msgstr ""
+
+msgid "Success! Confirmation Email has been sent."
+msgstr ""
+
+msgid "Cannot activate LDAP authentication"
+msgstr ""
+

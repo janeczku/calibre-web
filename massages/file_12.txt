@@ -1,0 +1,120 @@
+msgid "Tags"
+msgstr ""
+
+msgid "Series ID"
+msgstr ""
+
+msgid "Rating"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Upload Cover from Local Disk"
+msgstr ""
+
+msgid "Published Date"
+msgstr ""
+
+msgid "Publisher"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "View Book on Save"
+msgstr ""
+
+msgid "Fetch Metadata"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Search keyword"
+msgstr ""
+
+msgid "Click the cover to load metadata to the form"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Search error!"
+msgstr ""
+
+msgid "No Result(s) found! Please try another keyword."
+msgstr ""
+
+msgid "This Field is Required"
+msgstr ""
+
+msgid "Merge selected books"
+msgstr ""
+
+msgid "Remove Selections"
+msgstr ""
+
+msgid "Exchange author and title"
+msgstr ""
+
+msgid "Update Title Sort automatically"
+msgstr ""
+
+msgid "Update Author Sort automatically"
+msgstr ""
+
+msgid "Enter Title"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Enter Title Sort"
+msgstr ""
+
+msgid "Title Sort"
+msgstr ""
+
+msgid "Enter Author Sort"
+msgstr ""
+
+msgid "Author Sort"
+msgstr ""
+
+msgid "Enter Authors"
+msgstr ""
+
+msgid "Enter Categories"
+msgstr ""
+
+msgid "Enter Series"
+msgstr ""
+
+msgid "Series Index"
+msgstr ""
+
+msgid "Enter Languages"
+msgstr ""
+
+msgid "Publishing Date"
+msgstr ""
+
+msgid "Enter Publishers"
+msgstr ""
+
+msgid "Enter comments"
+msgstr ""
+

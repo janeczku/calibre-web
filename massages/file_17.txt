@@ -1,0 +1,120 @@
+msgid "Logout User"
+msgstr ""
+
+msgid "Sort ascending according to download count"
+msgstr ""
+
+msgid "Sort descending according to download count"
+msgstr ""
+
+msgid "Sort authors in alphabetical order"
+msgstr ""
+
+msgid "Sort authors in reverse alphabetical order"
+msgstr ""
+
+msgid "Sort ascending according to series index"
+msgstr ""
+
+msgid "Sort descending according to series index"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Alphabetical Books"
+msgstr ""
+
+msgid "Books sorted alphabetically"
+msgstr ""
+
+msgid "Popular publications from this catalog based on Downloads."
+msgstr ""
+
+msgid "Popular publications from this catalog based on Rating."
+msgstr ""
+
+msgid "Recently added Books"
+msgstr ""
+
+msgid "The latest Books"
+msgstr ""
+
+msgid "Random Books"
+msgstr ""
+
+msgid "Books ordered by Author"
+msgstr ""
+
+msgid "Books ordered by publisher"
+msgstr ""
+
+msgid "Books ordered by category"
+msgstr ""
+
+msgid "Books ordered by series"
+msgstr ""
+
+msgid "Books ordered by Languages"
+msgstr ""
+
+msgid "Books ordered by Rating"
+msgstr ""
+
+msgid "Books ordered by file formats"
+msgstr ""
+
+msgid "Shelves"
+msgstr ""
+
+msgid "Books organized in shelves"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "Toggle Navigation"
+msgstr ""
+
+msgid "Search Library"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Please do not refresh the page"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "About"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Book Details"
+msgstr ""
+
+msgid "Grid"
+msgstr ""
+
+msgid "Archived"
+msgstr ""
+
+msgid "Remember Me"
+msgstr ""
+
+msgid "Forgot Password?"
+msgstr ""
+
+msgid "Log in with Magic Link"
+msgstr ""
+

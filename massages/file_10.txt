@@ -1,0 +1,120 @@
+msgid "Delete"
+msgstr ""
+
+msgid "Public Shelf"
+msgstr ""
+
+msgid "Import LDAP Users"
+msgstr ""
+
+msgid "Email Server Settings"
+msgstr ""
+
+msgid "SMTP Hostname"
+msgstr ""
+
+msgid "SMTP Port"
+msgstr ""
+
+msgid "Encryption"
+msgstr ""
+
+msgid "SMTP Login"
+msgstr ""
+
+msgid "From Email"
+msgstr ""
+
+msgid "Email Service"
+msgstr ""
+
+msgid "Gmail via Oauth2"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "Calibre Database Directory"
+msgstr ""
+
+msgid "Log Level"
+msgstr ""
+
+msgid "Port"
+msgstr ""
+
+msgid "External Port"
+msgstr ""
+
+msgid "Books per Page"
+msgstr ""
+
+msgid "Uploads"
+msgstr ""
+
+msgid "Anonymous Browsing"
+msgstr ""
+
+msgid "Public Registration"
+msgstr ""
+
+msgid "Magic Link Remote Login"
+msgstr ""
+
+msgid "Reverse Proxy Login"
+msgstr ""
+
+msgid "Reverse Proxy Header Name"
+msgstr ""
+
+msgid "Edit Calibre Database Configuration"
+msgstr ""
+
+msgid "Edit Basic Configuration"
+msgstr ""
+
+msgid "Edit UI Configuration"
+msgstr ""
+
+msgid "Scheduled Tasks"
+msgstr ""
+
+msgid "Start Time"
+msgstr ""
+
+msgid "Maximum Duration"
+msgstr ""
+
+msgid "Generate Thumbnails"
+msgstr ""
+
+msgid "Generate series cover thumbnails"
+msgstr ""
+
+msgid "Reconnect Calibre Database"
+msgstr ""
+
+msgid "Generate Metadata Backup Files"
+msgstr ""
+
+msgid "Refresh Thumbnail Cache"
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid "Download Debug Package"
+msgstr ""
+
+msgid "View Logs"
+msgstr ""
+
+msgid "Restart"
+msgstr ""
+
+msgid "Shutdown"
+msgstr ""
+
+msgid "Version Information"
+msgstr ""
+

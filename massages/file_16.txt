@@ -1,0 +1,120 @@
+msgid "Add Allowed/Denied custom column values"
+msgstr ""
+
+msgid "Read in Browser"
+msgstr ""
+
+msgid "Listen in Browser"
+msgstr ""
+
+msgid "Book %(index)s of %(range)s"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid "Mark As Unread"
+msgstr ""
+
+msgid "Mark As Read"
+msgstr ""
+
+msgid "Mark Book as Read or Unread"
+msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Restore from archive"
+msgstr ""
+
+msgid "Add to archive"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Archive"
+msgstr ""
+
+msgid "Description:"
+msgstr ""
+
+msgid "Add to shelf"
+msgstr ""
+
+msgid "(Public)"
+msgstr ""
+
+msgid "Edit Metadata"
+msgstr ""
+
+msgid "Email Account Type"
+msgstr ""
+
+msgid "Standard Email Account"
+msgstr ""
+
+msgid "Gmail Account"
+msgstr ""
+
+msgid "Setup Gmail Account"
+msgstr ""
+
+msgid "Revoke Gmail Access"
+msgstr ""
+
+msgid "STARTTLS"
+msgstr ""
+
+msgid "SSL/TLS"
+msgstr ""
+
+msgid "SMTP Password"
+msgstr ""
+
+msgid "Attachment Size Limit"
+msgstr ""
+
+msgid "Save and Send Test Email"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Allowed Domains (Whitelist)"
+msgstr ""
+
+msgid "Add Domain"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Enter domainname"
+msgstr ""
+
+msgid "Denied Domains (Blacklist)"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Kobo Token:"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
+msgstr ""
+
+msgid "Create Issue"
+msgstr ""
+
+msgid "Return to Home"
+msgstr ""
+

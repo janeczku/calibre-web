@@ -1,0 +1,120 @@
+msgid "Show Calibre-Web Log: "
+msgstr ""
+
+msgid "Calibre-Web Log: "
+msgstr ""
+
+msgid "Stream output, can't be displayed"
+msgstr ""
+
+msgid "Show Access Log: "
+msgstr ""
+
+msgid "Download Calibre-Web Log"
+msgstr ""
+
+msgid "Download Access Log"
+msgstr ""
+
+msgid "Select Allowed/Denied Tags"
+msgstr ""
+
+msgid "Select Allowed/Denied Custom Column Values"
+msgstr ""
+
+msgid "Select Allowed/Denied Tags of User"
+msgstr ""
+
+msgid "Select Allowed/Denied Custom Column Values of User"
+msgstr ""
+
+msgid "Enter Tag"
+msgstr ""
+
+msgid "Add View Restriction"
+msgstr ""
+
+msgid "This book format will be permanently erased from database"
+msgstr ""
+
+msgid "This book will be permanently erased from database"
+msgstr ""
+
+msgid "and hard disk"
+msgstr ""
+
+msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
+msgstr ""
+
+msgid ""
+msgstr ""
+
+msgid "Choose File Location"
+msgstr ""
+
+msgid "type"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "size"
+msgstr ""
+
+msgid "Parent Directory"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Ok"
+msgstr ""
+
+msgid "Calibre-Web eBook Catalog"
+msgstr ""
+
+msgid "epub Reader"
+msgstr ""
+
+msgid "Light"
+msgstr ""
+
+msgid "Dark"
+msgstr ""
+
+msgid "Sepia"
+msgstr ""
+
+msgid "Black"
+msgstr ""
+
+msgid "Reflow text when sidebars are open."
+msgstr ""
+
+msgid "Font Sizes"
+msgstr ""
+
+msgid "Font"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Yahei"
+msgstr ""
+
+msgid "SimSun"
+msgstr ""
+
+msgid "KaiTi"
+msgstr ""
+
+msgid "Arial"
+msgstr ""
+
+msgid "Spread"
+msgstr ""
+
+msgid "Two columns"
+msgstr ""
+
