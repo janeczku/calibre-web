@@ -36,7 +36,7 @@ msgstr "Podatkovna baza je uspešno ponovno povezana"
 
 #: cps/admin.py:164
 msgid "Unknown command"
-msgstr "Neznani ukaz"
+msgstr "Neznan ukaz"
 
 #: cps/admin.py:175
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
@@ -54,11 +54,11 @@ msgstr "Administrativna stran"
 
 #: cps/admin.py:253
 msgid "Basic Configuration"
-msgstr "Osnovna nastavitev"
+msgstr "Osnovne nastavitve"
 
 #: cps/admin.py:291
 msgid "UI Configuration"
-msgstr "Nastavitev uporabniškega vmesnika"
+msgstr "Nastavitve uporabniškega vmesnika"
 
 #: cps/admin.py:325 cps/templates/admin.html:51
 msgid "Edit Users"
@@ -860,7 +860,7 @@ msgstr "Registracija pri %(provider)s"
 #: cps/oauth_bb.py:139 cps/remotelogin.py:131
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
-msgstr "Uspeh! Zdaj ste prijavljeni kot: %(nickname)s"
+msgstr "Uspeh! Prijavljeni ste kot: %(nickname)s"
 
 #: cps/oauth_bb.py:149
 #, python-format
@@ -1412,7 +1412,7 @@ msgstr "Pred naslednjo prijavo počakajte eno minuto"
 #: cps/web.py:1402
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "zdaj ste prijavljeni kot: '%(nickname)s'"
+msgstr "prijavljeni ste kot: '%(nickname)s'"
 
 #: cps/web.py:1409
 #, python-format
@@ -1443,7 +1443,7 @@ msgstr "Za ponastavitev gesla vnesite veljavno uporabniško ime"
 #: cps/web.py:1439
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "Zdaj ste prijavljeni kot: '%(nickname)s'"
+msgstr "Prijavljeni ste kot: '%(nickname)s'"
 
 #: cps/web.py:1504 cps/web.py:1554
 #, python-format
@@ -2643,7 +2643,7 @@ msgstr "Dodaj v arhiv"
 
 #: cps/templates/detail.html:267
 msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
-msgstr "Označi knjigo kot arhivirano ali ne, da jo skriješ v Calibre-Web in izbrišeš iz Kobo bralnika"
+msgstr "Označi knjigo kot arhivirano ali ne, da se skrije v Calibre-Web in izbriše iz Kobo bralnika"
 
 #: cps/templates/detail.html:267
 msgid "Archive"
