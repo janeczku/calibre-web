@@ -21,6 +21,7 @@ import os
 import errno
 import signal
 import socket
+import multiprocessing
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -268,7 +269,7 @@ class WebServer(object):
             log.info('Starting Tornado server on %s', output)
 
             self.wsgiserver = IOLoop.current()
-            self.wsgiserver.start()
+            self.wsgiserver.start(multiprocessing.cpu_count())
             # wait for stop signal
             self.wsgiserver.close(True)
         finally:
