@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-26 19:43+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton.me>\n"
 "Language: nl\n"
@@ -47,8 +47,8 @@ msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Test E-Mail wordt verzonden naar %(email)s, controleer de taken voor het resultaat"
 
 #: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
-#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -69,7 +69,7 @@ msgstr "Uiterlijk aanpassen"
 msgid "Edit Users"
 msgstr "Systeembeheerder"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Alles"

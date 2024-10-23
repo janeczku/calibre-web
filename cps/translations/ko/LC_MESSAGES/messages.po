@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2024-09-26 19:43+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -45,8 +45,8 @@ msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "%(email)s에 테스트를 위한 이메일을 보냄. 결과 확인 필요"
 
 #: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
-#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -66,7 +66,7 @@ msgstr "UI 설정"
 msgid "Edit Users"
 msgstr "사용자 관리"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "모두"
