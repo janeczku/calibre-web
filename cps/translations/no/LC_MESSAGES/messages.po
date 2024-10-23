@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-26 19:43+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language: no\n"
@@ -46,8 +46,8 @@ msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Test e-post i kø for sending til %(email)s, sjekk Oppgaver for resultat"
 
 #: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
-#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -67,7 +67,7 @@ msgstr "UI-konfigurasjon"
 msgid "Edit Users"
 msgstr "Rediger brukere"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Alle"

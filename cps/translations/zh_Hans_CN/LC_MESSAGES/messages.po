@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-26 19:43+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_CN\n"
@@ -43,8 +43,8 @@ msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "成功！书籍已排队进行元数据备份，请检查任务列表以获取结果"
 
 #: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
-#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "未知"
 
@@ -64,7 +64,7 @@ msgstr "界面配置"
 msgid "Edit Users"
 msgstr "管理用户"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "全部"

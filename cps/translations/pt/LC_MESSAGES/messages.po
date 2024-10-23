@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-26 19:43+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2023-07-25 11:30+0100\n"
 "Last-Translator: horus68 <https://github.com/horus68>\n"
 "Language: pt\n"
@@ -43,8 +43,8 @@ msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Sucesso! Livros enviados para lista de espera para cópia de segurança de metadados. Por favor, verifique o resultado em Tarefas"
 
 #: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
-#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -64,7 +64,7 @@ msgstr "Configuração de IU"
 msgid "Edit Users"
 msgstr "Editar utilizadores"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Tudo"
