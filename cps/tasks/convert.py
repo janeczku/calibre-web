@@ -282,22 +282,30 @@ class TaskConvert(CalibreTask):
                         if not ele.startswith('Traceback') and not ele.startswith('  File'):
                             error_message = N_("Calibre failed with error: %(error)s", error=ele)
                     return check, error_message
-            quotes = [1, 2, 4, 6]
+            quotes = [1, 2]
+            quotes_index = 4
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext)]
+                       (file_path + format_new_ext), "-v", "-v"]
             if config.config_embed_metadata:
+                quotes.append([4])
+                quotes_index = 5
                 command.extend(['--from-opf', path_tmp_opf])
-            if has_cover:
-                command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
-            # quotes_index = 3
+                if has_cover:
+                    quotes.append([6])
+                    command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
+                    quotes_index = 7
             if config.config_calibre:
-                parameters = re.findall(r"--[\w-]+(?:(\s(?:(\".+\")|(?:.+?)|(?:(\'.+\'))))(?:\s|$))?",
+                parameters = re.findall(r"(--[\w-]+)(?:(\s(?:(\".+\")|(?:.+?)))(?:\s|$))?",
                                         config.config_calibre, re.IGNORECASE | re.UNICODE)
                 if parameters:
                     for param in parameters:
-                        command.append(param)
-                        #quotes.append(quotes_index)
-                        #quotes_index += 1
+                        command.append(strip_whitespaces(param[0]))
+                        quotes_index += 1
+                        if param[1] != "":
+                            parsed = strip_whitespaces(param[1]).strip("\"")
+                            command.append(parsed)
+                            quotes.append(quotes_index)
+                            quotes_index += 1
             p = process_open(command, quotes, newlines=False)
         except OSError as e:
             return 1, N_("Ebook-converter failed: %(error)s", error=e)
