@@ -2089,7 +2089,7 @@ def extract_user_data_from_field(user, field):
 
 
 def extract_dynamic_field_from_filter(user, filtr):
-    match = re.search("([a-zA-Z0-9-]+)=%s", filtr, re.IGNORECASE | re.UNICODE)
+    match = re.search(r"([a-zA-Z0-9-]+)=%s", filtr, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:
