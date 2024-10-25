@@ -268,14 +268,16 @@ class TaskConvert(CalibreTask):
 
                 opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
                                '--with-library', library_path]
-                p = process_open(opf_command, quotes, my_env)
-                p.wait()
+                p = process_open(opf_command, quotes, my_env, newlines=False)
+                lines = list()
+                while p.poll() is None:
+                    lines.append(p.stdout.readline())
                 check = p.returncode
                 calibre_traceback = p.stderr.readlines()
                 if check == 0:
                     path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
-                    with open(path_tmp_opf, 'w') as fd:
-                        copyfileobj(p.stdout, fd)
+                    with open(path_tmp_opf, 'wb') as fd:
+                        fd.write(b''.join(lines))
                 else:
                     error_message = ""
                     for ele in calibre_traceback:
@@ -287,11 +289,11 @@ class TaskConvert(CalibreTask):
             command = [config.config_converterpath, (file_path + format_old_ext),
                        (file_path + format_new_ext)]
             if config.config_embed_metadata:
-                quotes.append([4])
+                quotes.append(4)
                 quotes_index = 5
                 command.extend(['--from-opf', path_tmp_opf])
                 if has_cover:
-                    quotes.append([6])
+                    quotes.append(6)
                     command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
                     quotes_index = 7
             if config.config_calibre:
