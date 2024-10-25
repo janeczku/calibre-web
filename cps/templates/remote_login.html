@@ -7,6 +7,11 @@
     {{_('On another device, login and visit:')}}
   <h4><a id="verify_url" data-token="{{token}}" href="{{verify_url}}">{{verify_url}}</a><b></b>
   </h4>
+  {% if qrcode %}
+  <center>
+    <img src="{{qrcode_url}}">
+  </center>
+  {% endif %}
   <p>
     {{_('Once verified, you will automatically be logged in on this device.')}}
   </p>
