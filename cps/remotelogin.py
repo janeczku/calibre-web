@@ -65,7 +65,7 @@ def remote_login():
     ub.session.add(auth_token)
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
-    if (has_qrcode):
+    if has_qrcode:
         qrcode_url = url_for('remotelogin.remote_qrcode', _external=true)
     else:
         qrcode_url = ""
