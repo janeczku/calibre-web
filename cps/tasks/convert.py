@@ -289,14 +289,15 @@ class TaskConvert(CalibreTask):
                 command.extend(['--from-opf', path_tmp_opf])
             if has_cover:
                 command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
-            quotes_index = 3
+            # quotes_index = 3
             if config.config_calibre:
-                parameters = config.config_calibre.split(" ")
-                for param in parameters:
-                    command.append(param)
-                    quotes.append(quotes_index)
-                    quotes_index += 1
-
+                parameters = re.findall(r"--[\w-]+(?:(\s(?:(\".+\")|(?:.+?)|(?:(\'.+\'))))(?:\s|$))?",
+                                        config.config_calibre, re.IGNORECASE | re.UNICODE)
+                if parameters:
+                    for param in parameters:
+                        command.append(param)
+                        #quotes.append(quotes_index)
+                        #quotes_index += 1
             p = process_open(command, quotes, newlines=False)
         except OSError as e:
             return 1, N_("Ebook-converter failed: %(error)s", error=e)
