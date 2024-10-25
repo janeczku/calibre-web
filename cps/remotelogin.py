@@ -65,9 +65,15 @@ def remote_login():
     ub.session.add(auth_token)
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
+    if (has_qrcode):
+        qrcode_url = url_for('remotelogin.remote_qrcode', _external=true)
+    else:
+        qrcode_url = ""
     log.debug("Remot Login request with token: %s", auth_token.auth_token)
     return render_title_template('remote_login.html', title=_("Login"), token=auth_token.auth_token,
-                                 verify_url=verify_url, qrcode=has_qrcode,  page="remotelogin")
+                                 verify_url=verify_url, 
+                                 qrcode=has_qrcode, qrcode_url = qrcode_url,  
+                                 page="remotelogin")
 
 @remotelogin.route('/remote/qrcode.png')
 @remote_login_required
