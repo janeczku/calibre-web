@@ -283,9 +283,9 @@ class TaskConvert(CalibreTask):
                             error_message = N_("Calibre failed with error: %(error)s", error=ele)
                     return check, error_message
             quotes = [1, 2]
-            quotes_index = 4
+            quotes_index = 3
             command = [config.config_converterpath, (file_path + format_old_ext),
-                       (file_path + format_new_ext), "-v", "-v"]
+                       (file_path + format_new_ext)]
             if config.config_embed_metadata:
                 quotes.append([4])
                 quotes_index = 5
