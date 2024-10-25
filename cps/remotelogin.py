@@ -33,6 +33,12 @@ from . import config, logger, ub
 from .render_template import render_title_template
 from .usermanagement import user_login_required
 
+try:
+    import qrcode
+    import cStringIO
+    has_qrcode = True
+except ImportError:
+    has_qrcode = False
 
 remotelogin = Blueprint('remotelogin', __name__)
 log = logger.create()
@@ -61,8 +67,26 @@ def remote_login():
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     log.debug("Remot Login request with token: %s", auth_token.auth_token)
     return render_title_template('remote_login.html', title=_("Login"), token=auth_token.auth_token,
-                                 verify_url=verify_url, page="remotelogin")
+                                 verify_url=verify_url, qrcode=has_qrcode,  page="remotelogin")
 
+@remotelogin.route('/remote/qrcode.png')
+@remote_login_required
+def remote_qrcode():
+    auth_token = ub.RemoteAuthToken.auth_token
+    verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
+    qr = qrcode.QRCode(version=1,
+                       error_correction=qrcode.constants.ERROR_CORRECT_H,
+                       box_size=50,
+                       border=4,
+                      )
+    qr.add_data(verify_url)
+    qr.make(fit=True)
+    img = qr.make_image()
+    img_buf = cStringIO.StringIO()
+    img.save(img_buf)
+    img_buf.seek(0)
+    return flask.send_file(img_buf, mimetype='image/png')
+    
 
 @remotelogin.route('/verify/<token>')
 @remote_login_required
