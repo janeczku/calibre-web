@@ -306,7 +306,15 @@ def edit_user_table():
         .group_by(text('books_tags_link.tag')) \
         .order_by(db.Tags.name).all()
     if config.config_restricted_column:
-        custom_values = calibre_db.session.query(db.cc_classes[config.config_restricted_column]).all()
+        try:
+            custom_values = calibre_db.session.query(db.cc_classes[config.config_restricted_column]).all()
+        except (KeyError, AttributeError, IndexError):
+            custom_values = []
+            log.error("Custom Column No.{} does not exist in calibre database".format(
+                config.config_restricted_column))
+            flash(_("Custom Column No.%(column)d does not exist in calibre database",
+                    column=config.config_restricted_column),
+                  category="error")
     else:
         custom_values = []
     if not config.config_anonbrowse:
@@ -982,8 +990,14 @@ def prepare_tags(user, action, tags_name, id_list):
             raise Exception(_("Tag not found"))
         new_tags_list = [x.name for x in tags]
     else:
-        tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column]) \
-            .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
+        try:
+            tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column]) \
+                .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
+        except (KeyError, AttributeError, IndexError):
+            log.error("Custom Column No.{} does not exist in calibre database".format(
+                config.config_restricted_column))
+            raise Exception(_("Custom Column No.%(column)d does not exist in calibre database",
+                    column=config.config_restricted_column))
         new_tags_list = [x.value for x in tags]
     saved_tags_list = user.__dict__[tags_name].split(",") if len(user.__dict__[tags_name]) else []
     if action == "remove":
