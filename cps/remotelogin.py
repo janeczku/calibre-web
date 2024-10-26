@@ -35,6 +35,7 @@ from .usermanagement import user_login_required
 
 try:
     import qrcode
+    from base64 import b64encode
     from io import BytesIO
     from flask import send_file
     has_qrcode = True
@@ -77,7 +78,7 @@ def remote_login():
         img = qr.make_image()
         img_buf = BytesIO()
         img.save(img_buf,format = 'jpeg')
-        qrcode_url = "data:image/png;base64, %s" % base64.b64encode(stream.getvalue()).decode()
+        qrcode_url = "data:image/png;base64, %s" % b64encode(stream.getvalue()).decode()
     else:
         qrcode_url = ""
     log.debug("Remot Login request with token: %s", auth_token.auth_token)
