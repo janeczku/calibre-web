@@ -80,6 +80,7 @@ def remote_login():
 def remote_qrcode():
     auth_token = ub.RemoteAuthToken.auth_token
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
+    log.info("Generate QR Code for remode loging: %s", auth_token.auth_token)
     qr = qrcode.QRCode(version=1,
                        error_correction=qrcode.constants.ERROR_CORRECT_H,
                        box_size=50,
