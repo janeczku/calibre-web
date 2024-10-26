@@ -36,6 +36,7 @@ from .usermanagement import user_login_required
 try:
     import qrcode
     from io import BytesIO
+    from flask import send_file
     has_qrcode = True
 except ImportError:
     has_qrcode = False
@@ -99,7 +100,7 @@ def remote_qrcode(token):
     img_buf = BytesIO()
     img.save(img_buf)
     img_buf.seek(0)
-    return flask.send_file(img_buf, mimetype='image/png')
+    return send_file(img_buf, mimetype='image/png')
     
 
 @remotelogin.route('/verify/<token>')
