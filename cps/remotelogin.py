@@ -91,7 +91,7 @@ def remote_qrcode(token):
     log.info("Generate QR Code for remode loging: %s", auth_token.auth_token)
     qr = qrcode.QRCode(version=1,
                        error_correction=qrcode.constants.ERROR_CORRECT_H,
-                       box_size=50,
+                       box_size=5,
                        border=4,
                       )
     qr.add_data(verify_url)
