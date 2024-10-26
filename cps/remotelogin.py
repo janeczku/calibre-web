@@ -75,10 +75,17 @@ def remote_login():
                                  qrcode=has_qrcode, qrcode_url = qrcode_url,  
                                  page="remotelogin")
 
-@remotelogin.route('/remote/qrcode.png')
+@remotelogin.route('/qrcode/<token>.png')
 @remote_login_required
-def remote_qrcode():
-    auth_token = ub.RemoteAuthToken.auth_token
+def remote_qrcode(token):
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    # Token not found
+    if auth_token is None:
+        flash(_("Token not found"), category="error")
+        log.error("Remote Login token not found")
+        return redirect(url_for('web.index'))
+        
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     log.info("Generate QR Code for remode loging: %s", auth_token.auth_token)
     qr = qrcode.QRCode(version=1,
