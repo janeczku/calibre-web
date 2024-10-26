@@ -98,9 +98,9 @@ def remote_qrcode(token):
     qr.make(fit=True)
     img = qr.make_image()
     img_buf = BytesIO()
-    img.save(img_buf)
+    img.save(img_buf,format = 'jpeg')
     img_buf.seek(0)
-    return send_file(img_buf, mimetype='image/png')
+    return send_file(img_buf, mimetype = 'image/jpeg')
     
 
 @remotelogin.route('/verify/<token>')
