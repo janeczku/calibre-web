@@ -67,7 +67,17 @@ def remote_login():
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
     if has_qrcode:
-        qrcode_url = url_for('remotelogin.remote_qrcode', token=auth_token.auth_token, _external=true)
+        qr = qrcode.QRCode(version=1,
+                       error_correction=qrcode.constants.ERROR_CORRECT_H,
+                       box_size=5,
+                       border=4,
+                      )
+        qr.add_data(verify_url)
+        qr.make(fit=True)
+        img = qr.make_image()
+        img_buf = BytesIO()
+        img.save(img_buf,format = 'jpeg')
+        qrcode_url = "data:image/png;base64, %s" % base64.b64encode(stream.getvalue()).decode()
     else:
         qrcode_url = ""
     log.debug("Remot Login request with token: %s", auth_token.auth_token)
@@ -75,32 +85,6 @@ def remote_login():
                                  verify_url=verify_url, 
                                  qrcode=has_qrcode, qrcode_url = qrcode_url,  
                                  page="remotelogin")
-
-@remotelogin.route('/qrcode/<token>.jpg')
-@remote_login_required
-def remote_qrcode(token):
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
-
-    # Token not found
-    if auth_token is None:
-        flash(_("Token not found"), category="error")
-        log.error("Remote Login token not found")
-        return redirect(url_for('web.index'))
-        
-    verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
-    log.info("Generate QR Code for remode loging: %s", auth_token.auth_token)
-    qr = qrcode.QRCode(version=1,
-                       error_correction=qrcode.constants.ERROR_CORRECT_H,
-                       box_size=5,
-                       border=4,
-                      )
-    qr.add_data(verify_url)
-    qr.make(fit=True)
-    img = qr.make_image()
-    img_buf = BytesIO()
-    img.save(img_buf,format = 'jpeg')
-    img_buf.seek(0)
-    return send_file(img_buf, mimetype = 'image/jpeg')
     
 
 @remotelogin.route('/verify/<token>')
