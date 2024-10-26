@@ -76,7 +76,7 @@ def remote_login():
                                  qrcode=has_qrcode, qrcode_url = qrcode_url,  
                                  page="remotelogin")
 
-@remotelogin.route('/qrcode/<token>.png')
+@remotelogin.route('/qrcode/<token>.jpg')
 @remote_login_required
 def remote_qrcode(token):
     auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
