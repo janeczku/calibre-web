@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-10-27 21:36:02</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-10-31 19:45:00</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-10-28 04:51:42</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-01 03:02:38</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 8 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 11 min</p>
         </div>
       </div>
       </div>
@@ -1235,12 +1235,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="skipClass">
         <td>TestEditBooks</td>
         <td class="text-center">38</td>
-        <td class="text-center">35</td>
+        <td class="text-center">37</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 38)">Detail</a>
@@ -1276,44 +1276,11 @@
     
     
     
-        <tr id="et13.4" class="none bg-info">
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_comments</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et13.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et13.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 499, in test_edit_comments
-    self.assertEqual(len(self.adv_search({&#39;comments&#39;: u&#39;mirä 人&#39;})), 1)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 2173, in adv_search
-    ele = self.driver.find_element(By.XPATH,
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: //input[@value = &#39;mirä 人&#39; and starts-with(@id, &#39;comments&#39;) ]/..
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1345,35 +1312,11 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id="et13.8" class="none bg-info">
+        <tr id='pt13.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_date</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et13.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et13.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 672, in test_edit_custom_date
-    self.assertEqual(len(self.adv_search({u&#39;custom_column_2_start&#39;: u&#39;16/7/2015&#39;})), 0)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 2149, in adv_search
-    self.select_date_with_editor(key, key + &#39;_delete&#39;,
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1695, in select_date_with_editor
-    month_year = cls.check_element_on_page((By.CLASS_NAME, &#39;datepicker-switch&#39;)).text.split(&#39; &#39;)
-AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2122,12 +2065,12 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="errorClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2136,26 +2079,26 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
 
     
     
-        <tr id="ft18.1" class="none bg-danger">
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 128, in test_load_metadata
-    self.assertEqual(20, len(results))
-AssertionError: 20 != 10</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 99, in test_load_metadata
+    if results[cont][&#39;source&#39;] == &#39;https://comicvine.gamespot.com/&#39;:
+IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2981,12 +2924,12 @@ AssertionError: 20 != 10</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestLdapLogin</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c32', 13)">Detail</a>
@@ -3040,31 +2983,11 @@ AssertionError: 20 != 10</pre>
     
     
     
-        <tr id="et32.6" class="none bg-info">
+        <tr id='pt32.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLdapLogin - test_LDAP_import_memberfield</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et32.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et32.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et32.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_ldap.py&#34;, line 330, in test_LDAP_import_memberfield
-    self.assertEqual(User2rights[&#39;email&#39;], &#39; 	no_user@thata.org&#39;)
-TypeError: &#39;bool&#39; object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4023,7 +3946,7 @@ TypeError: &#39;bool&#39; object is not subscriptable</pre>
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 39, in setUpClass
     make_release.main(args)
-  File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 454, in main
+  File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 456, in main
     update_requirements()
   File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 92, in update_requirements
     with open(os.path.join(FILEPATH, &#34;pyproject.toml&#34;), &#39;r&#39;) as fp:
@@ -4631,11 +4554,11 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4708,31 +4631,11 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
     
     
-        <tr id="ft51.8" class="none bg-danger">
+        <tr id='pt51.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft51.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft51.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft51.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 317, in test_sideloaded_book
-    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
-AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.0037533645451876575 difference)</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5939,9 +5842,9 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>523</td>
-        <td>508</td>
+        <td>512</td>
+        <td>0</td>
         <td>2</td>
-        <td>4</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -5970,7 +5873,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-47-generic #47~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Oct  2 16:16:55 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-48-generic #48~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  7 11:24:13 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6071,6 +5974,12 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
             </tr>
           
             <tr>
+              <th>netifaces-plus</th>
+              <td>0.12.3</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>pypdf</th>
               <td>5.0.1</td>
               <td>Basic</td>
@@ -6096,7 +6005,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>requests</th>
-              <td>2.31.0</td>
+              <td>2.32.3</td>
               <td>Basic</td>
             </tr>
           
@@ -6119,6 +6028,12 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
             </tr>
           
             <tr>
+              <th>urllib3</th>
+              <td>2.2.3</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>Wand</th>
               <td>0.6.13</td>
               <td>Basic</td>
@@ -6126,13 +6041,13 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>Werkzeug</th>
-              <td>3.0.6</td>
+              <td>3.1.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6162,7 +6077,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6192,7 +6107,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6222,7 +6137,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6270,7 +6185,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6306,7 +6221,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6348,7 +6263,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6378,7 +6293,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.149.0</td>
+              <td>2.151.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6474,7 +6389,7 @@ AssertionError: 0.0037533645451876575 != 0.0 within 0.0001 delta (0.003753364545
 </div>
 
 <script>
-    drawCircle(508, 2, 4, 9);
+    drawCircle(512, 0, 2, 9);
     showCase(5);
 </script>
 

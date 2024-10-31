@@ -423,7 +423,7 @@ def get_series(book):
 
 
 def get_seriesindex(book):
-    return book.series_index or 1
+    return book.series_index if isinstance(book.series_index, float) else 1
 
 
 def get_language(book):
@@ -486,14 +486,16 @@ def get_metadata(book):
 
     if get_series(book):
         name = get_series(book)
-        metadata["Series"] = {
-            "Name": get_series(book),
-            "Number": get_seriesindex(book),        # ToDo Check int() ?
-            "NumberFloat": float(get_seriesindex(book)),
-            # Get a deterministic id based on the series name.
-            "Id": str(uuid.uuid3(uuid.NAMESPACE_DNS, name)),
-        }
-
+        try:
+            metadata["Series"] = {
+                "Name": get_series(book),
+                "Number": get_seriesindex(book),        # ToDo Check int() ?
+                "NumberFloat": float(get_seriesindex(book)),
+                # Get a deterministic id based on the series name.
+                "Id": str(uuid.uuid3(uuid.NAMESPACE_DNS, name)),
+            }
+        except Exception as e:
+            print(e)
     return metadata
 
 
