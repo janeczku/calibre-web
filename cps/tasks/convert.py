@@ -18,7 +18,7 @@
 
 import os
 import re
-from glob import glob
+import glob
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
 from time import time
@@ -242,7 +242,7 @@ class TaskConvert(CalibreTask):
 
         # move file
         if check == 0:
-            converted_file = glob(os.path.splitext(filename)[0] + "*.kepub.epub")
+            converted_file = glob.glob(glob.escape(os.path.splitext(filename)[0]) + "*.kepub.epub")
             if len(converted_file) == 1:
                 copyfile(converted_file[0], (file_path + format_new_ext))
                 os.unlink(converted_file[0])
