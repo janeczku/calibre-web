@@ -509,7 +509,7 @@ msgstr "이메일 주소는 비워둘 수 없고, 올바른 형식이어야 합�
 #: cps/admin.py:2071
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr "사용자 '%(nick)s의 정보가 수정되었습니다."
+msgstr "사용자 '%(nick)s의 정보를 수정했습니다."
 
 #: cps/converter.py:31
 msgid "not installed"
@@ -942,7 +942,7 @@ msgstr "인증되었습니다. 기기로 돌아가 주세요."
 
 #: cps/render_template.py:41 cps/web.py:421
 msgid "Books"
-msgstr "책"
+msgstr "전체"
 
 #: cps/render_template.py:43
 msgid "Show recent books"
@@ -950,7 +950,7 @@ msgstr "최근 책 보기"
 
 #: cps/render_template.py:44 cps/templates/index.xml:27
 msgid "Hot Books"
-msgstr "인기 책"
+msgstr "인기"
 
 #: cps/render_template.py:46
 msgid "Show Hot Books"
@@ -958,16 +958,16 @@ msgstr "인기 책 보기"
 
 #: cps/render_template.py:48 cps/render_template.py:53
 msgid "Downloaded Books"
-msgstr "다운로드한 책"
+msgstr "받은 적 있는"
 
 #: cps/render_template.py:50 cps/render_template.py:55
 #: cps/templates/user_table.html:167
 msgid "Show Downloaded Books"
-msgstr "다운로드한 책 보기"
+msgstr "다운로드 받은 적 있는 책 보기"
 
 #: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:436
 msgid "Top Rated Books"
-msgstr "평점 높은 책"
+msgstr "베스트"
 
 #: cps/render_template.py:60 cps/templates/user_table.html:161
 msgid "Show Top Rated Books"
@@ -976,7 +976,7 @@ msgstr "평점 높은 책 보기"
 #: cps/render_template.py:61 cps/templates/index.xml:63
 #: cps/templates/index.xml:67 cps/web.py:769
 msgid "Read Books"
-msgstr "읽은 책"
+msgstr "읽음"
 
 #: cps/render_template.py:63
 msgid "Show Read and Unread"
@@ -985,7 +985,7 @@ msgstr "읽은 책과 안 읽은 책 보기"
 #: cps/render_template.py:65 cps/templates/index.xml:70
 #: cps/templates/index.xml:74 cps/web.py:772
 msgid "Unread Books"
-msgstr "읽지 않은 책"
+msgstr "읽지 않음"
 
 #: cps/render_template.py:67
 msgid "Show unread"
@@ -993,7 +993,7 @@ msgstr "읽지 않은 책 보기"
 
 #: cps/render_template.py:68
 msgid "Discover"
-msgstr "추천"
+msgstr "둘러보기"
 
 #: cps/render_template.py:70 cps/templates/index.xml:58
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
@@ -1065,7 +1065,7 @@ msgstr "파일 형식 보기"
 
 #: cps/render_template.py:95 cps/web.py:795
 msgid "Archived Books"
-msgstr "보관된 책"
+msgstr "보관함"
 
 #: cps/render_template.py:97 cps/templates/user_table.html:166
 msgid "Show Archived Books"
