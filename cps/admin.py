@@ -52,7 +52,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
 from .usermanagement import user_login_required
-from .babel import get_available_translations, get_available_locale, get_user_locale_language
+from .cw_babel import get_available_translations, get_available_locale, get_user_locale_language
 from . import debug_info
 from .string_helper import strip_whitespaces
 
@@ -219,7 +219,7 @@ def admin():
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
             commit = format_datetime(form_date - tz, format='short')
         else:
-            commit = version['version'].replace("b", " Beta")
+            commit = version.replace("b", " Beta")
 
     all_user = ub.session.query(ub.User).all()
     # email_settings = mail_config.get_mail_settings()
