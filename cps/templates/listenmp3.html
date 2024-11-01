@@ -59,7 +59,7 @@
         </div>
       {% endif %}
       {% if entry.series|length > 0 %}
-          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index | formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
+          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index|formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
 
       {% endif %}
 

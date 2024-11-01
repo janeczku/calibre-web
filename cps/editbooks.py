@@ -501,6 +501,7 @@ def do_edit_book(book_id, upload_formats=None):
                     modify_date = True
                     helper.replace_cover_thumbnail_cache(book.id)
                 else:
+                    edit_error = True
                     flash(error, category="error")
 
         # Add default series_index to book

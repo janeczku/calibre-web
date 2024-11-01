@@ -32,7 +32,6 @@ try:
         l.part3 = getattr(l, 'alpha_3', None)
         return l
 
-
     def get(name=None, part1=None, part3=None):
         if part3 is not None:
             return _copy_fields(pyc_languages.get(alpha_3=part3))
