@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-10-31 19:45:00</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-02 08:09:02</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-01 03:02:38</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-02 15:03:00</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 11 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 47 min</p>
         </div>
       </div>
       </div>
@@ -2732,11 +2732,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">11</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2827,11 +2827,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.10' class='hiddenRow bg-success'>
+        <tr id="ft30.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 372, in test_sync_shelf
+    self.assertEqual(1, len(data), data)
+AssertionError: 1 != 0 : []</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3913,49 +3933,43 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestPipInstall</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 1)">Detail</a>
+            <a onclick="showClassDetail('c41', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et41.1" class="none bg-info">
+        <tr id='pt41.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>setUpClass (test_pip_install)</div>
+                <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et41.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et41.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et41.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 39, in setUpClass
-    make_release.main(args)
-  File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 456, in main
-    update_requirements()
-  File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 92, in update_requirements
-    with open(os.path.join(FILEPATH, &#34;pyproject.toml&#34;), &#39;r&#39;) as fp:
-FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/calibre-web/pyproject.toml&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_module_start</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4641,12 +4655,12 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestUpdater</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">3</td>
+        <td class="text-center">1</td>
+        <td class="text-center">4</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c52', 9)">Detail</a>
@@ -4673,38 +4687,154 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id="et52.3" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 153, in test_check_update_stable_errors
+    self.check_updater(&#39;Timeout&#39;,  &#34;alert&#34;, 13)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 87, in check_updater
+    self.assertTrue(responsetext in self.check_element_on_page((By.ID, &#34;message&#34;)).text)
+AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id="et52.4" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 181, in test_check_update_stable_versions
+    self.check_updater(&#39;{}.{}.{}&#39;.format(*version3), &#34;alert-warning&#34;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 87, in check_updater
+    self.assertTrue(responsetext in self.check_element_on_page((By.ID, &#34;message&#34;)).text)
+AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id="et52.5" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 390, in test_perform_update
+    performUpdate.click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 93, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 403, in _execute
+    return self._parent.execute(command, params)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementNotInteractableException: Message: Element &lt;div id=&#34;perform_update&#34; class=&#34;btn btn-primary hidden&#34;&gt; could not be scrolled into view
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+ElementNotInteractableError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:353:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:167:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:136:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:205:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:85:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id="et52.6" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 330, in test_perform_update_stable_errors
+    performUpdate.click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 93, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 403, in _execute
+    return self._parent.execute(command, params)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementNotInteractableException: Message: Element &lt;div id=&#34;perform_update&#34; class=&#34;btn btn-primary hidden&#34;&gt; could not be scrolled into view
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+ElementNotInteractableError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:353:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:167:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:136:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:205:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:85:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4744,11 +4874,31 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
     
     
-        <tr id='pt52.9' class='hiddenRow bg-success'>
+        <tr id="ft52.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 431, in test_update_write_protect
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;message&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4877,11 +5027,11 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadEPubs</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4936,11 +5086,33 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
     
     
     
-        <tr id='pt54.6' class='hiddenRow bg-success'>
+        <tr id="ft54.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft54.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft54.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft54.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 88, in test_upload_epub_lang
+    details = self.verify_upload(epub_file, check_warning=True)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 79, in verify_upload
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_warning&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5841,10 +6013,10 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>523</td>
-        <td>512</td>
-        <td>0</td>
-        <td>2</td>
+        <td>525</td>
+        <td>508</td>
+        <td>3</td>
+        <td>5</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -6041,7 +6213,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>Werkzeug</th>
-              <td>3.1.0</td>
+              <td>3.1.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6389,7 +6561,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
 </div>
 
 <script>
-    drawCircle(512, 0, 2, 9);
+    drawCircle(508, 3, 5, 9);
     showCase(5);
 </script>
 
