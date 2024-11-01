@@ -29,8 +29,8 @@ from .constants import DEFAULT_SETTINGS_FILE, DEFAULT_GDRIVE_FILE
 
 def version_info():
     if _NIGHTLY_VERSION[1].startswith('$Format'):
-        return "Calibre-Web version: %s - unknown git-clone" % _STABLE_VERSION['version'].replace("b", " Beta")
-    return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'].replace("b", " Beta"), _NIGHTLY_VERSION[1])
+        return "Calibre-Web version: %s - unknown git-clone" % _STABLE_VERSION.replace("b", " Beta")
+    return "Calibre-Web version: %s -%s" % (_STABLE_VERSION.replace("b", " Beta"), _NIGHTLY_VERSION[1])
 
 
 class CliParameter(object):
