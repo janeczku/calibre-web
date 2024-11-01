@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2024-09-21 12:05+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2022-01-10 11:30+0900\n"
 "Last-Translator: 내맘대로의 EPUBGUIDE.NET <byword77@gmail.com>\n"
 "Language: ko\n"
@@ -44,9 +44,9 @@ msgstr "알 수 없는 명령"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "%(email)s에 테스트를 위한 이메일을 보냄. 결과 확인 필요"
 
-#: cps/admin.py:208 cps/editbooks.py:628 cps/editbooks.py:671
-#: cps/editbooks.py:1316 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -66,7 +66,7 @@ msgstr "UI 설정"
 msgid "Edit Users"
 msgstr "사용자 관리"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "모두"
@@ -289,7 +289,7 @@ msgstr "Gmail 계정 인증에 성공하였습니다."
 
 #: cps/admin.py:1323 cps/admin.py:1326 cps/admin.py:1711 cps/admin.py:1860
 #: cps/admin.py:1958 cps/admin.py:2079 cps/editbooks.py:168
-#: cps/editbooks.py:575 cps/editbooks.py:1270 cps/shelf.py:90 cps/shelf.py:150
+#: cps/editbooks.py:576 cps/editbooks.py:1271 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:476 cps/tasks/convert.py:156 cps/web.py:1529
 #, python-format
@@ -554,96 +554,96 @@ msgstr "책이 %(book_format)s(으)로 변환하기 위해 대기 중입니다"
 msgid "There was an error converting this book: %(res)s"
 msgstr "이 책을 변환하는 동안 오류가 발생했습니다: %(res)s"
 
-#: cps/editbooks.py:448 cps/editbooks.py:942 cps/web.py:532 cps/web.py:1570
+#: cps/editbooks.py:448 cps/editbooks.py:943 cps/web.py:532 cps/web.py:1570
 #: cps/web.py:1615 cps/web.py:1660
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "선택한 책 제목을 사용할 수 없습니다. 파일이 존재하지 않거나 액세스할 수 없습니다"
 
-#: cps/editbooks.py:494 cps/editbooks.py:1299
+#: cps/editbooks.py:494 cps/editbooks.py:1300
 msgid "User has no rights to upload cover"
 msgstr "표지를 업로드 할 수 있는 권한이 없는 사용자입니다."
 
-#: cps/editbooks.py:514 cps/editbooks.py:757
+#: cps/editbooks.py:515 cps/editbooks.py:758
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "식별자는 대소문자를 구분하지 않으며 이전 식별자를 덮어씁니다"
 
-#: cps/editbooks.py:529 cps/editbooks.py:731 cps/editbooks.py:1069
+#: cps/editbooks.py:530 cps/editbooks.py:732 cps/editbooks.py:1070
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s'은(는) 유효한 언어가 아닙니다"
 
-#: cps/editbooks.py:557
+#: cps/editbooks.py:558
 msgid "Metadata successfully updated"
 msgstr "메타데이터가 성공적으로 업데이트되었습니다"
 
-#: cps/editbooks.py:580
+#: cps/editbooks.py:581
 msgid "Error editing book: {}"
 msgstr "책 편집 중 오류 발생: {}"
 
-#: cps/editbooks.py:675
+#: cps/editbooks.py:676
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "업로드한 책이 라이브러리에 있을 수 있음. 새로 업로드하기 전에 확인 필요: "
 
-#: cps/editbooks.py:769 cps/editbooks.py:1216
+#: cps/editbooks.py:770 cps/editbooks.py:1217
 #, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "파일 확장자 '%(ext)s'은(는) 이 서버에 업로드할 수 없습니다"
 
-#: cps/editbooks.py:775 cps/editbooks.py:1227
+#: cps/editbooks.py:776 cps/editbooks.py:1228
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "파일 확장자 '%(ext)s'은(는) 이 서버에 업로드할 수 없습니다"
 
-#: cps/editbooks.py:779 cps/editbooks.py:1232
+#: cps/editbooks.py:780 cps/editbooks.py:1233
 msgid "File to be uploaded must have an extension"
 msgstr "업로드할 파일에는 확장자가 있어야 합니다"
 
-#: cps/editbooks.py:787
+#: cps/editbooks.py:788
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "파일 %(filename)s을(를) 임시 디렉토리에 저장할 수 없습니다"
 
-#: cps/editbooks.py:807
+#: cps/editbooks.py:808
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "표지 파일%(file)s를 이동하지 못했습니다.:%(error)s"
 
-#: cps/editbooks.py:864 cps/editbooks.py:866
+#: cps/editbooks.py:865 cps/editbooks.py:867
 msgid "Book Format Successfully Deleted"
 msgstr "책 형식이 성공적으로 삭제되었습니다"
 
-#: cps/editbooks.py:873 cps/editbooks.py:875
+#: cps/editbooks.py:874 cps/editbooks.py:876
 msgid "Book Successfully Deleted"
 msgstr "책이 성공적으로 삭제되었습니다"
 
-#: cps/editbooks.py:927
+#: cps/editbooks.py:928
 msgid "You are missing permissions to delete books"
 msgstr "책을 삭제할 수 있는 권한이 없습니다."
 
-#: cps/editbooks.py:977
+#: cps/editbooks.py:978
 msgid "edit metadata"
 msgstr "메타데이터 편집"
 
-#: cps/editbooks.py:1030
+#: cps/editbooks.py:1031
 #, fuzzy, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
 msgstr "%(seriesindex)s은(는) 유효한 숫자가 아닙니다. 건너뜁니다"
 
-#: cps/editbooks.py:1221
+#: cps/editbooks.py:1222
 msgid "User has no rights to upload additional file formats"
 msgstr "추가 파일 유형을 업로드 할 권한이 없는 사용자입니다."
 
-#: cps/editbooks.py:1245
+#: cps/editbooks.py:1246
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "%(path)s 경로를 생성하지 못했습니다(권한이 없음)."
 
-#: cps/editbooks.py:1252
+#: cps/editbooks.py:1253
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "%(file)s 파일을 저장하지 못했습니다."
 
-#: cps/editbooks.py:1277
+#: cps/editbooks.py:1278
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "파일 형식 %(ext)s이(가) %(book)s에 추가되었습니다"

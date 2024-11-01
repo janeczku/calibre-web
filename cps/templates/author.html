@@ -71,7 +71,7 @@
           <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.Books.series[0].id )}}">
             {{entry.Books.series[0].name}}
           </a>
-          ({{entry.Books.series_index|formatseriesindex}})
+          ({{entry.Books.series_index|formatfloat(2)}})
         </p>
         {% endif %}
         {% if entry.Books.ratings.__len__() > 0 %}
@@ -122,7 +122,7 @@
           <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id )}}">
             {{entry.series[0].name}}
           </a>
-          ({{entry.series_index|formatseriesindex}})
+          ({{entry.series_index|formatfloat(2)}})
         </p>
         {% endif %}
         <div class="rating">

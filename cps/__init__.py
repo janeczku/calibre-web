@@ -34,7 +34,6 @@ from .cli import CliParameter
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
-# from .babel import babel, get_locale
 from .updater import Updater
 from . import config_sql
 from . import cache_buster
@@ -85,7 +84,7 @@ log = logger.create()
 app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Strict',
+    SESSION_COOKIE_SAMESITE='Lax',
     REMEMBER_COOKIE_SAMESITE='Strict',
     WTF_CSRF_SSL_STRICT=False,
     SESSION_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "session",

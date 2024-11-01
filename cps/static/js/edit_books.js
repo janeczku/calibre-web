@@ -3,7 +3,7 @@
  */
 /* global Bloodhound, language, Modernizr, tinymce, getPath */
 
-if ($("#comments").length) {
+if ($("#comments").length && typeof tinymce !== "undefined") {
     tinymce.init({
         selector: "#comments",
         plugins: 'code',

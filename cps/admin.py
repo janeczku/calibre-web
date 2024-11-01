@@ -306,7 +306,15 @@ def edit_user_table():
         .group_by(text('books_tags_link.tag')) \
         .order_by(db.Tags.name).all()
     if config.config_restricted_column:
-        custom_values = calibre_db.session.query(db.cc_classes[config.config_restricted_column]).all()
+        try:
+            custom_values = calibre_db.session.query(db.cc_classes[config.config_restricted_column]).all()
+        except (KeyError, AttributeError, IndexError):
+            custom_values = []
+            log.error("Custom Column No.{} does not exist in calibre database".format(
+                config.config_restricted_column))
+            flash(_("Custom Column No.%(column)d does not exist in calibre database",
+                    column=config.config_restricted_column),
+                  category="error")
     else:
         custom_values = []
     if not config.config_anonbrowse:
@@ -982,8 +990,14 @@ def prepare_tags(user, action, tags_name, id_list):
             raise Exception(_("Tag not found"))
         new_tags_list = [x.name for x in tags]
     else:
-        tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column]) \
-            .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
+        try:
+            tags = calibre_db.session.query(db.cc_classes[config.config_restricted_column]) \
+                .filter(db.cc_classes[config.config_restricted_column].id.in_(id_list)).all()
+        except (KeyError, AttributeError, IndexError):
+            log.error("Custom Column No.{} does not exist in calibre database".format(
+                config.config_restricted_column))
+            raise Exception(_("Custom Column No.%(column)d does not exist in calibre database",
+                    column=config.config_restricted_column))
         new_tags_list = [x.value for x in tags]
     saved_tags_list = user.__dict__[tags_name].split(",") if len(user.__dict__[tags_name]) else []
     if action == "remove":
@@ -1744,6 +1758,14 @@ def _db_configuration_update_helper():
             ub.session.query(ub.KoboSyncedBooks).delete()
             helper.delete_thumbnail_cache()
             ub.session_commit()
+            # deleted visibilities based on custom column and tags
+            config.config_restricted_column = 0
+            config.config_denied_tags = ""
+            config.config_allowed_tags = ""
+            config.config_columns_to_ignore = ""
+            config.config_denied_column_value = ""
+            config.config_allowed_column_value = ""
+            config.config_read_column = 0
         _config_string(to_save, "config_calibre_dir")
         calibre_db.update_config(config)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
@@ -2081,7 +2103,7 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
 
 
 def extract_user_data_from_field(user, field):
-    match = re.search(field + r"=([@\.\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    match = re.search(field + r"=(.*?)($|(?<!\\),)", user, re.IGNORECASE | re.UNICODE)    
     if match:
         return match.group(1)
     else:
@@ -2089,7 +2111,7 @@ def extract_user_data_from_field(user, field):
 
 
 def extract_dynamic_field_from_filter(user, filtr):
-    match = re.search("([a-zA-Z0-9-]+)=%s", filtr, re.IGNORECASE | re.UNICODE)
+    match = re.search(r"([a-zA-Z0-9-]+)=%s", filtr, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:

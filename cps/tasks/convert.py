@@ -18,7 +18,7 @@
 
 import os
 import re
-from glob import glob
+import glob
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
 from time import time
@@ -242,7 +242,7 @@ class TaskConvert(CalibreTask):
 
         # move file
         if check == 0:
-            converted_file = glob(os.path.splitext(filename)[0] + "*.kepub.epub")
+            converted_file = glob.glob(glob.escape(os.path.splitext(filename)[0]) + "*.kepub.epub")
             if len(converted_file) == 1:
                 copyfile(converted_file[0], (file_path + format_new_ext))
                 os.unlink(converted_file[0])
@@ -268,35 +268,46 @@ class TaskConvert(CalibreTask):
 
                 opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
                                '--with-library', library_path]
-                p = process_open(opf_command, quotes, my_env)
-                p.wait()
+                p = process_open(opf_command, quotes, my_env, newlines=False)
+                lines = list()
+                while p.poll() is None:
+                    lines.append(p.stdout.readline())
                 check = p.returncode
                 calibre_traceback = p.stderr.readlines()
                 if check == 0:
                     path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
-                    with open(path_tmp_opf, 'w') as fd:
-                        copyfileobj(p.stdout, fd)
+                    with open(path_tmp_opf, 'wb') as fd:
+                        fd.write(b''.join(lines))
                 else:
                     error_message = ""
                     for ele in calibre_traceback:
                         if not ele.startswith('Traceback') and not ele.startswith('  File'):
                             error_message = N_("Calibre failed with error: %(error)s", error=ele)
                     return check, error_message
-            quotes = [1, 2, 4, 6]
+            quotes = [1, 2]
+            quotes_index = 3
             command = [config.config_converterpath, (file_path + format_old_ext),
                        (file_path + format_new_ext)]
             if config.config_embed_metadata:
+                quotes.append(4)
+                quotes_index = 5
                 command.extend(['--from-opf', path_tmp_opf])
-            if has_cover:
-                command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
-            quotes_index = 3
+                if has_cover:
+                    quotes.append(6)
+                    command.extend(['--cover', os.path.join(os.path.dirname(file_path), 'cover.jpg')])
+                    quotes_index = 7
             if config.config_calibre:
-                parameters = config.config_calibre.split(" ")
-                for param in parameters:
-                    command.append(param)
-                    quotes.append(quotes_index)
-                    quotes_index += 1
-
+                parameters = re.findall(r"(--[\w-]+)(?:(\s(?:(\".+\")|(?:.+?)))(?:\s|$))?",
+                                        config.config_calibre, re.IGNORECASE | re.UNICODE)
+                if parameters:
+                    for param in parameters:
+                        command.append(strip_whitespaces(param[0]))
+                        quotes_index += 1
+                        if param[1] != "":
+                            parsed = strip_whitespaces(param[1]).strip("\"")
+                            command.append(parsed)
+                            quotes.append(quotes_index)
+                            quotes_index += 1
             p = process_open(command, quotes, newlines=False)
         except OSError as e:
             return 1, N_("Ebook-converter failed: %(error)s", error=e)

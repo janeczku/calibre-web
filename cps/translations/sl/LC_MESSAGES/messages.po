@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-09-21 12:05+0200\n"
+"POT-Creation-Date: 2024-10-23 18:42+0200\n"
 "PO-Revision-Date: 2024-09-18 19:45+0200\n"
 "Last-Translator: Andrej Kralj\n"
 "Language: sl\n"
@@ -36,15 +36,15 @@ msgstr "Podatkovna baza je uspešno ponovno povezana"
 
 #: cps/admin.py:164
 msgid "Unknown command"
-msgstr "Neznani ukaz"
+msgstr "Neznan ukaz"
 
 #: cps/admin.py:175
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Uspeh! Knjige so v čakalni vrsti za varnostno kopiranje metapodatkov, za rezultat preverite opravila"
 
-#: cps/admin.py:208 cps/editbooks.py:628 cps/editbooks.py:671
-#: cps/editbooks.py:1316 cps/updater.py:615 cps/uploader.py:105
-#: cps/uploader.py:114
+#: cps/admin.py:208 cps/editbooks.py:629 cps/editbooks.py:672
+#: cps/editbooks.py:1317 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
 msgid "Unknown"
 msgstr "Neznano"
 
@@ -54,17 +54,17 @@ msgstr "Administrativna stran"
 
 #: cps/admin.py:253
 msgid "Basic Configuration"
-msgstr "Osnovna nastavitev"
+msgstr "Osnovne nastavitve"
 
 #: cps/admin.py:291
 msgid "UI Configuration"
-msgstr "Nastavitev uporabniškega vmesnika"
+msgstr "Nastavitve uporabniškega vmesnika"
 
 #: cps/admin.py:325 cps/templates/admin.html:51
 msgid "Edit Users"
 msgstr "Urejanje uporabnikov"
 
-#: cps/admin.py:369 cps/opds.py:543 cps/templates/grid.html:14
+#: cps/admin.py:369 cps/opds.py:540 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Vse"
@@ -287,7 +287,7 @@ msgstr "Uspeh! Račun Gmail je potrjen."
 
 #: cps/admin.py:1323 cps/admin.py:1326 cps/admin.py:1711 cps/admin.py:1860
 #: cps/admin.py:1958 cps/admin.py:2079 cps/editbooks.py:168
-#: cps/editbooks.py:575 cps/editbooks.py:1270 cps/shelf.py:90 cps/shelf.py:150
+#: cps/editbooks.py:576 cps/editbooks.py:1271 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:476 cps/tasks/convert.py:156 cps/web.py:1529
 #, python-format
@@ -551,95 +551,95 @@ msgstr "Knjiga je uspešno dodana v čakalno vrsto za pretvorbo v %(book_format)
 msgid "There was an error converting this book: %(res)s"
 msgstr "Pri pretvorbi te knjige je prišlo do napake: %(res)s"
 
-#: cps/editbooks.py:448 cps/editbooks.py:942 cps/web.py:532 cps/web.py:1570
+#: cps/editbooks.py:448 cps/editbooks.py:943 cps/web.py:532 cps/web.py:1570
 #: cps/web.py:1615 cps/web.py:1660
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Ups! Izbrana knjiga ni na voljo. Datoteka ne obstaja ali ni dostopna"
 
-#: cps/editbooks.py:494 cps/editbooks.py:1299
+#: cps/editbooks.py:494 cps/editbooks.py:1300
 msgid "User has no rights to upload cover"
 msgstr "Uporabnik nima pravice do nalaganja naslovnice"
 
-#: cps/editbooks.py:514 cps/editbooks.py:757
+#: cps/editbooks.py:515 cps/editbooks.py:758
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Identifikatorji niso občutljivi na velikost črk, prepisovanje starega identifikatorja"
 
-#: cps/editbooks.py:529 cps/editbooks.py:731 cps/editbooks.py:1069
+#: cps/editbooks.py:530 cps/editbooks.py:732 cps/editbooks.py:1070
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s' ni veljaven jezik"
 
-#: cps/editbooks.py:557
+#: cps/editbooks.py:558
 msgid "Metadata successfully updated"
 msgstr "Metapodatki so bili uspešno posodobljeni"
 
-#: cps/editbooks.py:580
+#: cps/editbooks.py:581
 msgid "Error editing book: {}"
 msgstr "Napaka pri urejanju knjige: {}"
 
-#: cps/editbooks.py:675
+#: cps/editbooks.py:676
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Naložena knjiga verjetno obstaja v knjižnici, preden naložite novo, razmislite o spremembi:"
 
-#: cps/editbooks.py:769 cps/editbooks.py:1216
+#: cps/editbooks.py:770 cps/editbooks.py:1217
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "Vrsta datoteke ni dovoljena za nalaganje v ta strežnik"
 
-#: cps/editbooks.py:775 cps/editbooks.py:1227
+#: cps/editbooks.py:776 cps/editbooks.py:1228
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Datoteke s končnico '%(ext)s' ni dovoljeno naložiti na ta strežnik"
 
-#: cps/editbooks.py:779 cps/editbooks.py:1232
+#: cps/editbooks.py:780 cps/editbooks.py:1233
 msgid "File to be uploaded must have an extension"
 msgstr "Datoteka, ki jo želite naložiti, mora imeti končnico"
 
-#: cps/editbooks.py:787
+#: cps/editbooks.py:788
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Datoteke %(filename)s ni bilo mogoče shraniti v začasno mapo"
 
-#: cps/editbooks.py:807
+#: cps/editbooks.py:808
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Nisem uspel premakniti naslovne datoteke %(file)s: %(error)s"
 
-#: cps/editbooks.py:864 cps/editbooks.py:866
+#: cps/editbooks.py:865 cps/editbooks.py:867
 msgid "Book Format Successfully Deleted"
 msgstr "Uspešno izbrisana vrsta knjige"
 
-#: cps/editbooks.py:873 cps/editbooks.py:875
+#: cps/editbooks.py:874 cps/editbooks.py:876
 msgid "Book Successfully Deleted"
 msgstr "Knjiga je bila uspešno izbrisana"
 
-#: cps/editbooks.py:927
+#: cps/editbooks.py:928
 msgid "You are missing permissions to delete books"
 msgstr "Manjkajo vam dovoljenja za brisanje knjig"
 
-#: cps/editbooks.py:977
+#: cps/editbooks.py:978
 msgid "edit metadata"
 msgstr "urejanje metapodatkov"
 
-#: cps/editbooks.py:1030
+#: cps/editbooks.py:1031
 #, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
 msgstr "Številka serije: %(seriesindex)s ni veljavno število, preskočim"
 
-#: cps/editbooks.py:1221
+#: cps/editbooks.py:1222
 msgid "User has no rights to upload additional file formats"
 msgstr "Uporabnik nima pravic za nalaganje dodatnih formatov datotek"
 
-#: cps/editbooks.py:1245
+#: cps/editbooks.py:1246
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nisem uspel ustvariti poti %(path)s (zavrnjeno dovoljenje)."
 
-#: cps/editbooks.py:1252
+#: cps/editbooks.py:1253
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Nisem uspel shraniti datoteke %(file)s."
 
-#: cps/editbooks.py:1277
+#: cps/editbooks.py:1278
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Oblina datotek %(ext)s je dodan v %(book)s"
@@ -860,7 +860,7 @@ msgstr "Registracija pri %(provider)s"
 #: cps/oauth_bb.py:139 cps/remotelogin.py:131
 #, python-format
 msgid "Success! You are now logged in as: %(nickname)s"
-msgstr "Uspeh! Zdaj ste prijavljeni kot: %(nickname)s"
+msgstr "Uspeh! Prijavljeni ste kot: %(nickname)s"
 
 #: cps/oauth_bb.py:149
 #, python-format
@@ -1412,7 +1412,7 @@ msgstr "Pred naslednjo prijavo počakajte eno minuto"
 #: cps/web.py:1402
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "zdaj ste prijavljeni kot: '%(nickname)s'"
+msgstr "prijavljeni ste kot: '%(nickname)s'"
 
 #: cps/web.py:1409
 #, python-format
@@ -1443,7 +1443,7 @@ msgstr "Za ponastavitev gesla vnesite veljavno uporabniško ime"
 #: cps/web.py:1439
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "Zdaj ste prijavljeni kot: '%(nickname)s'"
+msgstr "Prijavljeni ste kot: '%(nickname)s'"
 
 #: cps/web.py:1504 cps/web.py:1554
 #, python-format
@@ -2643,7 +2643,7 @@ msgstr "Dodaj v arhiv"
 
 #: cps/templates/detail.html:267
 msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
-msgstr "Označi knjigo kot arhivirano ali ne, da jo skriješ v Calibre-Web in izbrišeš iz Kobo bralnika"
+msgstr "Označi knjigo kot arhivirano ali ne, da se skrije v Calibre-Web in izbriše iz Kobo bralnika"
 
 #: cps/templates/detail.html:267
 msgid "Archive"

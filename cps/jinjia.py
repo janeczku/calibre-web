@@ -111,14 +111,15 @@ def yesno(value, yes, no):
 
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
-    value = 0 if not value else value
+    if not value:
+        return value
     formated_value = ('{0:.' + str(decimals) + 'f}').format(value)
     if formated_value.endswith('.' + "0" * decimals):
         formated_value = formated_value.rstrip('0').rstrip('.')
     return formated_value
 
 
-@jinjia.app_template_filter('formatseriesindex')
+'''@jinjia.app_template_filter('formatseriesindex')
 def formatseriesindex_filter(series_index):
     if series_index:
         try:
@@ -129,6 +130,7 @@ def formatseriesindex_filter(series_index):
         except (ValueError, TypeError):
             return series_index
     return 0
+'''
 
 
 @jinjia.app_template_filter('escapedlink')
