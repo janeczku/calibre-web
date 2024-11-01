@@ -998,7 +998,7 @@ msgstr "추천"
 #: cps/render_template.py:70 cps/templates/index.xml:58
 #: cps/templates/user_table.html:159 cps/templates/user_table.html:162
 msgid "Show Random Books"
-msgstr "무작위 추천"
+msgstr "무작위 추천 보기"
 
 #: cps/render_template.py:71 cps/templates/book_table.html:67
 #: cps/templates/index.xml:97 cps/web.py:1138
@@ -1294,7 +1294,7 @@ msgstr "업데이트 정보가 없습니다."
 
 #: cps/templates/index.html:6 cps/web.py:448
 msgid "Discover (Random Books)"
-msgstr "추천 (무작위 책)"
+msgstr "추천 (무작위)"
 
 #: cps/web.py:484
 msgid "Hot Books (Most Downloaded)"
@@ -2590,7 +2590,7 @@ msgstr "새 사용자 기본 기능"
 #: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:84
 #: cps/templates/user_table.html:154
 msgid "Show Random Books in Detail View"
-msgstr "상세 보기에서 무작위 책 표시"
+msgstr "목록 보기에서 무작위 추천 표시"
 
 #: cps/templates/config_view_edit.html:166 cps/templates/user_edit.html:87
 msgid "Add Allowed/Denied Tags"
@@ -3455,7 +3455,7 @@ msgstr "사용자 비밀번호 초기화"
 
 #: cps/templates/user_edit.html:28
 msgid "Send to eReader Email Address. Use comma to seperate emails for multiple eReaders"
-msgstr "전자책 리더 이메일로 전송 (여러 전자책 리더를 사용할 경우 쉼표로 구분하여 입력)"
+msgstr "전자책 리더로 전송할 이메일 (여러 전자책 리더를 사용할 경우 쉼표로 구분하여 입력)"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
