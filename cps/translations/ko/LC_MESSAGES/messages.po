@@ -132,11 +132,11 @@ msgstr "매개변수를 찾을 수 없습니다."
 
 #: cps/admin.py:573
 msgid "Invalid Read Column"
-msgstr "잘못된 읽기 열입니다."
+msgstr "읽기 항목이 유효하지 않습니다."
 
 #: cps/admin.py:579
 msgid "Invalid Restricted Column"
-msgstr "잘못된 제한된 열입니다."
+msgstr "제한된 항목이 유효하지 않습니다."
 
 #: cps/admin.py:599 cps/admin.py:1876
 msgid "Calibre-Web configuration updated"
@@ -176,7 +176,7 @@ msgstr "선택한 사용자의 제한을 변경하시겠습니까?"
 
 #: cps/admin.py:627
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "선택한 사용자의 보기 제한을 제한을 변경하시겠습니까?"
+msgstr "선택한 사용자의 보기 제한을 변경하시겠습니까?"
 
 #: cps/admin.py:630
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
