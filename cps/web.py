@@ -23,6 +23,7 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+import importlib
 
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
@@ -36,7 +37,6 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
-
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -84,6 +84,10 @@ try:
     from natsort import natsorted as sort
 except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
+
+
+sql_version = importlib.metadata.version("sqlalchemy")
+sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 
 @app.after_request
@@ -532,7 +536,7 @@ def render_author_books(page, author_id, order):
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
-    if constants.sqlalchemy_version2:
+    if sqlalchemy_version2:
         author = calibre_db.session.get(db.Authors, author_id)
     else:
         author = calibre_db.session.query(db.Authors).get(author_id)
