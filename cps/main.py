@@ -42,6 +42,7 @@ def main():
     from .tasks_status import tasks
     from .error_handler import init_errorhandler
     from .remotelogin import remotelogin
+    from .signal import register_signals
     try:
         from .kobo import kobo, get_kobo_activated
         from .kobo_auth import kobo_auth
@@ -60,6 +61,7 @@ def main():
 
     from . import web_server
     init_errorhandler()
+    register_signals()
 
     app.register_blueprint(search)
     app.register_blueprint(tasks)
