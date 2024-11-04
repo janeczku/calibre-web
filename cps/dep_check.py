@@ -39,11 +39,16 @@ def load_dependencies(optional=False):
             with open(req_path, 'r') as f:
                 for line in f:
                     if not line.startswith('#') and not line == '\n' and not line.startswith('git'):
-                        res = re.match(r'(.*?)([<=>\s]+)([\d\.]+),?\s?([<=>\s]+)?([\d\.]+)?', line.strip())
+                        res = re.match(r'(.*?)([<=>\s]+)([\d\.]+),?\s?([<=>\s]+)?([\d\.]+)?'
+                                       r'(?:;python_version([<=>\s]+)\'([\d\.]+)\')?', line.strip())
                         try:
                             if getattr(sys, 'frozen', False):
                                 dep_version = exe_deps[res.group(1).lower().replace('_', '-')]
                             else:
+                                if res.group(6) and res.group(7):
+                                    if not eval(str(sys.version_info[0]) + "." + str(sys.version_info[1]) +
+                                                res.group(6)+ res.group(7)):
+                                        continue
                                 if importlib:
                                     dep_version = version(res.group(1))
                                 else:
