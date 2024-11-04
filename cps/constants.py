@@ -173,7 +173,6 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
 STABLE_VERSION =  '0.6.24b'
-# _version = STABLE_VERSION['version']
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
