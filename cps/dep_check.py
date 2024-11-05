@@ -46,8 +46,9 @@ def load_dependencies(optional=False):
                                 dep_version = exe_deps[res.group(1).lower().replace('_', '-')]
                             else:
                                 if res.group(6) and res.group(7):
-                                    if not eval(str(sys.version_info[0]) + "." + str(sys.version_info[1]) +
-                                                res.group(6)+ res.group(7)):
+                                    val = res.group(7).split(".")
+                                    if not eval(str(sys.version_info[0]) + "." + "{:02d}".format(sys.version_info[1]) +
+                                                res.group(6) + val[0] + "." + "{:02d}".format(int(val[1]))):                                    
                                         continue
                                 if importlib:
                                     dep_version = version(res.group(1))
