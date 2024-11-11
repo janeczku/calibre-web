@@ -50,6 +50,7 @@ dependencies = [
     "regex>=2022.3.2,<2024.6.25",
     "bleach>=6.0.0,<6.2.0",
     "python-magic>=0.4.27,<0.5.0",
+    "python-magic-bin>=0.4.0,<0.5.0;sys_platform=='win32'",
     "flask-httpAuth>=4.4.0,<5.0.0",
     "cryptography>=30.0.0,<44.0.0",
 ]
