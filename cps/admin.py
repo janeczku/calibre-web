@@ -219,7 +219,7 @@ def admin():
                     form_date += timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
             commit = format_datetime(form_date - tz, format='short')
         else:
-            commit = version.replace("b", " Beta")
+            commit = version['version'].replace("b", " Beta")
 
     all_user = ub.session.query(ub.User).all()
     # email_settings = mail_config.get_mail_settings()

@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-02 20:22:07</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-10 20:11:07</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-03 03:38:36</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-11 03:26:27</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 9 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
         </div>
       </div>
       </div>
@@ -3390,12 +3390,12 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestLogin</td>
         <td class="text-center">19</td>
-        <td class="text-center">18</td>
+        <td class="text-center">19</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c36', 19)">Detail</a>
@@ -3530,46 +3530,11 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
     
     
-        <tr id="et36.15" class="none bg-info">
+        <tr id='pt36.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLogin - test_password_policy</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et36.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et36.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et36.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 347, in test_password_policy
-    self.create_user(&#39;lower_user&#39;, {&#39;password&#39;: &#39;123456P+&#39;, &#39;email&#39;: &#39;a3@b.com&#39;})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1013, in create_user
-    return cls.change_user(config)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1083, in change_user
-    ele = cls.driver.find_element(By.ID, key)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;password&#34;]
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -4672,12 +4637,12 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestUpdater</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">3</td>
+        <td class="text-center">1</td>
+        <td class="text-center">4</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c52', 9)">Detail</a>
@@ -4704,38 +4669,154 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id="et52.3" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 153, in test_check_update_stable_errors
+    self.check_updater(&#39;Timeout&#39;,  &#34;alert&#34;, 13)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 87, in check_updater
+    self.assertTrue(responsetext in self.check_element_on_page((By.ID, &#34;message&#34;)).text)
+AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id="et52.4" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 181, in test_check_update_stable_versions
+    self.check_updater(&#39;{}.{}.{}&#39;.format(*version3), &#34;alert-warning&#34;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 87, in check_updater
+    self.assertTrue(responsetext in self.check_element_on_page((By.ID, &#34;message&#34;)).text)
+AttributeError: &#39;bool&#39; object has no attribute &#39;text&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id="et52.5" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 390, in test_perform_update
+    performUpdate.click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 93, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 403, in _execute
+    return self._parent.execute(command, params)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementNotInteractableException: Message: Element &lt;div id=&#34;perform_update&#34; class=&#34;btn btn-primary hidden&#34;&gt; could not be scrolled into view
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+ElementNotInteractableError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:353:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:167:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:136:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:205:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:85:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id="et52.6" class="none bg-info">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et52.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et52.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et52.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 330, in test_perform_update_stable_errors
+    performUpdate.click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 93, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 403, in _execute
+    return self._parent.execute(command, params)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementNotInteractableException: Message: Element &lt;div id=&#34;perform_update&#34; class=&#34;btn btn-primary hidden&#34;&gt; could not be scrolled into view
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+ElementNotInteractableError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:353:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:167:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:136:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:205:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:85:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4775,11 +4856,31 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     
     
     
-        <tr id='pt52.9' class='hiddenRow bg-success'>
+        <tr id="ft52.9" class="none bg-danger">
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_updater.py&#34;, line 431, in test_update_write_protect
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;message&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5873,9 +5974,9 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>525</td>
-        <td>514</td>
-        <td>1</td>
-        <td>1</td>
+        <td>510</td>
+        <td>2</td>
+        <td>4</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -6072,7 +6173,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>3.1.1</td>
+              <td>3.1.3</td>
               <td>Basic</td>
             </tr>
           
@@ -6420,7 +6521,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
 </div>
 
 <script>
-    drawCircle(514, 1, 1, 9);
+    drawCircle(510, 2, 4, 9);
     showCase(5);
 </script>
 
