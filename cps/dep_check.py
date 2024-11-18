@@ -43,23 +43,23 @@ def load_dependencies(optional=False):
                                        r'(?:(python_version)\s?([<=>]+)\s?\'([\d\.]+)\'|'
                                        r'(sys_platform)\s?([\!=]+)\s?\'([\w]+)\'))?', line.strip())
                         try:
+                            if res.group(7) and res.group(8):
+                                val = res.group(8).split(".")
+                                if not eval(str(sys.version_info[0]) + "." + "{:02d}".format(sys.version_info[1]) +
+                                            res.group(7) + val[0] + "." + "{:02d}".format(int(val[1]))):
+                                    continue
+                            elif res.group(10) and res.group(11):
+                                # only installed if platform is eqal, don't check if platform is not equal
+                                if res.group(10) == "==":
+                                    if sys.platform != res.group(11):
+                                        continue
+                                # installed if platform is not eqal, don't check if platform is equal
+                                elif res.group(10) == "!=":
+                                    if sys.platform == res.group(11):
+                                        continue
                             if getattr(sys, 'frozen', False):
                                 dep_version = exe_deps[res.group(1).lower().replace('_', '-')]
                             else:
-                                if res.group(7) and res.group(8):
-                                    val = res.group(8).split(".")
-                                    if not eval(str(sys.version_info[0]) + "." + "{:02d}".format(sys.version_info[1]) +
-                                                res.group(7) + val[0] + "." + "{:02d}".format(int(val[1]))):
-                                        continue
-                                elif res.group(10) and res.group(11):
-                                    # only installed if platform is eqal, don't check if platform is not equal
-                                    if res.group(10) == "==":
-                                        if sys.platform != res.group(11):
-                                            continue
-                                    # installed if platform is not eqal, don't check if platform is equal
-                                    elif res.group(10) == "!=":
-                                        if sys.platform == res.group(11):
-                                            continue
                                 if importlib:
                                     dep_version = version(res.group(1))
                                 else:

@@ -23,7 +23,7 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
-import importlib
+from importlib.metadata import metadata
 
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
@@ -86,7 +86,7 @@ except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
 
-sql_version = importlib.metadata.version("sqlalchemy")
+sql_version = metadata("sqlalchemy")["Version"]
 sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 
