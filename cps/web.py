@@ -796,7 +796,7 @@ def render_archived_books(page, sort_param):
                                                                                 True,
                                                                                 True, config.config_read_column)
 
-    name = _('Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
+    name = _('Archived Books') + ' (' + str(len(entries)) + ')'
     page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=page_name, order=sort_param[1])
