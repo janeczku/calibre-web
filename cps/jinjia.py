@@ -119,20 +119,6 @@ def formatfloat(value, decimals=1):
     return formated_value
 
 
-'''@jinjia.app_template_filter('formatseriesindex')
-def formatseriesindex_filter(series_index):
-    if series_index:
-        try:
-            if int(series_index) - series_index == 0:
-                return int(series_index)
-            else:
-                return series_index
-        except (ValueError, TypeError):
-            return series_index
-    return 0
-'''
-
-
 @jinjia.app_template_filter('escapedlink')
 def escapedlink_filter(url, text):
     return "<a href='{}'>{}</a>".format(url, escape(text))
