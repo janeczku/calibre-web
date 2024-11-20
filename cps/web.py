@@ -87,7 +87,7 @@ except ImportError:
 
 
 sql_version = metadata("sqlalchemy")["Version"]
-sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
+sqlalchemy_version2 = ([int(x) if x.isnumeric() else 0 for x in sql_version.split('.')[:3]] >= [2, 0, 0])
 
 
 @app.after_request
