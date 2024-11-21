@@ -37,17 +37,31 @@ def error_http(error):
                            error_code="Error {0}".format(error.code),
                            error_name=error.name,
                            issue=False,
+                           goto_admin=False,
                            unconfigured=not config.db_configured,
                            instance=config.config_calibre_web_title
                            ), error.code
 
 
 def internal_error(error):
+    if (isinstance(error.original_exception, AttributeError) and
+        error.original_exception.args[0] == "'NoneType' object has no attribute 'query'"
+        and error.original_exception.name == "query"):
+        return render_template('http_error.html',
+                               error_code="Database Error",
+                               error_name='The library used is invalid or has permission errors',
+                               issue=False,
+                               goto_admin=True,
+                               unconfigured=False,
+                               error_stack="",
+                               instance=config.config_calibre_web_title
+                               ), 500
     return render_template('http_error.html',
                            error_code="500 Internal Server Error",
                            error_name='The server encountered an internal error and was unable to complete your '
                                       'request. There is an error in the application.',
                            issue=True,
+                           goto_admin=False,
                            unconfigured=False,
                            error_stack=traceback.format_exc().split("\n"),
                            instance=config.config_calibre_web_title
