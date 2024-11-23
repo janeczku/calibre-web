@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-11-23 09:31+0100\n"
-"PO-Revision-Date: 2024-08-24 05:32+0200\n"
+"POT-Creation-Date: 2024-11-23 09:36+0100\n"
+"PO-Revision-Date: 2024-11-22 04:30+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -444,7 +444,7 @@ msgstr "{} utente importato correttamente"
 
 #: cps/admin.py:1737
 msgid "Books path not valid"
-msgstr ""
+msgstr "Percorso dei libri non valido"
 
 #: cps/admin.py:1744
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -2203,7 +2203,7 @@ msgstr "Stabile"
 
 #: cps/templates/config_edit.html:46
 msgid "Nightly"
-msgstr "Notturno"
+msgstr "Nightly"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
