@@ -658,6 +658,7 @@ class CalibreDB:
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
             with cls.engine.begin() as connection:
+                connection.execute(text('PRAGMA cache_size = 10000;'))
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
 
