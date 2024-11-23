@@ -483,6 +483,8 @@ def autodetect_calibre_binaries():
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
                         "C:\\program files\\calibre2\\"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/"]
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
@@ -513,6 +515,8 @@ def autodetect_unrar_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/unrar"]
     else:
         calibre_path = ["/usr/bin/unrar"]
     for element in calibre_path:
@@ -525,6 +529,8 @@ def autodetect_kepubify_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/kepubify"]
     else:
         calibre_path = ["/opt/kepubify/kepubify-linux-64bit", "/opt/kepubify/kepubify-linux-32bit"]
     for element in calibre_path:
