@@ -48,7 +48,11 @@
     <div class="row">
       <div class="col errorlink">
       {% if not unconfigured %}
-        <a href="{{url_for('web.index')}}" title="{{ _('Return to Home') }}">{{_('Return to Home')}}</a>
+        {% if goto_admin %}
+           <a href="{{url_for('admin.db_configuration')}}" title="{{ _('Return to Database config') }}">{{_('Return to Database config')}}</a>
+        {%  else %}
+           <a href="{{url_for('web.index')}}" title="{{ _('Return to Home') }}">{{_('Return to Home')}}</a>
+        {% endif %}
       {% else %}
         <a href="{{url_for('web.logout')}}" title="{{ _('Logout User') }}">{{ _('Logout User') }}</a>
       {% endif %}

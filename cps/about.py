@@ -23,7 +23,7 @@
 import sys
 import platform
 import sqlite3
-import importlib
+from importlib.metadata import metadata
 from collections import OrderedDict
 
 import flask
@@ -41,7 +41,7 @@ req = dep_check.load_dependencies(False)
 opt = dep_check.load_dependencies(True)
 for i in (req + opt):
     modules[i[1]] = i[0]
-modules['Jinja2'] = importlib.metadata.version("jinja2")
+modules['Jinja2'] = metadata("jinja2")["Version"]
 if sys.version_info < (3, 12):
     modules['pySqlite'] = sqlite3.version
 modules['SQLite'] = sqlite3.sqlite_version

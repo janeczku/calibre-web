@@ -23,7 +23,7 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
-import importlib
+from importlib.metadata import metadata
 
 from flask import Blueprint, jsonify
 from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
@@ -86,8 +86,8 @@ except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
 
-sql_version = importlib.metadata.version("sqlalchemy")
-sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
+sql_version = metadata("sqlalchemy")["Version"]
+sqlalchemy_version2 = ([int(x) if x.isnumeric() else 0 for x in sql_version.split('.')[:3]] >= [2, 0, 0])
 
 
 @app.after_request
@@ -796,7 +796,7 @@ def render_archived_books(page, sort_param):
                                                                                 True,
                                                                                 True, config.config_read_column)
 
-    name = _('Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
+    name = _('Archived Books') + ' (' + str(len(entries)) + ')'
     page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=page_name, order=sort_param[1])

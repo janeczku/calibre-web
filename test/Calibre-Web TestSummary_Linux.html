@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-10-31 19:45:00</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-20 18:23:06</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-01 03:02:38</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-21 01:38:12</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 11 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
         </div>
       </div>
       </div>
@@ -2065,12 +2065,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2079,26 +2079,28 @@
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id="ft18.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 99, in test_load_metadata
-    if results[cont][&#39;source&#39;] == &#39;https://comicvine.gamespot.com/&#39;:
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 111, in test_load_metadata
+    self.assertEqual(&#39;https://comicvine.gamespot.com/&#39;, results[cv][&#39;source&#39;])
+AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon.com/&#39;
+- https://comicvine.gamespot.com/
++ https://amazon.com/</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3913,49 +3915,43 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestPipInstall</td>
+        <td class="text-center">3</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 1)">Detail</a>
+            <a onclick="showClassDetail('c41', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et41.1" class="none bg-info">
+        <tr id='pt41.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>setUpClass (test_pip_install)</div>
+                <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et41.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et41.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et41.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_pip_install.py&#34;, line 39, in setUpClass
-    make_release.main(args)
-  File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 456, in main
-    update_requirements()
-  File &#34;/home/ozzie/Development/calibre-web-test/build_release/make_release.py&#34;, line 92, in update_requirements
-    with open(os.path.join(FILEPATH, &#34;pyproject.toml&#34;), &#39;r&#39;) as fp:
-FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Development/calibre-web/pyproject.toml&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt41.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestPipInstall - test_module_start</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5841,10 +5837,10 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>523</td>
-        <td>512</td>
+        <td>525</td>
+        <td>515</td>
+        <td>1</td>
         <td>0</td>
-        <td>2</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -6041,13 +6037,13 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>Werkzeug</th>
-              <td>3.1.0</td>
+              <td>3.1.3</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6065,7 +6061,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6077,7 +6073,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6095,7 +6091,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6107,7 +6103,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6125,7 +6121,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6137,7 +6133,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6155,7 +6151,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6185,7 +6181,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6203,7 +6199,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6221,7 +6217,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6239,7 +6235,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6263,7 +6259,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6281,7 +6277,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6293,7 +6289,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.151.0</td>
+              <td>2.154.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6311,7 +6307,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.20.0</td>
+              <td>1.21.1</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6389,7 +6385,7 @@ FileNotFoundError: [Errno 2] No such file or directory: &#39;/home/ozzie/Develop
 </div>
 
 <script>
-    drawCircle(512, 0, 2, 9);
+    drawCircle(515, 1, 0, 9);
     showCase(5);
 </script>
 

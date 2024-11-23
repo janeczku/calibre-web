@@ -43,6 +43,8 @@ def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
     for get, val in request.args.items():
+        if get == "page":
+            continue
         args[get] = val
     return url_for(request.endpoint, **args)
 
@@ -111,26 +113,12 @@ def yesno(value, yes, no):
 
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
-    if not value:
+    if not value or (isinstance(value, str) and not value.is_numeric()):
         return value
     formated_value = ('{0:.' + str(decimals) + 'f}').format(value)
     if formated_value.endswith('.' + "0" * decimals):
         formated_value = formated_value.rstrip('0').rstrip('.')
     return formated_value
-
-
-'''@jinjia.app_template_filter('formatseriesindex')
-def formatseriesindex_filter(series_index):
-    if series_index:
-        try:
-            if int(series_index) - series_index == 0:
-                return int(series_index)
-            else:
-                return series_index
-        except (ValueError, TypeError):
-            return series_index
-    return 0
-'''
 
 
 @jinjia.app_template_filter('escapedlink')
