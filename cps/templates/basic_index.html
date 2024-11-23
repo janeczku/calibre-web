@@ -1,0 +1,32 @@
+{% extends "basic_layout.html" %}
+{% block body %}
+
+<div class="pagination">
+  <div>
+    {% if pagination.has_prev %}
+      <a href="{{ (pagination.page - 1)|url_for_other_page }}">&laquo; {{_('Previous')}}</a>
+    {% endif %}
+  </div>
+  <div>
+    {% if pagination.has_next %}
+      <a href="{{ (pagination.page + 1)|url_for_other_page }}">{{_('Next')}} &raquo;</a>
+    {% endif %}
+  </div>
+</div>
+
+{% if entries|length < 1 %}
+  <p>{{_('No Results Found')}}</p>
+{% endif %}
+
+{% for entry in entries %}
+  {% if entry.Books.authors %}
+    {% set author = entry.Books.authors[0].name.replace('|',',')|shortentitle(30) %}
+  {% else %}
+    {% set author = '' %}
+  {% endif %}
+  <a href="{{ url_for('basic.show_book', book_id=entry.Books.id) }}">
+    <p class="listing" title="{{entry.Books.title}}">{{ author }} - {{entry.Books.title|shortentitle}}</p>
+  </a>
+{% endfor %}
+
+{% endblock %}
