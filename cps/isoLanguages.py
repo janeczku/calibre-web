@@ -101,6 +101,6 @@ def get_lang3(lang):
             ret_value = lang
         else:
             ret_value = ""
-    except KeyError:
+    except (KeyError, AttributeError):
         ret_value = lang
     return ret_value

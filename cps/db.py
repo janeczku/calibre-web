@@ -102,6 +102,16 @@ class Identifiers(Base):
     type = Column(String(collation='NOCASE'), nullable=False, default="isbn")
     val = Column(String(collation='NOCASE'), nullable=False)
     book = Column(Integer, ForeignKey('books.id'), nullable=False)
+    amazon = {
+        "jp": "co.jp", 
+        "uk": "co.uk", 
+        "us": "com", 
+        "au": "com.au", 
+        "be": "com.be", 
+        "br": "com.br", 
+        "tr": "com.tr", 
+        "mx": "com.mx",
+    }
 
     def __init__(self, val, id_type, book):
         super().__init__()
@@ -114,7 +124,11 @@ class Identifiers(Base):
         if format_type == 'amazon':
             return "Amazon"
         elif format_type.startswith("amazon_"):
-            return "Amazon.{0}".format(format_type[7:].lower().replace("uk","co.uk"))
+            label_amazon = "Amazon.{0}"
+            country_code = format_type[7:].lower()
+            if country_code not in self.amazon:
+                return label_amazon.format(country_code)
+            return label_amazon.format(self.amazon[country_code])
         elif format_type == "isbn":
             return "ISBN"
         elif format_type == "doi":
@@ -149,7 +163,11 @@ class Identifiers(Base):
         if format_type == "amazon" or format_type == "asin":
             return "https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            return "https://amazon.{0}/dp/{1}".format(format_type[7:].lower().replace("uk","co.uk"), self.val)
+            link_amazon = "https://amazon.{0}/dp/{1}"
+            country_code = format_type[7:].lower()
+            if country_code not in self.amazon:
+                return link_amazon.format(country_code, self.val)
+            return link_amazon.format(self.amazon[country_code], self.val)
         elif format_type == "isbn":
             return "https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
@@ -658,6 +676,7 @@ class CalibreDB:
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
             with cls.engine.begin() as connection:
+                connection.execute(text('PRAGMA cache_size = 10000;'))
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
 
