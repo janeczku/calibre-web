@@ -86,7 +86,7 @@
 
     <div class="form-group">
       <label>{{_('Identifiers')}}</label>
-      <table class="table" id="identifier-table">
+      <table class="table" id="identifier-table"><tbody>
 	{% for identifier in book.identifiers %}
 	<tr>
       <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
@@ -94,6 +94,7 @@
 	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
 	</tr>
 	{% endfor %}
+      </tbody>
       </table>
       <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
     </div>
