@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -2802,11 +2802,16 @@ msgstr "Calibre-Webインスタンスが未設定です。管理者に連絡し�
 msgid "Create Issue"
 msgstr "Issueを作成"
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "DB設定"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "ホームに戻る"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr "ユーザーをログアウト"
 
@@ -3073,6 +3078,11 @@ msgstr "Calibre-WebのeBookカタログ"
 #: cps/templates/read.html:7
 msgid "epub Reader"
 msgstr "EPUBリーダー"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "ユーザー名を入力してください"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

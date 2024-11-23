@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2023-07-25 11:30+0100\n"
 "Last-Translator: horus68 <https://github.com/horus68>\n"
 "Language: pt\n"
@@ -2799,11 +2799,16 @@ msgstr "Instancia do Calibre-Web não configurada. Por favor, contacte o seu adm
 msgid "Create Issue"
 msgstr "Criar ocorrência"
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Configuração da base de dados"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "Voltar para entrada"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr "Terminar sessão"
 
@@ -3070,6 +3075,11 @@ msgstr "Catálogo de ebooks Calibre-Web"
 #: cps/templates/read.html:7
 msgid "epub Reader"
 msgstr "leitor de epub"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Escolher um nome de utilizador"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

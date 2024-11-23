@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -2810,11 +2810,16 @@ msgstr ""
 msgid "Create Issue"
 msgstr ""
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Funkciók beállítása"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "Vissza a kezdőlapra"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr ""
 
@@ -3082,6 +3087,11 @@ msgstr "Calibre-Web e-könyv katalógus"
 #: cps/templates/read.html:7
 msgid "epub Reader"
 msgstr ""
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Válassz egy felhasználónevet"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
