@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2024-11-01 17:50+0900\n"
 "Last-Translator: limeade23 <admin@limeade.me>\n"
 "Language: ko\n"
@@ -2760,11 +2760,16 @@ msgstr "Calibre-Web이 설정되지 않았습니다. 관리자에게 문의하�
 msgid "Create Issue"
 msgstr "이슈 생성"
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "데이터베이스 설정"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "홈으로"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr "로그아웃"
 
@@ -3031,6 +3036,11 @@ msgstr "Calibre-Web 책 목록"
 #: cps/templates/read.html:7
 msgid "epub Reader"
 msgstr "epub 리더"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "사용자 이름 선택"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

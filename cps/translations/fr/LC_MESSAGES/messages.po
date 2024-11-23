@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2020-06-07 06:47+0200\n"
 "Last-Translator: <thovi98@gmail.com>\n"
 "Language: fr\n"
@@ -2844,11 +2844,16 @@ msgstr "Le serveur de courriel n'est pas configuré, veuillez contacter votre ad
 msgid "Create Issue"
 msgstr "Signaler un problème"
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Configuration des options"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "Retour à l’accueil"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr "Déconnecter l’utilisateur"
 
@@ -3117,6 +3122,11 @@ msgstr "Catalogue de livres électroniques Calibre-Web"
 #, fuzzy
 msgid "epub Reader"
 msgstr "Lecteur PDF"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Choisissez un nom d'utilisateur"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2020-04-29 01:20+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -2823,11 +2823,16 @@ msgstr "Сервер электронной почты не настроен, о
 msgid "Create Issue"
 msgstr "Создать запись"
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Дополнительный Настройки"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "Вернуться на главную"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr ""
 
@@ -3096,6 +3101,11 @@ msgstr "Каталог электронных книг Caliber-Web"
 #, fuzzy
 msgid "epub Reader"
 msgstr "PDF reader"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Выберите имя пользователя"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

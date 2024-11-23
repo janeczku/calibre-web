@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -2813,11 +2813,16 @@ msgstr ""
 msgid "Create Issue"
 msgstr "Luo virheilmoitus"
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Ominaisuuksien asetukset"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr "Palaa kotiin"
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr ""
 
@@ -3086,6 +3091,11 @@ msgstr "Calibre-Web e-kirjaluettelo"
 #, fuzzy
 msgid "epub Reader"
 msgstr "PDF lukija"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Valitse käyttäjänimi"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

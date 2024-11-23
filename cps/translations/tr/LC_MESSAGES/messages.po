@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -2810,11 +2810,16 @@ msgstr "E-Posta sunucusu ayarlanmadı, lütfen yöneticinizle iletişime geçin!
 msgid "Create Issue"
 msgstr ""
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Özellik Yapılandırması"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr ""
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr ""
 
@@ -3083,6 +3088,11 @@ msgstr ""
 #, fuzzy
 msgid "epub Reader"
 msgstr "PDF Okuyucu"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Kullanıcı adı seç"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

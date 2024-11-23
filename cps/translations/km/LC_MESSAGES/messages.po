@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-11-21 16:37+0100\n"
+"POT-Creation-Date: 2024-11-23 09:31+0100\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -2799,11 +2799,16 @@ msgstr ""
 msgid "Create Issue"
 msgstr ""
 
-#: cps/templates/http_error.html:51
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "ការកំណត់មុខងារ"
+
+#: cps/templates/http_error.html:54
 msgid "Return to Home"
 msgstr ""
 
-#: cps/templates/http_error.html:53
+#: cps/templates/http_error.html:57
 msgid "Logout User"
 msgstr ""
 
@@ -3071,6 +3076,11 @@ msgstr ""
 #: cps/templates/read.html:7
 msgid "epub Reader"
 msgstr ""
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "ជ្រើសរើសឈ្មោះអ្នកប្រើប្រាស់"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
