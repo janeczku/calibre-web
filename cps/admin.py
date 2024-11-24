@@ -1114,8 +1114,8 @@ def _config_checkbox_int(to_save, x):
     return config.set_from_dictionary(to_save, x, lambda y: 1 if (y == "on") else 0, 0)
 
 
-def _config_string(to_save, x):
-    return config.set_from_dictionary(to_save, x, lambda y: strip_whitespaces(y) if y else y)
+def _config_string(to_save, x, strip=True):
+    return config.set_from_dictionary(to_save, x, lambda y: strip_whitespaces(y) if y and strip else y)
 
 
 def _configuration_gdrive_helper(to_save):
@@ -1737,6 +1737,11 @@ def _db_configuration_update_helper():
             return _db_configuration_result(_("Books path not valid"), gdrive_error)
         else:
             _config_string(to_save, "config_calibre_split_dir")
+    _config_checkbox_int(to_save, "config_calibre_db_use_content_server_for_updates")
+    if config.config_calibre_db_use_content_server_for_updates:
+        _config_string(to_save, "config_calibre_db_content_server_url")
+        _config_string(to_save, "config_calibre_db_content_server_username")
+        _config_string(to_save, "config_calibre_db_content_server_password_e", strip=False)
 
     if db_change or not db_valid or not config.db_configured \
       or config.config_calibre_dir != to_save["config_calibre_dir"]:

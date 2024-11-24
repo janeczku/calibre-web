@@ -61,6 +61,20 @@
         {% endif %}
       {% endif %}
     {% endif %}
+      <div class="form-group required">
+        <input type="checkbox" id="config_calibre_db_use_content_server_for_updates" name="config_calibre_db_use_content_server_for_updates" data-control="ccs_settings" data-t ="{{ config.config_calibre_db_content_server_url  }}" {% if config.config_calibre_db_use_content_server_for_updates %}checked{% endif %} >
+        <label for="config_calibre_db_use_content_server_for_updates">{{_('Use Calibre Content Server for DB updates')}}</label>
+      </div>
+      <div data-related="ccs_settings">
+       <div class="form-group required">
+        <label for="config_calibre_db_content_server_url">{{_('Calibre Content Server URL')}}</label>
+        <input type="text" class="form-control" id="config_calibre_db_content_server_url" name="config_calibre_db_content_server_url" value="{% if config.config_calibre_db_content_server_url %}{{ config.config_calibre_db_content_server_url }}{% endif %}" autocomplete="off">
+        <label for="config_calibre_db_content_server_username">{{_('Username')}}</label>
+        <input type="text" class="form-control" id="config_calibre_db_content_server_username" name="config_calibre_db_content_server_username" value="{% if config.config_calibre_db_content_server_username %}{{ config.config_calibre_db_content_server_username }}{% endif %}">
+        <label for="config_calibre_db_content_server_password_e">{{_('Password')}}</label>
+        <input type="password" class="form-control" id="config_calibre_db_content_server_password_e" name="config_calibre_db_content_server_password_e" value="{% if config.config_calibre_db_content_server_password_e %}{{ config.config_calibre_db_content_server_password_e }}{% endif %}">
+      </div>
+      </div>
     <div class="col-sm-12">
       <div id="db_submit" name="submit" class="btn btn-default">{{_('Save')}}</div>
       <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-default">{{_('Cancel')}}</a>

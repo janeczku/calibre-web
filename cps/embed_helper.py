@@ -36,7 +36,7 @@ def do_calibre_export(book_id, book_format):
         if config.config_calibre_split:
             my_env['CALIBRE_OVERRIDE_DATABASE_PATH'] = os.path.join(config.config_calibre_dir, "metadata.db")
         library_path = config.get_book_path()
-        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--with-library', library_path,
+        opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', *config.get_with_library_args(),
                        '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
                        str(book_id)]
         p = process_open(opf_command, quotes, my_env)

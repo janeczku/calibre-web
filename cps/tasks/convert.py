@@ -262,12 +262,9 @@ class TaskConvert(CalibreTask):
                 my_env = os.environ.copy()
                 if config.config_calibre_split:
                     my_env['CALIBRE_OVERRIDE_DATABASE_PATH'] = os.path.join(config.config_calibre_dir, "metadata.db")
-                    library_path = config.config_calibre_split_dir
-                else:
-                    library_path = config.config_calibre_dir
 
                 opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
-                               '--with-library', library_path]
+                               *config.get_with_library_args()]
                 p = process_open(opf_command, quotes, my_env, newlines=False)
                 lines = list()
                 while p.poll() is None:

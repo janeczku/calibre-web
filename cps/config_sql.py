@@ -73,6 +73,10 @@ class _Settings(_Base):
     config_calibre_uuid = Column(String)
     config_calibre_split = Column(Boolean, default=False)
     config_calibre_split_dir = Column(String)
+    config_calibre_db_use_content_server_for_updates = Column(Boolean, default=False)
+    config_calibre_db_content_server_url = Column(String)
+    config_calibre_db_content_server_username = Column(String)
+    config_calibre_db_content_server_password_e = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
@@ -403,6 +407,19 @@ class ConfigSQL(object):
 
     def get_book_path(self):
         return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
+
+    def get_with_library_args(self):
+        args = ["--with-library"]
+        if self.config_calibre_db_use_content_server_for_updates:
+            args.append(self.config_calibre_db_content_server_url)
+            if self.config_calibre_db_content_server_username:
+                args.append("--username")
+                args.append(self.config_calibre_db_content_server_username)
+                args.append("--password")
+                args.append(self.config_calibre_db_content_server_password_e)
+        else:
+            args.append(self.get_book_path())
+        return args
 
     def store_calibre_uuid(self, calibre_db, Library_table):
         try:
