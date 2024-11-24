@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-20 18:23:06</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-23 20:45:47</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-21 01:38:12</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-24 03:58:38</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 6 min</p>
         </div>
       </div>
       </div>
@@ -2111,11 +2111,11 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2242,11 +2242,31 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
     
     
-        <tr id='pt19.14' class='hiddenRow bg-success'>
+        <tr id="ft19.14" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.14')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 636, in test_edit_rating
+    self.assertEqual(1, len(books[1]))
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2354,12 +2374,12 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestSSL</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c22', 7)">Detail</a>
@@ -2413,11 +2433,31 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
     
     
-        <tr id='pt22.6' class='hiddenRow bg-success'>
+        <tr id="et22.6" class="none bg-info">
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et22.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et22.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 134, in test_email_limit
+    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3058,12 +3098,12 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestSecurity</td>
         <td class="text-center">5</td>
-        <td class="text-center">5</td>
+        <td class="text-center">4</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c33', 5)">Detail</a>
@@ -3099,11 +3139,44 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     
     
     
-        <tr id='pt33.4' class='hiddenRow bg-success'>
+        <tr id="et33.4" class="none bg-info">
             <td>
                 <div class='testcase'>TestSecurity - test_redis_backend</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et33.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et33.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et33.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_limiter.py&#34;, line 87, in test_redis_backend
+    self.restart_calibre_web()
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 459, in restart_calibre_web
+    cls.driver.find_element(By.ID, &#39;admin_restart&#39;).click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
+    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;admin_restart&#34;]
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5838,9 +5911,9 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>525</td>
-        <td>515</td>
-        <td>1</td>
-        <td>0</td>
+        <td>512</td>
+        <td>2</td>
+        <td>2</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -5869,7 +5942,7 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-48-generic #48~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Oct  7 11:24:13 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-49-generic #49~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Nov  6 17:42:15 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6013,7 +6086,7 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
           
             <tr>
               <th>tornado</th>
-              <td>6.4.1</td>
+              <td>6.4.2</td>
               <td>Basic</td>
             </tr>
           
@@ -6385,7 +6458,7 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
 </div>
 
 <script>
-    drawCircle(515, 1, 0, 9);
+    drawCircle(512, 2, 2, 9);
     showCase(5);
 </script>
 
