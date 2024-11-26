@@ -215,6 +215,7 @@ def table_get_custom_enum(c_id):
 def edit_list_book(param):
     vals = request.form.to_dict()
     book = calibre_db.get_book(vals['pk'])
+    calibre_db.create_functions(config)
     sort_param = ""
     ret = ""
     try:

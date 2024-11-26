@@ -47,35 +47,35 @@ class TaskBackupMetadata(CalibreTask):
 
     def set_all_books_dirty(self):
         with app.app_context():
-            calibre_db = db.CalibreDB(app)
+            calibre_dbb = db.CalibreDB(app)
             try:
-                books = calibre_db.session.query(db.Books).all()
+                books = calibre_dbb.session.query(db.Books).all()
                 for book in books:
-                    calibre_db.set_metadata_dirty(book.id)
-                calibre_db.session.commit()
+                    calibre_dbb.set_metadata_dirty(book.id)
+                calibre_dbb.session.commit()
                 self._handleSuccess()
             except Exception as ex:
                 self.log.debug('Error adding book for backup: ' + str(ex))
                 self._handleError('Error adding book for backup: ' + str(ex))
-                calibre_db.session.rollback()
+                calibre_dbb.session.rollback()
         # self.calibre_db.session.close()
 
     def backup_metadata(self):
         with app.app_context():
             try:
-                calibre_db = db.CalibreDB(app)
-                metadata_backup = calibre_db.session.query(db.Metadata_Dirtied).all()
-                custom_columns = (calibre_db.session.query(db.CustomColumns)
+                calibre_dbb = db.CalibreDB(app)
+                metadata_backup = calibre_dbb.session.query(db.Metadata_Dirtied).all()
+                custom_columns = (calibre_dbb.session.query(db.CustomColumns)
                                   .filter(db.CustomColumns.mark_for_delete == 0)
                                   .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions))
                                   .order_by(db.CustomColumns.label).all())
                 count = len(metadata_backup)
                 i = 0
                 for backup in metadata_backup:
-                    book = calibre_db.session.query(db.Books).filter(db.Books.id == backup.book).one_or_none()
-                    calibre_db.session.query(db.Metadata_Dirtied).filter(
+                    book = calibre_dbb.session.query(db.Books).filter(db.Books.id == backup.book).one_or_none()
+                    calibre_dbb.session.query(db.Metadata_Dirtied).filter(
                         db.Metadata_Dirtied.book == backup.book).delete()
-                    calibre_db.session.commit()
+                    calibre_dbb.session.commit()
                     if book:
                         self.open_metadata(book, custom_columns)
                     else:
@@ -89,7 +89,7 @@ class TaskBackupMetadata(CalibreTask):
                 b = "NaN" if not hasattr(book, 'id') else book.id
                 self.log.debug('Error creating metadata backup for book {}: '.format(b) + str(ex))
                 self._handleError('Error creating metadata backup: ' + str(ex))
-                calibre_db.session.rollback()
+                calibre_dbb.session.rollback()
                 # self.calibre_db.session.close()
 
     def open_metadata(self, book, custom_columns):
