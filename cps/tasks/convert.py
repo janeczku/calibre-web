@@ -60,6 +60,8 @@ class TaskConvert(CalibreTask):
         self.results = dict()
 
     def run(self, worker_thread):
+        df_cover = None
+        cur_book = None
         self.worker_thread = worker_thread
         if config.config_use_google_drive:
             with app.app_context():
@@ -90,38 +92,38 @@ class TaskConvert(CalibreTask):
                                       format=self.settings['old_book_format'],
                                       fn=data.name + "." + self.settings['old_book_format'].lower())
                     # worker_db.session.close()
-                return self._handleError(error_message)
+                    return self._handleError(error_message)
 
-            filename = self._convert_ebook_format()
+        filename = self._convert_ebook_format()
+        if config.config_use_google_drive:
+            os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
+            if df_cover:
+                os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
+
+        if filename:
             if config.config_use_google_drive:
-                os.remove(self.file_path + '.' + self.settings['old_book_format'].lower())
-                if df_cover:
-                    os.remove(os.path.join(config.config_calibre_dir, cur_book.path, "cover.jpg"))
-
-            if filename:
-                if config.config_use_google_drive:
-                    # Upload files to gdrive
-                    gdriveutils.updateGdriveCalibreFromLocal()
-                    self._handleSuccess()
-                if self.ereader_mail:
-                    # if we're sending to E-Reader after converting, create a one-off task and run it immediately
-                    # todo: figure out how to incorporate this into the progress
-                    try:
-                        EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))
-                        for email in self.ereader_mail.split(','):
-                            email = strip_whitespaces(email)
-                            worker_thread.add(self.user, TaskEmail(self.settings['subject'],
-                                                                   self.results["path"],
-                                                                   filename,
-                                                                   self.settings,
-                                                                   email,
-                                                                   EmailText,
-                                                                   self.settings['body'],
-                                                                   id=self.book_id,
-                                                                   internal=True)
-                                              )
-                    except Exception as ex:
-                        return self._handleError(str(ex))
+                # Upload files to gdrive
+                gdriveutils.updateGdriveCalibreFromLocal()
+                self._handleSuccess()
+            if self.ereader_mail:
+                # if we're sending to E-Reader after converting, create a one-off task and run it immediately
+                # todo: figure out how to incorporate this into the progress
+                try:
+                    EmailText = N_(u"%(book)s send to E-Reader", book=escape(self.title))
+                    for email in self.ereader_mail.split(','):
+                        email = strip_whitespaces(email)
+                        worker_thread.add(self.user, TaskEmail(self.settings['subject'],
+                                                               self.results["path"],
+                                                               filename,
+                                                               self.settings,
+                                                               email,
+                                                               EmailText,
+                                                               self.settings['body'],
+                                                               id=self.book_id,
+                                                               internal=True)
+                                          )
+                except Exception as ex:
+                    return self._handleError(str(ex))
 
     def _convert_ebook_format(self):
         error_message = None

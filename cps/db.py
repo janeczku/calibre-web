@@ -538,7 +538,7 @@ class CalibreDB:
         self.Session = None
         #if init:
         #    self.init_db(expire_on_commit)
-        if _app is not None:
+        if _app is not None and not _app._got_first_request:
             self.init_app(_app)
 
     def init_app(self, _app):
@@ -1072,7 +1072,7 @@ class CalibreDB:
         # self.dispose()
         # self.engine.dispose()
         self.setup_db(config.config_calibre_dir, app_db_path)
-        self.update_config(config)
+        self.update_config(config, config.config_calibre_dir, app_db_path)
 
 
 def lcase(s):
