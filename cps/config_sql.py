@@ -405,11 +405,13 @@ class ConfigSQL(object):
         return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
 
     def store_calibre_uuid(self, calibre_db, Library_table):
+        from . import app
         try:
-            calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
-            if self.config_calibre_uuid != calibre_uuid.uuid:
-                self.config_calibre_uuid = calibre_uuid.uuid
-                self.save()
+            with app.app_context():
+                calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
+                if self.config_calibre_uuid != calibre_uuid.uuid:
+                    self.config_calibre_uuid = calibre_uuid.uuid
+                    self.save()
         except AttributeError:
             pass
 
