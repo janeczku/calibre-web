@@ -144,7 +144,6 @@ def shutdown():
     show_text = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
-        calibre_db.dispose()
         ub.dispose()
 
         if task == 0:
@@ -1767,10 +1766,10 @@ def _db_configuration_update_helper():
             config.config_allowed_column_value = ""
             config.config_read_column = 0
         _config_string(to_save, "config_calibre_dir")
-        calibre_db.update_config(config)
+        calibre_db.update_config(config, config.config_calibre_dir, ub.app_DB_path)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_("DB is not Writeable"), category="warning")
-    calibre_db.update_config(config)
+    calibre_db.update_config(config, config.config_calibre_dir, ub.app_DB_path)
     config.save()
     return _db_configuration_result(None, gdrive_error)
 

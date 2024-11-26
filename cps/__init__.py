@@ -102,7 +102,7 @@ if wtf_present:
 else:
     csrf = None
 
-calibre_db = db.CalibreDB()
+calibre_db = db.CalibreDB(app)
 
 web_server = WebServer()
 
@@ -146,9 +146,7 @@ def create_app():
     lm.anonymous_user = ub.Anonymous
     lm.session_protection = 'strong' if config.config_session == 1 else "basic"
 
-    db.CalibreDB.update_config(config)
-    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
-    calibre_db.init_db()
+    db.CalibreDB.update_config(config, config.config_calibre_dir, cli_param.settings_path)
 
     updater_thread.init_updater(config, web_server)
     # Perform dry run of updater and exit afterward
