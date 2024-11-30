@@ -118,7 +118,7 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    if '/static/' not in request.path and not config.db_configured and \
+    if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
                                  'admin.simulatedbchange',
                                  'admin.db_configuration',
@@ -126,7 +126,7 @@ def before_request():
                                  'web.login_post',
                                  'web.logout',
                                  'admin.load_dialogtexts',
-                                 'admin.ajax_pathchooser'):
+                                 'admin.ajax_pathchooser')):
         return redirect(url_for('admin.db_configuration'))
 
 
@@ -144,7 +144,6 @@ def shutdown():
     show_text = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
-        calibre_db.dispose()
         ub.dispose()
 
         if task == 0:
@@ -1737,14 +1736,12 @@ def _db_configuration_update_helper():
             return _db_configuration_result(_("Books path not valid"), gdrive_error)
         else:
             _config_string(to_save, "config_calibre_split_dir")
-
-    if db_change or not db_valid or not config.db_configured \
-      or config.config_calibre_dir != to_save["config_calibre_dir"]:
+    if (db_change or not db_valid or not config.db_configured
+           or config.config_calibre_dir != to_save["config_calibre_dir"]):
         if not os.path.exists(metadata_db) or not to_save['config_calibre_dir']:
             return _db_configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdrive_error)
         else:
             calibre_db.setup_db(to_save['config_calibre_dir'], ub.app_DB_path)
-        config.store_calibre_uuid(calibre_db, db.Library_Id)
         # if db changed -> delete shelfs, delete download books, delete read books, kobo sync...
         if db_change:
             log.info("Calibre Database changed, all Calibre-Web info related to old Database gets deleted")
@@ -1767,10 +1764,11 @@ def _db_configuration_update_helper():
             config.config_allowed_column_value = ""
             config.config_read_column = 0
         _config_string(to_save, "config_calibre_dir")
-        calibre_db.update_config(config)
+        calibre_db.update_config(config, config.config_calibre_dir, ub.app_DB_path)
+        config.store_calibre_uuid(calibre_db, db.Library_Id)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_("DB is not Writeable"), category="warning")
-    calibre_db.update_config(config)
+    calibre_db.update_config(config, config.config_calibre_dir, ub.app_DB_path)
     config.save()
     return _db_configuration_result(None, gdrive_error)
 

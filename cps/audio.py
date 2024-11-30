@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
-
 import mutagen
 import base64
 from . import cover, logger
@@ -51,13 +49,12 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
             if not pubdate:
                 pubdate = str(audio_file.tags.get('TDOR').text[0]) if "TDOR" in audio_file.tags else None
         if cover_data and not no_cover_processing:
-            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             cover_info = cover_data[0]
             for dat in cover_data:
                 if dat.type == mutagen.id3.PictureType.COVER_FRONT:
                     cover_info = dat
                     break
-            cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
+            tmp_cover_name = cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
     elif original_file_extension in [".ogg", ".flac", ".opus", ".ogv"]:
         title = audio_file.tags.get('TITLE')[0] if "TITLE" in audio_file else None
         author = audio_file.tags.get('ARTIST')[0] if "ARTIST" in audio_file else None
@@ -70,17 +67,15 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         cover_data = audio_file.tags.get('METADATA_BLOCK_PICTURE')
         if not no_cover_processing:
             if cover_data:
-                tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
                 cover_info = mutagen.flac.Picture(base64.b64decode(cover_data[0]))
-                cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
+                tmp_cover_name = cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
             if hasattr(audio_file, "pictures"):
                 cover_info = audio_file.pictures[0]
                 for dat in audio_file.pictures:
                     if dat.type == mutagen.id3.PictureType.COVER_FRONT:
                         cover_info = dat
                         break
-                tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
-                cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
+                tmp_cover_name = cover.cover_processing(tmp_file_path, cover_info.data, "." + cover_info.mime[-3:])
     elif original_file_extension in [".aac"]:
         title = audio_file.tags.get('Title').value if "Title" in audio_file else None
         author = audio_file.tags.get('Artist').value if "Artist" in audio_file else None
@@ -92,7 +87,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         pubdate = audio_file.tags.get('Year').value if "Year" in audio_file else None
         cover_data = audio_file.tags['Cover Art (Front)']
         if cover_data and not no_cover_processing:
-            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
+            tmp_cover_name = tmp_file_path + '.jpg'
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data.value.split(b"\x00",1)[1])
     elif original_file_extension in [".asf"]:
@@ -106,7 +101,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         pubdate = audio_file.tags.get('Year')[0].value if "Year" in audio_file else None
         cover_data = audio_file.tags.get('WM/Picture', None)
         if cover_data and not no_cover_processing:
-            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
+            tmp_cover_name = tmp_file_path + '.jpg'
             with open(tmp_cover_name, "wb") as cover_file:
                 cover_file.write(cover_data[0].value)
     elif original_file_extension in [".mp4", ".m4a", ".m4b"]:
@@ -120,7 +115,6 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
         pubdate = audio_file.tags.get('©day')[0] if "©day" in audio_file.tags else None
         cover_data = audio_file.tags.get('covr', None)
         if cover_data and not no_cover_processing:
-            tmp_cover_name = os.path.join(os.path.dirname(tmp_file_path), 'cover.jpg')
             cover_type = None
             for c in cover_data:
                 if c.imageformat == mutagen.mp4.AtomDataType.JPEG:
@@ -132,7 +126,7 @@ def get_audio_file_info(tmp_file_path, original_file_extension, original_file_na
                     cover_bin = c
                     break
             if cover_type:
-                cover.cover_processing(tmp_file_path, cover_bin, cover_type)
+                tmp_cover_name = cover.cover_processing(tmp_file_path, cover_bin, cover_type)
             else:
                 logger.error("Unknown covertype in file {} ".format(original_file_name))
 

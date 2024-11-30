@@ -23,10 +23,11 @@ from io import BytesIO
 from datetime import datetime, timezone
 
 from .. import constants
-from cps import config, db, fs, gdriveutils, logger, ub
+from cps import config, db, fs, gdriveutils, logger, ub, app
 from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
 from sqlalchemy import func, text, or_
 from flask_babel import lazy_gettext as N_
+
 try:
     from wand.image import Image
     use_IM = True
@@ -113,9 +114,10 @@ class TaskGenerateCoverThumbnails(CalibreTask):
     @staticmethod
     def get_books_with_covers(book_id=-1):
         filter_exp = (db.Books.id == book_id) if book_id != -1 else True
-        calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
-        books_cover = calibre_db.session.query(db.Books).filter(db.Books.has_cover == 1).filter(filter_exp).all()
-        calibre_db.session.close()
+        with app.app_context():
+            calibre_db = db.CalibreDB(app) #, expire_on_commit=False, init=True)
+            books_cover = calibre_db.session.query(db.Books).filter(db.Books.has_cover == 1).filter(filter_exp).all()
+            # calibre_db.session.close()
         return books_cover
 
     def get_book_cover_thumbnails(self, book_id):
@@ -246,7 +248,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
         super(TaskGenerateSeriesThumbnails, self).__init__(task_message)
         self.log = logger.create()
         self.app_db_session = ub.get_new_session_instance()
-        self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
+        # self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
         self.cache = fs.FileSystem()
         self.resolutions = [
             constants.COVER_THUMBNAIL_SMALL,
@@ -254,58 +256,60 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
         ]
 
     def run(self, worker_thread):
-        if self.calibre_db.session and use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
-            self.message = 'Scanning Series'
-            all_series = self.get_series_with_four_plus_books()
-            count = len(all_series)
+        with app.app_context():
+            calibre_db = db.CalibreDB(app)
+            if calibre_db.session and use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
+                self.message = 'Scanning Series'
+                all_series = self.get_series_with_four_plus_books(calibre_db)
+                count = len(all_series)
 
-            total_generated = 0
-            for i, series in enumerate(all_series):
-                generated = 0
-                series_thumbnails = self.get_series_thumbnails(series.id)
-                series_books = self.get_series_books(series.id)
+                total_generated = 0
+                for i, series in enumerate(all_series):
+                    generated = 0
+                    series_thumbnails = self.get_series_thumbnails(series.id)
+                    series_books = self.get_series_books(series.id, calibre_db)
 
-                # Generate new thumbnails for missing covers
-                resolutions = list(map(lambda t: t.resolution, series_thumbnails))
-                missing_resolutions = list(set(self.resolutions).difference(resolutions))
-                for resolution in missing_resolutions:
-                    generated += 1
-                    self.create_series_thumbnail(series, series_books, resolution)
-
-                # Replace outdated or missing thumbnails
-                for thumbnail in series_thumbnails:
-                    if any(book.last_modified > thumbnail.generated_at for book in series_books):
+                    # Generate new thumbnails for missing covers
+                    resolutions = list(map(lambda t: t.resolution, series_thumbnails))
+                    missing_resolutions = list(set(self.resolutions).difference(resolutions))
+                    for resolution in missing_resolutions:
                         generated += 1
-                        self.update_series_thumbnail(series_books, thumbnail)
+                        self.create_series_thumbnail(series, series_books, resolution)
 
-                    elif not self.cache.get_cache_file_exists(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS):
-                        generated += 1
-                        self.update_series_thumbnail(series_books, thumbnail)
+                    # Replace outdated or missing thumbnails
+                    for thumbnail in series_thumbnails:
+                        if any(book.last_modified > thumbnail.generated_at for book in series_books):
+                            generated += 1
+                            self.update_series_thumbnail(series_books, thumbnail)
 
-                # Increment the progress
-                self.progress = (1.0 / count) * i
+                        elif not self.cache.get_cache_file_exists(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS):
+                            generated += 1
+                            self.update_series_thumbnail(series_books, thumbnail)
 
-                if generated > 0:
-                    total_generated += generated
-                    self.message = N_('Generated {0} series thumbnails').format(total_generated)
+                    # Increment the progress
+                    self.progress = (1.0 / count) * i
 
-                # Check if job has been cancelled or ended
-                if self.stat == STAT_CANCELLED:
-                    self.log.info(f'GenerateSeriesThumbnails task has been cancelled.')
-                    return
+                    if generated > 0:
+                        total_generated += generated
+                        self.message = N_('Generated {0} series thumbnails').format(total_generated)
 
-                if self.stat == STAT_ENDED:
-                    self.log.info(f'GenerateSeriesThumbnails task has been ended.')
-                    return
+                    # Check if job has been cancelled or ended
+                    if self.stat == STAT_CANCELLED:
+                        self.log.info(f'GenerateSeriesThumbnails task has been cancelled.')
+                        return
 
-            if total_generated == 0:
-                self.self_cleanup = True
+                    if self.stat == STAT_ENDED:
+                        self.log.info(f'GenerateSeriesThumbnails task has been ended.')
+                        return
 
-        self._handleSuccess()
-        self.app_db_session.remove()
+                if total_generated == 0:
+                    self.self_cleanup = True
 
-    def get_series_with_four_plus_books(self):
-        return self.calibre_db.session \
+            self._handleSuccess()
+            self.app_db_session.remove()
+
+    def get_series_with_four_plus_books(self, calibre_db):
+        return calibre_db.session \
             .query(db.Series) \
             .join(db.books_series_link) \
             .join(db.Books) \
@@ -314,8 +318,8 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
             .having(func.count('book_series_link') > 3) \
             .all()
 
-    def get_series_books(self, series_id):
-        return self.calibre_db.session \
+    def get_series_books(self, series_id, calibre_db):
+        return calibre_db.session \
             .query(db.Books) \
             .join(db.books_series_link) \
             .join(db.Series) \
@@ -461,13 +465,15 @@ class TaskClearCoverThumbnailCache(CalibreTask):
 
     def run(self, worker_thread):
         if self.app_db_session:
-            if self.book_id == 0:  # delete superfluous thumbnails
-                calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
-                thumbnails = (calibre_db.session.query(ub.Thumbnail)
-                              .join(db.Books, ub.Thumbnail.entity_id == db.Books.id, isouter=True)
-                              .filter(db.Books.id==None)
-                              .all())
-                calibre_db.session.close()
+            # delete superfluous thumbnails
+            if self.book_id == 0:
+                with app.app_context():
+                    calibre_db = db.CalibreDB(app)
+                    thumbnails = (calibre_db.session.query(ub.Thumbnail)
+                                  .join(db.Books, ub.Thumbnail.entity_id == db.Books.id, isouter=True)
+                                  .filter(db.Books.id==None)
+                                  .all())
+                    # calibre_db.session.close()
             elif self.book_id > 0:  # make sure single book is selected
                 thumbnails = self.get_thumbnails_for_book(self.book_id)
             if self.book_id < 0:

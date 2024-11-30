@@ -29,8 +29,9 @@ NO_JPEG_EXTENSIONS = ['.png', '.webp', '.bmp']
 COVER_EXTENSIONS = ['.png', '.webp', '.bmp', '.jpg', '.jpeg']
 
 
-def cover_processing(tmp_file_name, img, extension):
-    tmp_cover_name = os.path.join(os.path.dirname(tmp_file_name), 'cover.jpg')
+def cover_processing(tmp_file_path, img, extension):
+    # tmp_cover_name = os.path.join(os.path.dirname(tmp_file_name), 'cover.jpg')
+    tmp_cover_name = tmp_file_path + '.jpg'
     if extension in NO_JPEG_EXTENSIONS:
         if use_IM:
             with Image(blob=img) as imgc:
