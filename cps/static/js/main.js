@@ -726,20 +726,20 @@ $(function() {
             url: getPath() + "/ajax/simulatedbchange",
             data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
-                if ( data.change ) {
-                    if ( data.valid ) {
+                if ( !data.valid ) {
+                    $("#InvalidDialog").modal('show');
+                }
+                else{
+                    if ( data.change ) {
                         confirmDialog(
                             "db_submit",
                             "GeneralChangeModal",
                             0,
                             changeDbSettings
                         );
-                    }
-                    else {
-                        $("#InvalidDialog").modal('show');
-                    }
-                } else {
+                    } else {
                     changeDbSettings();
+                   }
                 }
             }
         });

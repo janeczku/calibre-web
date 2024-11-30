@@ -237,7 +237,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
     if use_generic_pdf_cover:
         return None
     try:
-        cover_file_name = os.path.join(os.path.dirname(tmp_file_path), "cover.jpg")
+        cover_file_name = tmp_file_path + ".jpg"
         with Image() as img:
             img.options["pdf:use-cropbox"] = "true"
             img.read(filename=tmp_file_path + '[0]', resolution=150)
@@ -245,7 +245,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
             if img.alpha_channel:
                 img.alpha_channel = 'remove'
                 img.background_color = Color('white')
-            img.save(filename=os.path.join(tmp_dir, cover_file_name))
+            img.save(filename=cover_file_name)
         return cover_file_name
     except PolicyError as ex:
         log.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)

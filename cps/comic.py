@@ -90,7 +90,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
                 if len(ext) > 1:
                     extension = ext[1].lower()
                     if extension in cover.COVER_EXTENSIONS:
-                        cover_data = cf.read([name])
+                        cover_data = cf.read(name)
                         break
         except Exception as ex:
             log.error('Rarfile failed with error: {}'.format(ex))
@@ -109,13 +109,13 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
     return cover_data, extension
 
 
-def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
+def _extract_cover(tmp_file_path, original_file_extension, rar_executable):
     cover_data = extension = None
     if use_comic_meta:
         try:
-            archive = ComicArchive(tmp_file_name, rar_exe_path=rar_executable)
+            archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
         except TypeError:
-            archive = ComicArchive(tmp_file_name)
+            archive = ComicArchive(tmp_file_path)
         name_list = archive.getPageNameList if hasattr(archive, "getPageNameList") else archive.get_page_name_list
         for index, name in enumerate(name_list()):
             ext = os.path.splitext(name)
@@ -126,8 +126,8 @@ def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
                     cover_data = get_page(index)
                     break
     else:
-        cover_data, extension = _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_executable)
-    return cover.cover_processing(tmp_file_name, cover_data, extension)
+        cover_data, extension = _extract_cover_from_archive(original_file_extension, tmp_file_path, rar_executable)
+    return cover.cover_processing(tmp_file_path, cover_data, extension)
 
 
 def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable, no_cover_processing):

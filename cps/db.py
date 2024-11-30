@@ -23,7 +23,7 @@ import json
 from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
-from weakref import WeakSet
+# from weakref import WeakSet
 from uuid import uuid4
 
 from sqlite3 import OperationalError as sqliteOperationalError
@@ -45,7 +45,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale
-from flask import flash
+from flask import flash, g, Flask
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
@@ -528,34 +528,25 @@ class AlchemyEncoder(json.JSONEncoder):
 
 
 class CalibreDB:
-    _init = False
-    engine = None
     config = None
-    session_factory = None
-    # This is a WeakSet so that references here don't keep other CalibreDB
-    # instances alive once they reach the end of their respective scopes
-    instances = WeakSet()
+    config_calibre_dir = None
+    app_db_path = None
 
-    def __init__(self, expire_on_commit=True, init=False):
+    def __init__(self, _app: Flask=None):  # , expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
         """
-        self.session = None
-        if init:
-            self.init_db(expire_on_commit)
+        self.Session = None
+        #if init:
+        #    self.init_db(expire_on_commit)
+        if _app is not None and not _app._got_first_request:
+            self.init_app(_app)
 
-    def init_db(self, expire_on_commit=True):
-        if self._init:
-            self.init_session(expire_on_commit)
-
-        self.instances.add(self)
-
-    def init_session(self, expire_on_commit=True):
-        self.session = self.session_factory()
-        self.session.expire_on_commit = expire_on_commit
-        self.create_functions(self.config)
+    def init_app(self, _app):
+        _app.teardown_appcontext(self.teardown)
 
     @classmethod
     def setup_db_cc_classes(cls, cc):
+        global cc_classes
         cc_ids = []
         books_custom_column_links = {}
         for row in cc:
@@ -623,8 +614,6 @@ class CalibreDB:
                                      secondary=books_custom_column_links[cc_id[0]],
                                      backref='books'))
 
-        return cc_classes
-
     @classmethod
     def check_valid_db(cls, config_calibre_dir, app_db_path, config_calibre_uuid):
         if not config_calibre_dir:
@@ -644,7 +633,6 @@ class CalibreDB:
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
                 database_uuid = local_session().query(Library_Id).one_or_none()
-                # local_session.dispose()
 
             check_engine.connect()
             db_change = config_calibre_uuid != database_uuid.uuid
@@ -652,13 +640,30 @@ class CalibreDB:
             return False, False
         return True, db_change
 
+    def teardown(self, exception):
+        ctx = g.get("lib_sql")
+        if ctx:
+            ctx.close()
+
+    @property
+    def session(self):
+        # connect or get active connection
+        if not g.get("lib_sql"):
+            g.lib_sql = self.connect()
+        return g.lib_sql
+
     @classmethod
-    def update_config(cls, config):
+    def update_config(cls, config, config_calibre_dir, app_db_path):
         cls.config = config
+        cls.config_calibre_dir = config_calibre_dir
+        cls.app_db_path = app_db_path
+
+
+    def connect(self):
+        return self.setup_db(self.config_calibre_dir, self.app_db_path)
 
     @classmethod
     def setup_db(cls, config_calibre_dir, app_db_path):
-        cls.dispose()
 
         if not config_calibre_dir:
             cls.config.invalidate()
@@ -670,17 +675,17 @@ class CalibreDB:
             return None
 
         try:
-            cls.engine = create_engine('sqlite://',
+            engine = create_engine('sqlite://',
                                        echo=False,
                                        isolation_level="SERIALIZABLE",
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
-            with cls.engine.begin() as connection:
+            with engine.begin() as connection:
                 connection.execute(text('PRAGMA cache_size = 10000;'))
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
 
-            conn = cls.engine.connect()
+            conn = engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
@@ -696,13 +701,10 @@ class CalibreDB:
                 log.error_or_exception(e)
                 return None
 
-        cls.session_factory = scoped_session(sessionmaker(autocommit=False,
-                                                          autoflush=True,
-                                                          bind=cls.engine, future=True))
-        for inst in cls.instances:
-            inst.init_session()
+        return scoped_session(sessionmaker(autocommit=False,
+                                           autoflush=False,
+                                           bind=engine, future=True))
 
-        cls._init = True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
@@ -1066,43 +1068,11 @@ class CalibreDB:
         except sqliteOperationalError:
             pass
 
-    @classmethod
-    def dispose(cls):
-        # global session
-
-        for inst in cls.instances:
-            old_session = inst.session
-            inst.session = None
-            if old_session:
-                try:
-                    old_session.close()
-                except Exception:
-                    pass
-                if old_session.bind:
-                    try:
-                        old_session.bind.dispose()
-                    except Exception:
-                        pass
-
-        for attr in list(Books.__dict__.keys()):
-            if attr.startswith("custom_column_"):
-                setattr(Books, attr, None)
-
-        for db_class in cc_classes.values():
-            Base.metadata.remove(db_class.__table__)
-        cc_classes.clear()
-
-        for table in reversed(Base.metadata.sorted_tables):
-            name = table.key
-            if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
-                if table is not None:
-                    Base.metadata.remove(table)
-
     def reconnect_db(self, config, app_db_path):
-        self.dispose()
-        self.engine.dispose()
+        # self.dispose()
+        # self.engine.dispose()
         self.setup_db(config.config_calibre_dir, app_db_path)
-        self.update_config(config)
+        self.update_config(config, config.config_calibre_dir, app_db_path)
 
 
 def lcase(s):
