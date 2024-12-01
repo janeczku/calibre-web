@@ -43,7 +43,7 @@ def hide_console_windows():
 
 if __name__ == '__main__':
     if os.name == "nt":
-        pass # hide_console_windows()
+        hide_console_windows()
     main()
 
 
