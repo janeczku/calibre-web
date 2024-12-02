@@ -210,13 +210,13 @@ class TaskConvert(CalibreTask):
                 else:
                     error_message = N_('%(format)s format not found on disk', format=format_new_ext.upper())
             local_db.session.close()
-            log.info("ebook converter failed with error while converting book")
-            if not error_message:
-                error_message = N_('Ebook converter failed with unknown error')
-            else:
-                log.error(error_message)
-            self._handleError(error_message)
-            return
+        log.info("ebook converter failed with error while converting book")
+        if not error_message:
+            error_message = N_('Ebook converter failed with unknown error')
+        else:
+            log.error(error_message)
+        self._handleError(error_message)
+        return
 
     def _convert_kepubify(self, file_path, format_old_ext, format_new_ext):
         if config.config_embed_metadata and config.config_binariesdir:

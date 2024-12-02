@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-29 20:17:45</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-12-06 17:23:58</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-30 03:36:53</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-12-07 00:45:19</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 12 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 11 min</p>
         </div>
       </div>
       </div>
@@ -1023,13 +1023,13 @@
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="passClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
+        <td class="text-center">18</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 18)">Detail</a>
         </td>
@@ -1172,11 +1172,11 @@
     
     
     
-        <tr id='st12.16' class='none bg-warning'>
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
-            <td colspan='6' align='center'>SKIP</td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2074,11 +2074,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">16</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2205,11 +2205,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.14' class='hiddenRow bg-success'>
+        <tr id="ft19.14" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_rating</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.14')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 632, in test_edit_rating
+    self.assertEqual(4, values[&#39;rating&#39;])
+AssertionError: 4 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2241,11 +2261,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt19.18' class='hiddenRow bg-success'>
+        <tr id="ft19.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 976, in test_watch_metadata
+    self.assertNotIn(&#39;series&#39;, book)
+AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1733511155&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5801,10 +5841,10 @@ IndexError: list index out of range</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>523</td>
-        <td>514</td>
-        <td>0</td>
+        <td>513</td>
+        <td>2</td>
         <td>1</td>
-        <td>8</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -6348,7 +6388,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(514, 0, 1, 8);
+    drawCircle(513, 2, 1, 7);
     showCase(5);
 </script>
 
