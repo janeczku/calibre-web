@@ -34,6 +34,15 @@ except ImportError as e:
     error = "Cannot import python-magic, checking uploaded file metadata will not work: {}".format(e)
 
 
+def get_mimetype(ext):
+    # overwrite some mimetypes for proper file detection
+    mimes = {".fb2": "text/xml",
+             ".cbz": "application/zip",
+             ".cbr": "application/x-rar"
+             }
+    return mimes.get(ext, mimetypes.types_map[ext])
+
+
 def get_temp_dir():
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
     if not os.path.isdir(tmp_dir):
@@ -54,7 +63,7 @@ def validate_mime_type(file_buffer, allowed_extensions):
     allowed_mimetypes = list()
     for x in allowed_extensions:
         try:
-            allowed_mimetypes.append(mimetypes.types_map["." + x])
+            allowed_mimetypes.append(get_mimetype("." + x))
         except KeyError:
             log.error("Unkown mimetype for Extension: {}".format(x))
     tmp_mime_type = mime.from_buffer(file_buffer.read())
