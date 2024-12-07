@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2024-11-23 20:45:47</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2024-12-06 17:23:58</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-11-24 03:58:38</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2024-12-07 00:45:19</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 6 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 11 min</p>
         </div>
       </div>
       </div>
@@ -1023,15 +1023,15 @@
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="passClass">
         <td>TestEditAdditionalBooks</td>
-        <td class="text-center">20</td>
+        <td class="text-center">18</td>
         <td class="text-center">18</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 20)">Detail</a>
+            <a onclick="showClassDetail('c12', 18)">Detail</a>
         </td>
     </tr>
 
@@ -1172,51 +1172,16 @@
     
     
     
-        <tr id="st12.16" class="none bg-warning">
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_writeonly_calibre_database</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.16')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_st12.16" class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st12.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Not implemented</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt12.17' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_writeonly_path</div>
+                <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='st12.18' class='none bg-warning'>
-            <td>
-                <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
-            </td>
-            <td colspan='6' align='center'>SKIP</td>
-        </tr>
-    
-    
-    
-        <tr id='pt12.19' class='hiddenRow bg-success'>
+        <tr id='pt12.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
@@ -1225,7 +1190,7 @@
     
     
     
-        <tr id='pt12.20' class='hiddenRow bg-success'>
+        <tr id='pt12.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
@@ -2065,12 +2030,12 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="errorClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2079,28 +2044,26 @@
 
     
     
-        <tr id="ft18.1" class="none bg-danger">
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 111, in test_load_metadata
-    self.assertEqual(&#39;https://comicvine.gamespot.com/&#39;, results[cv][&#39;source&#39;])
-AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon.com/&#39;
-- https://comicvine.gamespot.com/
-+ https://amazon.com/</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 99, in test_load_metadata
+    if results[cont][&#39;source&#39;] == &#39;https://comicvine.gamespot.com/&#39;:
+IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2114,8 +2077,8 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
     <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">17</td>
-        <td class="text-center">1</td>
+        <td class="text-center">16</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2259,9 +2222,9 @@ AssertionError: &#39;https://comicvine.gamespot.com/&#39; != &#39;https://amazon
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 636, in test_edit_rating
-    self.assertEqual(1, len(books[1]))
-AssertionError: 1 != 0</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 632, in test_edit_rating
+    self.assertEqual(4, values[&#39;rating&#39;])
+AssertionError: 4 != 0</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2298,11 +2261,31 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id='pt19.18' class='hiddenRow bg-success'>
+        <tr id="ft19.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 976, in test_watch_metadata
+    self.assertNotIn(&#39;series&#39;, book)
+AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1733511155&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2374,12 +2357,12 @@ AssertionError: 1 != 0</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestSSL</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
+        <td class="text-center">7</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c22', 7)">Detail</a>
@@ -2433,31 +2416,11 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id="et22.6" class="none bg-info">
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_email_limit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et22.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et22.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 134, in test_email_limit
-    self.check_element_on_page((By.ID, &#39;edit_cancel&#39;)).click()
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3098,12 +3061,12 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestSecurity</td>
         <td class="text-center">5</td>
-        <td class="text-center">4</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c33', 5)">Detail</a>
@@ -3139,44 +3102,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id="et33.4" class="none bg-info">
+        <tr id='pt33.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_redis_backend</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et33.4')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et33.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et33.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_limiter.py&#34;, line 87, in test_redis_backend
-    self.restart_calibre_web()
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 459, in restart_calibre_web
-    cls.driver.find_element(By.ID, &#39;admin_restart&#39;).click()
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 830, in find_element
-    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 440, in execute
-    self.error_handler.check_response(response)
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.10/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 245, in check_response
-    raise exception_class(message, screen, stacktrace)
-selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;admin_restart&#34;]
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:193:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:511:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5910,11 +5840,11 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>525</td>
-        <td>512</td>
+        <td>523</td>
+        <td>513</td>
         <td>2</td>
-        <td>2</td>
-        <td>9</td>
+        <td>1</td>
+        <td>7</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -6044,7 +5974,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>netifaces-plus</th>
-              <td>0.12.3</td>
+              <td>0.12.4</td>
               <td>Basic</td>
             </tr>
           
@@ -6134,7 +6064,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6164,7 +6094,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6194,7 +6124,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6224,7 +6154,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6272,7 +6202,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6308,7 +6238,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6350,7 +6280,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6380,7 +6310,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
           
             <tr>
               <th>PyDrive2</th>
-              <td>1.21.1</td>
+              <td>1.21.3</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6458,7 +6388,7 @@ dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
 </div>
 
 <script>
-    drawCircle(512, 2, 2, 9);
+    drawCircle(513, 2, 1, 7);
     showCase(5);
 </script>
 

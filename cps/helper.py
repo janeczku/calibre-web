@@ -30,7 +30,7 @@ import requests
 import unidecode
 from uuid import uuid4
 
-from flask import send_from_directory, make_response, abort, url_for, Response
+from flask import send_from_directory, make_response, abort, url_for, Response, request
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
@@ -974,7 +974,8 @@ def do_download_file(book, book_format, client, data, headers):
     # ToDo Check headers parameter
     for element in headers:
         response.headers[element[0]] = element[1]
-    log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
+    log.info('Downloading file: \'%s\' by %s - %s', format(os.path.join(filename, book_name + "." + book_format)),
+             current_user.name, request.headers.get('X-Forwarded-For', request.remote_addr))
     return response
 
 
