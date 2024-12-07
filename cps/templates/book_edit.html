@@ -78,27 +78,6 @@
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" autocomplete="off" name="authors" id="authors" value="{{' & '.join(authors)}}">
     </div>
-
-    <div class="form-group">
-      <label for="comments">{{_('Description')}}</label>
-      <textarea class="form-control" name="comments" id="comments" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
-    </div>
-
-    <div class="form-group">
-      <label>{{_('Identifiers')}}</label>
-      <table class="table" id="identifier-table"><tbody>
-	{% for identifier in book.identifiers %}
-	<tr>
-      <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
-	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
-	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
-	</tr>
-	{% endfor %}
-      </tbody>
-      </table>
-      <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
-    </div>
-
     <div class="form-group">
       <label for="tags">{{_('Tags')}}</label>
       <input type="text" class="form-control typeahead" autocomplete="off"  name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
@@ -111,21 +90,6 @@
       <label for="series_index">{{_('Series ID')}}</label>
       <input type="number" step="0.01" min="0" placeholder="1" class="form-control" name="series_index" id="series_index" value="{{book.series_index|formatfloat(2)}}">
     </div>
-    <div class="form-group">
-      <label for="rating">{{_('Rating')}}</label>
-      <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
-    </div>
-    {% if current_user.role_upload() and g.allow_upload %}
-    <div class="form-group">
-      <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
-      <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
-    </div>
-      <div class="form-group" aria-label="Upload cover from local drive">
-        <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
-        <div class="upload-cover-input-text" id="upload-cover"></div>
-        <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
-      </div>
-    {% endif %}
     <label for="pubdate">{{_('Published Date')}}</label>
     <div class="form-group input-group">
        <input type="text" class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
@@ -142,6 +106,39 @@
       <label for="languages">{{_('Language')}}</label>
       <input type="text" class="form-control typeahead" autocomplete="off" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
     </div>
+    <div class="form-group">
+      <label for="rating">{{_('Rating')}}</label>
+      <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
+    </div>
+      <div class="form-group">
+      <label for="comments">{{_('Description')}}</label>
+      <textarea class="form-control" name="comments" id="comments" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
+    </div>
+    <div class="form-group">
+      <label>{{_('Identifiers')}}</label>
+      <table class="table" id="identifier-table"><tbody>
+	{% for identifier in book.identifiers %}
+	<tr>
+      <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
+	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
+	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
+	</tr>
+	{% endfor %}
+      </tbody>
+      </table>
+      <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
+    </div>
+    {% if current_user.role_upload() and g.allow_upload %}
+    <div class="form-group">
+      <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
+      <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
+    </div>
+      <div class="form-group" aria-label="Upload cover from local drive">
+        <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
+        <div class="upload-cover-input-text" id="upload-cover"></div>
+        <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
+      </div>
+    {% endif %}
       {% if cc|length > 0 %}
         {% for c in cc %}
           <div class="form-group">
