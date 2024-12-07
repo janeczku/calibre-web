@@ -28,11 +28,11 @@ from shutil import copyfile
 from markupsafe import escape, Markup  # dependency of flask
 from functools import wraps
 
-from flask import Blueprint, request, flash, redirect, url_for, abort, Response
+from flask import Blueprint, request, flash, redirect, url_for, abort, jsonify, make_response, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
-from .cw_login import current_user, login_required
+from .cw_login import current_user
 from sqlalchemy.exc import OperationalError, IntegrityError, InterfaceError
 from sqlalchemy.orm.exc import StaleDataError
 from sqlalchemy.sql.expression import func
@@ -76,7 +76,7 @@ def edit_required(f):
 @editbook.route("/ajax/delete/<int:book_id>", methods=["POST"])
 @user_login_required
 def delete_book_from_details(book_id):
-    return Response(delete_book_from_table(book_id, "", True), mimetype='application/json')
+    return delete_book_from_table(book_id, "", True) # , mimetype='application/json')
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""}, methods=["POST"])
@@ -158,16 +158,16 @@ def upload():
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
                         resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
-                        return Response(json.dumps(resp), mimetype='application/json')
+                        return make_response(jsonify(resp))
                     else:
                         resp = {"location": url_for('web.show_book', book_id=book_id)}
-                        return Response(json.dumps(resp), mimetype='application/json')
+                        return make_response(jsonify(resp))
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: {}".format(e))
                 flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
                       category="error")
-        return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+        return make_response(jsonify(location=url_for("web.index")))
     abort(404)
 
 
@@ -206,7 +206,7 @@ def table_get_custom_enum(c_id):
     ret.append({'value': "", 'text': ""})
     for idx, en in enumerate(cc.get_display_dict()['enum_values']):
         ret.append({'value': en, 'text': en})
-    return json.dumps(ret)
+    return make_response(jsonify(ret))
 
 
 @editbook.route("/ajax/editbooks/<param>", methods=['POST'])
@@ -221,68 +221,54 @@ def edit_list_book(param):
     try:
         if param == 'series_index':
             edit_book_series_index(vals['value'], book)
-            ret = Response(json.dumps({'success': True, 'newValue': book.series_index}), mimetype='application/json')
+            ret = make_response(jsonify(success=True, newValue=book.series_index))
         elif param == 'tags':
             edit_book_tags(vals['value'], book)
-            ret = Response(json.dumps({'success': True, 'newValue': ', '.join([tag.name for tag in book.tags])}),
-                           mimetype='application/json')
+            ret = make_response(jsonify(success=True, newValue=', '.join([tag.name for tag in book.tags])))
         elif param == 'series':
             edit_book_series(vals['value'], book)
-            ret = Response(json.dumps({'success': True, 'newValue':  ', '.join([serie.name for serie in book.series])}),
-                           mimetype='application/json')
+            ret = make_response(jsonify(success=True, newValue=', '.join([serie.name for serie in book.series])))
         elif param == 'publishers':
             edit_book_publisher(vals['value'], book)
-            ret = Response(json.dumps({'success': True,
-                                       'newValue': ', '.join([publisher.name for publisher in book.publishers])}),
-                           mimetype='application/json')
+            ret = make_response(jsonify(success=True,
+                                       newValue=', '.join([publisher.name for publisher in book.publishers])))
         elif param == 'languages':
             invalid = list()
             edit_book_languages(vals['value'], book, invalid=invalid)
             if invalid:
-                ret = Response(json.dumps({'success': False,
-                                           'msg': 'Invalid languages in request: {}'.format(','.join(invalid))}),
-                               mimetype='application/json')
+                ret = make_response(jsonify(success=False,
+                                           msg='Invalid languages in request: {}'.format(','.join(invalid))))
             else:
                 lang_names = list()
                 for lang in book.languages:
                     lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
-                ret = Response(json.dumps({'success': True, 'newValue':  ', '.join(lang_names)}),
-                               mimetype='application/json')
+                ret = make_response(jsonify(success=True, newValue=', '.join(lang_names)))
         elif param == 'author_sort':
             book.author_sort = vals['value']
-            ret = Response(json.dumps({'success': True, 'newValue':  book.author_sort}),
-                           mimetype='application/json')
+            ret = make_response(jsonify(success=True, newValue=book.author_sort))
         elif param == 'title':
             sort_param = book.sort
             if handle_title_on_edit(book, vals.get('value', "")):
                 rename_error = helper.update_dir_structure(book.id, config.get_book_path())
                 if not rename_error:
-                    ret = Response(json.dumps({'success': True, 'newValue':  book.title}),
-                                   mimetype='application/json')
+                    ret = make_response(jsonify(success=True, newValue=book.title))
                 else:
-                    ret = Response(json.dumps({'success': False,
-                                               'msg': rename_error}),
-                                   mimetype='application/json')
+                    ret = make_response(jsonify(success=False, msg=rename_error))
         elif param == 'sort':
             book.sort = vals['value']
-            ret = Response(json.dumps({'success': True, 'newValue':  book.sort}),
-                           mimetype='application/json')
+            ret = make_response(jsonify(success=True,newValue=book.sort))
         elif param == 'comments':
             edit_book_comments(vals['value'], book)
-            ret = Response(json.dumps({'success': True, 'newValue':  book.comments[0].text}),
-                           mimetype='application/json')
+            ret = make_response(jsonify(success=True, newValue=book.comments[0].text))
         elif param == 'authors':
             input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == "true")
             rename_error = helper.update_dir_structure(book.id, config.get_book_path(), input_authors[0])
             if not rename_error:
-                ret = Response(json.dumps({
-                    'success': True,
-                    'newValue':  ' & '.join([author.replace('|', ',') for author in input_authors])}),
-                    mimetype='application/json')
+                ret = make_response(jsonify(
+                    success=True,
+                    newValue=' & '.join([author.replace('|', ',') for author in input_authors])))
             else:
-                ret = Response(json.dumps({'success': False,
-                                           'msg': rename_error}),
-                               mimetype='application/json')
+                ret = make_response(jsonify(success=False, msg=rename_error))
         elif param == 'is_archived':
             is_archived = change_archived_books(book.id, vals['value'] == "True",
                                                 message="Book {} archive bit set to: {}".format(book.id, vals['value']))
@@ -301,8 +287,7 @@ def edit_list_book(param):
             if vals['value'] in ["True", "False"]:
                 ret = ""
             else:
-                ret = Response(json.dumps({'success': True, 'newValue': vals['value']}),
-                               mimetype='application/json')
+                ret = make_response(jsonify(success=True, newValue=vals['value']))
         else:
             return _("Parameter not found"), 400
         book.last_modified = datetime.now(timezone.utc)
@@ -315,9 +300,8 @@ def edit_list_book(param):
     except (OperationalError, IntegrityError, StaleDataError) as e:
         calibre_db.session.rollback()
         log.error_or_exception("Database error: {}".format(e))
-        ret = Response(json.dumps({'success': False,
-                                   'msg': 'Database error: {}'.format(e.orig if hasattr(e, "orig") else e)}),
-                       mimetype='application/json')
+        ret = make_response(jsonify(success=False,
+                                   msg='Database error: {}'.format(e.orig if hasattr(e, "orig") else e)))
     return ret
 
 
@@ -328,13 +312,13 @@ def get_sorted_entry(field, bookid):
         book = calibre_db.get_filtered_book(bookid)
         if book:
             if field == 'title':
-                return json.dumps({'sort': book.sort})
+                return make_response(jsonify(sort=book.sort))
             elif field == 'authors':
-                return json.dumps({'author_sort': book.author_sort})
+                return make_response(jsonify(author_sort=book.author_sort))
             if field == 'sort':
-                return json.dumps({'sort': book.title})
+                return make_response(jsonify(sort=book.title))
             if field == 'author_sort':
-                return json.dumps({'authors': " & ".join([a.name for a in calibre_db.order_authors([book])])})
+                return make_response(jsonify(authors=" & ".join([a.name for a in calibre_db.order_authors([book])])))
     return ""
 
 
@@ -350,7 +334,7 @@ def simulate_merge_list_book():
             from_book = []
             for book_id in vals:
                 from_book.append(calibre_db.get_book(book_id).title)
-            return json.dumps({'to': to_book, 'from': from_book})
+            return make_response(jsonify({'to': to_book, 'from': from_book}))
     return ""
 
 
@@ -388,7 +372,7 @@ def merge_list_book():
                                                         element.uncompressed_size,
                                                         to_name))
                     delete_book_from_table(from_book.id, "", True)
-                    return json.dumps({'success': True})
+                    return make_response(jsonify(success=True))
     return ""
 
 
@@ -428,11 +412,11 @@ def table_xchange_author_title():
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: {}".format(e))
-                return json.dumps({'success': False})
+                return make_response(jsonify(success=False))
 
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
-        return json.dumps({'success': True})
+        return make_response(jsonify(success=True))
     return ""
 
 
@@ -560,7 +544,7 @@ def do_edit_book(book_id, upload_formats=None):
 
         if upload_formats:
             resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
-            return Response(json.dumps(resp), mimetype='application/json')
+            return make_response(jsonify(resp))
 
         if "detail_view" in to_save:
             return redirect(url_for('web.show_book', book_id=book.id))
@@ -769,17 +753,17 @@ def file_handling_on_upload(requested_file):
         if config.config_check_extensions and allowed_extensions != ['']:
             if not validate_mime_type(requested_file, allowed_extensions):
                 flash(_("File type isn't allowed to be uploaded to this server"), category="error")
-                return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+                return None, make_response(jsonify(location=url_for("web.index")))
     if '.' in requested_file.filename:
         file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
         if file_ext not in allowed_extensions and '' not in allowed_extensions:
             flash(
                 _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                   ext=file_ext), category="error")
-            return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+            return None, make_response(jsonify(location=url_for("web.index")))
     else:
         flash(_('File to be uploaded must have an extension'), category="error")
-        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+        return None, make_response(jsonify(location=url_for("web.index")))
 
     # extract metadata from file
     try:
@@ -788,7 +772,7 @@ def file_handling_on_upload(requested_file):
         log.error("File %s could not saved to temp dir", requested_file.filename)
         flash(_("File %(filename)s could not saved to temp dir",
                 filename=requested_file.filename), category="error")
-        return None, Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
+        return None, make_response(jsonify(location=url_for("web.index")))
     return meta, None
 
 
@@ -860,7 +844,7 @@ def delete_whole_book(book_id, book):
 def render_delete_book_result(book_format, json_response, warning, book_id, location=""):
     if book_format:
         if json_response:
-            return json.dumps([warning, {"location": url_for("edit-book.show_edit_book", book_id=book_id),
+            return jsonify([warning, {"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                          "type": "success",
                                          "format": book_format,
                                          "message": _('Book Format Successfully Deleted')}])
@@ -869,7 +853,7 @@ def render_delete_book_result(book_format, json_response, warning, book_id, loca
             return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
     else:
         if json_response:
-            return json.dumps([warning, {"location": get_redirect_location(location, "web.index"),
+            return jsonify([warning, {"location": get_redirect_location(location, "web.index"),
                                          "type": "success",
                                          "format": book_format,
                                          "message": _('Book Successfully Deleted')}])
@@ -887,7 +871,7 @@ def delete_book_from_table(book_id, book_format, json_response, location=""):
                 result, error = helper.delete_book(book, config.get_book_path(), book_format=book_format.upper())
                 if not result:
                     if json_response:
-                        return json.dumps([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
+                        return jsonify([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                             "type": "danger",
                                             "format": "",
                                             "message": error}])
@@ -914,7 +898,7 @@ def delete_book_from_table(book_id, book_format, json_response, location=""):
                 log.error_or_exception(ex)
                 calibre_db.session.rollback()
                 if json_response:
-                    return json.dumps([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
+                    return jsonify([{"location": url_for("edit-book.show_edit_book", book_id=book_id),
                                         "type": "danger",
                                         "format": "",
                                         "message": ex}])
@@ -928,7 +912,7 @@ def delete_book_from_table(book_id, book_format, json_response, location=""):
         return render_delete_book_result(book_format, json_response, warning, book_id, location)
     message = _("You are missing permissions to delete books")
     if json_response:
-        return json.dumps({"location": url_for("edit-book.show_edit_book", book_id=book_id),
+        return jsonify({"location": url_for("edit-book.show_edit_book", book_id=book_id),
                            "type": "danger",
                            "format": "",
                            "message": message})

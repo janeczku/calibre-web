@@ -21,10 +21,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-import json
+# import json
 from urllib.parse import unquote_plus
 
-from flask import Blueprint, request, render_template, make_response, abort, Response, g
+from flask import Blueprint, request, render_template, make_response, abort, g, jsonify
 from flask_babel import get_locale
 from flask_babel import gettext as _
 
@@ -451,7 +451,7 @@ def get_database_stats():
     stat['authors'] = calibre_db.session.query(db.Authors).count()
     stat['categories'] = calibre_db.session.query(db.Tags).count()
     stat['series'] = calibre_db.session.query(db.Series).count()
-    return Response(json.dumps(stat), mimetype="application/json")
+    return make_response(jsonify(stat))
 
 
 @opds.route("/opds/thumb_240_240/<book_id>")
