@@ -314,7 +314,7 @@ def edit_book_read_status(book_id, read_status=None):
                 else:
                     book.read_status = ub.ReadBook.STATUS_FINISHED
             else:
-                book.read_status = ub.ReadBook.STATUS_FINISHED if read_status else ub.ReadBook.STATUS_UNREAD
+                book.read_status = ub.ReadBook.STATUS_FINISHED if read_status == True else ub.ReadBook.STATUS_UNREAD
         else:
             read_book = ub.ReadBook(user_id=current_user.id, book_id=book_id)
             read_book.read_status = ub.ReadBook.STATUS_FINISHED
