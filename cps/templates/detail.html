@@ -88,7 +88,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                                     {% for format in entry.reader_list %}
                                         <li><a target="_blank"
-                                               href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
+                                               href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }} ({{ entry.reader_list_sizes[format]|filesizeformat }})</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -97,7 +97,7 @@
                                    href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.reader_list[0]) }}"
                                    id="readbtn" class="btn btn-primary" role="button"><span
                                         class="glyphicon glyphicon-book"></span> {{ _('Read in Browser') }}
-                                    - {{ entry.reader_list[0] }}</a>
+                                    - {{ entry.reader_list[0] }} ({{ entry.reader_list_sizes[entry.reader_list[0]]|filesizeformat }})</a>
                             {% endif %}
                         </div>
                     {% endif %}
