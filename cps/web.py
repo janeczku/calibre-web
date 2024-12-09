@@ -1581,9 +1581,10 @@ def read_book(book_id, book_format):
         bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                                              ub.Bookmark.book_id == book_id,
                                                              ub.Bookmark.format == book_format.upper())).first()
-    if book_format.lower() == "epub":
-        log.debug("Start epub reader for %d", book_id)
-        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark)
+    if book_format.lower() == "epub" or book_format.lower() == "kepub":
+        log.debug("Start [k]epub reader for %d", book_id)
+        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark,
+                                     book_format=book_format)
     elif book_format.lower() == "pdf":
         log.debug("Start pdf reader for %d", book_id)
         return render_title_template('readpdf.html', pdffile=book_id, title=book.title)
@@ -1643,6 +1644,11 @@ def show_book(book_id):
 
         entry.email_share_list = check_send_to_ereader(entry)
         entry.reader_list = check_read_formats(entry)
+
+        entry.reader_list_sizes = dict()
+        for data in entry.data:
+            if data.format.lower() in entry.reader_list:
+                entry.reader_list_sizes[data.format.lower()] = data.uncompressed_size
 
         entry.audio_entries = []
         for media_format in entry.data:

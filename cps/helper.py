@@ -199,7 +199,7 @@ def check_send_to_ereader(entry):
 # Check if a reader is existing for any of the book formats, if not, return empty list, otherwise return
 # list with supported formats
 def check_read_formats(entry):
-    extensions_reader = {'TXT', 'PDF', 'EPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'}
+    extensions_reader = {'TXT', 'PDF', 'EPUB', 'KEPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'}
     book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):

@@ -70,7 +70,7 @@
     {% endif %}
     {% for format in entry.Books.data %}
     <link rel="http://opds-spec.org/acquisition" href="{{ url_for('opds.opds_download_link', book_id=entry.Books.id, book_format=format.format|lower)}}"
-          length="{{format.uncompressed_size}}" mtime="{{entry.Books.atom_timestamp}}" type="{{format.format|lower|mimetype}}"/>
+          length="{{format.uncompressed_size}}" title="{{format.format}}" mtime="{{entry.Books.atom_timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>
   {% endfor %}
