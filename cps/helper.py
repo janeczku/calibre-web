@@ -307,18 +307,16 @@ def edit_book_read_status(book_id, read_status=None):
     if not config.config_read_column:
         book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
                                                          ub.ReadBook.book_id == book_id)).first()
-        if book:
-            if read_status is None:
-                if book.read_status == ub.ReadBook.STATUS_FINISHED:
-                    book.read_status = ub.ReadBook.STATUS_UNREAD
-                else:
-                    book.read_status = ub.ReadBook.STATUS_FINISHED
-            else:
-                book.read_status = ub.ReadBook.STATUS_FINISHED if read_status == True else ub.ReadBook.STATUS_UNREAD
-        else:
+        if not book:
             read_book = ub.ReadBook(user_id=current_user.id, book_id=book_id)
-            read_book.read_status = ub.ReadBook.STATUS_FINISHED
             book = read_book
+        if read_status is None:
+            if book.read_status == ub.ReadBook.STATUS_FINISHED:
+                book.read_status = ub.ReadBook.STATUS_UNREAD
+            else:
+                book.read_status = ub.ReadBook.STATUS_FINISHED
+        else:
+            book.read_status = ub.ReadBook.STATUS_FINISHED if read_status == True else ub.ReadBook.STATUS_UNREAD
         if not book.kobo_reading_state:
             kobo_reading_state = ub.KoboReadingState(user_id=current_user.id, book_id=book_id)
             kobo_reading_state.current_bookmark = ub.KoboBookmark()

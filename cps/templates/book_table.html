@@ -15,27 +15,28 @@
 {%- endmacro %}
 
 {% macro book_checkbox_row(parameter, show_text, sort) -%}
-<th data-name="{{parameter}}" data-field="{{parameter}}" data-switchable="false"
+<th data-name="{{parameter}}" data-field="{{parameter}}"
     {% if sort %}data-sortable="true" {% endif %}
     data-visible="{{visiblility.get(parameter)}}"
     data-formatter="bookCheckboxFormatter">
     {% if parameter == "is_archived" %}
-        <div class="btn btn-default disabled" id="archive_selected_books" aria-disabled="true">
-          {{_('Archive selected books')}}
+      <div  class="form-check">
+        <div>
+            <input type="radio" class="check_head" data-set="True" data-val="{{ parameter }}" name="options_archive_selected_books" id="false_archive_selected_books" data-name="archive_books" disabled>{{_('Archive selected books')}}
         </div>
-        <br>
-        <div class="btn btn-default disabled" id="unarchive_selected_books" aria-disabled="true">
-          {{_('Unarchive selected books')}}
+        <div>
+            <input type="radio" class="check_head" data-set="False" data-val="{{ parameter }}" name="options_unarchive_selected_books" data-name="archive_books" disabled>{{_('Unarchive selected books')}}
         </div>
-        <br>
+      </div>
     {% elif parameter == "read_status" %}
-        <div class="btn btn-default disabled" id="read_selected_books" aria-disabled="true">
-          {{_('Mark selected books as read')}}
+      <div  class="form-check">
+        <div>
+            <input type="radio" class="check_head" data-set="True" data-val="{{ parameter }}" name="options_read_selected_books" id="false_read_selected_books" data-name="read_books" disabled>{{_('Mark selected books as read')}}
         </div>
-        <br>
-        <div class="btn btn-default disabled" id="unread_selected_books" aria-disabled="true">
-          {{_('Mark selected books as unread')}}</div>
-        <br>
+        <div>
+            <input type="radio" class="check_head" data-set="False" data-val="{{ parameter }}" name="options_unread_selected_books" data-name="read_books" disabled>{{_('Mark selected books as unread')}}</div>
+        </div>
+      </div>
     {% endif %}
     {{show_text}}
 </th>
@@ -55,7 +56,7 @@
           <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">
             {{_('Merge selected books')}}
           </div>
-          <div class="btn btn-default disabled" id="delete_selection" aria-disabled="true">
+          <div class="btn btn-default disabled mass_selection" id="book_delete_selection" aria-disabled="true">
             {{_('Clear selections')}}
           </div>
           <div class="btn btn-default disabled" id="edit_selected_books" aria-disabled="true">
@@ -82,7 +83,7 @@
       <thead>
         <tr>
           {% if current_user.role_edit() %}
-            <th data-field="state" data-checkbox="true" data-sortable="true"></th>
+            <th data-field="state" data-checkbox="true" data-visible="true" data-sortable="true"></th>
           {% endif %}
             <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ text_table_row('title', _('Enter Title'),_('Title'), true, true) }}
@@ -123,9 +124,9 @@
             {% endfor %}
           {% if current_user.role_delete_books() and current_user.role_edit()%}
             <th data-align="right" data-formatter="EbookActions" data-switchable="false">
-                <div class="btn btn-default disabled" id="delete_selected_books" aria-disabled="true">
+                <div><div class="btn btn-default button_head disabled" aria-disabled="true">
                     {{_('Delete selected books')}}
-                </div>
+                </div></div>
                 <br>
                 {{_('Delete')}}
             </th>
@@ -137,6 +138,8 @@
 {% endblock %}
 {% block modal %}
 {{ delete_book(current_user.role_delete_books()) }}
+{{ delete_confirm_modal() }}
+{{ change_confirm_modal() }}
 {% if current_user.role_edit() %}
 <div class="modal fade" id="mergeModal" role="dialog" aria-labelledby="metaMergeLabel">
   <div class="modal-dialog">
@@ -162,7 +165,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="delete_selected_modal" role="dialog" aria-labelledby="metaDeleteSelectedLabel">
+<!--div class="modal fade" id="delete_selected_modal" role="dialog" aria-labelledby="metaDeleteSelectedLabel">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
@@ -180,7 +183,7 @@
       </div>
     </div>
   </div>
-</div>
+</div-->
 
 <div class="modal fade" id="archive_selected_modal" role="dialog" aria-labelledby="metaArchiveSelectedLabel">
   <div class="modal-dialog">
@@ -265,7 +268,7 @@
 <div class="modal fade" id="edit_selected_modal" role="dialog" aria-labelledby="metaEditSelectedLabel">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header text-center">
+      <div class="modal-header bg-info text-center">
           <span>{{_('Edit Metadata')}}</span>
       </div>
       <div class="modal-body">
