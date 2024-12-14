@@ -214,7 +214,7 @@ def table_get_custom_enum(c_id):
 @login_required_if_no_ano
 @edit_required
 def edit_list_book(param):
-    vals = request.get_json() # form.to_dict(flat=False)
+    vals = request.get_json()
     return edit_book_param(param, vals)
 
 @editbook.route("/ajax/editselectedbooks", methods=['POST'])
@@ -232,40 +232,40 @@ def edit_selected_books():
     languages = d.get('languages')
     publishers = d.get('publishers')
     comments = d.get('comments')
-    checkA = d.get('checkA')
 
     vals = {
         "pk": selections,
         "value": None,
-        "checkA": checkA,
+        "checkA": d.get('checkA'),
+        "checkT": d.get('checkT'),
     }
     if title:
         vals['value'] = title
-        edit_book_param('title', vals)
+        res_title = edit_book_param('title', vals)
     if title_sort:
         vals['value'] = title_sort
-        edit_book_param('sort', vals)
+        res1_tit_sort = edit_book_param('sort', vals)
     if author_sort:
         vals['value'] = author_sort
-        edit_book_param('author_sort', vals)
+        res_author_sort = edit_book_param('author_sort', vals)
     if authors:
         vals['value'] = authors
-        edit_book_param('authors', vals)
+        res_author = edit_book_param('authors', vals)
     if categories:
         vals['value'] = categories
-        edit_book_param('tags', vals)
+        res_cat = edit_book_param('tags', vals)
     if series:
         vals['value'] = series
-        edit_book_param('series', vals)
+        res_series = edit_book_param('series', vals)
     if languages:
         vals['value'] = languages
-        edit_book_param('languages', vals)
+        res_lang = edit_book_param('languages', vals)
     if publishers:
         vals['value'] = publishers
-        edit_book_param('publishers', vals)
+        res_pup = edit_book_param('publishers', vals)
     if comments:
         vals['value'] = comments
-        edit_book_param('comments', vals)
+        res_comments = edit_book_param('comments', vals)
     return json.dumps({'success': True})
 
 # Separated from /editbooks so that /editselectedbooks can also use this
@@ -283,9 +283,16 @@ def edit_selected_books():
 @edit_required
 def edit_book_param(param, vals):
     elements = vals.get('pk',[])
+    if not vals.get('value'):
+        return jsonify(success=False, msg=_("Value is missing on request"))
+    if not elements :
+        return jsonify(success=False, msg=_("Oops! Selected book is unavailable. File does not exist or is not accessible"))
     ret = {}
     for elem in elements:
         book = calibre_db.get_book(elem)
+        if not book:
+            ret = jsonify(success=False, msg=_("Oops! Selected book is unavailable. File does not exist or is not accessible"))
+            continue
         calibre_db.create_functions(config)
         sort_param = ""
         try:
@@ -325,7 +332,7 @@ def edit_book_param(param, vals):
                         ret = jsonify(success=False, msg=rename_error)
             elif param == 'sort':
                 book.sort = vals['value']
-                ret = jsonify(success=True,newValue=book.sort)
+                ret = jsonify(success=True, newValue=book.sort)
             elif param == 'comments':
                 edit_book_comments(vals['value'], book)
                 ret = jsonify(success=True, newValue=book.comments[0].text)
