@@ -283,7 +283,7 @@ def edit_selected_books():
 @edit_required
 def edit_book_param(param, vals):
     elements = vals.get('pk',[])
-    if not vals.get('value'):
+    if vals.get('value', None) is None:
         return jsonify(success=False, msg=_("Value is missing on request"))
     if not elements :
         return jsonify(success=False, msg=_("Oops! Selected book is unavailable. File does not exist or is not accessible"))
