@@ -141,6 +141,7 @@ class _Settings(_Base):
     config_ldap_group_name = Column(String, default='calibreweb')
 
     config_kepubifypath = Column(String, default=None)
+    config_kepubifyopts = Column(String)
     config_converterpath = Column(String, default=None)
     config_binariesdir = Column(String, default=None)
     config_calibre = Column(String)

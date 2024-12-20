@@ -227,7 +227,20 @@ class TaskConvert(CalibreTask):
             filename = file_path + format_old_ext
             temp_file_path = os.path.dirname(file_path)
         quotes = [1, 3]
+        quotes_index = 4
         command = [config.config_kepubifypath, filename, '-o', temp_file_path, '-i']
+        if config.config_kepubifyopts:
+            parameters = re.findall(r"(--[\w-]+)(?:(\s(?:(\".+\")|(?:.+?)))(?:\s|$))?",
+                                    config.config_kepubifyopts, re.IGNORECASE | re.UNICODE)
+            if parameters:
+                for param in parameters:
+                    command.append(strip_whitespaces(param[0]))
+                    quotes_index += 1
+                    if param[1] != "":
+                        parsed = strip_whitespaces(param[1]).strip("\"")
+                        command.append(parsed)
+                        quotes.append(quotes_index)
+                        quotes_index += 1
         try:
             p = process_open(command, quotes)
         except OSError as e:
