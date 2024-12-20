@@ -340,6 +340,10 @@
               <button type="button" id="kepubify_path" data-toggle="modal" data-link="config_kepubifypath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
+           <div class="form-group">
+              <label for="config_kepubifyopts">{{_('Kepubify Settings')}}</label>
+              <input type="text" class="form-control" id="config_kepubifyopts" name="config_kepubifyopts" value="{% if config.config_kepubifyopts != None %}{{ config.config_kepubifyopts }}{% endif %}" autocomplete="off">
+           </div>
         {% if feature_support['rar'] %}
             <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
            <div class="form-group input-group">
