@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-12-14 14:50+0100\n"
-"PO-Revision-Date: 2024-11-22 04:30+0100\n"
+"POT-Creation-Date: 2024-12-15 07:19+0100\n"
+"PO-Revision-Date: 2024-12-15 06:37+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -1910,7 +1910,7 @@ msgstr "Disconnetti"
 
 #: cps/templates/basic_layout.html:35
 msgid "Normal Theme"
-msgstr ""
+msgstr "Tema normale"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -2794,9 +2794,8 @@ msgid "Create Issue"
 msgstr "Segnala problema"
 
 #: cps/templates/http_error.html:52
-#, fuzzy
 msgid "Return to Database config"
-msgstr "Configurazione del database"
+msgstr "Ritorna alla configurazione del database"
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -2906,9 +2905,8 @@ msgid "Toggle Navigation"
 msgstr "Attiva/disattiva navigazione"
 
 #: cps/templates/layout.html:59
-#, fuzzy
 msgid "Simple Theme"
-msgstr "Semplice"
+msgstr "Tema semplice"
 
 #: cps/templates/layout.html:67 cps/templates/layout.html:97
 msgid "Account"
@@ -3060,9 +3058,8 @@ msgid "epub Reader"
 msgstr "Lettore epub"
 
 #: cps/templates/read.html:80
-#, fuzzy
 msgid "Choose a theme below:"
-msgstr "Scegli un nome utente"
+msgstr "Scegli un tema qui sotto:"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
