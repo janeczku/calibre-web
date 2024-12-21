@@ -394,10 +394,16 @@ def delete_book_file(book, calibrepath, book_format=None):
 def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdrive=False):
     for file_format in one_book.data:
         if not gdrive:
-            if not os.path.exists(new_path):
-                os.makedirs(new_path)
-            shutil.move(os.path.join(old_path, file_format.name + '.' + file_format.format.lower()),
-                    os.path.join(new_path, all_new_name + '.' + file_format.format.lower()))
+            try:
+                if not os.path.exists(new_path):
+                    os.makedirs(new_path)
+                shutil.move(os.path.join(old_path, file_format.name + '.' + file_format.format.lower()),
+                        os.path.join(new_path, all_new_name + '.' + file_format.format.lower()))
+            except PermissionError as ex:
+                log.error("Moving book-id %s folder %s failed: %s", one_book.id, new_path, ex)                
+                return _("Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s",
+                 book_id=one_book.id, src=new_path, error=str(ex))
+            
         else:
             g_file = gd.getFileFromEbooksFolder(old_path,
                                                 file_format.name + '.' + file_format.format.lower())
@@ -410,6 +416,7 @@ def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdriv
 
         # change name in Database
         file_format.name = all_new_name
+    return False
 
 
 def rename_author_path(first_author, old_author_dir, renamed_author, calibre_path="", gdrive=False):
@@ -468,7 +475,7 @@ def update_dir_structure_file(book_id, calibre_path, original_filepath, new_auth
         all_new_name = get_valid_filename(local_book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_author, chars=42)
         # Book folder already moved, only files need to be renamed
-        rename_all_files_on_change(local_book, new_path, new_path, all_new_name)
+        error |= rename_all_files_on_change(local_book, new_path, new_path, all_new_name)
 
         if error:
             return error
@@ -511,11 +518,11 @@ def update_dir_structure_gdrive(book_id, first_author):
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(g_file['id'], book.path)
         else:
-            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found'''
+            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found
     if titledir != new_titledir or authordir != new_authordir :
         all_new_name = get_valid_filename(book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_authordir, chars=42)
-        rename_all_files_on_change(book, book.path, book.path, all_new_name, gdrive=True)  # todo: Move filenames on gdrive
+        return rename_all_files_on_change(book, book.path, book.path, all_new_name, gdrive=True)  # todo: Move filenames on gdrive
     return False
 
 
@@ -555,26 +562,6 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
         log.error_or_exception("Rename title from {} to {} failed with error: {}".format(path, new_path, ex))
         return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                  src=path, dest=new_path, error=str(ex))
-    return False
-
-
-def rename_files_on_change(first_author,
-                           renamed_author,
-                           local_book,
-                           original_filepath="",
-                           path="",
-                           calibre_path="",
-                           gdrive=False):
-    # Rename all files from old names to new names
-    #try:
-        #clean_author_database(renamed_author, calibre_path, gdrive=gdrive)
-        #if first_author and first_author not in renamed_author:
-        #    clean_author_database([first_author], calibre_path, local_book, gdrive)
-        #if not gdrive and not renamed_author and not original_filepath and len(os.listdir(os.path.dirname(path))) == 0:
-        #    shutil.rmtree(os.path.dirname(path))
-    #except (OSError, FileNotFoundError) as ex:
-    #    log.error_or_exception("Error in rename file in path {}".format(ex))
-    #    return _("Error in rename file in path: {}".format(str(ex)))
     return False
 
 
@@ -972,8 +959,9 @@ def do_download_file(book, book_format, client, data, headers):
     # ToDo Check headers parameter
     for element in headers:
         response.headers[element[0]] = element[1]
-    log.info('Downloading file: \'%s\' by %s - %s', format(os.path.join(filename, book_name + "." + book_format)),
+    log.info('Downloading file: \'%s\' by %s', format(os.path.join(filename, book_name + "." + book_format)),
              current_user.name, request.headers.get('X-Forwarded-For', request.remote_addr))
+    log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
     return response
 
 

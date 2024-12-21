@@ -162,7 +162,7 @@ def upload():
                         return make_response(jsonify(resp))
                     else:
                         resp = {"location": url_for('web.show_book', book_id=book_id)}
-                        return make_response(jsonify(resp))
+                        return Response(json.dumps(resp), mimetype='application/json')
             except (OperationalError, IntegrityError, StaleDataError) as e:
                 calibre_db.session.rollback()
                 log.error_or_exception("Database error: {}".format(e))
@@ -398,6 +398,7 @@ def get_sorted_entry(field, bookid):
                 return make_response(jsonify(authors=" & ".join([a.name for a in calibre_db.order_authors([book])])))
     return ""
 
+    
 @editbook.route("/ajax/simulatemerge", methods=['POST'])
 @user_login_required
 @edit_required
@@ -461,6 +462,7 @@ def read_selected_books():
 
         return json.dumps({'success': True})
     return ""
+
 
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @user_login_required
@@ -772,8 +774,9 @@ def prepare_authors(authr, calibre_path, gdrive=False):
                     all_new_name = helper.get_valid_filename(one_book.title, chars=42) + ' - ' \
                                    + helper.get_valid_filename(renamed_author.name, chars=42)
                     # change location in database to new author/title path
-                    helper.rename_all_files_on_change(one_book, new_path, new_path, all_new_name, gdrive)
-
+                    error = helper.rename_all_files_on_change(one_book, new_path, new_path, all_new_name, gdrive)
+                    if error:
+                        flash(error)
     return input_authors
 
 
