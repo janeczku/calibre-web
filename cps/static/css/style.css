@@ -382,13 +382,109 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
   overflow-y: scroll;
 }
 
-.media-list { padding-right: 15px; }
+#meta-info #book-list {
+  list-style-type: none;
+  padding: 0px 15px 0px 0px;
+}
 
-#meta-info img {
+#meta-info #book-list .media {
+  display: flex;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#meta-info #book-list .media .media-image {
+  width: 200px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+#meta-info #book-list .media .media-image-wrapper {
+position: relative;
+width: 100%;
+}
+
+#meta-info #book-list .media .media-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+#meta-info #book-list .media .media-image .image-dimensions{
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+#meta-info #book-list .media .media-image .image-dimensions.larger{
+  background-color: rgba(0, 160, 0, 0.7);
+}
+#meta-info #book-list .media .media-image .image-dimensions.smaller{
+  background-color: rgba(160, 0, 0, 0.7);
+}
+#meta-info #book-list .media .media-image input {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+#meta-info #book-list .media .media-image button {
+  margin-top: 10px;
+  /* padding: 8px 16px; */
+  cursor: pointer;
+}
+
+#meta-info #book-list .media .media-image div {
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #666;
+  text-align: center;
+}
+
+#meta-info #book-list .media .media-body {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-content: start;
+}
+
+#meta-info #book-list .media .media-body dt {
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+#meta-info #book-list .media .media-body dt input{
+  margin-right: 5px;
+  margin-top: 0px;
+}
+
+#meta-info #book-list .media .media-body dd {
+  margin: 0;
+  color: #666;
+}
+/* .media-list { padding-right: 15px; } */
+
+/* #meta-info img {
   max-height: 150px;
   max-width: 100px;
   cursor: pointer;
-}
+} */
 
 .padded-bottom { margin-bottom: 15px; }
 .upload-format-input-text { display: initial; }

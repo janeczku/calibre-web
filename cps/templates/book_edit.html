@@ -1,68 +1,68 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
-  <div class="col-sm-3 col-lg-3 col-xs-12">
-    <div class="cover">
-        <!-- Always use full-sized image for the book edit page -->
-        <img id="detailcover" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
-    </div>
+<div class="col-sm-3 col-lg-3 col-xs-12">
+  <div class="cover">
+    <!-- Always use full-sized image for the book edit page -->
+    <img id="detailcover" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
+  </div>
 {% if current_user.role_delete_books() %}
-    <div class="text-center">
-      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal">{{_("Delete Book")}}</button>
-    </div>
-    {% if book.data|length > 1 %}
-      <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
-      {% for file in book.data %}
-        <div class="form-group">
+  <div class="text-center">
+    <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal">{{_("Delete Book")}}</button>
+  </div>
+  {% if book.data|length > 1 %}
+    <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
+    {% for file in book.data %}
+      <div class="form-group">
           <button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button>
-        </div>
-      {% endfor %}
-      </div>
-    {% endif %}
-{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endif %}
 
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
       <form class="padded-bottom" action="{{ url_for('edit-book.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <div class="form-group">
-              <div class="text-left">
-                  <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
-                  <select class="form-control" name="book_format_from" id="book_format_from">
-                    <option disabled selected value>-- {{_('select an option')}} --</option>
-                    {% for format in source_formats %}
-                    <option>{{format|upper}}</option>
-                    {% endfor %}
-                  </select>
-                  <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
-                  <select class="form-control" name="book_format_to" id="book_format_to">
-                    <option disabled selected value>-- {{_('select an option')}} --</option>
-                    {% for format in conversion_formats %}
-                    <option>{{format|upper}}</option>
-                    {% endfor %}
-                  </select>
-              </div>
-          </div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="form-group">
+        <div class="text-left">
+          <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
+          <select class="form-control" name="book_format_from" id="book_format_from">
+            <option disabled selected value>-- {{_('select an option')}} --</option>
+            {% for format in source_formats %}
+            <option>{{format|upper}}</option>
+            {% endfor %}
+          </select>
+          <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
+          <select class="form-control" name="book_format_to" id="book_format_to">
+            <option disabled selected value>-- {{_('select an option')}} --</option>
+            {% for format in conversion_formats %}
+            <option>{{format|upper}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
           <button type="submit" class="btn btn-primary" id="btn-book-convert" name="btn-book-convert"><span class="glyphicon glyphicon-duplicate"></span> {{_('Convert book')}}</button>
-      </form>
+    </form>
   </div>
-{% endif %}
-{% if current_user.role_upload() and g.allow_upload %}
+  {% endif %}
+  {% if current_user.role_upload() and g.allow_upload %}
 
   <div class="text-center more-stuff"><!--h4 aria-label="Upload new book format"></h4-->
   <form id="form-upload-format" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
-    <div class="text-center">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <input type="hidden" name="book_id" value="{{ book.id }}">
-      <div role="group" aria-label="Upload new book format">
-        <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload Format') }}</label>
-        <div class="upload-format-input-text" id="upload-format"></div>
+      <div class="text-center">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="book_id" value="{{ book.id }}">
+        <div role="group" aria-label="Upload new book format">
+          <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload Format') }}</label>
+          <div class="upload-format-input-text" id="upload-format"></div>
         <input id="btn-upload-format" name="btn-upload-format" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
   </div>
-{% endif %}
+  {% endif %}
 </div>
 <form role="form" action="{{ url_for('edit-book.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -110,21 +110,21 @@
       <label for="rating">{{_('Rating')}}</label>
       <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
-      <div class="form-group">
+    <div class="form-group">
       <label for="comments">{{_('Description')}}</label>
       <textarea class="form-control" name="comments" id="comments" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
     </div>
     <div class="form-group">
       <label>{{_('Identifiers')}}</label>
       <table class="table" id="identifier-table"><tbody>
-	{% for identifier in book.identifiers %}
-	<tr>
+          {% for identifier in book.identifiers %}
+          <tr>
       <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
 	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
-	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
-	</tr>
-	{% endfor %}
-      </tbody>
+            <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
       <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
     </div>
@@ -133,82 +133,82 @@
       <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
-      <div class="form-group" aria-label="Upload cover from local drive">
-        <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
-        <div class="upload-cover-input-text" id="upload-cover"></div>
-        <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
-      </div>
+    <div class="form-group" aria-label="Upload cover from local drive">
+      <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
+      <div class="upload-cover-input-text" id="upload-cover"></div>
+      <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
+    </div>
     {% endif %}
-      {% if cc|length > 0 %}
-        {% for c in cc %}
-          <div class="form-group">
-            <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
-            {% if c.datatype == 'bool' %}
-              <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
+    {% if cc|length > 0 %}
+    {% for c in cc %}
+    <div class="form-group">
+      <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
+      {% if c.datatype == 'bool' %}
+      <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
                 <option value="None" {% if book['custom_column_' ~ c.id]|length == 0 %} selected {% endif %}></option>
                 <option value="True"  {% if book['custom_column_' ~ c.id]|length > 0 %}{% if book['custom_column_' ~ c.id][0].value ==true %}selected{% endif %}{% endif %} >{{_('Yes')}}</option>
                 <option value="False"  {% if book['custom_column_' ~ c.id]|length > 0 %}{% if book['custom_column_' ~ c.id][0].value ==false %}selected{% endif %}{% endif %}>{{_('No')}}</option>
-              </select>
-            {% endif %}
+      </select>
+      {% endif %}
 
-            {% if c.datatype == 'int' or c.datatype == 'float' %}
+      {% if c.datatype == 'int' or c.datatype == 'float' %}
 	    <input type="number" step="{% if c.datatype == 'float' %}0.01{% else %}1{% endif %}" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
-            {% endif %}
+      {% endif %}
 
-            {% if c.datatype == 'text' %}
+      {% if c.datatype == 'text' %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
               value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
-            {% endif %}
+      {% endif %}
 
-            {% if c.datatype == 'series' %}
+      {% if c.datatype == 'series' %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
                 value="{% for column in book['custom_column_' ~ c.id] %} {{ '%s [%s]' % (book['custom_column_' ~ c.id][0].value, book['custom_column_' ~ c.id][0].extra|formatfloat(2)) }}{% if not loop.last %}, {% endif %}{% endfor %}"
-              {% endif %}>
-            {% endif %}
+      {% endif %}>
+      {% endif %}
 
-            {% if c.datatype == 'datetime' %}
-              <div class="input-group">
+      {% if c.datatype == 'datetime' %}
+      <div class="input-group">
                 <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value  %}{{ book['custom_column_' ~ c.id][0].value|formatdateinput}}{% endif %}"
-                  {% endif %}>
+        {% endif %}>
                 <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input hidden" id="fake_pubdate_{{ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
-                  {% endif %}>
-                <span class="input-group-btn">
+        {% endif %}>
+        <span class="input-group-btn">
                   <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                </span>
-              </div>
-            {% endif %}
+        </span>
+      </div>
+      {% endif %}
 
-            {% if c.datatype == 'comments' %}
+      {% if c.datatype == 'comments' %}
               <textarea class="form-control tiny_editor" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" rows="7">{% if book['custom_column_' ~ c.id]|length > 0 %}{{book['custom_column_' ~ c.id][0].value}}{%endif%}</textarea>
-            {% endif %}
-            {% if c.datatype == 'enumeration' %}
-              <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
-                  <option></option>
-                  {% for opt in c.get_display_dict().enum_values %}
+      {% endif %}
+      {% if c.datatype == 'enumeration' %}
+      <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
+        <option></option>
+        {% for opt in c.get_display_dict().enum_values %}
                     <option
                       {% if book['custom_column_' ~ c.id]|length > 0 %}
-                        {% if book['custom_column_' ~ c.id][0].value == opt %}selected="selected"{% endif %}
-                      {% endif %}
-                      >{{ opt }}</option>
-                  {% endfor %}
-              </select>
-            {% endif %}
+          {% if book['custom_column_' ~ c.id][0].value == opt %}selected="selected"{% endif %}
+          {% endif %}
+          >{{ opt }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
 
-            {% if c.datatype == 'rating' %}
+      {% if c.datatype == 'rating' %}
               <input type="number" min="1" max="5" step="0.5" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                 {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{{ '%.1f' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
-                {% endif %}>
-            {% endif %}
-          </div>
-        {% endfor %}
+      {% endif %}>
       {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
 
     <div class="checkbox">
       <label>
@@ -263,28 +263,56 @@
 
 {% block js %}
 <script type="text/template" id="template-book-result">
-  <li class="media" data-related="<%= source.id %>">
-    <img class="pull-left img-responsive"
-         data-toggle="modal"
-         data-target="#metaModal"
-         src="<%= cover || "{{ url_for('static', filename='img/academicpaper.svg') }}" %>"
-         alt="Cover"
-    >
-    <div class="media-body">
-      <h4 class="media-heading">
-        <a class="meta_title" href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
-      </h4>
-      <p class="meta_author">{{_('Author')}}：<%= authors.join(" & ") %></p>
-      <% if (publisher) { %>
-        <p class="meta_publisher">{{_('Publisher')}}：<%= publisher %></p>
-      <% } %>
-      <% if (description) { %>
-        <p class="meta_description">{{_('Description')}}: <%= description %></p>
-      <% } %>
-      <p>{{_('Source')}}:
-        <a class="meta_source" href="<%= source.link %>" target="_blank" rel="noopener"><%= source.description %></a>
-      </p>
+  <li class="media" data-related="<%= book.source.id %>">
+    <div class="media-image">
+      <div class="media-image-wrapper">
+        <img
+          onload="coverDimensions(this)"
+          src="<%= book.cover || "{{ url_for('static', filename='img/academicpaper.svg') }}" %>"
+          alt="Cover"
+      >
+      <div class="image-dimensions"></div>
+      <input type="checkbox" data-meta-index="<%= index %>" data-meta-value="cover">
     </div>
+      <button class="btn btn-default">Save</button>
+      <div><a class="meta_source" href="<%= book.source.link %>" target="_blank" rel="noopener"><%= book.source.description %></a></div>
+    </div>
+    <dl class="media-body">
+      <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="title">Title:</dt>
+      <dd><a class="meta_title" href="<%= book.url %>" target="_blank" rel="noopener"><%= book.title %></a></dd>
+      <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="authors">Author:</dt>
+      <dd class="meta_author"><%= book.authors.join(" & ") %></dd>
+      <% if (book.publisher) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="publisher">Publisher:</dt>
+        <dd class="meta_publisher"><%= book.publisher %></dd>
+      <% } %>
+      <% if (book.publishedDate) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="pubDate">Published Date:</dt>
+        <dd class="meta_publishedDate"><%= book.publishedDate %></dd>
+      <% } %>
+      <% if (book.series) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="series">Series:</dt>
+        <dd class="meta_publishedDate"><%= book.series %></dd>
+      <% } %>
+      <% if (book.series_index) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="seriesIndex">Series Index:</dt>
+        <dd class="meta_publishedDate"><%= book.series_index %></dd>
+      <% } %>
+      <% if (book.description) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="description">Description:</dt>
+        <dd class="meta_description"><%= book.description %></dd>
+      <% } %>
+      <% if (book.tags.length !== 0) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="tags">Tags:</dt>
+        <dd class="meta_author"><%= book.tags.join(", ") %></dd>
+      <% } %>
+      <% if (Object.keys(book.identifiers).length !== 0 ) { %>
+        <% for (const key in book.identifiers) { %>
+          <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="identifiers">Identifier</dt>
+          <dd class="meta_description"><%= key %>:<%= book.identifiers[key] %></dd>
+        <% } %>
+      <% } %>
+      </dl>
   </li>
 </script>
 <script>
@@ -312,7 +340,15 @@
   function removeIdentifierLine(el) {
     $(el).parent().parent().remove();
   }
-
+  function coverDimensions(el) {
+    var existing_cover = document.querySelector("#detailcover")
+    el.nextElementSibling.innerText = el.naturalWidth + 'x' + el.naturalHeight
+    if (existing_cover.naturalHeight*existing_cover.naturalWidth >  el.naturalWidth * el.naturalHeight){
+      el.nextElementSibling.classList.add("smaller")
+    } else if (existing_cover.naturalHeight*existing_cover.naturalWidth < el.naturalWidth * el.naturalHeight){
+      el.nextElementSibling.classList.add("larger")
+    }
+  }
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
