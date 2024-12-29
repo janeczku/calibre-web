@@ -399,7 +399,7 @@ def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdriv
                     os.makedirs(new_path)
                 shutil.move(os.path.join(old_path, file_format.name + '.' + file_format.format.lower()),
                         os.path.join(new_path, all_new_name + '.' + file_format.format.lower()))
-            except PermissionError as ex:
+            except (PermissionError, FileNotFoundError) as ex:
                 log.error("Moving book-id %s folder %s failed: %s", one_book.id, new_path, ex)                
                 return _("Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s",
                  book_id=one_book.id, src=new_path, error=str(ex))
@@ -475,10 +475,11 @@ def update_dir_structure_file(book_id, calibre_path, original_filepath, new_auth
         all_new_name = get_valid_filename(local_book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_author, chars=42)
         # Book folder already moved, only files need to be renamed
-        error |= rename_all_files_on_change(local_book, new_path, new_path, all_new_name)
+        renameerror = rename_all_files_on_change(local_book, new_path, new_path, all_new_name)
 
-        if error:
-            return error
+
+        if error or renameerror:
+            return error or renameerror
     return False
 
 
@@ -558,7 +559,7 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
                     log.error("Deleting authorpath for book %s failed: %s", localbook.id, ex)
         # change location in database to new author/title path
         localbook.path = os.path.join(new_author_dir, new_titledir).replace('\\', '/')
-    except OSError as ex:
+    except (OSError, FileNotFoundError) as ex:
         log.error_or_exception("Rename title from {} to {} failed with error: {}".format(path, new_path, ex))
         return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                  src=path, dest=new_path, error=str(ex))

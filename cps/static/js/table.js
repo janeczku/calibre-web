@@ -220,7 +220,8 @@ $(function() {
                 "comments": $("#comments_input").val().toString(),
                 "checkA": $('#autoupdate_authorsort').prop('checked').toString()
             }),
-            success: function success(booTitles) {
+            success: function success(data) {
+                let result = "";
                 $("#books-table").bootstrapTable("refresh");
                 $("#books-table").bootstrapTable("uncheckAll");
 
@@ -234,7 +235,23 @@ $(function() {
                 $("#publishers_input").val("");
                 $("#comments_input").val("");
 
-                handleListServerResponse;
+                $("#flash_success").remove();
+                $("#flash_danger").remove();
+
+                if (!jQuery.isEmptyObject(data)) {
+                    data.forEach(function(item) {
+                        if (item.success === true) {
+                            result = "success";
+                        } else {
+                            result = "danger";
+                        }
+                        $(".navbar").after('<div class="row-fluid text-center">' +
+                            '<div id="flash_' + result + '" class="alert alert-' + result + '">' + item.msg + '</div>' +
+                            '</div>');
+                    });
+                }
+                $(".table.table-striped").bootstrapTable("refresh");
+                // handleListServerResponse(data);
             }
         });
     });

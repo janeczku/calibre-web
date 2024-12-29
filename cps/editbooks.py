@@ -215,7 +215,7 @@ def table_get_custom_enum(c_id):
 @edit_required
 def edit_list_book(param):
     vals = request.get_json()
-    return edit_book_param(param, vals)
+    return jsonify(edit_book_param(param, vals))
 
 @editbook.route("/ajax/editselectedbooks", methods=['POST'])
 @login_required_if_no_ano
@@ -239,34 +239,56 @@ def edit_selected_books():
         "checkA": d.get('checkA'),
         "checkT": d.get('checkT'),
     }
+    res = list()
     if title:
         vals['value'] = title
-        res_title = edit_book_param('title', vals)
+        out = edit_book_param('title', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if title_sort:
         vals['value'] = title_sort
-        res1_tit_sort = edit_book_param('sort', vals)
+        out = edit_book_param('sort', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if author_sort:
         vals['value'] = author_sort
-        res_author_sort = edit_book_param('author_sort', vals)
+        out = edit_book_param('author_sort', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if authors:
         vals['value'] = authors
-        res_author = edit_book_param('authors', vals)
+        out = edit_book_param('authors', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if categories:
         vals['value'] = categories
-        res_cat = edit_book_param('tags', vals)
+        out = edit_book_param('tags', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if series:
         vals['value'] = series
-        res_series = edit_book_param('series', vals)
+        out = edit_book_param('series', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if languages:
         vals['value'] = languages
-        res_lang = edit_book_param('languages', vals)
+        out = edit_book_param('languages', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if publishers:
         vals['value'] = publishers
-        res_pup = edit_book_param('publishers', vals)
+        out = edit_book_param('publishers', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
     if comments:
         vals['value'] = comments
-        res_comments = edit_book_param('comments', vals)
-    return json.dumps({'success': True})
+        out = edit_book_param('comments', vals, True)
+        if out[0].get('success') != True:
+            res.extend(out)
+    if len(res) == 0:
+        return jsonify([{'success': True, "msg": _("Changes successfully applied")}])
+    else:
+        return jsonify(res)
 
 # Separated from /editbooks so that /editselectedbooks can also use this
 #
@@ -281,70 +303,87 @@ def edit_selected_books():
 #
 @login_required_if_no_ano
 @edit_required
-def edit_book_param(param, vals):
+def edit_book_param(param, vals, multi=False):
     elements = vals.get('pk',[])
     if vals.get('value', None) is None:
-        return jsonify(success=False, msg=_("Value is missing on request"))
+        return {'success':False, 'msg':_("Value is missing on request")}
     if not elements :
-        return jsonify(success=False, msg=_("Oops! Selected book is unavailable. File does not exist or is not accessible"))
+        return {"success":False, "msg":_("Oops! Selected book is unavailable. File does not exist or is not accessible")}
     ret = {}
+    out = list()
     for elem in elements:
         book = calibre_db.get_book(elem)
         if not book:
-            ret = jsonify(success=False, msg=_("Oops! Selected book is unavailable. File does not exist or is not accessible"))
+            ret = {"success": False,
+                   "msg": _("Oops! Selected book is unavailable. File does not exist or is not accessible")}
+            if multi:
+                out.append(ret)
             continue
         calibre_db.create_functions(config)
         sort_param = ""
         try:
             if param == 'series_index':
                 edit_book_series_index(vals['value'], book)
-                ret = jsonify(success=True, newValue=book.series_index)
+                ret = {"success":True,
+                       "newValue":book.series_index}
             elif param == 'tags':
                 edit_book_tags(vals['value'], book)
-                ret = jsonify(success=True, newValue=', '.join([tag.name for tag in book.tags]))
+                ret = {"success":True,
+                       "newValue":', '.join([tag.name for tag in book.tags])}
             elif param == 'series':
                 edit_book_series(vals['value'], book)
-                ret = jsonify(success=True, newValue=', '.join([serie.name for serie in book.series]))
+                ret = {"success":True,
+                       "newValue":', '.join([serie.name for serie in book.series])}
             elif param == 'publishers':
                 edit_book_publisher(vals['value'], book)
-                ret = jsonify(success=True,
-                                           newValue=', '.join([publisher.name for publisher in book.publishers]))
+                ret = {"success":True,
+                       "newValue":', '.join([publisher.name for publisher in book.publishers])}
             elif param == 'languages':
                 invalid = list()
                 edit_book_languages(vals['value'], book, invalid=invalid)
                 if invalid:
-                    ret = jsonify(success=False, msg='Invalid languages in request: {}'.format(','.join(invalid)))
+                    ret = {"success": False, "msg": 'Invalid languages in request: {}'.format(','.join(invalid))}
+                    if multi:
+                        out.append(ret)
                 else:
                     lang_names = list()
                     for lang in book.languages:
                         lang_names.append(isoLanguages.get_language_name(get_locale(), lang.lang_code))
-                    ret = jsonify(success=True, newValue=', '.join(lang_names))
+                    ret = {"success":True,
+                           "newValue":', '.join(lang_names)}
             elif param == 'author_sort':
                 book.author_sort = vals['value']
-                ret = jsonify(success=True, newValue=book.author_sort)
+                ret = {"success":True,
+                       "newValue":book.author_sort}
             elif param == 'title':
                 sort_param = book.sort
                 if handle_title_on_edit(book, vals.get('value', "")):
                     rename_error = helper.update_dir_structure(book.id, config.get_book_path())
                     if not rename_error:
-                        ret = jsonify(success=True, newValue=book.title)
+                        ret = {"success":True,
+                               "newValue":book.title}
                     else:
-                        ret = jsonify(success=False, msg=rename_error)
+                        ret = {"success":False, "msg":rename_error}
+                        if multi:
+                            out.append(ret)
             elif param == 'sort':
                 book.sort = vals['value']
-                ret = jsonify(success=True, newValue=book.sort)
+                ret = {"success":True,
+                       "newValue":book.sort}
             elif param == 'comments':
                 edit_book_comments(vals['value'], book)
-                ret = jsonify(success=True, newValue=book.comments[0].text)
+                ret = {"success":True,
+                       "newValue":book.comments[0].text}
             elif param == 'authors':
                 input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == True)
                 rename_error = helper.update_dir_structure(book.id, config.get_book_path(), input_authors[0])
                 if not rename_error:
-                    ret = jsonify(
-                        success=True,
-                        newValue=' & '.join([author.replace('|', ',') for author in input_authors]))
+                    ret = {"success":True,
+                        "newValue":' & '.join([author.replace('|', ',') for author in input_authors])}
                 else:
-                    ret = jsonify(success=False, msg=rename_error)
+                    ret = {"success":False, "msg":rename_error}
+                    if multi:
+                        out.append(ret)
             elif param == 'is_archived':
                 is_archived = change_archived_books(book.id, vals['value'] == "True",
                                                     message="Book {} archive bit set to: {}".format(book.id,
@@ -355,7 +394,11 @@ def edit_book_param(param, vals):
             elif param == 'read_status':
                 error = helper.edit_book_read_status(book.id, vals['value'] == "True")
                 if error:
-                    return error, 400
+                    if multi:
+                        out.append({"success":False, "msg":error})
+                        continue
+                    else:
+                        return error, 400
                 continue
             elif param.startswith("custom_column_"):
                 new_val = dict()
@@ -365,8 +408,11 @@ def edit_book_param(param, vals):
                 if vals['value'] in ["True", "False"]:
                     ret = {}
                 else:
-                    ret = jsonify(success=True, newValue=vals['value'])
+                    ret = {"success":True, "newValue":vals['value']}
             else:
+                if multi:
+                    out.append({"success":False, "msg":_("Parameter not found")})
+                    continue
                 return _("Parameter not found"), 400
             book.last_modified = datetime.now(timezone.utc)
 
@@ -378,8 +424,16 @@ def edit_book_param(param, vals):
         except (OperationalError, IntegrityError, StaleDataError, AttributeError) as e:
             calibre_db.session.rollback()
             log.error_or_exception("Database error: {}".format(e))
-            ret = jsonify(success=False, msg='Database error: {}'.format(e.orig if hasattr(e, "orig") else e))
-    return ret
+            ret = {"success":False, "msg":'Database error: {}'.format(e.orig if hasattr(e, "orig") else e)}
+            if multi:
+                out.append(ret)
+    if multi:
+        if len(out) > 0:
+            return out
+        else:
+            return [ret]
+    else:
+        return ret
 
 
 @editbook.route("/ajax/sort_value/<field>/<int:bookid>")
