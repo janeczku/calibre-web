@@ -218,7 +218,8 @@ $(function() {
                 "languages": $("#languages_input").val(),
                 "publishers": $("#publishers_input").val(),
                 "comments": $("#comments_input").val().toString(),
-                "checkA": $('#autoupdate_authorsort').prop('checked').toString()
+                "checkA": $('#autoupdate_authorsort').prop('checked'),
+                "checkT": $('#autoupdate_titlesort').prop('checked')
             }),
             success: function success(data) {
                 let result = "";
