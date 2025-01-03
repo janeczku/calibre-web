@@ -263,28 +263,56 @@
 
 {% block js %}
 <script type="text/template" id="template-book-result">
-  <li class="media" data-related="<%= source.id %>">
-    <img class="pull-left img-responsive"
-         data-toggle="modal"
-         data-target="#metaModal"
-         src="<%= cover || "{{ url_for('static', filename='img/academicpaper.svg') }}" %>"
-         alt="Cover"
-    >
-    <div class="media-body">
-      <h4 class="media-heading">
-        <a class="meta_title" href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
-      </h4>
-      <p class="meta_author">{{_('Author')}}：<%= authors.join(" & ") %></p>
-      <% if (publisher) { %>
-        <p class="meta_publisher">{{_('Publisher')}}：<%= publisher %></p>
-      <% } %>
-      <% if (description) { %>
-        <p class="meta_description">{{_('Description')}}: <%= description %></p>
-      <% } %>
-      <p>{{_('Source')}}:
-        <a class="meta_source" href="<%= source.link %>" target="_blank" rel="noopener"><%= source.description %></a>
-      </p>
+  <li class="media" data-related="<%= book.source.id %>">
+    <div class="media-image">
+      <div class="media-image-wrapper">
+        <img
+          onload="coverDimensions(this)"
+          src="<%= book.cover || "{{ url_for('static', filename='img/academicpaper.svg') }}" %>"
+          alt="Cover"
+        >
+        <div class="image-dimensions"></div>
+        <input type="checkbox" data-meta-index="<%= index %>" data-meta-value="cover">
+      </div>
+      <button class="btn btn-default">Save</button>
+      <div><a class="meta_source" href="<%= book.source.link %>" target="_blank" rel="noopener"><%= book.source.description %></a></div>
     </div>
+    <dl class="media-body">
+      <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="title">Title:</dt>
+      <dd><a class="meta_title" href="<%= book.url %>" target="_blank" rel="noopener"><%= book.title %></a></dd>
+      <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="authors">Author:</dt>
+      <dd class="meta_author"><%= book.authors.join(" & ") %></dd>
+      <% if (book.publisher) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="publisher">Publisher:</dt>
+        <dd class="meta_publisher"><%= book.publisher %></dd>
+      <% } %>
+      <% if (book.publishedDate) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="pubDate">Published Date:</dt>
+        <dd class="meta_publishedDate"><%= book.publishedDate %></dd>
+      <% } %>
+      <% if (book.series) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="series">Series:</dt>
+        <dd class="meta_publishedDate"><%= book.series %></dd>
+      <% } %>
+      <% if (book.series_index) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="seriesIndex">Series Index:</dt>
+        <dd class="meta_publishedDate"><%= book.series_index %></dd>
+      <% } %>
+      <% if (book.description) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="description">Description:</dt>
+        <dd class="meta_description"><%= book.description %></dd>
+      <% } %>
+      <% if (book.tags.length !== 0) { %>
+        <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="tags">Tags:</dt>
+        <dd class="meta_author"><%= book.tags.join(", ") %></dd>
+      <% } %>
+      <% if (Object.keys(book.identifiers).length !== 0 ) { %>
+        <% for (const key in book.identifiers) { %>
+          <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="identifiers">Identifier</dt>
+          <dd class="meta_description"><%= key %>:<%= book.identifiers[key] %></dd>
+        <% } %>
+      <% } %>
+    </dl>
   </li>
 </script>
 <script>
@@ -312,7 +340,15 @@
   function removeIdentifierLine(el) {
     $(el).parent().parent().remove();
   }
-
+  function coverDimensions(el) {
+    var existing_cover = document.querySelector("#detailcover")
+    el.nextElementSibling.innerText = el.naturalWidth + 'x' + el.naturalHeight
+    if (existing_cover.naturalHeight*existing_cover.naturalWidth >  el.naturalWidth * el.naturalHeight){
+      el.nextElementSibling.classList.add("smaller")
+    } else if (existing_cover.naturalHeight*existing_cover.naturalWidth < el.naturalWidth * el.naturalHeight){
+      el.nextElementSibling.classList.add("larger")
+    }
+  }
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
