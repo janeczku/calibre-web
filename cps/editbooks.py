@@ -215,7 +215,11 @@ def table_get_custom_enum(c_id):
 @edit_required
 def edit_list_book(param):
     vals = request.get_json()
-    return jsonify(edit_book_param(param, vals))
+    ret_value = edit_book_param(param, vals)
+    if isinstance(ret_value, dict):
+        return jsonify(ret_value)
+    else:
+        return ret_value
 
 @editbook.route("/ajax/editselectedbooks", methods=['POST'])
 @login_required_if_no_ano
@@ -233,6 +237,9 @@ def edit_selected_books():
     publishers = d.get('publishers')
     comments = d.get('comments')
 
+    if not (
+      title or title_sort or authors or categories or series or languages or publishers or comments) or not selections:
+        return _("Parameter not found"), 400
     vals = {
         "pk": selections,
         "value": None,
@@ -307,7 +314,7 @@ def edit_book_param(param, vals, multi=False):
     elements = vals.get('pk',[])
     if vals.get('value', None) is None:
         return {'success':False, 'msg':_("Value is missing on request")}
-    if not elements :
+    if not elements or len(elements) > 1 and multi == False:
         return {"success":False, "msg":_("Oops! Selected book is unavailable. File does not exist or is not accessible")}
     ret = {}
     out = list()
@@ -318,7 +325,9 @@ def edit_book_param(param, vals, multi=False):
                    "msg": _("Oops! Selected book is unavailable. File does not exist or is not accessible")}
             if multi:
                 out.append(ret)
-            continue
+                continue
+            else:
+                return ret
         calibre_db.create_functions(config)
         sort_param = ""
         try:
