@@ -36,7 +36,7 @@ def cover_processing(tmp_file_path, img, extension):
         if use_IM:
             with Image(blob=img) as imgc:
                 imgc.format = 'jpeg'
-                imgc.transform_colorspace('rgb')
+                imgc.transform_colorspace('srgb')
                 imgc.save(filename=tmp_cover_name)
                 return tmp_cover_name
         else:
