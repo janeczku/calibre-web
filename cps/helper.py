@@ -237,7 +237,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
     return _("The requested file could not be read. Maybe wrong permissions?")
 
 
-def get_valid_filename(value, replace_whitespace=True, chars=128):
+def get_valid_filename(value, replace_whitespace=True, chars=128, force_unidecode=False):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
@@ -245,7 +245,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128):
     if value[-1:] == '.':
         value = value[:-1]+'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
-    if config.config_unicode_filename:
+    if config.config_unicode_filename or force_unidecode:
         value = (unidecode.unidecode(value))
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
@@ -1105,11 +1105,14 @@ def get_download_link(book_id, book_format, client):
             file_name = book.title
             if len(book.authors) > 0:
                 file_name = file_name + ' - ' + book.authors[0].name
-            file_name = get_valid_filename(file_name, replace_whitespace=False)
+            if client != "kindle":
+                file_name = get_valid_filename(file_name, replace_whitespace=False, force_unidecode=True)
+            else:
+                file_name = quote(get_valid_filename(file_name, replace_whitespace=False))
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-            headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
-                quote(file_name), book_format, quote(file_name), book_format)
+            headers["Content-Disposition"] = ('attachment; filename="{}.{}"; filename*=UTF-8\'\'{}.{}').format(
+                file_name, book_format, file_name, book_format)
             return do_download_file(book, book_format, client, data1, headers)
     else:
         log.error("Book id {} not found for downloading".format(book_id))

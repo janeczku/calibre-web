@@ -1242,7 +1242,12 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    client = "kobo" if "Kobo" in request.headers.get('User-Agent') else ""
+    if "kindle" in request.headers.get('User-Agent').lower():
+        client = "kindle"
+    elif "Kobo" in request.headers.get('User-Agent').lower():
+        client = "kobo"
+    else:
+        client = ""
     return get_download_link(book_id, book_format, client)
 
 
