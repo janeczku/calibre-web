@@ -40,7 +40,7 @@ class Google(Metadata):
     ISBN_TYPE = "ISBN_13"
 
     def search(
-        self, query: str, generic_cover: str = "", locale: str = "en"
+        self, query: str, generic_cover: str = "", locale: str = "en",**kwargs
     ) -> Optional[List[MetaRecord]]:
         val = list()    
         if self.active:

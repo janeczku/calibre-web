@@ -130,7 +130,7 @@ def metadata_search():
         # ret = cl[0].search(query, static_cover, locale)
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             meta = {
-                executor.submit(c.search, query, static_cover, locale): c
+                executor.submit(c.search, query, static_cover, locale, token=getattr(current_user,f'{c.__id__}_token',None)): c
                 for c in cl
                 if active.get(c.__id__, True)
             }

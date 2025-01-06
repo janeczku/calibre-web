@@ -114,7 +114,7 @@ class LubimyCzytac(Metadata):
     SUMMARY = "//script[@type='application/ld+json']//text()"
 
     def search(
-        self, query: str, generic_cover: str = "", locale: str = "en"
+        self, query: str, generic_cover: str = "", locale: str = "en",**kwargs
     ) -> Optional[List[MetaRecord]]:
         if self.active:
             try:

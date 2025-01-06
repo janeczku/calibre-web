@@ -53,7 +53,7 @@ class Amazon(Metadata):
     session.headers=headers
 
     def search(
-        self, query: str, generic_cover: str = "", locale: str = "en"
+        self, query: str, generic_cover: str = "", locale: str = "en",**kwargs
     ) -> Optional[List[MetaRecord]]:
         def inner(link, index) -> [dict, int]:
             with self.session as session:

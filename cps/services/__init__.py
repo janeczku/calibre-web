@@ -48,3 +48,9 @@ try:
 except ImportError as err:
     log.debug("Cannot import gmail, sending books via Gmail Oauth2 Verification will not work: %s", err)
     gmail = None
+
+try:
+    from . import hardcover
+except ImportError as err:
+    log.debug("Cannot import hardcover, syncing Kobo read progress to Hardcover will not work: %s", err)
+    hardcover = None

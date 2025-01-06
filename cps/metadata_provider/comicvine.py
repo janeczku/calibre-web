@@ -41,7 +41,7 @@ class ComicVine(Metadata):
     HEADERS = {"User-Agent": "Not Evil Browser"}
 
     def search(
-        self, query: str, generic_cover: str = "", locale: str = "en"
+        self, query: str, generic_cover: str = "", locale: str = "en",**kwargs
     ) -> Optional[List[MetaRecord]]:
         val = list()
         if self.active:

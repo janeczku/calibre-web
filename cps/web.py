@@ -65,7 +65,8 @@ from .string_helper import strip_whitespaces
 feature_support = {
     'ldap': bool(services.ldap),
     'goodreads': bool(services.goodreads_support),
-    'kobo': bool(services.kobo)
+    'kobo': bool(services.kobo),
+    'hardcover' : bool(services.hardcover)
 }
 
 try:
@@ -1465,7 +1466,7 @@ def logout():
 
 
 # ################################### Users own configuration #########################################################
-def change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages):
+def change_profile(kobo_support, hardcover_support, local_oauth_check, oauth_status, translations, languages):
     to_save = request.form.to_dict()
     current_user.random_books = 0
     try:
@@ -1493,6 +1494,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
         current_user.kobo_only_shelves_sync = int(to_save.get("kobo_only_shelves_sync") == "on") or 0
         if old_state == 0 and current_user.kobo_only_shelves_sync == 1:
             kobo_sync_status.update_on_sync_shelfs(current_user.id)
+        current_user.hardcover_token = to_save.get("hardcover_token","").replace("Bearer ","")
 
     except Exception as ex:
         flash(str(ex), category="error")
@@ -1505,6 +1507,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
                                      title=_("%(name)s's Profile", name=current_user.name),
                                      page="me",
                                      kobo_support=kobo_support,
+                                     hardcover_support=hardcover_support,
                                      registered_oauth=local_oauth_check,
                                      oauth_status=oauth_status)
 
@@ -1536,6 +1539,7 @@ def profile():
     languages = calibre_db.speaking_language()
     translations = get_available_locale()
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
+    hardcover_support = feature_support['hardcover'] and config.config_hardcover_sync
     if feature_support['oauth'] and config.config_login_type == 2:
         oauth_status = get_oauth_status()
         local_oauth_check = oauth_check
@@ -1544,7 +1548,7 @@ def profile():
         local_oauth_check = {}
 
     if request.method == "POST":
-        change_profile(kobo_support, local_oauth_check, oauth_status, translations, languages)
+        change_profile(kobo_support, hardcover_support, local_oauth_check, oauth_status, translations, languages)
     return render_title_template("user_edit.html",
                                  translations=translations,
                                  profile=1,
@@ -1552,6 +1556,7 @@ def profile():
                                  content=current_user,
                                  config=config,
                                  kobo_support=kobo_support,
+                                 hardcover_support=hardcover_support,
                                  title=_("%(name)s's Profile", name=current_user.name),
                                  page="me",
                                  registered_oauth=local_oauth_check,

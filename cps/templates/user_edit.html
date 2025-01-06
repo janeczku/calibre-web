@@ -60,6 +60,12 @@
       {% endfor %}
     </div>
     {% endif %}
+    {% if kobo_support and hardcover_support and not new_user %}
+    <div class="form-group">
+      <label for="hardcover_token">{{_('Hardcover API token')}}</label>
+      <input type="text" class="form-control" name="hardcover_token" id="hardcover_token" value="{{ content.hardcover_token if content.hardcover_token != None }}">
+    </div>
+    {% endif %}
     {% if kobo_support and not new_user %}
     <label>{{ _('Kobo Sync Token')}}</label>
     <div class="form-group col">

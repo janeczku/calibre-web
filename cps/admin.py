@@ -63,6 +63,7 @@ feature_support = {
     'ldap': bool(services.ldap),
     'goodreads': bool(services.goodreads_support),
     'kobo': bool(services.kobo),
+    'hardcover' : bool(services.hardcover),
     'updater': constants.UPDATER_AVAILABLE,
     'gmail': bool(services.gmail),
     'scheduler': schedule.use_APScheduler,
@@ -1801,6 +1802,7 @@ def _configuration_update_helper():
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
         _config_int(to_save, "config_external_port")
         _config_checkbox_int(to_save, "config_kobo_proxy")
+        _config_checkbox_int(to_save, "config_hardcover_sync")
 
         if "config_upload_formats" in to_save:
             to_save["config_upload_formats"] = ','.join(

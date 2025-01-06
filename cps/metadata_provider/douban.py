@@ -71,7 +71,7 @@ class Douban(Metadata):
     def search(self,
                query: str,
                generic_cover: str = "",
-               locale: str = "en") -> List[MetaRecord]:
+               locale: str = "en",**kwargs) -> List[MetaRecord]:
         val = []
         if self.active:
             log.debug(f"start searching {query} on douban")

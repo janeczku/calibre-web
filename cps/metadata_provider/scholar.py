@@ -40,7 +40,7 @@ class scholar(Metadata):
     META_URL = "https://scholar.google.com/"
 
     def search(
-        self, query: str, generic_cover: str = "", locale: str = "en"
+        self, query: str, generic_cover: str = "", locale: str = "en",**kwargs
     ) -> Optional[List[MetaRecord]]:
         val = list()
         if self.active:

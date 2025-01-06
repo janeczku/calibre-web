@@ -155,6 +155,8 @@ class Identifiers(Base):
             return "Lubimyczytac"
         if format_type == "databazeknih":
             return "Databáze knih"
+        if format_type == "hardcover-slug":
+            return "Hardcover"
         else:
             return self.type
 
@@ -194,6 +196,8 @@ class Identifiers(Base):
             return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "databazeknih":
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
+        elif format_type == "hardcover-slug":
+            return "https://hardcover.app/books/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         elif self.val.lower().startswith("data:"):

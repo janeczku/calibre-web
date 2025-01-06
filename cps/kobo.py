@@ -49,7 +49,7 @@ from . import isoLanguages
 from .epub import get_epub_layout
 from .constants import COVER_THUMBNAIL_SMALL, COVER_THUMBNAIL_MEDIUM, COVER_THUMBNAIL_LARGE
 from .helper import get_download_link
-from .services import SyncToken as SyncToken
+from .services import SyncToken as SyncToken, hardcover
 from .web import download_required
 from .kobo_auth import requires_kobo_auth, get_auth_token
 
@@ -769,6 +769,7 @@ def HandleStateRequest(book_uuid):
 
         try:
             request_data = request.json
+            log.debug(request_data)
             request_reading_state = request_data["ReadingStates"][0]
 
             request_bookmark = request_reading_state["CurrentBookmark"]
@@ -804,6 +805,10 @@ def HandleStateRequest(book_uuid):
             log.debug("Received malformed v1/library/<book_uuid>/state request.")
             ub.session.rollback()
             abort(400, description="Malformed request data is missing 'ReadingStates' key")
+
+        if config.config_hardcover_sync and bool(hardcover):
+                hardcoverClient = hardcover.HardcoverClient(current_user.hardcover_token)
+                hardcoverClient.update_reading_progress(book.identifiers, request_bookmark["ProgressPercent"])
 
         ub.session.merge(kobo_reading_state)
         ub.session_commit()

@@ -276,6 +276,9 @@
       </div>
       <button class="btn btn-default">Save</button>
       <div><a class="meta_source" href="<%= book.source.link %>" target="_blank" rel="noopener"><%= book.source.description %></a></div>
+      <% if(book.format !== "") { %>
+      <div>Format: <%= book.format %></div>
+      <% } %>
     </div>
     <dl class="media-body">
       <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="title">Title:</dt>
@@ -308,8 +311,10 @@
       <% } %>
       <% if (Object.keys(book.identifiers).length !== 0 ) { %>
         <% for (const key in book.identifiers) { %>
-          <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="identifiers">Identifier</dt>
-          <dd class="meta_description"><%= key %>:<%= book.identifiers[key] %></dd>
+          <% if (book.identifiers[key] !== "") { %>
+            <dt><input type="checkbox" data-meta-index="<%= index %>" data-meta-value="identifiers">Identifier</dt>
+            <dd class="meta_description"><%= key %>:<%= book.identifiers[key] %></dd>
+          <% } %>
         <% } %>
       <% } %>
     </dl>

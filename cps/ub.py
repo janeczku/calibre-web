@@ -257,6 +257,7 @@ class User(UserBase, Base):
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     view_settings = Column(JSON, default={})
     kobo_only_shelves_sync = Column(Integer, default=0)
+    hardcover_token = Column(String, unique=True, default="")
 
 
 if oauth_support:
@@ -600,6 +601,15 @@ def migrate_user_session_table(engine, _session):
             conn.execute(text("ALTER TABLE user_session ADD column 'expiry' Integer"))
             trans.commit()
 
+def migrate_user_table(engine, _session):
+    try:
+        _session.query(exists().where(User.hardcover_token)).scalar()
+        _session.commit()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        with engine.connect() as conn:
+            trans = conn.begin()
+            conn.execute(text("ALTER TABLE user ADD column 'hardcover_token' String"))
+            trans.commit()
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
 # maybe 4/5 versions back to current should work.

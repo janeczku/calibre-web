@@ -149,6 +149,10 @@
         <label for="config_external_port">{{_('Server External Port (for port forwarded API calls)')}}</label>
         <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" autocomplete="off" required>
       </div>
+      <div class="form-group" style="margin-left:10px;">
+        <input type="checkbox" id="config_hardcover_sync" name="config_hardcover_sync"  {% if config.config_hardcover_sync %}checked{% endif %}>
+        <label for="config_hardcover_sync">{{_('Sync Kobo read progress to Hardcover (Requires API key per user)')}}</label>
+      </div>
     </div>
     {% endif %}
     {% if feature_support['goodreads'] %}
