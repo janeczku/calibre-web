@@ -1105,7 +1105,7 @@ def get_download_link(book_id, book_format, client):
             file_name = book.title
             if len(book.authors) > 0:
                 file_name = file_name + ' - ' + book.authors[0].name
-            if client != "kindle":
+            if client == "kindle":
                 file_name = get_valid_filename(file_name, replace_whitespace=False, force_unidecode=True)
             else:
                 file_name = quote(get_valid_filename(file_name, replace_whitespace=False))
