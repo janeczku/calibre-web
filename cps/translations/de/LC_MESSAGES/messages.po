@@ -1485,7 +1485,7 @@ msgstr "%(format)s Format nicht gefunden"
 
 #: cps/tasks/convert.py:215
 msgid "Ebook converter failed with unknown error"
-msgstr "EBook Converter mit unbekanntem Fehler fehlgeschlagen"
+msgstr "E-Book Converter mit unbekanntem Fehler fehlgeschlagen"
 
 #: cps/tasks/convert.py:234
 #, python-format
@@ -1505,7 +1505,7 @@ msgstr "Calibre fehlgeschlagen mit Fehler: %(error)s"
 #: cps/tasks/convert.py:317
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
-msgstr "Fehler des EBook-Converters: %(error)s"
+msgstr "Fehler des E-Book-Converters: %(error)s"
 
 #: cps/tasks/convert.py:345
 msgid "Convert"
@@ -1636,7 +1636,7 @@ msgstr "E-Mail Service"
 
 #: cps/templates/admin.html:91
 msgid "Gmail via Oauth2"
-msgstr "Gmail via Oauth2"
+msgstr "Gmail via OAuth2"
 
 #: cps/templates/admin.html:106
 msgid "Configuration"
@@ -1644,7 +1644,7 @@ msgstr "Konfiguration"
 
 #: cps/templates/admin.html:109
 msgid "Calibre Database Directory"
-msgstr "Ordner der Calibre-DB"
+msgstr "Ordner der Calibre Datenbank"
 
 #: cps/templates/admin.html:113 cps/templates/config_edit.html:68
 msgid "Log Level"
@@ -1705,7 +1705,7 @@ msgstr "Geplante Aufgabe"
 #: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
 #: cps/templates/tasks.html:18
 msgid "Start Time"
-msgstr "Uhrzeit zu der die Aufgabe startet"
+msgstr "Startzeit"
 
 #: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
 msgid "Maximum Duration"
@@ -1722,7 +1722,7 @@ msgstr "Seriencover Miniaturansichten erzeugen"
 #: cps/templates/admin.html:186 cps/templates/admin.html:208
 #: cps/templates/schedule_edit.html:37
 msgid "Reconnect Calibre Database"
-msgstr "Mit Calibre Bibliothek neuverbinden"
+msgstr "Mit Calibre Bibliothek neu verbinden"
 
 #: cps/templates/admin.html:190 cps/templates/schedule_edit.html:41
 msgid "Generate Metadata Backup Files"
@@ -1815,12 +1815,12 @@ msgstr "In Bibliothek"
 #: cps/templates/author.html:26 cps/templates/index.html:74
 #: cps/templates/search.html:31 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
-msgstr "Sortiere nach Buchdatum, Neuestes zuerst"
+msgstr "Sortiere nach Buchdatum, neuestes zuerst"
 
 #: cps/templates/author.html:27 cps/templates/index.html:75
 #: cps/templates/search.html:32 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
-msgstr "Sortiere nach Buchdatum, Ältestes zuerst"
+msgstr "Sortiere nach Buchdatum, ältestes zuerst"
 
 #: cps/templates/author.html:28 cps/templates/index.html:76
 #: cps/templates/search.html:33 cps/templates/shelf.html:22
@@ -1835,12 +1835,12 @@ msgstr "Sortiere Titel in umgekehrt alphabetischer Reihenfolge"
 #: cps/templates/author.html:30 cps/templates/index.html:80
 #: cps/templates/search.html:37 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
-msgstr "Sortiere nach Herausgabedatum, Neueste zuerst"
+msgstr "Sortiere nach Herausgabedatum, neueste zuerst"
 
 #: cps/templates/author.html:31 cps/templates/index.html:81
 #: cps/templates/search.html:38 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
-msgstr "Sortiere nach Herausgabedatum, Älteste zuerst"
+msgstr "Sortiere nach Herausgabedatum, älteste zuerst"
 
 #: cps/templates/author.html:56 cps/templates/author.html:113
 #: cps/templates/index.html:30 cps/templates/index.html:113
@@ -2050,7 +2050,7 @@ msgstr "Speichern"
 
 #: cps/templates/book_edit.html:239
 msgid "Keyword"
-msgstr "Suchbegriff"
+msgstr "Schlüsselbegriff"
 
 #: cps/templates/book_edit.html:240
 msgid "Search keyword"
@@ -2217,7 +2217,7 @@ msgstr "Google Drive Calibre-Ordner"
 
 #: cps/templates/config_db.html:52
 msgid "Metadata Watch Channel ID"
-msgstr "Matadata Überwachungs-ID"
+msgstr "Metadaten Überwachungs-ID"
 
 #: cps/templates/config_db.html:55
 msgid "Revoke"
@@ -2257,7 +2257,7 @@ msgstr "Nightly"
 
 #: cps/templates/config_edit.html:50
 msgid "Trusted Hosts (Comma Separated)"
-msgstr "Trusted Hosts (Komma separiert)"
+msgstr "Trusted Hosts (kommasepariert)"
 
 #: cps/templates/config_edit.html:61
 msgid "Logfile Configuration"
@@ -2293,7 +2293,7 @@ msgstr "Hochladen aktivieren"
 
 #: cps/templates/config_edit.html:112
 msgid "(Please ensure that users also have upload permissions)"
-msgstr "(Bitte stellen Sie sicher das sie über die Upload Berechtigung verfügen)"
+msgstr "(Bitte stellen Sie sicher, dass Sie über die Upload Berechtigung verfügen)"
 
 #: cps/templates/config_edit.html:116
 msgid "Allowed Upload Fileformats"
@@ -2321,11 +2321,11 @@ msgstr "Synchronisation mit Kobo aktivieren"
 
 #: cps/templates/config_edit.html:146
 msgid "Proxy unknown requests to Kobo Store"
-msgstr "Unbekannte Anfragen an Kobo.com weiterleiten"
+msgstr "Unbekannte Anfragen an kobo.com weiterleiten"
 
 #: cps/templates/config_edit.html:149
 msgid "Server External Port (for port forwarded API calls)"
-msgstr "Externer Server Port (für Port Weiterleitung von API Aufrufen)"
+msgstr "Externer Server Port (für Portweiterleitung von API-Aufrufen)"
 
 #: cps/templates/config_edit.html:157
 msgid "Use Goodreads"
@@ -2524,7 +2524,7 @@ msgstr "Stark"
 
 #: cps/templates/config_edit.html:393
 msgid "User Password policy"
-msgstr "Passwort Regeln"
+msgstr "Passwortregeln"
 
 #: cps/templates/config_edit.html:397
 msgid "Minimum password length"
@@ -2532,7 +2532,7 @@ msgstr "Minimale Passwortlänge"
 
 #: cps/templates/config_edit.html:402
 msgid "Enforce number"
-msgstr "Erzwinge Nummer"
+msgstr "Erzwinge Zahl"
 
 #: cps/templates/config_edit.html:406
 msgid "Enforce lowercase characters"
@@ -2689,7 +2689,7 @@ msgstr "Buch als archiviert oder nicht markieren, um es in Calibre-Web auszublen
 
 #: cps/templates/detail.html:275
 msgid "Archive"
-msgstr "Archiv"
+msgstr "Archiviert"
 
 #: cps/templates/detail.html:301 cps/templates/listenmp3.html:190
 #: cps/templates/search.html:16
@@ -2709,7 +2709,7 @@ msgstr "Metadaten bearbeiten"
 
 #: cps/templates/email_edit.html:13
 msgid "Email Account Type"
-msgstr "Wähle Server Typ"
+msgstr "Wähle Servertyp"
 
 #: cps/templates/email_edit.html:15
 msgid "Standard Email Account"
@@ -2804,7 +2804,7 @@ msgstr "Zurück zur Hauptseite"
 
 #: cps/templates/http_error.html:57
 msgid "Logout User"
-msgstr "Benutzer ausloggem"
+msgstr "Benutzer ausloggen"
 
 #: cps/templates/index.html:71
 msgid "Sort ascending according to download count"
@@ -2866,19 +2866,19 @@ msgstr "Zufällige Bücher"
 
 #: cps/templates/index.xml:83
 msgid "Books ordered by Author"
-msgstr "Bücher nach Autoren sortiert"
+msgstr "Bücher nach Autor sortiert"
 
 #: cps/templates/index.xml:92
 msgid "Books ordered by publisher"
-msgstr "Bücher nach Verlegern sortiert"
+msgstr "Bücher nach Verleger sortiert"
 
 #: cps/templates/index.xml:101
 msgid "Books ordered by category"
-msgstr "Bücher nach Kategorien sortiert"
+msgstr "Bücher nach Kategorie sortiert"
 
 #: cps/templates/index.xml:110
 msgid "Books ordered by series"
-msgstr "Bücher nach Serien sortiert"
+msgstr "Bücher nach Serie sortiert"
 
 #: cps/templates/index.xml:119
 msgid "Books ordered by Languages"
@@ -2886,11 +2886,11 @@ msgstr "Bücher nach Sprache sortiert"
 
 #: cps/templates/index.xml:128
 msgid "Books ordered by Rating"
-msgstr "Bücher nach Bewertungen sortiert"
+msgstr "Bücher nach Bewertung sortiert"
 
 #: cps/templates/index.xml:137
 msgid "Books ordered by file formats"
-msgstr "Bücher nach Dateiformaten sortiert"
+msgstr "Bücher nach Dateiformat sortiert"
 
 #: cps/templates/index.xml:142 cps/templates/layout.html:155
 #: cps/templates/search_form.html:88
@@ -3009,7 +3009,7 @@ msgstr "Dieses Buchformat wird permanent aus der Datenbank gelöscht"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
-msgstr "Das Buch wird aus der Calibre-Datenbank"
+msgstr "Das Buch wird endgültig aus der Datenbank"
 
 #: cps/templates/modal_dialogs.html:52
 msgid "and hard disk"
@@ -3017,7 +3017,7 @@ msgstr "und von der Festplatte gelöscht"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr "Wichtiger Kobo Hinweis: Gelöschte Bücher bleiben auf auf allen verbundenen Kobo Geräten erhalten."
+msgstr "Wichtiger Kobo Hinweis: Gelöschte Bücher bleiben auf allen verbundenen Kobo Geräten erhalten."
 
 #: cps/templates/modal_dialogs.html:57
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
@@ -3057,11 +3057,11 @@ msgstr "Calibre-Web E-Book-Katalog"
 
 #: cps/templates/read.html:7
 msgid "epub Reader"
-msgstr "epub-Leser"
+msgstr "EPUB-Leser"
 
 #: cps/templates/read.html:80
 msgid "Choose a theme below:"
-msgstr "Wähle eine Design:"
+msgstr "Wähle ein Design:"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
@@ -3341,11 +3341,11 @@ msgstr "Sprachen ausschließen"
 
 #: cps/templates/search_form.html:127
 msgid "Extensions"
-msgstr "Datei Erweiterungen"
+msgstr "Dateierweiterungen"
 
 #: cps/templates/search_form.html:135
 msgid "Exclude Extensions"
-msgstr "Datei Erweiterungen ausschliessen"
+msgstr "Dateierweiterungen ausschliessen"
 
 #: cps/templates/search_form.html:145
 msgid "Rating Above"
@@ -3371,7 +3371,7 @@ msgstr "Lösche dieses Bücherregal"
 
 #: cps/templates/shelf.html:14
 msgid "Edit Shelf Properties"
-msgstr "Bücherregal Eigenschaften bearbeiten"
+msgstr "Eigenschaften bearbeiten"
 
 #: cps/templates/shelf.html:17
 msgid "Arrange books manually"
@@ -3387,11 +3387,11 @@ msgstr "Manuelles Sortieren aktivieren"
 
 #: cps/templates/shelf.html:28
 msgid "Sort according to book added to shelf, newest first"
-msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, Neuestes zuerst"
+msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, neuestes zuerst"
 
 #: cps/templates/shelf.html:29
 msgid "Sort according to book added to shelf, oldest first"
-msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, Ältestes zuerst"
+msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, ältestes zuerst"
 
 #: cps/templates/shelf_edit.html:14
 msgid "Share with Everyone"
@@ -3403,7 +3403,7 @@ msgstr "Dieses Bücherregal mit Kobo synchronisieren"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
-msgstr "Drag 'n drop um Reihenfolge zu ändern"
+msgstr "Ziehen und ablegen um Reihenfolge zu ändern"
 
 #: cps/templates/shelf_order.html:33
 msgid "Hidden Book"
@@ -3411,7 +3411,7 @@ msgstr "Verstecktes Buch"
 
 #: cps/templates/stats.html:7
 msgid "Library Statistics"
-msgstr "Bibiliotheksstatistiken"
+msgstr "Bibliotheksstatistiken"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
@@ -3491,7 +3491,7 @@ msgstr "Zeige nur Bücher mit dieser Sprache"
 
 #: cps/templates/user_edit.html:54
 msgid "OAuth Settings"
-msgstr "Oauth Einstellungen"
+msgstr "OAuth Einstellungen"
 
 #: cps/templates/user_edit.html:56
 msgid "Link"
@@ -3511,7 +3511,7 @@ msgstr "Erzeugen/Ansehen"
 
 #: cps/templates/user_edit.html:70
 msgid "Force full kobo sync"
-msgstr "Komplettsynchronisation Kobo erzwingen"
+msgstr "Kobo Komplettsynchronisation erzwingen"
 
 #: cps/templates/user_edit.html:88
 msgid "Add allowed/Denied Custom Column Values"
@@ -3595,7 +3595,7 @@ msgstr "Verbotene Spaltennamen"
 
 #: cps/templates/user_table.html:144
 msgid "Change Password"
-msgstr "Passworts ändern"
+msgstr "Passwort ändern"
 
 #: cps/templates/user_table.html:147
 msgid "View"
@@ -3611,5 +3611,5 @@ msgstr "Ausgesuchte Bücherregale mit Kobo synchronisieren"
 
 #: cps/templates/user_table.html:156
 msgid "Show Read/Unread Section"
-msgstr "Zeige Gelesen/Ungelesen Auswahl"
+msgstr "Zeige Gelesen/Ungelesen"
 
