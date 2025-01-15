@@ -90,6 +90,11 @@
                                         <li><a target="_blank"
                                                href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
                                         </li>
+                                        {% if format == 'epub' %}
+                                            <li><a target="_blank"
+                                                   href="/static/custom/reader/index.html?bookPath=/download/{{ entry.id }}/epub/{{ entry.id }}.epub">epub new</a>
+                                            </li>
+                                        {% endif %}
                                     {% endfor %}
                                 </ul>
                             {% else %}
@@ -98,6 +103,9 @@
                                    id="readbtn" class="btn btn-primary" role="button"><span
                                         class="glyphicon glyphicon-book"></span> {{ _('Read in Browser') }}
                                     - {{ entry.reader_list[0] }}</a>
+                                    <a target="_blank" class="btn btn-primary" role="button"
+                                           href="/static/custom/reader/index.html?bookPath=/download/{{ entry.id }}/epub/{{ entry.id }}.epub">epub new</a>
+
                             {% endif %}
                         </div>
                     {% endif %}

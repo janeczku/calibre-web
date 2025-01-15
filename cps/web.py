@@ -97,7 +97,7 @@ def add_security_headers(resp):
     if request.endpoint == "web.read_book" and config.config_use_google_drive:
         csp +=" blob: "
     csp += "; font-src 'self' data:"
-    if request.endpoint == "web.read_book":
+    if request.endpoint == "web.read_book" or request.path.startswith("/static/custom/reader/index.html"):
         csp += " blob: "
     csp += "; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
@@ -105,7 +105,7 @@ def add_security_headers(resp):
     csp += " data:"
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
         csp += " *"
-    if request.endpoint == "web.read_book":
+    if request.endpoint == "web.read_book" or request.path.startswith("/static/custom/reader/index.html"):
         csp += " blob: ; style-src-elem 'self' blob: 'unsafe-inline'"
     csp += "; object-src 'none';"
     resp.headers['Content-Security-Policy'] = csp
