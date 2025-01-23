@@ -32,7 +32,7 @@
     <div class="form-group">
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
-            {%  for translation in translations %}
+            {%  for translation in translations|sort(attribute='display_name') %}
                 <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
             {% endfor %}
         </select>
