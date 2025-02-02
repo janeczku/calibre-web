@@ -1256,19 +1256,26 @@ def download_link(book_id, book_format, anyname):
     return get_download_link(book_id, book_format, client)
 
 
-@web.route('/send/<int:book_id>/<book_format>/<int:convert>', methods=["POST"])
+@web.route('/send/<int:book_id>/<book_format>/<int:convert>/<ereader_email>', methods=["POST"])
 @login_required_if_no_ano
 @download_required
-def send_to_ereader(book_id, book_format, convert):
+def send_to_ereader(book_id, book_format, convert, ereader_email):
     if not config.get_mail_server_configured():
         return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
-    elif current_user.kindle_mail:
-        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.get_book_path(),
+    elif ereader_email:
+        # Validate that the ereader_email belongs to the current user
+        from .string_helper import strip_whitespaces
+        user_emails = [strip_whitespaces(x) for x in (current_user.kindle_mail or '').split(',')]
+        if ereader_email not in user_emails:
+            response = [{'type': "danger", 'message': _("Oops! Invalid eReader email address.")}]
+            return make_response(jsonify(response))
+
+        result = send_mail(book_id, book_format, convert, ereader_email, config.get_book_path(),
                            current_user.name)
         if result is None:
             ub.update_download(book_id, int(current_user.id))
             response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
-                                                       eReadermail=current_user.kindle_mail)}]
+                                                         eReadermail=ereader_email)}]
         else:
             response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     else:
@@ -1652,7 +1659,7 @@ def show_book(book_id):
 
         entry.ordered_authors = calibre_db.order_authors([entry])
 
-        entry.email_share_list = check_send_to_ereader(entry)
+        entry.email_share_list = check_send_to_ereader(entry, current_user.kindle_mail or '')
         entry.reader_list = check_read_formats(entry)
 
         entry.reader_list_sizes = dict()

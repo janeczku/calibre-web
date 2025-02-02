@@ -149,47 +149,59 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     return
 
 
-def check_send_to_ereader_with_converter(formats):
+def _format_ereader_message(msg_single, msg_multi, ereader_emails, email, **kwargs):
+    """Format message text based on number of configured emails."""
+    if len(ereader_emails) > 1:
+        return _(msg_multi, eReadermail=email, **kwargs)
+    else:
+        return _(msg_single, **kwargs)
+
+
+def check_send_to_ereader_with_converter(formats, ereader_emails):
     book_formats = list()
-    if 'MOBI' in formats and 'EPUB' not in formats:
-        book_formats.append({'format': 'Epub',
-                             'convert': 1,
-                             'text': _('Convert %(orig)s to %(format)s and send to eReader',
-                                       orig='Mobi',
-                                       format='Epub')})
-    if 'AZW3' in formats and 'EPUB' not in formats:
-        book_formats.append({'format': 'Epub',
-                             'convert': 2,
-                             'text': _('Convert %(orig)s to %(format)s and send to eReader',
-                                       orig='Azw3',
-                                       format='Epub')})
+    if 'EPUB' not in formats:
+        for convert_format in [('MOBI', 1), ('AZW3', 2)]:
+            if convert_format[0] in formats:
+                for email in ereader_emails:
+                    msg_text = _format_ereader_message(
+                        'Convert %(orig)s to %(format)s and send to eReader',
+                        'Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)',
+                        ereader_emails, email,
+                        orig=convert_format[0], format='Epub'
+                    )
+                    book_formats.append({'format': 'Epub',
+                                         'convert': convert_format[1],
+                                         'ereader_email': email,
+                                         'text': msg_text})
     return book_formats
 
 
-def check_send_to_ereader(entry):
+def check_send_to_ereader(entry, ereader_email_str):
     """
         returns all available book formats for sending to eReader
     """
     formats = list()
     book_formats = list()
+    ereader_emails = [strip_whitespaces(x) for x in ereader_email_str.split(',')]
     if len(entry.data):
         for ele in iter(entry.data):
             if ele.uncompressed_size < config.mail_size:
                 formats.append(ele.format)
-        if 'EPUB' in formats:
-            book_formats.append({'format': 'Epub',
-                                 'convert': 0,
-                                 'text': _('Send %(format)s to eReader', format='Epub')})
-        if 'PDF' in formats:
-            book_formats.append({'format': 'Pdf',
-                                 'convert': 0,
-                                 'text': _('Send %(format)s to eReader', format='Pdf')})
-        if 'AZW' in formats:
-            book_formats.append({'format': 'Azw',
-                                 'convert': 0,
-                                 'text': _('Send %(format)s to eReader', format='Azw')})
+        for book_format in ['EPUB', 'PDF', 'AZW']:
+            if book_format in formats:
+                for ereader_email in ereader_emails:
+                    msg_text = _format_ereader_message(
+                        'Send %(format)s to eReader',
+                        'Send %(format)s to eReader (%(eReadermail)s)',
+                        ereader_emails, ereader_email,
+                        format=book_format
+                    )
+                    book_formats.append({'format': book_format,
+                                         'convert': 0,
+                                         'ereader_email': ereader_email,
+                                         'text': msg_text})
         if config.config_converterpath:
-            book_formats.extend(check_send_to_ereader_with_converter(formats))
+            book_formats.extend(check_send_to_ereader_with_converter(formats, ereader_emails))
         return book_formats
     else:
         log.error('Cannot find book entry %d', entry.id)
