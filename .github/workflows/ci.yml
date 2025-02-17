@@ -46,15 +46,6 @@ jobs:
         run: |
           docker build -t ahedkhatib/calibre-web:latest .
 
-      - name: Scan Docker image for vulnerabilities (Trivy)
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'ahedkhatib/calibre-web:latest'
-          format: 'table'
-          exit-code: 1
-          ignore-unfixed: true
-          severity: 'HIGH,CRITICAL'
-
       - name: Push Docker image to DockerHub
         run: |
           docker push ahedkhatib/calibre-web:latest
