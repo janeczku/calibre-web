@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Ensure reports folder exists
+        run: mkdir -p reports     # Ensures folder exists before running JMeter
+
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.5.0
         with:
@@ -20,7 +23,7 @@ jobs:
           outputReportsFolder: reports/
           args: "--loglevel INFO"
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
           name: jmeter-test-results
           path: reports/
