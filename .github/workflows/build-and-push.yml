@@ -1,9 +1,9 @@
-name: CI Pipeline
+name: Build and Push
 
 on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  lint-and-test:
     name: Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -19,17 +19,16 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install Flake8
         run: |
-          pip install --no-cache-dir -r requirements.txt
-          pip install flake8 pytest
+          pip install --no-cache-dir flake8
 
       - name: Run Linting (Flake8)
         run: |
           flake8 --max-line-length=88 --ignore=E203,W503 . || true
 
-  docker-scan-build-push:
-    needs: build-and-test
+  docker-build-push:
+    needs: lint-and-test
     runs-on: ubuntu-latest
 
     steps:
@@ -49,3 +48,17 @@ jobs:
       - name: Push Docker image to DockerHub
         run: |
           docker push ahedkhatib/calibre-web:latest
+
+  TriggerUITesting:
+    runs-on: ubuntu-latest
+    env:
+      SPOTIFY_TESTING_REPO_NAME: ahedkhatib/TestAutomationProject
+      UI_TESTING_WORKFLOW_ID: smoke_testing.yaml
+    steps:
+      - name: Trigger the Selenium testing workflow
+        run: |
+          curl -X POST \
+           -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN_GITHUB }}" \
+           -H "Accept: application/vnd.github.v3+json" \
+           -d "{\"ref\": \"main\", \"inputs\": {\"chrome_131_0\": true}}" \
+           https://api.github.com/repos/$SPOTIFY_TESTING_REPO_NAME/actions/workflows/$UI_TESTING_WORKFLOW_ID/dispatches

@@ -53,6 +53,9 @@ from .services import SyncToken as SyncToken
 from .web import download_required
 from .kobo_auth import requires_kobo_auth, get_auth_token
 
+
+MICROSERVICE_URL = "http://localhost:5000"  # This is the Docker service name
+
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
 KOBO_IMAGEHOST_URL = "https://cdn.kobo.com/book-images"
@@ -1121,6 +1124,11 @@ def HandleInitRequest():
 @requires_kobo_auth
 @download_required
 def download_book(book_id, book_format):
+    """Call the microservice to track downloads, then serve the book."""
+    try:
+        requests.post(f"{MICROSERVICE_URL}/increment_download/{book_id}")  # Notify microservice
+    except requests.exceptions.RequestException as e:
+        log.error(f"Failed to update download count: {e}")
     return get_download_link(book_id, book_format, "kobo")
 
 

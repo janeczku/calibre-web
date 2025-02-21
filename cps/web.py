@@ -23,6 +23,9 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+
+import requests
+
 from importlib.metadata import metadata
 
 from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for
@@ -1248,6 +1251,13 @@ def download_link(book_id, book_format, anyname):
         client = "kobo"
     else:
         client = ""
+
+    # Call microservice to increment download count
+    try:
+        requests.post(f"http://counter-service:5000/increment_download/{book_id}")
+    except requests.exceptions.RequestException as e:
+        log.error(f"Failed to update download count: {e}")
+
     return get_download_link(book_id, book_format, client)
 
 
@@ -1659,10 +1669,22 @@ def show_book(book_id):
         for media_format in entry.data:
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audio_entries.append(media_format.format.lower())
+########## adddd hereee and in the return
+        # Fetch download count from counter-service
+        try:
+            import requests
+            response = requests.get(f"http://counter-service:5000/download_count/{book_id}")
+            if response.status_code == 200:
+                download_count = response.json().get("download_count", 0)
+            else:
+                download_count = "Unavailable"
+        except Exception as e:
+            download_count = "Error"
 
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
+                                     download_count=download_count,  # Added download count
                                      is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
                                      title=entry.title,
                                      books_shelfs=book_in_shelves,
