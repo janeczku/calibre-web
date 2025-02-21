@@ -831,4 +831,5 @@ input:-moz-placeholder { color: #454545; }
     bottom: 4rem;
     width: fit-content;
     position: absolute;
+    visibility: hidden;
 }
