@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  calibre-web:
+    image: calibre-web-image
+    ports:
+      - "8083:8083"
+    volumes:
+      - C:\Users\2020\Desktop\library:/app/library
+    depends_on:
+      - counter-service
+
+  counter-service:
+    image: counter-service-image
+    ports:
+      - "5000:5000"
+    volumes:
+      - C:\Users\2020\Desktop\library:/app/library
