@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Ensure reports folder exists
-        run: mkdir -p reports  # Ensures folder exists before running JMeter
+        run: mkdir -p reports     # Ensures folder exists before running JMeter
 
       - name: Run JMeter Action on a test
         uses: rbhadti94/apache-jmeter-action@v0.5.0
