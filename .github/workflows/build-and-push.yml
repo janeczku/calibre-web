@@ -49,16 +49,19 @@ jobs:
         run: |
           docker push ahedkhatib/calibre-web:latest
 
-  TriggerUITesting:
+  action_build:
     runs-on: ubuntu-latest
-    env:
-      SPOTIFY_TESTING_REPO_NAME: ahedkhatib/TestAutomationProject
-      UI_TESTING_WORKFLOW_ID: smoke_testing.yaml
     steps:
-      - name: Trigger the Selenium testing workflow
-        run: |
-          curl -X POST \
-           -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN_GITHUB }}" \
-           -H "Accept: application/vnd.github.v3+json" \
-           -d "{\"ref\": \"main\", \"inputs\": {\"chrome_131_0\": true}}" \
-           https://api.github.com/repos/$SPOTIFY_TESTING_REPO_NAME/actions/workflows/$UI_TESTING_WORKFLOW_ID/dispatches
+      - uses: actions/checkout@v2
+
+      - name: Run JMeter Action on a test
+        uses: rbhadti94/apache-jmeter-action@v0.5.0
+        with:
+          testFilePath: test/calibre-standard-users.jmx
+          outputReportsFolder: reports/
+          args: "--loglevel INFO"
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: jmeter-test-results
+          path: reports/
