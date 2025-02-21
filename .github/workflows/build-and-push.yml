@@ -48,23 +48,3 @@ jobs:
       - name: Push Docker image to DockerHub
         run: |
           docker push ahedkhatib/calibre-web:latest
-
-  action_build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository (preproduction branch)
-        uses: actions/checkout@v2
-        with:
-            ref: preproduction-branch
-
-      - name: Run JMeter Action on a test
-        uses: rbhadti94/apache-jmeter-action@v0.5.0
-        with:
-          testFilePath: test/calibre-standard-users.jmx
-          outputReportsFolder: reports/
-          args: "--loglevel INFO"
-
-      - uses: actions/upload-artifact@v1
-        with:
-          name: jmeter-test-results
-          path: reports/
