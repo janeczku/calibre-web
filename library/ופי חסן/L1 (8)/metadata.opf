@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:identifier opf:scheme="calibre" id="calibre_id">8</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">79aeeac7-dff3-4f7a-9da2-ae30635dbe99</dc:identifier>
+        <dc:title>L1</dc:title>
+        <dc:creator opf:file-as="חסן, ופי" opf:role="aut">ופי חסן</dc:creator>
+        <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (7.23.0) [https://calibre-ebook.com]</dc:contributor>
+        <dc:date>2024-12-13T00:00:00+00:00</dc:date>
+        <dc:language>ara</dc:language>
+        <meta name="calibre:timestamp" content="2024-12-24T05:44:43+00:00"/>
+        <meta name="calibre:title_sort" content="L1"/>
+    </metadata>
+    <guide>
+        <reference type="cover" title="Cover" href="cover.jpg"/>
+    </guide>
+</package>

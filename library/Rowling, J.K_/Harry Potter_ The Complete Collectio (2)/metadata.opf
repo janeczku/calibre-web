@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:identifier opf:scheme="calibre" id="calibre_id">2</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">8a422e87-cf14-465e-8ec7-78c289bb231e</dc:identifier>
+        <dc:title>Harry Potter: The Complete Collection</dc:title>
+        <dc:creator opf:file-as="Rowling, J.K." opf:role="aut">Rowling, J.K.</dc:creator>
+        <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (7.23.0) [https://calibre-ebook.com]</dc:contributor>
+        <dc:date>2015-12-13T23:00:00+00:00</dc:date>
+        <dc:publisher>Arthur A. Levine Books</dc:publisher>
+        <dc:language>eng</dc:language>
+        <meta name="calibre:timestamp" content="2024-12-23T09:08:05.474145+00:00"/>
+        <meta name="calibre:title_sort" content="Harry Potter: The Complete Collection"/>
+    </metadata>
+    <guide>
+        <reference type="cover" title="Cover" href="cover.jpg"/>
+    </guide>
+</package>

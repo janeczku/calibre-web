@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:identifier opf:scheme="calibre" id="calibre_id">7</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">984d003c-c4de-4c40-8eb6-14bad1adcfa3</dc:identifier>
+        <dc:title>L3</dc:title>
+        <dc:creator opf:file-as="wafi" opf:role="aut">wafi</dc:creator>
+        <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (7.23.0) [https://calibre-ebook.com]</dc:contributor>
+        <dc:date>2024-12-13T00:00:00+00:00</dc:date>
+        <dc:language>ara</dc:language>
+        <meta name="calibre:timestamp" content="2024-12-24T05:44:43+00:00"/>
+        <meta name="calibre:title_sort" content="L3"/>
+    </metadata>
+    <guide>
+        <reference type="cover" title="Cover" href="cover.jpg"/>
+    </guide>
+</package>

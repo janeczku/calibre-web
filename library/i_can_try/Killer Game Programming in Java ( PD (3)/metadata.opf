@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:identifier opf:scheme="calibre" id="calibre_id">3</dc:identifier>
+        <dc:identifier opf:scheme="uuid" id="uuid_id">de2d868a-2a0e-4009-9dd3-cadd516a0431</dc:identifier>
+        <dc:title>Killer Game Programming in Java ( PDFDrive )</dc:title>
+        <dc:creator opf:file-as="i_can_try" opf:role="aut">i_can_try</dc:creator>
+        <dc:contributor opf:file-as="calibre" opf:role="bkp">calibre (7.23.0) [https://calibre-ebook.com]</dc:contributor>
+        <dc:date>2008-06-20T12:10:24+00:00</dc:date>
+        <dc:publisher>unknown</dc:publisher>
+        <dc:language>en</dc:language>
+        <meta name="calibre:timestamp" content="2024-12-23T09:18:51.670315+00:00"/>
+        <meta name="calibre:title_sort" content="Killer Game Programming in Java ( PDFDrive )"/>
+    </metadata>
+    <guide>
+        <reference type="cover" title="Cover" href="cover.jpg"/>
+    </guide>
+</package>
