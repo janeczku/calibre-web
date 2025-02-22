@@ -18,5 +18,5 @@ jobs:
           curl -X POST \
            -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN_GITHUB }}" \
            -H "Accept: application/vnd.github.v3+json" \
-           -d "{\"ref\": \"${{ github.head_ref }}\", \"inputs\": {\"chrome_131_0\": true}}" \
+           -d "{\"ref\": \"main\", \"inputs\": {\"grid_url\": \"http://localhost:4444\", \"chrome_131_0\": true}}" \
            https://api.github.com/repos/$TESTING_REPO_NAME/actions/workflows/$UI_TESTING_WORKFLOW_ID/dispatches
