@@ -49,3 +49,12 @@ jobs:
       - name: Push Docker image to DockerHub
         run: |
           docker push ahedkhatib/calibre-web:${{ github.run_number }}
+
+      # Build and push counter-service microservice
+      - name: Build Docker image for counter-service
+        run: |
+          docker build -t ahedkhatib/counter-service:${{ github.run_number }} ./counter-service
+
+      - name: Push Docker image for counter-service
+        run: |
+          docker push ahedkhatib/counter-service:${{ github.run_number }}
