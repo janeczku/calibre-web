@@ -1,6 +1,7 @@
 name: Build and Push
 
-on: [push, pull_request]
+on:
+  push:
 
 jobs:
   lint-and-test:
@@ -43,8 +44,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ahedkhatib/calibre-web:latest .
+          docker build -t ahedkhatib/calibre-web:${{ github.run_number }} .
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push ahedkhatib/calibre-web:latest
+          docker push ahedkhatib/calibre-web:${{ github.run_number }}
