@@ -2,8 +2,6 @@ name: Integration Tests
 
 on:
   pull_request:
-    branches:
-      - main  # Triggers when a PR is opened to main
 
 jobs:
   run-integration-tests:
