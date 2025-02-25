@@ -28,6 +28,10 @@ jobs:
         run: |
           flake8 --max-line-length=88 --ignore=E203,W503 . || true
 
+      - name: Run Specific Unit Test (test_helpers.py)
+        run: |
+          python -m unittest test.test_helpers
+
   docker-build-push:
     needs: lint-and-test
     runs-on: ubuntu-latest
@@ -49,3 +53,12 @@ jobs:
       - name: Push Docker image to DockerHub
         run: |
           docker push ahedkhatib/calibre-web:${{ github.run_number }}
+
+      # Build and push counter-service microservice
+      - name: Build Docker image for counter-service
+        run: |
+          docker build -t ahedkhatib/counter-service:${{ github.run_number }} ./counter-service
+
+      - name: Push Docker image for counter-service
+        run: |
+          docker push ahedkhatib/counter-service:${{ github.run_number }}
