@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   calibre-web:
-    image: calibre-web-image
+    image: ahedkhatib/calibre-web:38
     ports:
       - "8083:8083"
     volumes:
@@ -11,7 +11,7 @@ services:
       - counter-service
 
   counter-service:
-    image: counter-service-image
+    image: ahedkhatib/counter-service:38
     ports:
       - "5000:5000"
     volumes:

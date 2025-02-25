@@ -28,6 +28,10 @@ jobs:
         run: |
           flake8 --max-line-length=88 --ignore=E203,W503 . || true
 
+      - name: Run Specific Unit Test (test_helpers.py)
+        run: |
+          python -m unittest test.test_helpers
+
   docker-build-push:
     needs: lint-and-test
     runs-on: ubuntu-latest
