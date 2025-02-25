@@ -22,7 +22,7 @@ jobs:
 
       - name: Install Flake8
         run: |
-          pip install --no-cache-dir flake8
+          pip install --no-cache-dir flake8 pytest flask
 
       - name: Run Linting (Flake8)
         run: |
