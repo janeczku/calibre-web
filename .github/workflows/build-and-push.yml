@@ -25,6 +25,10 @@ jobs:
         run: |
           pip install --no-cache-dir -r requirements.txt
 
+      - name: Install dependencies from counterService requirements.txt
+        run: |
+          pip install --no-cache-dir -r counterService/requirements.txt
+
       - name: Run Linting (Flake8)
         run: |
           flake8 --max-line-length=88 --ignore=E203,W503 . || true
@@ -32,6 +36,10 @@ jobs:
       - name: Run Specific Unit Test (test_helpers.py)
         run: |
           python -m unittest test.test_helpers
+
+      - name: Run Unit Tests for Counter Service
+        run: |
+          python -m unittest test.test_counter_service    
 
 
   docker-build-push:
@@ -59,7 +67,7 @@ jobs:
       # Build and push counter-service microservice
       - name: Build Docker image for counter-service
         run: |
-          docker build -t ahedkhatib/counter-service:${{ github.run_number }} ./counter-service
+          docker build -t ahedkhatib/counter-service:${{ github.run_number }} ./counterService
 
       - name: Push Docker image for counter-service
         run: |

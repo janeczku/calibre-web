@@ -2,7 +2,13 @@ import sqlite3
 import os
 
 # Path to the existing Calibre-Web database
-DB_PATH = os.path.join(os.getcwd(), "library", "metadata.db")
+#DB_PATH = os.path.join(os.getcwd(), "library", "metadata.db")
+
+# Check if the application is running in test mode
+TEST_MODE = os.getenv("TEST_MODE", "false").lower() == "true"
+
+DB_PATH = "metadataTest.db" if TEST_MODE else os.path.join(os.getcwd(), "library", "metadata.db")
+
 
 def custom_title_sort(s):
     """ Dummy function to replace Calibre's missing SQLite title_sort """
@@ -10,8 +16,13 @@ def custom_title_sort(s):
 
 def get_db_connection():
     """ Create SQLite connection and register custom functions """
+    #conn = sqlite3.connect(DB_PATH)
+    #conn.create_function("title_sort", 1, custom_title_sort)  # Register custom function
+    #return conn
+    print(DB_PATH)
     conn = sqlite3.connect(DB_PATH)
     conn.create_function("title_sort", 1, custom_title_sort)  # Register custom function
+
     return conn
 
 def init_db():
@@ -28,7 +39,11 @@ def init_db():
 
     conn.close()
 
-init_db()  # Run this when the microservice starts
+#init_db()  # Run this when the microservice starts
+
+# Initialize the database only if not in test mode
+if not TEST_MODE:
+    init_db()
 
 from fastapi import FastAPI, HTTPException
 
