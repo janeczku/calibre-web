@@ -29,6 +29,10 @@ jobs:
         run: |
           pip install --no-cache-dir -r counterService/requirements.txt
 
+      - name: Install httpx
+        run: |
+          pip install --no-cache-dir httpx
+
       - name: Run Linting (Flake8)
         run: |
           flake8 --max-line-length=88 --ignore=E203,W503 . || true
