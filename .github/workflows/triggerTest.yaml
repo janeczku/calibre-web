@@ -13,7 +13,7 @@ jobs:
     env:
       TESTING_REPO_NAME: wafik97/API_calibre_web
       UI_TESTING_WORKFLOW_ID: smokeTest.yaml
-      PYTHON_TESTING_WORKFLOW_ID: pythonTest.yaml  # Add the new workflow ID
+      PYTHON_TESTING_WORKFLOW_ID: pythonTest.yaml
     steps:
       - name: Trigger the Selenium testing workflow
         run: |
