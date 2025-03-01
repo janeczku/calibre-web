@@ -25,14 +25,6 @@ jobs:
         run: |
           pip install --no-cache-dir -r requirements.txt
 
-      - name: Install dependencies from counterService requirements.txt
-        run: |
-          pip install --no-cache-dir -r counterService/requirements.txt
-
-      - name: Install httpx
-        run: |
-          pip install --no-cache-dir httpx
-
       # Install pip and pytest
       - name: Install dependencies
         run: |
