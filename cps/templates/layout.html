@@ -59,52 +59,67 @@
             {% if simple==true %} <li><a href="{{url_for('basic.index')}}" id="basic"><span class="glyphicon glyphicon-phone"></span><span>{{_('Simple Theme')}}</span></a><li>{% endif %}
           </ul>
           {% endif %}
-          <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if current_user.is_authenticated or g.allow_anonymous %}
-              {% if g.current_theme == 1 %}
-              <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
-                <ul class="dropdown-menu profileDropli">
-                    <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}" ><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
-                    {% if g.allow_registration and not current_user.is_authenticated %}
-                    <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
-                    <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
-                    {% endif %}
-                    {% if not current_user.is_anonymous %}
-                    <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
-                    {% endif %}
-                </ul>
-              </li>
-              {% endif %}
-              {% if current_user.role_upload() and g.allow_upload %}
-                  <li>
+            <ul class="nav navbar-nav navbar-right" id="main-nav">
+                {% if current_user.is_authenticated %}
+                <!-- New button on the left, only visible when logged in -->
+                <li class="center-li">
+                    <a href="http://localhost:8080/index.html" class="btn btn-info btn-sm" style="border-radius: 50px; font-weight: bold; color: #777777; background-color: #DFF2D8; border: none; padding: 15px; text-transform: uppercase;" target="_blank">
+                        Read together
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if current_user.is_authenticated or g.allow_anonymous %}
+                {% if g.current_theme == 1 %}
+                <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                    <ul class="dropdown-menu profileDropli">
+                        <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}" ><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
+                        {% if g.allow_registration and not current_user.is_authenticated %}
+                        <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
+                        <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
+                        {% endif %}
+                        {% if not current_user.is_anonymous %}
+                        <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                {% endif %}
+
+                {% if current_user.role_upload() and g.allow_upload %}
+                <li>
                     <form id="form-upload" class="navbar-form" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
-                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                      <div class="form-group">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
-                        type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
-                        <input class="hide" id="btn-upload2" name="btn-upload2" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}">
-                      </div>
+                                                                                     type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
+                            <input class="hide" id="btn-upload2" name="btn-upload2" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}">
+                        </div>
                     </form>
-                  </li>
-              {% endif %}
-              {% if not current_user.is_anonymous and not simple%}
+                </li>
+                {% endif %}
+
+                {% if not current_user.is_anonymous and not simple %}
                 <li class="top_tasks"><a id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
-              {% endif %}
-              {% if current_user.role_admin() %}
+                {% endif %}
+
+                {% if current_user.role_admin() %}
                 <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
-              {% endif %}
-              {% if g.current_theme == 0 %}
-              <li><a id="top_user" data-text="{{_('Account')}}" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
+                {% endif %}
+
+                {% if g.current_theme == 0 %}
+                <li><a id="top_user" data-text="{{_('Account')}}" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
                 {% if not current_user.is_anonymous %}
                 <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
                 {% endif %}
-              {% endif %}
-            {% endif %}
-            {% if g.allow_registration and not current_user.is_authenticated and g.current_theme == 0 %}
-            <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
-            <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
-            {% endif %}
-          </ul>
+                {% endif %}
+                {% endif %}
+
+                {% if g.allow_registration and not current_user.is_authenticated and g.current_theme == 0 %}
+                <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
+                <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
+                {% endif %}
+            </ul>
+
         </div><!--/.nav-collapse -->
       </div>
     </div>

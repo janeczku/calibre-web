@@ -1,14 +1,12 @@
-name: Build
+name: Build and Push
 
-on: [push, pull_request]
+on:
+  push:
 
 jobs:
   lint-and-test:
-    name: Test on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest ]
+    name: Test on Ubunto
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -23,9 +21,37 @@ jobs:
         run: |
           pip install --no-cache-dir flake8
 
+      - name: Install dependencies from requirements.txt
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Install dependencies from counterService requirements.txt
+        run: |
+          pip install --no-cache-dir -r counterService/requirements.txt
+
+      - name: Install httpx
+        run: |
+          pip install --no-cache-dir httpx
+
+      # Install pip and pytest
+      - name: Install dependencies
+        run: |
+          pip install pytest
+
       - name: Run Linting (Flake8)
         run: |
           flake8 --max-line-length=88 --ignore=E203,W503 . || true
+
+      - name: Run Specific Unit Test (TestHelperFunctions.py)
+        run: |
+          pytest test/TestHelperFunctions.py --doctest-modules --junitxml=test-results/TestHelperFunctions.xml
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            test-results//*.xml
 
   docker-build-push:
     needs: lint-and-test
@@ -43,8 +69,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t wafik97/calibre-web:latest .
+          docker build -t wafik97/calibre-web:${{ github.run_number }} .
 
       - name: Push Docker image to DockerHub
         run: |
-          docker push wafik97/calibre-web:latest
+          docker push wafik97/calibre-web:${{ github.run_number }}
