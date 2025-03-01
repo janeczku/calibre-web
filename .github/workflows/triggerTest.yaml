@@ -2,6 +2,9 @@ name: CalibreWeb tests
 
 on:
   pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   TriggerDeployment:
@@ -23,8 +26,9 @@ jobs:
 
       - name: Trigger the Calibre testing workflow
         run: |
-          curl -X POST \
+          response=$(curl -X POST \
             -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             -d "{\"ref\": \"main\"}" \
-            https://api.github.com/repos/$TESTING_REPO_NAME/actions/workflows/$PYTHON_TESTING_WORKFLOW_ID/dispatches
+            https://api.github.com/repos/$TESTING_REPO_NAME/actions/workflows/$PYTHON_TESTING_WORKFLOW_ID/dispatches)
+          echo "Response: $response"
