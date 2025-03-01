@@ -2,15 +2,12 @@ name: CalibreWeb tests
 
 on:
   pull_request:
-    branches:
-      - main
-  workflow_dispatch:  # Manual trigger
 
 jobs:
   TriggerDeployment:
     name: Trigger UI Testing Workflow
     runs-on: ubuntu-latest
-    needs: Test
+
     env:
       TESTING_REPO_NAME: wafik97/API_calibre_web
       UI_TESTING_WORKFLOW_ID: smokeTest.yaml
@@ -26,9 +23,8 @@ jobs:
 
       - name: Trigger the Calibre testing workflow
         run: |
-          response=$(curl -X POST \
+          curl -X POST \
             -H "Authorization: Bearer ${{ secrets.ACCESS_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             -d "{\"ref\": \"main\"}" \
-            https://api.github.com/repos/$TESTING_REPO_NAME/actions/workflows/$PYTHON_TESTING_WORKFLOW_ID/dispatches)
-          echo "Response: $response"
+            https://api.github.com/repos/$TESTING_REPO_NAME/actions/workflows/$PYTHON_TESTING_WORKFLOW_ID/dispatches
