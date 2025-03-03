@@ -30,5 +30,6 @@ class TestHelperFunctions(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual(result.group(1), "5.33.2")
 
+
 if __name__ == "__main__":
     unittest.main()
