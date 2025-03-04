@@ -27,7 +27,7 @@ jobs:
 
       - name: Run Locust Test
         run: |
-          locust -f locustfile.py --headless --users 3 --spawn-rate 2 --run-time 3s --html=report.html --csv=report
+          locust -f locustFile.py --headless --users 3 --spawn-rate 2 --run-time 3s --html=report.html --csv=report
 
       - name: Upload Locust HTML Report
         uses: actions/upload-artifact@v4
