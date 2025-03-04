@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   calibre-web:
-    image: wafik97/calibre-web:17
+    image: wafik97/calibre-web:24
     ports:
       - "8083:8083"
     volumes:
       - C:\Users\dwafi\Desktop\library:/app/library
 
   reading-sync-service:
-    image: wafik97/reading-sync-service:4
+    image: wafik97/reading-sync-service:7
     ports:
       - "8080:8080"
     depends_on:

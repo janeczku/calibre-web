@@ -2,6 +2,7 @@ from locust import HttpUser, task, between
 
 class CalibreUser(HttpUser):
     wait_time = between(1, 3)  # Simulate human-like delays
+    host = "https://ffe4-5-28-174-93.ngrok-free.app"
 
 
 
