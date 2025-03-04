@@ -25,18 +25,32 @@ jobs:
           python -m pip install --upgrade pip
           pip install locust
 
-      - name: Run Locust Test
+      - name: Run Small Load Test
         run: |
-          locust -f locustFile.py --headless --users 3 --spawn-rate 2 --run-time 3s --html=report.html --csv=report
+          locust -f locustFile.py --headless --users 5 --spawn-rate 2 --run-time 10s --html=report_small.html --csv=report_small
 
-      - name: Upload Locust HTML Report
+      - name: Run Medium Load Test
+        run: |
+          locust -f locustFile.py --headless --users 20 --spawn-rate 5 --run-time 20s --html=report_medium.html --csv=report_medium
+
+      - name: Run Large Load Test
+        run: |
+          locust -f locustFile.py --headless --users 50 --spawn-rate 10 --run-time 30s --html=report_large.html --csv=report_large
+
+      - name: Upload Small Test Report
         uses: actions/upload-artifact@v4
         with:
-          name: locust-html-report
-          path: report.html
+          name: locust-small-test
+          path: report_small.html
 
-      - name: Upload Locust CSV Reports
+      - name: Upload Medium Test Report
         uses: actions/upload-artifact@v4
         with:
-          name: locust-csv-reports
-          path: report_*.csv
+          name: locust-medium-test
+          path: report_medium.html
+
+      - name: Upload Large Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: locust-large-test
+          path: report_large.html
