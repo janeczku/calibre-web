@@ -463,6 +463,16 @@ def get_metadata(book):
                 log.error(e)
 
     book_uuid = book.uuid
+    book_isbn = None
+    book_pages = None
+    book_words = None
+    for i in book.identifiers:
+        if i.format_type() == "ISBN":
+            book_isbn = i.val
+    if config.config_kobo_pages_cc:
+        book_pages = getattr(book, "custom_column_"+str(config.config_kobo_pages_cc))[0].value
+    if config.config_kobo_words_cc:
+        book_words = getattr(book, "custom_column_"+str(config.config_kobo_words_cc))[0].value
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
@@ -486,6 +496,9 @@ def get_metadata(book):
         "RevisionId": book_uuid,
         "Title": book.title,
         "WorkId": book_uuid,
+        "ISBN": book_isbn,
+        "StorePages" : book_pages,
+        "StoreWordCount" : book_words,
     }
     metadata.update(get_author(book))
 
