@@ -9,6 +9,7 @@ on:
 
 jobs:
   load_test:
+    #if: github.event.pull_request.merged == true  # Ensures it runs only when merged
     runs-on: ubuntu-latest
 
     steps:
