@@ -151,6 +151,8 @@ class Identifiers(Base):
             return "ISSN"
         elif format_type == "isfdb":
             return "ISFDB"
+        elif format_type == "storygraph":
+            return "StoryGraph"
         if format_type == "lubimyczytac":
             return "Lubimyczytac"
         if format_type == "databazeknih":
@@ -194,6 +196,8 @@ class Identifiers(Base):
             return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "databazeknih":
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
+        elif format_type == "storygraph":
+            return "https://app.thestorygraph.com/books/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         elif self.val.lower().startswith("data:"):
