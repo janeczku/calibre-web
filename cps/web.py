@@ -60,7 +60,7 @@ from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
-
+import traceback
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -808,6 +808,10 @@ def render_archived_books(page, sort_param):
 @web.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
+    try:
+        x = 7/0
+    except Exception:
+        log.error("test", stacklevel=1)
     sort_param = (request.args.get('sort') or 'stored').lower()
     return render_books_list("newest", sort_param, 1, page)
 
