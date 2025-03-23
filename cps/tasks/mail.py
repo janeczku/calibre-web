@@ -171,6 +171,10 @@ class TaskEmail(CalibreTask):
         except MemoryError as e:
             log.error_or_exception(e, stacklevel=3)
             self._handleError('MemoryError sending e-mail: {}'.format(str(e)))
+        except (smtplib.SMTPRecipientsRefused) as e:
+            log.error_or_exception(e, stacklevel=3)
+            self._handleError('Smtplib Error sending e-mail: {}'.format(
+                (list(e.args[0].values())[0][1]).decode('utf-8)').replace("\n", '. ')))
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             log.error_or_exception(e, stacklevel=3)
             if hasattr(e, "smtp_error"):
