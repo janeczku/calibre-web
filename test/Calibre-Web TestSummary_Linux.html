@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2025-01-03 19:44:59</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2025-02-25 20:25:57</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-01-04 03:03:26</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-02-26 03:39:03</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 12 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
         </div>
       </div>
       </div>
@@ -2030,12 +2030,12 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="errorClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2044,26 +2044,26 @@
 
     
     
-        <tr id="ft18.1" class="none bg-danger">
+        <tr id="et18.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 268, in test_load_metadata
-    self.assertEqual(1, found)
-AssertionError: 1 != 0</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 75, in test_load_metadata
+    if results[0][&#39;source&#39;] == &#39;https://comicvine.gamespot.com/&#39;:
+IndexError: list index out of range</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -2074,11 +2074,11 @@ AssertionError: 1 != 0</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2241,11 +2241,31 @@ AssertionError: 1 != 0</pre>
     
     
     
-        <tr id='pt19.18' class='hiddenRow bg-success'>
+        <tr id="ft19.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 936, in test_watch_metadata
+    self.assertTrue(button)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5894,9 +5914,9 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>529</td>
-        <td>520</td>
+        <td>519</td>
         <td>2</td>
-        <td>0</td>
+        <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5925,7 +5945,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-50-generic #51~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Nov 21 12:03:03 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-52-generic #53~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jan 15 19:18:46 UTC 2 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5943,7 +5963,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>babel</th>
-              <td>2.16.0</td>
+              <td>2.17.0</td>
               <td>Basic</td>
             </tr>
           
@@ -6045,7 +6065,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>pytz</th>
-              <td>2024.2</td>
+              <td>2025.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6063,7 +6083,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.36</td>
+              <td>2.0.38</td>
               <td>Basic</td>
             </tr>
           
@@ -6099,7 +6119,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.161.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6129,7 +6149,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.161.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6159,7 +6179,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.161.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6189,7 +6209,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.161.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6237,7 +6257,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.162.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6267,13 +6287,13 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>beautifulsoup4</th>
-              <td>4.12.3</td>
+              <td>4.13.3</td>
               <td>TestLoadMetadata</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.162.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6303,7 +6323,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>beautifulsoup4</th>
-              <td>4.12.3</td>
+              <td>4.13.3</td>
               <td>TestLoadMetadataScholar</td>
             </tr>
           
@@ -6315,7 +6335,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.162.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6345,7 +6365,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.157.0</td>
+              <td>2.162.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6447,7 +6467,7 @@ AssertionError: &#39;book9&#39; != &#39;book11&#39;
 </div>
 
 <script>
-    drawCircle(520, 2, 0, 7);
+    drawCircle(519, 2, 1, 7);
     showCase(5);
 </script>
 
