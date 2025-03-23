@@ -25,7 +25,7 @@ import mimetypes
 
 from io import StringIO
 from email.message import EmailMessage
-from email.utils import formatdate, parseaddr
+from email.utils import formatdate, parseaddr, make_msgid
 from email.generator import Generator
 from flask_babel import lazy_gettext as N_
 
@@ -142,7 +142,7 @@ class TaskEmail(CalibreTask):
         message['To'] = self.recipient
         message['Subject'] = self.subject
         message['Date'] = formatdate(localtime=True)
-        message['Message-Id'] = "{}@{}".format(uuid.uuid4(), self.get_msgid_domain())
+        message['Message-ID'] = make_msgid(domain=self.get_msgid_domain())
         message.set_content(self.text.encode('UTF-8'), "text", "plain")
         if self.attachment:
             data = self._get_attachment(self.filepath, self.attachment)
