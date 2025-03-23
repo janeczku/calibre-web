@@ -808,10 +808,6 @@ def render_archived_books(page, sort_param):
 @web.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
-    try:
-        x = 7/0
-    except Exception:
-        log.error("test", stacklevel=1)
     sort_param = (request.args.get('sort') or 'stored').lower()
     return render_books_list("newest", sort_param, 1, page)
 
