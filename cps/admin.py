@@ -426,7 +426,7 @@ def table_get_locale():
     current_locale = get_locale()
     for loc in locale:
         ret.append({'value': str(loc), 'text': loc.get_language_name(current_locale)})
-    return json.dumps(ret)
+    return json.dumps(sorted(ret, key=lambda x: x['text']))
 
 
 @admi.route("/ajax/getdefaultlanguage")
@@ -438,7 +438,7 @@ def table_get_default_lang():
     ret.append({'value': 'all', 'text': _('Show All')})
     for lang in languages:
         ret.append({'value': lang.lang_code, 'text': lang.name})
-    return json.dumps(ret)
+    return json.dumps(sorted(ret, key=lambda x: x['text']))
 
 
 @admi.route("/ajax/editlistusers/<param>", methods=['POST'])
