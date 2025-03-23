@@ -24,3 +24,4 @@ python-magic>=0.4.27,<0.5.0
 python-magic-bin>=0.4.0,<0.5.0;sys_platform=='win32'
 flask-httpAuth>=4.4.0,<5.0.0
 cryptography>=30.0.0,<44.0.0
+fake_headers>=1.0.2,<1.1.0
