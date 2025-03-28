@@ -901,7 +901,8 @@ class CalibreDB:
                 results = self.session.query(Authors).filter(Authors.sort == auth).all()
                 # ToDo: How to handle not found author name
                 if not len(results):
-                    log.error("Author {} not found to display name in right order".format(auth))
+                    book_id = entry.id if isinstance(entry, Books) else entry[0].id
+                    log.error("Author '{}' of book {} not found to display name in right order".format(auth, book_id))
                     # error = True
                     break
                 for r in results:
