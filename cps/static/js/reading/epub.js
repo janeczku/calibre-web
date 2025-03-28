@@ -52,6 +52,32 @@ var reader;
         }
     });
 
+    // Update progress percentage
+    let progressDiv = document.getElementById("progress");
+    reader.book.ready.then((()=>{
+        let locations_key = reader.book.key()+'-locations';
+        let stored_locations = localStorage.getItem(locations_key);
+        let make_locations, save_locations;
+        if (stored_locations) {
+            make_locations = Promise.resolve(reader.book.locations.load(stored_locations));
+            // No-op because locations are already saved
+            save_locations = ()=>{};
+        } else {
+            make_locations = reader.book.locations.generate();
+            save_locations = ()=>{
+                localStorage.setItem(locations_key, reader.book.locations.save());
+            };
+        }
+        make_locations.then(()=>{
+            reader.rendition.on('relocated', (location)=>{
+                let percentage = Math.round(location.end.percentage*100);
+                progressDiv.textContent=percentage+"%";
+            });
+            reader.rendition.reportLocation();
+            progressDiv.style.visibility = "visible";
+        }).then(save_locations);
+    }));
+
     /**
      * @param {string} action - Add or remove bookmark
      * @param {string|int} location - Location or zero
