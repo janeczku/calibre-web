@@ -138,6 +138,25 @@ in your Docker run/compose file. Omit this variable for a lightweight image.
    - Set **Path to Calibre Binaries** to `/usr/bin`.
    - Set **Path to Unrar** to `/usr/bin/unrar`.
 
+## Reverse Proxy
+If you want to self-host calibre-web securely on a remote host, you must not
+let it listen to 0.0.0.0 and you must use TLS/SSL.
+
+The best way to do this is via either an Nginx (best) or Apache reverse-proxy
+in conjunction with [Let's Encrypt](https://letsencrypt.org/getting-started/).
+
+The virtual host configurations for both Nginx and Apache can be located in
+the `web` directory. There is also a gist of the [calibre-web nginx
+config](https://gist.github.com/hopeseekr/292f345b01d598a1fd0dfcf70e8f5fcc).
+
+To set `calibre-web` to listen to localhost, start the command with `-i 127.0.0.4`
+
+To do this via the systemd service:
+
+* Edit `/etc/systemd/system/multi-user.target.wants/calibre-web.service`
+* Change to `ExecStart=/usr/lib/calibre-web/cps.py -i 127.0.0.4`
+* `sudo systemctl daemon-reload; sudo systemctl restart calibre-web`
+
 ## Troubleshooting
 
 - **Common Issues**: 
