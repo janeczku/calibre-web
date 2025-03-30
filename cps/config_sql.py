@@ -121,6 +121,8 @@ class _Settings(_Base):
     config_login_type = Column(Integer, default=0)
 
     config_kobo_proxy = Column(Boolean, default=False)
+    config_kobo_pages_cc = Column(SmallInteger, default=0)
+    config_kobo_words_cc = Column(SmallInteger, default=0)
 
     config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
@@ -499,7 +501,7 @@ def autodetect_calibre_binaries():
             if all(values):
                 version = values[0].group(1)
                 log.debug("calibre version %s", version)
-                return element 
+                return element
     return ""
 
 
