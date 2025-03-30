@@ -233,7 +233,7 @@ class UserBase:
         return '<User %r>' % self.name
 
 
-# Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
+# Baseclass for Users in Calibre-Web, settings which depend on certain users are stored here. It is derived from
 # User Base (all access methods are declared there)
 class User(UserBase, Base):
     __tablename__ = 'user'
@@ -601,7 +601,7 @@ def migrate_user_session_table(engine, _session):
             trans.commit()
 
 
-# Migrate database to current version, has to be updated after every database change. Currently migration from
+# Migrate database to current version, has to be updated after every database change. Currently, migration from
 # maybe 4/5 versions back to current should work.
 # Migration is done by checking if relevant columns are existing, and then adding rows with SQL commands
 def migrate_Database(_session):
@@ -636,7 +636,7 @@ def update_download(book_id, user_id):
             session.rollback()
 
 
-# Delete non existing downloaded books in calibre-web's own database
+# Delete non-existing downloaded books in calibre-web's own database
 def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     try:

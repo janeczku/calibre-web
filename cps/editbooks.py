@@ -461,7 +461,7 @@ def get_sorted_entry(field, bookid):
                 return make_response(jsonify(authors=" & ".join([a.name for a in calibre_db.order_authors([book])])))
     return ""
 
-    
+
 @editbook.route("/ajax/simulatemerge", methods=['POST'])
 @user_login_required
 @edit_required

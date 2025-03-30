@@ -328,7 +328,7 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
     sync_token.to_headers(extra_headers)
 
     # log.debug("Kobo Sync Content: {}".format(sync_results))
-    # jsonify decodes the unicode string different to what kobo expects
+    # jsonify decodes the Unicode string different to what kobo expects
     response = make_response(json.dumps(sync_results), extra_headers)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -732,7 +732,7 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
     ub.session_commit()
 
 
-# Creates a Kobo "Tag" object from a ub.Shelf object
+# Creates a Kobo "Tag" object from an ub.Shelf object
 def create_kobo_tag(shelf):
     tag = {
         "Created": convert_to_kobo_timestamp_string(shelf.created),

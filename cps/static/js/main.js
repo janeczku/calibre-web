@@ -49,7 +49,7 @@ function elementSorter(a, b) {
     return 0;
 }
 
-// Generic control/related handler to show/hide fields based on a checkbox' value
+// Generic control/related handler to show/hide fields based on a 'checkbox' value
 // e.g.
 //  <input type="checkbox" data-control="stuff-to-show">
 //  <div data-related="stuff-to-show">...</div>
@@ -63,7 +63,7 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
     });
 });
 
-// Generic control/related handler to show/hide fields based on a select' value
+// Generic control/related handler to show/hide fields based on a 'select' value
 $(document).on("change", "select[data-control]", function() {
     var $this = $(this);
     var name = $this.data("control");
@@ -79,7 +79,7 @@ $(document).on("change", "select[data-control]", function() {
     }
 });
 
-// Generic control/related handler to show/hide fields based on a select' value
+// Generic control/related handler to show/hide fields based on a 'select' value
 // this one is made to show all values if select value is not 0
 $(document).on("change", "select[data-controlall]", function() {
     var $this = $(this);

@@ -55,7 +55,7 @@ class EmailBase:
         return (code, resp)
 
     def send(self, strg):
-        """Send `strg' to the server."""
+        """Send 'strg' to the server."""
         log.debug_no_auth('send: {}'.format(strg[:300]), stacklevel=2)
         if hasattr(self, 'sock') and self.sock:
             try:
@@ -102,7 +102,7 @@ class Email(EmailBase, smtplib.SMTP):
         smtplib.SMTP.__init__(self, *args, **kwargs)
 
 
-# Class for sending ssl encrypted email with ability to get current progress, , derived from emailbase class
+# Class for sending ssl encrypted email with ability to get current progress, derived from emailbase class
 class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
     def __init__(self, *args, **kwargs):
