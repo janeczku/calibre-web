@@ -175,6 +175,7 @@
             // Apply theme to rest of the page. 
             document.getElementById("main").style.backgroundColor = themes[id]["bgColor"];
             document.getElementById("titlebar").style.color = themes[id]["title-color"] || "#fff";
+            document.getElementById("progress").style.color = themes[id]["title-color"] || "#fff";
         }
 
         // font size settings logic
@@ -215,6 +216,6 @@
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/reading/epub-progress.js') }}"></script>      
+      <!--script src="{{ url_for('static', filename='js/reading/locationchange-polyfill.js') }}"></script-->
     </body>
 </html>
