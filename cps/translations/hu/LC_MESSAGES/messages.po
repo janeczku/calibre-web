@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-12-15 07:19+0100\n"
+"POT-Creation-Date: 2025-03-30 15:55+0200\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -62,7 +62,7 @@ msgstr "Alapvető beállítások"
 msgid "UI Configuration"
 msgstr "Felhasználói felület beállításai"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:789 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -302,7 +302,7 @@ msgstr ""
 #: cps/admin.py:1976 cps/admin.py:2097 cps/editbooks.py:168
 #: cps/editbooks.py:561 cps/editbooks.py:1256 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1530
+#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1535
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr ""
@@ -341,7 +341,7 @@ msgstr ""
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1411 cps/admin.py:1460 cps/admin.py:2093 cps/web.py:1320
+#: cps/admin.py:1411 cps/admin.py:1460 cps/admin.py:2093 cps/web.py:1325
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
@@ -484,7 +484,7 @@ msgstr "Az e-mail kiszolgáló beállításai frissítve."
 msgid "Database Configuration"
 msgstr "Funkciók beállítása"
 
-#: cps/admin.py:1940 cps/web.py:1294
+#: cps/admin.py:1940 cps/web.py:1299
 msgid "Oops! Please complete all fields."
 msgstr "Az összes mezőt ki kell tölteni!"
 
@@ -519,7 +519,7 @@ msgstr ""
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:2063 cps/web.py:1479
+#: cps/admin.py:2063 cps/web.py:1484
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
@@ -544,7 +544,7 @@ msgstr "nincs telepítve"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:1033 cps/templates/config_edit.html:203
+#: cps/db.py:1038 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -571,8 +571,8 @@ msgstr "A könyv sikeresen átalakításra lett jelölve a következő formátum
 msgid "There was an error converting this book: %(res)s"
 msgstr "Hiba történt a könyv átalakításakor: %(res)s"
 
-#: cps/editbooks.py:433 cps/editbooks.py:928 cps/web.py:535 cps/web.py:1571
-#: cps/web.py:1617 cps/web.py:1667
+#: cps/editbooks.py:433 cps/editbooks.py:928 cps/web.py:535 cps/web.py:1576
+#: cps/web.py:1622 cps/web.py:1672
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
 
@@ -827,7 +827,7 @@ msgstr ""
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:989 cps/helper.py:1146
+#: cps/helper.py:989 cps/helper.py:1149
 #, fuzzy
 msgid "Cover"
 msgstr "Felfedezés"
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1148 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -950,7 +950,7 @@ msgstr ""
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:69
 #: cps/templates/layout.html:104 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1356
+#: cps/templates/login.html:21 cps/web.py:1361
 msgid "Login"
 msgstr "Belépés"
 
@@ -1387,111 +1387,111 @@ msgstr ""
 msgid "File formats list"
 msgstr ""
 
-#: cps/web.py:1254
+#: cps/web.py:1259
 #, fuzzy
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
-#: cps/web.py:1260
+#: cps/web.py:1265
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(eReadermail)s"
 
-#: cps/web.py:1263
+#: cps/web.py:1268
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Hiba történt a könyv küldésekor: %(res)s"
 
-#: cps/web.py:1265
+#: cps/web.py:1270
 #, fuzzy
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Először be kell állítani a kindle e-mail címet..."
 
-#: cps/web.py:1281
+#: cps/web.py:1286
 msgid "Please wait one minute to register next user"
 msgstr ""
 
 #: cps/templates/layout.html:70 cps/templates/layout.html:105
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1282
-#: cps/web.py:1286 cps/web.py:1291 cps/web.py:1295 cps/web.py:1301
-#: cps/web.py:1321 cps/web.py:1325 cps/web.py:1338 cps/web.py:1341
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1287
+#: cps/web.py:1291 cps/web.py:1296 cps/web.py:1300 cps/web.py:1306
+#: cps/web.py:1326 cps/web.py:1330 cps/web.py:1343 cps/web.py:1346
 msgid "Register"
 msgstr "Regisztrálás"
 
-#: cps/web.py:1285 cps/web.py:1388
+#: cps/web.py:1290 cps/web.py:1393
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1290 cps/web.py:1337
+#: cps/web.py:1295 cps/web.py:1342
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr ""
 
-#: cps/web.py:1323
+#: cps/web.py:1328
 msgid "Oops! Your Email is not allowed."
 msgstr "Nem engedélyezett a megadott e-mail cím bejegyzése"
 
-#: cps/web.py:1326
+#: cps/web.py:1331
 msgid "Success! Confirmation Email has been sent."
 msgstr "Jóváhagyó levél elküldve az email címedre."
 
-#: cps/web.py:1371 cps/web.py:1394
+#: cps/web.py:1376 cps/web.py:1399
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1384
+#: cps/web.py:1389
 msgid "Please wait one minute before next login"
 msgstr ""
 
-#: cps/web.py:1403
+#: cps/web.py:1408
 #, fuzzy, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
 
-#: cps/web.py:1410
+#: cps/web.py:1415
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1415
+#: cps/web.py:1420
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1419 cps/web.py:1444
+#: cps/web.py:1424 cps/web.py:1449
 #, fuzzy
 msgid "Wrong Username or Password"
 msgstr "Rossz felhasználó név vagy jelszó!"
 
-#: cps/web.py:1426
+#: cps/web.py:1431
 msgid "New Password was sent to your email address"
 msgstr ""
 
-#: cps/web.py:1430
+#: cps/web.py:1435
 #, fuzzy
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
-#: cps/web.py:1432
+#: cps/web.py:1437
 #, fuzzy
 msgid "Please enter valid username to reset password"
 msgstr "Rossz felhasználó név vagy jelszó!"
 
-#: cps/web.py:1440
+#: cps/web.py:1445
 #, fuzzy, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
 
-#: cps/web.py:1505 cps/web.py:1555
+#: cps/web.py:1510 cps/web.py:1560
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s profilja"
 
-#: cps/web.py:1521
+#: cps/web.py:1526
 #, fuzzy
 msgid "Success! Profile Updated"
 msgstr "A profil frissítve."
 
-#: cps/web.py:1525
+#: cps/web.py:1530
 #, fuzzy
 msgid "Oops! An account already exists for this Email."
 msgstr "Már létezik felhasználó ehhez az e-mail címhez."
@@ -1551,7 +1551,7 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:279
+#: cps/tasks/mail.py:283
 msgid "E-mail"
 msgstr ""
 

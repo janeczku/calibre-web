@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2024-12-15 07:19+0100\n"
+"POT-Creation-Date: 2025-03-30 15:55+0200\n"
 "PO-Revision-Date: 2023-11-01 06:12+0100\n"
 "Last-Translator: Branislav Hanáček <brango@brango.sk>\n"
 "Language: sk_SK\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.13.1\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -60,7 +60,7 @@ msgstr "Základná konfigurácia"
 msgid "UI Configuration"
 msgstr "Konfigurácia používateľského rozhrania"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:789 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -295,7 +295,7 @@ msgstr "Úspech! Gmail konto bolo verifikované."
 #: cps/admin.py:1976 cps/admin.py:2097 cps/editbooks.py:168
 #: cps/editbooks.py:561 cps/editbooks.py:1256 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1530
+#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1535
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Chyba databázy: %(error)s."
@@ -334,7 +334,7 @@ msgstr "Bol uvedený neplatný doba behu"
 msgid "Scheduled tasks settings updated"
 msgstr "Nastavenia naplánovaných úloh boli aktualizované"
 
-#: cps/admin.py:1411 cps/admin.py:1460 cps/admin.py:2093 cps/web.py:1320
+#: cps/admin.py:1411 cps/admin.py:1460 cps/admin.py:2093 cps/web.py:1325
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Vyskytla sa neočakávaná chyba. Prosím, skúste to opäť neskôr."
 
@@ -474,7 +474,7 @@ msgstr "Nastavenia databáze boli aktualizované"
 msgid "Database Configuration"
 msgstr "Konfigurácia databázy"
 
-#: cps/admin.py:1940 cps/web.py:1294
+#: cps/admin.py:1940 cps/web.py:1299
 msgid "Oops! Please complete all fields."
 msgstr "Vyplňte prosím všetky polia."
 
@@ -508,7 +508,7 @@ msgstr "Nie je možné zmazať používateľa Hosť"
 msgid "No admin user remaining, can't delete user"
 msgstr "Nezostáva žiadny používateľ, nie je možné odobrať rolu správcu"
 
-#: cps/admin.py:2063 cps/web.py:1479
+#: cps/admin.py:2063 cps/web.py:1484
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-mailová adresa nemôže byť prázdna a musí byť platná"
 
@@ -533,7 +533,7 @@ msgstr "nie je naištalované"
 msgid "Execution permissions missing"
 msgstr "Chýba právo na vykonanie"
 
-#: cps/db.py:1033 cps/templates/config_edit.html:203
+#: cps/db.py:1038 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -560,8 +560,8 @@ msgstr "Kniha bola úspešne zaradená na prevod do %(book_format)s"
 msgid "There was an error converting this book: %(res)s"
 msgstr "Vyskytla sa chyba pri prevode tejto knihy: %(res)s"
 
-#: cps/editbooks.py:433 cps/editbooks.py:928 cps/web.py:535 cps/web.py:1571
-#: cps/web.py:1617 cps/web.py:1667
+#: cps/editbooks.py:433 cps/editbooks.py:928 cps/web.py:535 cps/web.py:1576
+#: cps/web.py:1622 cps/web.py:1672
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Vybraná kniha nie je dostupná. Súbor neexistuje alebo sa k nemu nedá pristupovať"
 
@@ -812,7 +812,7 @@ msgstr "Neplatný obsah súboru obalky knihy"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Ako súbor obálky knihy sú podporované iba súbory jpg/jpeg"
 
-#: cps/helper.py:989 cps/helper.py:1146
+#: cps/helper.py:989 cps/helper.py:1149
 msgid "Cover"
 msgstr "Obálka knihy"
 
@@ -852,7 +852,7 @@ msgstr "Chýba právo na vykonanie"
 msgid "Error executing Calibre"
 msgstr "Chyba pri spustení UnRar"
 
-#: cps/helper.py:1148 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Zaradiť všetky knihy na zálohovanie metadát"
 
@@ -936,7 +936,7 @@ msgstr "{} Hviezdičiek"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:69
 #: cps/templates/layout.html:104 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1356
+#: cps/templates/login.html:21 cps/web.py:1361
 msgid "Login"
 msgstr "Prihlásiť sa"
 
@@ -1361,106 +1361,106 @@ msgstr "Zoznam hodnotení"
 msgid "File formats list"
 msgstr "Zoznam súborových formátov"
 
-#: cps/web.py:1254
+#: cps/web.py:1259
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Najskôr nastavte poštový server, prosím..."
 
-#: cps/web.py:1260
+#: cps/web.py:1265
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Úspech! Kniha bola zaradená na odoslanie do %(eReadermail)s"
 
-#: cps/web.py:1263
+#: cps/web.py:1268
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Vyskytla sa chyba pri posielaní knihy: %(res)s"
 
-#: cps/web.py:1265
+#: cps/web.py:1270
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Nastavte vo vašom profile platnú e-mailovú adresu pre vašu čítačku."
 
-#: cps/web.py:1281
+#: cps/web.py:1286
 msgid "Please wait one minute to register next user"
 msgstr "Počkajte, prosím minútku pred registráciou ďalšieho používateľa"
 
 #: cps/templates/layout.html:70 cps/templates/layout.html:105
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1282
-#: cps/web.py:1286 cps/web.py:1291 cps/web.py:1295 cps/web.py:1301
-#: cps/web.py:1321 cps/web.py:1325 cps/web.py:1338 cps/web.py:1341
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1287
+#: cps/web.py:1291 cps/web.py:1296 cps/web.py:1300 cps/web.py:1306
+#: cps/web.py:1326 cps/web.py:1330 cps/web.py:1343 cps/web.py:1346
 msgid "Register"
 msgstr "Registrovať"
 
-#: cps/web.py:1285 cps/web.py:1388
+#: cps/web.py:1290 cps/web.py:1393
 #, fuzzy
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr "Poštový server nie je nastavený, kontaktujte prosím správcu."
 
-#: cps/web.py:1290 cps/web.py:1337
+#: cps/web.py:1295 cps/web.py:1342
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Poštový server nie je nastavený, kontaktujte prosím správcu."
 
-#: cps/web.py:1323
+#: cps/web.py:1328
 msgid "Oops! Your Email is not allowed."
 msgstr "Vaša e-mailová adresa nie je povolená."
 
-#: cps/web.py:1326
+#: cps/web.py:1331
 msgid "Success! Confirmation Email has been sent."
 msgstr "Úspech! Potvrdzujúci e-mail bol odoslaný."
 
-#: cps/web.py:1371 cps/web.py:1394
+#: cps/web.py:1376 cps/web.py:1399
 msgid "Cannot activate LDAP authentication"
 msgstr "Nie je možné aktivovať LDAP autentifikáciu"
 
-#: cps/web.py:1384
+#: cps/web.py:1389
 msgid "Please wait one minute before next login"
 msgstr "Počkajte, prosím minútku pred opätovným prihlásením"
 
-#: cps/web.py:1403
+#: cps/web.py:1408
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ste prihlásený ako: '%(nickname)s'"
 
-#: cps/web.py:1410
+#: cps/web.py:1415
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Záložné prihlásenie ako: '%(nickname)s', LDAP server je nedostupný alebo používateľ je neznámy"
 
-#: cps/web.py:1415
+#: cps/web.py:1420
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Nemôžem prihlásiť: %(message)s"
 
-#: cps/web.py:1419 cps/web.py:1444
+#: cps/web.py:1424 cps/web.py:1449
 msgid "Wrong Username or Password"
 msgstr "Nesprávne používateľské meno alebo heslo"
 
-#: cps/web.py:1426
+#: cps/web.py:1431
 msgid "New Password was sent to your email address"
 msgstr "Na vašu e-mailovú adresu bolo odoslané nové heslo"
 
-#: cps/web.py:1430
+#: cps/web.py:1435
 msgid "An unknown error occurred. Please try again later."
 msgstr "Vyskytla sa neočakávaná chyba. Prosím, skúste to opäť neskôr."
 
-#: cps/web.py:1432
+#: cps/web.py:1437
 msgid "Please enter valid username to reset password"
 msgstr "Na resetovanie hesla zadajte platné používateľské meno"
 
-#: cps/web.py:1440
+#: cps/web.py:1445
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Teraz ste prihlásený ako: '%(nickname)s'"
 
-#: cps/web.py:1505 cps/web.py:1555
+#: cps/web.py:1510 cps/web.py:1560
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "Profil pre %(name)s"
 
-#: cps/web.py:1521
+#: cps/web.py:1526
 msgid "Success! Profile Updated"
 msgstr "Úspech! Profil bol aktualizovaný"
 
-#: cps/web.py:1525
+#: cps/web.py:1530
 msgid "Oops! An account already exists for this Email."
 msgstr "Účet s touto e-mailovou adresou už existuje."
 
@@ -1519,7 +1519,7 @@ msgstr "Previesť"
 msgid "Reconnecting Calibre database"
 msgstr "Spojenie s databázou sa znovu naväzuje"
 
-#: cps/tasks/mail.py:279
+#: cps/tasks/mail.py:283
 msgid "E-mail"
 msgstr "E-mail"
 
