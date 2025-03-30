@@ -76,7 +76,7 @@ def edit_required(f):
 @editbook.route("/ajax/delete/<int:book_id>", methods=["POST"])
 @user_login_required
 def delete_book_from_details(book_id):
-    return delete_book_from_table(book_id, "", True) # , mimetype='application/json')
+    return delete_book_from_table(book_id, "", True)
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""}, methods=["POST"])

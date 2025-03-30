@@ -193,7 +193,7 @@ class Identifiers(Base):
         elif format_type == "issn":
             return "https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
-            return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+            return "https://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "databazeknih":
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
         elif format_type == "storygraph":

@@ -60,7 +60,7 @@ from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
-import traceback
+
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -112,7 +112,7 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000';
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000'
     return resp
 
 

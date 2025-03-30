@@ -513,7 +513,7 @@ def update_dir_structure_gdrive(book_id, first_author):
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(g_file['id'], book.path)
         else:
-            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found'''
+            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found
     if titledir != new_titledir or authordir != new_authordir :
         all_new_name = get_valid_filename(book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_authordir, chars=42)
