@@ -25,7 +25,7 @@
             <input type="radio" class="check_head" data-set="True" data-val="{{ parameter }}" name="options_archive_selected_books" id="false_archive_selected_books" data-name="archive_books" disabled>{{_('Archive selected books')}}
         </div>
         <div>
-            <input type="radio" class="check_head" data-set="False" data-val="{{ parameter }}" name="options_unarchive_selected_books" data-name="archive_books" disabled>{{_('Unarchive selected books')}}
+            <input type="radio" class="check_head" data-set="False" data-val="{{ parameter }}" name="options_unarchive_selected_books" id="true_archive_selected_books"  data-name="archive_books" disabled>{{_('Unarchive selected books')}}
         </div>
       </div>
     {% elif parameter == "read_status" %}
@@ -34,7 +34,7 @@
             <input type="radio" class="check_head" data-set="True" data-val="{{ parameter }}" name="options_read_selected_books" id="false_read_selected_books" data-name="read_books" disabled>{{_('Mark selected books as read')}}
         </div>
         <div>
-            <input type="radio" class="check_head" data-set="False" data-val="{{ parameter }}" name="options_unread_selected_books" data-name="read_books" disabled>{{_('Mark selected books as unread')}}</div>
+            <input type="radio" class="check_head" data-set="False" data-val="{{ parameter }}" name="options_unread_selected_books" id="true_read_selected_books" data-name="read_books" disabled>{{_('Mark selected books as unread')}}</div>
         </div>
       </div>
     {% endif %}
