@@ -17,7 +17,7 @@
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from . import logger
-from .constants import CACHE_DIR
+from .constants import CACHE_DIRECTORY
 from os import makedirs, remove
 from os.path import isdir, isfile, join
 from shutil import rmtree
@@ -25,7 +25,7 @@ from shutil import rmtree
 
 class FileSystem:
     _instance = None
-    _cache_dir = CACHE_DIR
+    _cache_dir = CACHE_DIRECTORY
 
     def __new__(cls):
         if cls._instance is None:
