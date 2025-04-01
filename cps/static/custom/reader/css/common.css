@@ -1,0 +1,120 @@
+#sidebar, #notedlg {
+	display: grid;
+	overflow: hidden;
+	position: absolute;
+	box-shadow: none;
+	font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+	background-color: #fff;
+}
+
+.box {
+	border: 0;
+	padding: 11px 0;
+	display: grid;
+	min-height: 36px;
+}
+
+[id^="btn-"].box input {
+	width: 36px;
+	height: 36px;
+	border: 0;
+	margin: 0 11px;
+	cursor: pointer;
+	padding: 0;
+	outline: none;
+	opacity: 0.5;
+	background-size: 24px 24px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+[id^="btn-"].box input:hover {
+	opacity: 0.7;
+	background-color: #F2F3F4;
+	border-radius: 18px;
+}
+
+[id^="btn-"].box.selected input {
+	opacity: 0.7;
+	background-color: #F2F3F4;
+	border-radius: 18px;
+}
+
+[id^="btn-"].box input[type=file]::file-selector-button,
+[id^="btn-"].box input[type=file]::-webkit-file-upload-button {
+	content: none;
+	visibility: hidden;
+}
+
+#btn-m.box input {
+	background-image: url("../img/menu.svg");
+}
+
+#btn-p.box input {
+	background-image: url("../img/prev.svg");
+}
+
+#btn-n.box input {
+	background-image: url("../img/next.svg");
+}
+
+#btn-o.box input {
+	background-image: url("../img/open-book.svg");
+}
+
+#btn-b.box input {
+	background-image: url("../img/bookmark.svg");
+}
+
+#btn-b.box.bookmarked input {
+	background-image: url("../img/bookmarked.svg");
+}
+
+#btn-d.box input {
+	background-image: url("../img/bookmarks.svg");
+}
+
+#btn-f.box input {
+	background-image: url("../img/resize-full.svg");
+}
+
+#btn-f.box.resize-small input {
+	background-image: url("../img/resize-small.svg");
+}
+
+#btn-t.box input {
+	background-image: url("../img/toc.svg");
+}
+
+#btn-a.box input {
+	background-image: url("../img/annotations.svg");
+}
+
+#btn-s.box input {
+	background-image: url("../img/search.svg");
+}
+
+#btn-c.box input {
+	background-image: url("../img/settings.svg");
+}
+
+#btn-i.box input {
+	background-image: url("../img/info.svg");
+}
+
+/**
+ * iPhone 5 : 320 x 568
+ */
+@media
+only screen and (width: 320px) and (orientation: portrait),
+only screen and (height: 320px) and (orientation: landscape) {
+	.box {
+		min-height: 30px;
+	}
+
+	[id^="btn-"].box input {
+		width: 30px;
+		height: 30px;
+	}
+}
