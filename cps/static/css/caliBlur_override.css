@@ -26,3 +26,36 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
 input.datepicker {color: transparent}
 input.datepicker:focus {color: transparent}
 input.datepicker:focus + input {color: #555}
+
+/* only mobile resolution */
+@media only screen and (max-width: 767px) {
+
+    /* author icon placement and size */
+    .author > .container-fluid > .row-fluid > .col-sm-10 > h2 {
+        min-height: 70px;
+        float: none;
+        padding-bottom: 20px;
+        position: relative;
+        padding-left: 100px;
+    }
+
+    body.author > .container-fluid > .row-fluid > .col-sm-10 > h2:after{
+        height: auto;
+        width: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5em;
+        left: 20px;
+    }
+}
+/* unify button behavior. only affects tablets */
+/* convert button */
+#btn-book-convert {
+    width: 100%;
+    overflow: hidden;
+}
+/*delete format button */
+#delete_format {
+    width: 100%;
+    overflow: hidden;
+}
