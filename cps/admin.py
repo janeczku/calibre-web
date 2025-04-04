@@ -947,10 +947,7 @@ def ajax_fullsync(userid):
 def ajax_self_synccollections():
     t = TaskSyncShelves()
     msg = t.sync()
-    return Response(
-        json.dumps([{"type": "success", "message": msg}]),
-        mimetype='application/json',
-    )
+    return make_response(jsonify(type="success", message=msg))
 
 
 
@@ -960,10 +957,7 @@ def ajax_self_synccollections():
 def ajax_synccollections(userid):
     t = TaskSyncShelves()
     msg = t.sync()
-    return Response(
-        json.dumps([{"type": "success", "message": msg}]),
-        mimetype='application/json',
-    )
+    return make_response(jsonify(type="success", message=msg))
 
 
 @admi.route("/ajax/pathchooser/")

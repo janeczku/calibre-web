@@ -22,14 +22,14 @@ from datetime import datetime, timezone
 from flask_babel import lazy_gettext as N_
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 
-from cps import config, logger, db, ub
+from cps import config, logger, db, ub, app
 from cps.services.worker import CalibreTask
 
 class TaskSyncShelves(CalibreTask):
     def __init__(self, task_message=N_('Syncing shelves and collections')):
         super(TaskSyncShelves, self).__init__(task_message)
         self.log = logger.create()
-        self.cdb = db.CalibreDB(expire_on_commit=False, init=True)
+        self.cdb = db.CalibreDB(app)
 
     def run(self, worker_thread):
         self.log.info(f'Running {self.__class__.__name__}')
