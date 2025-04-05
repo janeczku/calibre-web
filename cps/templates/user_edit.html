@@ -86,6 +86,7 @@
       {% if ( current_user and current_user.role_admin() and not new_user ) and not simple %}
       <a href="#" id="get_user_tags" class="btn btn-default" data-id="{{content.id}}" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
       <a href="#" id="get_user_column_values" data-id="{{content.id}}" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/Denied Custom Column Values')}}</a>
+      <div class="btn btn-default" id="sync_collections_now" data-value="{{ content.id }}">{{_('Sync collections now')}}</div>
       {% endif %}
     </div>
       <div class="col-sm-6">
@@ -137,6 +138,10 @@
       <label for="kobo_only_shelves_sync">{{_('Sync only books in selected shelves with Kobo')}}</label>
     </div>
     {% endif %}
+    <div class="form-group">
+      <input type="checkbox" name="sync_from_collections" id="sync_from_collections" {% if content.sync_from_collections %}checked{% endif %}>
+      <label for="sync_from_collections">{{_('Sync shelves from Calibre collections (requires scheduled task)')}}</label>
+    </div>
     </div>
     <div class="col-sm-12">
       <div id="user_submit" class="btn btn-default">{{_('Save')}}</div>
@@ -170,6 +175,7 @@
 {% block modal %}
 {{ restrict_modal() }}
 {{ delete_confirm_modal() }}
+{{ change_confirm_modal() }}
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
