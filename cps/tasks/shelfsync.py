@@ -34,9 +34,10 @@ class TaskSyncShelves(CalibreTask):
     def run(self, worker_thread):
         self.log.info(f'Running {self.__class__.__name__}')
         try:
-            self.sync()
-        except:
-            self.log.error_or_exception(ex)
+            with app.app_context():
+                self.sync()
+        except Exception as exc:
+            self.log.error_or_exception(exc)
         return self._handleSuccess()
 
     def info(self, *args, **kwargs):
@@ -55,8 +56,8 @@ class TaskSyncShelves(CalibreTask):
         collfield = f'custom_column_{collcc.id}'
 
         # debug
-        self.info(f'shelfsync {collcc.id}')
-        self.info(f'{colldb}, {collfield}')
+        #self.info(f'shelfsync {collcc.id}')
+        #self.info(f'{colldb}, {collfield}')
 
         # Find calibre books with collections assigned,
         books = (
