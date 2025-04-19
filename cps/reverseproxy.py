@@ -36,6 +36,7 @@
 #
 # Inspired by http://flask.pocoo.org/snippets/35/
 
+import os
 
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
@@ -53,29 +54,53 @@ class ReverseProxied(object):
         proxy_set_header X-Scheme $scheme;
         proxy_set_header X-Script-Name /myprefix;
         }
+
+    If you cannot configure these headers (for instance, if you are serving calibre-web from
+    behind an opaque TLS terminator or unconfigurable reverse proxy such as tailscale funnel), 
+    then you may also use optional environment variables to achieve the same result. 
+
+    To configure a prefix override (script name), set PROXY_SCRIPT_NAME
+    To configure a scheme override, set PROXY_SCHEME
+    To configure a host override, set PROXY_HOST
+    To configure a port override, set PROXY_PORT
     """
 
-    def __init__(self, application):
+    def __init__(self, application,
+                 script_name=None, scheme=None, forwarded_host=None, port=None):
         self.app = application
         self.proxied = False
 
+        self.env_script = script_name or os.getenv('PROXY_SCRIPT_NAME', '')
+        self.env_scheme = scheme      or os.getenv('PROXY_SCHEME', '')
+        self.env_host   = forwarded_host or os.getenv('PROXY_HOST', '')
+        self.env_port = port or os.getenv('PROXY_PORT','')
+
     def __call__(self, environ, start_response):
         self.proxied = False
-        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+
+        script_name = environ.get('HTTP_X_SCRIPT_NAME', self.env_script)
         if script_name:
             self.proxied = True
             environ['SCRIPT_NAME'] = script_name
-            path_info = environ.get('PATH_INFO', '')
-            if path_info and path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
+            path = environ.get('PATH_INFO', '')
+            if path.startswith(script_name):
+                environ['PATH_INFO'] = path[len(script_name):]
 
-        scheme = environ.get('HTTP_X_SCHEME', '')
+        scheme = (
+            environ.get('HTTP_X_SCHEME', '') or
+            environ.get('HTTP_X_FORWARDED_PROTO', '')
+        ) or self.env_scheme
         if scheme:
-            environ['wsgi.url_scheme'] = scheme
-        servr = environ.get('HTTP_X_FORWARDED_HOST', '')
-        if servr:
-            environ['HTTP_HOST'] = servr
             self.proxied = True
+            environ['wsgi.url_scheme'] = scheme
+
+        host = environ.get('HTTP_X_FORWARDED_HOST', self.env_host)
+        if host:
+            self.proxied = True
+            if self.env_port and ':' not in host:
+                host = f"{host}:{self.env_port}"
+            environ['HTTP_HOST'] = host
+
         return self.app(environ, start_response)
 
     @property
