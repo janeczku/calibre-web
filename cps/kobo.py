@@ -426,21 +426,13 @@ def get_series(book):
         return None
     return book.series[0].name
 
-def get_subtitle(book):
-    #ID the Column id associated with Subtitle
-    col = (calibre_db.session.query(db.CustomColumns)
-                      .filter(db.CustomColumns.mark_for_delete == 0)
-                      .filter(db.CustomColumns.datatype.notin_(db.cc_exceptions))
-                      .filter(db.CustomColumns.label == 'subtitle') 
-                      .order_by(db.CustomColumns.label).all())[0]
-    
     if (col):
         subtitleColumn = getattr(book, 'custom_column_' + str(col.id))
         if len(subtitleColumn):
             return subtitleColumn[0].value
     else:
             return ""
-        
+
 def get_seriesindex(book):
     return book.series_index if isinstance(book.series_index, float) else 1
 
@@ -477,6 +469,8 @@ def get_metadata(book):
                 log.error(e)
 
     book_uuid = book.uuid
+    if config.config_kobo_subtitle_cc:
+        subtitle = config.config_kobo_subtitle_prefix+" "+getattr(book, "custom_column_"+str(config.config_kobo_subtitle_cc))[0].value+" "+config.config_kobo_subtitle_suffix
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
@@ -499,7 +493,7 @@ def get_metadata(book):
         "Publisher": {"Imprint": "", "Name": get_publisher(book), },
         "RevisionId": book_uuid,
         "Title": book.title,
-        "Subtitle": get_subtitle(book),
+        "Subtitle": subtitle,
         "WorkId": book_uuid,
     }
     metadata.update(get_author(book))
