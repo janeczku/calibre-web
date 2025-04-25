@@ -470,7 +470,12 @@ def get_metadata(book):
 
     book_uuid = book.uuid
     if config.config_kobo_subtitle_cc:
-        subtitle = config.config_kobo_subtitle_prefix+" "+getattr(book, "custom_column_"+str(config.config_kobo_subtitle_cc))[0].value+" "+config.config_kobo_subtitle_suffix
+        subtitle = (
+            f"{config.config_kobo_subtitle_prefix or ''} "
+            f"{getattr(book, f'custom_column_{config.config_kobo_subtitle_cc}')[0].value} "
+            f"{config.config_kobo_subtitle_suffix or ''}"
+        ).strip()
+
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
