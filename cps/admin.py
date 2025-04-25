@@ -250,7 +250,7 @@ def configuration():
         calibre_db.session
         .query(db.CustomColumns)
         .filter(
-            db.CustomColumns.datatype.in_(["int", "text", "comments"]),
+            db.CustomColumns.datatype.notin_(db.cc_exceptions),
             db.CustomColumns.mark_for_delete == 0
         )
         .all()

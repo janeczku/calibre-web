@@ -475,6 +475,8 @@ def get_metadata(book):
             f"{getattr(book, f'custom_column_{config.config_kobo_subtitle_cc}')[0].value} "
             f"{config.config_kobo_subtitle_suffix or ''}"
         ).strip()
+    else:
+        subtitle = ""
 
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
