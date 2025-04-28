@@ -132,6 +132,9 @@
                 </div>
             </div>
             <h2 id="title">{{ entry.title }}</h2>
+            {% if entry['custom_column_' ~ subtitle_cc]|length > 0 %}
+                <h3 id="subtitle">{{ (entry['custom_column_' ~ subtitle_cc] | first).value }}</h3>
+            {% endif %}
             <p class="author">
                 {% for author in entry.ordered_authors %}
                     <a href="{{ url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{ author.name.replace('|',',') }}</a>
@@ -213,38 +216,40 @@
 
 
                 {% for c in cc %}
-                    {% if entry['custom_column_' ~ c.id]|length > 0 %}
-                        <div class="real_custom_columns">
-                            {{ c.name }}:
-                            {% for column in entry['custom_column_' ~ c.id] %}
-                                {% if c.datatype == 'rating' %}
-                                    {{ (column.value / 2)|formatfloat }}
-                                {% else %}
-                                    {% if c.datatype == 'bool' %}
-                                        {% if column.value == true %}
-                                            <span class="glyphicon glyphicon-ok"></span>
-                                        {% else %}
-                                            <span class="glyphicon glyphicon-remove"></span>
-                                        {% endif %}
+                    {% if c.id != subtitle_cc %}
+                        {% if entry['custom_column_' ~ c.id]|length > 0 %}
+                            <div class="real_custom_columns">
+                                {{ c.name }}:
+                                {% for column in entry['custom_column_' ~ c.id] %}
+                                    {% if c.datatype == 'rating' %}
+                                        {{ (column.value / 2)|formatfloat }}
                                     {% else %}
-                                        {% if c.datatype == 'float' %}
-                                            {{ column.value|formatfloat(2) }}
-                                        {% elif c.datatype == 'datetime' %}
-                                            {{ column.value|formatdate }}
-                                        {% elif c.datatype == 'comments' %}
-                                            {{ column.value|safe }}
-                                        {% elif c.datatype == 'series' %}
-                                            {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
-                                        {% elif c.datatype == 'text' %}
-                                            {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                                        {% if c.datatype == 'bool' %}
+                                            {% if column.value == true %}
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            {% else %}
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            {% endif %}
                                         {% else %}
-                                            {{ column.value }}
+                                            {% if c.datatype == 'float' %}
+                                                {{ column.value|formatfloat(2) }}
+                                            {% elif c.datatype == 'datetime' %}
+                                                {{ column.value|formatdate }}
+                                            {% elif c.datatype == 'comments' %}
+                                                {{ column.value|safe }}
+                                            {% elif c.datatype == 'series' %}
+                                                {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                                            {% elif c.datatype == 'text' %}
+                                                {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                                            {% else %}
+                                                {{ column.value }}
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            {% endfor %}
+                                {% endfor %}
 
-                        </div>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
