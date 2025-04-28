@@ -38,7 +38,7 @@ from flask import (
 )
 from .cw_login import current_user
 from werkzeug.datastructures import Headers
-from sqlalchemy import func
+from sqlalchemy import func, null, literal
 from sqlalchemy.sql.expression import and_, or_
 from sqlalchemy.exc import StatementError
 from sqlalchemy.sql import select
@@ -173,11 +173,15 @@ def HandleSyncRequest():
     only_kobo_shelves = current_user.kobo_only_shelves_sync
 
     if only_kobo_shelves:
-        changed_entries = calibre_db.session.query(db.Books,
+        extra_filters=[]
+        extra_filters.append(ub.Shelf.kobo_sync)
+
+        shelf_entries = calibre_db.session.query(db.Books,
                                                    ub.ArchivedBook.last_modified,
                                                    ub.BookShelf.date_added,
-                                                   ub.ArchivedBook.is_archived)
-        changed_entries = (changed_entries
+                                                   ub.ArchivedBook.is_archived,
+                                                   literal(False).label("deleted"))
+        shelf_entries = (shelf_entries
                            .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                                           ub.ArchivedBook.user_id == current_user.id))
                            .filter(db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id)
@@ -185,13 +189,42 @@ def HandleSyncRequest():
                            .filter(ub.BookShelf.date_added > sync_token.books_last_modified)
                            .filter(db.Data.format.in_(KOBO_FORMATS))
                            .filter(calibre_db.common_filters(allow_show_archived=True))
-                           .order_by(db.Books.id)
-                           .order_by(ub.ArchivedBook.last_modified)
                            .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
                            .join(ub.Shelf)
                            .filter(ub.Shelf.user_id == current_user.id)
-                           .filter(ub.Shelf.kobo_sync)
+                           .filter(*extra_filters)
                            .distinct())
+
+        shelf_exists = (
+            calibre_db.session.query(ub.BookShelf)
+                .join(ub.Shelf)
+                .filter(
+                    ub.BookShelf.book_id == db.Books.id,
+                    *extra_filters
+                )
+                .exists()
+        )
+
+        deleted_entries = (
+            calibre_db.session.query(
+                db.Books,
+                ub.ArchivedBook.last_modified,
+                func.current_timestamp().label("date_added"),
+                ub.ArchivedBook.is_archived,
+                literal(True).label("deleted")
+            )
+            .join(ub.KoboSyncedBooks, and_(db.Books.id == ub.KoboSyncedBooks.book_id,
+                                                          ub.KoboSyncedBooks.user_id == current_user.id))
+            .outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
+                                             ub.ArchivedBook.user_id == current_user.id))
+            .filter(~shelf_exists)
+        )
+        changed_entries = (
+            shelf_entries
+            .union_all(deleted_entries)
+            .order_by(db.Books.id, ub.ArchivedBook.last_modified)
+        )
+
     else:
         changed_entries = calibre_db.session.query(db.Books,
                                                    ub.ArchivedBook.last_modified,
@@ -216,7 +249,7 @@ def HandleSyncRequest():
 
         kobo_reading_state = get_or_create_reading_state(book.Books.id)
         entitlement = {
-            "BookEntitlement": create_book_entitlement(book.Books, archived=(book.is_archived==True)),
+            "BookEntitlement": create_book_entitlement(book.Books, archived = book.is_archived or (only_kobo_shelves and book.deleted)),
             "BookMetadata": get_metadata(book.Books),
         }
 
@@ -248,7 +281,10 @@ def HandleSyncRequest():
             pass
 
         new_books_last_created = max(ts_created, new_books_last_created)
-        kobo_sync_status.add_synced_books(book.Books.id)
+        if only_kobo_shelves and book.deleted:
+            kobo_sync_status.remove_synced_book(book.Books.id)
+        else:
+            kobo_sync_status.add_synced_books(book.Books.id)
 
     max_change = changed_entries.filter(ub.ArchivedBook.is_archived)\
         .filter(ub.ArchivedBook.user_id == current_user.id) \
