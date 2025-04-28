@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: xlivevil <xlivevil@aliyun.com>\n"
 "Language: zh_TW\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -63,7 +63,7 @@ msgstr "基本配置"
 msgid "UI Configuration"
 msgstr "界面配置"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -83,6 +83,7 @@ msgid "User not found"
 msgstr "找不到用戶"
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "成功刪除 {} 個用戶"
 
@@ -216,6 +217,7 @@ msgid "Allow"
 msgstr "允許"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr ""
 
@@ -444,6 +446,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "數據庫中沒有找到至少一個LDAP用戶"
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "{} 用戶被成功導入"
 
@@ -539,7 +542,7 @@ msgstr "未安裝"
 msgid "Execution permissions missing"
 msgstr "缺少執行權限"
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -589,6 +592,7 @@ msgid "Metadata successfully updated"
 msgstr "已成功更新元數據"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr ""
 
@@ -673,12 +677,12 @@ msgstr "回調網域名稱尚未被驗證，請在google開發者控制台按步
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "找不到id為 %(book)d 的書籍的 %(format)s 格式"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "Google Drive %(fn)s 上找不到 %(format)s"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "找不到 %(format)s：%(fn)s"
@@ -732,6 +736,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "無法讀取請求的文件。可能有錯誤的權限設置？"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr ""
 
@@ -750,7 +755,7 @@ msgstr "刪除書籍 %(id)s失敗：%(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "僅從數據庫中刪除書籍 %(id)s，數據庫中的書籍路徑無效： %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "將標題從“%(src)s”改為“%(dest)s”時失敗，錯誤錯信息：%(error)s"
@@ -760,7 +765,7 @@ msgstr "將標題從“%(src)s”改為“%(dest)s”時失敗，錯誤錯信息
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive上找不到文件 %(file)s"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "將標題從“%(src)s”改為“%(dest)s”時失敗，錯誤錯信息：%(error)s"
@@ -933,6 +938,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth 錯誤，請重試。"
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr "GitHub Oauth 錯誤: {}"
 
@@ -941,10 +947,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth 錯誤，請重試。"
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr "Google Oauth 錯誤: {}"
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr "{} 星"
 
@@ -1300,7 +1308,7 @@ msgstr "讀取更新信息時出現未預期數據"
 msgid "No update available. You already have the latest version installed"
 msgstr "無可用更新。您已經安裝了最新版本"
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "有新的更新。單擊下面的按鈕以更新到最新版本。"
 
@@ -1308,7 +1316,7 @@ msgstr "有新的更新。單擊下面的按鈕以更新到最新版本。"
 msgid "Could not fetch update information"
 msgstr "無法獲取更新信息"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "點擊下面按鈕更新到最新穩定版本。"
 
@@ -1528,7 +1536,7 @@ msgstr "發生未知錯誤，書籍轉換失敗"
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify 轉換失敗：%(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "找不到轉換後的文件或文件夾%(folder)s中有多個文件"
@@ -1571,6 +1579,7 @@ msgid "Cover Thumbnails"
 msgstr ""
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr ""
 

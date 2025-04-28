@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language: no\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -63,7 +63,7 @@ msgstr "Grunnleggende konfigurasjon"
 msgid "UI Configuration"
 msgstr "UI-konfigurasjon"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -83,6 +83,7 @@ msgid "User not found"
 msgstr "Bruker ikke funnet"
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "{} brukere ble slettet"
 
@@ -216,6 +217,7 @@ msgid "Allow"
 msgstr "Tillate"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr "{} synkroniseringsoppføringer slettet"
 
@@ -446,6 +448,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "Minst én LDAP-bruker ikke funnet i databasen"
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "{} Bruker ble importert"
 
@@ -543,7 +546,7 @@ msgstr "ikke installert"
 msgid "Execution permissions missing"
 msgstr "Utførelsestillatelser mangler"
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -594,6 +597,7 @@ msgid "Metadata successfully updated"
 msgstr "Metadata ble oppdatert"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr "Feil ved redigering av bok: {}"
 
@@ -678,12 +682,12 @@ msgstr "Tilbakeringingsdomene er ikke bekreftet. Følg fremgangsmåten for å be
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s format ikke funnet for bok-ID: %(book)d"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s ikke funnet på Google Disk: %(fn)s"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s ikke funnet: %(fn)s"
@@ -737,6 +741,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Den forespurte filen kunne ikke leses. Kanskje feil tillatelser?"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr "Lesestatus kunne ikke angis: {}"
 
@@ -755,7 +760,7 @@ msgstr "Sletting av bok %(id)s mislyktes: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Sletter bok %(id)s kun fra databasen, bokbanen i databasen er ikke gyldig: %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Endre navn på forfatter fra: '%(src)s' til '%(dest)s' mislyktes med feil: %(error)s"
@@ -765,7 +770,7 @@ msgstr "Endre navn på forfatter fra: '%(src)s' til '%(dest)s' mislyktes med fei
 msgid "File %(file)s not found on Google Drive"
 msgstr "Fil %(file)s ikke funnet på Google Disk"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Endre navn på tittel fra: '%(src)s' til '%(dest)s' mislyktes med feil: %(error)s"
@@ -936,6 +941,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth-feil, prøv igjen senere."
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr "GitHub Oauth-feil: {}"
 
@@ -944,10 +950,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth-feil, prøv igjen senere."
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr "Google Oauth-feil: {}"
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr "{} Stjerner"
 
@@ -1302,7 +1310,7 @@ msgstr "Uventede data under lesing av oppdateringsinformasjon"
 msgid "No update available. You already have the latest version installed"
 msgstr "Ingen oppdatering tilgjengelig. Du har allerede den nyeste versjonen installert"
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "En ny oppdatering er tilgjengelig. Klikk på knappen nedenfor for å oppdatere til siste versjon."
 
@@ -1310,7 +1318,7 @@ msgstr "En ny oppdatering er tilgjengelig. Klikk på knappen nedenfor for å opp
 msgid "Could not fetch update information"
 msgstr "Kunne ikke hente oppdateringsinformasjon"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Klikk på knappen nedenfor for å oppdatere til siste stabile versjon."
 
@@ -1532,7 +1540,7 @@ msgstr "Ebook-konvertering mislyktes med ukjent feil"
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify-konvertering mislyktes: %(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Konvertert fil ikke funnet eller mer enn én fil i mappen %(folder)s"
@@ -1574,6 +1582,7 @@ msgid "Cover Thumbnails"
 msgstr "Forsideminiatyrbilder"
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr "Genererte {0} serieminiatyrbilder"
 

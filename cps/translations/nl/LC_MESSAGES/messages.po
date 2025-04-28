@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton.me>\n"
 "Language: nl\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -64,7 +64,7 @@ msgstr "Basisconfiguratie"
 msgid "UI Configuration"
 msgstr "Uiterlijk aanpassen"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -85,6 +85,7 @@ msgid "User not found"
 msgstr "Gebruiker niet gevonden"
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "{} gebruikers succesvol verwijderd"
 
@@ -222,6 +223,7 @@ msgid "Allow"
 msgstr "Toestaan"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr "{} synchronisatie objecten verwijderd"
 
@@ -451,6 +453,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "Minstens een LDAP Gebruiker is niet gevonden in de Database"
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "{} Gebruiker succesvol geïmporteerd"
 
@@ -548,7 +551,7 @@ msgstr "niet geïnstalleerd"
 msgid "Execution permissions missing"
 msgstr "Kan programma niet uitvoeren"
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -598,6 +601,7 @@ msgid "Metadata successfully updated"
 msgstr "De metagegevens zijn bijgewerkt"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr "Fout tijdens bijwerken van boek: {}"
 
@@ -682,12 +686,12 @@ msgstr "Het callback-domein is niet geverifieerd. Volg de stappen in de Google-o
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s formaat niet gevonden voor boek met id: %(book)d"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s niet aangetroffen op Google Drive: %(fn)s"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s niet gevonden %(fn)s"
@@ -741,6 +745,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Het opgevraagde bestand kan niet worden gelezen. Ben je hiertoe gemachtigd?"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr "Gelezen/ongelezen status kan niet aangepast worden: {}"
 
@@ -759,7 +764,7 @@ msgstr "Verwijderen van boek %(id)s mislukt: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Verwijder boek %(id)s alleen uit database, boek pad is ongeldig: %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
@@ -769,7 +774,7 @@ msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
 msgid "File %(file)s not found on Google Drive"
 msgstr "Bestand '%(file)s' niet aangetroffen op Google Drive"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Kan de titel '%(src)s' niet wijzigen in '%(dest)s': %(error)s"
@@ -942,6 +947,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub OAuth fout, probeer het later nog eens."
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr "Github OAuth foutmelding: {}"
 
@@ -950,10 +956,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google OAuth fout, probeer het later nog eens."
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr "Google OAuth foutmelding: {}"
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr "{} sterren"
 
@@ -1311,7 +1319,7 @@ msgstr "Onverwachte gegevens tijdens het uitlezen van de update-informatie"
 msgid "No update available. You already have the latest version installed"
 msgstr "Er is geen update beschikbaar."
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Er is een update beschikbaar. Klik op de knop hieronder om te updaten naar de nieuwste versie."
 
@@ -1319,7 +1327,7 @@ msgstr "Er is een update beschikbaar. Klik op de knop hieronder om te updaten na
 msgid "Could not fetch update information"
 msgstr "De update-informatie kan niet worden opgehaald"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Klik op de onderstaande knop om de laatste stabiele versie te installeren."
 
@@ -1540,7 +1548,7 @@ msgstr "E-Book converter mislukt met een onbekende foutmelding"
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify-converteerder mislukt: %(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Omgezette bestand is niet gevonden of meer dan een bestand in map %(folder)s"
@@ -1583,6 +1591,7 @@ msgid "Cover Thumbnails"
 msgstr "Omslag miniaturen"
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr "{0} serieminiaturen gegenereerd"
 

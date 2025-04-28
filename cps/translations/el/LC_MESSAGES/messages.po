@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Depountis Georgios\n"
 "Language: el\n"
@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -62,7 +62,7 @@ msgstr "Βασική Διαμόρφωση"
 msgid "UI Configuration"
 msgstr "UI Διαμόρφωση"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, fuzzy, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -83,6 +83,7 @@ msgid "User not found"
 msgstr "Δεν βρέθηκε χρήστης"
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr ""
 
@@ -220,6 +221,7 @@ msgid "Allow"
 msgstr "Επιτρέπεται"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr ""
 
@@ -450,6 +452,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "Τουλάχιστον Ένας Χρήστης LDAP Δεν Βρέθηκε Στη Βάση Δεδομένων"
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -547,7 +550,7 @@ msgstr "δεν εγκαταστάθηκε"
 msgid "Execution permissions missing"
 msgstr "Λείπουν άδειες εκτέλεσης"
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -597,6 +600,7 @@ msgid "Metadata successfully updated"
 msgstr "Τα μεταδεδομένα ενημερώθηκαν επιτυχώς"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr ""
 
@@ -681,12 +685,12 @@ msgstr "Η ανάκληση ονόματος δεν έχει επαληθευτ�
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s η δομή δεν βρέθηκε για την ταυτότητα βιβλίου: %(book)d"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s δεν βρέθηκε στο Google Drive: %(fn)s"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s δεν βρέθηκε: %(fn)s"
@@ -740,6 +744,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Το αρχείου που χητήθηκε δεν μπορεί να διαβαστεί. Μπορεί να υπάρχουν λαθασμένες άδειες;"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr ""
 
@@ -758,7 +763,7 @@ msgstr "Η διαγραφή βιβλίου %(id)s απέτυχε: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Διαγραφή βιβλίου %(id)s, η πορεία βιβλίου δεν είναι έγκυρη: %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Η μετονομασία τίτλου από: '%(src)s' σε '%(dest)s' απέτυχε με σφάλμα: %(error)s"
@@ -768,7 +773,7 @@ msgstr "Η μετονομασία τίτλου από: '%(src)s' σε '%(dest)s'
 msgid "File %(file)s not found on Google Drive"
 msgstr "Το αρχείο %(file)s δεν βρέθηκε στο Google Drive"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Η μετονομασία τίτλου από: '%(src)s' σε '%(dest)s' απέτυχε με σφάλμα: %(error)s"
@@ -940,6 +945,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth σφάλμα, παρακαλούμε δοκίμασε ξανά αργότερα."
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr ""
 
@@ -948,10 +954,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth σφάλμα, παρακαλούμε δοκίμασε ξανά αργότερα."
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr ""
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr ""
 
@@ -1309,7 +1317,7 @@ msgstr "Απρόβλεπτα δεδομένα κατά την ανάγνωση �
 msgid "No update available. You already have the latest version installed"
 msgstr "Δεν υπάρχει διαθέσιμη ενημέρωση. Έχεις ήδη την τελευταία έκδοση εγκατεστημένη"
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Μια νέα ενημέρωση είναι διαθέσιμη. Κάνε κλικ στο κουμπί πιο κάτω για να ενημερώσεις με την τελευταία έκδοση."
 
@@ -1317,7 +1325,7 @@ msgstr "Μια νέα ενημέρωση είναι διαθέσιμη. Κάνε
 msgid "Could not fetch update information"
 msgstr "Δεν μπόρεσε να συγκεντρώσει τις πληροφορίες ενημέρωσης"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Κάνε κλικ στο κουμπί πιο κάτω για να ενημερώσεις με την τελευταία σταθερή έκδοση."
 
@@ -1538,7 +1546,7 @@ msgstr "Ο μετατροπέας Ebook απέτυχε με άγνωστο σφ�
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Ο μετατροπέας Kepubify απέτυχε: %(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Το τροποποιημένο αρχείο δεν βρέθηκε ή υπάρχουν περισσότερα από ένα αρχεία στο φάκελο %(folder)s"
@@ -1581,6 +1589,7 @@ msgid "Cover Thumbnails"
 msgstr ""
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr ""
 

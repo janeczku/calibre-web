@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -63,7 +63,7 @@ msgstr "Temel Ayarlar"
 msgid "UI Configuration"
 msgstr "Arayüz Ayarları"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -83,6 +83,7 @@ msgid "User not found"
 msgstr ""
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr ""
 
@@ -216,6 +217,7 @@ msgid "Allow"
 msgstr ""
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr ""
 
@@ -445,6 +447,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr ""
 
@@ -542,7 +545,7 @@ msgstr "yüklü değil"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -592,6 +595,7 @@ msgid "Metadata successfully updated"
 msgstr "Metaveri başarıyla güncellendi"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr ""
 
@@ -676,12 +680,12 @@ msgstr "Geri yönlendirme alanı (callback domain) doğrulanamadı, lütfen Goog
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(book)d nolu kitap için %(format)s biçimi bulunamadı"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(fn)s eKitabı için %(format)s biçimi Google Drive'da bulunamadı"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s bulunamadı: %(fn)s"
@@ -735,6 +739,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "İstenilen dosya okunamadı. Yanlış izinlerden kaynaklanabilir?"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr ""
 
@@ -753,7 +758,7 @@ msgstr ""
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, fuzzy, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Kitap adını değiştirme sırasında hata oluştu ('%(src)s' → '%(dest)s'): %(error)s"
@@ -763,7 +768,7 @@ msgstr "Kitap adını değiştirme sırasında hata oluştu ('%(src)s' → '%(de
 msgid "File %(file)s not found on Google Drive"
 msgstr "%(file)s dosyası Google Drive'da bulunamadı"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Kitap adını değiştirme sırasında hata oluştu ('%(src)s' → '%(dest)s'): %(error)s"
@@ -931,6 +936,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth hatası, lütfen tekrar deneyin."
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr ""
 
@@ -939,10 +945,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth hatası, lütfen tekrar deneyin."
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr ""
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr ""
 
@@ -1300,7 +1308,7 @@ msgstr "Güncelleme bilgileri okunurken beklenmeyen veri"
 msgid "No update available. You already have the latest version installed"
 msgstr "Yeni güncelleme mevcut değil. Zaten en son sürüme sahipsiniz."
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Yeni bir güncelleme mevcut. Son sürüme güncellemek için aşağıdaki düğmeye tıklayın."
 
@@ -1308,7 +1316,7 @@ msgstr "Yeni bir güncelleme mevcut. Son sürüme güncellemek için aşağıdak
 msgid "Could not fetch update information"
 msgstr "Güncelleme bilgileri alınamadı"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Son kararlı sürüme güncellemek için aşağıdaki düğmeye tıklayın."
 
@@ -1528,7 +1536,7 @@ msgstr ""
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""
@@ -1571,6 +1579,7 @@ msgid "Cover Thumbnails"
 msgstr ""
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr ""
 

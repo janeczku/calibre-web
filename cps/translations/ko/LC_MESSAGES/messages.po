@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2024-11-01 17:50+0900\n"
 "Last-Translator: limeade23 <admin@limeade.me>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -60,7 +60,7 @@ msgstr "기본 설정"
 msgid "UI Configuration"
 msgstr "UI 설정"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -80,6 +80,7 @@ msgid "User not found"
 msgstr "사용자를 찾을 수 없습니다."
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "{} 사용자를 삭제했습니다."
 
@@ -213,6 +214,7 @@ msgid "Allow"
 msgstr "허용"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr "{} 동기화 항목이 삭제되었습니다."
 
@@ -439,6 +441,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "데이터베이스에서 찾을 수 없는 LDAP 사용자가 있습니다."
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "{} 명의 사용자를 가져왔습니다."
 
@@ -533,7 +536,7 @@ msgstr "설치되지 않았습니다."
 msgid "Execution permissions missing"
 msgstr "실행 권한이 없습니다."
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -583,6 +586,7 @@ msgid "Metadata successfully updated"
 msgstr "메타데이터가 업데이트되었습니다."
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr "책 편집 중 오류가 발생했습니다: {}"
 
@@ -666,12 +670,12 @@ msgstr "콜백 도메인이 인증되지 않았습니다. Google 개발자 콘�
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "책 ID %(book)d의 %(format)s 형식을 찾을 수 없습니다."
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "Google 드라이브에서 %(format)s 파일을 찾을 수 없습니다: %(fn)s"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s을(를) 찾을 수 없습니다: %(fn)s"
@@ -721,6 +725,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "요청한 파일을 읽을 수 없습니다. 파일 접근 권한을 확인해주세요."
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr "읽기 상태를 설정할 수 없습니다: {}"
 
@@ -739,7 +744,7 @@ msgstr "책 %(id)s 삭제에 실패했습니다: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "데이터베이스 경로가 올바르지 않아 책 %(id)s을(를) 데이터베이스에서만 삭제합니다: %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "저자명 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했습니다: %(error)s"
@@ -749,7 +754,7 @@ msgstr "저자명 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했습니�
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google 드라이브에서 %(file)s 파일을 찾을 수 없습니다."
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "제목을 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했습니다: %(error)s"
@@ -916,6 +921,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth 오류입니다. 잠시 후 다시 시도해 주세요."
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr "GitHub 인증 오류가 발생했습니다: {}"
 
@@ -924,10 +930,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google 인증 오류입니다. 잠시 후 다시 시도해 주세요."
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr "Google 인증 오류가 발생했습니다: {}"
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr "{} Stars"
 
@@ -1273,7 +1281,7 @@ msgstr "업데이트 정보를 읽는 중 알 수 없는 문제가 발생했습�
 msgid "No update available. You already have the latest version installed"
 msgstr "업데이트가 없습니다. 최신 버전이 설치되어 있습니다."
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "새로운 업데이트가 있습니다. 아래 버튼을 클릭해 최신 버전으로 업데이트하세요."
 
@@ -1281,7 +1289,7 @@ msgstr "새로운 업데이트가 있습니다. 아래 버튼을 클릭해 최�
 msgid "Could not fetch update information"
 msgstr "업데이트 정보를 가져올 수 없습니다."
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "아래 버튼을 클릭해 최신 버전으로 업데이트하세요."
 
@@ -1492,7 +1500,7 @@ msgstr "알 수 없는 오류로 변환에 실패했습니다."
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify 변환에 실패했습니다: %(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "변환된 파일을 찾을 수 없거나 %(folder)s 폴더에 하나 이상의 파일이 존재합니다."
@@ -1534,6 +1542,7 @@ msgid "Cover Thumbnails"
 msgstr "표지 섬네일"
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr "{0}개의 시리즈 섬네일을 생성했습니다."
 

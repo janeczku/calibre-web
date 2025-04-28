@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2024-12-08 13:50+0100\n"
 "Last-Translator: pollitor@gmx.com\n"
 "Language: gl\n"
@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -58,7 +58,7 @@ msgstr "Configuración Básica"
 msgid "UI Configuration"
 msgstr "Configuración da Interface de Usuario"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -78,6 +78,7 @@ msgid "User not found"
 msgstr "Usuario non atopado"
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "{} usuarios borrados con éxito"
 
@@ -211,6 +212,7 @@ msgid "Allow"
 msgstr "Permitir"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr "Elimináronse {} entradas de sincronización"
 
@@ -437,6 +439,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "Non se atopou polo menos un usuario LDAP na base de datos"
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "Usuario {} importado correctamente"
 
@@ -531,7 +534,7 @@ msgstr "non instalado"
 msgid "Execution permissions missing"
 msgstr "Faltan permisos de execución"
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -581,6 +584,7 @@ msgid "Metadata successfully updated"
 msgstr "Actualizáronse correctamente os metadatos"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr "Erro ao editar o libro: {}"
 
@@ -664,12 +668,12 @@ msgstr "O dominio de devolución de chamada non está verificado. Sigue os pasos
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "Non se atopou o formato %(format)s para o ID do libro: %(book)d"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "Non se atopou %(format)s en Google Drive: %(fn)s"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s non atopado: %(fn)s"
@@ -719,6 +723,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Non se puido ler o ficheiro solicitado. Quizais permisos incorrectos?"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr "Non se puido establecer o estado de lectura: {}"
 
@@ -737,7 +742,7 @@ msgstr "Produciuse un erro ao eliminar o libro %(id)s: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "Eliminando o libro %(id)s só da base de datos, a ruta do libro na base de datos non é válida: %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "O cambio de nome do autor de: '%(src)s' a '%(dest)s' fallou co erro: %(error)s"
@@ -747,7 +752,7 @@ msgstr "O cambio de nome do autor de: '%(src)s' a '%(dest)s' fallou co erro: %(e
 msgid "File %(file)s not found on Google Drive"
 msgstr "Non se atopou o ficheiro %(file)s en Google Drive"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "O cambio de título de: '%(src)s' a '%(dest)s' produciu o erro: %(error)s"
@@ -914,6 +919,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "Erro de GitHub Oauth. Ténteo de novo máis tarde."
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr "Erro de GitHub Oauth: {}"
 
@@ -922,10 +928,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Erro de Google Oauth. Téntao de novo máis tarde."
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr "Erro de Google Oauth: {}"
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr "{} estrelas"
 
@@ -1271,7 +1279,7 @@ msgstr "Datos inesperados ao ler a información de actualización"
 msgid "No update available. You already have the latest version installed"
 msgstr "Non hai ningunha actualización dispoñible. Xa tes instalada a última versión"
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Hai unha nova actualización dispoñible. Fai clic no botón de abaixo para actualizar á última versión."
 
@@ -1279,7 +1287,7 @@ msgstr "Hai unha nova actualización dispoñible. Fai clic no botón de abaixo p
 msgid "Could not fetch update information"
 msgstr "Non se puido recuperar a información de actualización"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Fai clic no botón de abaixo para actualizar á última versión estable."
 
@@ -1490,7 +1498,7 @@ msgstr "Fallou o conversor de libros electrónicos cun erro descoñecido"
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify-converter fallou: %(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Non se atopou o ficheiro convertido ou hai máis dun ficheiro no cartafol %(folder)s"
@@ -1532,6 +1540,7 @@ msgid "Cover Thumbnails"
 msgstr "Miniaturas de portada"
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr "Xeráronse {0} miniaturas de series"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-04-28 12:21-0400\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -63,7 +63,7 @@ msgstr "基本設定"
 msgid "UI Configuration"
 msgstr "UI設定"
 
-#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:797 cps/search.py:150
 #: cps/web.py:753
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -83,6 +83,7 @@ msgid "User not found"
 msgstr "ユーザーが見つかりません"
 
 #: cps/admin.py:415
+#, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "{}人のユーザーが削除されました"
 
@@ -216,6 +217,7 @@ msgid "Allow"
 msgstr "許可"
 
 #: cps/admin.py:946
+#, python-brace-format
 msgid "{} sync entries deleted"
 msgstr "{}件の同期項目を削除しました"
 
@@ -443,6 +445,7 @@ msgid "At Least One LDAP User Not Found in Database"
 msgstr "DB内にLDAPユーザーが1人も見つかりません"
 
 #: cps/admin.py:1676
+#, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr "{}人のユーザーをインポートしました"
 
@@ -537,7 +540,7 @@ msgstr "インストールされていません"
 msgid "Execution permissions missing"
 msgstr "実行権限がありません"
 
-#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/db.py:1042 cps/templates/config_edit.html:203
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -587,6 +590,7 @@ msgid "Metadata successfully updated"
 msgstr "メタデータを更新しました"
 
 #: cps/editbooks.py:566
+#, python-brace-format
 msgid "Error editing book: {}"
 msgstr "本編集中のエラー: {}"
 
@@ -671,12 +675,12 @@ msgstr "コールバックドメインが認証されていません。Google De
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "ID: %(book)d の本に %(format)s フォーマットはありません"
 
-#: cps/helper.py:94 cps/tasks/convert.py:93
+#: cps/helper.py:93 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "Googleドライブ: %(fn)s に %(format)s はありません"
 
-#: cps/helper.py:99
+#: cps/helper.py:98
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s がありません: %(fn)s"
@@ -729,6 +733,7 @@ msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "要求されたファイルを読み込めませんでした。権限設定が正しいか確認してください。"
 
 #: cps/helper.py:352
+#, python-brace-format
 msgid "Read status could not set: {}"
 msgstr "読み込みステータスを設定できません: {}"
 
@@ -747,7 +752,7 @@ msgstr "本 %(id)s の削除に失敗しました: %(message)s"
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr "本 %(id)s はDBのみから削除されます。DB内の本のパスが有効ではありません: %(path)s"
 
-#: cps/helper.py:439
+#: cps/helper.py:438
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "エラー: %(error)s により、著者名を %(src)s から %(dest)s に変更できませんでした"
@@ -757,7 +762,7 @@ msgstr "エラー: %(error)s により、著者名を %(src)s から %(dest)s �
 msgid "File %(file)s not found on Google Drive"
 msgstr "ファイル %(file)s はGoogleドライブ上にありません"
 
-#: cps/helper.py:559
+#: cps/helper.py:558
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "エラー: %(error)s により、タイトルを %(src)s から %(dest)s に変更できませんでした"
@@ -929,6 +934,7 @@ msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub OAuth エラー、再度お試しください。"
 
 #: cps/oauth_bb.py:338
+#, python-brace-format
 msgid "GitHub Oauth error: {}"
 msgstr "GitHub OAuth エラー: {}"
 
@@ -937,10 +943,12 @@ msgid "Google Oauth error, please retry later."
 msgstr "Google OAuth エラー、再度お試しください。"
 
 #: cps/oauth_bb.py:362
+#, python-brace-format
 msgid "Google Oauth error: {}"
 msgstr "Google OAuth エラー: {}"
 
 #: cps/opds.py:299
+#, python-brace-format
 msgid "{} Stars"
 msgstr "星{}"
 
@@ -1295,7 +1303,7 @@ msgstr "アップデート情報の読み込み中に予期しないデータが
 msgid "No update available. You already have the latest version installed"
 msgstr "アップデートはありません。すでに最新バージョンがインストールされています"
 
-#: cps/updater.py:458
+#: cps/updater.py:459
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "アップデートが利用可能です。下のボタンをクリックして最新バージョンにアップデートしてください。"
 
@@ -1303,7 +1311,7 @@ msgstr "アップデートが利用可能です。下のボタンをクリック
 msgid "Could not fetch update information"
 msgstr "アップデート情報を取得できません"
 
-#: cps/updater.py:486
+#: cps/updater.py:487
 msgid "Click on the button below to update to the latest stable version."
 msgstr "下のボタンをクリックして最新の安定バージョンにアップデートしてください。"
 
@@ -1523,7 +1531,7 @@ msgstr "Ebook converter が不明なエラーで失敗しました"
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify-converter が失敗しました: %(error)s"
 
-#: cps/tasks/convert.py:255
+#: cps/tasks/convert.py:254
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "変換されたファイルが見つからないか、またはフォルダー %(folder)s 内に複数存在します"
@@ -1566,6 +1574,7 @@ msgid "Cover Thumbnails"
 msgstr "表紙サムネイル"
 
 #: cps/tasks/thumbnail.py:294
+#, python-brace-format
 msgid "Generated {0} series thumbnails"
 msgstr "シリーズのサムネイルを{0}個生成しました"
 
