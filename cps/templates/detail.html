@@ -131,10 +131,12 @@
                     {% endif %}
                 </div>
             </div>
-            <h2 id="title">{{ entry.title }}</h2>
-            {% if entry['custom_column_' ~ subtitle_cc]|length > 0 %}
-                <h3 id="subtitle">{{ (entry['custom_column_' ~ subtitle_cc] | first).value }}</h3>
-            {% endif %}
+            <div class="booktitle">
+                <h2 id="title">{{ entry.title }}</h2>
+                {% if entry['custom_column_' ~ subtitle_cc]|length > 0 %}
+                    <h3 id="subtitle">{{ (entry['custom_column_' ~ subtitle_cc] | first).value }}</h3>
+                {% endif %}
+            </div>
             <p class="author">
                 {% for author in entry.ordered_authors %}
                     <a href="{{ url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{ author.name.replace('|',',') }}</a>
