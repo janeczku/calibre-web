@@ -155,6 +155,8 @@ class Identifiers(Base):
             return "StoryGraph"
         elif format_type == "ebooks":
             return "eBooks.com"
+        elif format_type == "smashwords":
+            return "Smashwords"
         if format_type == "lubimyczytac":
             return "Lubimyczytac"
         if format_type == "databazeknih":
@@ -202,6 +204,8 @@ class Identifiers(Base):
             return "https://app.thestorygraph.com/books/{0}".format(self.val)
         elif format_type == "ebooks":
             return "https://www.ebooks.com/en-us/book/{0}".format(self.val)
+        elif format_type == "smashwords":
+            return "https://www.smashwords.com/books/view/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         elif self.val.lower().startswith("data:"):
