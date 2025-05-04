@@ -25,7 +25,7 @@ import mimetypes
 
 from io import StringIO
 from email.message import EmailMessage
-from email.utils import formatdate, parseaddr
+from email.utils import formatdate, parseaddr, make_msgid
 from email.generator import Generator
 from flask_babel import lazy_gettext as N_
 
@@ -34,7 +34,8 @@ from cps.services import gmail
 from cps.embed_helper import do_calibre_export
 from cps import logger, config
 from cps import gdriveutils
-import uuid
+from cps.string_helper import strip_whitespaces
+
 
 log = logger.create()
 
@@ -54,8 +55,8 @@ class EmailBase:
         return (code, resp)
 
     def send(self, strg):
-        """Send `strg' to the server."""
-        log.debug_no_auth('send: {}'.format(strg[:300]))
+        """Send 'strg' to the server."""
+        log.debug_no_auth('send: {}'.format(strg[:300]), stacklevel=2)
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -101,7 +102,7 @@ class Email(EmailBase, smtplib.SMTP):
         smtplib.SMTP.__init__(self, *args, **kwargs)
 
 
-# Class for sending ssl encrypted email with ability to get current progress, , derived from emailbase class
+# Class for sending ssl encrypted email with ability to get current progress, derived from emailbase class
 class EmailSSL(EmailBase, smtplib.SMTP_SSL):
 
     def __init__(self, *args, **kwargs):
@@ -127,9 +128,9 @@ class TaskEmail(CalibreTask):
         try:
             # Parse out the address from the From line, and then the domain from that
             from_email = parseaddr(self.settings["mail_from"])[1]
-            msgid_domain = from_email.partition('@')[2].strip()
+            msgid_domain = strip_whitespaces(from_email.partition('@')[2])
             # This can sometimes sneak through parseaddr if the input is malformed
-            msgid_domain = msgid_domain.rstrip('>').strip()
+            msgid_domain = strip_whitespaces(msgid_domain.rstrip('>'))
         except Exception:
             msgid_domain = ''
         return msgid_domain or 'calibre-web.com'
@@ -141,7 +142,7 @@ class TaskEmail(CalibreTask):
         message['To'] = self.recipient
         message['Subject'] = self.subject
         message['Date'] = formatdate(localtime=True)
-        message['Message-Id'] = "{}@{}".format(uuid.uuid4(), self.get_msgid_domain())
+        message['Message-ID'] = make_msgid(domain=self.get_msgid_domain())
         message.set_content(self.text.encode('UTF-8'), "text", "plain")
         if self.attachment:
             data = self._get_attachment(self.filepath, self.attachment)
@@ -168,10 +169,14 @@ class TaskEmail(CalibreTask):
             else:
                 self.send_gmail_email(msg)
         except MemoryError as e:
-            log.error_or_exception(e, stacklevel=3)
+            log.error_or_exception(e, stacklevel=2)
             self._handleError('MemoryError sending e-mail: {}'.format(str(e)))
+        except (smtplib.SMTPRecipientsRefused) as e:
+            log.error_or_exception(e, stacklevel=2)
+            self._handleError('Smtplib Error sending e-mail: {}'.format(
+                (list(e.args[0].values())[0][1]).decode('utf-8)').replace("\n", '. ')))
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
-            log.error_or_exception(e, stacklevel=3)
+            log.error_or_exception(e, stacklevel=2)
             if hasattr(e, "smtp_error"):
                 text = e.smtp_error.decode('utf-8').replace("\n", '. ')
             elif hasattr(e, "message"):
@@ -182,10 +187,10 @@ class TaskEmail(CalibreTask):
                 text = ''
             self._handleError('Smtplib Error sending e-mail: {}'.format(text))
         except (socket.error) as e:
-            log.error_or_exception(e, stacklevel=3)
+            log.error_or_exception(e, stacklevel=2)
             self._handleError('Socket Error sending e-mail: {}'.format(e.strerror))
         except Exception as ex:
-            log.error_or_exception(ex, stacklevel=3)
+            log.error_or_exception(ex, stacklevel=2)
             self._handleError('Error sending e-mail: {}'.format(ex))
 
     def send_standard_email(self, msg):
@@ -268,7 +273,7 @@ class TaskEmail(CalibreTask):
                 if config.config_binariesdir and config.config_embed_metadata:
                     os.remove(datafile)
             except IOError as e:
-                log.error_or_exception(e, stacklevel=3)
+                log.error_or_exception(e, stacklevel=2)
                 log.error('The requested file could not be read. Maybe wrong permissions?')
                 return None
         return data

@@ -23,10 +23,10 @@
 import sys
 import platform
 import sqlite3
+from importlib.metadata import metadata
 from collections import OrderedDict
 
 import flask
-import jinja2
 from flask_babel import gettext as _
 
 from . import db, calibre_db, converter, uploader, constants, dep_check
@@ -41,17 +41,18 @@ req = dep_check.load_dependencies(False)
 opt = dep_check.load_dependencies(True)
 for i in (req + opt):
     modules[i[1]] = i[0]
-modules['Jinja2'] = jinja2.__version__
-modules['pySqlite'] = sqlite3.version
+modules['Jinja2'] = metadata("jinja2")["Version"]
+if sys.version_info < (3, 12):
+    modules['pySqlite'] = sqlite3.version
 modules['SQLite'] = sqlite3.sqlite_version
 sorted_modules = OrderedDict((sorted(modules.items(), key=lambda x: x[0].casefold())))
 
 
 def collect_stats():
     if constants.NIGHTLY_VERSION[0] == "$Format:%H$":
-        calibre_web_version = constants.STABLE_VERSION['version'].replace("b", " Beta")
+        calibre_web_version = constants.STABLE_VERSION.replace("b", " Beta")
     else:
-        calibre_web_version = (constants.STABLE_VERSION['version'].replace("b", " Beta") + ' - '
+        calibre_web_version = (constants.STABLE_VERSION.replace("b", " Beta") + ' - '
                                + constants.NIGHTLY_VERSION[0].replace('%', '%%') + ' - '
                                + constants.NIGHTLY_VERSION[1].replace('%', '%%'))
 

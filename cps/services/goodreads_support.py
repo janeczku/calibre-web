@@ -117,7 +117,7 @@ def get_author_info(author_name):
 
 
 def get_other_books(author_info, library_books=None):
-    # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
+    # Get all identifiers (ISBN, Goodreads, etc.) and filter author's books by that list so we show fewer duplicates
     # Note: Not all images will be shown, even though they're available on Goodreads.com.
     #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
 

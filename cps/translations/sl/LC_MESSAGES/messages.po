@@ -1,0 +1,3616 @@
+# Slovenian translations for Calibre-Web.
+# Copyright (C) 2024 Andrej Kralj
+# This file is distributed under the same license as the Calibre-Web
+# project.
+# FIRST AUTHOR Andrej Kralj, 2024.
+msgid ""
+msgstr ""
+"Project-Id-Version:  Calibre-Web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"PO-Revision-Date: 2024-09-18 19:45+0200\n"
+"Last-Translator: Andrej Kralj\n"
+"Language: sl\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: cps/about.py:85
+msgid "Statistics"
+msgstr "Statistika"
+
+#: cps/admin.py:151
+msgid "Server restarted, please reload page."
+msgstr "Strežnik se je znova zagnal, prosimo, ponovno naložite stran."
+
+#: cps/admin.py:153
+msgid "Performing Server shutdown, please close window."
+msgstr "Izvajanje zaustavitve strežnika, prosim zaprite okno."
+
+#: cps/admin.py:161
+msgid "Success! Database Reconnected"
+msgstr "Podatkovna baza je uspešno ponovno povezana"
+
+#: cps/admin.py:164
+msgid "Unknown command"
+msgstr "Neznan ukaz"
+
+#: cps/admin.py:175
+msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
+msgstr "Uspeh! Knjige so v čakalni vrsti za varnostno kopiranje metapodatkov, za rezultat preverite opravila"
+
+#: cps/admin.py:208 cps/editbooks.py:614 cps/editbooks.py:657
+#: cps/editbooks.py:1302 cps/updater.py:615 cps/uploader.py:108
+#: cps/uploader.py:117
+msgid "Unknown"
+msgstr "Neznano"
+
+#: cps/admin.py:233
+msgid "Admin page"
+msgstr "Administrativna stran"
+
+#: cps/admin.py:253
+msgid "Basic Configuration"
+msgstr "Osnovne nastavitve"
+
+#: cps/admin.py:291
+msgid "UI Configuration"
+msgstr "Nastavitve uporabniškega vmesnika"
+
+#: cps/admin.py:315 cps/admin.py:996 cps/db.py:793 cps/search.py:150
+#: cps/web.py:753
+#, python-format
+msgid "Custom Column No.%(column)d does not exist in calibre database"
+msgstr "Stolpec po meri št. %(column)d ne obstaja v zbirki podatkov Calibre"
+
+#: cps/admin.py:333 cps/templates/admin.html:51
+msgid "Edit Users"
+msgstr "Urejanje uporabnikov"
+
+#: cps/admin.py:377 cps/opds.py:540 cps/templates/grid.html:14
+#: cps/templates/list.html:13
+msgid "All"
+msgstr "Vse"
+
+#: cps/admin.py:401 cps/admin.py:1426
+msgid "User not found"
+msgstr "Ne najdem uporabnika"
+
+#: cps/admin.py:415
+msgid "{} users deleted successfully"
+msgstr "{} uporabnikov uspešno izbrisanih"
+
+#: cps/admin.py:438 cps/templates/config_view_edit.html:133
+#: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
+msgid "Show All"
+msgstr "Pokaži vse"
+
+#: cps/admin.py:459 cps/admin.py:465
+msgid "Malformed request"
+msgstr "Napačno oblikovana zahteva"
+
+#: cps/admin.py:477 cps/admin.py:2069
+msgid "Guest Name can't be changed"
+msgstr "Imena gosta ni mogoče spremeniti"
+
+#: cps/admin.py:489
+msgid "Guest can't have this role"
+msgstr "Gost ne more imeti te vloge"
+
+#: cps/admin.py:501 cps/admin.py:2023
+msgid "No admin user remaining, can't remove admin role"
+msgstr "Ni več nobenega admin uporabnika, ne morem odstraniti vloge admin"
+
+#: cps/admin.py:505 cps/admin.py:519
+msgid "Value has to be true or false"
+msgstr "Vrednost mora biti true ali false"
+
+#: cps/admin.py:507
+msgid "Invalid role"
+msgstr "Neveljavna vloga"
+
+#: cps/admin.py:511
+msgid "Guest can't have this view"
+msgstr "Gost ne more imeti tega pogleda"
+
+#: cps/admin.py:521
+msgid "Invalid view"
+msgstr "Nepravilen pogled"
+
+#: cps/admin.py:524
+msgid "Guest's Locale is determined automatically and can't be set"
+msgstr "Lokalni jezik gosta se določi samodejno in ga ni mogoče nastaviti."
+
+#: cps/admin.py:528
+msgid "No Valid Locale Given"
+msgstr "Ni navedenega veljavnega lokalnega jezika"
+
+#: cps/admin.py:539
+msgid "No Valid Book Language Given"
+msgstr "Ni navedenega veljavnega jezika knjige"
+
+#: cps/admin.py:541 cps/editbooks.py:292
+msgid "Parameter not found"
+msgstr "Parameter ni najden"
+
+#: cps/admin.py:578
+msgid "Invalid Read Column"
+msgstr "Nepravilen stolpec za branje"
+
+#: cps/admin.py:584
+msgid "Invalid Restricted Column"
+msgstr "Neveljavni stolpec za omejitev"
+
+#: cps/admin.py:604 cps/admin.py:1894
+msgid "Calibre-Web configuration updated"
+msgstr "Posodobljena nastavitev Calibre-Web"
+
+#: cps/admin.py:616
+msgid "Do you really want to delete the Kobo Token?"
+msgstr "Ali res želite izbrisati žeton Kobo?"
+
+#: cps/admin.py:618
+msgid "Do you really want to delete this domain?"
+msgstr "Ali res želite izbrisati to domeno?"
+
+#: cps/admin.py:620
+msgid "Do you really want to delete this user?"
+msgstr "Ali res želite izbrisati tega uporabnika?"
+
+#: cps/admin.py:622
+msgid "Are you sure you want to delete this shelf?"
+msgstr "Ste prepričani, da želite izbrisati to polico?"
+
+#: cps/admin.py:624
+msgid "Are you sure you want to change locales of selected user(s)?"
+msgstr "Ali ste prepričani, da želite spremeniti lokalne jezike izbranih uporabnikov?"
+
+#: cps/admin.py:626
+msgid "Are you sure you want to change visible book languages for selected user(s)?"
+msgstr "Ste prepričani, da želite spremeniti vidne jezike knjig za izbrane uporabnike?"
+
+#: cps/admin.py:628
+msgid "Are you sure you want to change the selected role for the selected user(s)?"
+msgstr "Ali ste prepričani, da želite spremeniti izbrano vlogo za izbranega(-e) uporabnika(-e)?"
+
+#: cps/admin.py:630
+msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
+msgstr "Ali ste prepričani, da želite spremeniti izbrane omejitve za izbranega(-e) uporabnika(-e)?"
+
+#: cps/admin.py:632
+msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
+msgstr "Ali ste prepričani, da želite spremeniti izbrane omejitve vidljivosti za izbranega(-e) uporabnika(-e)?"
+
+#: cps/admin.py:635
+msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
+msgstr "Ali ste prepričani, da želite spremeniti obnašanje sinhronizacije police za izbranega(-e) uporabnika(-e)?"
+
+#: cps/admin.py:637
+msgid "Are you sure you want to change Calibre library location?"
+msgstr "Ste prepričani, da želite spremeniti lokacijo knjižnice Calibre?"
+
+#: cps/admin.py:639
+msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
+msgstr "Calibre-Web bo poiskal posodobljene naslovnice in posodobil sličice naslovnic, kar lahko traja nekaj časa."
+
+#: cps/admin.py:642
+msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
+msgstr "Ali ste prepričani, da želite izbrisati sinhronizacijsko podatkovno bazo Calibre-Web, da bi vsilili popolno sinhronizacijo z bralnikom Kobo?"
+
+#: cps/admin.py:885 cps/admin.py:891 cps/admin.py:901 cps/admin.py:911
+#: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
+#: cps/templates/user_table.html:58
+msgid "Deny"
+msgstr "Onemogoči"
+
+#: cps/admin.py:887 cps/admin.py:893 cps/admin.py:903 cps/admin.py:913
+#: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
+#: cps/templates/user_table.html:61
+msgid "Allow"
+msgstr "Omogoči"
+
+#: cps/admin.py:946
+msgid "{} sync entries deleted"
+msgstr "{} izbrisanih vnosov za sinhronizacijo"
+
+#: cps/admin.py:987
+msgid "Tag not found"
+msgstr "Oznaka ni bila najdena"
+
+#: cps/admin.py:1005
+msgid "Invalid Action"
+msgstr "Neveljavno dejanje"
+
+#: cps/admin.py:1132
+msgid "client_secrets.json Is Not Configured For Web Application"
+msgstr "Client_secrets.json ni nastavljen za spletno aplikacijo"
+
+#: cps/admin.py:1177
+msgid "Logfile Location is not Valid, Please Enter Correct Path"
+msgstr "Lokacija dnevniške datoteke ni veljavna, vnesite pravilno pot"
+
+#: cps/admin.py:1183
+msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
+msgstr "Lokacija dnevniške datoteke dostopa ni veljavna, vnesite pravilno pot"
+
+#: cps/admin.py:1217
+msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
+msgstr "Vnesite ponudnika LDAP, vrata, DN in identifikator objekta uporabnika"
+
+#: cps/admin.py:1223
+msgid "Please Enter a LDAP Service Account and Password"
+msgstr "Vnesite račun in geslo storitve LDAP"
+
+#: cps/admin.py:1226
+msgid "Please Enter a LDAP Service Account"
+msgstr "Vnesite račun storitve LDAP"
+
+#: cps/admin.py:1231
+#, python-format
+msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
+msgstr "Filter predmetov skupine LDAP mora imeti en identifikator oblike \"%s\""
+
+#: cps/admin.py:1233
+msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
+msgstr "Filter predmeta skupine LDAP ima neusklajene oklepaje"
+
+#: cps/admin.py:1237
+#, python-format
+msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
+msgstr "Filter uporabniškega objekta LDAP mora imeti en identifikator oblike \"%s\""
+
+#: cps/admin.py:1239
+msgid "LDAP User Object Filter Has Unmatched Parenthesis"
+msgstr "Filter objekta uporabnika LDAP ima neusklajene oklepaje"
+
+#: cps/admin.py:1246
+#, python-format
+msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
+msgstr "Filter za uporabnike članov LDAP mora imeti en identifikator oblike \"%s\""
+
+#: cps/admin.py:1248
+msgid "LDAP Member User Filter Has Unmatched Parenthesis"
+msgstr "Filter uporabnika člana LDAP ima neusklajene oklepaje"
+
+#: cps/admin.py:1255
+msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
+msgstr "LDAP CACcertifikat, lokacija certifikata ali ključa ni veljavna, vnesite pravilno pot"
+
+#: cps/admin.py:1286 cps/templates/admin.html:53
+msgid "Add New User"
+msgstr "Dodajanje novega uporabnika"
+
+#: cps/admin.py:1295 cps/templates/admin.html:100
+msgid "Edit Email Server Settings"
+msgstr "Urejanje nastavitev e-poštnega strežnika"
+
+#: cps/admin.py:1314
+msgid "Success! Gmail Account Verified."
+msgstr "Uspeh! Račun Gmail je potrjen."
+
+#: cps/admin.py:1334 cps/admin.py:1337 cps/admin.py:1722 cps/admin.py:1878
+#: cps/admin.py:1976 cps/admin.py:2097 cps/editbooks.py:168
+#: cps/editbooks.py:561 cps/editbooks.py:1256 cps/shelf.py:90 cps/shelf.py:150
+#: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
+#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1535
+#, python-format
+msgid "Oops! Database Error: %(error)s."
+msgstr "Ups! Napaka podatkovne baze: %(error)s."
+
+#: cps/admin.py:1344
+#, python-format
+msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
+msgstr "Testno e-poštno sporočilo je v čakalni vrsti za pošiljanje na %(email)s naslovov, za rezultat preverite opravila"
+
+#: cps/admin.py:1347
+#, python-format
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr "Pri pošiljanju testnega e-poštnega sporočila je prišlo do napake: %(res)s"
+
+#: cps/admin.py:1349
+msgid "Please configure your e-mail address first..."
+msgstr "Najprej nastavite vaš e-poštni naslov..."
+
+#: cps/admin.py:1351
+msgid "Email Server Settings updated"
+msgstr "Posodobljene nastavitve e-poštnega strežnika"
+
+#: cps/admin.py:1374 cps/templates/admin.html:195
+msgid "Edit Scheduled Tasks Settings"
+msgstr "Urejanje nastavitev načrtovanih opravil"
+
+#: cps/admin.py:1386
+msgid "Invalid start time for task specified"
+msgstr "Nepravilen začetni čas za določeno nalogo"
+
+#: cps/admin.py:1391
+msgid "Invalid duration for task specified"
+msgstr "Nepravilno trajanje za določeno nalogo"
+
+#: cps/admin.py:1401
+msgid "Scheduled tasks settings updated"
+msgstr "Posodobljene nastavitve načrtovanih opravil"
+
+#: cps/admin.py:1411 cps/admin.py:1460 cps/admin.py:2093 cps/web.py:1325
+msgid "Oops! An unknown error occurred. Please try again later."
+msgstr "Ups! Zgodila se je neznana napaka. Prosimo, poskusite znova pozneje."
+
+#: cps/admin.py:1415
+msgid "Settings DB is not Writeable"
+msgstr "DB nastavitev ni mogoče zapisati"
+
+#: cps/admin.py:1445 cps/admin.py:2085
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr "Urejanje uporabnika %(nick)s"
+
+#: cps/admin.py:1457
+#, python-format
+msgid "Success! Password for user %(user)s reset"
+msgstr "Uspeh! Ponastavitev gesla za uporabnika %(user)s"
+
+#: cps/admin.py:1463
+msgid "Oops! Please configure the SMTP mail settings."
+msgstr "Ups! Nastavite nastavitve pošte SMTP."
+
+#: cps/admin.py:1474
+msgid "Logfile viewer"
+msgstr "Pregledovalnik dnevniške datoteke"
+
+#: cps/admin.py:1540
+msgid "Requesting update package"
+msgstr "Zahteva za paket posodobitev"
+
+#: cps/admin.py:1541
+msgid "Downloading update package"
+msgstr "Prenos paketa posodobitev"
+
+#: cps/admin.py:1542
+msgid "Unzipping update package"
+msgstr "Razpakiranje paketa posodobitev"
+
+#: cps/admin.py:1543
+msgid "Replacing files"
+msgstr "Zamenjava datotek"
+
+#: cps/admin.py:1544
+msgid "Database connections are closed"
+msgstr "Povezave do zbirke podatkov so zaprte"
+
+#: cps/admin.py:1545
+msgid "Stopping server"
+msgstr "Ustavitev strežnika"
+
+#: cps/admin.py:1546
+msgid "Update finished, please press okay and reload page"
+msgstr "Posodobitev je končana, pritisnite OK in ponovno naložite stran"
+
+#: cps/admin.py:1547 cps/admin.py:1548 cps/admin.py:1549 cps/admin.py:1550
+#: cps/admin.py:1551 cps/admin.py:1552
+msgid "Update failed:"
+msgstr "Posodobitev ni uspela:"
+
+#: cps/admin.py:1547 cps/updater.py:391 cps/updater.py:626 cps/updater.py:628
+msgid "HTTP Error"
+msgstr "Napaka HTTP"
+
+#: cps/admin.py:1548 cps/updater.py:393 cps/updater.py:630
+msgid "Connection error"
+msgstr "Napaka povezave"
+
+#: cps/admin.py:1549 cps/updater.py:395 cps/updater.py:632
+msgid "Timeout while establishing connection"
+msgstr "Potek časa pri vzpostavljanju povezave"
+
+#: cps/admin.py:1550 cps/updater.py:397 cps/updater.py:634
+msgid "General error"
+msgstr "Splošna napaka"
+
+#: cps/admin.py:1551
+msgid "Update file could not be saved in temp dir"
+msgstr "Datoteke posodobitve ni bilo mogoče shraniti v začasno mapo"
+
+#: cps/admin.py:1552
+msgid "Files could not be replaced during update"
+msgstr "Datotek med posodabljanjem ni bilo mogoče zamenjati"
+
+#: cps/admin.py:1576
+msgid "Failed to extract at least One LDAP User"
+msgstr "Nisem uspel izpisati vsaj enega uporabnika LDAP"
+
+#: cps/admin.py:1621
+msgid "Failed to Create at Least One LDAP User"
+msgstr "Nisem uspel ustvariti vsaj enega uporabnika LDAP"
+
+#: cps/admin.py:1634
+#, python-format
+msgid "Error: %(ldaperror)s"
+msgstr "Napaka: %(ldaperror)s"
+
+#: cps/admin.py:1638
+msgid "Error: No user returned in response of LDAP server"
+msgstr "Napaka: V odzivu strežnika LDAP ni vrnjenega nobenega uporabnika"
+
+#: cps/admin.py:1674
+msgid "At Least One LDAP User Not Found in Database"
+msgstr "V podatkovni zbirki ni najden vsaj en uporabnik LDAP"
+
+#: cps/admin.py:1676
+msgid "{} User Successfully Imported"
+msgstr "{} Uporabnik je bil uspešno uvožen"
+
+#: cps/admin.py:1734
+msgid "Books path not valid"
+msgstr "Pot do knjig ni veljavna"
+
+#: cps/admin.py:1740
+msgid "DB Location is not Valid, Please Enter Correct Path"
+msgstr "Lokacija do DB ni veljavna, vnesite pravilno pot"
+
+#: cps/admin.py:1768
+msgid "DB is not Writeable"
+msgstr "V DB ni mogoče zapisati"
+
+#: cps/admin.py:1782
+msgid "Keyfile Location is not Valid, Please Enter Correct Path"
+msgstr "Lokacija datoteka Keyfile ni veljavna, vnesite pravilno pot"
+
+#: cps/admin.py:1786
+msgid "Certfile Location is not Valid, Please Enter Correct Path"
+msgstr "Lokacija datoteke Certfile ni veljavna, vnesite pravilno pot"
+
+#: cps/admin.py:1863
+msgid "Password length has to be between 1 and 40"
+msgstr "Dolžina gesla mora biti med 1 in 40"
+
+#: cps/admin.py:1917
+msgid "Database Settings updated"
+msgstr "Posodobljene nastavitve zbirke podatkov"
+
+#: cps/admin.py:1925
+msgid "Database Configuration"
+msgstr "Nastavitev zbirke podatkov"
+
+#: cps/admin.py:1940 cps/web.py:1299
+msgid "Oops! Please complete all fields."
+msgstr "Ups! Izpolnite vsa polja."
+
+#: cps/admin.py:1949
+msgid "E-mail is not from valid domain"
+msgstr "E-pošta ni iz veljavne domene"
+
+#: cps/admin.py:1955
+msgid "Add new user"
+msgstr "Dodajanje novega uporabnika"
+
+#: cps/admin.py:1966
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "Ustvarjen uporabnik '%(user)s'"
+
+#: cps/admin.py:1972
+msgid "Oops! An account already exists for this Email. or name."
+msgstr "Ups! Za to e-pošto že obstaja račun ali ime."
+
+#: cps/admin.py:2002
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "Uporabnik '%(nick)s' je izbrisan"
+
+#: cps/admin.py:2005
+msgid "Can't delete Guest User"
+msgstr "Ne morem izbrisati uporabnika gosta"
+
+#: cps/admin.py:2008
+msgid "No admin user remaining, can't delete user"
+msgstr "Ni preostalega uporabnika administratorja, uporabnika ni mogoče izbrisati"
+
+#: cps/admin.py:2063 cps/web.py:1484
+msgid "Email can't be empty and has to be a valid Email"
+msgstr "E-pošta ne sme biti prazna in mora biti veljavna."
+
+#: cps/admin.py:2089
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "Uporabnik '%(nick)s' je posodobljen"
+
+#: cps/basic.py:67 cps/search.py:50 cps/search.py:426
+#: cps/templates/basic_layout.html:23 cps/templates/book_edit.html:242
+#: cps/templates/feed.xml:34 cps/templates/index.xml:12
+#: cps/templates/layout.html:47 cps/templates/layout.html:50
+#: cps/templates/search_form.html:247
+msgid "Search"
+msgstr "Iskanje"
+
+#: cps/converter.py:31
+msgid "not installed"
+msgstr "ni nameščen"
+
+#: cps/converter.py:32
+msgid "Execution permissions missing"
+msgstr "Manjkajo dovoljenja za izvajanje"
+
+#: cps/db.py:1038 cps/templates/config_edit.html:203
+#: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
+#: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
+#: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
+#: cps/web.py:1137
+msgid "None"
+msgstr "Nobeno"
+
+#: cps/editbooks.py:154
+#, python-format
+msgid "File %(file)s uploaded"
+msgstr "Prenesena datoteka %(file)s"
+
+#: cps/editbooks.py:183
+msgid "Source or destination format for conversion missing"
+msgstr "Manjka izvorni ali ciljni format za pretvorbo"
+
+#: cps/editbooks.py:191
+#, python-format
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr "Knjiga je uspešno dodana v čakalno vrsto za pretvorbo v %(book_format)s"
+
+#: cps/editbooks.py:195
+#, python-format
+msgid "There was an error converting this book: %(res)s"
+msgstr "Pri pretvorbi te knjige je prišlo do napake: %(res)s"
+
+#: cps/editbooks.py:433 cps/editbooks.py:928 cps/web.py:535 cps/web.py:1576
+#: cps/web.py:1622 cps/web.py:1672
+msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
+msgstr "Ups! Izbrana knjiga ni na voljo. Datoteka ne obstaja ali ni dostopna"
+
+#: cps/editbooks.py:479 cps/editbooks.py:1285
+msgid "User has no rights to upload cover"
+msgstr "Uporabnik nima pravice do nalaganja naslovnice"
+
+#: cps/editbooks.py:500 cps/editbooks.py:743
+msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
+msgstr "Identifikatorji niso občutljivi na velikost črk, prepisovanje starega identifikatorja"
+
+#: cps/editbooks.py:515 cps/editbooks.py:717 cps/editbooks.py:1055
+#, python-format
+msgid "'%(langname)s' is not a valid language"
+msgstr "'%(langname)s' ni veljaven jezik"
+
+#: cps/editbooks.py:543
+msgid "Metadata successfully updated"
+msgstr "Metapodatki so bili uspešno posodobljeni"
+
+#: cps/editbooks.py:566
+msgid "Error editing book: {}"
+msgstr "Napaka pri urejanju knjige: {}"
+
+#: cps/editbooks.py:661
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr "Naložena knjiga verjetno obstaja v knjižnici, preden naložite novo, razmislite o spremembi:"
+
+#: cps/editbooks.py:755 cps/editbooks.py:1202
+msgid "File type isn't allowed to be uploaded to this server"
+msgstr "Vrsta datoteke ni dovoljena za nalaganje v ta strežnik"
+
+#: cps/editbooks.py:761 cps/editbooks.py:1213
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Datoteke s končnico '%(ext)s' ni dovoljeno naložiti na ta strežnik"
+
+#: cps/editbooks.py:765 cps/editbooks.py:1218
+msgid "File to be uploaded must have an extension"
+msgstr "Datoteka, ki jo želite naložiti, mora imeti končnico"
+
+#: cps/editbooks.py:773
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr "Datoteke %(filename)s ni bilo mogoče shraniti v začasno mapo"
+
+#: cps/editbooks.py:793
+#, python-format
+msgid "Failed to Move Cover File %(file)s: %(error)s"
+msgstr "Nisem uspel premakniti naslovne datoteke %(file)s: %(error)s"
+
+#: cps/editbooks.py:850 cps/editbooks.py:852
+msgid "Book Format Successfully Deleted"
+msgstr "Uspešno izbrisana vrsta knjige"
+
+#: cps/editbooks.py:859 cps/editbooks.py:861
+msgid "Book Successfully Deleted"
+msgstr "Knjiga je bila uspešno izbrisana"
+
+#: cps/editbooks.py:913
+msgid "You are missing permissions to delete books"
+msgstr "Manjkajo vam dovoljenja za brisanje knjig"
+
+#: cps/editbooks.py:963
+msgid "edit metadata"
+msgstr "urejanje metapodatkov"
+
+#: cps/editbooks.py:1016
+#, python-format
+msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
+msgstr "Številka serije: %(seriesindex)s ni veljavno število, preskočim"
+
+#: cps/editbooks.py:1207
+msgid "User has no rights to upload additional file formats"
+msgstr "Uporabnik nima pravic za nalaganje dodatnih formatov datotek"
+
+#: cps/editbooks.py:1231
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "Nisem uspel ustvariti poti %(path)s (zavrnjeno dovoljenje)."
+
+#: cps/editbooks.py:1238
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "Nisem uspel shraniti datoteke %(file)s."
+
+#: cps/editbooks.py:1263
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "Oblina datotek %(ext)s je dodan v %(book)s"
+
+#: cps/gdrive.py:58
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr "Nastavitev Google Drive ni dokončana, poskusite deaktivirati in znova aktivirati Google Drive"
+
+#: cps/gdrive.py:96
+msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgstr "Povratna domena ni preverjena, sledite korakom za preverjanje domene v konzoli za razvijalce Google"
+
+#: cps/helper.py:87
+#, python-format
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr "Vrsta %(format)s ni najdena za id knjige: %(book)d"
+
+#: cps/helper.py:94 cps/tasks/convert.py:93
+#, python-format
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr "%(format)s ni bil najden v storitvi Google Drive: %(fn)s"
+
+#: cps/helper.py:99
+#, python-format
+msgid "%(format)s not found: %(fn)s"
+msgstr "%(format)s ni najden: %(fn)s"
+
+#: cps/helper.py:104 cps/helper.py:233 cps/templates/detail.html:66
+msgid "Send to eReader"
+msgstr "Pošlji v e-bralnik"
+
+#: cps/helper.py:105 cps/helper.py:125 cps/helper.py:235
+msgid "This Email has been sent via Calibre-Web."
+msgstr "To e-poštno sporočilo je bilo poslano prek programa Calibre-Web."
+
+#: cps/helper.py:123
+msgid "Calibre-Web Test Email"
+msgstr "Testna e-pošta Calibre-Web"
+
+#: cps/helper.py:124
+msgid "Test Email"
+msgstr "Testna e-pošta"
+
+#: cps/helper.py:141
+msgid "Get Started with Calibre-Web"
+msgstr "Začnite s programom Calibre-Web"
+
+#: cps/helper.py:146
+#, python-format
+msgid "Registration Email for user: %(name)s"
+msgstr "Registracijski e-poštni naslov za uporabnika: %(name)s"
+
+#: cps/helper.py:157 cps/helper.py:163
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader"
+msgstr "Pretvarjanje %(orig)s v %(format)s in pošiljanje v e-bralnik"
+
+#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#, python-format
+msgid "Send %(format)s to eReader"
+msgstr "Pošlji %(format)s v e-bralnik"
+
+#: cps/helper.py:230
+#, python-format
+msgid "%(book)s send to eReader"
+msgstr "%(book)s pošljite v e-bralnik"
+
+#: cps/helper.py:237
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "Zahtevane datoteke ni bilo mogoče prebrati. Morda napačna dovoljenja?"
+
+#: cps/helper.py:352
+msgid "Read status could not set: {}"
+msgstr "Stanja branja ni bilo mogoče nastaviti: {}"
+
+#: cps/helper.py:375
+#, python-format
+msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
+msgstr "Brisanje knjižne mape za knjigo %(id)s ni bilo uspešno, pot ima podmape: %(path)s"
+
+#: cps/helper.py:381
+#, python-format
+msgid "Deleting book %(id)s failed: %(message)s"
+msgstr "Brisanje knjige %(id)s ni bilo uspešno: %(message)s"
+
+#: cps/helper.py:392
+#, python-format
+msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
+msgstr "Brisanje knjige %(id)s samo iz zbirke podatkov, pot do knjige v zbirki podatkov ni veljavna: %(path)s"
+
+#: cps/helper.py:439
+#, python-format
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Preimenovanje avtorja iz: '%(src)s' v '%(dest)s' ni bilo uspešno z napako: %(error)s"
+
+#: cps/helper.py:507 cps/helper.py:516
+#, python-format
+msgid "File %(file)s not found on Google Drive"
+msgstr "Datoteke %(file)s ni mogoče najti v storitvi Google Drive"
+
+#: cps/helper.py:559
+#, python-format
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Preimenovanje naslova iz: '%(src)s' v '%(dest)s' ni bilo uspešno z napako: %(error)s"
+
+#: cps/helper.py:597
+#, python-format
+msgid "Book path %(path)s not found on Google Drive"
+msgstr "Pot do knjige %(path)s ni bila najdena v storitvi Google Drive"
+
+#: cps/helper.py:657
+msgid "Found an existing account for this Email address"
+msgstr "Najden obstoječi račun za ta e-poštni naslov"
+
+#: cps/helper.py:665
+msgid "This username is already taken"
+msgstr "To uporabniško ime je že zasedeno"
+
+#: cps/helper.py:679
+msgid "Invalid Email address format"
+msgstr "Nepravilna oblike e-poštnega naslova"
+
+#: cps/helper.py:701
+msgid "Password doesn't comply with password validation rules"
+msgstr "Geslo ni v skladu s pravili za preverjanje gesla"
+
+#: cps/helper.py:847
+msgid "Python module 'advocate' is not installed but is needed for cover uploads"
+msgstr "Modul Python 'advocate' ni nameščen, vendar je potreben za nalaganje naslovnic"
+
+#: cps/helper.py:857
+msgid "Error Downloading Cover"
+msgstr "Napaka pri nalaganju naslovnice"
+
+#: cps/helper.py:860
+msgid "Cover Format Error"
+msgstr "Napaka vrste naslovnice"
+
+#: cps/helper.py:863
+msgid "You are not allowed to access localhost or the local network for cover uploads"
+msgstr "Dostop do lokalnega gostitelja ali lokalnega omrežja za prenos naslovnice ni dovoljen."
+
+#: cps/helper.py:873
+msgid "Failed to create path for cover"
+msgstr "Nisem uspel ustvariti poti za naslovnice"
+
+#: cps/helper.py:889
+msgid "Cover-file is not a valid image file, or could not be stored"
+msgstr "Datoteka naslovnice ni veljavna slikovna datoteka ali je ni bilo mogoče shraniti"
+
+#: cps/helper.py:900
+msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
+msgstr "Za datoteke naslovnic so podprte samo datoteke jpg/jpeg/png/webp/bmp"
+
+#: cps/helper.py:912
+msgid "Invalid cover file content"
+msgstr "Nepravilna vsebina datoteke z naslovnico"
+
+#: cps/helper.py:916
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr "Samo datoteke jpg/jpeg so podprte kot datoteke naslovnic"
+
+#: cps/helper.py:989 cps/helper.py:1149
+msgid "Cover"
+msgstr "Naslovnica"
+
+#: cps/helper.py:1006
+msgid "UnRar binary file not found"
+msgstr "Binarna datoteka UnRar ni bila najdena"
+
+#: cps/helper.py:1017
+msgid "Error executing UnRar"
+msgstr "Napaka pri izvajanju UnRar"
+
+#: cps/helper.py:1025
+msgid "Could not find the specified directory"
+msgstr "Ni bilo mogoče najti določenega imenika"
+
+#: cps/helper.py:1028
+msgid "Please specify a directory, not a file"
+msgstr "Navedite imenik in ne datoteke"
+
+#: cps/helper.py:1042
+msgid "Calibre binaries not viable"
+msgstr "Binarne datoteke Calibre niso izvedljive"
+
+#: cps/helper.py:1051
+#, python-format
+msgid "Missing calibre binaries: %(missing)s"
+msgstr "Manjkajoče binarne datoteke Calibre: %(missing)s"
+
+#: cps/helper.py:1053
+#, python-format
+msgid "Missing executable permissions: %(missing)s"
+msgstr "Manjkajoča dovoljenja za izvršilni program: %(missing)s"
+
+#: cps/helper.py:1058
+msgid "Error executing Calibre"
+msgstr "Napaka pri izvajanju programa Calibre"
+
+#: cps/helper.py:1151 cps/templates/admin.html:216
+msgid "Queue all books for metadata backup"
+msgstr "Vse knjige v vrsti za varnostno kopiranje metapodatkov"
+
+#: cps/kobo_auth.py:92
+msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
+msgstr "Dostopajte do Calibre-Web z nelokalnega gostitelja, da pridobite veljavno api_endpoint za napravo kobo"
+
+#: cps/kobo_auth.py:118
+msgid "Kobo Setup"
+msgstr "Nastavitev za Kobo"
+
+#: cps/oauth_bb.py:78
+#, python-format
+msgid "Register with %(provider)s"
+msgstr "Registracija pri %(provider)s"
+
+#: cps/oauth_bb.py:139 cps/remotelogin.py:131
+#, python-format
+msgid "Success! You are now logged in as: %(nickname)s"
+msgstr "Uspeh! Prijavljeni ste kot: %(nickname)s"
+
+#: cps/oauth_bb.py:149
+#, python-format
+msgid "Link to %(oauth)s Succeeded"
+msgstr "Povezava do %(oauth)s je bila uspešna"
+
+#: cps/oauth_bb.py:156
+msgid "Login failed, No User Linked With OAuth Account"
+msgstr "Prijava ni uspela, z računom OAuth ni povezan noben uporabnik"
+
+#: cps/oauth_bb.py:198
+#, python-format
+msgid "Unlink to %(oauth)s Succeeded"
+msgstr "Odklop povezave z %(oauth)s je bil uspešen"
+
+#: cps/oauth_bb.py:203
+#, python-format
+msgid "Unlink to %(oauth)s Failed"
+msgstr "Odklop povezave z %(oauth)s ni bil uspešen"
+
+#: cps/oauth_bb.py:206
+#, python-format
+msgid "Not Linked to %(oauth)s"
+msgstr "Ni povezano z %(oauth)s"
+
+#: cps/oauth_bb.py:263
+msgid "Failed to log in with GitHub."
+msgstr "Neuspešna prijava v GitHub."
+
+#: cps/oauth_bb.py:269
+msgid "Failed to fetch user info from GitHub."
+msgstr "Neuspešna pridobitev informacij o uporabniku iz storitve GitHub."
+
+#: cps/oauth_bb.py:281
+msgid "Failed to log in with Google."
+msgstr "Neuspešna prijava v Google."
+
+#: cps/oauth_bb.py:287
+msgid "Failed to fetch user info from Google."
+msgstr "Neuspešna ridobititev informacij o uporabniku iz Googla."
+
+#: cps/oauth_bb.py:335
+msgid "GitHub Oauth error, please retry later."
+msgstr "Napaka GitHub Oauth, prosimo, poskusite pozneje."
+
+#: cps/oauth_bb.py:338
+msgid "GitHub Oauth error: {}"
+msgstr "Napaka GitHub Oauth: {}"
+
+#: cps/oauth_bb.py:359
+msgid "Google Oauth error, please retry later."
+msgstr "Napaka Google Oauth, poskusite pozneje."
+
+#: cps/oauth_bb.py:362
+msgid "Google Oauth error: {}"
+msgstr "Napaka Google Oauth: {}"
+
+#: cps/opds.py:299
+msgid "{} Stars"
+msgstr "{} zvezdic"
+
+#: cps/remotelogin.py:63 cps/templates/layout.html:69
+#: cps/templates/layout.html:104 cps/templates/login.html:4
+#: cps/templates/login.html:21 cps/web.py:1361
+msgid "Login"
+msgstr "Prijava"
+
+#: cps/remotelogin.py:75 cps/remotelogin.py:109
+msgid "Token not found"
+msgstr "ne najdem žetona"
+
+#: cps/remotelogin.py:84 cps/remotelogin.py:117
+msgid "Token has expired"
+msgstr "Veljavnost žetona je potekla"
+
+#: cps/remotelogin.py:93
+msgid "Success! Please return to your device"
+msgstr "Uspeh! Vrnite se v svojo napravo"
+
+#: cps/render_template.py:41 cps/web.py:424
+msgid "Books"
+msgstr "Knjige"
+
+#: cps/render_template.py:43
+msgid "Show recent books"
+msgstr "Prikaži nedavne knjige"
+
+#: cps/render_template.py:44 cps/templates/index.xml:27
+msgid "Hot Books"
+msgstr "Najbolj vroče knjige"
+
+#: cps/render_template.py:46
+msgid "Show Hot Books"
+msgstr "Prikaži vroče knjige"
+
+#: cps/render_template.py:48 cps/render_template.py:53
+msgid "Downloaded Books"
+msgstr "Prenesene knjige"
+
+#: cps/render_template.py:50 cps/render_template.py:55
+#: cps/templates/user_table.html:167
+msgid "Show Downloaded Books"
+msgstr "Prikaži prenesene knjige"
+
+#: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:439
+msgid "Top Rated Books"
+msgstr "Najbolje ocenjene knjige"
+
+#: cps/render_template.py:60 cps/templates/user_table.html:161
+msgid "Show Top Rated Books"
+msgstr "Prikaži najbolje ocenjene knjige"
+
+#: cps/render_template.py:61 cps/templates/index.xml:63
+#: cps/templates/index.xml:67 cps/web.py:772
+msgid "Read Books"
+msgstr "Prebrane knjige"
+
+#: cps/render_template.py:63
+msgid "Show Read and Unread"
+msgstr "Prikaži prebrano in neprebrano"
+
+#: cps/render_template.py:65 cps/templates/index.xml:70
+#: cps/templates/index.xml:74 cps/web.py:775
+msgid "Unread Books"
+msgstr "Neprebrane knjige"
+
+#: cps/render_template.py:67
+msgid "Show unread"
+msgstr "Prikaži neprebrane"
+
+#: cps/render_template.py:68
+msgid "Discover"
+msgstr "Odkrivanje"
+
+#: cps/render_template.py:70 cps/templates/index.xml:58
+#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
+msgid "Show Random Books"
+msgstr "Prikaži naključne knjige"
+
+#: cps/render_template.py:71 cps/templates/book_table.html:67
+#: cps/templates/index.xml:97 cps/web.py:1141
+msgid "Categories"
+msgstr "Kategorije"
+
+#: cps/render_template.py:73 cps/templates/user_table.html:158
+msgid "Show Category Section"
+msgstr "Prikaži oddelek kategorije"
+
+#: cps/render_template.py:74 cps/templates/book_edit.html:86
+#: cps/templates/book_table.html:68 cps/templates/index.xml:106
+#: cps/templates/search_form.html:70 cps/web.py:1031 cps/web.py:1043
+msgid "Series"
+msgstr "Serije"
+
+#: cps/render_template.py:76 cps/templates/user_table.html:157
+msgid "Show Series Section"
+msgstr "Prikaži razdelek serij"
+
+#: cps/render_template.py:77 cps/templates/book_table.html:66
+#: cps/templates/index.xml:79
+msgid "Authors"
+msgstr "Avtorji"
+
+#: cps/render_template.py:79 cps/templates/user_table.html:160
+msgid "Show Author Section"
+msgstr "Prikaži razdelek avtorjev"
+
+#: cps/render_template.py:81 cps/templates/book_table.html:72
+#: cps/templates/index.xml:88 cps/web.py:999
+msgid "Publishers"
+msgstr "Založniki"
+
+#: cps/render_template.py:83 cps/templates/user_table.html:163
+msgid "Show Publisher Section"
+msgstr "Prikaži razdelek založnikov"
+
+#: cps/render_template.py:84 cps/templates/book_table.html:70
+#: cps/templates/index.xml:115 cps/templates/search_form.html:108
+#: cps/web.py:1113
+msgid "Languages"
+msgstr "Jeziki"
+
+#: cps/render_template.py:87 cps/templates/user_table.html:155
+msgid "Show Language Section"
+msgstr "Prikaži razdelek jezikov"
+
+#: cps/render_template.py:88 cps/templates/index.xml:124
+msgid "Ratings"
+msgstr "Ocene"
+
+#: cps/render_template.py:90 cps/templates/user_table.html:164
+msgid "Show Ratings Section"
+msgstr "Prikaži razdelek ocen"
+
+#: cps/render_template.py:91 cps/templates/index.xml:133
+msgid "File formats"
+msgstr "Vrste datotek"
+
+#: cps/render_template.py:93 cps/templates/user_table.html:165
+msgid "Show File Formats Section"
+msgstr "Prikaži razdelek vrste datotek"
+
+#: cps/render_template.py:95 cps/web.py:798
+msgid "Archived Books"
+msgstr "Arhivirane knjige"
+
+#: cps/render_template.py:97 cps/templates/user_table.html:166
+msgid "Show Archived Books"
+msgstr "Prikaži arhivirane knjige"
+
+#: cps/render_template.py:100 cps/web.py:829
+msgid "Books List"
+msgstr "Seznam knjig"
+
+#: cps/render_template.py:102 cps/templates/user_table.html:168
+msgid "Show Books List"
+msgstr "Prikaži seznam knjig"
+
+#: cps/search.py:201
+msgid "Published after "
+msgstr "Objavljeno po"
+
+#: cps/search.py:208
+msgid "Published before "
+msgstr "Objavljeno pred"
+
+#: cps/search.py:230
+#, python-format
+msgid "Rating <= %(rating)s"
+msgstr "Ocena <= %(rating)s"
+
+#: cps/search.py:232
+#, python-format
+msgid "Rating >= %(rating)s"
+msgstr "Ocena >= %(rating)s"
+
+#: cps/search.py:234
+#, python-format
+msgid "Read Status = '%(status)s'"
+msgstr "Prebrani status = '%(status)s'"
+
+#: cps/search.py:351
+msgid "Error on search for custom columns, please restart Calibre-Web"
+msgstr "Napaka pri iskanju stolpcev po meri, ponovno zaženite Calibre-Web"
+
+#: cps/search.py:370 cps/search.py:402 cps/templates/layout.html:58
+msgid "Advanced Search"
+msgstr "Napredno iskanje"
+
+#: cps/shelf.py:49 cps/shelf.py:111
+msgid "Invalid shelf specified"
+msgstr "Navedena nepravilna polica"
+
+#: cps/shelf.py:55
+msgid "Sorry you are not allowed to add a book to that shelf"
+msgstr "Žal vam ni dovoljeno dodati knjige na to polico."
+
+#: cps/shelf.py:64
+#, python-format
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "Knjiga je že del police: %(shelfname)s"
+
+#: cps/shelf.py:77
+#, python-format
+msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
+msgstr "%(book_id)s je neveljaven ID knjige. Ni ga bilo mogoče dodati na polico"
+
+#: cps/shelf.py:97
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "Knjiga je bila dodana na polico: %(sname)s"
+
+#: cps/shelf.py:116
+msgid "You are not allowed to add a book to the shelf"
+msgstr "Knjige ne smete dodati na polico"
+
+#: cps/shelf.py:134
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "Knjige so že del police: %(name)s"
+
+#: cps/shelf.py:146
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "Knjige so bile dodane na polico: %(sname)s"
+
+#: cps/shelf.py:153
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "Ni bilo mogoče dodati knjig na polico: %(sname)s"
+
+#: cps/shelf.py:199
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "Knjiga je bila odstranjena s police: %(sname)s"
+
+#: cps/shelf.py:208
+msgid "Sorry you are not allowed to remove a book from this shelf"
+msgstr "Žal vam ni dovoljeno odstraniti knjige s te police"
+
+#: cps/shelf.py:218 cps/templates/layout.html:160
+msgid "Create a Shelf"
+msgstr "Ustvari polico"
+
+#: cps/shelf.py:226
+msgid "Sorry you are not allowed to edit this shelf"
+msgstr "Žal vam ni dovoljeno urejati te police"
+
+#: cps/shelf.py:228
+msgid "Edit a shelf"
+msgstr "Urejanje police"
+
+#: cps/shelf.py:237
+msgid "Error deleting Shelf"
+msgstr "Napaka pri brisanju police"
+
+#: cps/shelf.py:239
+msgid "Shelf successfully deleted"
+msgstr "Polica je bila uspešno izbrisana"
+
+#: cps/shelf.py:289
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "Spremeni vrstni red police: '%(name)s'"
+
+#: cps/shelf.py:324
+msgid "Sorry you are not allowed to create a public shelf"
+msgstr "Žal vam ni dovoljeno ustvariti javne police"
+
+#: cps/shelf.py:341
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "Ustvarjena polica %(title)s"
+
+#: cps/shelf.py:344
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "Polica %(title)s je spremenjena"
+
+#: cps/shelf.py:358
+msgid "There was an error"
+msgstr "Prišlo je do napake"
+
+#: cps/shelf.py:380
+#, python-format
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr "Javna polica z imenom '%(title)s' že obstaja."
+
+#: cps/shelf.py:391
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr "Zasebna polica z imenom '%(title)s' že obstaja."
+
+#: cps/shelf.py:481
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Polica: '%(name)s'"
+
+#: cps/shelf.py:487
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "Napaka pri odpiranju police. Polica ne obstaja ali ni dostopna"
+
+#: cps/tasks_status.py:47 cps/templates/layout.html:91
+#: cps/templates/tasks.html:7
+msgid "Tasks"
+msgstr "Opravila"
+
+#: cps/tasks_status.py:63
+msgid "Waiting"
+msgstr "Na čakanju"
+
+#: cps/tasks_status.py:65
+msgid "Failed"
+msgstr "Neuspešno"
+
+#: cps/tasks_status.py:67
+msgid "Started"
+msgstr "Začeto"
+
+#: cps/tasks_status.py:69
+msgid "Finished"
+msgstr "Končano"
+
+#: cps/tasks_status.py:71
+msgid "Ended"
+msgstr "Končano"
+
+#: cps/tasks_status.py:73
+msgid "Cancelled"
+msgstr "Preklicano"
+
+#: cps/tasks_status.py:75
+msgid "Unknown Status"
+msgstr "Neznani status"
+
+#: cps/updater.py:433 cps/updater.py:444 cps/updater.py:545 cps/updater.py:560
+msgid "Unexpected data while reading update information"
+msgstr "Nepričakovani podatki med branjem informacij o posodobitvi"
+
+#: cps/updater.py:440 cps/updater.py:552
+msgid "No update available. You already have the latest version installed"
+msgstr "Posodobitev ni na voljo. Najnovejšo različico že imate nameščeno"
+
+#: cps/updater.py:458
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "Na voljo je nova posodobitev. Klikni spodnji gumb za posodobitev na najnovejšo različico."
+
+#: cps/updater.py:476
+msgid "Could not fetch update information"
+msgstr "Ni bilo mogoče pridobiti informacij o posodobitvi"
+
+#: cps/updater.py:486
+msgid "Click on the button below to update to the latest stable version."
+msgstr "Klikni spodnji gumb za posodobitev na najnovejšo stabilno različico."
+
+#: cps/updater.py:495 cps/updater.py:509 cps/updater.py:520
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr "Na voljo je nova posodobitev. Klikni spodnji gumb za posodobitev na različico: %(version)s"
+
+#: cps/updater.py:538
+msgid "No release information available"
+msgstr "Informacije o izdaji niso na voljo"
+
+#: cps/templates/index.html:6 cps/web.py:451
+msgid "Discover (Random Books)"
+msgstr "Odkrivanje (naključne knjige)"
+
+#: cps/web.py:487
+msgid "Hot Books (Most Downloaded)"
+msgstr "Vroče knjige (največkrat prenesene)"
+
+#: cps/web.py:518
+#, python-format
+msgid "Downloaded books by %(user)s"
+msgstr "Prenesene knjige od %(user)s"
+
+#: cps/web.py:551
+#, python-format
+msgid "Author: %(name)s"
+msgstr "Avtor: %(name)s"
+
+#: cps/web.py:587
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "Založnik: %(name)s"
+
+#: cps/web.py:615
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Serija: %(serie)s"
+
+#: cps/web.py:629
+msgid "Rating: None"
+msgstr "Ocena: brez"
+
+#: cps/web.py:638
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr "Ocena: %(rating)s zvezdic"
+
+#: cps/web.py:669
+#, python-format
+msgid "File format: %(format)s"
+msgstr "Vrsta datoteke: %(format)s"
+
+#: cps/web.py:704
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Kategorija: %(name)s"
+
+#: cps/web.py:733
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Jezik: %(name)s"
+
+#: cps/templates/admin.html:16 cps/web.py:971
+msgid "Downloads"
+msgstr "Prenosi"
+
+#: cps/web.py:1073
+msgid "Ratings list"
+msgstr "Seznam ocen"
+
+#: cps/web.py:1100
+msgid "File formats list"
+msgstr "Seznam vrste datotek"
+
+#: cps/web.py:1259
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Najprej nastavite nastavitve pošte SMTP..."
+
+#: cps/web.py:1265
+#, python-format
+msgid "Success! Book queued for sending to %(eReadermail)s"
+msgstr "Uspeh! Knjiga je v vrsti za pošiljanje v %(eReadermail)s"
+
+#: cps/web.py:1268
+#, python-format
+msgid "Oops! There was an error sending book: %(res)s"
+msgstr "Ups! Pri pošiljanju knjige je prišlo do napake: %(res)s"
+
+#: cps/web.py:1270
+msgid "Oops! Please update your profile with a valid eReader Email."
+msgstr "Ups! Posodobite svoj profil z veljavnim e-poštnim naslovom eReaderja."
+
+#: cps/web.py:1286
+msgid "Please wait one minute to register next user"
+msgstr "Počakajte eno minuto za registracijo naslednjega uporabnika"
+
+#: cps/templates/layout.html:70 cps/templates/layout.html:105
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1287
+#: cps/web.py:1291 cps/web.py:1296 cps/web.py:1300 cps/web.py:1306
+#: cps/web.py:1326 cps/web.py:1330 cps/web.py:1343 cps/web.py:1346
+msgid "Register"
+msgstr "Registriraj"
+
+#: cps/web.py:1290 cps/web.py:1393
+msgid "Connection error to limiter backend, please contact your administrator"
+msgstr "Napaka pri povezavi z zalednim strežnikom limiterja, obrnite se na skrbnika"
+
+#: cps/web.py:1295 cps/web.py:1342
+msgid "Oops! Email server is not configured, please contact your administrator."
+msgstr "Ups! E-poštni strežnik ni nastavljen, obrnite se na skrbnika."
+
+#: cps/web.py:1328
+msgid "Oops! Your Email is not allowed."
+msgstr "Ups! Vaša e-pošta ni dovoljena."
+
+#: cps/web.py:1331
+msgid "Success! Confirmation Email has been sent."
+msgstr "Uspeh! Potrditveno e-poštno sporočilo je bilo poslano."
+
+#: cps/web.py:1376 cps/web.py:1399
+msgid "Cannot activate LDAP authentication"
+msgstr "Ni mogoče aktivirati avtentikacije LDAP"
+
+#: cps/web.py:1389
+msgid "Please wait one minute before next login"
+msgstr "Pred naslednjo prijavo počakajte eno minuto"
+
+#: cps/web.py:1408
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "prijavljeni ste kot: '%(nickname)s'"
+
+#: cps/web.py:1415
+#, python-format
+msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgstr "Rezervna prijava kot: %(nickname)s, strežnik LDAP ni dosegljiv ali uporabnik ni znan"
+
+#: cps/web.py:1420
+#, python-format
+msgid "Could not login: %(message)s"
+msgstr "Ni se mogel prijaviti: %(message)s"
+
+#: cps/web.py:1424 cps/web.py:1449
+msgid "Wrong Username or Password"
+msgstr "Napačno uporabniško ime ali geslo"
+
+#: cps/web.py:1431
+msgid "New Password was sent to your email address"
+msgstr "Novo geslo je bilo poslano na vaš e-poštni naslov"
+
+#: cps/web.py:1435
+msgid "An unknown error occurred. Please try again later."
+msgstr "Zgodila se je neznana napaka. Prosimo, poskusite znova pozneje."
+
+#: cps/web.py:1437
+msgid "Please enter valid username to reset password"
+msgstr "Za ponastavitev gesla vnesite veljavno uporabniško ime"
+
+#: cps/web.py:1445
+#, python-format
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr "Prijavljeni ste kot: '%(nickname)s'"
+
+#: cps/web.py:1510 cps/web.py:1560
+#, python-format
+msgid "%(name)s's Profile"
+msgstr "%(name)s profil"
+
+#: cps/web.py:1526
+msgid "Success! Profile Updated"
+msgstr "Uspeh! Profil posodobljen"
+
+#: cps/web.py:1530
+msgid "Oops! An account already exists for this Email."
+msgstr "Ups! Račun za to e-pošto že obstaja."
+
+#: cps/services/gmail.py:59
+msgid "Found no valid gmail.json file with OAuth information"
+msgstr "Nisem našel veljavne datoteke gmail.json z informacijami OAuth"
+
+#: cps/tasks/clean.py:29
+msgid "Delete temp folder contents"
+msgstr "Izbriši vsebino začasne mape"
+
+#: cps/tasks/convert.py:112
+#, python-format
+msgid "%(book)s send to E-Reader"
+msgstr "%(book)s pošlji v e-bralnik"
+
+#: cps/tasks/convert.py:177
+#, python-format
+msgid "Calibre ebook-convert %(tool)s not found"
+msgstr "Calibre ebook-convert %(tool)s ni najden"
+
+#: cps/tasks/convert.py:211
+#, python-format
+msgid "%(format)s format not found on disk"
+msgstr "%(format)s vrsta ni najdena na disku"
+
+#: cps/tasks/convert.py:215
+msgid "Ebook converter failed with unknown error"
+msgstr "Pretvornik e-knjig ni uspel z neznano napako"
+
+#: cps/tasks/convert.py:234
+#, python-format
+msgid "Kepubify-converter failed: %(error)s"
+msgstr "Kepubify-converter ni uspel: %(error)s"
+
+#: cps/tasks/convert.py:255
+#, python-format
+msgid "Converted file not found or more than one file in folder %(folder)s"
+msgstr "Pretvorjena datoteka ni bila najdena ali je v mapi %(folder)s več kot ena datoteka"
+
+#: cps/tasks/convert.py:289 cps/tasks/convert.py:340
+#, python-format
+msgid "Calibre failed with error: %(error)s"
+msgstr "Calibre ni uspel z napako: %(error)s"
+
+#: cps/tasks/convert.py:317
+#, python-format
+msgid "Ebook-converter failed: %(error)s"
+msgstr "Ebook-converter ni uspel: %(error)s"
+
+#: cps/tasks/convert.py:345
+msgid "Convert"
+msgstr "Pretvori"
+
+#: cps/tasks/database.py:26
+msgid "Reconnecting Calibre database"
+msgstr "Ponovno se povezuejm na podatkovno zbirko Calibre"
+
+#: cps/tasks/mail.py:283
+msgid "E-mail"
+msgstr "E-naslov"
+
+#: cps/tasks/metadata_backup.py:34
+msgid "Backing up Metadata"
+msgstr "Varnostno kopiranje metapodatkov"
+
+#: cps/tasks/thumbnail.py:97
+#, python-format
+msgid "Generated %(count)s cover thumbnails"
+msgstr "Ustvarjene sličice naslovnic %(count)s"
+
+#: cps/tasks/thumbnail.py:233 cps/tasks/thumbnail.py:448
+#: cps/tasks/thumbnail.py:518
+msgid "Cover Thumbnails"
+msgstr "Sličicah naslovnice"
+
+#: cps/tasks/thumbnail.py:294
+msgid "Generated {0} series thumbnails"
+msgstr "Ustvarjene sličice serije {0}"
+
+#: cps/tasks/thumbnail.py:459
+msgid "Clearing cover thumbnail cache"
+msgstr "Čiščenje predpomnilnika sličic naslovnice"
+
+#: cps/tasks/upload.py:39 cps/templates/admin.html:20
+#: cps/templates/layout.html:83 cps/templates/user_table.html:145
+msgid "Upload"
+msgstr "Naloži"
+
+#: cps/templates/admin.html:9
+msgid "Users"
+msgstr "Uporabniki"
+
+#: cps/templates/admin.html:13 cps/templates/login.html:9
+#: cps/templates/login.html:10 cps/templates/register.html:9
+#: cps/templates/user_edit.html:10 cps/templates/user_table.html:134
+msgid "Username"
+msgstr "Uporabniško ime"
+
+#: cps/templates/admin.html:14 cps/templates/register.html:14
+#: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
+msgid "Email"
+msgstr "E-pošta"
+
+#: cps/templates/admin.html:15
+msgid "Send to eReader Email"
+msgstr "Pošlji v e-pošto e-bralnika"
+
+#: cps/templates/admin.html:17 cps/templates/layout.html:94
+#: cps/templates/user_table.html:143
+msgid "Admin"
+msgstr "Administator"
+
+#: cps/templates/admin.html:18 cps/templates/login.html:13
+#: cps/templates/login.html:14 cps/templates/user_edit.html:23
+msgid "Password"
+msgstr "Geslo"
+
+#: cps/templates/admin.html:22 cps/templates/detail.html:28
+#: cps/templates/detail.html:41 cps/templates/shelf.html:8
+#: cps/templates/user_table.html:146
+msgid "Download"
+msgstr "Prenesi"
+
+#: cps/templates/admin.html:23
+msgid "View Books"
+msgstr "Oglejte si knjige"
+
+#: cps/templates/admin.html:24 cps/templates/user_table.html:131
+#: cps/templates/user_table.html:148
+msgid "Edit"
+msgstr "Uredi"
+
+#: cps/templates/admin.html:25 cps/templates/book_edit.html:17
+#: cps/templates/book_table.html:100 cps/templates/modal_dialogs.html:63
+#: cps/templates/modal_dialogs.html:116 cps/templates/user_edit.html:67
+#: cps/templates/user_table.html:149
+msgid "Delete"
+msgstr "Izbriši"
+
+#: cps/templates/admin.html:26
+msgid "Public Shelf"
+msgstr "Javna polica"
+
+#: cps/templates/admin.html:55
+msgid "Import LDAP Users"
+msgstr "Uvoz uporabnikov LDAP"
+
+#: cps/templates/admin.html:62
+msgid "Email Server Settings"
+msgstr "Nastavitve e-poštnega strežnika"
+
+#: cps/templates/admin.html:67 cps/templates/email_edit.html:31
+msgid "SMTP Hostname"
+msgstr "Ime gostitelja SMTP"
+
+#: cps/templates/admin.html:71 cps/templates/email_edit.html:35
+msgid "SMTP Port"
+msgstr "Vrata SMTP"
+
+#: cps/templates/admin.html:75 cps/templates/email_edit.html:39
+msgid "Encryption"
+msgstr "Šifriranje"
+
+#: cps/templates/admin.html:79 cps/templates/email_edit.html:47
+msgid "SMTP Login"
+msgstr "Prijava v SMTP"
+
+#: cps/templates/admin.html:83 cps/templates/admin.html:94
+#: cps/templates/email_edit.html:55
+msgid "From Email"
+msgstr "Iz e-poštnega naslova"
+
+#: cps/templates/admin.html:90
+msgid "Email Service"
+msgstr "Storitev e-pošte"
+
+#: cps/templates/admin.html:91
+msgid "Gmail via Oauth2"
+msgstr "Gmail prek Oauth2"
+
+#: cps/templates/admin.html:106
+msgid "Configuration"
+msgstr "Nastavitev"
+
+#: cps/templates/admin.html:109
+msgid "Calibre Database Directory"
+msgstr "Imenik zbirk podatkov Calibre"
+
+#: cps/templates/admin.html:113 cps/templates/config_edit.html:68
+msgid "Log Level"
+msgstr "Raven dnevnika"
+
+#: cps/templates/admin.html:117
+msgid "Port"
+msgstr "Vrata"
+
+#: cps/templates/admin.html:122
+msgid "External Port"
+msgstr "Zunanja vrata"
+
+#: cps/templates/admin.html:129 cps/templates/config_view_edit.html:28
+msgid "Books per Page"
+msgstr "Število knjig na stran"
+
+#: cps/templates/admin.html:133
+msgid "Uploads"
+msgstr "Nalaganje"
+
+#: cps/templates/admin.html:137
+msgid "Anonymous Browsing"
+msgstr "Anonimno brskanje"
+
+#: cps/templates/admin.html:141
+msgid "Public Registration"
+msgstr "Javna registracija"
+
+#: cps/templates/admin.html:145
+msgid "Magic Link Remote Login"
+msgstr "Prijava v oddaljeno prijavo Magic Link"
+
+#: cps/templates/admin.html:149
+msgid "Reverse Proxy Login"
+msgstr "Prijava za povratni posredniški strežnik"
+
+#: cps/templates/admin.html:154 cps/templates/config_edit.html:172
+msgid "Reverse Proxy Header Name"
+msgstr "Ime glave povratnega posredniškega strežnika"
+
+#: cps/templates/admin.html:159
+msgid "Edit Calibre Database Configuration"
+msgstr "Urejanje nastavitev podatkovne zbirke Calibre"
+
+#: cps/templates/admin.html:160
+msgid "Edit Basic Configuration"
+msgstr "Urejanje osnovnih nastavitev"
+
+#: cps/templates/admin.html:161
+msgid "Edit UI Configuration"
+msgstr "Urejanje nastavitev uporabniškega vmesnika"
+
+#: cps/templates/admin.html:167
+msgid "Scheduled Tasks"
+msgstr "Načrtovana opravila"
+
+#: cps/templates/admin.html:170 cps/templates/schedule_edit.html:12
+#: cps/templates/tasks.html:18
+msgid "Start Time"
+msgstr "Čas začetka"
+
+#: cps/templates/admin.html:174 cps/templates/schedule_edit.html:20
+msgid "Maximum Duration"
+msgstr "Najdaljše trajanje"
+
+#: cps/templates/admin.html:178 cps/templates/schedule_edit.html:29
+msgid "Generate Thumbnails"
+msgstr "Ustvarjanje sličic"
+
+#: cps/templates/admin.html:182
+msgid "Generate series cover thumbnails"
+msgstr "Ustvarjanje sličic naslovnic serij"
+
+#: cps/templates/admin.html:186 cps/templates/admin.html:208
+#: cps/templates/schedule_edit.html:37
+msgid "Reconnect Calibre Database"
+msgstr "Ponovna povezava podatkovne zbirke Calibre"
+
+#: cps/templates/admin.html:190 cps/templates/schedule_edit.html:41
+msgid "Generate Metadata Backup Files"
+msgstr "Ustvarjanje varnostnih datotek metapodatkov"
+
+#: cps/templates/admin.html:197
+msgid "Refresh Thumbnail Cache"
+msgstr "Osvežitev predpomnilnika sličic"
+
+#: cps/templates/admin.html:203
+msgid "Administration"
+msgstr "Administracija"
+
+#: cps/templates/admin.html:204
+msgid "Download Debug Package"
+msgstr "Prenos paketa za odpravljanje napak"
+
+#: cps/templates/admin.html:205
+msgid "View Logs"
+msgstr "Prikaži dnevnike"
+
+#: cps/templates/admin.html:211
+msgid "Restart"
+msgstr "Ponovni zagon"
+
+#: cps/templates/admin.html:212
+msgid "Shutdown"
+msgstr "Izklop"
+
+#: cps/templates/admin.html:221
+msgid "Version Information"
+msgstr "Informacije o različici"
+
+#: cps/templates/admin.html:225
+msgid "Version"
+msgstr "Različica"
+
+#: cps/templates/admin.html:226
+msgid "Details"
+msgstr "Podrobnosti"
+
+#: cps/templates/admin.html:232
+msgid "Current Version"
+msgstr "Trenutna različica"
+
+#: cps/templates/admin.html:239
+msgid "Check for Update"
+msgstr "Preveri za posodobitev"
+
+#: cps/templates/admin.html:240
+msgid "Perform Update"
+msgstr "Izvedite posodobitev"
+
+#: cps/templates/admin.html:253
+msgid "Are you sure you want to restart?"
+msgstr "Ali ste prepričani, da želite znova zagnati računalnik?"
+
+#: cps/templates/admin.html:258 cps/templates/admin.html:272
+#: cps/templates/admin.html:292 cps/templates/config_db.html:82
+msgid "OK"
+msgstr "V redu"
+
+#: cps/templates/admin.html:259 cps/templates/admin.html:273
+#: cps/templates/book_edit.html:220 cps/templates/book_table.html:127
+#: cps/templates/config_db.html:66 cps/templates/config_edit.html:427
+#: cps/templates/config_view_edit.html:175 cps/templates/detail.html:350
+#: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
+#: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
+#: cps/templates/schedule_edit.html:45 cps/templates/shelf_edit.html:27
+#: cps/templates/tasks.html:47 cps/templates/user_edit.html:144
+msgid "Cancel"
+msgstr "Prekliči"
+
+#: cps/templates/admin.html:271
+msgid "Are you sure you want to shutdown?"
+msgstr "Ste prepričani, da želite izklopiti?"
+
+#: cps/templates/admin.html:283
+msgid "Updating, please do not reload this page"
+msgstr "Posodabljanje, prosimo, ne nalagajte te strani znova"
+
+#: cps/templates/author.html:15
+msgid "via"
+msgstr "preko"
+
+#: cps/templates/author.html:23
+msgid "In Library"
+msgstr "V knjižnici"
+
+#: cps/templates/author.html:26 cps/templates/index.html:74
+#: cps/templates/search.html:31 cps/templates/shelf.html:20
+msgid "Sort according to book date, newest first"
+msgstr "Razvrstite glede na datum knjige, najprej najnovejši"
+
+#: cps/templates/author.html:27 cps/templates/index.html:75
+#: cps/templates/search.html:32 cps/templates/shelf.html:21
+msgid "Sort according to book date, oldest first"
+msgstr "Razvrsti po datumu knjige, najprej najstarejši"
+
+#: cps/templates/author.html:28 cps/templates/index.html:76
+#: cps/templates/search.html:33 cps/templates/shelf.html:22
+msgid "Sort title in alphabetical order"
+msgstr "Razvrsti naslov po abecednem vrstnem redu"
+
+#: cps/templates/author.html:29 cps/templates/index.html:77
+#: cps/templates/search.html:34 cps/templates/shelf.html:23
+msgid "Sort title in reverse alphabetical order"
+msgstr "Razvrsti naslov v obratnem abecednem vrstnem redu"
+
+#: cps/templates/author.html:30 cps/templates/index.html:80
+#: cps/templates/search.html:37 cps/templates/shelf.html:26
+msgid "Sort according to publishing date, newest first"
+msgstr "Razvrsti glede na datum objave, najprej najnovejše"
+
+#: cps/templates/author.html:31 cps/templates/index.html:81
+#: cps/templates/search.html:38 cps/templates/shelf.html:27
+msgid "Sort according to publishing date, oldest first"
+msgstr "Razvrsti glede na datum objave, najprej najstarejši"
+
+#: cps/templates/author.html:56 cps/templates/author.html:113
+#: cps/templates/index.html:30 cps/templates/index.html:113
+#: cps/templates/search.html:67 cps/templates/shelf.html:58
+msgid "reduce"
+msgstr "zmanjšaj"
+
+#: cps/templates/author.html:97
+msgid "More by"
+msgstr "Več po"
+
+#: cps/templates/basic_detail.html:34 cps/templates/detail.html:158
+#: cps/templates/listenmp3.html:62
+#, python-format
+msgid "Book %(index)s of %(range)s"
+msgstr "Knjiga %(index)s v %(range)s"
+
+#: cps/templates/basic_detail.html:41 cps/templates/book_edit.html:106
+#: cps/templates/detail.html:165 cps/templates/listenmp3.html:69
+#: cps/templates/user_edit.html:33
+msgid "Language"
+msgstr "Jezik"
+
+#: cps/templates/basic_detail.html:61 cps/templates/book_edit.html:102
+#: cps/templates/book_edit.html:279 cps/templates/book_edit.html:296
+#: cps/templates/detail.html:200 cps/templates/listenmp3.html:102
+#: cps/templates/search_form.html:16
+msgid "Publisher"
+msgstr "Založnik"
+
+#: cps/templates/basic_detail.html:70 cps/templates/detail.html:209
+#: cps/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Objavljeno"
+
+#: cps/templates/basic_detail.html:76 cps/templates/detail.html:286
+#: cps/templates/listenmp3.html:177
+msgid "Description:"
+msgstr "Opis:"
+
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:175
+msgid "Previous"
+msgstr "Prejšnji"
+
+#: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
+#: cps/templates/layout.html:190
+msgid "Next"
+msgstr "Naslednji"
+
+#: cps/templates/basic_index.html:18 cps/templates/search.html:6
+msgid "No Results Found"
+msgstr "Ni bilo najdenih rezultatov"
+
+#: cps/templates/basic_layout.html:17 cps/templates/layout.html:26
+#: cps/templates/login.html:30
+msgid "Home"
+msgstr "Domov"
+
+#: cps/templates/basic_layout.html:21 cps/templates/layout.html:48
+msgid "Search Library"
+msgstr "Iskanje po knjižnici"
+
+#: cps/templates/basic_layout.html:29 cps/templates/layout.html:73
+#: cps/templates/layout.html:99
+msgid "Logout"
+msgstr "Odjava"
+
+#: cps/templates/basic_layout.html:35
+msgid "Normal Theme"
+msgstr ""
+
+#: cps/templates/book_edit.html:11
+msgid "Delete Book"
+msgstr "Izbriši knjigo"
+
+#: cps/templates/book_edit.html:14
+msgid "Delete formats:"
+msgstr "Brisanje vrste:"
+
+#: cps/templates/book_edit.html:25
+msgid "Convert book format:"
+msgstr "Pretvori vrsto knjige:"
+
+#: cps/templates/book_edit.html:30
+msgid "Convert from:"
+msgstr "Pretvori iz:"
+
+#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
+msgid "select an option"
+msgstr "izberi možnost"
+
+#: cps/templates/book_edit.html:37
+msgid "Convert to:"
+msgstr "Pretvori v:"
+
+#: cps/templates/book_edit.html:46
+msgid "Convert book"
+msgstr "Pretvori knjigo"
+
+#: cps/templates/book_edit.html:53 cps/templates/layout.html:80
+#: cps/templates/layout.html:137
+msgid "Uploading..."
+msgstr "Nalaganje..."
+
+#: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
+#: cps/templates/layout.html:80 cps/templates/layout.html:206
+#: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
+msgid "Close"
+msgstr "Zapri"
+
+#: cps/templates/book_edit.html:53 cps/templates/layout.html:80
+msgid "Error"
+msgstr "Napaka"
+
+#: cps/templates/book_edit.html:53 cps/templates/layout.html:80
+msgid "Upload done, processing, please wait..."
+msgstr "Prenos opravljen, obdelujem, prosim počakajte..."
+
+#: cps/templates/book_edit.html:58
+msgid "Upload Format"
+msgstr "Nalaganje vrsta"
+
+#: cps/templates/book_edit.html:71 cps/templates/search_form.html:8
+msgid "Book Title"
+msgstr "Naslov knjige"
+
+#: cps/templates/book_edit.html:78 cps/templates/book_edit.html:277
+#: cps/templates/book_edit.html:295 cps/templates/search_form.html:12
+msgid "Author"
+msgstr "Avtor"
+
+#: cps/templates/book_edit.html:82 cps/templates/search_form.html:52
+msgid "Tags"
+msgstr "Oznake"
+
+#: cps/templates/book_edit.html:90
+msgid "Series ID"
+msgstr "Številka serije"
+
+#: cps/templates/book_edit.html:93
+msgid "Published Date"
+msgstr "Datum objave"
+
+#: cps/templates/book_edit.html:110
+msgid "Rating"
+msgstr "Ocena"
+
+#: cps/templates/book_edit.html:114 cps/templates/book_edit.html:282
+#: cps/templates/book_edit.html:297 cps/templates/search_form.html:154
+msgid "Description"
+msgstr "Opis"
+
+#: cps/templates/book_edit.html:118
+msgid "Identifiers"
+msgstr "Identifikatorji"
+
+#: cps/templates/book_edit.html:122 cps/templates/book_edit.html:306
+msgid "Identifier Type"
+msgstr "Vrsta identifikatorja"
+
+#: cps/templates/book_edit.html:123 cps/templates/book_edit.html:307
+msgid "Identifier Value"
+msgstr "Vrednost identifikatorja"
+
+#: cps/templates/book_edit.html:124 cps/templates/book_edit.html:308
+#: cps/templates/user_table.html:24
+msgid "Remove"
+msgstr "Odstrani"
+
+#: cps/templates/book_edit.html:129
+msgid "Add Identifier"
+msgstr "Dodaj identifikator"
+
+#: cps/templates/book_edit.html:133
+msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgstr "Prenesi naslovnico iz naslova URL (JPEG - slika se prenese in shrani v zbirko podatkov)"
+
+#: cps/templates/book_edit.html:137
+msgid "Upload Cover from Local Disk"
+msgstr "Prenesi naslovnico iz lokalnega diska"
+
+#: cps/templates/book_edit.html:149 cps/templates/search_form.html:46
+#: cps/templates/search_form.html:167
+msgid "Yes"
+msgstr "Da"
+
+#: cps/templates/book_edit.html:150 cps/templates/search_form.html:47
+#: cps/templates/search_form.html:168
+msgid "No"
+msgstr "Ne"
+
+#: cps/templates/book_edit.html:215
+msgid "View Book on Save"
+msgstr "Oglej si knjigo po shranjevanju"
+
+#: cps/templates/book_edit.html:218 cps/templates/book_edit.html:236
+msgid "Fetch Metadata"
+msgstr "Pridobivanje metapodatkov"
+
+#: cps/templates/book_edit.html:219 cps/templates/config_db.html:65
+#: cps/templates/config_edit.html:426 cps/templates/config_view_edit.html:174
+#: cps/templates/email_edit.html:65 cps/templates/schedule_edit.html:44
+#: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
+#: cps/templates/user_edit.html:142
+msgid "Save"
+msgstr "Shrani"
+
+#: cps/templates/book_edit.html:239
+msgid "Keyword"
+msgstr "Ključna beseda"
+
+#: cps/templates/book_edit.html:240
+msgid "Search keyword"
+msgstr "Ključna beseda za iskanje"
+
+#: cps/templates/book_edit.html:246
+msgid "Click the cover to load metadata to the form"
+msgstr "Klikni na naslovnico, da se v obrazec naložijo metapodatki."
+
+#: cps/templates/book_edit.html:253 cps/templates/book_edit.html:292
+msgid "Loading..."
+msgstr "Nalaganje..."
+
+#: cps/templates/book_edit.html:284 cps/templates/book_edit.html:298
+msgid "Source"
+msgstr "Vir:"
+
+#: cps/templates/book_edit.html:293
+msgid "Search error!"
+msgstr "Napaka pri iskanju!"
+
+#: cps/templates/book_edit.html:294
+msgid "No Result(s) found! Please try another keyword."
+msgstr "Ni najden noben rezultat! Poskusite z drugo ključno besedo."
+
+#: cps/templates/book_table.html:12 cps/templates/book_table.html:69
+#: cps/templates/user_table.html:14 cps/templates/user_table.html:77
+#: cps/templates/user_table.html:100
+msgid "This Field is Required"
+msgstr "To polje je obvezno"
+
+#: cps/templates/book_table.html:37
+msgid "Merge selected books"
+msgstr "Združevanje izbranih knjig"
+
+#: cps/templates/book_table.html:38 cps/templates/user_table.html:124
+msgid "Remove Selections"
+msgstr "Odstranjevanje izbire"
+
+#: cps/templates/book_table.html:41
+msgid "Exchange author and title"
+msgstr "Zamenjava avtorja in naslova"
+
+#: cps/templates/book_table.html:47
+msgid "Update Title Sort automatically"
+msgstr "Samodejna posodobitev razvrščanja po naslovu"
+
+#: cps/templates/book_table.html:51
+msgid "Update Author Sort automatically"
+msgstr "Samodejna posodobitev razvrščanja po avtorju"
+
+#: cps/templates/book_table.html:63 cps/templates/book_table.html:69
+msgid "Enter Title"
+msgstr "Vnesi naslov"
+
+#: cps/templates/book_table.html:63 cps/templates/config_view_edit.html:24
+#: cps/templates/shelf_edit.html:8
+msgid "Title"
+msgstr "Naslov"
+
+#: cps/templates/book_table.html:64
+msgid "Enter Title Sort"
+msgstr "Vnesi razvrščanje naslovov"
+
+#: cps/templates/book_table.html:64
+msgid "Title Sort"
+msgstr "Razvrščanje naslovov"
+
+#: cps/templates/book_table.html:65
+msgid "Enter Author Sort"
+msgstr "Vnesi razvrščanje avtorjev"
+
+#: cps/templates/book_table.html:65
+msgid "Author Sort"
+msgstr "Razvrščanje avtorjev"
+
+#: cps/templates/book_table.html:66
+msgid "Enter Authors"
+msgstr "Vnesi avtorja"
+
+#: cps/templates/book_table.html:67
+msgid "Enter Categories"
+msgstr "Vnesi kategorijo"
+
+#: cps/templates/book_table.html:68
+msgid "Enter Series"
+msgstr "Vnesi serijo"
+
+#: cps/templates/book_table.html:69
+msgid "Series Index"
+msgstr "Številka serije"
+
+#: cps/templates/book_table.html:70
+msgid "Enter Languages"
+msgstr "Vnesi jezike"
+
+#: cps/templates/book_table.html:71
+msgid "Publishing Date"
+msgstr "Datum objave"
+
+#: cps/templates/book_table.html:72
+msgid "Enter Publishers"
+msgstr "Vnesi založnike"
+
+#: cps/templates/book_table.html:73
+msgid "Enter comments"
+msgstr "Vnesi komentarje"
+
+#: cps/templates/book_table.html:73
+msgid "Comments"
+msgstr "Komentarji"
+
+#: cps/templates/book_table.html:75
+msgid "Archive Status"
+msgstr "Stanje arhiva"
+
+#: cps/templates/book_table.html:77 cps/templates/search_form.html:42
+msgid "Read Status"
+msgstr "Preberi stanje"
+
+#: cps/templates/book_table.html:80 cps/templates/book_table.html:82
+#: cps/templates/book_table.html:84 cps/templates/book_table.html:86
+#: cps/templates/book_table.html:90 cps/templates/book_table.html:92
+#: cps/templates/book_table.html:96
+msgid "Enter "
+msgstr "Vnesi "
+
+#: cps/templates/book_table.html:113 cps/templates/modal_dialogs.html:46
+#: cps/templates/tasks.html:37
+msgid "Are you really sure?"
+msgstr "Ste res prepričani?"
+
+#: cps/templates/book_table.html:117
+msgid "Books with Title will be merged from:"
+msgstr "Knjige z naslovom bodo združene iz:"
+
+#: cps/templates/book_table.html:121
+msgid "Into Book with Title:"
+msgstr "V knjigo z naslovom:"
+
+#: cps/templates/book_table.html:126
+msgid "Merge"
+msgstr "Združitev"
+
+#: cps/templates/config_db.html:12
+msgid "Location of Calibre Database"
+msgstr "Lokacija podatkovne zbirke Calibre"
+
+#: cps/templates/config_db.html:21
+msgid "Separate Book Files from Library"
+msgstr "Loči knjižne datoteke od knjižnice"
+
+#: cps/templates/config_db.html:34
+msgid "Use Google Drive?"
+msgstr "Uporabljaš Google Drive?"
+
+#: cps/templates/config_db.html:39
+msgid "Authenticate Google Drive"
+msgstr "Preverjanje pristnosti storitve Google Drive"
+
+#: cps/templates/config_db.html:44
+msgid "Google Drive Calibre folder"
+msgstr "Mapa Calibre v Google Drive"
+
+#: cps/templates/config_db.html:52
+msgid "Metadata Watch Channel ID"
+msgstr "Metapodatki Watch ID kanala"
+
+#: cps/templates/config_db.html:55
+msgid "Revoke"
+msgstr "Preklic"
+
+#: cps/templates/config_db.html:80
+msgid "New db location is invalid, please enter valid path"
+msgstr "Nova lokacija db je neveljavna, vnesite veljavno pot"
+
+#: cps/templates/config_edit.html:18
+msgid "Server Configuration"
+msgstr "Nastavitve strežnika"
+
+#: cps/templates/config_edit.html:25
+msgid "Server Port"
+msgstr "Vrata strežnika"
+
+#: cps/templates/config_edit.html:28
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr "Lokacija datoteke SSL potrdila (za strežnike, ki ne uporabljajo SSL pustite prazno)"
+
+#: cps/templates/config_edit.html:35
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr "Lokacija datoteke s ključi SSL (za strežnike, ki ne uporabljajo SSL pustite prazno)"
+
+#: cps/templates/config_edit.html:43
+msgid "Update Channel"
+msgstr "Kanal za posodobitve"
+
+#: cps/templates/config_edit.html:45
+msgid "Stable"
+msgstr "Stabilen"
+
+#: cps/templates/config_edit.html:46
+msgid "Nightly"
+msgstr "Nočen"
+
+#: cps/templates/config_edit.html:50
+msgid "Trusted Hosts (Comma Separated)"
+msgstr "Zaupanja vredni gostitelji (ločeni z vejico)"
+
+#: cps/templates/config_edit.html:61
+msgid "Logfile Configuration"
+msgstr "Nastavitev dnevniške datoteke"
+
+#: cps/templates/config_edit.html:77
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr "Lokacija in ime dnevniške datoteke (calibre-web.log, če ni vneseno)"
+
+#: cps/templates/config_edit.html:82
+msgid "Enable Access Log"
+msgstr "Omogoči dnevnik dostopa"
+
+#: cps/templates/config_edit.html:85
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr "Lokacija in ime dnevniške datoteke dostopa (access.log, če ni vneseno)"
+
+#: cps/templates/config_edit.html:96
+msgid "Feature Configuration"
+msgstr "Nastavitve funkcij"
+
+#: cps/templates/config_edit.html:104
+msgid "Convert non-English characters in title and author while saving to disk"
+msgstr "Pretvarjanje neangleških znakov v naslovu in avtorju med shranjevanjem na disk"
+
+#: cps/templates/config_edit.html:108
+msgid "Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)"
+msgstr "Vstavljanje metapodatkov v datoteko e-knjige ob prenosu/pretvorbi/elektronski pošti (potrebujete binarne datoteke Calibre/Kepubify)"
+
+#: cps/templates/config_edit.html:112
+msgid "Enable Uploads"
+msgstr "Omogoči nalaganje"
+
+#: cps/templates/config_edit.html:112
+msgid "(Please ensure that users also have upload permissions)"
+msgstr "(prepričaj se, da imajo uporabniki tudi dovoljenja za nalaganje)"
+
+#: cps/templates/config_edit.html:116
+msgid "Allowed Upload Fileformats"
+msgstr "Dovoljene vrste datotek za nalaganje"
+
+#: cps/templates/config_edit.html:122
+msgid "Enable Anonymous Browsing"
+msgstr "Omogočanje anonimnega brskanja"
+
+#: cps/templates/config_edit.html:126
+msgid "Enable Public Registration"
+msgstr "Omogočanje javne registracije"
+
+#: cps/templates/config_edit.html:131
+msgid "Use Email as Username"
+msgstr "Uporabi e-pošto kot uporabniško ime"
+
+#: cps/templates/config_edit.html:136
+msgid "Enable Magic Link Remote Login"
+msgstr "Omogoči oddaljeno prijavo prek povezave Magic Link"
+
+#: cps/templates/config_edit.html:141
+msgid "Enable Kobo sync"
+msgstr "Omogoči sinhronizacijo s Kobo"
+
+#: cps/templates/config_edit.html:146
+msgid "Proxy unknown requests to Kobo Store"
+msgstr "Posredovanje neznanih zahtev do trgovine Kobo"
+
+#: cps/templates/config_edit.html:149
+msgid "Server External Port (for port forwarded API calls)"
+msgstr "Zunanja vrata strežnika (za posredovane klice API)"
+
+#: cps/templates/config_edit.html:157
+msgid "Use Goodreads"
+msgstr "Uporabi Goodreads"
+
+#: cps/templates/config_edit.html:161
+msgid "Goodreads API Key"
+msgstr "Ključ API Goodreads"
+
+#: cps/templates/config_edit.html:168
+msgid "Allow Reverse Proxy Authentication"
+msgstr "Omogočanje avtentikacije povratnega posrednika"
+
+#: cps/templates/config_edit.html:179
+msgid "Login type"
+msgstr "Vrsta prijave"
+
+#: cps/templates/config_edit.html:181
+msgid "Use Standard Authentication"
+msgstr "Uporaba standardnega preverjanja pristnosti"
+
+#: cps/templates/config_edit.html:183
+msgid "Use LDAP Authentication"
+msgstr "Uporaba overjanja LDAP"
+
+#: cps/templates/config_edit.html:186
+msgid "Use OAuth"
+msgstr "Uporaba protokola OAuth"
+
+#: cps/templates/config_edit.html:193
+msgid "LDAP Server Host Name or IP Address"
+msgstr "Gostiteljsko ime ali naslov IP strežnika LDAP"
+
+#: cps/templates/config_edit.html:197
+msgid "LDAP Server Port"
+msgstr "Vrata strežnika LDAP"
+
+#: cps/templates/config_edit.html:201
+msgid "LDAP Encryption"
+msgstr "Šifriranje LDAP"
+
+#: cps/templates/config_edit.html:204
+msgid "TLS"
+msgstr "TLS"
+
+#: cps/templates/config_edit.html:205
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/config_edit.html:209
+msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgstr "Pot do CACcertifikata LDAP (potrebna samo za preverjanje pristnosti odjemalčevega certifikata)"
+
+#: cps/templates/config_edit.html:216
+msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
+msgstr "Pot potrdila LDAP (potrebna samo za preverjanje pristnosti potrdila odjemalca)"
+
+#: cps/templates/config_edit.html:223
+msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
+msgstr "Pot do datoteke ključa LDAP (potrebna samo za preverjanje pristnosti odjemalčevega potrdila)"
+
+#: cps/templates/config_edit.html:232
+msgid "LDAP Authentication"
+msgstr "Preverjanje pristnosti LDAP"
+
+#: cps/templates/config_edit.html:234
+msgid "Anonymous"
+msgstr "Anonimno"
+
+#: cps/templates/config_edit.html:235
+msgid "Unauthenticated"
+msgstr "Neavtentificirano"
+
+#: cps/templates/config_edit.html:236
+msgid "Simple"
+msgstr "Enostavno"
+
+#: cps/templates/config_edit.html:241
+msgid "LDAP Administrator Username"
+msgstr "Uporabniško ime skrbnika LDAP"
+
+#: cps/templates/config_edit.html:247
+msgid "LDAP Administrator Password"
+msgstr "Geslo skrbnika LDAP"
+
+#: cps/templates/config_edit.html:252
+msgid "LDAP Distinguished Name (DN)"
+msgstr "Razpoznavno ime (DN) LDAP"
+
+#: cps/templates/config_edit.html:256
+msgid "LDAP User Object Filter"
+msgstr "Filtriranje predmeta uporabnika LDAP"
+
+#: cps/templates/config_edit.html:261
+msgid "LDAP Server is OpenLDAP?"
+msgstr "Strežnik LDAP je OpenLDAP?"
+
+#: cps/templates/config_edit.html:263
+msgid "Following Settings are Needed For User Import"
+msgstr "Za uvoz uporabnika so potrebne naslednje nastavitve"
+
+#: cps/templates/config_edit.html:265
+msgid "LDAP Group Object Filter"
+msgstr "Filter objektov skupine LDAP"
+
+#: cps/templates/config_edit.html:269
+msgid "LDAP Group Name"
+msgstr "Ime skupine LDAP"
+
+#: cps/templates/config_edit.html:273
+msgid "LDAP Group Members Field"
+msgstr "Polje člani skupine LDAP"
+
+#: cps/templates/config_edit.html:277
+msgid "LDAP Member User Filter Detection"
+msgstr "Zaznavanje filtrov za uporabnike članov LDAP"
+
+#: cps/templates/config_edit.html:279
+msgid "Autodetect"
+msgstr "Samodejno zaznavanje"
+
+#: cps/templates/config_edit.html:280
+msgid "Custom Filter"
+msgstr "Filter po meri"
+
+#: cps/templates/config_edit.html:285
+msgid "LDAP Member User Filter"
+msgstr "Filtriranje uporabnikov članov LDAP"
+
+#: cps/templates/config_edit.html:296
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr "Pridobitev %(provider)s poverilnice OAuth"
+
+#: cps/templates/config_edit.html:299
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr "%(provider)s Id odjemalca OAuth"
+
+#: cps/templates/config_edit.html:303
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s skrivnost odjemalca OAuth"
+
+#: cps/templates/config_edit.html:319
+msgid "External binaries"
+msgstr "Zunanje binarne datoteke"
+
+#: cps/templates/config_edit.html:325
+msgid "Path to Calibre Binaries"
+msgstr "Pot do binarnih datotek Calibre"
+
+#: cps/templates/config_edit.html:333
+msgid "Calibre E-Book Converter Settings"
+msgstr "Nastavitve pretvornika e-knjig Calibre"
+
+#: cps/templates/config_edit.html:336
+msgid "Path to Kepubify E-Book Converter"
+msgstr "Pot do Kepubify pretvornika e-knjig"
+
+#: cps/templates/config_edit.html:344
+msgid "Location of Unrar binary"
+msgstr "Lokacija binarnega programa Unrar"
+
+#: cps/templates/config_edit.html:360
+msgid "Security Settings"
+msgstr "Varnostne nastavitve"
+
+#: cps/templates/config_edit.html:368
+msgid "Limit failed login attempts"
+msgstr "Omejitev neuspelih poskusov prijave"
+
+#: cps/templates/config_edit.html:372
+msgid "Configure Backend for Limiter"
+msgstr "Nastavitev zalednega sistema za omejitve"
+
+#: cps/templates/config_edit.html:376
+msgid "Options for Limiter Backend"
+msgstr "Možnosti za omejitev zalednega sistema"
+
+#: cps/templates/config_edit.html:382
+msgid "Check if file extensions matches file content on upload"
+msgstr "Preveri ali se končnice datotek ujemajo z vsebino datoteke pri nalaganju"
+
+#: cps/templates/config_edit.html:385
+msgid "Session protection"
+msgstr "Zaščita seje"
+
+#: cps/templates/config_edit.html:387
+msgid "Basic"
+msgstr "Osnovna"
+
+#: cps/templates/config_edit.html:388
+msgid "Strong"
+msgstr "Močna"
+
+#: cps/templates/config_edit.html:393
+msgid "User Password policy"
+msgstr "Pravilnik o geslih uporabnikov"
+
+#: cps/templates/config_edit.html:397
+msgid "Minimum password length"
+msgstr "Najmanjša dolžina gesla"
+
+#: cps/templates/config_edit.html:402
+msgid "Enforce number"
+msgstr "Obvezna uporaba številk"
+
+#: cps/templates/config_edit.html:406
+msgid "Enforce lowercase characters"
+msgstr "Obvezna uporaba malih črk"
+
+#: cps/templates/config_edit.html:410
+msgid "Enforce uppercase characters"
+msgstr "Obvezna uporaba velikih črk"
+
+#: cps/templates/config_edit.html:414
+msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
+msgstr "Obvezna uporaba znakov (potrebno za kitajske/japonske/korejske znake)"
+
+#: cps/templates/config_edit.html:418
+msgid "Enforce special characters"
+msgstr "Obvezna uporaba posebnih znakov"
+
+#: cps/templates/config_view_edit.html:17
+msgid "View Configuration"
+msgstr "Prikaži nastavitve"
+
+#: cps/templates/config_view_edit.html:32
+msgid "No. of Random Books to Display"
+msgstr "Število naključnih knjig za prikaz"
+
+#: cps/templates/config_view_edit.html:36
+msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
+msgstr "Število avtorjev, ki se prikažejo pred skrivanjem (0 = onemogoči skrivanje)"
+
+#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:101
+msgid "Theme"
+msgstr "Tema"
+
+#: cps/templates/config_view_edit.html:42
+msgid "Standard Theme"
+msgstr "Standardna tema"
+
+#: cps/templates/config_view_edit.html:43
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! temna tema"
+
+#: cps/templates/config_view_edit.html:47
+msgid "Regular Expression for Ignoring Columns"
+msgstr "Regularni izraz za ignoriranje stolpcev"
+
+#: cps/templates/config_view_edit.html:51
+msgid "Link Read/Unread Status to Calibre Column"
+msgstr "Poveži stanje prebrano/neprebrano s stolpcem Calibre"
+
+#: cps/templates/config_view_edit.html:60
+msgid "View Restrictions based on Calibre column"
+msgstr "Prikaz omejitev na podlagi stolpca Calibre"
+
+#: cps/templates/config_view_edit.html:69
+msgid "Regular Expression for Title Sorting"
+msgstr "Regularni izraz za razvrščanje naslovov"
+
+#: cps/templates/config_view_edit.html:80
+msgid "Default Settings for New Users"
+msgstr "Privzete nastavitve za nove uporabnike"
+
+#: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:96
+msgid "Admin User"
+msgstr "Administratorski uporabnik"
+
+#: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:101
+msgid "Allow Downloads"
+msgstr "Dovoli prenose"
+
+#: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:105
+msgid "Allow eBook Viewer"
+msgstr "Dovoli pregledovalnik e-knjig"
+
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:110
+msgid "Allow Uploads"
+msgstr "Dovoli nalaganje"
+
+#: cps/templates/config_view_edit.html:106 cps/templates/user_edit.html:115
+msgid "Allow Edit"
+msgstr "Omogoči urejanje"
+
+#: cps/templates/config_view_edit.html:111 cps/templates/user_edit.html:120
+msgid "Allow Delete Books"
+msgstr "Dovoli izbris knjig"
+
+#: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:126
+msgid "Allow Changing Password"
+msgstr "Dovoli spreminjanje gesla"
+
+#: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:130
+msgid "Allow Editing Public Shelves"
+msgstr "Omogoči urejanje javnih polic"
+
+#: cps/templates/config_view_edit.html:123
+msgid "Default Language"
+msgstr "Privzeti jezik"
+
+#: cps/templates/config_view_edit.html:131
+msgid "Default Visible Language of Books"
+msgstr "Privzet vidni jezik knjig"
+
+#: cps/templates/config_view_edit.html:147
+msgid "Default Visibilities for New Users"
+msgstr "Privzete vidnosti za nove uporabnike"
+
+#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:84
+#: cps/templates/user_table.html:154
+msgid "Show Random Books in Detail View"
+msgstr "Prikaži naključne knjige v podrobnem pogledu"
+
+#: cps/templates/config_view_edit.html:166 cps/templates/user_edit.html:87
+msgid "Add Allowed/Denied Tags"
+msgstr "Dodajanje oznak dovoljeno/zavrnjeno"
+
+#: cps/templates/config_view_edit.html:167
+msgid "Add Allowed/Denied custom column values"
+msgstr "Dodajanje vrednosti stolpca dovoljeno/zavrnjeno po meri"
+
+#: cps/templates/detail.html:85 cps/templates/detail.html:99
+msgid "Read in Browser"
+msgstr "Preberi v brskalniku"
+
+#: cps/templates/detail.html:108 cps/templates/detail.html:128
+msgid "Listen in Browser"
+msgstr "Poslušaj v brskalniku"
+
+#: cps/templates/detail.html:259 cps/templates/listenmp3.html:158
+msgid "Mark As Unread"
+msgstr "Označi kot neprebrano"
+
+#: cps/templates/detail.html:260 cps/templates/listenmp3.html:158
+msgid "Mark As Read"
+msgstr "Označi kot prebrano"
+
+#: cps/templates/detail.html:262
+msgid "Mark Book as Read or Unread"
+msgstr "Označite knjigo kot prebrano ali neprebrano"
+
+#: cps/templates/detail.html:262 cps/templates/listenmp3.html:159
+msgid "Read"
+msgstr "Preberi"
+
+#: cps/templates/detail.html:272 cps/templates/listenmp3.html:166
+msgid "Restore from archive"
+msgstr "Obnovi iz arhiva"
+
+#: cps/templates/detail.html:273 cps/templates/listenmp3.html:166
+msgid "Add to archive"
+msgstr "Dodaj v arhiv"
+
+#: cps/templates/detail.html:275
+msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
+msgstr "Označi knjigo kot arhivirano ali ne, da se skrije v Calibre-Web in izbriše iz Kobo bralnika"
+
+#: cps/templates/detail.html:275
+msgid "Archive"
+msgstr "Arhiv"
+
+#: cps/templates/detail.html:301 cps/templates/listenmp3.html:190
+#: cps/templates/search.html:16
+msgid "Add to shelf"
+msgstr "Dodaj na polico"
+
+#: cps/templates/detail.html:313 cps/templates/detail.html:332
+#: cps/templates/feed.xml:81 cps/templates/layout.html:157
+#: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
+#: cps/templates/search.html:22
+msgid "(Public)"
+msgstr "(Javno)"
+
+#: cps/templates/detail.html:348
+msgid "Edit Metadata"
+msgstr "Urejanje metapodatkov"
+
+#: cps/templates/email_edit.html:13
+msgid "Email Account Type"
+msgstr "Vrsta e-poštnega računa"
+
+#: cps/templates/email_edit.html:15
+msgid "Standard Email Account"
+msgstr "Standardni e-poštni račun"
+
+#: cps/templates/email_edit.html:16
+msgid "Gmail Account"
+msgstr "Račun Gmail"
+
+#: cps/templates/email_edit.html:22
+msgid "Setup Gmail Account"
+msgstr "Nastavitev računa Gmail"
+
+#: cps/templates/email_edit.html:24
+msgid "Revoke Gmail Access"
+msgstr "Preklic dostopov do Gmail"
+
+#: cps/templates/email_edit.html:42
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/templates/email_edit.html:43
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/templates/email_edit.html:51
+msgid "SMTP Password"
+msgstr "Geslo za SMTP"
+
+#: cps/templates/email_edit.html:58
+msgid "Attachment Size Limit"
+msgstr "Omejitev velikosti priloge"
+
+#: cps/templates/email_edit.html:66
+msgid "Save and Send Test Email"
+msgstr "Shrani in pošlji testno e-pošto"
+
+#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
+#: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
+msgid "Back"
+msgstr "Nazaj"
+
+#: cps/templates/email_edit.html:74
+msgid "Allowed Domains (Whitelist)"
+msgstr "Dovoljene domene (bel seznam)"
+
+#: cps/templates/email_edit.html:78 cps/templates/email_edit.html:105
+msgid "Add Domain"
+msgstr "Dodajanje domene"
+
+#: cps/templates/email_edit.html:81 cps/templates/email_edit.html:108
+#: cps/templates/user_table.html:27
+msgid "Add"
+msgstr "Dodaj"
+
+#: cps/templates/email_edit.html:86 cps/templates/email_edit.html:96
+msgid "Enter domainname"
+msgstr "Vnesi ime domene"
+
+#: cps/templates/email_edit.html:92
+msgid "Denied Domains (Blacklist)"
+msgstr "Zavrnjene domene (črni seznam)"
+
+#: cps/templates/generate_kobo_auth_url.html:6
+msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgstr "V urejevalniku besedila odprite datoteko .kobo/Kobo/Kobo eReader.conf in dodajte (ali uredite):"
+
+#: cps/templates/generate_kobo_auth_url.html:11
+msgid "Kobo Token:"
+msgstr "Kobo žeton:"
+
+#: cps/templates/grid.html:21
+msgid "List"
+msgstr "Seznam"
+
+#: cps/templates/http_error.html:34
+msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
+msgstr "Instanca Calibre-Web ni nastavljena, obrni se na skrbnika"
+
+#: cps/templates/http_error.html:44
+msgid "Create Issue"
+msgstr "Ustvarjanje poročila o težavi"
+
+#: cps/templates/http_error.html:52
+#, fuzzy
+msgid "Return to Database config"
+msgstr "Nastavitev zbirke podatkov"
+
+#: cps/templates/http_error.html:54
+msgid "Return to Home"
+msgstr "Vrnitev domov"
+
+#: cps/templates/http_error.html:57
+msgid "Logout User"
+msgstr "Odjava uporabnika"
+
+#: cps/templates/index.html:71
+msgid "Sort ascending according to download count"
+msgstr "Razvrsti naraščajoče glede na število prenosov"
+
+#: cps/templates/index.html:72
+msgid "Sort descending according to download count"
+msgstr "Razvrsti padajoče glede na število prenosov"
+
+#: cps/templates/index.html:78 cps/templates/search.html:35
+#: cps/templates/shelf.html:24
+msgid "Sort authors in alphabetical order"
+msgstr "Razvrsti avtorje po abecednem vrstnem redu"
+
+#: cps/templates/index.html:79 cps/templates/search.html:36
+#: cps/templates/shelf.html:25
+msgid "Sort authors in reverse alphabetical order"
+msgstr "Razvrsti avtorje v obratnem abecednem vrstnem redu"
+
+#: cps/templates/index.html:83
+msgid "Sort ascending according to series index"
+msgstr "Razvrsti naraščajoče glede na indeks serije"
+
+#: cps/templates/index.html:84
+msgid "Sort descending according to series index"
+msgstr "Razvrsti padajoče glede na indeks serije"
+
+#: cps/templates/index.xml:7
+msgid "Start"
+msgstr "Začetek"
+
+#: cps/templates/index.xml:19
+msgid "Alphabetical Books"
+msgstr "Abecedno razvrščene knjige"
+
+#: cps/templates/index.xml:23
+msgid "Books sorted alphabetically"
+msgstr "Knjige razvrščene po abecedi"
+
+#: cps/templates/index.xml:31
+msgid "Popular publications from this catalog based on Downloads."
+msgstr "Priljubljene publikacije iz tega kataloga na podlagi prenosov."
+
+#: cps/templates/index.xml:40
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Priljubljene publikacije iz tega kataloga na podlagi ocene."
+
+#: cps/templates/index.xml:45
+msgid "Recently added Books"
+msgstr "Nedavno dodane knjige"
+
+#: cps/templates/index.xml:49
+msgid "The latest Books"
+msgstr "Najnovejše knjige"
+
+#: cps/templates/index.xml:54
+msgid "Random Books"
+msgstr "Naključne knjige"
+
+#: cps/templates/index.xml:83
+msgid "Books ordered by Author"
+msgstr "Knjige, razvrščene po avtorju"
+
+#: cps/templates/index.xml:92
+msgid "Books ordered by publisher"
+msgstr "Knjige, razvrščene po založniku"
+
+#: cps/templates/index.xml:101
+msgid "Books ordered by category"
+msgstr "Knjige, razvrščene po kategorijah"
+
+#: cps/templates/index.xml:110
+msgid "Books ordered by series"
+msgstr "Knjige, razvrščene po serijah"
+
+#: cps/templates/index.xml:119
+msgid "Books ordered by Languages"
+msgstr "Knjige, razvrščene po jezikih"
+
+#: cps/templates/index.xml:128
+msgid "Books ordered by Rating"
+msgstr "Knjige, razvrščene po oceni"
+
+#: cps/templates/index.xml:137
+msgid "Books ordered by file formats"
+msgstr "Knjige, razvrščene po vrstah datotek"
+
+#: cps/templates/index.xml:142 cps/templates/layout.html:155
+#: cps/templates/search_form.html:88
+msgid "Shelves"
+msgstr "Police"
+
+#: cps/templates/index.xml:146
+msgid "Books organized in shelves"
+msgstr "Knjige, urejene po policah"
+
+#: cps/templates/layout.html:32
+msgid "Toggle Navigation"
+msgstr "Preklopi navigacijo"
+
+#: cps/templates/layout.html:59
+#, fuzzy
+msgid "Simple Theme"
+msgstr "Enostavno"
+
+#: cps/templates/layout.html:67 cps/templates/layout.html:97
+msgid "Account"
+msgstr "Račun"
+
+#: cps/templates/layout.html:94 cps/templates/read.html:78
+#: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
+msgid "Settings"
+msgstr "Nastavitve"
+
+#: cps/templates/layout.html:138
+msgid "Please do not refresh the page"
+msgstr "Ne osvežuj strani"
+
+#: cps/templates/layout.html:148
+msgid "Browse"
+msgstr "Brskaj"
+
+#: cps/templates/layout.html:161 cps/templates/stats.html:3
+msgid "About"
+msgstr "O programu"
+
+#: cps/templates/layout.html:202
+msgid "Book Details"
+msgstr "Podrobnosti o knjigi"
+
+#: cps/templates/list.html:22
+msgid "Grid"
+msgstr "Mreža"
+
+#: cps/templates/listenmp3.html:167
+msgid "Archived"
+msgstr "Arhivirano"
+
+#: cps/templates/login.html:18
+msgid "Remember Me"
+msgstr "Zapomni si me"
+
+#: cps/templates/login.html:23
+msgid "Forgot Password?"
+msgstr "Ste pozabili geslo?"
+
+#: cps/templates/login.html:34
+msgid "Log in with Magic Link"
+msgstr "Prijavi se s povezavo Magic Link"
+
+#: cps/templates/logviewer.html:6
+msgid "Show Calibre-Web Log: "
+msgstr "Prikaži dnevnik Calibre-Web:"
+
+#: cps/templates/logviewer.html:8
+msgid "Calibre-Web Log: "
+msgstr "Dnevnik Calibre-Web:"
+
+#: cps/templates/logviewer.html:8
+msgid "Stream output, can't be displayed"
+msgstr "Izhodni tok, ki ga ni mogoče prikazati"
+
+#: cps/templates/logviewer.html:12
+msgid "Show Access Log: "
+msgstr "Prikaži dnevnik dostopa: "
+
+#: cps/templates/logviewer.html:18
+msgid "Download Calibre-Web Log"
+msgstr "Prenos Calibre-Web Log"
+
+#: cps/templates/logviewer.html:21
+msgid "Download Access Log"
+msgstr "Prenos dnevnika dostopa"
+
+#: cps/templates/modal_dialogs.html:6
+msgid "Select Allowed/Denied Tags"
+msgstr "Izberite dovoljene/zavrnjene oznake"
+
+#: cps/templates/modal_dialogs.html:7
+msgid "Select Allowed/Denied Custom Column Values"
+msgstr "Izberite dovoljene/zavrnjene vrednosti stolpcev po meri"
+
+#: cps/templates/modal_dialogs.html:8
+msgid "Select Allowed/Denied Tags of User"
+msgstr "Izberite dovoljene/zavrnjene oznake uporabnika"
+
+#: cps/templates/modal_dialogs.html:9
+msgid "Select Allowed/Denied Custom Column Values of User"
+msgstr "Izberite dovoljene/zavrnjene vrednosti stolpcev po meri uporabnika"
+
+#: cps/templates/modal_dialogs.html:15
+msgid "Enter Tag"
+msgstr "Vnesite oznako"
+
+#: cps/templates/modal_dialogs.html:24
+msgid "Add View Restriction"
+msgstr "Dodajanje omejitve prikaza"
+
+#: cps/templates/modal_dialogs.html:50
+msgid "This book format will be permanently erased from database"
+msgstr "Ta vrsta knjige bo trajno izbrisana iz podatkovne baze"
+
+#: cps/templates/modal_dialogs.html:51
+msgid "This book will be permanently erased from database"
+msgstr "Ta knjiga bo trajno izbrisana iz baze podatkov"
+
+#: cps/templates/modal_dialogs.html:52
+msgid "and hard disk"
+msgstr "in iz trdega diska"
+
+#: cps/templates/modal_dialogs.html:56
+msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
+msgstr "Pomembno opozorilo Kobo: izbrisane knjige bodo ostale v vsaki povezani napravi Kobo."
+
+#: cps/templates/modal_dialogs.html:57
+msgid "Books must first be archived and the device synced before a book can safely be deleted."
+msgstr "Preden lahko knjigo varno izbrišete, jo morate najprej arhivirati in sinhronizirati napravo."
+
+#: cps/templates/modal_dialogs.html:76
+msgid "Choose File Location"
+msgstr "Izberi lokacijo datoteke"
+
+#: cps/templates/modal_dialogs.html:82
+msgid "type"
+msgstr "vrsta"
+
+#: cps/templates/modal_dialogs.html:83
+msgid "name"
+msgstr "ime"
+
+#: cps/templates/modal_dialogs.html:84
+msgid "size"
+msgstr "velikost"
+
+#: cps/templates/modal_dialogs.html:90
+msgid "Parent Directory"
+msgstr "Nadrejeni imenik"
+
+#: cps/templates/modal_dialogs.html:98
+msgid "Select"
+msgstr "Izberi"
+
+#: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:46
+msgid "Ok"
+msgstr "V redu"
+
+#: cps/templates/osd.xml:5
+msgid "Calibre-Web eBook Catalog"
+msgstr "Katalog e-knjig Calibre-Web"
+
+#: cps/templates/read.html:7
+msgid "epub Reader"
+msgstr "epub bralnik"
+
+#: cps/templates/read.html:80
+#, fuzzy
+msgid "Choose a theme below:"
+msgstr "Izberite uporabniško ime"
+
+#: cps/templates/read.html:84 cps/templates/readcbr.html:104
+msgid "Light"
+msgstr "Svetlo"
+
+#: cps/templates/read.html:86 cps/templates/readcbr.html:105
+msgid "Dark"
+msgstr "Temno"
+
+#: cps/templates/read.html:88
+msgid "Sepia"
+msgstr "Sepia"
+
+#: cps/templates/read.html:90
+msgid "Black"
+msgstr "Črno"
+
+#: cps/templates/read.html:95
+msgid "Reflow text when sidebars are open."
+msgstr "Preusmerjanje besedila, ko so odprte stranske vrstice."
+
+#: cps/templates/read.html:100
+msgid "Font Sizes"
+msgstr "Velikosti pisave"
+
+#: cps/templates/read.html:105
+msgid "Font"
+msgstr "Pisava"
+
+#: cps/templates/read.html:106
+msgid "Default"
+msgstr "Privzeto"
+
+#: cps/templates/read.html:107
+msgid "Yahei"
+msgstr "Yahei"
+
+#: cps/templates/read.html:108
+msgid "SimSun"
+msgstr "SimSun"
+
+#: cps/templates/read.html:109
+msgid "KaiTi"
+msgstr "KaiTi"
+
+#: cps/templates/read.html:110
+msgid "Arial"
+msgstr "Arial"
+
+#: cps/templates/read.html:113
+msgid "Spread"
+msgstr "Razprši"
+
+#: cps/templates/read.html:114
+msgid "Two columns"
+msgstr "Dva stolpca"
+
+#: cps/templates/read.html:115
+msgid "One column"
+msgstr "En stolpec"
+
+#: cps/templates/readcbr.html:8
+msgid "Comic Reader"
+msgstr "Bralnik stripov"
+
+#: cps/templates/readcbr.html:75
+msgid "Keyboard Shortcuts"
+msgstr "Bližnjice na tipkovnici"
+
+#: cps/templates/readcbr.html:78
+msgid "Previous Page"
+msgstr "Prejšnja stran"
+
+#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:159
+msgid "Next Page"
+msgstr "Naslednja stran"
+
+#: cps/templates/readcbr.html:80
+msgid "Single Page Display"
+msgstr "Prikaz ene strani"
+
+#: cps/templates/readcbr.html:81
+msgid "Long Strip Display"
+msgstr "Prikaz dolgega traku"
+
+#: cps/templates/readcbr.html:82
+msgid "Scale to Best"
+msgstr "Povečaj na najboljše"
+
+#: cps/templates/readcbr.html:83
+msgid "Scale to Width"
+msgstr "Povečaj na širino"
+
+#: cps/templates/readcbr.html:84
+msgid "Scale to Height"
+msgstr "Povečaj na višino"
+
+#: cps/templates/readcbr.html:85
+msgid "Scale to Native"
+msgstr "Povečaj na privzeto"
+
+#: cps/templates/readcbr.html:86
+msgid "Rotate Right"
+msgstr "Obračanje v desno"
+
+#: cps/templates/readcbr.html:87
+msgid "Rotate Left"
+msgstr "Obračanje v levo"
+
+#: cps/templates/readcbr.html:88
+msgid "Flip Image"
+msgstr "Obrni sliko"
+
+#: cps/templates/readcbr.html:110
+msgid "Display"
+msgstr "Prikaz"
+
+#: cps/templates/readcbr.html:113
+msgid "Single Page"
+msgstr "Ena stran"
+
+#: cps/templates/readcbr.html:114
+msgid "Long Strip"
+msgstr "Dolgi trak"
+
+#: cps/templates/readcbr.html:119
+msgid "Scale"
+msgstr "Povečava"
+
+#: cps/templates/readcbr.html:122
+msgid "Best"
+msgstr "Najboljša"
+
+#: cps/templates/readcbr.html:123
+msgid "Width"
+msgstr "Širina"
+
+#: cps/templates/readcbr.html:124
+msgid "Height"
+msgstr "Višina"
+
+#: cps/templates/readcbr.html:125
+msgid "Native"
+msgstr "Privzeto"
+
+#: cps/templates/readcbr.html:130
+msgid "Rotate"
+msgstr "Zavrti"
+
+#: cps/templates/readcbr.html:141
+msgid "Flip"
+msgstr "Obrni"
+
+#: cps/templates/readcbr.html:144
+msgid "Horizontal"
+msgstr "Vodoravno"
+
+#: cps/templates/readcbr.html:145
+msgid "Vertical"
+msgstr "Navpično"
+
+#: cps/templates/readcbr.html:150
+msgid "Direction"
+msgstr "Smer"
+
+#: cps/templates/readcbr.html:153
+msgid "Left to Right"
+msgstr "Od leve proti desni"
+
+#: cps/templates/readcbr.html:154
+msgid "Right to Left"
+msgstr "Od desne proti levi"
+
+#: cps/templates/readcbr.html:162
+msgid "Reset to Top"
+msgstr "Ponastavitev na vrh"
+
+#: cps/templates/readcbr.html:163
+msgid "Remember Position"
+msgstr "Zapomni si položaj"
+
+#: cps/templates/readcbr.html:168
+msgid "Scrollbar"
+msgstr "Drsni trak"
+
+#: cps/templates/readcbr.html:171
+msgid "Show"
+msgstr "Prikaži"
+
+#: cps/templates/readcbr.html:172
+msgid "Hide"
+msgstr "Skrij"
+
+#: cps/templates/readdjvu.html:5
+msgid "DJVU Reader"
+msgstr "Bralnik DJVU"
+
+#: cps/templates/readpdf.html:31
+msgid "PDF Reader"
+msgstr "Bralnik PDF"
+
+#: cps/templates/readtxt.html:6
+msgid "txt Reader"
+msgstr "txt bralnik"
+
+#: cps/templates/register.html:4
+msgid "Register New Account"
+msgstr "Registracija novega računa"
+
+#: cps/templates/register.html:10
+msgid "Choose a username"
+msgstr "Izberite uporabniško ime"
+
+#: cps/templates/register.html:15
+msgid "Your Email"
+msgstr "Vaš e-poštni naslov"
+
+#: cps/templates/remote_login.html:5
+msgid "Magic Link - Authorise New Device"
+msgstr "Magic Link - avtorizacija nove naprave"
+
+#: cps/templates/remote_login.html:7
+msgid "On another device, login and visit:"
+msgstr "V drugi napravi se prijavite in obiščite:"
+
+#: cps/templates/remote_login.html:11
+msgid "Once verified, you will automatically be logged in on this device."
+msgstr "Po preverjanju boste samodejno prijavljeni v to napravo."
+
+#: cps/templates/remote_login.html:14
+msgid "This verification link will expire in 10 minutes."
+msgstr "Ta povezava za preverjanje poteče čez 10 minut."
+
+#: cps/templates/schedule_edit.html:33
+msgid "Generate Series Cover Thumbnails"
+msgstr "Ustvarjanje sličic naslovnic serij"
+
+#: cps/templates/search.html:7
+msgid "Search Term:"
+msgstr "Iskalni izraz:"
+
+#: cps/templates/search.html:9
+msgid "Results for:"
+msgstr "Rezultati za:"
+
+#: cps/templates/search_form.html:21
+msgid "Published Date From"
+msgstr "Datum objave od"
+
+#: cps/templates/search_form.html:31
+msgid "Published Date To"
+msgstr "Datum objave do"
+
+#: cps/templates/search_form.html:44 cps/templates/search_form.html:165
+msgid "Any"
+msgstr "Vse"
+
+#: cps/templates/search_form.html:45 cps/templates/search_form.html:166
+msgid "Empty"
+msgstr "Prazen"
+
+#: cps/templates/search_form.html:60
+msgid "Exclude Tags"
+msgstr "Izključi oznake"
+
+#: cps/templates/search_form.html:78
+msgid "Exclude Series"
+msgstr "Izključi serijo"
+
+#: cps/templates/search_form.html:96
+msgid "Exclude Shelves"
+msgstr "Izključi police"
+
+#: cps/templates/search_form.html:116
+msgid "Exclude Languages"
+msgstr "Izključi jezike"
+
+#: cps/templates/search_form.html:127
+msgid "Extensions"
+msgstr "Razširitve"
+
+#: cps/templates/search_form.html:135
+msgid "Exclude Extensions"
+msgstr "Izključitev razširitev"
+
+#: cps/templates/search_form.html:145
+msgid "Rating Above"
+msgstr "Zgornja ocena"
+
+#: cps/templates/search_form.html:149
+msgid "Rating Below"
+msgstr "Spodnja ocena"
+
+#: cps/templates/search_form.html:175 cps/templates/search_form.html:187
+#: cps/templates/search_form.html:201
+msgid "From:"
+msgstr "Od:"
+
+#: cps/templates/search_form.html:179 cps/templates/search_form.html:191
+#: cps/templates/search_form.html:211
+msgid "To:"
+msgstr "Za:"
+
+#: cps/templates/shelf.html:13
+msgid "Delete this Shelf"
+msgstr "Brisanje te police"
+
+#: cps/templates/shelf.html:14
+msgid "Edit Shelf Properties"
+msgstr "Urejanje lastnosti police"
+
+#: cps/templates/shelf.html:17
+msgid "Arrange books manually"
+msgstr "Ročno urejanje knjig"
+
+#: cps/templates/shelf.html:18
+msgid "Disable Change order"
+msgstr "Onemogoči spremembo vrstnega reda"
+
+#: cps/templates/shelf.html:18
+msgid "Enable Change order"
+msgstr "Omogoči spremembo vrstnega reda"
+
+#: cps/templates/shelf.html:28
+msgid "Sort according to book added to shelf, newest first"
+msgstr "Razvrsti glede na knjigo, ki je bila dodana na polico, najprej najnovejša."
+
+#: cps/templates/shelf.html:29
+msgid "Sort according to book added to shelf, oldest first"
+msgstr "Razvrsti glede na knjigo, ki je bila dodana na polico, najprej najstarejša."
+
+#: cps/templates/shelf_edit.html:14
+msgid "Share with Everyone"
+msgstr "Deli z vsemi"
+
+#: cps/templates/shelf_edit.html:21
+msgid "Sync this shelf with Kobo device"
+msgstr "Sinhronizacija te police z napravo Kobo"
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag to Rearrange Order"
+msgstr "Povlecite, da spremenite vrstni red"
+
+#: cps/templates/shelf_order.html:33
+msgid "Hidden Book"
+msgstr "Skrita knjiga"
+
+#: cps/templates/stats.html:7
+msgid "Library Statistics"
+msgstr "Statistika knjižnice"
+
+#: cps/templates/stats.html:12
+msgid "Books in this Library"
+msgstr "Knjig v tej knjižnici"
+
+#: cps/templates/stats.html:16
+msgid "Authors in this Library"
+msgstr "Avtorjev v tej knjižnici"
+
+#: cps/templates/stats.html:20
+msgid "Categories in this Library"
+msgstr "Kategorij v tej knjižnici"
+
+#: cps/templates/stats.html:24
+msgid "Series in this Library"
+msgstr "Serij v tej knjižnici"
+
+#: cps/templates/stats.html:29
+msgid "System Statistics"
+msgstr "Sistemske statistike"
+
+#: cps/templates/stats.html:33
+msgid "Program"
+msgstr "Program"
+
+#: cps/templates/stats.html:34
+msgid "Installed Version"
+msgstr "Nameščena različica"
+
+#: cps/templates/tasks.html:12
+msgid "User"
+msgstr "Uporabnik"
+
+#: cps/templates/tasks.html:14
+msgid "Task"
+msgstr "Opravilo"
+
+#: cps/templates/tasks.html:15
+msgid "Status"
+msgstr "Status"
+
+#: cps/templates/tasks.html:16
+msgid "Progress"
+msgstr "Napredek"
+
+#: cps/templates/tasks.html:17
+msgid "Run Time"
+msgstr "Čas delovanja"
+
+#: cps/templates/tasks.html:19
+msgid "Message"
+msgstr "Sporočilo"
+
+#: cps/templates/tasks.html:21
+msgid "Actions"
+msgstr "Dejanja"
+
+#: cps/templates/tasks.html:41
+msgid "This task will be cancelled. Any progress made by this task will be saved."
+msgstr "To opravilo bo preklicano. Vsak napredek, dosežen pri tem opravilu, bo shranjen."
+
+#: cps/templates/tasks.html:42
+msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgstr "Če je to načrtovano opravilo, se bo ponovno izvedlo ob naslednjem načrtovanem času."
+
+#: cps/templates/user_edit.html:20
+msgid "Reset user Password"
+msgstr "Ponastavitev uporabniškega gesla"
+
+#: cps/templates/user_edit.html:28
+msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
+msgstr "Pošlji v e-bralnikov e-naslov. Uporabi vejico za ločitev e-poštnih sporočil za več e-bralnikov"
+
+#: cps/templates/user_edit.html:43
+msgid "Language of Books"
+msgstr "Jezik knjig"
+
+#: cps/templates/user_edit.html:54
+msgid "OAuth Settings"
+msgstr "Nastavitve OAuth"
+
+#: cps/templates/user_edit.html:56
+msgid "Link"
+msgstr "Povezava"
+
+#: cps/templates/user_edit.html:58
+msgid "Unlink"
+msgstr "Odklop povezave"
+
+#: cps/templates/user_edit.html:64
+msgid "Kobo Sync Token"
+msgstr "Žeton za sinhronizacijo Kobo"
+
+#: cps/templates/user_edit.html:66
+msgid "Create/View"
+msgstr "Ustvari/pogled"
+
+#: cps/templates/user_edit.html:70
+msgid "Force full kobo sync"
+msgstr "Vsili popolno sinhronizacijo s Kobo"
+
+#: cps/templates/user_edit.html:88
+msgid "Add allowed/Denied Custom Column Values"
+msgstr "Dodajanje dovoljenih/zavrnjenih vrednosti stolpcev po meri"
+
+#: cps/templates/user_edit.html:137
+msgid "Sync only books in selected shelves with Kobo"
+msgstr "Sinhroniziranje samo knjig na izbranih policah s Kobo"
+
+#: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
+msgid "Delete User"
+msgstr "Izbriši uporabnika"
+
+#: cps/templates/user_edit.html:159
+msgid "Generate Kobo Auth URL"
+msgstr "Ustvarite URL avtentikacije Kobo"
+
+#: cps/templates/user_table.html:80 cps/templates/user_table.html:103
+msgid "Select..."
+msgstr "Izberi..."
+
+#: cps/templates/user_table.html:131
+msgid "Edit User"
+msgstr "Uredi uporabnika"
+
+#: cps/templates/user_table.html:134
+msgid "Enter Username"
+msgstr "Vnesi uporabniško ime"
+
+#: cps/templates/user_table.html:135
+msgid "Enter Email"
+msgstr "Vnesi e-pošto"
+
+#: cps/templates/user_table.html:136
+msgid "Enter eReader Email"
+msgstr "Vnesi e-pošto e-bralnika"
+
+#: cps/templates/user_table.html:136
+msgid "eReader Email"
+msgstr "E-pošta za e-bralnik"
+
+#: cps/templates/user_table.html:137
+msgid "Locale"
+msgstr "Lokacija"
+
+#: cps/templates/user_table.html:138
+msgid "Visible Book Languages"
+msgstr "Jeziki vidnih knjig"
+
+#: cps/templates/user_table.html:139
+msgid "Edit Allowed Tags"
+msgstr "Uredi dovoljene oznake"
+
+#: cps/templates/user_table.html:139
+msgid "Allowed Tags"
+msgstr "Dovoljene oznake"
+
+#: cps/templates/user_table.html:140
+msgid "Edit Denied Tags"
+msgstr "Uredi zavrnjene oznake"
+
+#: cps/templates/user_table.html:140
+msgid "Denied Tags"
+msgstr "Zavrnjene oznake"
+
+#: cps/templates/user_table.html:141
+msgid "Edit Allowed Column Values"
+msgstr "Urejanje dovoljenih vrednosti stolpcev"
+
+#: cps/templates/user_table.html:141
+msgid "Allowed Column Values"
+msgstr "Dovoljene vrednosti stolpcev"
+
+#: cps/templates/user_table.html:142
+msgid "Edit Denied Column Values"
+msgstr "Urejanje vrednosti zavrnjenega stolpca"
+
+#: cps/templates/user_table.html:142
+msgid "Denied Column Values"
+msgstr "Zavrnjene vrednosti stolpcev"
+
+#: cps/templates/user_table.html:144
+msgid "Change Password"
+msgstr "Sprememba gesla"
+
+#: cps/templates/user_table.html:147
+msgid "View"
+msgstr "Oglejte si"
+
+#: cps/templates/user_table.html:150
+msgid "Edit Public Shelves"
+msgstr "Urejanje javnih polic"
+
+#: cps/templates/user_table.html:152
+msgid "Sync selected Shelves with Kobo"
+msgstr "Usklajevanje izbrane police s Kobo"
+
+#: cps/templates/user_table.html:156
+msgid "Show Read/Unread Section"
+msgstr "Prikaži razdelek Prebrano/neprebrano"
+

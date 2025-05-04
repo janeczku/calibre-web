@@ -49,7 +49,7 @@ function elementSorter(a, b) {
     return 0;
 }
 
-// Generic control/related handler to show/hide fields based on a checkbox' value
+// Generic control/related handler to show/hide fields based on a 'checkbox' value
 // e.g.
 //  <input type="checkbox" data-control="stuff-to-show">
 //  <div data-related="stuff-to-show">...</div>
@@ -63,7 +63,7 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
     });
 });
 
-// Generic control/related handler to show/hide fields based on a select' value
+// Generic control/related handler to show/hide fields based on a 'select' value
 $(document).on("change", "select[data-control]", function() {
     var $this = $(this);
     var name = $this.data("control");
@@ -79,7 +79,7 @@ $(document).on("change", "select[data-control]", function() {
     }
 });
 
-// Generic control/related handler to show/hide fields based on a select' value
+// Generic control/related handler to show/hide fields based on a 'select' value
 // this one is made to show all values if select value is not 0
 $(document).on("change", "select[data-controlall]", function() {
     var $this = $(this);
@@ -130,8 +130,13 @@ $(".container-fluid").bind('drop', function (e) {
             }
         });
         if (dt.files.length) {
-            $("#btn-upload")[0].files = dt.files;
-            $("#form-upload").submit();
+            if($("#btn-upload-format").length) {
+                $("#btn-upload-format")[0].files = dt.files;
+                $("#form-upload-format").submit();
+            } else {
+                $("#btn-upload")[0].files = dt.files;
+                $("#form-upload").submit();
+            }
         }
     }
 });
@@ -140,12 +145,25 @@ $("#btn-upload").change(function() {
     $("#form-upload").submit();
 });
 
+$("#btn-upload-format").change(function() {
+    $("#form-upload-format").submit();
+});
+
+
 $("#form-upload").uploadprogress({
-    redirect_url: getPath() + "/", //"{{ url_for('web.index')}}",
-    uploadedMsg: $("#form-upload").data("message"), //"{{_('Upload done, processing, please wait...')}}",
-    modalTitle: $("#form-upload").data("title"), //"{{_('Uploading...')}}",
-    modalFooter: $("#form-upload").data("footer"), //"{{_('Close')}}",
-    modalTitleFailed: $("#form-upload").data("failed") //"{{_('Error')}}"
+    redirect_url: getPath() + "/",
+    uploadedMsg: $("#form-upload").data("message"),
+    modalTitle: $("#form-upload").data("title"),
+    modalFooter: $("#form-upload").data("footer"),
+    modalTitleFailed: $("#form-upload").data("failed")
+});
+
+$("#form-upload-format").uploadprogress({
+    redirect_url: getPath() + "/",
+    uploadedMsg: $("#form-upload-format").data("message"),
+    modalTitle: $("#form-upload-format").data("title"),
+    modalFooter: $("#form-upload-format").data("footer"),
+    modalTitleFailed: $("#form-upload-format").data("failed")
 });
 
 $(document).ready(function() {
@@ -604,6 +622,7 @@ $(function() {
     });
 
     $("#toggle_order_shelf").click(function() {
+        $("#toggle_order_shelf").toggleClass("dummy");
         $("#new").toggleClass("disabled");
         $("#old").toggleClass("disabled");
         $("#asc").toggleClass("disabled");
@@ -612,9 +631,20 @@ $(function() {
         $("#auth_za").toggleClass("disabled");
         $("#pub_new").toggleClass("disabled");
         $("#pub_old").toggleClass("disabled");
+        $("#shelf_new").toggleClass("disabled");
+        $("#shelf_old").toggleClass("disabled");
         var alternative_text = $("#toggle_order_shelf").data('alt-text');
+        var status = $("#toggle_order_shelf").hasClass("dummy") ? "on" : "off";
         $("#toggle_order_shelf").data('alt-text', $("#toggle_order_shelf").html());
         $("#toggle_order_shelf").html(alternative_text);
+
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/view",
+            data: "{\"shelf\": {\"man\": \"" + status + "\"}}",
+        });
     });
 
     $("#btndeluser").click(function() {
@@ -696,20 +726,20 @@ $(function() {
             url: getPath() + "/ajax/simulatedbchange",
             data: {config_calibre_dir: $("#config_calibre_dir").val(), csrf_token: $("input[name='csrf_token']").val()},
             success: function success(data) {
-                if ( data.change ) {
-                    if ( data.valid ) {
+                if ( !data.valid ) {
+                    $("#InvalidDialog").modal('show');
+                }
+                else{
+                    if ( data.change ) {
                         confirmDialog(
                             "db_submit",
                             "GeneralChangeModal",
                             0,
                             changeDbSettings
                         );
-                    }
-                    else {
-                        $("#InvalidDialog").modal('show');
-                    }
-                } else {
+                    } else {
                     changeDbSettings();
+                   }
                 }
             }
         });

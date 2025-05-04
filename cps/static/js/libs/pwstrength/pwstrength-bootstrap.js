@@ -183,7 +183,7 @@ try {
                 ];
                 $.each(sequences, function(ignore, sequence) {
                     for (j = 0; j < word.length - 2; j += 1) {
-                        // iterate the word trough a sliding window of size 3:
+                        // iterate the word through a sliding window of size 3:
                         if (
                             sequence.indexOf(
                                 word.toLowerCase().substring(j, j + 3)

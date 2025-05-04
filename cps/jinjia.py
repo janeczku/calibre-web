@@ -27,7 +27,7 @@ import datetime
 import mimetypes
 from uuid import uuid4
 
-from flask import Blueprint, request, url_for
+from flask import Blueprint, request, url_for, g
 from flask_babel import format_date
 from .cw_login import current_user
 
@@ -43,6 +43,8 @@ def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
     for get, val in request.args.items():
+        if get == "page":
+            continue
         args[get] = val
     return url_for(request.endpoint, **args)
 
@@ -111,21 +113,12 @@ def yesno(value, yes, no):
 
 @jinjia.app_template_filter('formatfloat')
 def formatfloat(value, decimals=1):
-    value = 0 if not value else value
-    return ('{0:.' + str(decimals) + 'f}').format(value).rstrip('0').rstrip('.')
-
-
-@jinjia.app_template_filter('formatseriesindex')
-def formatseriesindex_filter(series_index):
-    if series_index:
-        try:
-            if int(series_index) - series_index == 0:
-                return int(series_index)
-            else:
-                return series_index
-        except (ValueError, TypeError):
-            return series_index
-    return 0
+    if not value or (isinstance(value, str) and not value.is_numeric()):
+        return value
+    formated_value = ('{0:.' + str(decimals) + 'f}').format(value)
+    if formated_value.endswith('.' + "0" * decimals):
+        formated_value = formated_value.rstrip('0').rstrip('.')
+    return formated_value
 
 
 @jinjia.app_template_filter('escapedlink')
@@ -179,3 +172,12 @@ def get_cover_srcset(series):
         url = url_for('web.get_series_cover', series_id=series.id, resolution=shortname, c=cache_timestamp())
         srcset.append(f'{url} {resolution}x')
     return ', '.join(srcset)
+
+
+@jinjia.app_template_filter('music')
+def contains_music(book_formats):
+    result = False
+    for format in book_formats:
+        if format.format.lower() in g.constants.EXTENSIONS_AUDIO:
+            result = True
+    return result

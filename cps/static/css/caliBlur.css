@@ -3268,6 +3268,10 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     left: auto !important
 }
 
+ul.dropdown-menu.offscreen {
+    margin: 2px -160px 0
+}
+
 div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropdown-menu.offscreen {
     position: fixed;
     top: 120px;
@@ -4333,6 +4337,7 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
 
 .navbar-right > li > ul.dropdown-menu.offscreen {
     right: -10px
+
 }
 
 .login .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > div.navbar.navbar-default.navbar-static-top > div > form {
@@ -7148,22 +7153,17 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
-        max-width: 130px;
-        width: 130px;
-        height: 180px;
-        margin: 0;
+        position: relative;
+        max-width: unset;
+        width: 100%;
+        height: unset;
         padding: 15px;
-        position: absolute
     }
 
     body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
         padding: 15px;
         margin: 0 !important;
         width: 100%
-    }
-
-    body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 > .form-group:nth-child(1), body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 > .form-group:nth-child(2), body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 > .form-group:nth-child(1), body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 > .form-group:nth-child(2) {
-        padding-left: 120px
     }
 
     #deleteButton, body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
@@ -7951,3 +7951,5 @@ div.comments[data-readmore] {
     transition: height 300ms;
     overflow: hidden
 }
+
+.dropdown-menu > .offscreen

@@ -18,7 +18,7 @@
 
 from flask_babel import lazy_gettext as N_
 
-from cps import config, logger, db, ub
+from cps import config, logger, db, ub, app
 from cps.services.worker import CalibreTask
 
 
@@ -26,11 +26,13 @@ class TaskReconnectDatabase(CalibreTask):
     def __init__(self, task_message=N_('Reconnecting Calibre database')):
         super(TaskReconnectDatabase, self).__init__(task_message)
         self.log = logger.create()
-        self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
+        # self.calibre_db = db.CalibreDB(expire_on_commit=False, init=True)
 
     def run(self, worker_thread):
-        self.calibre_db.reconnect_db(config, ub.app_DB_path)
-        self.calibre_db.session.close()
+        with app.app_context():
+            calibre_db = db.CalibreDB(app)
+            calibre_db.reconnect_db(config, ub.app_DB_path)
+        # self.calibre_db.session.close()
         self._handleSuccess()
 
     @property

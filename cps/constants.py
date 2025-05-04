@@ -19,9 +19,6 @@
 import sys
 import os
 from collections import namedtuple
-from sqlalchemy import __version__ as sql_version
-
-sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 # APP_MODE - production, development, or test
 APP_MODE             = os.environ.get('APP_MODE', 'production')
@@ -175,7 +172,7 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
                                   'series_id, languages, publisher, pubdate, identifiers')
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
-STABLE_VERSION = {'version': '0.6.23b'}
+STABLE_VERSION =  '0.6.25b'
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
@@ -193,7 +190,7 @@ THUMBNAIL_TYPE_AUTHOR    = 3
 COVER_THUMBNAIL_ORIGINAL = 0
 COVER_THUMBNAIL_SMALL    = 1
 COVER_THUMBNAIL_MEDIUM   = 2
-COVER_THUMBNAIL_LARGE    = 3
+COVER_THUMBNAIL_LARGE    = 4
 
 # clean-up the module namespace
 del sys, os, namedtuple

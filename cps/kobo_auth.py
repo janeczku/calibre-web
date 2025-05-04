@@ -22,7 +22,7 @@
 This module also includes research notes into the auth protocol used by Kobo devices.
 
 Log-in:
-When first booting a Kobo device the user must sign into a Kobo (or affiliate) account.
+When first booting a Kobo device the user must log in to a Kobo (or affiliate) account.
 Upon successful sign-in, the user is redirected to
     https://auth.kobobooks.com/CrossDomainSignIn?id=<some id>
 which serves the following response:
@@ -41,7 +41,7 @@ issue for a few years now https://www.mobileread.com/forums/showpost.php?p=34768
 will still grant access given the userkey.)
 
 Official Kobo Store Api authorization:
-* For most of the endpoints we care about (sync, metadata, tags, etc), the userKey is
+* For most of the endpoints we care about (sync, metadata, tags, etc.), the userKey is
 passed in the x-kobo-userkey header, and is sufficient to authorize the API call.
 * Some endpoints (e.g: AnnotationService) instead make use of Bearer tokens pass through
 an authorization header. To get a BearerToken, the device makes a POST request to the

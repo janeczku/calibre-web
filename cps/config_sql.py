@@ -35,7 +35,7 @@ except ImportError:
 
 from . import constants, logger
 from .subproc_wrapper import process_wait
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 _Base = declarative_base()
@@ -182,26 +182,6 @@ class _Settings(_Base):
 class ConfigSQL(object):
     # pylint: disable=no-member
     def __init__(self):
-        '''self.config_calibre_uuid = None
-        self.config_calibre_split_dir = None
-        self.dirty = None
-        self.config_logfile = None
-        self.config_upload_formats = None
-        self.mail_gmail_token = None
-        self.mail_server_type = None
-        self.mail_server = None
-        self.config_log_level = None
-        self.config_allowed_column_value = None
-        self.config_denied_column_value = None
-        self.config_allowed_tags = None
-        self.config_denied_tags = None
-        self.config_default_show = None
-        self.config_default_role = None
-        self.config_keyfile = None
-        self.config_certfile = None
-        self.config_rarfile_location = None
-        self.config_kepubifypath = None
-        self.config_binariesdir = None'''
         self.__dict__["dirty"] = list()
 
     def init_config(self, session, secret_key, cli):
@@ -288,19 +268,19 @@ class ConfigSQL(object):
 
     def list_denied_tags(self):
         mct = self.config_denied_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_tags(self):
         mct = self.config_allowed_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_denied_column_values(self):
         mct = self.config_denied_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_column_values(self):
         mct = self.config_allowed_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def get_log_level(self):
         return logger.get_level_name(self.config_log_level)
@@ -372,7 +352,7 @@ class ConfigSQL(object):
             db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        # constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        
         from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
@@ -425,11 +405,13 @@ class ConfigSQL(object):
         return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
 
     def store_calibre_uuid(self, calibre_db, Library_table):
+        from . import app
         try:
-            calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
-            if self.config_calibre_uuid != calibre_uuid.uuid:
-                self.config_calibre_uuid = calibre_uuid.uuid
-                self.save()
+            with app.app_context():
+                calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
+                if self.config_calibre_uuid != calibre_uuid.uuid:
+                    self.config_calibre_uuid = calibre_uuid.uuid
+                    self.save()
         except AttributeError:
             pass
 
@@ -503,6 +485,8 @@ def autodetect_calibre_binaries():
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
                         "C:\\program files\\calibre2\\"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/"]
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
@@ -533,6 +517,8 @@ def autodetect_unrar_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/unrar"]
     else:
         calibre_path = ["/usr/bin/unrar"]
     for element in calibre_path:
@@ -545,6 +531,8 @@ def autodetect_kepubify_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/kepubify"]
     else:
         calibre_path = ["/opt/kepubify/kepubify-linux-64bit", "/opt/kepubify/kepubify-linux-32bit"]
     for element in calibre_path:

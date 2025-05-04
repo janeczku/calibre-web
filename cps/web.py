@@ -23,9 +23,9 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+from importlib.metadata import metadata
 
-from flask import Blueprint, jsonify
-from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
+from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -36,7 +36,6 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
-
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -51,7 +50,7 @@ from .helper import check_valid_domain, check_email, check_username, \
     edit_book_read_status, valid_password
 from .pagination import Pagination
 from .redirect import get_redirect_location
-from .babel import get_available_locale
+from .cw_babel import get_available_locale
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
@@ -60,6 +59,7 @@ from . import limiter
 from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 from .usermanagement import user_login_required
+from .string_helper import strip_whitespaces
 
 
 feature_support = {
@@ -85,6 +85,10 @@ except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
 
+sql_version = metadata("sqlalchemy")["Version"]
+sqlalchemy_version2 = ([int(x) if x.isnumeric() else 0 for x in sql_version.split('.')[:3]] >= [2, 0, 0])
+
+
 @app.after_request
 def add_security_headers(resp):
     default_src = ([host.strip() for host in config.config_trustedhosts.split(',') if host] +
@@ -108,7 +112,7 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000';
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000'
     return resp
 
 
@@ -298,9 +302,10 @@ def get_languages_json():
 def get_matching_tags():
     tag_dict = {'tags': []}
     q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True))
-    calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    author_input = request.args.get('author_name') or ''
-    title_input = request.args.get('book_title') or ''
+    calibre_db.create_functions()
+    # calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    author_input = request.args.get('authors') or ''
+    title_input = request.args.get('title') or ''
     include_tag_inputs = request.args.getlist('include_tag') or ''
     exclude_tag_inputs = request.args.getlist('exclude_tag') or ''
     q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
@@ -530,7 +535,7 @@ def render_author_books(page, author_id, order):
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
-    if constants.sqlalchemy_version2:
+    if sqlalchemy_version2:
         author = calibre_db.session.get(db.Authors, author_id)
     else:
         author = calibre_db.session.query(db.Authors).get(author_id)
@@ -790,7 +795,7 @@ def render_archived_books(page, sort_param):
                                                                                 True,
                                                                                 True, config.config_read_column)
 
-    name = _('Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
+    name = _('Archived Books') + ' (' + str(len(entries)) + ')'
     page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=page_name, order=sort_param[1])
@@ -1192,13 +1197,14 @@ def serve_book(book_id, book_format, anyname):
     if not data:
         return "File not in Database"
     range_header = request.headers.get('Range', None)
-
+    if not range_header:
+        log.info('Serving book: \'%s\' to %s - %s', data.name, current_user.name,
+                 request.headers.get('X-Forwarded-For', request.remote_addr))
     if config.config_use_google_drive:
         try:
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-            if not range_header:
-                log.info('Serving book: %s', data.name)
+            if not range_header:                
                 headers['Accept-Ranges'] = 'bytes'
             df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
             return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
@@ -1207,7 +1213,6 @@ def serve_book(book_id, book_format, anyname):
             return "File Not Found"
     else:
         if book_format.upper() == 'TXT':
-            log.info('Serving book: %s', data.name)
             try:
                 rawdata = open(os.path.join(config.get_book_path(), book.path, data.name + "." + book_format),
                                "rb").read()
@@ -1228,7 +1233,6 @@ def serve_book(book_id, book_format, anyname):
         response = make_response(
             send_from_directory(os.path.join(config.get_book_path(), book.path), data.name + "." + book_format))
         if not range_header:
-            log.info('Serving book: %s', data.name)
             response.headers['Accept-Ranges'] = 'bytes'
         return response
 
@@ -1238,7 +1242,12 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    client = "kobo" if "Kobo" in request.headers.get('User-Agent') else ""
+    if "kindle" in request.headers.get('User-Agent').lower():
+        client = "kindle"
+    elif "Kobo" in request.headers.get('User-Agent').lower():
+        client = "kobo"
+    else:
+        client = ""
     return get_download_link(book_id, book_format, client)
 
 
@@ -1247,8 +1256,7 @@ def download_link(book_id, book_format, anyname):
 @download_required
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
-        response = [{'type': "danger", 'message': _("Please configure the SMTP mail settings first...")}]
-        return Response(json.dumps(response), mimetype='application/json')
+        return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.get_book_path(),
                            current_user.name)
@@ -1260,7 +1268,7 @@ def send_to_ereader(book_id, book_format, convert):
             response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     else:
         response = [{'type': "danger", 'message': _("Oops! Please update your profile with a valid eReader Email.")}]
-    return Response(json.dumps(response), mimetype='application/json')
+    return make_response(jsonify(response))
 
 
 # ################################### Login Logout ##################################################################
@@ -1286,7 +1294,7 @@ def register_post():
     if not config.get_mail_server_configured():
         flash(_("Oops! Email server is not configured, please contact your administrator."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
-    nickname = to_save.get("email", "").strip() if config.config_register_email else to_save.get('name')
+    nickname = strip_whitespaces(to_save.get("email", "")) if config.config_register_email else to_save.get('name')
     if not nickname or not to_save.get("email"):
         flash(_("Oops! Please complete all fields."), category="error")
         return render_title_template('register.html', title=_("Register"), page="register")
@@ -1311,7 +1319,7 @@ def register_post():
             ub.session.commit()
             if feature_support['oauth']:
                 register_user_with_oauth(content)
-            send_registration_mail(to_save.get("email", "").strip(), nickname, password)
+            send_registration_mail(strip_whitespaces(to_save.get("email", "")), nickname, password)
         except Exception:
             ub.session.rollback()
             flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
@@ -1370,11 +1378,11 @@ def login():
 
 
 @web.route('/login', methods=['POST'])
-@limiter.limit("40/day", key_func=lambda: request.form.get('username', "").strip().lower())
-@limiter.limit("3/minute", key_func=lambda: request.form.get('username', "").strip().lower())
+@limiter.limit("40/day", key_func=lambda: strip_whitespaces(request.form.get('username', "")).lower())
+@limiter.limit("3/minute", key_func=lambda: strip_whitespaces(request.form.get('username', "")).lower())
 def login_post():
     form = request.form.to_dict()
-    username = form.get('username', "").strip().lower().replace("\n","").replace("\r","")
+    username = strip_whitespaces(form.get('username', "")).lower().replace("\n","").replace("\r","")
     try:
         limiter.check()
     except RateLimitExceeded:
@@ -1578,9 +1586,10 @@ def read_book(book_id, book_format):
         bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                                              ub.Bookmark.book_id == book_id,
                                                              ub.Bookmark.format == book_format.upper())).first()
-    if book_format.lower() == "epub":
-        log.debug("Start epub reader for %d", book_id)
-        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark)
+    if book_format.lower() == "epub" or book_format.lower() == "kepub":
+        log.debug("Start [k]epub reader for %d", book_id)
+        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark,
+                                     book_format=book_format)
     elif book_format.lower() == "pdf":
         log.debug("Start pdf reader for %d", book_id)
         return render_title_template('readpdf.html', pdffile=book_id, title=book.title)
@@ -1640,6 +1649,11 @@ def show_book(book_id):
 
         entry.email_share_list = check_send_to_ereader(entry)
         entry.reader_list = check_read_formats(entry)
+
+        entry.reader_list_sizes = dict()
+        for data in entry.data:
+            if data.format.lower() in entry.reader_list:
+                entry.reader_list_sizes[data.format.lower()] = data.uncompressed_size
 
         entry.audio_entries = []
         for media_format in entry.data:
