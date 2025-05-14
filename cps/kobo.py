@@ -184,11 +184,11 @@ def HandleSyncRequest():
         shelf_entries = (shelf_entries
                            .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                                           ub.ArchivedBook.user_id == current_user.id))
-                           .filter(and_(
+                           .filter(or_(
                                 db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id).filter(ub.KoboSyncedBooks.user_id == current_user.id)),
-                                db.Books.last_modified < sync_token.books_last_modified
+                                db.Books.last_modified > sync_token.books_last_modified
                             ))
-                           .filter(or_(ub.Shelf.is_public == 1, ub.BookShelf.date_added > sync_token.books_last_modified))
+                           .filter(ub.BookShelf.date_added > sync_token.books_last_modified)
                            .filter(db.Data.format.in_(KOBO_FORMATS))
                            .filter(calibre_db.common_filters(allow_show_archived=True))
                            .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
@@ -234,9 +234,9 @@ def HandleSyncRequest():
         changed_entries = (changed_entries
                            .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                                           ub.ArchivedBook.user_id == current_user.id))
-                           .filter(and_(
+                           .filter(or_(
                                 db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id).filter(ub.KoboSyncedBooks.user_id == current_user.id)),
-                                db.Books.last_modified < sync_token.books_last_modified
+                                db.Books.last_modified > sync_token.books_last_modified
                             ))
                            .filter(calibre_db.common_filters(allow_show_archived=True))
                            .filter(db.Data.format.in_(KOBO_FORMATS))
