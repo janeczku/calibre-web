@@ -247,6 +247,7 @@ def HandleSyncRequest():
     reading_states_in_new_entitlements = []
     books = changed_entries.limit(SYNC_ITEM_LIMIT)
     log.debug("Books to Sync: {}".format(len(books.all())))
+    log.debug("sync_token.books_last_created: %s", sync_token.books_last_created)
     for book in books:
         formats = [data.format for data in book.Books.data]
         if 'KEPUB' not in formats and config.config_kepubifypath and 'EPUB' in formats:
@@ -270,6 +271,7 @@ def HandleSyncRequest():
         except AttributeError:
             pass
 
+        log.debug("Syncing book %s, ts_created: %s", book.Books.id, ts_created)
         if ts_created > sync_token.books_last_created:
             sync_results.append({"NewEntitlement": entitlement})
         else:
@@ -299,8 +301,8 @@ def HandleSyncRequest():
 
     new_archived_last_modified = max(new_archived_last_modified, max_change)
 
-    # no. of books returned
-    book_count = changed_entries.count()
+    # books count not yet synced
+    book_count = changed_entries.count() - books.count()
     # last entry:
     cont_sync = bool(book_count)
     log.debug("Remaining books to Sync: {}".format(book_count))
@@ -321,10 +323,10 @@ def HandleSyncRequest():
         changed_reading_states = changed_reading_states.filter(
             ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified)
 
-    changed_reading_states = changed_reading_states.filter(
+    changed_reading_states = (changed_reading_states.filter(
         and_(ub.KoboReadingState.user_id == current_user.id,
-             ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements)))\
-        .order_by(ub.KoboReadingState.last_modified)
+             ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements)))
+        .order_by(ub.KoboReadingState.last_modified))
     cont_sync |= bool(changed_reading_states.count() > SYNC_ITEM_LIMIT)
     for kobo_reading_state in changed_reading_states.limit(SYNC_ITEM_LIMIT).all():
         book = calibre_db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
