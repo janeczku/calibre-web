@@ -211,7 +211,7 @@ def HandleSyncRequest():
             calibre_db.session.query(
                 db.Books,
                 ub.ArchivedBook.last_modified,
-                func.current_timestamp().label("date_added"),
+                db.Books.timestamp.label("date_added"),
                 ub.ArchivedBook.is_archived,
                 literal(True).label("deleted")
             )
