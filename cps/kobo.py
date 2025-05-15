@@ -273,8 +273,10 @@ def HandleSyncRequest():
 
         log.debug("Syncing book %s, ts_created: %s", book.Books.id, ts_created)
         if ts_created > sync_token.books_last_created:
+            log.debug("Marking as NewEntitlement")
             sync_results.append({"NewEntitlement": entitlement})
         else:
+            log.debug("Marking as ChangedEntitlement")
             sync_results.append({"ChangedEntitlement": entitlement})
 
         new_books_last_modified = max(
