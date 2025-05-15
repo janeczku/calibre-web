@@ -186,9 +186,9 @@ def HandleSyncRequest():
                                                                           ub.ArchivedBook.user_id == current_user.id))
                            .filter(or_(
                                 db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id).filter(ub.KoboSyncedBooks.user_id == current_user.id)),
-                                func.datetime(db.Books.last_modified) > sync_token.books_last_modified
+                                func.datetime(db.Books.last_modified) > sync_token.books_last_modified,
+                                func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified,
                             ))
-                           .filter(func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified)
                            .filter(db.Data.format.in_(KOBO_FORMATS))
                            .filter(calibre_db.common_filters(allow_show_archived=True))
                            .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
@@ -266,7 +266,7 @@ def HandleSyncRequest():
         ts_created = book.Books.timestamp.replace(tzinfo=None)
 
         try:
-            ts_created = max(ts_created, book.date_added)
+            ts_created = max(ts_created, book.date_added.replace(tzinfo=None))
         except AttributeError:
             pass
 
