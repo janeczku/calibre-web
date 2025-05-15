@@ -255,8 +255,7 @@ def HandleSyncRequest():
 
         kobo_reading_state = get_or_create_reading_state(book.Books.id)
         entitlement = {
-            "BookEntitlement": create_book_entitlement(book.Books, archived = book.is_archived or (only_kobo_shelves and book.deleted)),
-            "BookMetadata": get_metadata(book.Books),
+            "BookEntitlement": create_book_entitlement(book.Books, archived = book.is_archived or (only_kobo_shelves and book.deleted))
         }
 
         if kobo_reading_state.last_modified > sync_token.reading_state_last_modified:
@@ -274,10 +273,12 @@ def HandleSyncRequest():
         log.debug("Syncing book %s, ts_created: %s", book.Books.id, ts_created)
         if ts_created > sync_token.books_last_created:
             log.debug("Marking as NewEntitlement")
+            entitlement["BookMetadata"] = get_metadata(book.Books)
             sync_results.append({"NewEntitlement": entitlement})
         else:
             log.debug("Marking as ChangedEntitlement")
             sync_results.append({"ChangedEntitlement": entitlement})
+            sync_results.append({"ChangedProductMetadata": get_metadata(book.Books)})
 
         new_books_last_modified = max(
             book.Books.last_modified.replace(tzinfo=None), new_books_last_modified
