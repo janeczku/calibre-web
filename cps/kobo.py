@@ -25,6 +25,7 @@ import zipfile
 from time import gmtime, strftime
 import json
 from urllib.parse import unquote
+import uuid
 
 from flask import (
     Blueprint,
@@ -512,10 +513,22 @@ def get_metadata(book):
                 log.error(e)
 
     book_uuid = book.uuid
+
+    thumbnail_generated_at = (
+        calibre_db.session
+        .query(ub.Thumbnail.generated_at)
+        .filter(ub.Thumbnail.entity_id == book.id)
+        .order_by(ub.Thumbnail.id)
+        .limit(1)
+    ).scalar()
+
+    #turn thumbnail generated_at timestamp into an epoch for use as the version
+    version_str = f"{thumbnail_generated_at.timestamp():.0f}"
+
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
-        "CoverImageId": book_uuid,
+        "CoverImageId": book_uuid+"/"+version_str,
         "CrossRevisionId": book_uuid,
         "CurrentDisplayPrice": {"CurrencyCode": "USD", "TotalAmount": 0},
         "CurrentLoveDisplayPrice": {"TotalAmount": 0},
@@ -954,10 +967,12 @@ def get_current_bookmark_response(current_bookmark):
     return resp
 
 
-@kobo.route("/<book_uuid>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': ""})
-@kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
+@kobo.route("/<book_uuid>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': "", 'version': ""})
+@kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg", defaults={'version': ""})
+@kobo.route("/<book_uuid>/<version>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': ""})
+@kobo.route("/<book_uuid>/<version>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
-def HandleCoverImageRequest(book_uuid, width, height, Quality, isGreyscale):
+def HandleCoverImageRequest(book_uuid, version, width, height, Quality, isGreyscale):
     try:
         if int(height) > 1000:
             resolution = COVER_THUMBNAIL_LARGE
