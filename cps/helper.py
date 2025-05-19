@@ -734,6 +734,16 @@ def get_book_cover_with_uuid(book_uuid, resolution=None):
     return get_book_cover_internal(book, resolution=resolution)
 
 
+def get_book_cover_epoch_date_with_uuid(book_uuid):
+    book = calibre_db.get_book_by_uuid(book_uuid)
+    if book and book.has_cover:
+        file_path = os.path.join(config.get_book_path(), book.path, "cover.jpg")
+        if os.path.isfile(file_path):
+            ts = int(os.path.getmtime(file_path))
+            return str(ts)
+    return None
+
+
 def get_book_cover_internal(book, resolution=None):
     if book and book.has_cover:
 

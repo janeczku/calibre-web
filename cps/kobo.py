@@ -170,6 +170,8 @@ def HandleSyncRequest():
     # We reload the book database so that the user gets a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
     calibre_db.reconnect_db(config, ub.app_DB_path)
+    # also refresh thumbnails if configured
+    helper.update_thumbnail_cache()
 
     only_kobo_shelves = current_user.kobo_only_shelves_sync
 
@@ -514,21 +516,17 @@ def get_metadata(book):
 
     book_uuid = book.uuid
 
-    thumbnail_generated_at = (
-        calibre_db.session
-        .query(ub.Thumbnail.generated_at)
-        .filter(ub.Thumbnail.entity_id == book.id)
-        .order_by(ub.Thumbnail.id)
-        .limit(1)
-    ).scalar()
-
-    #turn thumbnail generated_at timestamp into an epoch for use as the version
-    version_str = f"{thumbnail_generated_at.timestamp():.0f}"
+    #get cover version from book cover file
+    coverVersion = helper.get_book_cover_epoch_date_with_uuid(book_uuid)
+    if coverVersion:
+        coverImageId = book_uuid+"/"+coverVersion
+    else:
+        coverImageId = book_uuid
 
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
-        "CoverImageId": book_uuid+"/"+version_str,
+        "CoverImageId": coverImageId,
         "CrossRevisionId": book_uuid,
         "CurrentDisplayPrice": {"CurrencyCode": "USD", "TotalAmount": 0},
         "CurrentLoveDisplayPrice": {"TotalAmount": 0},
