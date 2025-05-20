@@ -469,10 +469,12 @@ def get_metadata(book):
     for i in book.identifiers:
         if i.format_type() == "ISBN":
             book_isbn = i.val
-    if config.config_kobo_pages_cc:
-        book_pages = getattr(book, "custom_column_"+str(config.config_kobo_pages_cc))[0].value
-    if config.config_kobo_words_cc:
-        book_words = getattr(book, "custom_column_"+str(config.config_kobo_words_cc))[0].value
+    pages = getattr(book, "custom_column_"+str(config.config_kobo_pages_cc))
+    if config.config_kobo_pages_cc and len(pages):
+        book_pages = pages[0].value
+    words = getattr(book, "custom_column_"+str(config.config_kobo_words_cc))
+    if config.config_kobo_words_cc and len(words):
+        book_words = words[0].value
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
