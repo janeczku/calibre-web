@@ -175,6 +175,13 @@ def HandleSyncRequest():
 
     only_kobo_shelves = current_user.kobo_only_shelves_sync
 
+    synced_ids = (
+        calibre_db.session
+        .query(ub.KoboSyncedBooks.book_id)
+        .filter(ub.KoboSyncedBooks.user_id == current_user.id)
+        .scalar_subquery()
+    )
+
     if only_kobo_shelves:
         extra_filters=[]
         extra_filters.append(ub.Shelf.kobo_sync)
@@ -183,12 +190,13 @@ def HandleSyncRequest():
                                                    ub.ArchivedBook.last_modified,
                                                    ub.BookShelf.date_added,
                                                    ub.ArchivedBook.is_archived,
+                                                   db.Books.id.in_(synced_ids).label("kobo_synced"),
                                                    literal(False).label("deleted"))
         shelf_entries = (shelf_entries
                            .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                                           ub.ArchivedBook.user_id == current_user.id))
                            .filter(or_(
-                                db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id).filter(ub.KoboSyncedBooks.user_id == current_user.id)),
+                                db.Books.id.notin_(synced_ids),
                                 func.datetime(db.Books.last_modified) > sync_token.books_last_modified,
                                 func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified,
                             ))
@@ -216,6 +224,7 @@ def HandleSyncRequest():
                 ub.ArchivedBook.last_modified,
                 db.Books.timestamp.label("date_added"),
                 ub.ArchivedBook.is_archived,
+                db.Books.id.in_(synced_ids).label("kobo_synced"),
                 literal(True).label("deleted")
             )
             .join(ub.KoboSyncedBooks, and_(db.Books.id == ub.KoboSyncedBooks.book_id,
@@ -234,12 +243,13 @@ def HandleSyncRequest():
     else:
         changed_entries = calibre_db.session.query(db.Books,
                                                    ub.ArchivedBook.last_modified,
-                                                   ub.ArchivedBook.is_archived)
+                                                   ub.ArchivedBook.is_archived,
+                                                   db.Books.id.in_(synced_ids).label("kobo_synced"))
         changed_entries = (changed_entries
                            .join(db.Data).outerjoin(ub.ArchivedBook, and_(db.Books.id == ub.ArchivedBook.book_id,
                                                                           ub.ArchivedBook.user_id == current_user.id))
                            .filter(or_(
-                                db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id).filter(ub.KoboSyncedBooks.user_id == current_user.id)),
+                                db.Books.id.notin_(synced_ids),
                                 func.datetime(db.Books.last_modified) > sync_token.books_last_modified
                             ))
                            .filter(calibre_db.common_filters(allow_show_archived=True))
@@ -251,6 +261,7 @@ def HandleSyncRequest():
     books = changed_entries.limit(SYNC_ITEM_LIMIT)
     log.debug("Books to Sync: {}".format(len(books.all())))
     log.debug("sync_token.books_last_created: %s", sync_token.books_last_created)
+    changed_books=0
     for book in books:
         formats = [data.format for data in book.Books.data]
         if 'KEPUB' not in formats and config.config_kepubifypath and 'EPUB' in formats:
@@ -272,15 +283,22 @@ def HandleSyncRequest():
             ts_created = max(ts_created, book.date_added.replace(tzinfo=None))
         except AttributeError:
             pass
-
-        log.debug("Syncing book %s, ts_created: %s", book.Books.id, ts_created)
-        if ts_created > sync_token.books_last_created:
+        file_modified = get_book_file_modified(book.Books)
+        log.debug("Syncing book %s, ts_created: %s, book file modified: %s", book.Books.id, ts_created, file_modified)
+        if ts_created > sync_token.books_last_created or not book.kobo_synced:
             log.debug("Marking as NewEntitlement")
             entitlement["BookMetadata"] = get_metadata(book.Books)
             sync_results.append({"NewEntitlement": entitlement})
         elif book.deleted:
-            log.debug("Marking as ChangedEntitlement")
+            log.debug("Marking as ChangedEntitlement for deletion")
             sync_results.append({"ChangedEntitlement": entitlement})
+        elif file_modified > sync_token.books_last_modified:
+            # setting Accessibility to "Preview" tricks the Kobo to automatically redownload a book on the next call to the sync URL
+            # cont_sync will be set whenever this is hit, so the query is ran again, and since the book is also removed from the synced books list, it will show up again
+            log.debug("Marking as ChangedEntitlement & Preview for file update")
+            entitlement["BookEntitlement"]["Accessibility"]="Preview"
+            sync_results.append({"ChangedEntitlement": entitlement})
+            changed_books += 1
         else:
             log.debug("Marking as ChangedProductMetadata")
             entitlement["BookMetadata"] = get_metadata(book.Books)
@@ -297,7 +315,9 @@ def HandleSyncRequest():
             pass
 
         new_books_last_created = max(ts_created, new_books_last_created)
-        if only_kobo_shelves and book.deleted:
+        # delete sync record if book was changed to force redownload on next call to sync URL
+        if (only_kobo_shelves and book.deleted) or file_modified > sync_token.books_last_modified:
+            log.debug("Removing book from synced books")
             kobo_sync_status.remove_synced_book(book.Books.id)
         else:
             kobo_sync_status.add_synced_books(book.Books.id)
@@ -310,8 +330,9 @@ def HandleSyncRequest():
 
     new_archived_last_modified = max(new_archived_last_modified, max_change)
 
-    # books count not yet synced
-    book_count = changed_entries.count() - books.count()
+    # Determine books count not yet synced.
+    # changed_books indicates the count of books that need to be redownloaded due to file change
+    book_count = changed_entries.count() - books.count() + changed_books
     # last entry:
     cont_sync = bool(book_count)
     log.debug("Remaining books to Sync: {}".format(book_count))
@@ -487,6 +508,27 @@ def get_language(book):
     if not book.languages:
         return 'en'
     return isoLanguages.get(part3=book.languages[0].lang_code).part1
+
+
+def get_book_file_modified(book):
+    kepub = [data for data in book.data if data.format == 'KEPUB']
+    revision = 0
+    for book_data in kepub if len(kepub) > 0 else book.data:
+        if book_data.format not in KOBO_FORMATS:
+            continue
+        for kobo_format in KOBO_FORMATS[book_data.format]:
+            # log.debug('Id: %s, Format: %s' % (book.id, kobo_format))
+            try:
+                if get_epub_layout(book, book_data) == 'pre-paginated':
+                    kobo_format = 'EPUB3FL'
+                version = helper.get_file_modified_epoch(book, kobo_format, book_data)
+                if version > revision:
+                    revision = version
+            except (zipfile.BadZipfile, FileNotFoundError) as e:
+                log.error(e)
+
+    modified_dt = datetime.fromtimestamp(revision, tz=timezone.utc).replace(tzinfo=None)
+    return modified_dt
 
 
 def get_metadata(book):
