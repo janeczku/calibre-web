@@ -1,12 +1,12 @@
 # Translations template for PROJECT.
-# Copyright (C) 2025 ORGANIZATION
+# Copyright (C) 2025 UsamaFoad
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <usamafoad@gmail.com>, 2025.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Project-Id-Version: Calibre-Web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\\n"
 "POT-Creation-Date: 2025-03-30 15:55+0200\n"
 "PO-Revision-Date: 2025-05-23 18:40+0300\n"
 "Last-Translator: UsamaFoad <usamafoad@gmail.com>\n"
