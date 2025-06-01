@@ -734,6 +734,16 @@ def get_book_cover_with_uuid(book_uuid, resolution=None):
     return get_book_cover_internal(book, resolution=resolution)
 
 
+def get_book_cover_epoch_date_with_uuid(book_uuid):
+    book = calibre_db.get_book_by_uuid(book_uuid)
+    if book and book.has_cover:
+        file_path = os.path.join(config.get_book_path(), book.path, "cover.jpg")
+        if os.path.isfile(file_path):
+            ts = int(os.path.getmtime(file_path))
+            return str(ts)
+    return None
+
+
 def get_book_cover_internal(book, resolution=None):
     if book and book.has_cover:
 
@@ -963,6 +973,30 @@ def do_download_file(book, book_format, client, data, headers):
     log.info('Downloading file: \'%s\' by %s - %s', format(os.path.join(filename, book_name + "." + book_format)),
              current_user.name, request.headers.get('X-Forwarded-For', request.remote_addr))
     return response
+
+
+#return the last modified time of the book file as epoch timestamp for use as a version number
+def get_file_modified_epoch(book, book_format, data):
+    book_name = data.name
+    download_name = filename = None
+    if config.config_use_google_drive:
+        #skip versioning for google drive (implementation )
+        return None
+    else:
+        filename = os.path.join(config.get_book_path(), book.path)
+        if not os.path.isfile(os.path.join(filename, book_name + "." + book_format)):
+            # ToDo: improve error handling
+            log.error('File not found: %s', os.path.join(filename, book_name + "." + book_format))
+        if book_format == "kepub" and config.config_kepubifypath and config.config_embed_metadata:
+            filename, download_name = do_kepubify_metadata_replace(book, os.path.join(filename,
+                                                                                      book_name + "." + book_format))
+        elif book_format != "kepub" and config.config_binariesdir and config.config_embed_metadata:
+            filename, download_name = do_calibre_export(book.id, book_format)
+        else:
+            download_name = book_name
+
+    full_path = os.path.join(filename, download_name + "." + book_format)
+    return int(os.path.getmtime(full_path))
 
 
 def do_kepubify_metadata_replace(book, file_path):
