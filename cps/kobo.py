@@ -426,6 +426,12 @@ def get_series(book):
         return None
     return book.series[0].name
 
+    if (col):
+        subtitleColumn = getattr(book, 'custom_column_' + str(col.id))
+        if len(subtitleColumn):
+            return subtitleColumn[0].value
+    else:
+            return ""
 
 def get_seriesindex(book):
     return book.series_index if isinstance(book.series_index, float) else 1
@@ -463,6 +469,16 @@ def get_metadata(book):
                 log.error(e)
 
     book_uuid = book.uuid
+    subtitle = ""
+    if config.config_kobo_subtitle_cc:
+        subtitleColumn = getattr(book, f'custom_column_{config.config_kobo_subtitle_cc}')
+        if len(subtitleColumn):
+            subtitle = (
+                f"{config.config_kobo_subtitle_prefix or ''} "
+                f"{subtitleColumn[0].value} "
+                f"{config.config_kobo_subtitle_suffix or ''}"
+            ).strip()
+
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
@@ -485,6 +501,7 @@ def get_metadata(book):
         "Publisher": {"Imprint": "", "Name": get_publisher(book), },
         "RevisionId": book_uuid,
         "Title": book.title,
+        "Subtitle": subtitle,
         "WorkId": book_uuid,
     }
     metadata.update(get_author(book))

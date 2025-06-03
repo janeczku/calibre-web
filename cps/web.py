@@ -1663,6 +1663,7 @@ def show_book(book_id):
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
+                                     subtitle_cc=config.config_subtitle_column,
                                      is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
                                      title=entry.title,
                                      books_shelfs=book_in_shelves,
