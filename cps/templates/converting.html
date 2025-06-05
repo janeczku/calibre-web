@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="discover">
+    <h2>{{_('Converting e-book')}}</h2>
+    <div>{{ entry.authors[0].name }}, {{ entry.title }}</div>
+    <div class="progress">
+        <div id="progressbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="5"></div>
+    </div>
+    <a href="{{ url_for('web.read_book', book_id=book_id, book_format='epub') }}">
+        Press here if the book does not open
+    </a>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/refresh.js') }}"></script>
+{% endblock %}
