@@ -285,6 +285,9 @@ class TaskConvert(CalibreTask):
                 else:
                     error_message = ""
                     for ele in calibre_traceback:
+                        # Decode bytes to string if needed
+                        if isinstance(ele, bytes):
+                            ele = ele.decode('utf-8', errors="ignore").strip('\n')                       
                         if not ele.startswith('Traceback') and not ele.startswith('  File'):
                             error_message = N_("Calibre failed with error: %(error)s", error=ele)
                     return check, error_message
