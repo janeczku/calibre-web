@@ -961,6 +961,7 @@ def HandleBookDeletionRequest(book_uuid):
 # TODO: Implement the following routes
 @csrf.exempt
 @kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET", "POST"])
+@kobo.route("/v1/library/<dummy>/preview", methods=["POST"])
 def HandleUnimplementedRequest(dummy=None):
     log.debug("Unimplemented Library Request received: %s (request is forwarded to kobo if configured)",
               request.base_url)

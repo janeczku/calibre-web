@@ -189,8 +189,8 @@ def reconnect():
 
 
 @admi.route("/ajax/updateThumbnails", methods=['POST'])
-@admin_required
 @user_login_required
+@admin_required
 def update_thumbnails():
     content = config.get_scheduled_task_settings()
     if content['schedule_generate_book_covers']:
