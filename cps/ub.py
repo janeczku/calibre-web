@@ -43,6 +43,8 @@ except ImportError as e:
 from sqlalchemy import create_engine, exc, exists, event, text
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
+from sqlalchemy import DateTime, UniqueConstraint
+from datetime import datetime
 from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.expression import func
 try:
@@ -232,8 +234,25 @@ class UserBase:
     def __repr__(self):
         return '<User %r>' % self.name
 
+class PDFProgress(Base):
+    __tablename__ = 'pdf_progress'
+    __table_args__ = (
+        UniqueConstraint('user_id', 'book_id', 'format', name='_user_book_format_uc'),
+        {'sqlite_autoincrement': True}
+    )
 
-# Baseclass for Users in Calibre-Web, settings which depend on certain users are stored here. It is derived from
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    book_id = Column(Integer, nullable=False)
+    format = Column(String(10), default="PDF")
+    page = Column(String, nullable=False)
+    total = Column(Integer)
+    updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    user = relationship("User", backref="pdf_progress")  # optional, but follows style
+
+
+# Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
 # User Base (all access methods are declared there)
 class User(UserBase, Base):
     __tablename__ = 'user'
@@ -601,7 +620,7 @@ def migrate_user_session_table(engine, _session):
             trans.commit()
 
 
-# Migrate database to current version, has to be updated after every database change. Currently, migration from
+# Migrate database to current version, has to be updated after every database change. Currently migration from
 # maybe 4/5 versions back to current should work.
 # Migration is done by checking if relevant columns are existing, and then adding rows with SQL commands
 def migrate_Database(_session):
@@ -636,7 +655,7 @@ def update_download(book_id, user_id):
             session.rollback()
 
 
-# Delete non-existing downloaded books in calibre-web's own database
+# Delete non existing downloaded books in calibre-web's own database
 def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     try:

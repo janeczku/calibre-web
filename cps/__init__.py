@@ -25,9 +25,10 @@ import sys
 import os
 import mimetypes
 
-from flask import Flask
+from flask import Flask, request
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from . import logger
 from .cli import CliParameter
@@ -55,17 +56,17 @@ mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
 mimetypes.add_type('application/epub+zip', '.kepub')
-mimetypes.add_type('application/fb2+zip', '.fb2')
-mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
+mimetypes.add_type('text/xml', '.fb2')
+mimetypes.add_type('application/octet-stream', '.mobi')
 mimetypes.add_type('application/octet-stream', '.prc')
-mimetypes.add_type('application/x-mobipocket-ebook', '.azw')
-mimetypes.add_type('application/x-mobipocket-ebook', '.azw3')
-mimetypes.add_type('application/x-cbr', '.cbr')
-mimetypes.add_type('application/x-cbz', '.cbz')
+mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-mobi8-ebook', '.azw3')
+mimetypes.add_type('application/x-rar', '.cbr')
+mimetypes.add_type('application/zip', '.cbz')
 mimetypes.add_type('application/x-tar', '.cbt')
 mimetypes.add_type('application/x-7z-compressed', '.cb7')
-mimetypes.add_type('image/vnd.djvu', '.djv')
-mimetypes.add_type('image/vnd.djvu', '.djvu')
+mimetypes.add_type('image/vnd.djv', '.djv')
+mimetypes.add_type('image/vnd.djv', '.djvu')
 mimetypes.add_type('application/mpeg', '.mpeg')
 mimetypes.add_type('audio/mpeg', '.mp3')
 mimetypes.add_type('audio/x-m4a', '.m4a')
@@ -77,12 +78,19 @@ mimetypes.add_type('audio/ogg', '.ogg')
 mimetypes.add_type('application/ogg', '.oga')
 mimetypes.add_type('text/css', '.css')
 mimetypes.add_type('application/x-ms-reader', '.lit')
-mimetypes.add_type('text/javascript', '.js')
-mimetypes.add_type('text/rtf', '.rtf')
+mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
 
 log = logger.create()
 
 app = Flask(__name__)
+
+# Number of proxies in your chain (adjust or get from env)
+trusted_proxies = int(os.environ.get('TRUSTED_PROXIES', 1))
+
+# Trust 1 proxy (Caddy), adjust if you have more proxies in front
+#app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=trusted_proxies, x_proto=trusted_proxies)
+
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
@@ -103,7 +111,7 @@ if wtf_present:
 else:
     csrf = None
 
-calibre_db = db.CalibreDB(app)
+calibre_db = db.CalibreDB()
 
 web_server = WebServer()
 
@@ -127,7 +135,6 @@ def create_app():
 
     config_sql.load_configuration(ub.session, encrypt_key)
     config.init_config(ub.session, encrypt_key, cli_param)
-
     if error:
         log.error(error)
 
@@ -147,7 +154,9 @@ def create_app():
     lm.anonymous_user = ub.Anonymous
     lm.session_protection = 'strong' if config.config_session == 1 else "basic"
 
-    db.CalibreDB.update_config(config, config.config_calibre_dir, cli_param.settings_path)
+    db.CalibreDB.update_config(config)
+    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
+    calibre_db.init_db()
 
     updater_thread.init_updater(config, web_server)
     # Perform dry run of updater and exit afterward
@@ -170,7 +179,7 @@ def create_app():
                  .format(res['name'],
                          res['target'],
                          res['found']))
-    app.wsgi_app = ReverseProxied(app.wsgi_app)
+    #app.wsgi_app = ReverseProxied(app.wsgi_app)
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
@@ -214,6 +223,17 @@ def create_app():
     register_scheduled_tasks(config.schedule_reconnect)
     register_startup_tasks()
 
+
+   # @app.before_request
+   # def log_headers():
+   #     # This will print ALL headers received by Flask
+   #     # Be careful, it will be very verbose!
+   #     log.info("--- Received Headers ---")
+   #     for header, value in request.headers.items():
+   #         log.info(f"{header}: {value}")
+   #     log.info("------------------------")
+   #     # Also log the remote_addr after ProxyFix has run
+   #     log.info(f"Flask request.remote_addr after ProxyFix: {request.remote_addr}")
+    
+
     return app
-
-

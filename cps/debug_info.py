@@ -23,10 +23,11 @@ import zipfile
 import json
 from io import BytesIO
 from flask_babel.speaklater import LazyString
-from importlib.metadata import metadata
+
 import os
 
 from flask import send_file
+import importlib
 
 from . import logger, config
 from .about import collect_stats
@@ -49,7 +50,7 @@ def assemble_logfiles(file_name):
         with open(f, 'rb') as fd:
             shutil.copyfileobj(fd, wfd)
     wfd.seek(0)
-    version = metadata("flask")["Version"]
+    version = importlib.metadata.version("flask")
     if int(version.split('.')[0]) < 2:
         return send_file(wfd,
                          as_attachment=True,
@@ -73,7 +74,7 @@ def send_debug():
         for fp in file_list:
             zf.write(fp, os.path.basename(fp))
     memory_zip.seek(0)
-    version = metadata("flask")["Version"]
+    version = importlib.metadata.version("flask")
     if int(version.split('.')[0]) < 2:
         return send_file(memory_zip,
                          as_attachment=True,

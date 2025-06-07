@@ -405,13 +405,11 @@ class ConfigSQL(object):
         return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
 
     def store_calibre_uuid(self, calibre_db, Library_table):
-        from . import app
         try:
-            with app.app_context():
-                calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
-                if self.config_calibre_uuid != calibre_uuid.uuid:
-                    self.config_calibre_uuid = calibre_uuid.uuid
-                    self.save()
+            calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
+            if self.config_calibre_uuid != calibre_uuid.uuid:
+                self.config_calibre_uuid = calibre_uuid.uuid
+                self.save()
         except AttributeError:
             pass
 
@@ -485,8 +483,6 @@ def autodetect_calibre_binaries():
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
                         "C:\\program files\\calibre2\\"]
-    elif sys.platform.startswith("freebsd"):
-        calibre_path = ["/usr/local/bin/"]
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
@@ -517,8 +513,6 @@ def autodetect_unrar_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
-    elif sys.platform.startswith("freebsd"):
-        calibre_path = ["/usr/local/bin/unrar"]
     else:
         calibre_path = ["/usr/bin/unrar"]
     for element in calibre_path:
@@ -531,8 +525,6 @@ def autodetect_kepubify_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
-    elif sys.platform.startswith("freebsd"):
-        calibre_path = ["/usr/local/bin/kepubify"]
     else:
         calibre_path = ["/opt/kepubify/kepubify-linux-64bit", "/opt/kepubify/kepubify-linux-32bit"]
     for element in calibre_path:

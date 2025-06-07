@@ -21,7 +21,7 @@ import sys
 from . import create_app, limiter
 from .jinjia import jinjia
 from flask import request
-
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 def request_username():
     return request.authorization.username
@@ -29,9 +29,9 @@ def request_username():
 
 def main():
     app = create_app()
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
 
     from .web import web
-    from .basic import basic
     from .opds import opds
     from .admin import admi
     from .gdrive import gdrive
@@ -65,7 +65,6 @@ def main():
     app.register_blueprint(search)
     app.register_blueprint(tasks)
     app.register_blueprint(web)
-    app.register_blueprint(basic)
     app.register_blueprint(opds)
     limiter.limit("3/minute", key_func=request_username)(opds)
     app.register_blueprint(jinjia)

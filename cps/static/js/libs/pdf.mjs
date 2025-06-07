@@ -16667,7 +16667,7 @@ const PDFWorkerUtil = {
 {
   if (isNodeJS) {
     PDFWorkerUtil.isWorkerDisabled = true;
-    GlobalWorkerOptions.workerSrc ||= "./pdf.worker.js";
+    GlobalWorkerOptions.workerSrc ||= "./pdf.worker.mjs";
   }
   PDFWorkerUtil.isSameOrigin = function (baseUrl, otherUrl) {
     let base;

@@ -24,6 +24,7 @@ See https://github.com/adobe-type-tools/cmap-resources
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="google" content="notranslate">
     {% if g.google_site_verification|length > 0 %}
       <meta name="google-site-verification" content="{{g.google_site_verification}}">
@@ -35,7 +36,7 @@ See https://github.com/adobe-type-tools/cmap-resources
     <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/viewer.css') }}">
 	  <!-- This snippet is used in production (included from viewer.html) -->
 	  <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.json') }}">
-	  <script src="{{ url_for('static', filename='js/libs/pdf.js') }}" type="module"></script>
+	  <script src="{{ url_for('static', filename='js/libs/pdf.mjs') }}" type="module"></script>
 
     <script type="text/javascript">
     window.addEventListener('webviewerloaded', function() {
@@ -46,12 +47,19 @@ See https://github.com/adobe-type-tools/cmap-resources
         PDFViewerApplicationOptions.set('cMapUrl', "{{ url_for('static', filename='cmaps/') }}");
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
-        PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
+        PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.mjs') }}");
         PDFViewerApplicationOptions.set('defaultUrl',"{{ url_for('web.serve_book', book_id=pdffile, book_format='pdf') }}")
     });
     </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof PDFViewerApplication !== "undefined" && {{ bookmark_page or "null" }} !== null) {
+          PDFViewerApplication.initialBookmark = "page=" + {{ bookmark_page }};
+        }
+      });
+    </script>
 
-    <script src="{{ url_for('static', filename='js/libs/viewer.js') }}" type="module">></script>
+    <script src="{{ url_for('static', filename='js/libs/viewer.mjs') }}" type="module">></script>
 
   </head>
 

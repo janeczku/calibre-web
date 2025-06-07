@@ -199,7 +199,7 @@ class CalibreTask:
             self.run(*args)
         except Exception as ex:
             self._handleError(str(ex))
-            log.exception(ex)
+            log.error_or_exception(ex)
 
         self.end_time = datetime.now()
 
@@ -235,7 +235,7 @@ class CalibreTask:
 
     @property
     def dead(self):
-        """Determines whether this task can be garbage collected
+        """Determines whether or not this task can be garbage collected
 
         We have a separate dictating this because there may be certain tasks that want to override this
         """

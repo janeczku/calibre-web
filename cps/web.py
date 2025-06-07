@@ -23,9 +23,10 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
-from importlib.metadata import metadata
+import importlib
 
-from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for
+from flask import Blueprint, jsonify
+from flask import request, redirect, send_from_directory, make_response, flash, abort, url_for, Response
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -38,6 +39,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.sql.functions import coalesce
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 
 from . import constants, logger, isoLanguages, services
 from . import db, ub, config, app
@@ -85,8 +87,8 @@ except ImportError:
     sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
 
-sql_version = metadata("sqlalchemy")["Version"]
-sqlalchemy_version2 = ([int(x) if x.isnumeric() else 0 for x in sql_version.split('.')[:3]] >= [2, 0, 0])
+sql_version = importlib.metadata.version("sqlalchemy")
+sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 
 @app.after_request
@@ -112,7 +114,7 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    resp.headers['Strict-Transport-Security'] = 'max-age=31536000'
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000';
     return resp
 
 
@@ -795,7 +797,7 @@ def render_archived_books(page, sort_param):
                                                                                 True,
                                                                                 True, config.config_read_column)
 
-    name = _('Archived Books') + ' (' + str(len(entries)) + ')'
+    name = _('Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
     page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=page_name, order=sort_param[1])
@@ -810,6 +812,99 @@ def render_archived_books(page, sort_param):
 def index(page):
     sort_param = (request.args.get('sort') or 'stored').lower()
     return render_books_list("newest", sort_param, 1, page)
+
+
+@web.route("/api/pagechanged", methods=["POST"])
+@login_required_if_no_ano
+def page_changed():
+    data = request.get_json()
+
+    print("Received payload:", data)
+
+    page = data.get("page")
+    print(f"PDF Page changed to: {page}")
+    return jsonify({"status": "ok", "page": page})
+
+# TEMP store – replace with DB later
+# pdf_progress_store = {}
+
+@web.route('/api/pdf-progress', methods=['POST'])
+@login_required_if_no_ano
+def save_pdf_progress():
+    data = request.get_json()
+
+    print("Received payload:", data)
+
+    book_id = data.get("file")  # expecting book_id here
+    page = data.get("page")
+    total = data.get("total")
+    format = data.get("format", "PDF").upper()
+    user_id = getattr(current_user, "id", None)
+
+    if not book_id or page is None or not user_id:
+        return jsonify({"error": "Missing data"}), 400
+
+    # Check if progress already exists
+    progress = ub.session.query(ub.PDFProgress).filter_by(
+        user_id=user_id, book_id=book_id, format=format
+    ).first()
+
+    if progress:
+        progress.page = page
+        progress.total = total
+    else:
+        progress = ub.PDFProgress(
+            user_id=user_id,
+            book_id=book_id,
+            format=format,
+            page=page,
+            total=total
+        )
+        ub.session.add(progress)
+
+    ub.session.commit()
+
+    return jsonify({
+        "status": "ok",
+        "progress": {
+            "page": progress.page,
+            "total": progress.total,
+            "updated": progress.updated.isoformat()
+        }
+    })
+
+
+
+@web.route("/api/epub-progress", methods=["POST"])
+@login_required_if_no_ano
+def epub_progress():
+    data = request.get_json()
+    book_id = int(data.get("book"))
+    cfi = data.get("cfi")
+    percent = int(data.get("percent"))
+    total = int(data.get("total"))
+
+    progress = ub.session.query(ub.PDFProgress).filter_by(
+        user_id=current_user.id,
+        book_id=book_id,
+        format="EPUB"
+    ).first()
+
+    if not progress:
+        progress = ub.PDFProgress(
+            user_id=current_user.id,
+            book_id=book_id,
+            format="EPUB"
+        )
+        ub.session.add(progress)
+
+    # Save percent as "page", and total as "pagesCount"
+    progress.page = percent
+    progress.pagesCount = total
+    progress.modified = datetime.utcnow()
+    ub.session.commit()
+    return jsonify({"status": "ok"})
+
 
 
 @web.route('/<data>/<sort_param>', defaults={'page': 1, 'book_id': 1})
@@ -1197,14 +1292,13 @@ def serve_book(book_id, book_format, anyname):
     if not data:
         return "File not in Database"
     range_header = request.headers.get('Range', None)
-    if not range_header:
-        log.info('Serving book: \'%s\' to %s - %s', data.name, current_user.name,
-                 request.headers.get('X-Forwarded-For', request.remote_addr))
+
     if config.config_use_google_drive:
         try:
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-            if not range_header:                
+            if not range_header:
+                log.info('Serving book: %s', data.name)
                 headers['Accept-Ranges'] = 'bytes'
             df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
             return do_gdrive_download(df, headers, (book_format.upper() == 'TXT'))
@@ -1213,6 +1307,7 @@ def serve_book(book_id, book_format, anyname):
             return "File Not Found"
     else:
         if book_format.upper() == 'TXT':
+            log.info('Serving book: %s', data.name)
             try:
                 rawdata = open(os.path.join(config.get_book_path(), book.path, data.name + "." + book_format),
                                "rb").read()
@@ -1233,6 +1328,7 @@ def serve_book(book_id, book_format, anyname):
         response = make_response(
             send_from_directory(os.path.join(config.get_book_path(), book.path), data.name + "." + book_format))
         if not range_header:
+            log.info('Serving book: %s', data.name)
             response.headers['Accept-Ranges'] = 'bytes'
         return response
 
@@ -1242,12 +1338,7 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    if "kindle" in request.headers.get('User-Agent').lower():
-        client = "kindle"
-    elif "Kobo" in request.headers.get('User-Agent').lower():
-        client = "kobo"
-    else:
-        client = ""
+    client = "kobo" if "Kobo" in request.headers.get('User-Agent') else ""
     return get_download_link(book_id, book_format, client)
 
 
@@ -1256,7 +1347,8 @@ def download_link(book_id, book_format, anyname):
 @download_required
 def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
-        return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
+        response = [{'type': "danger", 'message': _("Please configure the SMTP mail settings first...")}]
+        return Response(json.dumps(response), mimetype='application/json')
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.get_book_path(),
                            current_user.name)
@@ -1268,7 +1360,7 @@ def send_to_ereader(book_id, book_format, convert):
             response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     else:
         response = [{'type': "danger", 'message': _("Oops! Please update your profile with a valid eReader Email.")}]
-    return make_response(jsonify(response))
+    return Response(json.dumps(response), mimetype='application/json')
 
 
 # ################################### Login Logout ##################################################################
@@ -1570,58 +1662,84 @@ def profile():
 @login_required_if_no_ano
 @viewer_required
 def read_book(book_id, book_format):
+    book_format = book_format.lower()
     book = calibre_db.get_filtered_book(book_id)
 
     if not book:
-        flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
-              category="error")
+        flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"), category="error")
         log.debug("Selected book is unavailable. File does not exist or is not accessible")
         return redirect(url_for("web.index"))
 
     book.ordered_authors = calibre_db.order_authors([book], False)
 
-    # check if book has a bookmark
+    bookmark_page = None
+    if current_user.is_authenticated:
+        progress = ub.session.query(ub.PDFProgress).filter_by(
+            user_id=current_user.id,
+            book_id=book_id,
+            format=book_format.upper()
+        ).first()
+        if progress:
+            bookmark_page = progress.page
+
+
     bookmark = None
     if current_user.is_authenticated:
-        bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
-                                                             ub.Bookmark.book_id == book_id,
-                                                             ub.Bookmark.format == book_format.upper())).first()
-    if book_format.lower() == "epub" or book_format.lower() == "kepub":
-        log.debug("Start [k]epub reader for %d", book_id)
-        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark,
-                                     book_format=book_format)
-    elif book_format.lower() == "pdf":
+        bookmark = ub.session.query(ub.Bookmark).filter_by(
+            user_id=current_user.id,
+            book_id=book_id,
+            format=book_format.upper()
+        ).first()
+
+    bookmark_percent = None
+    if current_user.is_authenticated:
+        progress = ub.session.query(ub.PDFProgress).filter_by(
+            user_id=current_user.id,
+            book_id=book_id,
+            format="EPUB"
+        ).first()
+        if progress:
+            bookmark_percent = progress.page
+
+
+    if book_format == "pdf":
         log.debug("Start pdf reader for %d", book_id)
-        return render_title_template('readpdf.html', pdffile=book_id, title=book.title)
-    elif book_format.lower() == "txt":
+        return render_title_template('readpdf.html', pdffile=book_id, title=book.title, bookmark_page=bookmark_page)
+
+    if book_format == "epub":
+        log.debug("Start epub reader for %d", book_id)
+        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark_percent)
+
+    if book_format == "txt":
         log.debug("Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=book.title)
-    elif book_format.lower() in ["djvu", "djv"]:
+
+    if book_format in ["djvu", "djv"]:
         log.debug("Start djvu reader for %d", book_id)
-        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title,
-                                     extension=book_format.lower())
-    else:
-        for fileExt in constants.EXTENSIONS_AUDIO:
-            if book_format.lower() == fileExt:
-                entries = calibre_db.get_filtered_book(book_id)
-                log.debug("Start mp3 listening for %d", book_id)
-                return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                             entry=entries, bookmark=bookmark)
-        for fileExt in ["cbr", "cbt", "cbz"]:
-            if book_format.lower() == fileExt:
-                all_name = str(book_id)
-                title = book.title
-                if len(book.series):
-                    title = title + " - " + book.series[0].name
-                    if book.series_index:
-                        title = title + " #" + '{0:.2f}'.format(book.series_index).rstrip('0').rstrip('.')
-                log.debug("Start comic reader for %d", book_id)
-                return render_title_template('readcbr.html', comicfile=all_name, title=title,
-                                             extension=fileExt, bookmark=bookmark)
-        log.debug("Selected book is unavailable. File does not exist or is not accessible")
-        flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
-              category="error")
-        return redirect(url_for("web.index"))
+        return render_title_template('readdjvu.html', djvufile=book_id, title=book.title, extension=book_format)
+
+    for fileExt in constants.EXTENSIONS_AUDIO:
+        if book_format == fileExt:
+            entries = calibre_db.get_filtered_book(book_id)
+            log.debug("Start mp3 listening for %d", book_id)
+            return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format,
+                                         entry=entries, bookmark=bookmark_page)
+
+    for fileExt in ["cbr", "cbt", "cbz"]:
+        if book_format == fileExt:
+            all_name = str(book_id)
+            title = book.title
+            if len(book.series):
+                title += f" - {book.series[0].name}"
+                if book.series_index:
+                    title += f" #{book.series_index:.2f}".rstrip('0').rstrip('.')
+            log.debug("Start comic reader for %d", book_id)
+            return render_title_template('readcbr.html', comicfile=all_name, title=title,
+                                         extension=fileExt, bookmark=bookmark_page)
+
+    log.debug("Selected book is unavailable. File does not exist or is not accessible")
+    flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"), category="error")
+    return redirect(url_for("web.index"))
 
 
 @web.route("/book/<int:book_id>")
@@ -1649,11 +1767,6 @@ def show_book(book_id):
 
         entry.email_share_list = check_send_to_ereader(entry)
         entry.reader_list = check_read_formats(entry)
-
-        entry.reader_list_sizes = dict()
-        for data in entry.data:
-            if data.format.lower() in entry.reader_list:
-                entry.reader_list_sizes[data.format.lower()] = data.uncompressed_size
 
         entry.audio_entries = []
         for media_format in entry.data:

@@ -23,7 +23,7 @@ import json
 import os
 import sys
 
-from flask import Blueprint, request, url_for, make_response, jsonify
+from flask import Blueprint, Response, request, url_for
 from .cw_login import current_user
 from flask_babel import get_locale
 from sqlalchemy.exc import InvalidRequestError, OperationalError
@@ -89,7 +89,7 @@ def metadata_provider():
         provider.append(
             {"name": c.__name__, "active": ac, "initial": ac, "id": c.__id__}
         )
-    return make_response(jsonify(provider))
+    return Response(json.dumps(provider), mimetype="application/json")
 
 
 @meta.route("/metadata/provider", methods=["POST"])
@@ -114,7 +114,9 @@ def metadata_change_active_provider(prov_name):
         provider = next((c for c in cl if c.__id__ == prov_name), None)
         if provider is not None:
             data = provider.search(new_state.get("query", ""))
-        return make_response(jsonify([asdict(x) for x in data]))
+        return Response(
+            json.dumps([asdict(x) for x in data]), mimetype="application/json"
+        )
     return ""
 
 
@@ -136,4 +138,4 @@ def metadata_search():
             }
             for future in concurrent.futures.as_completed(meta):
                 data.extend([asdict(x) for x in future.result() if x])
-    return  make_response(jsonify(data))
+    return Response(json.dumps(data), mimetype="application/json")
