@@ -30,7 +30,7 @@ import requests
 import unidecode
 from uuid import uuid4
 
-from flask import send_from_directory, make_response, abort, url_for, Response, request
+from flask import send_from_directory, make_response, abort, url_for, Response
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
@@ -199,7 +199,7 @@ def check_send_to_ereader(entry):
 # Check if a reader is existing for any of the book formats, if not, return empty list, otherwise return
 # list with supported formats
 def check_read_formats(entry):
-    extensions_reader = {'TXT', 'PDF', 'EPUB', 'KEPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'}
+    extensions_reader = {'TXT', 'PDF', 'EPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'}
     book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):
@@ -237,7 +237,7 @@ def send_mail(book_id, book_format, convert, ereader_mail, calibrepath, user_id)
     return _("The requested file could not be read. Maybe wrong permissions?")
 
 
-def get_valid_filename(value, replace_whitespace=True, chars=128, force_unidecode=False):
+def get_valid_filename(value, replace_whitespace=True, chars=128):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
@@ -245,7 +245,7 @@ def get_valid_filename(value, replace_whitespace=True, chars=128, force_unidecod
     if value[-1:] == '.':
         value = value[:-1]+'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
-    if config.config_unicode_filename or force_unidecode:
+    if config.config_unicode_filename:
         value = (unidecode.unidecode(value))
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
@@ -513,7 +513,7 @@ def update_dir_structure_gdrive(book_id, first_author):
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(g_file['id'], book.path)
         else:
-            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found
+            return _('File %(file)s not found on Google Drive', file=authordir)  # file not found'''
     if titledir != new_titledir or authordir != new_authordir :
         all_new_name = get_valid_filename(book.title, chars=42) + ' - ' \
                        + get_valid_filename(new_authordir, chars=42)
@@ -905,7 +905,7 @@ def save_cover(img, book_path):
             else:
                 imgc = Image(blob=io.BytesIO(img.content))
             imgc.format = 'jpeg'
-            imgc.transform_colorspace("srgb")
+            imgc.transform_colorspace("rgb")
             img = imgc
         except (BlobError, MissingDelegateError):
             log.error("Invalid cover file content")
@@ -974,8 +974,7 @@ def do_download_file(book, book_format, client, data, headers):
     # ToDo Check headers parameter
     for element in headers:
         response.headers[element[0]] = element[1]
-    log.info('Downloading file: \'%s\' by %s - %s', format(os.path.join(filename, book_name + "." + book_format)),
-             current_user.name, request.headers.get('X-Forwarded-For', request.remote_addr))
+    log.info('Downloading file: {}'.format(os.path.join(filename, book_name + "." + book_format)))
     return response
 
 
@@ -1105,14 +1104,11 @@ def get_download_link(book_id, book_format, client):
             file_name = book.title
             if len(book.authors) > 0:
                 file_name = file_name + ' - ' + book.authors[0].name
-            if client == "kindle":
-                file_name = get_valid_filename(file_name, replace_whitespace=False, force_unidecode=True)
-            else:
-                file_name = quote(get_valid_filename(file_name, replace_whitespace=False))
+            file_name = get_valid_filename(file_name, replace_whitespace=False)
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-            headers["Content-Disposition"] = ('attachment; filename="{}.{}"; filename*=UTF-8\'\'{}.{}').format(
-                file_name, book_format, file_name, book_format)
+            headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
+                quote(file_name), book_format, quote(file_name), book_format)
             return do_download_file(book, book_format, client, data1, headers)
     else:
         log.error("Book id {} not found for downloading".format(book_id))

@@ -828,7 +828,7 @@ const defaultOptions = {
     kind: OptionKind.WORKER
   },
   workerSrc: {
-    value: "../build/pdf.worker.js",
+    value: "../build/pdf.worker.mjs",
     kind: OptionKind.WORKER
   }
 };
@@ -14438,6 +14438,25 @@ const AppConstants = {
   SpreadMode: SpreadMode
 };
 window.PDFViewerApplication = PDFViewerApplication;
+// PDFViewerApplication.eventBus.on("pagechanging", (evt) => {
+//   const currentPage = evt.pageNumber;
+//   const totalPages = PDFViewerApplication.pagesCount;
+//   const fileHash = PDFViewerApplication.url.split("/").pop().split("?")[0];
+//   const payload = {
+//     file: fileHash,
+//     page: currentPage,
+//     total: totalPages
+//   };
+
+//   fetch("/api/pdf-progress", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(payload)
+//   }).catch((err) => {
+//     console.error("Progress sync failed", err);
+//   });
+// });
+
 window.PDFViewerApplicationConstants = AppConstants;
 window.PDFViewerApplicationOptions = AppOptions;
 function getViewerConfiguration() {
@@ -14567,23 +14586,66 @@ function getViewerConfiguration() {
     printContainer: document.getElementById("printContainer")
   };
 }
-function webViewerLoad() {
+async function webViewerLoad() {
   const config = getViewerConfiguration();
+
+  // Dispatch viewer loaded event
   const event = new CustomEvent("webviewerloaded", {
     bubbles: true,
     cancelable: true,
-    detail: {
-      source: window
-    }
+    detail: { source: window }
   });
+
   try {
     parent.document.dispatchEvent(event);
   } catch (ex) {
     console.error(`webviewerloaded: ${ex}`);
     document.dispatchEvent(event);
   }
+
+  // Run PDF.js app
   PDFViewerApplication.run(config);
+
+  try {
+    // Wait for the app to fully initialize
+    await PDFViewerApplication.initializedPromise;
+  } catch (e) {
+    console.error("PDFViewerApplication failed to initialize", e);
+    return;
+  }
+
+  PDFViewerApplication.eventBus.on("pagechanging", (evt) => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const currentPage = evt.pageNumber;
+    const urlParts = window.location.pathname.split("/");
+    const fileHash = urlParts.find(x => /^\d+$/.test(x));
+    const format = urlParts[urlParts.length - 1].toUpperCase(); // get 'pdf' or 'epub' and uppercase it
+
+    if (!fileHash || !currentPage) {
+      console.warn("Missing fileHash or currentPage, skipping sync");
+      return;
+    }
+
+    fetch("/api/pdf-progress", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken
+      },
+      body: JSON.stringify({
+        file: fileHash,
+        page: currentPage,
+        total: PDFViewerApplication.pagesCount,
+        format: format
+      })
+    }).catch((err) => {
+      console.error("Progress sync failed", err);
+    });
+  });
+
 }
+
+
 document.blockUnblockOnload?.(true);
 if (document.readyState === "interactive" || document.readyState === "complete") {
   webViewerLoad();

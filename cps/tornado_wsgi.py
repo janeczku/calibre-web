@@ -110,7 +110,8 @@ class MyWSGIContainer(WSGIContainer):
         request_time = 1000.0 * request.request_time()
         assert request.method is not None
         assert request.uri is not None
-        ip = self.env.get("HTTP_FORWARD_FOR", None) or request.remote_ip
+        #ip = self.env.get("HTTP_FORWARD_FOR", None) or request.remote_ip
+        ip = (self.env.get("HTTP_X_FORWARDED_FOR") or request.remote_addr).split(',')[0].strip()
         summary = (
             request.method  # type: ignore[operator]
             + " "

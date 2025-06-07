@@ -23,12 +23,12 @@ import json
 from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
-# from weakref import WeakSet
+from weakref import WeakSet
 from uuid import uuid4
 
 from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
-from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
+from sqlalchemy import Table, Column, ForeignKey, CheckConstraint, UniqueConstraint, DateTime
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
@@ -45,7 +45,8 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale
-from flask import flash, g, Flask
+from flask import flash
+from datetime import datetime
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
@@ -102,16 +103,6 @@ class Identifiers(Base):
     type = Column(String(collation='NOCASE'), nullable=False, default="isbn")
     val = Column(String(collation='NOCASE'), nullable=False)
     book = Column(Integer, ForeignKey('books.id'), nullable=False)
-    amazon = {
-        "jp": "co.jp", 
-        "uk": "co.uk", 
-        "us": "com", 
-        "au": "com.au", 
-        "be": "com.be", 
-        "br": "com.br", 
-        "tr": "com.tr", 
-        "mx": "com.mx",
-    }
 
     def __init__(self, val, id_type, book):
         super().__init__()
@@ -124,11 +115,7 @@ class Identifiers(Base):
         if format_type == 'amazon':
             return "Amazon"
         elif format_type.startswith("amazon_"):
-            label_amazon = "Amazon.{0}"
-            country_code = format_type[7:].lower()
-            if country_code not in self.amazon:
-                return label_amazon.format(country_code)
-            return label_amazon.format(self.amazon[country_code])
+            return "Amazon.{0}".format(format_type[7:].lower().replace("uk","co.uk"))
         elif format_type == "isbn":
             return "ISBN"
         elif format_type == "doi":
@@ -151,8 +138,6 @@ class Identifiers(Base):
             return "ISSN"
         elif format_type == "isfdb":
             return "ISFDB"
-        elif format_type == "storygraph":
-            return "StoryGraph"
         if format_type == "lubimyczytac":
             return "Lubimyczytac"
         if format_type == "databazeknih":
@@ -165,11 +150,7 @@ class Identifiers(Base):
         if format_type == "amazon" or format_type == "asin":
             return "https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            link_amazon = "https://amazon.{0}/dp/{1}"
-            country_code = format_type[7:].lower()
-            if country_code not in self.amazon:
-                return link_amazon.format(country_code, self.val)
-            return link_amazon.format(self.amazon[country_code], self.val)
+            return "https://amazon.{0}/dp/{1}".format(format_type[7:].lower().replace("uk","co.uk"), self.val)
         elif format_type == "isbn":
             return "https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
@@ -193,11 +174,9 @@ class Identifiers(Base):
         elif format_type == "issn":
             return "https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
-            return "https://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+            return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "databazeknih":
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
-        elif format_type == "storygraph":
-            return "https://app.thestorygraph.com/books/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         elif self.val.lower().startswith("data:"):
@@ -443,7 +422,6 @@ class Books(Base):
     def atom_timestamp(self):
         return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
 
-
 class CustomColumns(Base):
     __tablename__ = 'custom_columns'
 
@@ -532,25 +510,34 @@ class AlchemyEncoder(json.JSONEncoder):
 
 
 class CalibreDB:
+    _init = False
+    engine = None
     config = None
-    config_calibre_dir = None
-    app_db_path = None
+    session_factory = None
+    # This is a WeakSet so that references here don't keep other CalibreDB
+    # instances alive once they reach the end of their respective scopes
+    instances = WeakSet()
 
-    def __init__(self, _app: Flask=None):  # , expire_on_commit=True, init=False):
+    def __init__(self, expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
         """
-        self.Session = None
-        #if init:
-        #    self.init_db(expire_on_commit)
-        if _app is not None and not _app._got_first_request:
-            self.init_app(_app)
+        self.session = None
+        if init:
+            self.init_db(expire_on_commit)
 
-    def init_app(self, _app):
-        _app.teardown_appcontext(self.teardown)
+    def init_db(self, expire_on_commit=True):
+        if self._init:
+            self.init_session(expire_on_commit)
+
+        self.instances.add(self)
+
+    def init_session(self, expire_on_commit=True):
+        self.session = self.session_factory()
+        self.session.expire_on_commit = expire_on_commit
+        self.create_functions(self.config)
 
     @classmethod
     def setup_db_cc_classes(cls, cc):
-        global cc_classes
         cc_ids = []
         books_custom_column_links = {}
         for row in cc:
@@ -618,6 +605,8 @@ class CalibreDB:
                                      secondary=books_custom_column_links[cc_id[0]],
                                      backref='books'))
 
+        return cc_classes
+
     @classmethod
     def check_valid_db(cls, config_calibre_dir, app_db_path, config_calibre_uuid):
         if not config_calibre_dir:
@@ -637,6 +626,7 @@ class CalibreDB:
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
                 database_uuid = local_session().query(Library_Id).one_or_none()
+                # local_session.dispose()
 
             check_engine.connect()
             db_change = config_calibre_uuid != database_uuid.uuid
@@ -644,30 +634,13 @@ class CalibreDB:
             return False, False
         return True, db_change
 
-    def teardown(self, exception):
-        ctx = g.get("lib_sql")
-        if ctx:
-            ctx.close()
-
-    @property
-    def session(self):
-        # connect or get active connection
-        if not g.get("lib_sql"):
-            g.lib_sql = self.connect()
-        return g.lib_sql
-
     @classmethod
-    def update_config(cls, config, config_calibre_dir, app_db_path):
+    def update_config(cls, config):
         cls.config = config
-        cls.config_calibre_dir = config_calibre_dir
-        cls.app_db_path = app_db_path
-
-
-    def connect(self):
-        return self.setup_db(self.config_calibre_dir, self.app_db_path)
 
     @classmethod
     def setup_db(cls, config_calibre_dir, app_db_path):
+        cls.dispose()
 
         if not config_calibre_dir:
             cls.config.invalidate()
@@ -679,17 +652,16 @@ class CalibreDB:
             return None
 
         try:
-            engine = create_engine('sqlite://',
+            cls.engine = create_engine('sqlite://',
                                        echo=False,
                                        isolation_level="SERIALIZABLE",
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
-            with engine.begin() as connection:
-                connection.execute(text('PRAGMA cache_size = 10000;'))
+            with cls.engine.begin() as connection:
                 connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
                 connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
 
-            conn = engine.connect()
+            conn = cls.engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
@@ -705,10 +677,13 @@ class CalibreDB:
                 log.error_or_exception(e)
                 return None
 
-        return scoped_session(sessionmaker(autocommit=False,
-                                           autoflush=False,
-                                           bind=engine, future=True))
+        cls.session_factory = scoped_session(sessionmaker(autocommit=False,
+                                                          autoflush=True,
+                                                          bind=cls.engine, future=True))
+        for inst in cls.instances:
+            inst.init_session()
 
+        cls._init = True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
@@ -905,8 +880,7 @@ class CalibreDB:
                 results = self.session.query(Authors).filter(Authors.sort == auth).all()
                 # ToDo: How to handle not found author name
                 if not len(results):
-                    book_id = entry.id if isinstance(entry, Books) else entry[0].id
-                    log.error("Author '{}' of book {} not found to display name in right order".format(auth, book_id))
+                    log.error("Author {} not found to display name in right order".format(auth))
                     # error = True
                     break
                 for r in results:
@@ -1073,11 +1047,43 @@ class CalibreDB:
         except sqliteOperationalError:
             pass
 
+    @classmethod
+    def dispose(cls):
+        # global session
+
+        for inst in cls.instances:
+            old_session = inst.session
+            inst.session = None
+            if old_session:
+                try:
+                    old_session.close()
+                except Exception:
+                    pass
+                if old_session.bind:
+                    try:
+                        old_session.bind.dispose()
+                    except Exception:
+                        pass
+
+        for attr in list(Books.__dict__.keys()):
+            if attr.startswith("custom_column_"):
+                setattr(Books, attr, None)
+
+        for db_class in cc_classes.values():
+            Base.metadata.remove(db_class.__table__)
+        cc_classes.clear()
+
+        for table in reversed(Base.metadata.sorted_tables):
+            name = table.key
+            if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
+                if table is not None:
+                    Base.metadata.remove(table)
+
     def reconnect_db(self, config, app_db_path):
-        # self.dispose()
-        # self.engine.dispose()
+        self.dispose()
+        self.engine.dispose()
         self.setup_db(config.config_calibre_dir, app_db_path)
-        self.update_config(config, config.config_calibre_dir, app_db_path)
+        self.update_config(config)
 
 
 def lcase(s):

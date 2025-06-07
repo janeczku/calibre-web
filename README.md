@@ -115,6 +115,7 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 
 - **Python Version**: Ensure you have Python 3.7 or newer.
 - **Imagemagick**: Required for cover extraction from EPUBs. Windows users may also need to install [Ghostscript](https://ghostscript.com/releases/gsdnld.html) for PDF cover extraction.
+- **Windows Users**: Install [libmagic](https://gnuwin32.sourceforge.net/downlinks/file.php) for 32bit python or [libmagic for 64bit python](https://github.com/nscaife/file-windows/releases/tag/20170108), depending on your Python version. Make sure these files are included in your path.
 - **Optional Tools**:
    - **Calibre desktop program**: Recommended for on-the-fly conversion and metadata editing. Set the path to Calibre’s converter tool on the setup page.
    - **Kepubify tool**: Needed for Kobo device support. Download the tool and place the binary in `/opt/kepubify` on Linux or `C:\Program Files\kepubify` on Windows.

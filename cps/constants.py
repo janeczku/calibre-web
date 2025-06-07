@@ -172,11 +172,11 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
                                   'series_id, languages, publisher, pubdate, identifiers')
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
-STABLE_VERSION =  '0.6.25b'
+STABLE_VERSION =  '0.6.24'
 
 NIGHTLY_VERSION = dict()
-NIGHTLY_VERSION[0] = '$Format:%H$'
-NIGHTLY_VERSION[1] = '$Format:%cI$'
+NIGHTLY_VERSION[0] = '0af52f205358b0147ee3430f9e6c8fe007c0ea77'
+NIGHTLY_VERSION[1] = '2024-11-16T07:21:28+01:00'
 
 # CACHE
 CACHE_TYPE_THUMBNAILS    = 'thumbnails'
