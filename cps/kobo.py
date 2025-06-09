@@ -289,7 +289,7 @@ def HandleSyncRequest():
             log.debug("Marking as NewEntitlement")
             entitlement["BookMetadata"] = get_metadata(book.Books)
             sync_results.append({"NewEntitlement": entitlement})
-        elif book.deleted:
+        elif only_kobo_shelves and book.deleted:
             log.debug("Marking as ChangedEntitlement for deletion")
             sync_results.append({"ChangedEntitlement": entitlement})
         elif file_modified > sync_token.books_last_modified:
