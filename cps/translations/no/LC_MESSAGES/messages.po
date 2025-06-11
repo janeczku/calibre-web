@@ -717,12 +717,22 @@ msgstr "Kom i gang med Calibre-Web"
 msgid "Registration Email for user: %(name)s"
 msgstr "Registrerings-e-post for bruker: %(name)s"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "Konverter %(orig)s til %(format)s og send til E-Reader (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Konverter %(orig)s til %(format)s og send til E-Reader"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "Send %(format)s til E-Reader (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "Send %(format)s til E-Reader"

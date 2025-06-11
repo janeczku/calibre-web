@@ -709,12 +709,22 @@ msgstr "Memulai dengan Calibre-Web"
 msgid "Registration Email for user: %(name)s"
 msgstr "Email pendaftaran untuk pengguna: %(name)s"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "Ubah %(orig)s menjadi %(format)s dan kirim ke E-Reader (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Ubah %(orig)s menjadi %(format)s dan kirim ke E-Reader"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "Kirim %(format)s ke E-Reader (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "Kirim %(format)s ke E-Reader"

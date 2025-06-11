@@ -717,12 +717,22 @@ msgstr "Kezdő lépések a Calibre-Web-bel"
 msgid "Registration Email for user: %(name)s"
 msgstr "Regisztrációs e-mail a következő felhasználóhoz: %(name)s"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "%(orig)s konvertálása %(format)s-ra és küldés Kindle-re (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "%(orig)s konvertálása %(format)s-ra és küldés Kindle-re"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "%(format)s küldése Kindle-re (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "%(format)s küldése Kindle-re"
