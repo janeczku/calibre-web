@@ -419,6 +419,45 @@ def feed_shelf(book_id):
                 log.error_or_exception("Settings Database error: {}".format(e))
     return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
+@opds.route("/opds/shelf/<int:book_id>/new")
+@requires_basic_auth_if_no_ano
+def feed_shelf_new(book_id):
+    if not (auth.current_user().is_authenticated or g.allow_anonymous):
+        abort(404)
+    off = request.args.get("offset") or 0
+    if auth.current_user().is_anonymous:
+        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1,
+                                                  ub.Shelf.id == book_id).first()
+    else:
+        shelf = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(auth.current_user().id),
+                                                           ub.Shelf.id == book_id),
+                                                      and_(ub.Shelf.is_public == 1,
+                                                           ub.Shelf.id == book_id))).first()
+    result = list()
+    pagination = list()
+    # user is allowed to access shelf
+    if shelf:
+        result, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                                                           config.config_books_per_page,
+                                                           db.Books,
+                                                           ub.BookShelf.shelf == shelf.id,
+                                                           [ub.BookShelf.date_added.desc()],
+                                                           True, config.config_read_column,
+                                                           ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
+        # delete shelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
+        wrong_entries = calibre_db.session.query(ub.BookShelf) \
+            .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
+            .filter(db.Books.id == None).all()
+        for entry in wrong_entries:
+            log.info('Not existing book {} in {} deleted'.format(entry.book_id, shelf))
+            try:
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == entry.book_id).delete()
+                ub.session.commit()
+            except (OperationalError, InvalidRequestError) as e:
+                ub.session.rollback()
+                log.error_or_exception("Settings Database error: {}".format(e))
+    return render_xml_template('feed.xml', entries=result, pagination=pagination)
+
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
