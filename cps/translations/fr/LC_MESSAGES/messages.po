@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-06-28 13:57+0200\n"
 "PO-Revision-Date: 2020-06-07 06:47+0200\n"
 "Last-Translator: <thovi98@gmail.com>\n"
 "Language: fr\n"
@@ -1560,17 +1560,17 @@ msgstr "La commande Kepubify-converter a échouée : %(error)s"
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Fichier converti non trouvé ou plus d'un fichier dans le chemin %(folder)s"
 
-#: cps/tasks/convert.py:289 cps/tasks/convert.py:340
+#: cps/tasks/convert.py:291 cps/tasks/convert.py:342
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "Calibre a échoué avec l’erreur : %(error)s"
 
-#: cps/tasks/convert.py:317
+#: cps/tasks/convert.py:319
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "La commande ebook-convert a échouée : %(error)s"
 
-#: cps/tasks/convert.py:345
+#: cps/tasks/convert.py:347
 msgid "Convert"
 msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-06-28 13:57+0200\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: subdiox <subdiox@gmail.com>\n"
 "Language: ja\n"
@@ -1528,17 +1528,17 @@ msgstr "Kepubify-converter が失敗しました: %(error)s"
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "変換されたファイルが見つからないか、またはフォルダー %(folder)s 内に複数存在します"
 
-#: cps/tasks/convert.py:289 cps/tasks/convert.py:340
+#: cps/tasks/convert.py:291 cps/tasks/convert.py:342
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "Calibre が失敗しました: %(error)s"
 
-#: cps/tasks/convert.py:317
+#: cps/tasks/convert.py:319
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Ebook-converter が失敗しました: %(error)s"
 
-#: cps/tasks/convert.py:345
+#: cps/tasks/convert.py:347
 msgid "Convert"
 msgstr "変換"
 

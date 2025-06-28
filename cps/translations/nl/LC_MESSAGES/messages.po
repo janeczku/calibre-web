@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-03-30 15:55+0200\n"
+"POT-Creation-Date: 2025-06-28 13:57+0200\n"
 "PO-Revision-Date: 2023-12-20 22:00+0100\n"
 "Last-Translator: Michiel Cornelissen <michiel.cornelissen+gitbhun at proton.me>\n"
 "Language: nl\n"
@@ -1545,17 +1545,17 @@ msgstr "Kepubify-converteerder mislukt: %(error)s"
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Omgezette bestand is niet gevonden of meer dan een bestand in map %(folder)s"
 
-#: cps/tasks/convert.py:289 cps/tasks/convert.py:340
+#: cps/tasks/convert.py:291 cps/tasks/convert.py:342
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "Calibre mislukt met foutmelding: %(error)s"
 
-#: cps/tasks/convert.py:317
+#: cps/tasks/convert.py:319
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "E-boek-conversie mislukt: %(error)s"
 
-#: cps/tasks/convert.py:345
+#: cps/tasks/convert.py:347
 msgid "Convert"
 msgstr "Overzetten"
 
