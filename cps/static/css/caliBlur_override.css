@@ -27,6 +27,11 @@ input.datepicker {color: transparent}
 input.datepicker:focus {color: transparent}
 input.datepicker:focus + input {color: #555}
 
+.col-sm-3.col-lg-2.col-xs-6.book.session {
+    margin-left: 0;
+    margin-right: 0;
+}
+
 @media only screen and (max-width: 767px) {
         .row-fluid > .col-sm-2 {
         visibility: hidden;
