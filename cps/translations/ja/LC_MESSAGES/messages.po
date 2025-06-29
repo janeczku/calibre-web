@@ -709,12 +709,22 @@ msgstr "Calibre-Webを始める"
 msgid "Registration Email for user: %(name)s"
 msgstr "ユーザー: %(name)s 用の登録メール"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "%(orig)s を %(format)s に変換してからE-Readerに送信 (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "%(orig)s を %(format)s に変換してからE-Readerに送信"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "E-Readerに %(format)s を送信 (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "E-Readerに %(format)s を送信"

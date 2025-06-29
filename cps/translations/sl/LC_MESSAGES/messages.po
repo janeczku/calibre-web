@@ -701,12 +701,22 @@ msgstr "Začnite s programom Calibre-Web"
 msgid "Registration Email for user: %(name)s"
 msgstr "Registracijski e-poštni naslov za uporabnika: %(name)s"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "Pretvarjanje %(orig)s v %(format)s in pošiljanje v e-bralnik (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Pretvarjanje %(orig)s v %(format)s in pošiljanje v e-bralnik"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "Pošlji %(format)s v e-bralnik (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, python-format
 msgid "Send %(format)s to eReader"
 msgstr "Pošlji %(format)s v e-bralnik"
