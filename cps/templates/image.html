@@ -6,6 +6,7 @@
         srcset="{{ srcset }}"
         src="{{ url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified) }}"
         alt="{{ image_alt }}"
+        loading="lazy"
     />
 {%- endmacro %}
 
@@ -16,5 +17,6 @@
         srcset="{{ srcset }}"
         src="{{ url_for('web.get_series_cover', series_id=series.id, resolution='og', c='day'|cache_timestamp) }}"
         alt="{{ title }}"
+        loading="lazy"
     />
 {%- endmacro %}
