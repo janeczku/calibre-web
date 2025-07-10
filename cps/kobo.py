@@ -18,7 +18,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import base64
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import os
 import uuid
 import zipfile
@@ -287,16 +287,23 @@ def HandleSyncRequest():
             log.debug("Marking as NewEntitlement")
             entitlement["BookMetadata"] = get_metadata(book.Books)
             sync_results.append({"NewEntitlement": entitlement})
+            kobo_sync_status.add_synced_books(book.Books.id)
         elif only_kobo_shelves and book.deleted:
             log.debug("Marking as ChangedEntitlement for deletion")
             sync_results.append({"ChangedEntitlement": entitlement})
-        elif file_modified > sync_token.books_last_modified:
+            log.debug("Removing book from synced books")
+            kobo_sync_status.remove_synced_book(book.Books.id)
+        #book modified (which is what sets the sync token) and file modified can differ by a few seconds, so allow for up to a minute of difference before considering the file to be changed
+        elif file_modified > sync_token.books_last_modified + timedelta(seconds=60):
             # setting Accessibility to "Preview" tricks the Kobo to automatically redownload a book on the next call to the sync URL
             # cont_sync will be set whenever this is hit, so the query is ran again, and since the book is also removed from the synced books list, it will show up again
             log.debug("Marking as ChangedEntitlement & Preview for file update")
             entitlement["BookEntitlement"]["Accessibility"]="Preview"
             sync_results.append({"ChangedEntitlement": entitlement})
             changed_books += 1
+            # delete sync record if book was changed to force redownload on next call to sync URL
+            log.debug("Removing changed book from synced books")
+            kobo_sync_status.remove_synced_book(book.Books.id)
         else:
             log.debug("Marking as ChangedProductMetadata")
             entitlement["BookMetadata"] = get_metadata(book.Books)
@@ -313,12 +320,6 @@ def HandleSyncRequest():
             pass
 
         new_books_last_created = max(ts_created, new_books_last_created)
-        # delete sync record if book was changed to force redownload on next call to sync URL
-        if (only_kobo_shelves and book.deleted) or file_modified > sync_token.books_last_modified:
-            log.debug("Removing book from synced books")
-            kobo_sync_status.remove_synced_book(book.Books.id)
-        else:
-            kobo_sync_status.add_synced_books(book.Books.id)
 
     max_change = changed_entries.filter(ub.ArchivedBook.is_archived)\
         .filter(ub.ArchivedBook.user_id == current_user.id) \
