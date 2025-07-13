@@ -134,9 +134,6 @@ def metadata_search():
                 for c in cl
                 if active.get(c.__id__, True)
             }
-            try:
-                for future in concurrent.futures.as_completed(meta, timeout=20):
-                    data.extend([asdict(x) for x in future.result() if x])
-            except concurrent.futures.TimeoutError:
-                log.warning("Metadata search timeout after 20 seconds")
+            for future in concurrent.futures.as_completed(meta):
+                data.extend([asdict(x) for x in future.result() if x])
     return  make_response(jsonify(data))
