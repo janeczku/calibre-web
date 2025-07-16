@@ -291,20 +291,115 @@
       {% endif %}
       {% if feature_support['oauth'] %}
         <div data-related="login-settings-2">
+          
           {% for prov in provider %}
+          <!-- OAuth Provider Panel for {{ prov['provider_name']|title }} -->
+          <div class="panel panel-info" style="margin-bottom: 30px; border-width: 2px;">
+            <div class="panel-heading" style="padding: 15px;">
+              <h5 class="panel-title" style="font-size: 16px;">
+                <span class="glyphicon glyphicon-{% if prov['provider_name'] == 'github' %}share{% elif prov['provider_name'] == 'google' %}globe{% else %}cog{% endif %}" style="margin-right: 8px;"></span>
+                <strong>{{_('%(provider)s OAuth Configuration', provider=prov['provider_name']|title)}}</strong>
+                {% if prov['obtain_link'] %}
+                <small class="pull-right">
+                  <a href="{{prov['obtain_link']}}" target="_blank" class="text-white" style="text-decoration: none;">
+                    <span class="glyphicon glyphicon-link"></span> {{_('Get Credentials')}}
+                  </a>
+                </small>
+                {% endif %}
+              </h5>
+            </div>
+            <div class="panel-body" style="padding: 20px; background-color: #fafafa;">
+              <!-- Enable/Disable Provider -->
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id="config_{{ prov['id'] }}_oauth_active" name="config_{{ prov['id'] }}_oauth_active" {% if prov['active'] %}checked{% endif %}>
+                    <strong>{{_('Enable %(provider)s OAuth', provider=prov['provider_name']|title)}}</strong>
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Basic OAuth Configuration -->
+              <div class="form-group">
+                <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name']|title)}}</label>
+                <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name']|title)}}</label>
+                <input type="password" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
+              </div>
+          
+          {% if prov['provider_name'] == 'oidc' %}
+          <!-- OIDC/OpenID Connect specific fields -->
+          <hr style="margin: 20px 0; border-top: 2px solid #ddd;">
+          <h6 class="text-info"><span class="glyphicon glyphicon-cog"></span> {{_('OpenID Connect Configuration')}}</h6>
+          
           <div class="form-group">
-            <a href="{{prov['obtain_link']}}" target="_blank">{{_('Obtain %(provider)s OAuth Credential', provider=prov['provider_name'])}}</a>
+            <label for="config_{{ prov['id'] }}_oauth_authorization_url">{{_('Authorization URL')}} <span class="text-danger">*</span></label>
+            <input type="url" class="form-control" id="config_{{ prov['id'] }}_oauth_authorization_url" name="config_{{ prov['id'] }}_oauth_authorization_url" 
+                   value="{% if prov['oauth_authorization_url']%}{{ prov['oauth_authorization_url'] }}{% endif %}" 
+                   placeholder="https://your-provider.com/auth/realms/your-realm/protocol/openid-connect/auth" autocomplete="off">
+            <small class="help-block">{{_('The authorization endpoint URL of your OpenID Connect provider')}}</small>
           </div>
+          
           <div class="form-group">
-            <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
-            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
+            <label for="config_{{ prov['id'] }}_oauth_token_url">{{_('Token URL')}} <span class="text-danger">*</span></label>
+            <input type="url" class="form-control" id="config_{{ prov['id'] }}_oauth_token_url" name="config_{{ prov['id'] }}_oauth_token_url" 
+                   value="{% if prov['oauth_token_url']%}{{ prov['oauth_token_url'] }}{% endif %}" 
+                   placeholder="https://your-provider.com/auth/realms/your-realm/protocol/openid-connect/token" autocomplete="off">
+            <small class="help-block">{{_('The token endpoint URL of your OpenID Connect provider')}}</small>
           </div>
+          
           <div class="form-group">
-            <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
-            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
+            <label for="config_{{ prov['id'] }}_oauth_userinfo_url">{{_('User Info URL')}} <span class="text-danger">*</span></label>
+            <input type="url" class="form-control" id="config_{{ prov['id'] }}_oauth_userinfo_url" name="config_{{ prov['id'] }}_oauth_userinfo_url" 
+                   value="{% if prov['oauth_userinfo_url']%}{{ prov['oauth_userinfo_url'] }}{% endif %}" 
+                   placeholder="https://your-provider.com/auth/realms/your-realm/protocol/openid-connect/userinfo" autocomplete="off">
+            <small class="help-block">{{_('The userinfo endpoint URL of your OpenID Connect provider')}}</small>
           </div>
-        {% endfor %}
-        </div>
+          
+          <hr style="margin: 20px 0; border-top: 1px solid #eee;">
+          <h6 class="text-info"><span class="glyphicon glyphicon-wrench"></span> {{_('Advanced Configuration')}}</h6>
+          
+          <div class="form-group">
+            <label for="config_{{ prov['id'] }}_oauth_scope">{{_('OAuth Scopes')}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_scope" name="config_{{ prov['id'] }}_oauth_scope" 
+                   value="{% if prov['oauth_scope'] %}{% if prov['oauth_scope'] is string %}{{ prov['oauth_scope'] }}{% else %}{{ prov['oauth_scope']|join(',') }}{% endif %}{% endif %}" 
+                   placeholder="openid,profile,email" autocomplete="off">
+            <small class="help-block">{{_('Comma-separated list of OAuth scopes. Common scopes: openid, profile, email')}}</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="config_{{ prov['id'] }}_oauth_userinfo_username_field">{{_('Username Field')}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_userinfo_username_field" name="config_{{ prov['id'] }}_oauth_userinfo_username_field" 
+                    value="{% if prov['oauth_userinfo_username_field']%}{{ prov['oauth_userinfo_username_field'] }}{% endif %}" 
+                    placeholder="preferred_username" autocomplete="off">
+            <small class="help-block">{{_('Field name for username in user info response')}}</small>
+          </div>
+
+          <div class="form-group">
+            <label for="config_{{ prov['id'] }}_oauth_userinfo_email_field">{{_('Email Field')}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_userinfo_email_field" name="config_{{ prov['id'] }}_oauth_userinfo_email_field" 
+                    value="{% if prov['oauth_userinfo_email_field']%}{{ prov['oauth_userinfo_email_field'] }}{% endif %}" 
+                    placeholder="email" autocomplete="off">
+            <small class="help-block">{{_('Field name for email in user info response')}}</small>
+          </div>
+          
+          <div class="form-group">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="config_{{ prov['id'] }}_oauth_auto_create_user" name="config_{{ prov['id'] }}_oauth_auto_create_user" {% if prov['oauth_auto_create_user'] %}checked{% endif %}>
+                {{_('Automatically create users from OAuth provider')}}
+              </label>
+            </div>
+            <small class="help-block">{{_('If enabled, new users will be automatically created when they login via OAuth')}}</small>
+          </div>
+          {% endif %}
+          
+            </div> <!-- End panel-body -->
+          </div> <!-- End panel -->
+          {% endfor %}
+        </div> <!-- End login-settings-2 -->
       {% endif %}
       {% endif %}
     {% endif %}
