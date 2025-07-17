@@ -53,6 +53,18 @@ class ReverseProxied(object):
         proxy_set_header X-Scheme $scheme;
         proxy_set_header X-Script-Name /myprefix;
         }
+
+    In Caddy (modern syntax):
+    reverse_proxy localhost:8083 {
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Host {host}
+    }
+
+    Or using legacy headers:
+    reverse_proxy localhost:8083 {
+        header_up X-Scheme {scheme}
+        header_up X-Forwarded-Host {host}
+    }
     """
 
     def __init__(self, application):
@@ -61,20 +73,35 @@ class ReverseProxied(object):
 
     def __call__(self, environ, start_response):
         self.proxied = False
-        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+        script_name = environ.get("HTTP_X_SCRIPT_NAME", "")
         if script_name:
             self.proxied = True
-            environ['SCRIPT_NAME'] = script_name
-            path_info = environ.get('PATH_INFO', '')
+            environ["SCRIPT_NAME"] = script_name
+            path_info = environ.get("PATH_INFO", "")
             if path_info and path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
+                environ["PATH_INFO"] = path_info[len(script_name) :]
 
-        scheme = environ.get('HTTP_X_SCHEME', '')
+        # Handle X-Scheme header (original implementation)
+        scheme = environ.get("HTTP_X_SCHEME", "")
         if scheme:
-            environ['wsgi.url_scheme'] = scheme
-        servr = environ.get('HTTP_X_FORWARDED_HOST', '')
+            environ["wsgi.url_scheme"] = scheme
+            self.proxied = True
+
+        # Handle X-Forwarded-Proto header (commonly used by reverse proxies like Caddy)
+        forwarded_proto = environ.get("HTTP_X_FORWARDED_PROTO", "")
+        if forwarded_proto:
+            environ["wsgi.url_scheme"] = forwarded_proto
+            self.proxied = True
+
+        # Handle X-Forwarded-Protocol header (alternative header name)
+        forwarded_protocol = environ.get("HTTP_X_FORWARDED_PROTOCOL", "")
+        if forwarded_protocol:
+            environ["wsgi.url_scheme"] = forwarded_protocol
+            self.proxied = True
+
+        servr = environ.get("HTTP_X_FORWARDED_HOST", "")
         if servr:
-            environ['HTTP_HOST'] = servr
+            environ["HTTP_HOST"] = servr
             self.proxied = True
         return self.app(environ, start_response)
 
