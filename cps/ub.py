@@ -681,6 +681,32 @@ def migrate_user_session_table(engine, _session):
             trans.commit()
 
 
+def migrate_oauth_provider_table(engine, _session):
+    """Migrate OAuth provider table to include new generic OAuth fields"""
+    try:
+        # Check if the new oauth_authorization_url column exists
+        _session.query(exists().where(OAuthProvider.oauth_authorization_url)).scalar()
+        _session.commit()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        with engine.connect() as conn:
+            trans = conn.begin()
+            try:
+                # Add new OAuth provider columns for generic OAuth/OIDC support
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_authorization_url' String"))
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_token_url' String"))
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_userinfo_url' String"))
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_scope' String"))
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_userinfo_username_field' String"))
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_userinfo_email_field' String"))
+                conn.execute(text("ALTER TABLE oauthProvider ADD column 'oauth_auto_create_user' Boolean DEFAULT 1"))
+                trans.commit()
+                log.info("Successfully migrated OAuth provider table with new generic OAuth fields")
+            except Exception as e:
+                trans.rollback()
+                log.error("Failed to migrate OAuth provider table: %s", e)
+                raise
+
+
 # Migrate database to current version, has to be updated after every database change. Currently, migration from
 # maybe 4/5 versions back to current should work.
 # Migration is done by checking if relevant columns are existing, and then adding rows with SQL commands
@@ -689,6 +715,7 @@ def migrate_Database(_session):
     add_missing_tables(engine, _session)
     migrate_registration_table(engine, _session)
     migrate_user_session_table(engine, _session)
+    migrate_oauth_provider_table(engine, _session)
 
 
 def clean_database(_session):
