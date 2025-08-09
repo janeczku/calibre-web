@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2025-03-25 20:17:40</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2025-08-05 20:14:09</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-03-26 03:29:00</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-08-06 03:42:45</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 15 min</p>
         </div>
       </div>
       </div>
@@ -1023,12 +1023,12 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">3</td>
+        <td class="text-center">1</td>
+        <td class="text-center">14</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 18)">Detail</a>
@@ -1064,137 +1064,501 @@
     
     
     
-        <tr id='pt12.4' class='hiddenRow bg-success'>
+        <tr id="ft12.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft12.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft12.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 735, in test_delete_role
+    self.assertEqual(200, result.status_code)
+AssertionError: 200 != 405</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.5' class='hiddenRow bg-success'>
+        <tr id="et12.5" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_details_popup</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 880, in test_details_popup
+    books[1][0][&#39;ele&#39;].click()
+    ~~~~~~~~^^^
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.6' class='hiddenRow bg-success'>
+        <tr id="et12.6" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 393, in test_edit_book_identifier
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.7' class='hiddenRow bg-success'>
+        <tr id="et12.7" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 531, in test_edit_book_identifier_capital
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.8' class='hiddenRow bg-success'>
+        <tr id="et12.8" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 544, in test_edit_book_identifier_standard
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.9' class='hiddenRow bg-success'>
+        <tr id="et12.9" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 497, in test_edit_special_book_identifier
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.10' class='hiddenRow bg-success'>
+        <tr id="et12.10" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 782, in test_title_sort
+    self.assertEqual(7, len(self.search(&#39; book &#39;)))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.11' class='hiddenRow bg-success'>
+        <tr id="et12.11" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_cbz_coverformats</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 106, in test_upload_cbz_coverformats
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.12' class='hiddenRow bg-success'>
+        <tr id="et12.12" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.12')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 609, in test_upload_edit_role
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.13' class='hiddenRow bg-success'>
+        <tr id="et12.13" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 235, in test_upload_metadata_cb7
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.14' class='hiddenRow bg-success'>
+        <tr id="et12.14" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.14')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 162, in test_upload_metadata_cbr
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.15' class='hiddenRow bg-success'>
+        <tr id="et12.15" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.15')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.15" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 203, in test_upload_metadata_cbt
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.16' class='hiddenRow bg-success'>
+        <tr id="et12.16" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.16')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 871, in test_xss_author_edit
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.17' class='hiddenRow bg-success'>
+        <tr id="et12.17" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.17')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.17" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.17').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 827, in test_xss_comment_edit
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.18' class='hiddenRow bg-success'>
+        <tr id="et12.18" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.18')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 849, in test_xss_custom_comment_edit
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1844,11 +2208,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksList</td>
         <td class="text-center">19</td>
-        <td class="text-center">19</td>
-        <td class="text-center">0</td>
+        <td class="text-center">18</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1858,11 +2222,31 @@
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id="ft17.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksList - test_booklist_xss</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 497, in test_booklist_xss
+    self.assertEqual(200, response.status_code)
+AssertionError: 200 != 500</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2030,12 +2414,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2044,31 +2428,11 @@
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 99, in test_load_metadata
-    if results[cont][&#39;source&#39;] == &#39;https://comicvine.gamespot.com/&#39;:
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2076,13 +2440,13 @@ IndexError: list index out of range</pre>
 
     <tr id="su" class="passClass">
         <td>TestEditBooksOnGdrive</td>
-        <td class="text-center">18</td>
-        <td class="text-center">18</td>
+        <td class="text-center">19</td>
+        <td class="text-center">19</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 18)">Detail</a>
+            <a onclick="showClassDetail('c19', 19)">Detail</a>
         </td>
     </tr>
 
@@ -2234,7 +2598,7 @@ IndexError: list index out of range</pre>
     
         <tr id='pt19.17' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
+                <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_epub</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2242,6 +2606,15 @@ IndexError: list index out of range</pre>
     
     
         <tr id='pt19.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditBooksOnGdrive - test_upload_book_lit</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_watch_metadata</div>
             </td>
@@ -2572,12 +2945,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestFilePicker</td>
         <td class="text-center">3</td>
-        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c27', 3)">Detail</a>
@@ -2621,11 +2994,32 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt27.3' class='hiddenRow bg-success'>
+        <tr id="et27.3" class="none bg-info">
             <td>
                 <div class='testcase'>TestFilePicker - test_two_filepickers</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et27.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et27.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et27.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_filepicker.py&#34;, line 87, in test_two_filepickers
+    accordions[0].click()
+    ~~~~~~~~~~^^^
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3539,12 +3933,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestMergeBooksList</td>
         <td class="text-center">2</td>
-        <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c37', 2)">Detail</a>
@@ -3553,11 +3947,32 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id='pt37.1' class='hiddenRow bg-success'>
+        <tr id="et37.1" class="none bg-info">
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et37.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et37.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et37.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_merge_books_list.py&#34;, line 110, in test_book_merge
+    bl[&#39;remove-btn&#39;].click()
+    ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3922,13 +4337,13 @@ IndexError: list index out of range</pre>
 
     <tr id="su" class="skipClass">
         <td>TestReader</td>
+        <td class="text-center">9</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 8)">Detail</a>
+            <a onclick="showClassDetail('c42', 9)">Detail</a>
         </td>
     </tr>
 
@@ -3972,7 +4387,7 @@ IndexError: list index out of range</pre>
     
         <tr id='pt42.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReader - test_pdf_reader</div>
+                <div class='testcase'>TestReader - test_kepub_reader</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3981,7 +4396,7 @@ IndexError: list index out of range</pre>
     
         <tr id='pt42.6' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReader - test_single_file_comic</div>
+                <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3990,7 +4405,7 @@ IndexError: list index out of range</pre>
     
         <tr id='pt42.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReader - test_sound_listener</div>
+                <div class='testcase'>TestReader - test_single_file_comic</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3998,6 +4413,15 @@ IndexError: list index out of range</pre>
     
     
         <tr id='pt42.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReader - test_sound_listener</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt42.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -5800,10 +6224,10 @@ IndexError: list index out of range</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>523</td>
-        <td>515</td>
-        <td>0</td>
-        <td>1</td>
+        <td>525</td>
+        <td>500</td>
+        <td>2</td>
+        <td>16</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5832,13 +6256,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-52-generic #53~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jan 15 19:18:46 UTC 2 x86_64 x86_64</td>
+              <td>Linux 6.8.0-71-generic #71-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:52:38 UTC 2025 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Python</th>
-              <td>3.10.12</td>
+              <td>3.12.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5856,7 +6280,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>bleach</th>
-              <td>6.1.0</td>
+              <td>6.2.0</td>
               <td>Basic</td>
             </tr>
           
@@ -5868,13 +6292,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>cryptography</th>
-              <td>44.0.2</td>
+              <td>44.0.3</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Flask</th>
-              <td>3.1.0</td>
+              <td>3.1.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5910,13 +6334,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>greenlet</th>
-              <td>3.1.1</td>
-              <td>Basic</td>
-            </tr>
-          
-            <tr>
-              <th>iso-639</th>
-              <td>0.4.5</td>
+              <td>3.2.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5928,13 +6346,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>lxml</th>
-              <td>5.3.1</td>
+              <td>5.3.2</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>netifaces-plus</th>
               <td>0.12.4</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>pycountry</th>
+              <td>24.6.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5964,19 +6388,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>requests</th>
-              <td>2.32.3</td>
+              <td>2.32.4</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.39</td>
+              <td>2.0.42</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>tornado</th>
-              <td>6.4.2</td>
+              <td>6.5.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5988,7 +6412,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>urllib3</th>
-              <td>2.3.0</td>
+              <td>2.5.0</td>
               <td>Basic</td>
             </tr>
           
@@ -6006,7 +6430,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6036,7 +6460,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6066,7 +6490,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6096,7 +6520,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6137,14 +6561,8 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
-              <th>py7zr</th>
-              <td>0.22.0</td>
-              <td>TestEditBooks</td>
-            </tr>
-          
-            <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6174,13 +6592,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>beautifulsoup4</th>
-              <td>4.13.3</td>
+              <td>4.13.4</td>
               <td>TestLoadMetadata</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6210,7 +6628,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>beautifulsoup4</th>
-              <td>4.13.3</td>
+              <td>4.13.4</td>
               <td>TestLoadMetadataScholar</td>
             </tr>
           
@@ -6222,7 +6640,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6252,7 +6670,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.165.0</td>
+              <td>2.177.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6294,13 +6712,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.23.0</td>
+              <td>4.25.0</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.23.0</td>
+              <td>4.25.0</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -6312,7 +6730,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.23.0</td>
+              <td>4.25.0</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -6335,6 +6753,12 @@ IndexError: list index out of range</pre>
             </tr>
           
             <tr>
+              <th>comicapi</th>
+              <td>3.2.0</td>
+              <td>TestReader</td>
+            </tr>
+          
+            <tr>
               <th>mutagen</th>
               <td>1.47.0</td>
               <td>TestUploadAudio</td>
@@ -6348,7 +6772,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(515, 0, 1, 7);
+    drawCircle(500, 2, 16, 7);
     showCase(5);
 </script>
 

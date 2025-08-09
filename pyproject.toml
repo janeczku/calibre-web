@@ -48,11 +48,11 @@ dependencies = [
     "urllib3>=1.22,<3.0",
     "Flask-Limiter>=2.3.0,<3.13.0",
     "regex>=2022.3.2,<2025.3.20",
-    "bleach>=6.0.0,<6.2.0",
+    "bleach>=6.0.0,<6.3.0",
     "python-magic>=0.4.27,<0.5.0",
     "python-magic-bin>=0.4.0,<0.5.0;sys_platform=='win32'",
     "flask-httpAuth>=4.4.0,<5.0.0",
-    "cryptography>=43.0.4,<45.0.0",
+    "cryptography>=39.0.0,<45.0.0",
 ]
 dynamic = ["version"]
 

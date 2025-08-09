@@ -103,7 +103,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/mergebooks",
+            url: getPath() + "/ajax/mergebooks",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success() {
                 $("#books-table").bootstrapTable("refresh");
@@ -122,7 +122,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/simulatemerge",
+            url: getPath() + "/ajax/simulatemerge",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success(booTitles) {
                 $('#merge_from').empty();
@@ -140,7 +140,7 @@ $(function() {
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            url: window.location.pathname + "/../ajax/xchange",
+            url: getPath() + "/ajax/xchange",
             data: JSON.stringify({"xchange":selections}),
             success: function success() {
                 $("#books-table").bootstrapTable("refresh");
