@@ -65,15 +65,13 @@
     {% endfor %}
     <content type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">
     {% if entry.Books.ratings.__len__() > 0 %}
-      RATING:
-        {% for number in range((entry.Books.ratings[0].rating/2)|int(2)) %}
-          ★
-          {% if loop.last and loop.index < 5 %}
-            {% for numer in range(5 - loop.index) %}
-              ★
-            {% endfor %}
-          {% endif %}
-        {% endfor %}<br/>
+      RATING: {% for number in range((entry.Books.ratings[0].rating/2)|int(2)) %}
+        ★{% if loop.last and loop.index < 5 %}
+          {% for numer in range(5 - loop.index) %}
+            ★
+          {% endfor %}
+        {% endif %}
+      {% endfor %}<br/>
     {% endif %}
     {% if entry.Books.tags|length > 0 %}
     TAGS: {% for tag in entry.Books.tags %}{{tag.name}}{{ ", " if not loop.last else "" }}{% endfor %}<br/>
@@ -119,7 +117,7 @@
     {% endif %}
 
     {% if entry.Books.comments[0] %}
-        <p>{{entry.Books.comments[0].text|striptags}}</p>
+        <p>{{entry.Books.comments[0].text}}</p>
     {% endif %}
     </div></content>
     {% if entry.Books.has_cover %}
