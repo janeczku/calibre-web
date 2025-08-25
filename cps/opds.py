@@ -88,8 +88,8 @@ def feed_letter_books(book_id):
                                                         letter,
                                                         [db.Books.sort],
                                                         True, config.config_read_column)
-
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/new")
@@ -101,7 +101,8 @@ def feed_new():
     entries, __, pagination = calibre_db.fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1), 0,
                                                         db.Books, True, [db.Books.timestamp.desc()],
                                                         True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/discover")
@@ -112,7 +113,8 @@ def feed_discover():
     query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
     entries = query.filter(calibre_db.common_filters()).order_by(func.random()).limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/rated")
@@ -125,7 +127,8 @@ def feed_best_rated():
                                                         db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                         [db.Books.timestamp.desc()],
                                                         True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/hot")
@@ -149,7 +152,8 @@ def feed_hot():
     num_books = entries.__len__()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1),
                             config.config_books_per_page, num_books)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/author")
@@ -174,7 +178,8 @@ def feed_letter_author(book_id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             entries.count())
     entries = entries.limit(config.config_books_per_page).offset(off).all()
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/author/<int:book_id>")
@@ -197,7 +202,8 @@ def feed_publisherindex():
         .limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(calibre_db.session.query(db.Publishers).all()))
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_publisher', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_publisher', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/publisher/<int:book_id>")
@@ -230,7 +236,8 @@ def feed_letter_category(book_id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             entries.count())
     entries = entries.offset(off).limit(config.config_books_per_page).all()
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_category', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_category', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/category/<int:book_id>")
@@ -263,7 +270,8 @@ def feed_letter_series(book_id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             entries.count())
     entries = entries.offset(off).limit(config.config_books_per_page).all()
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_series', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_series', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/series/<int:book_id>")
@@ -275,7 +283,8 @@ def feed_series(book_id):
                                                         db.Books.series.any(db.Series.id == book_id),
                                                         [db.Books.series_index],
                                                         True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/ratings")
@@ -297,7 +306,8 @@ def feed_ratingindex():
     element = list()
     for entry in entries:
         element.append(FeedObject(entry[0].id, _("{} Stars").format(entry.name)))
-    return render_xml_template('feed.xml', listelements=element, folder='opds.feed_ratings', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=element, folder='opds.feed_ratings', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/ratings/<book_id>")
@@ -321,7 +331,8 @@ def feed_formatindex():
     element = list()
     for entry in entries:
         element.append(FeedObject(entry.format, entry.format))
-    return render_xml_template('feed.xml', listelements=element, folder='opds.feed_format', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=element, folder='opds.feed_format', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/formats/<book_id>")
@@ -333,7 +344,8 @@ def feed_format(book_id):
                                                         db.Books.data.any(db.Data.format == book_id.upper()),
                                                         [db.Books.timestamp.desc()],
                                                         True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/language")
@@ -351,7 +363,8 @@ def feed_languagesindex():
         languages[0].name = isoLanguages.get_language_name(get_locale(), languages[0].lang_code)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(languages))
-    return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/language/<int:book_id>")
@@ -363,7 +376,8 @@ def feed_languages(book_id):
                                                         db.Books.languages.any(db.Languages.id == book_id),
                                                         [db.Books.timestamp.desc()],
                                                         True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/shelfindex")
@@ -377,7 +391,8 @@ def feed_shelfindex():
     number = len(shelf)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             number)
-    return render_xml_template('feed.xml', listelements=shelf, folder='opds.feed_shelf', pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', listelements=shelf, folder='opds.feed_shelf', pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/shelf/<int:book_id>")
@@ -417,7 +432,8 @@ def feed_shelf(book_id):
             except (OperationalError, InvalidRequestError) as e:
                 ub.session.rollback()
                 log.error_or_exception("Settings Database error: {}".format(e))
-    return render_xml_template('feed.xml', entries=result, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=result, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
@@ -470,7 +486,8 @@ def feed_read_books():
         return abort(403)
     off = request.args.get("offset") or 0
     result, pagination = render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
-    return render_xml_template('feed.xml', entries=result, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=result, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/unreadbooks")
@@ -480,7 +497,8 @@ def feed_unread_books():
         return abort(403)
     off = request.args.get("offset") or 0
     result, pagination = render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
-    return render_xml_template('feed.xml', entries=result, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=result, pagination=pagination, cc=cc)
 
 
 class FeedObject:
@@ -502,7 +520,8 @@ def feed_search(term):
         entries, __, ___ = calibre_db.get_search_results(term, config=config)
         entries_count = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entries_count, entries_count)
-        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination, cc=cc)
     else:
         return render_xml_template('feed.xml', searchterm="")
 
@@ -524,7 +543,8 @@ def render_xml_dataset(data_table, book_id):
                                                         getattr(db.Books, data_table.__tablename__).any(data_table.id == book_id),
                                                         [db.Books.timestamp.desc()],
                                                         True, config.config_read_column)
-    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 def render_element_index(database_column, linked_table, folder):
@@ -545,7 +565,9 @@ def render_element_index(database_column, linked_table, folder):
         elements.append({'id': entry.id, 'name': entry.id})
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(entries) + 1)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
     return render_xml_template('feed.xml',
                                letterelements=elements,
                                folder=folder,
-                               pagination=pagination)
+                               pagination=pagination,
+                               cc=cc)
