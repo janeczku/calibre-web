@@ -456,7 +456,7 @@ msgstr "{} Gebruiker succesvol geïmporteerd"
 
 #: cps/admin.py:1734
 msgid "Books path not valid"
-msgstr ""
+msgstr "Boekpad is ongeldig"
 
 #: cps/admin.py:1740
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -848,11 +848,11 @@ msgstr "Fout bij het uitvoeren van UnRar"
 
 #: cps/helper.py:1025
 msgid "Could not find the specified directory"
-msgstr ""
+msgstr "Opgegeven map kon niet worden gevonden"
 
 #: cps/helper.py:1028
 msgid "Please specify a directory, not a file"
-msgstr ""
+msgstr "Geef een map op, geen bestand"
 
 #: cps/helper.py:1042
 #, fuzzy
@@ -862,7 +862,7 @@ msgstr "Kan niet schrijven naar database"
 #: cps/helper.py:1051
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
-msgstr ""
+msgstr "Ontbrekende calibre-programmabestanden: %(missing)s"
 
 #: cps/helper.py:1053
 #, fuzzy, python-format
@@ -1171,7 +1171,7 @@ msgstr "Dit boek maakt al deel uit van boekenplank: %(shelfname)s"
 #: cps/shelf.py:77
 #, python-format
 msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
-msgstr ""
+msgstr "%(book_id)s is geen geldig Boek Id. Niet kunnen toevoegen aan boekenplank"
 
 #: cps/shelf.py:97
 #, python-format
@@ -1514,7 +1514,7 @@ msgstr "Geen geldig gmail.json bestand gevonden met OAuth informatie"
 
 #: cps/tasks/clean.py:29
 msgid "Delete temp folder contents"
-msgstr ""
+msgstr "Inhoud van tijdelijke map verwijderen"
 
 #: cps/tasks/convert.py:112
 #, fuzzy, python-format
@@ -1962,7 +1962,7 @@ msgstr "Afmelden"
 
 #: cps/templates/basic_layout.html:35
 msgid "Normal Theme"
-msgstr ""
+msgstr "Standaard Thema"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -2256,7 +2256,7 @@ msgstr "Locatie van de Calibre-database"
 
 #: cps/templates/config_db.html:21
 msgid "Separate Book Files from Library"
-msgstr ""
+msgstr "Scheid boekbestanden van de bibliotheek"
 
 #: cps/templates/config_db.html:34
 msgid "Use Google Drive?"
@@ -2341,7 +2341,7 @@ msgstr "Zet niet Engelse tekens in titel en auteur om tijdens het opslaan"
 
 #: cps/templates/config_edit.html:108
 msgid "Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)"
-msgstr ""
+msgstr "Metadata insluiten in e-boekbestand bij downloaden/conversie/e-mail (Calibre/Kepubify bestanden/binaries benodigd)"
 
 #: cps/templates/config_edit.html:112
 msgid "Enable Uploads"
@@ -2559,15 +2559,15 @@ msgstr "Beperk aantal mislukte inlogpogingen"
 
 #: cps/templates/config_edit.html:372
 msgid "Configure Backend for Limiter"
-msgstr ""
+msgstr "Configureer email server"
 
 #: cps/templates/config_edit.html:376
 msgid "Options for Limiter Backend"
-msgstr ""
+msgstr "Opties voor email server"
 
 #: cps/templates/config_edit.html:382
 msgid "Check if file extensions matches file content on upload"
-msgstr ""
+msgstr "Controleer bij upload of de bestandsextensie overeenkomt met bestandstype"
 
 #: cps/templates/config_edit.html:385
 msgid "Session protection"
@@ -2604,7 +2604,7 @@ msgstr "Forceer hoofdletter"
 
 #: cps/templates/config_edit.html:414
 msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
-msgstr ""
+msgstr "Forceer tekens (vereist voor Chinese/Japanse/Koreaanse tekens)"
 
 #: cps/templates/config_edit.html:418
 msgid "Enforce special characters"
@@ -2748,7 +2748,7 @@ msgstr "Toevoegen aan archief"
 
 #: cps/templates/detail.html:275
 msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
-msgstr ""
+msgstr "Markeer het boek als gearchiveerd of niet. Om het te verbergen in Calibre-Web en van de Kobo Reader te verwijderen"
 
 #: cps/templates/detail.html:275
 #, fuzzy
@@ -3162,7 +3162,7 @@ msgstr "Lettertypegrootte"
 
 #: cps/templates/read.html:105
 msgid "Font"
-msgstr ""
+msgstr "Lettertype"
 
 #: cps/templates/read.html:106
 #, fuzzy
@@ -3194,7 +3194,7 @@ msgstr "Gelezen"
 
 #: cps/templates/read.html:114
 msgid "Two columns"
-msgstr ""
+msgstr "Twee kolommen"
 
 #: cps/templates/read.html:115
 #, fuzzy
@@ -3400,11 +3400,11 @@ msgstr "Publicatiedatum tot"
 
 #: cps/templates/search_form.html:44 cps/templates/search_form.html:165
 msgid "Any"
-msgstr ""
+msgstr "Elk(e)"
 
 #: cps/templates/search_form.html:45 cps/templates/search_form.html:166
 msgid "Empty"
-msgstr ""
+msgstr "Leeg"
 
 #: cps/templates/search_form.html:60
 msgid "Exclude Tags"
@@ -3521,7 +3521,7 @@ msgstr "Systeeminformatie"
 
 #: cps/templates/stats.html:33
 msgid "Program"
-msgstr ""
+msgstr "Programma"
 
 #: cps/templates/stats.html:34
 msgid "Installed Version"
@@ -3570,7 +3570,7 @@ msgstr "Gebruikerswachtwoord herstellen"
 
 #: cps/templates/user_edit.html:28
 msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
-msgstr ""
+msgstr "Stuur naar het eReader email adres. meerdere email met een komma scheiden voor meerdere eReaders"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
