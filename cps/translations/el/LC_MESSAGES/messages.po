@@ -720,12 +720,22 @@ msgstr "Ξεκινήστε με το Calibre-Web"
 msgid "Registration Email for user: %(name)s"
 msgstr "e-mail εγγραφής για χρήστη: %(name)s"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "Μετατροπή %(orig)s σε %(format)s και αποστολή στο Kindle (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "Μετατροπή %(orig)s σε %(format)s και αποστολή στο Kindle"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "Αποστολή %(format)s στο Kindle (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "Αποστολή %(format)s στο Kindle"

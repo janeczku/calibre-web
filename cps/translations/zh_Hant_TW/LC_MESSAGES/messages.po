@@ -712,12 +712,22 @@ msgstr "開啟Calibre-Web之旅"
 msgid "Registration Email for user: %(name)s"
 msgstr "用戶註冊電子郵件：%(name)s"
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, fuzzy, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr "轉換 %(orig)s 到 %(format)s 並發送到Kindle (%(eReadermail)s)"
+
+#: cps/helper.py:161
 #, fuzzy, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr "轉換 %(orig)s 到 %(format)s 並發送到Kindle"
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, fuzzy, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr "發送 %(format)s 到Kindle (%(eReadermail)s)"
+
+#: cps/helper.py:189
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "發送 %(format)s 到Kindle"
