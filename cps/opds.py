@@ -456,7 +456,8 @@ def feed_shelf_new(book_id):
             except (OperationalError, InvalidRequestError) as e:
                 ub.session.rollback()
                 log.error_or_exception("Settings Database error: {}".format(e))
-    return render_xml_template('feed.xml', entries=result, pagination=pagination)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
