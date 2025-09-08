@@ -81,20 +81,78 @@ $(function() {
                 $("#merge_books").addClass("disabled");
                 $("#merge_books").attr("aria-disabled", true);
             }
+            if (selections.length >= 1) {
+                $("#delete_selected_books").removeClass("disabled");
+                $("#delete_selected_books").attr("aria-disabled", false);
+
+                $("#archive_selected_books").removeClass("disabled");
+                $("#archive_selected_books").attr("aria-disabled", false);
+
+                $("#unarchive_selected_books").removeClass("disabled");
+                $("#unarchive_selected_books").attr("aria-disabled", false);
+
+                $("#read_selected_books").removeClass("disabled");
+                $("#read_selected_books").attr("aria-disabled", false);
+
+                $("#unread_selected_books").removeClass("disabled");
+                $("#unread_selected_books").attr("aria-disabled", false);
+
+                $("#edit_selected_books").removeClass("disabled");
+                $("#edit_selected_books").attr("aria-disabled", false);
+            } else {
+                $("#delete_selected_books").addClass("disabled");
+                $("#delete_selected_books").attr("aria-disabled", true);
+
+                $("#archive_selected_books").addClass("disabled");
+                $("#archive_selected_books").attr("aria-disabled", true);
+
+                $("#unarchive_selected_books").addClass("disabled");
+                $("#unarchive_selected_books").attr("aria-disabled", true);
+
+                $("#read_selected_books").addClass("disabled");
+                $("#read_selected_books").attr("aria-disabled", true);
+
+                $("#unread_selected_books").addClass("disabled");
+                $("#unread_selected_books").attr("aria-disabled", true);
+
+                $("#edit_selected_books").addClass("disabled");
+                $("#edit_selected_books").attr("aria-disabled", true);
+            }
             if (selections.length < 1) {
-                $("#delete_selection").addClass("disabled");
-                $("#delete_selection").attr("aria-disabled", true);
+                // $("#book_delete_selection").addClass("disabled");
+                // $("#book_delete_selection").attr("aria-disabled", true);
                 $("#table_xchange").addClass("disabled");
                 $("#table_xchange").attr("aria-disabled", true);
             } else {
-                $("#delete_selection").removeClass("disabled");
-                $("#delete_selection").attr("aria-disabled", false);
+                // $("#book_delete_selection").removeClass("disabled");
+                // $("#book_delete_selection").attr("aria-disabled", false);
                 $("#table_xchange").removeClass("disabled");
                 $("#table_xchange").attr("aria-disabled", false);
-
             }
+            handle_header_buttons();
         });
-    $("#delete_selection").click(function() {
+
+    // Small block to initialize the state of the author/title sort inputs in metadata form
+    {
+        let checkA = $('#autoupdate_authorsort').prop('checked');
+        $('#author_sort_input').prop('disabled', checkA);
+        let checkT = $('#autoupdate_titlesort').prop('checked');
+        $('#title_sort_input').prop('disabled', checkT);
+    }
+
+    // Disable/enable author and title sort input in respect to auto-update title/author sort being checked on or not
+    $("#autoupdate_authorsort").on('change', function(event) {
+            let checkA = $('#autoupdate_authorsort').prop('checked');
+            $('#author_sort_input').prop('disabled', checkA);
+    })
+
+    $("#autoupdate_titlesort").on('change', function(event) {
+            let checkT = $('#autoupdate_titlesort').prop('checked');
+            $('#title_sort_input').prop('disabled', checkT);
+    })
+    /////
+
+    $("#book_delete_selection").click(function () {
         $("#books-table").bootstrapTable("uncheckAll");
     });
 
@@ -135,6 +193,250 @@ $(function() {
         });
     });
 
+    $("#edit_selected_books").click(function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#edit_selected_modal').modal("show");
+        }
+    });
+
+    $("#edit_selected_confirm").click(function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/editselectedbooks",
+            data: JSON.stringify({
+                "selections": selections,
+                "title": $("#title_input").val(),
+                "title_sort": $("#title_sort_input").val(),
+                "author_sort": $("#author_sort_input").val(),
+                "authors": $("#authors_input").val(),
+                "categories": $("#categories_input").val(),
+                "series": $("#series_input").val(),
+                "languages": $("#languages_input").val(),
+                "publishers": $("#publishers_input").val(),
+                "comments": $("#comments_input").val().toString(),
+                "checkA": $('#autoupdate_authorsort').prop('checked'),
+                "checkT": $('#autoupdate_titlesort').prop('checked')
+            }),
+            success: function success(data) {
+                let result = "";
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+
+                $("#title_input").val("");
+                $("#title_sort_input").val("");
+                $("#author_sort_input").val("");
+                $("#authors_input").val("");
+                $("#categories_input").val("");
+                $("#series_input").val("");
+                $("#languages_input").val("");
+                $("#publishers_input").val("");
+                $("#comments_input").val("");
+
+                $("#flash_success").remove();
+                $("#flash_danger").remove();
+
+                if (!jQuery.isEmptyObject(data)) {
+                    data.forEach(function(item) {
+                        if (item.success === true) {
+                            result = "success";
+                        } else {
+                            result = "danger";
+                        }
+                        $(".navbar").after('<div class="row-fluid text-center">' +
+                            '<div id="flash_' + result + '" class="alert alert-' + result + '">' + item.msg + '</div>' +
+                            '</div>');
+                    });
+                }
+                $(".table.table-striped").bootstrapTable("refresh");
+                // handleListServerResponse(data);
+            }
+        });
+    });
+
+    $(document).on('click', '#archive_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#archive_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-archive-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-archive-selected-books");
+                });
+
+            }
+        });
+    });
+
+    /*$(document).on('click', '#archive_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/archiveselectedbooks",
+            data: JSON.stringify({"selections":selections, "archive": true}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });
+
+    $(document).on('click', '#unarchive_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#unarchive_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-unarchive-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-unarchive-selected-books");
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click', '#unarchive_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/archiveselectedbooks",
+            data: JSON.stringify({"selections":selections, "archive": false}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });
+
+    $(document).on('click', '#delete_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#delete_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-delete-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-delete-selected-books");
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click', '#delete_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/deleteselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });
+
+    $(document).on('click', '#read_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#read_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-read-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-read-selected-books");
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click', '#read_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/readselectedbooks",
+            data: JSON.stringify({"selections":selections, "markAsRead": true}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });
+
+    $(document).on('click', '#unread_selected_books', function(event) {
+        if ($(this).hasClass("disabled")) {
+            event.stopPropagation()
+        } else {
+            $('#unread_selected_modal').modal("show");
+        }
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/displayselectedbooks",
+            data: JSON.stringify({"selections":selections}),
+            success: function success(booTitles) {
+                $('#display-unread-selected-books').empty();
+                $.each(booTitles.books, function(i, item) {
+                    $("<span>- " + item + "</span><p></p>").appendTo("#display-unread-selected-books");
+                });
+
+            }
+        });
+    });
+
+    $(document).on('click', '#unread_selected_confirm', function(event) {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: getPath() + "/ajax/readselectedbooks",
+            data: JSON.stringify({"selections":selections, "markAsRead": false}),
+            success: function success(booTitles) {
+                $("#books-table").bootstrapTable("refresh");
+                $("#books-table").bootstrapTable("uncheckAll");
+            }
+        });
+    });*/
+
     $("#table_xchange").click(function() {
         $.ajax({
             method:"post",
@@ -157,6 +459,10 @@ $(function() {
                 editable: {
                     mode: "inline",
                     emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    ajaxOptions: {
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                    },
                     success: function (response, __) {
                         if (!response.success) return response.msg;
                         return {newValue: response.newValue};
@@ -164,7 +470,8 @@ $(function() {
                     params: function (params) {
                         params.checkA = $('#autoupdate_authorsort').prop('checked');
                         params.checkT = $('#autoupdate_titlesort').prop('checked');
-                        return params
+                        params.pk = [params.pk];
+                        return JSON.stringify(params);
                     }
                 }
             };
@@ -198,7 +505,7 @@ $(function() {
         searchAlign: "left",
         showSearchButton : true,
         searchOnEnterKey: true,
-        checkboxHeader: false,
+        checkboxHeader: true,
         maintainMetaData: true,
         responseHandler: responseHandler,
         columns: column,
@@ -212,7 +519,7 @@ $(function() {
                 $.ajax({
                     method:"get",
                     dataType: "json",
-                    url: window.location.pathname + "/../ajax/sort_value/" + field + "/" + row.id,
+                    url: getPath() + "/ajax/sort_value/" + field + "/" + row.id,
                     success: function success(data) {
                         var key = Object.keys(data)[0];
                         $("#books-table").bootstrapTable("updateCellByUniqueId", {
@@ -222,6 +529,66 @@ $(function() {
                         });
                     }
                 });
+            }
+        },
+        onPostBody () {
+            // Remove all checkboxes from Headers for showing the texts in the column selector
+            $('.columns [data-field]').each(function(){
+                var elText = $(this).next().text();
+                $(this).next().empty();
+                var index = elText.lastIndexOf('\n', elText.length - 2);
+                if ( index > -1) {
+                    elText = elText.substr(index);
+                }
+                $(this).next().text(elText);
+            });
+        },
+        onPostHeader() {
+            $(".form-check").each(function () {
+                var item = $(this).parent();
+                var parent = item.parent().parent();
+                if (parent.prop('nodeName') === "TH") {
+                    item.prependTo(parent);
+                }
+            });
+
+            if ($(".button_head").length) {
+                if (!$._data($(".button_head").get(0), "events")) {
+                    $(".button_head").on("click", function () {
+                        var result = $('#books-table').bootstrapTable('getSelections').map(a => a.id);
+                        confirmDialog(
+                            "btndelbook",
+                            "GeneralDeleteModal",
+                            0,
+                            function () {
+                                $.ajax({
+                                    method: "post",
+                                    url: getPath() + "/ajax/deletebook",
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    data: JSON.stringify({"bookid": result}),
+                                    success: function (data) {
+                                        selections = selections.filter((el) => !result.includes(el));
+                                        handleListServerResponse(data);
+                                    },
+                                    error: function (data) {
+                                        handleListServerResponse([{type: "danger", message: data.responseText}])
+                                    },
+                                });
+                            }
+                        );
+                    });
+                }
+            }
+            if ($(".check_head").length) {
+                if (!$._data($(".check_head").get(0), "events")) {
+                    $(".check_head").on("change", function () {
+                        var val = $(this).data("set");
+                        var name = $(this).data("name");
+                        var data = $(this).data("val");
+                        bookCheckboxHeader(val, name, data);
+                    });
+                }
             }
         },
         // eslint-disable-next-line no-unused-vars
@@ -240,10 +607,16 @@ $(function() {
                 method:"post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: window.location.pathname + "/../ajax/table_settings",
+                url: getPath() + "/ajax/table_settings",
                 data: "{" + st + "}",
             });
+            handle_header_buttons();
         },
+        onLoadSuccess: function() {
+            $("input:radio.check_head:checked").each(function () {
+                $(this).prop('checked', false);
+            });
+        }
     });
 
     $("#domain_allow_submit").click(function(event) {
@@ -252,7 +625,7 @@ $(function() {
         $(this).closest("form").submit();
         $.ajax ({
             method:"get",
-            url: window.location.pathname + "/../../ajax/domainlist/1",
+            url: getPath() + "/ajax/domainlist/1",
             async: true,
             timeout: 900,
             success:function(data) {
@@ -273,7 +646,7 @@ $(function() {
         $(this).closest("form").submit();
         $.ajax ({
             method:"get",
-            url: window.location.pathname + "/../../ajax/domainlist/0",
+            url: getPath() + "/ajax/domainlist/0",
             async: true,
             timeout: 900,
             success:function(data) {
@@ -291,12 +664,12 @@ $(function() {
     function domainHandle(domainId) {
         $.ajax({
             method:"post",
-            url: window.location.pathname + "/../../ajax/deletedomain",
+            url: getPath() + "/ajax/deletedomain",
             data: {"domainid":domainId}
         });
         $.ajax({
             method:"get",
-            url: window.location.pathname + "/../../ajax/domainlist/1",
+            url: getPath() + "/ajax/domainlist/1",
             async: true,
             timeout: 900,
             success:function(data) {
@@ -305,7 +678,7 @@ $(function() {
         });
         $.ajax({
             method:"get",
-            url: window.location.pathname + "/../../ajax/domainlist/0",
+            url: getPath() + "/ajax/domainlist/0",
             async: true,
             timeout: 900,
             success:function(data) {
@@ -541,7 +914,7 @@ $(function() {
                 method:"post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                url: window.location.pathname + "/../../ajax/user_table_settings",
+                url: getPath() + "/ajax/user_table_settings",
                 data: "{" + st + "}",
             });
             handle_header_buttons();
@@ -567,8 +940,8 @@ $(function() {
 
 function handle_header_buttons () {
     if (selections.length < 1) {
-        $("#user_delete_selection").addClass("disabled");
-        $("#user_delete_selection").attr("aria-disabled", true);
+        $(".mass_selection").addClass("disabled");
+        $(".mass_selection").attr("aria-disabled", true);
         $(".check_head").attr("aria-disabled", true);
         $(".check_head").attr("disabled", true);
         $(".check_head").prop('checked', false);
@@ -580,8 +953,8 @@ function handle_header_buttons () {
         $(".multi_selector").attr("disabled", true);
         $(".header_select").attr("disabled", true);
     } else {
-        $("#user_delete_selection").removeClass("disabled");
-        $("#user_delete_selection").attr("aria-disabled", false);
+        $(".mass_selection").removeClass("disabled");
+        $(".mass_selection").attr("aria-disabled", false);
         $(".check_head").attr("aria-disabled", false);
         $(".check_head").removeAttr("disabled");
         $(".button_head").attr("aria-disabled", false);
@@ -590,8 +963,10 @@ function handle_header_buttons () {
         $(".multi_head").removeClass("hidden");
         $(".multi_selector").attr("aria-disabled", false);
         $(".multi_selector").removeAttr("disabled");
-        $('.multi_selector').selectpicker('refresh');
         $(".header_select").removeAttr("disabled");
+        if (typeof $.fn.selectpicker === "function") {
+            $('.multi_selector').selectpicker('refresh');
+        }
     }
 }
 
@@ -718,7 +1093,7 @@ function loadSuccess() {
     $("input[data-name='passwd_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
     $("input[data-name='edit_shelf_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
     $("input[data-name='sidebar_read_and_unread'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
-    $(".user-remove[data-pk='"+guest.data("pk")+"']").hide();
+    $(".user-remove[data-pk='" + guest.data("pk") + "']").hide();
 }
 
 function move_header_elements() {
@@ -760,7 +1135,7 @@ function move_header_elements() {
                     function () {
                         $.ajax({
                             method: "post",
-                            url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+                            url: getPath() + "/ajax/editlistusers/" + field,
                             data: {"pk": result, "value": values, "action": val},
                             success: function (data) {
                                 handleListServerResponse(data);
@@ -774,7 +1149,6 @@ function move_header_elements() {
             });
         }
     }
-
     $("#user_delete_selection").click(function () {
         $("#user-table").bootstrapTable("uncheckAll");
     });
@@ -805,8 +1179,10 @@ function move_header_elements() {
                     function () {
                         $.ajax({
                             method: "post",
-                            url: window.location.pathname + "/../../ajax/deleteuser",
-                            data: {"userid": result},
+                            url: getPath() + "/ajax/deleteuser",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: JSON.stringify({"userid": result}),
                             success: function (data) {
                                 selections = selections.filter((el) => !result.includes(el));
                                 handleListServerResponse(data);
@@ -832,7 +1208,7 @@ function handleListServerResponse (data) {
                 '</div>');
         });
     }
-    $("#user-table").bootstrapTable("refresh");
+    $(".table.table-striped").bootstrapTable("refresh");
 }
 
 function checkboxChange(checkbox, userId, field, field_index) {
@@ -847,22 +1223,22 @@ function checkboxChange(checkbox, userId, field, field_index) {
     });
 }
 
-function BookCheckboxChange(checkbox, userId, field) {
+function BookCheckboxChange(checkbox, bookId, field) {
     var value = checkbox.checked ? "True" : "False";
     var element = checkbox;
     $.ajax({
         method: "post",
         url: getPath() + "/ajax/editbooks/" + field,
-        data: {"pk": userId, "value": value},
+        data: JSON.stringify({"pk": [bookId], "value": value}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
         error: function(data) {
             element.checked = !element.checked;
             handleListServerResponse([{type:"danger", message:data.responseText}])
         },
         success: handleListServerResponse
     });
-    console.log("test");
 }
-
 
 function selectHeader(element, field) {
     if (element.value !== "None") {
@@ -870,7 +1246,7 @@ function selectHeader(element, field) {
             var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
             $.ajax({
                 method: "post",
-                url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+                url: getPath() + "/ajax/editlistusers/" + field,
                 data: {"pk": result, "value": element.value},
                 error: function (data) {
                     handleListServerResponse([{type:"danger", message:data.responseText}])
@@ -883,12 +1259,35 @@ function selectHeader(element, field) {
     }
 }
 
+function bookCheckboxHeader(CheckboxState, text, field_index) {
+    confirmDialog(text, "GeneralChangeModal", 0, function() {
+        var result = $('#books-table').bootstrapTable('getSelections').map(a => a.id);
+        $.ajax({
+            method: "post",
+            url: getPath() + "/ajax/editbooks/" + field_index,
+            data: JSON.stringify({"pk": result, "field_index": field_index, "value": CheckboxState, multi: "True"}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            error: function (data) {
+                handleListServerResponse([{type:"danger", message:data.responseText}])
+            },
+            success: function (data) {
+                handleListServerResponse (data, true)
+            },
+        });
+    },function() {
+        $("input:radio.check_head:checked").each(function() {
+            $(this).prop('checked', false);
+        });
+    });
+}
+
 function checkboxHeader(CheckboxState, field, field_index) {
     confirmDialog(field, "GeneralChangeModal", 0, function() {
         var result = $('#user-table').bootstrapTable('getSelections').map(a => a.id);
         $.ajax({
             method: "post",
-            url: window.location.pathname + "/../../ajax/editlistusers/" + field,
+            url: getPath() + "/ajax/editlistusers/" + field,
             data: {"pk": result, "field_index": field_index, "value": CheckboxState},
             error: function (data) {
                 handleListServerResponse([{type:"danger", message:data.responseText}])
@@ -904,7 +1303,7 @@ function checkboxHeader(CheckboxState, field, field_index) {
     });
 }
 
-function deleteUser(a,id){
+function deleteUser(a, id){
     confirmDialog(
     "btndeluser",
         "GeneralDeleteModal",
@@ -912,8 +1311,10 @@ function deleteUser(a,id){
         function() {
             $.ajax({
                 method:"post",
-                url: window.location.pathname + "/../../ajax/deleteuser",
-                data: {"userid":id},
+                url: getPath() + "/ajax/deleteuser",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({"userid": [id]}),
                 success: function (data) {
                     userId = parseInt(id, 10);
                     selections = selections.filter(item => item !== userId);
@@ -940,8 +1341,10 @@ function storeLocation() {
 function user_handle (userId) {
     $.ajax({
         method:"post",
-        url: window.location.pathname + "/../../ajax/deleteuser",
-        data: {"userid":userId}
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({"userid": [userId]}),
+        url: getPath() + "/ajax/deleteuser",
     });
     $("#user-table").bootstrapTable("refresh");
 }
@@ -949,6 +1352,5 @@ function user_handle (userId) {
 function shorten_html(value, response) {
     if(value) {
         $(this).html("[...]");
-        // value.split('\n').slice(0, 2).join("") +
     }
 }

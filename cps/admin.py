@@ -40,7 +40,7 @@ from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
 from sqlalchemy import and_
 from sqlalchemy.orm.attributes import flag_modified
-from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
+from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError, ArgumentError
 from sqlalchemy.sql.expression import func, or_, text
 
 from . import constants, logger, helper, services, cli_param
@@ -386,13 +386,12 @@ def list_users():
 @user_login_required
 @admin_required
 def delete_user():
-    user_ids = request.form.to_dict(flat=False)
-    users = None
+    user_ids = request.get_json().get("userid")
     message = ""
-    if "userid[]" in user_ids:
-        users = ub.session.query(ub.User).filter(ub.User.id.in_(user_ids['userid[]'])).all()
-    elif "userid" in user_ids:
-        users = ub.session.query(ub.User).filter(ub.User.id == user_ids['userid'][0]).all()
+    try:
+        users = ub.session.query(ub.User).filter(ub.User.id.in_(user_ids)).all()
+    except (ArgumentError):
+        users = None
     count = 0
     errors = list()
     success = list()
@@ -408,10 +407,10 @@ def delete_user():
             errors.append({'type': "danger", 'message': str(ex)})
 
     if count == 1:
-        log.info("User {} deleted".format(user_ids))
+        log.info("User {} deleted".format(user_ids[0]))
         success = [{'type': "success", 'message': message}]
     elif count > 1:
-        log.info("Users {} deleted".format(user_ids))
+        log.info("Users {} deleted".format(", ".join([str(user_id) for user_id in user_ids])))
         success = [{'type': "success", 'message': _("{} users deleted successfully").format(count)}]
     success.extend(errors)
     return make_response(jsonify(success))
@@ -618,6 +617,8 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Do you really want to delete this domain?')
     elif element_id == "btndeluser":
         texts["main"] = _('Do you really want to delete this user?')
+    elif element_id == "btndelbook":
+        texts["main"] = _('Do you really want to delete this book?')
     elif element_id == "delete_shelf":
         texts["main"] = _('Are you sure you want to delete this shelf?')
     elif element_id == "select_locale":
@@ -626,6 +627,10 @@ def load_dialogtexts(element_id):
         texts["main"] = _('Are you sure you want to change visible book languages for selected user(s)?')
     elif element_id == "role":
         texts["main"] = _('Are you sure you want to change the selected role for the selected user(s)?')
+    elif element_id == "archive_books":
+        texts["main"] = _('Are you sure you want to change the archive status for the selected book(s)?')
+    elif element_id == "read_books":
+        texts["main"] = _('Are you sure you want to change the read status for the selected book(s)?')
     elif element_id == "restrictions":
         texts["main"] = _('Are you sure you want to change the selected restrictions for the selected user(s)?')
     elif element_id == "sidebar_view":

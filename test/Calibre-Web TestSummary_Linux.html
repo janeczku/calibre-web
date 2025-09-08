@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2025-08-05 20:14:09</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2025-08-03 18:23:44</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-08-06 03:42:45</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-08-04 01:42:17</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 15 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 6 min</p>
         </div>
       </div>
       </div>
@@ -462,11 +462,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestCli</td>
         <td class="text-center">13</td>
-        <td class="text-center">13</td>
-        <td class="text-center">0</td>
+        <td class="text-center">12</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -530,11 +530,31 @@
     
     
     
-        <tr id='pt4.7' class='hiddenRow bg-success'>
+        <tr id="ft4.7" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCli - test_dryrun_update</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft4.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft4.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 541, in test_dryrun_update
+    self.assertFalse(&#34;favicon.ico&#34; in output)
+AssertionError: True is not false</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1023,12 +1043,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">18</td>
-        <td class="text-center">3</td>
-        <td class="text-center">1</td>
-        <td class="text-center">14</td>
+        <td class="text-center">18</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 18)">Detail</a>
@@ -1064,501 +1084,137 @@
     
     
     
-        <tr id="ft12.4" class="none bg-danger">
+        <tr id='pt12.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_delete_role</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft12.4" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft12.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 735, in test_delete_role
-    self.assertEqual(200, result.status_code)
-AssertionError: 200 != 405</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.5" class="none bg-info">
+        <tr id='pt12.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_details_popup</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.5')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.5" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.5').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 880, in test_details_popup
-    books[1][0][&#39;ele&#39;].click()
-    ~~~~~~~~^^^
-IndexError: list index out of range</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.6" class="none bg-info">
+        <tr id='pt12.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 393, in test_edit_book_identifier
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.7" class="none bg-info">
+        <tr id='pt12.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 531, in test_edit_book_identifier_capital
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.8" class="none bg-info">
+        <tr id='pt12.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.8')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 544, in test_edit_book_identifier_standard
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.9" class="none bg-info">
+        <tr id='pt12.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.9')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.9" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 497, in test_edit_special_book_identifier
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.10" class="none bg-info">
+        <tr id='pt12.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.10')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.10" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.10').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 782, in test_title_sort
-    self.assertEqual(7, len(self.search(&#39; book &#39;)))
-                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: object of type &#39;bool&#39; has no len()</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.11" class="none bg-info">
+        <tr id='pt12.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_cbz_coverformats</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.11')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.11" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 106, in test_upload_cbz_coverformats
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.12" class="none bg-info">
+        <tr id='pt12.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.12')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.12" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.12').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 609, in test_upload_edit_role
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.13" class="none bg-info">
+        <tr id='pt12.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 235, in test_upload_metadata_cb7
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.14" class="none bg-info">
+        <tr id='pt12.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.14')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.14" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.14').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 162, in test_upload_metadata_cbr
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.15" class="none bg-info">
+        <tr id='pt12.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.15')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.15" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.15').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 203, in test_upload_metadata_cbt
-    self.fill_basic_config({&#39;config_uploading&#39;: 1})
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
-    cls._fill_basic_config(elements)
-  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
-    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
-  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
-    raise TimeoutException(message, screen, stacktrace)
-selenium.common.exceptions.TimeoutException: Message: 
-Stacktrace:
-RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
-WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:199:5
-NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:552:5
-dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.16" class="none bg-info">
+        <tr id='pt12.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_author_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.16')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.16" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.16').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 871, in test_xss_author_edit
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.17" class="none bg-info">
+        <tr id='pt12.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_comment_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.17')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.17" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.17').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 827, in test_xss_comment_edit
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id="et12.18" class="none bg-info">
+        <tr id='pt12.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_xss_custom_comment_edit</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.18')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et12.18" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et12.18').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 849, in test_xss_custom_comment_edit
-    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2208,11 +1864,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditBooksList</td>
         <td class="text-center">19</td>
-        <td class="text-center">18</td>
-        <td class="text-center">1</td>
+        <td class="text-center">19</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2222,31 +1878,11 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
 
     
     
-        <tr id="ft17.1" class="none bg-danger">
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_booklist_xss</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 497, in test_booklist_xss
-    self.assertEqual(200, response.status_code)
-AssertionError: 200 != 500</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3933,51 +3569,90 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="errorClass">
-        <td>TestMergeBooksList</td>
-        <td class="text-center">2</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="passClass">
+        <td>TestMassEditBooksList</td>
+        <td class="text-center">5</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 2)">Detail</a>
+            <a onclick="showClassDetail('c37', 5)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et37.1" class="none bg-info">
+        <tr id='pt37.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestMergeBooksList - test_book_merge</div>
+                <div class='testcase'>TestMassEditBooksList - test_author_title_combi</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et37.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et37.1" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et37.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_merge_books_list.py&#34;, line 110, in test_book_merge
-    bl[&#39;remove-btn&#39;].click()
-    ^^^^^^^^^^^^^^^^^^^^^^
-AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
         <tr id='pt37.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_invalid_author_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_protected_author_title</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_multi</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_single</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestMergeBooksList</td>
+        <td class="text-center">2</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c38', 2)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt38.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMergeBooksList - test_book_merge</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt38.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
@@ -3995,13 +3670,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 2)">Detail</a>
+            <a onclick="showClassDetail('c39', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id='pt39.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_oauth_about</div>
             </td>
@@ -4010,7 +3685,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt38.2' class='hiddenRow bg-success'>
+        <tr id='pt39.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOAuthLogin - test_visible_oauth</div>
             </td>
@@ -4028,13 +3703,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c39', 26)">Detail</a>
+            <a onclick="showClassDetail('c40', 26)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt39.1' class='hiddenRow bg-success'>
+        <tr id='pt40.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_guest</div>
             </td>
@@ -4043,7 +3718,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.2' class='hiddenRow bg-success'>
+        <tr id='pt40.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_access_right_user</div>
             </td>
@@ -4052,7 +3727,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.3' class='hiddenRow bg-success'>
+        <tr id='pt40.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds</div>
             </td>
@@ -4061,7 +3736,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.4' class='hiddenRow bg-success'>
+        <tr id='pt40.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_author</div>
             </td>
@@ -4070,7 +3745,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.5' class='hiddenRow bg-success'>
+        <tr id='pt40.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
@@ -4079,7 +3754,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.6' class='hiddenRow bg-success'>
+        <tr id='pt40.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion</div>
             </td>
@@ -4088,7 +3763,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.7' class='hiddenRow bg-success'>
+        <tr id='pt40.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
@@ -4097,7 +3772,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.8' class='hiddenRow bg-success'>
+        <tr id='pt40.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
@@ -4106,7 +3781,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.9' class='hiddenRow bg-success'>
+        <tr id='pt40.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
@@ -4115,7 +3790,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.10' class='hiddenRow bg-success'>
+        <tr id='pt40.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
@@ -4124,7 +3799,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.11' class='hiddenRow bg-success'>
+        <tr id='pt40.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
@@ -4133,7 +3808,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.12' class='hiddenRow bg-success'>
+        <tr id='pt40.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
@@ -4142,7 +3817,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.13' class='hiddenRow bg-success'>
+        <tr id='pt40.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
@@ -4151,7 +3826,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.14' class='hiddenRow bg-success'>
+        <tr id='pt40.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
@@ -4160,7 +3835,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.15' class='hiddenRow bg-success'>
+        <tr id='pt40.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
@@ -4169,7 +3844,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.16' class='hiddenRow bg-success'>
+        <tr id='pt40.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
@@ -4178,7 +3853,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.17' class='hiddenRow bg-success'>
+        <tr id='pt40.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
@@ -4187,7 +3862,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.18' class='hiddenRow bg-success'>
+        <tr id='pt40.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
@@ -4196,7 +3871,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.19' class='hiddenRow bg-success'>
+        <tr id='pt40.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
@@ -4205,7 +3880,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.20' class='hiddenRow bg-success'>
+        <tr id='pt40.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
@@ -4214,7 +3889,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.21' class='hiddenRow bg-success'>
+        <tr id='pt40.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
@@ -4223,7 +3898,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.22' class='hiddenRow bg-success'>
+        <tr id='pt40.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
@@ -4232,7 +3907,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.23' class='hiddenRow bg-success'>
+        <tr id='pt40.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
@@ -4241,7 +3916,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.24' class='hiddenRow bg-success'>
+        <tr id='pt40.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
@@ -4250,7 +3925,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.25' class='hiddenRow bg-success'>
+        <tr id='pt40.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
             </td>
@@ -4259,7 +3934,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt39.26' class='hiddenRow bg-success'>
+        <tr id='pt40.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -4277,13 +3952,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c40', 1)">Detail</a>
+            <a onclick="showClassDetail('c41', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt40.1' class='hiddenRow bg-success'>
+        <tr id='pt41.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadPDF - test_upload_invalid_pdf</div>
             </td>
@@ -4301,13 +3976,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c41', 3)">Detail</a>
+            <a onclick="showClassDetail('c42', 3)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt41.1' class='hiddenRow bg-success'>
+        <tr id='pt42.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_command_start</div>
             </td>
@@ -4316,7 +3991,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt41.2' class='hiddenRow bg-success'>
+        <tr id='pt42.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_foldername_database_location</div>
             </td>
@@ -4325,7 +4000,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt41.3' class='hiddenRow bg-success'>
+        <tr id='pt42.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestPipInstall - test_module_start</div>
             </td>
@@ -4343,13 +4018,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c42', 9)">Detail</a>
+            <a onclick="showClassDetail('c43', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='st42.1' class='none bg-warning'>
+        <tr id='st43.1' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestReader - test_cb7_reader</div>
             </td>
@@ -4358,7 +4033,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.2' class='hiddenRow bg-success'>
+        <tr id='pt43.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_MACOS_files</div>
             </td>
@@ -4367,7 +4042,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.3' class='hiddenRow bg-success'>
+        <tr id='pt43.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_comic_reader</div>
             </td>
@@ -4376,7 +4051,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.4' class='hiddenRow bg-success'>
+        <tr id='pt43.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_epub_reader</div>
             </td>
@@ -4385,7 +4060,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.5' class='hiddenRow bg-success'>
+        <tr id='pt43.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_kepub_reader</div>
             </td>
@@ -4394,7 +4069,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.6' class='hiddenRow bg-success'>
+        <tr id='pt43.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_pdf_reader</div>
             </td>
@@ -4403,7 +4078,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.7' class='hiddenRow bg-success'>
+        <tr id='pt43.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_single_file_comic</div>
             </td>
@@ -4412,7 +4087,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.8' class='hiddenRow bg-success'>
+        <tr id='pt43.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_sound_listener</div>
             </td>
@@ -4421,7 +4096,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt42.9' class='hiddenRow bg-success'>
+        <tr id='pt43.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReader - test_txt_reader</div>
             </td>
@@ -4439,13 +4114,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 1)">Detail</a>
+            <a onclick="showClassDetail('c44', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt43.1' class='hiddenRow bg-success'>
+        <tr id='pt44.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReadOnlyDatabase - test_readonly_path</div>
             </td>
@@ -4463,13 +4138,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c44', 8)">Detail</a>
+            <a onclick="showClassDetail('c45', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt44.1' class='hiddenRow bg-success'>
+        <tr id='pt45.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_forgot_password</div>
             </td>
@@ -4478,7 +4153,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.2' class='hiddenRow bg-success'>
+        <tr id='pt45.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_illegal_email</div>
             </td>
@@ -4487,7 +4162,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.3' class='hiddenRow bg-success'>
+        <tr id='pt45.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_limit_domain</div>
             </td>
@@ -4496,7 +4171,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.4' class='hiddenRow bg-success'>
+        <tr id='pt45.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_register_no_server</div>
             </td>
@@ -4505,7 +4180,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.5' class='hiddenRow bg-success'>
+        <tr id='pt45.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_only_email</div>
             </td>
@@ -4514,7 +4189,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.6' class='hiddenRow bg-success'>
+        <tr id='pt45.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user</div>
             </td>
@@ -4523,7 +4198,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.7' class='hiddenRow bg-success'>
+        <tr id='pt45.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_registering_user_fail</div>
             </td>
@@ -4532,7 +4207,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt44.8' class='hiddenRow bg-success'>
+        <tr id='pt45.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestRegister - test_user_change_password</div>
             </td>
@@ -4550,13 +4225,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c45', 4)">Detail</a>
+            <a onclick="showClassDetail('c46', 4)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt45.1' class='hiddenRow bg-success'>
+        <tr id='pt46.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_logout</div>
             </td>
@@ -4565,7 +4240,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt45.2' class='hiddenRow bg-success'>
+        <tr id='pt46.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_move_page</div>
             </td>
@@ -4574,7 +4249,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt45.3' class='hiddenRow bg-success'>
+        <tr id='pt46.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_next</div>
             </td>
@@ -4583,7 +4258,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt45.4' class='hiddenRow bg-success'>
+        <tr id='pt46.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -4601,13 +4276,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c46', 17)">Detail</a>
+            <a onclick="showClassDetail('c47', 17)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt46.1' class='hiddenRow bg-success'>
+        <tr id='pt47.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_access_shelf</div>
             </td>
@@ -4616,7 +4291,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.2' class='hiddenRow bg-success'>
+        <tr id='pt47.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
@@ -4625,7 +4300,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.3' class='hiddenRow bg-success'>
+        <tr id='pt47.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
@@ -4634,7 +4309,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.4' class='hiddenRow bg-success'>
+        <tr id='pt47.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
@@ -4643,7 +4318,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.5' class='hiddenRow bg-success'>
+        <tr id='pt47.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf</div>
             </td>
@@ -4652,7 +4327,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.6' class='hiddenRow bg-success'>
+        <tr id='pt47.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
@@ -4661,7 +4336,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.7' class='hiddenRow bg-success'>
+        <tr id='pt47.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
@@ -4670,7 +4345,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.8' class='hiddenRow bg-success'>
+        <tr id='pt47.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
@@ -4679,7 +4354,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.9' class='hiddenRow bg-success'>
+        <tr id='pt47.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
@@ -4688,7 +4363,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.10' class='hiddenRow bg-success'>
+        <tr id='pt47.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
@@ -4697,7 +4372,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.11' class='hiddenRow bg-success'>
+        <tr id='pt47.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
@@ -4706,7 +4381,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.12' class='hiddenRow bg-success'>
+        <tr id='pt47.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -4715,7 +4390,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.13' class='hiddenRow bg-success'>
+        <tr id='pt47.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
@@ -4724,19 +4399,19 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id="st46.14" class="none bg-warning">
+        <tr id="st47.14" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st46.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st47.14')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st46.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st47.14" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st46.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st47.14').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4750,7 +4425,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.15' class='hiddenRow bg-success'>
+        <tr id='pt47.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
@@ -4759,7 +4434,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.16' class='hiddenRow bg-success'>
+        <tr id='pt47.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_shelf_order</div>
             </td>
@@ -4768,7 +4443,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt46.17' class='hiddenRow bg-success'>
+        <tr id='pt47.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
@@ -4786,13 +4461,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 1)">Detail</a>
+            <a onclick="showClassDetail('c48', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt47.1' class='hiddenRow bg-success'>
+        <tr id='pt48.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSocket - test_socket_communication</div>
             </td>
@@ -4810,13 +4485,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c48', 8)">Detail</a>
+            <a onclick="showClassDetail('c49', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt48.1' class='hiddenRow bg-success'>
+        <tr id='pt49.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_change_ebook</div>
             </td>
@@ -4825,7 +4500,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.2' class='hiddenRow bg-success'>
+        <tr id='pt49.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_convert_ebook</div>
             </td>
@@ -4834,7 +4509,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.3' class='hiddenRow bg-success'>
+        <tr id='pt49.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_download_book</div>
             </td>
@@ -4843,7 +4518,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.4' class='hiddenRow bg-success'>
+        <tr id='pt49.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_email_ebook</div>
             </td>
@@ -4852,7 +4527,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.5' class='hiddenRow bg-success'>
+        <tr id='pt49.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_kobo</div>
             </td>
@@ -4861,7 +4536,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.6' class='hiddenRow bg-success'>
+        <tr id='pt49.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_thumbnails</div>
             </td>
@@ -4870,7 +4545,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.7' class='hiddenRow bg-success'>
+        <tr id='pt49.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_upload_ebook</div>
             </td>
@@ -4879,7 +4554,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt48.8' class='hiddenRow bg-success'>
+        <tr id='pt49.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSplitLibrary - test_wrong_config_lib</div>
             </td>
@@ -4897,13 +4572,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c49', 1)">Detail</a>
+            <a onclick="showClassDetail('c50', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id='pt50.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSystemdActivation - test_systemd_activation</div>
             </td>
@@ -4921,13 +4596,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c50', 1)">Detail</a>
+            <a onclick="showClassDetail('c51', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt50.1' class='hiddenRow bg-success'>
+        <tr id='pt51.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnailsEnv - test_cover_cache_env_on_database_change</div>
             </td>
@@ -4945,13 +4620,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c51', 8)">Detail</a>
+            <a onclick="showClassDetail('c52', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt51.1' class='hiddenRow bg-success'>
+        <tr id='pt52.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_non_writable</div>
             </td>
@@ -4960,7 +4635,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt51.2' class='hiddenRow bg-success'>
+        <tr id='pt52.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cache_of_deleted_book</div>
             </td>
@@ -4969,7 +4644,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt51.3' class='hiddenRow bg-success'>
+        <tr id='pt52.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_cache_on_database_change</div>
             </td>
@@ -4978,7 +4653,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt51.4' class='hiddenRow bg-success'>
+        <tr id='pt52.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_change_on_upload_new_cover</div>
             </td>
@@ -4987,7 +4662,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='st51.5' class='none bg-warning'>
+        <tr id='st52.5' class='none bg-warning'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_for_series</div>
             </td>
@@ -4996,7 +4671,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt51.6' class='hiddenRow bg-success'>
+        <tr id='pt52.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_cover_on_upload_book</div>
             </td>
@@ -5005,7 +4680,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt51.7' class='hiddenRow bg-success'>
+        <tr id='pt52.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_remove_cover_from_cache</div>
             </td>
@@ -5014,7 +4689,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt51.8' class='hiddenRow bg-success'>
+        <tr id='pt52.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
@@ -5032,13 +4707,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c52', 9)">Detail</a>
+            <a onclick="showClassDetail('c53', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt52.1' class='hiddenRow bg-success'>
+        <tr id='pt53.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_errors</div>
             </td>
@@ -5047,7 +4722,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.2' class='hiddenRow bg-success'>
+        <tr id='pt53.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_nightly_request_errors</div>
             </td>
@@ -5056,7 +4731,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.3' class='hiddenRow bg-success'>
+        <tr id='pt53.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_errors</div>
             </td>
@@ -5065,7 +4740,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.4' class='hiddenRow bg-success'>
+        <tr id='pt53.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_check_update_stable_versions</div>
             </td>
@@ -5074,7 +4749,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.5' class='hiddenRow bg-success'>
+        <tr id='pt53.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update</div>
             </td>
@@ -5083,7 +4758,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.6' class='hiddenRow bg-success'>
+        <tr id='pt53.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_stable_errors</div>
             </td>
@@ -5092,19 +4767,19 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id="st52.7" class="none bg-warning">
+        <tr id="st53.7" class="none bg-warning">
             <td>
                 <div class='testcase'>TestUpdater - test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st52.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st53.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st52.7" class="popup_window test_output" style="display:none;">
+                <div id="div_st53.7" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st52.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st53.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -5118,7 +4793,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.8' class='hiddenRow bg-success'>
+        <tr id='pt53.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_reconnect_database</div>
             </td>
@@ -5127,7 +4802,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt52.9' class='hiddenRow bg-success'>
+        <tr id='pt53.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUpdater - test_update_write_protect</div>
             </td>
@@ -5145,13 +4820,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c53', 12)">Detail</a>
+            <a onclick="showClassDetail('c54', 12)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt53.1' class='hiddenRow bg-success'>
+        <tr id='pt54.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_aac</div>
             </td>
@@ -5160,7 +4835,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.2' class='hiddenRow bg-success'>
+        <tr id='pt54.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_aiff</div>
             </td>
@@ -5169,7 +4844,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.3' class='hiddenRow bg-success'>
+        <tr id='pt54.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_asf</div>
             </td>
@@ -5178,7 +4853,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.4' class='hiddenRow bg-success'>
+        <tr id='pt54.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_flac</div>
             </td>
@@ -5187,7 +4862,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.5' class='hiddenRow bg-success'>
+        <tr id='pt54.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_m4a</div>
             </td>
@@ -5196,7 +4871,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.6' class='hiddenRow bg-success'>
+        <tr id='pt54.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_m4b</div>
             </td>
@@ -5205,7 +4880,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.7' class='hiddenRow bg-success'>
+        <tr id='pt54.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_mp3</div>
             </td>
@@ -5214,7 +4889,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.8' class='hiddenRow bg-success'>
+        <tr id='pt54.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_mp4</div>
             </td>
@@ -5223,7 +4898,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.9' class='hiddenRow bg-success'>
+        <tr id='pt54.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_oggvorbis</div>
             </td>
@@ -5232,7 +4907,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.10' class='hiddenRow bg-success'>
+        <tr id='pt54.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_ogv</div>
             </td>
@@ -5241,7 +4916,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.11' class='hiddenRow bg-success'>
+        <tr id='pt54.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_opus</div>
             </td>
@@ -5250,7 +4925,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt53.12' class='hiddenRow bg-success'>
+        <tr id='pt54.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadAudio - test_upload_wav</div>
             </td>
@@ -5268,13 +4943,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c54', 6)">Detail</a>
+            <a onclick="showClassDetail('c55', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt54.1' class='hiddenRow bg-success'>
+        <tr id='pt55.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_comments</div>
             </td>
@@ -5283,7 +4958,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt54.2' class='hiddenRow bg-success'>
+        <tr id='pt55.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover</div>
             </td>
@@ -5292,7 +4967,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt54.3' class='hiddenRow bg-success'>
+        <tr id='pt55.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_cover_formats</div>
             </td>
@@ -5301,7 +4976,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt54.4' class='hiddenRow bg-success'>
+        <tr id='pt55.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_duplicate</div>
             </td>
@@ -5310,7 +4985,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt54.5' class='hiddenRow bg-success'>
+        <tr id='pt55.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
@@ -5319,7 +4994,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt54.6' class='hiddenRow bg-success'>
+        <tr id='pt55.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_lang</div>
             </td>
@@ -5337,13 +5012,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c55', 18)">Detail</a>
+            <a onclick="showClassDetail('c56', 18)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt55.1' class='hiddenRow bg-success'>
+        <tr id='pt56.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_edit_user_email</div>
             </td>
@@ -5352,7 +5027,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.2' class='hiddenRow bg-success'>
+        <tr id='pt56.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_list_visibility</div>
             </td>
@@ -5361,7 +5036,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.3' class='hiddenRow bg-success'>
+        <tr id='pt56.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_admin_role</div>
             </td>
@@ -5370,7 +5045,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.4' class='hiddenRow bg-success'>
+        <tr id='pt56.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_check_sort</div>
             </td>
@@ -5379,7 +5054,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.5' class='hiddenRow bg-success'>
+        <tr id='pt56.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_denied_tags</div>
             </td>
@@ -5388,7 +5063,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.6' class='hiddenRow bg-success'>
+        <tr id='pt56.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_download_role</div>
             </td>
@@ -5397,7 +5072,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.7' class='hiddenRow bg-success'>
+        <tr id='pt56.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_button</div>
             </td>
@@ -5406,7 +5081,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.8' class='hiddenRow bg-success'>
+        <tr id='pt56.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_email</div>
             </td>
@@ -5415,7 +5090,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.9' class='hiddenRow bg-success'>
+        <tr id='pt56.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_kindle</div>
             </td>
@@ -5424,7 +5099,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.10' class='hiddenRow bg-success'>
+        <tr id='pt56.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_language</div>
             </td>
@@ -5433,7 +5108,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.11' class='hiddenRow bg-success'>
+        <tr id='pt56.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_locale</div>
             </td>
@@ -5442,7 +5117,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.12' class='hiddenRow bg-success'>
+        <tr id='pt56.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_name</div>
             </td>
@@ -5451,7 +5126,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.13' class='hiddenRow bg-success'>
+        <tr id='pt56.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_edit_visiblility</div>
             </td>
@@ -5460,7 +5135,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.14' class='hiddenRow bg-success'>
+        <tr id='pt56.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_guest_edit</div>
             </td>
@@ -5469,7 +5144,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.15' class='hiddenRow bg-success'>
+        <tr id='pt56.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_remove_admin</div>
             </td>
@@ -5478,7 +5153,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.16' class='hiddenRow bg-success'>
+        <tr id='pt56.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_requests</div>
             </td>
@@ -5487,7 +5162,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.17' class='hiddenRow bg-success'>
+        <tr id='pt56.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_search</div>
             </td>
@@ -5496,7 +5171,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt55.18' class='hiddenRow bg-success'>
+        <tr id='pt56.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserList - test_user_list_sort</div>
             </td>
@@ -5514,13 +5189,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c56', 1)">Detail</a>
+            <a onclick="showClassDetail('c57', 1)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt56.1' class='hiddenRow bg-success'>
+        <tr id='pt57.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserLoad - test_user_change_vis</div>
             </td>
@@ -5538,13 +5213,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c57', 21)">Detail</a>
+            <a onclick="showClassDetail('c58', 21)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt57.1' class='hiddenRow bg-success'>
+        <tr id='pt58.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_column_restriction</div>
             </td>
@@ -5553,7 +5228,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.2' class='hiddenRow bg-success'>
+        <tr id='pt58.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_allow_tag_restriction</div>
             </td>
@@ -5562,7 +5237,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.3' class='hiddenRow bg-success'>
+        <tr id='pt58.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_archived_format_template</div>
             </td>
@@ -5571,7 +5246,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.4' class='hiddenRow bg-success'>
+        <tr id='pt58.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_author_user_template</div>
             </td>
@@ -5580,7 +5255,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.5' class='hiddenRow bg-success'>
+        <tr id='pt58.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_best_user_template</div>
             </td>
@@ -5589,7 +5264,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.6' class='hiddenRow bg-success'>
+        <tr id='pt58.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_category_user_template</div>
             </td>
@@ -5598,7 +5273,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.7' class='hiddenRow bg-success'>
+        <tr id='pt58.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_column_restriction</div>
             </td>
@@ -5607,7 +5282,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.8' class='hiddenRow bg-success'>
+        <tr id='pt58.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_deny_tag_restriction</div>
             </td>
@@ -5616,7 +5291,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.9' class='hiddenRow bg-success'>
+        <tr id='pt58.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_detail_random_user_template</div>
             </td>
@@ -5625,7 +5300,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.10' class='hiddenRow bg-success'>
+        <tr id='pt58.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_download_user_template</div>
             </td>
@@ -5634,7 +5309,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.11' class='hiddenRow bg-success'>
+        <tr id='pt58.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_format_user_template</div>
             </td>
@@ -5643,7 +5318,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.12' class='hiddenRow bg-success'>
+        <tr id='pt58.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_hot_user_template</div>
             </td>
@@ -5652,7 +5327,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.13' class='hiddenRow bg-success'>
+        <tr id='pt58.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_language_user_template</div>
             </td>
@@ -5661,7 +5336,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.14' class='hiddenRow bg-success'>
+        <tr id='pt58.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_limit_book_languages</div>
             </td>
@@ -5670,7 +5345,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.15' class='hiddenRow bg-success'>
+        <tr id='pt58.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_list_user_template</div>
             </td>
@@ -5679,7 +5354,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.16' class='hiddenRow bg-success'>
+        <tr id='pt58.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_publisher_user_template</div>
             </td>
@@ -5688,7 +5363,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.17' class='hiddenRow bg-success'>
+        <tr id='pt58.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_random_user_template</div>
             </td>
@@ -5697,7 +5372,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.18' class='hiddenRow bg-success'>
+        <tr id='pt58.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_read_user_template</div>
             </td>
@@ -5706,7 +5381,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.19' class='hiddenRow bg-success'>
+        <tr id='pt58.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_recent_user_template</div>
             </td>
@@ -5715,7 +5390,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.20' class='hiddenRow bg-success'>
+        <tr id='pt58.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_series_user_template</div>
             </td>
@@ -5724,7 +5399,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt57.21' class='hiddenRow bg-success'>
+        <tr id='pt58.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestUserTemplate - test_ui_language_settings</div>
             </td>
@@ -5742,13 +5417,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c58', 35)">Detail</a>
+            <a onclick="showClassDetail('c59', 35)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt58.1' class='hiddenRow bg-success'>
+        <tr id='pt59.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_about</div>
             </td>
@@ -5757,7 +5432,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.2' class='hiddenRow bg-success'>
+        <tr id='pt59.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_SMTP_Settings</div>
             </td>
@@ -5766,7 +5441,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.3' class='hiddenRow bg-success'>
+        <tr id='pt59.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_add_user</div>
             </td>
@@ -5775,7 +5450,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.4' class='hiddenRow bg-success'>
+        <tr id='pt59.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_password</div>
             </td>
@@ -5784,7 +5459,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.5' class='hiddenRow bg-success'>
+        <tr id='pt59.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_archived</div>
             </td>
@@ -5793,7 +5468,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.6' class='hiddenRow bg-success'>
+        <tr id='pt59.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_authors</div>
             </td>
@@ -5802,7 +5477,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.7' class='hiddenRow bg-success'>
+        <tr id='pt59.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_category</div>
             </td>
@@ -5811,7 +5486,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.8' class='hiddenRow bg-success'>
+        <tr id='pt59.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_file_formats</div>
             </td>
@@ -5820,7 +5495,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.9' class='hiddenRow bg-success'>
+        <tr id='pt59.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_hot</div>
             </td>
@@ -5829,7 +5504,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.10' class='hiddenRow bg-success'>
+        <tr id='pt59.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_language</div>
             </td>
@@ -5838,7 +5513,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.11' class='hiddenRow bg-success'>
+        <tr id='pt59.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_publisher</div>
             </td>
@@ -5847,7 +5522,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.12' class='hiddenRow bg-success'>
+        <tr id='pt59.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_random</div>
             </td>
@@ -5856,7 +5531,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.13' class='hiddenRow bg-success'>
+        <tr id='pt59.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rated</div>
             </td>
@@ -5865,7 +5540,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.14' class='hiddenRow bg-success'>
+        <tr id='pt59.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_rating</div>
             </td>
@@ -5874,7 +5549,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.15' class='hiddenRow bg-success'>
+        <tr id='pt59.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_read</div>
             </td>
@@ -5883,7 +5558,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.16' class='hiddenRow bg-success'>
+        <tr id='pt59.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_admin_change_visibility_series</div>
             </td>
@@ -5892,7 +5567,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.17' class='hiddenRow bg-success'>
+        <tr id='pt59.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
@@ -5901,7 +5576,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.18' class='hiddenRow bg-success'>
+        <tr id='pt59.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
@@ -5910,7 +5585,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.19' class='hiddenRow bg-success'>
+        <tr id='pt59.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
@@ -5919,7 +5594,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.20' class='hiddenRow bg-success'>
+        <tr id='pt59.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
@@ -5928,7 +5603,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.21' class='hiddenRow bg-success'>
+        <tr id='pt59.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_change_title</div>
             </td>
@@ -5937,7 +5612,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.22' class='hiddenRow bg-success'>
+        <tr id='pt59.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_checked_logged_in</div>
             </td>
@@ -5946,7 +5621,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.23' class='hiddenRow bg-success'>
+        <tr id='pt59.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
@@ -5955,7 +5630,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.24' class='hiddenRow bg-success'>
+        <tr id='pt59.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
@@ -5964,7 +5639,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.25' class='hiddenRow bg-success'>
+        <tr id='pt59.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_random_books_available</div>
             </td>
@@ -5973,7 +5648,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.26' class='hiddenRow bg-success'>
+        <tr id='pt59.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
@@ -5982,7 +5657,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.27' class='hiddenRow bg-success'>
+        <tr id='pt59.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_request_link_column_to_read_status</div>
             </td>
@@ -5991,7 +5666,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.28' class='hiddenRow bg-success'>
+        <tr id='pt59.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
@@ -6000,7 +5675,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.29' class='hiddenRow bg-success'>
+        <tr id='pt59.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
@@ -6009,7 +5684,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.30' class='hiddenRow bg-success'>
+        <tr id='pt59.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
@@ -6018,7 +5693,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.31' class='hiddenRow bg-success'>
+        <tr id='pt59.31' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_functions</div>
             </td>
@@ -6027,7 +5702,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.32' class='hiddenRow bg-success'>
+        <tr id='pt59.32' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
@@ -6036,7 +5711,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.33' class='hiddenRow bg-success'>
+        <tr id='pt59.33' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
@@ -6045,7 +5720,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.34' class='hiddenRow bg-success'>
+        <tr id='pt59.34' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
@@ -6054,7 +5729,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt58.35' class='hiddenRow bg-success'>
+        <tr id='pt59.35' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
@@ -6072,13 +5747,13 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c59', 16)">Detail</a>
+            <a onclick="showClassDetail('c60', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt59.1' class='hiddenRow bg-success'>
+        <tr id='pt60.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort</div>
             </td>
@@ -6087,7 +5762,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.2' class='hiddenRow bg-success'>
+        <tr id='pt60.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_comma</div>
             </td>
@@ -6096,7 +5771,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.3' class='hiddenRow bg-success'>
+        <tr id='pt60.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_junior</div>
             </td>
@@ -6105,7 +5780,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.4' class='hiddenRow bg-success'>
+        <tr id='pt60.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_oneword</div>
             </td>
@@ -6114,7 +5789,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.5' class='hiddenRow bg-success'>
+        <tr id='pt60.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_author_sort_roman</div>
             </td>
@@ -6123,7 +5798,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.6' class='hiddenRow bg-success'>
+        <tr id='pt60.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_Limit_Length</div>
             </td>
@@ -6132,7 +5807,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.7' class='hiddenRow bg-success'>
+        <tr id='pt60.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_char_replacement</div>
             </td>
@@ -6141,7 +5816,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.8' class='hiddenRow bg-success'>
+        <tr id='pt60.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_chinese_Characters</div>
             </td>
@@ -6150,7 +5825,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.9' class='hiddenRow bg-success'>
+        <tr id='pt60.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_deg_eur_replacement</div>
             </td>
@@ -6159,7 +5834,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.10' class='hiddenRow bg-success'>
+        <tr id='pt60.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_doubleS</div>
             </td>
@@ -6168,7 +5843,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.11' class='hiddenRow bg-success'>
+        <tr id='pt60.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_finish_Dot</div>
             </td>
@@ -6177,7 +5852,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.12' class='hiddenRow bg-success'>
+        <tr id='pt60.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_high23</div>
             </td>
@@ -6186,7 +5861,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.13' class='hiddenRow bg-success'>
+        <tr id='pt60.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_check_umlauts</div>
             </td>
@@ -6195,7 +5870,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.14' class='hiddenRow bg-success'>
+        <tr id='pt60.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_random_password</div>
             </td>
@@ -6204,7 +5879,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.15' class='hiddenRow bg-success'>
+        <tr id='pt60.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_split_authors</div>
             </td>
@@ -6213,7 +5888,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
     
     
     
-        <tr id='pt59.16' class='hiddenRow bg-success'>
+        <tr id='pt60.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCalibreHelper - test_whitespaces</div>
             </td>
@@ -6224,10 +5899,10 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>525</td>
-        <td>500</td>
-        <td>2</td>
-        <td>16</td>
+        <td>530</td>
+        <td>521</td>
+        <td>1</td>
+        <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -6772,7 +6447,7 @@ AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
 </div>
 
 <script>
-    drawCircle(500, 2, 16, 7);
+    drawCircle(521, 1, 1, 7);
     showCase(5);
 </script>
 
