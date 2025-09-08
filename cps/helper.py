@@ -471,12 +471,12 @@ def update_dir_structure_file(book_id, calibre_path, original_filepath, new_auth
                                      db_filename,
                                      original_filepath,
                                      path)
-        new_path = os.path.join(calibre_path, new_author_dir, new_title_dir).replace('\\', '/')
-        all_new_name = get_valid_filename(local_book.title, chars=42) + ' - ' \
-                       + get_valid_filename(new_author, chars=42)
-        # Book folder already moved, only files need to be renamed
-        renameerror = rename_all_files_on_change(local_book, new_path, new_path, all_new_name)
-
+        if not error:
+            new_path = os.path.join(calibre_path, new_author_dir, new_title_dir).replace('\\', '/')
+            all_new_name = get_valid_filename(local_book.title, chars=42) + ' - ' \
+                           + get_valid_filename(new_author, chars=42)
+            # Book folder already moved, only files need to be renamed
+            renameerror = rename_all_files_on_change(local_book, new_path, new_path, all_new_name)
 
         if error or renameerror:
             return error or renameerror

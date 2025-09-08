@@ -215,7 +215,8 @@ def table_get_custom_enum(c_id):
 @edit_required
 def edit_list_book(param):
     vals = request.get_json()
-    ret_value = edit_book_param(param, vals)
+    multi = vals.get('multi', False) == "True"
+    ret_value = edit_book_param(param, vals, multi)
     if isinstance(ret_value, dict):
         return jsonify(ret_value)
     else:
@@ -369,9 +370,11 @@ def edit_book_param(param, vals, multi=False):
                 if handle_title_on_edit(book, vals.get('value', "")):
                     rename_error = helper.update_dir_structure(book.id, config.get_book_path())
                     if not rename_error:
+                        calibre_db.session.commit()
                         ret = {"success":True,
                                "newValue":book.title}
                     else:
+                        calibre_db.session.rollback()
                         ret = {"success":False, "msg":rename_error}
                         if multi:
                             out.append(ret)
@@ -387,9 +390,11 @@ def edit_book_param(param, vals, multi=False):
                 input_authors, __ = handle_author_on_edit(book, vals['value'], vals.get('checkA', None) == True)
                 rename_error = helper.update_dir_structure(book.id, config.get_book_path(), input_authors[0])
                 if not rename_error:
+                    calibre_db.session.commit()
                     ret = {"success":True,
                         "newValue":' & '.join([author.replace('|', ',') for author in input_authors])}
                 else:
+                    calibre_db.session.rollback()
                     ret = {"success":False, "msg":rename_error}
                     if multi:
                         out.append(ret)

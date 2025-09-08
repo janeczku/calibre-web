@@ -1265,7 +1265,7 @@ function bookCheckboxHeader(CheckboxState, text, field_index) {
         $.ajax({
             method: "post",
             url: getPath() + "/ajax/editbooks/" + field_index,
-            data: JSON.stringify({"pk": result, "field_index": field_index, "value": CheckboxState}),
+            data: JSON.stringify({"pk": result, "field_index": field_index, "value": CheckboxState, multi: "True"}),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             error: function (data) {
