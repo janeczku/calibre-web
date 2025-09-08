@@ -327,7 +327,7 @@ def edit_book_read_status(book_id, read_status=None):
     else:
         try:
             calibre_db.create_functions(config)
-            book = calibre_db.get_filtered_book(book_id)
+            book = calibre_db.get_filtered_book(book_id, True)
             book_read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
             if len(book_read_status):
                 if read_status is None:
