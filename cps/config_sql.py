@@ -325,7 +325,7 @@ class ConfigSQL(object):
     def to_dict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("_e") and not k == "cli":
+            if k[0] != '_' and not k.endswith("_e") and not k == "cli" and 'api' not in k.lower():
                 storage[k] = v
         return storage
 
