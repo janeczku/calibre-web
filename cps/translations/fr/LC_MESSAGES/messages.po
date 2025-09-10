@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-08 12:20+0200\n"
-"PO-Revision-Date: 2025-09-09 20:18+0000\n"
+"PO-Revision-Date: 2025-09-10 19:25+0000\n"
 "Last-Translator: <thovi98@gmail.com>\n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -249,6 +249,8 @@ msgid ""
 "Calibre-Web will search for updated Covers and update Cover Thumbnails, this "
 "may take a while?"
 msgstr ""
+"Calibre-Web va rechercher des mises à jour de couvertures et mettre à jour "
+"les vignettes de couverture, cela peut prendre du temps."
 
 #: cps/admin.py:647
 msgid ""
@@ -532,7 +534,7 @@ msgstr "{} utilisateur importé avec succès"
 
 #: cps/admin.py:1739
 msgid "Books path not valid"
-msgstr ""
+msgstr "Chemin d'accès aux livres non valide"
 
 #: cps/admin.py:1745
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -755,7 +757,7 @@ msgstr "Vous n’avez par les permissions pour supprimer les livres"
 
 #: cps/editbooks.py:1139
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr ""
+msgstr "Le livre avec l'id \"{}\" n'a pas pu être supprimé: non trouvé"
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -1473,7 +1475,7 @@ msgstr ""
 
 #: cps/tasks_status.py:73
 msgid "Cancelled"
-msgstr ""
+msgstr "Annulé"
 
 #: cps/tasks_status.py:75
 msgid "Unknown Status"
@@ -2882,6 +2884,8 @@ msgstr ""
 #: cps/templates/config_edit.html:382
 msgid "Check if file extensions matches file content on upload"
 msgstr ""
+"Vérifier si les extensions de fichiers sont cohérentes avec le contenu lors "
+"de l'upload"
 
 #: cps/templates/config_edit.html:385
 msgid "Session protection"
