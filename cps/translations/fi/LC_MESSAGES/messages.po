@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-09-12 08:29+0200\n"
+"POT-Creation-Date: 2025-09-12 08:48+0200\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -23,14 +23,12 @@ msgid "Statistics"
 msgstr "Tilastot"
 
 #: cps/admin.py:151
-#, fuzzy
 msgid "Server restarted, please reload page."
-msgstr "Palvelin uudelleenkäynnistetty, ole hyvä ja päivitä sivu"
+msgstr ""
 
 #: cps/admin.py:153
-#, fuzzy
 msgid "Performing Server shutdown, please close window."
-msgstr "Palvelinta sammutetaan, ole hyvä ja sulje sivu"
+msgstr ""
 
 #: cps/admin.py:161
 msgid "Success! Database Reconnected"
@@ -41,9 +39,8 @@ msgid "Unknown command"
 msgstr ""
 
 #: cps/admin.py:175
-#, fuzzy
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr "Kirja lisätty onnistuneeksi lähetettäväksi osoitteeseen %(eReadermail)s"
+msgstr ""
 
 #: cps/admin.py:208 cps/editbooks.py:808 cps/editbooks.py:852
 #: cps/editbooks.py:1520 cps/updater.py:615 cps/uploader.py:108
@@ -70,9 +67,8 @@ msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
 #: cps/admin.py:333 cps/templates/admin.html:51
-#, fuzzy
 msgid "Edit Users"
-msgstr "Pääkäyttäjä"
+msgstr ""
 
 #: cps/admin.py:377 cps/opds.py:560 cps/templates/grid.html:14
 #: cps/templates/list.html:13
@@ -167,18 +163,16 @@ msgid "Do you really want to delete this user?"
 msgstr ""
 
 #: cps/admin.py:621
-#, fuzzy
 msgid "Do you really want to delete this book?"
-msgstr "Oletko varma, että haluat poistaa hyllyn?"
+msgstr ""
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
 msgstr "Oletko varma, että haluat poistaa hyllyn?"
 
 #: cps/admin.py:625
-#, fuzzy
 msgid "Are you sure you want to change locales of selected user(s)?"
-msgstr "Oletko varma, että haluat poistaa hyllyn?"
+msgstr ""
 
 #: cps/admin.py:627
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
@@ -189,33 +183,28 @@ msgid "Are you sure you want to change the selected role for the selected user(s
 msgstr ""
 
 #: cps/admin.py:631
-#, fuzzy
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr "Oletko varma, että haluat poistaa hyllyn?"
+msgstr ""
 
 #: cps/admin.py:633
-#, fuzzy
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr "Oletko varma, että haluat poistaa hyllyn?"
+msgstr ""
 
 #: cps/admin.py:635
-#, fuzzy
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Oletko varma, että haluat poistaa hyllyn?"
+msgstr ""
 
 #: cps/admin.py:637
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr ""
 
 #: cps/admin.py:640
-#, fuzzy
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Oletko varma, että haluat poistaa hyllyn?"
+msgstr ""
 
 #: cps/admin.py:642
-#, fuzzy
 msgid "Are you sure you want to change Calibre library location?"
-msgstr "Haluatko varmasti pysäyttää Calibre-Webin?"
+msgstr ""
 
 #: cps/admin.py:644
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
@@ -374,14 +363,13 @@ msgid "Edit User %(nick)s"
 msgstr "Muokkaa käyttäjää %(nick)s"
 
 #: cps/admin.py:1462
-#, fuzzy, python-format
+#, python-format
 msgid "Success! Password for user %(user)s reset"
-msgstr "Käyttäjän %(user)s salasana palautettu"
+msgstr ""
 
 #: cps/admin.py:1468
-#, fuzzy
 msgid "Oops! Please configure the SMTP mail settings."
-msgstr "Ole hyvä ja aseta SMTP postiasetukset ensin..."
+msgstr ""
 
 #: cps/admin.py:1479
 msgid "Logfile viewer"
@@ -495,14 +483,12 @@ msgid "Password length has to be between 1 and 40"
 msgstr ""
 
 #: cps/admin.py:1925
-#, fuzzy
 msgid "Database Settings updated"
-msgstr "Sähköpostipalvelimen tiedot päivitetty"
+msgstr ""
 
 #: cps/admin.py:1933
-#, fuzzy
 msgid "Database Configuration"
-msgstr "Ominaisuuksien asetukset"
+msgstr ""
 
 #: cps/admin.py:1948 cps/web.py:1299
 msgid "Oops! Please complete all fields."
@@ -522,9 +508,8 @@ msgid "User '%(user)s' created"
 msgstr "Käyttäjä '%(user)s' lisätty"
 
 #: cps/admin.py:1980
-#, fuzzy
 msgid "Oops! An account already exists for this Email. or name."
-msgstr "Tälle sähköpostiosoitteelle tai tunnukselle löytyi jo tili."
+msgstr ""
 
 #: cps/admin.py:2010
 #, python-format
@@ -592,9 +577,8 @@ msgid "There was an error converting this book: %(res)s"
 msgstr "Kirjan muunnoksessa tapahtui virhe: %(res)s"
 
 #: cps/editbooks.py:297
-#, fuzzy
 msgid "Changes successfully applied"
-msgstr "Metadata päivitetty onnistuneesti"
+msgstr ""
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
@@ -615,9 +599,9 @@ msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr ""
 
 #: cps/editbooks.py:709 cps/editbooks.py:912 cps/editbooks.py:1273
-#, fuzzy, python-format
+#, python-format
 msgid "'%(langname)s' is not a valid language"
-msgstr "%(langname)s ei ole kelvollinen kieli"
+msgstr ""
 
 #: cps/editbooks.py:737
 msgid "Metadata successfully updated"
@@ -633,9 +617,8 @@ msgid "Uploaded book probably exists in the library, consider to change before u
 msgstr ""
 
 #: cps/editbooks.py:950 cps/editbooks.py:1420
-#, fuzzy
 msgid "File type isn't allowed to be uploaded to this server"
-msgstr "Tiedostopääte '%(ext)s' ei ole sallittujen palvelimelle ladattavien listalla"
+msgstr ""
 
 #: cps/editbooks.py:956 cps/editbooks.py:1431
 #, python-format
@@ -725,48 +708,44 @@ msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s ei löydy: %(fn)s"
 
 #: cps/helper.py:104 cps/helper.py:233 cps/templates/detail.html:66
-#, fuzzy
 msgid "Send to eReader"
-msgstr "Lähetä Kindleen"
+msgstr ""
 
 #: cps/helper.py:105 cps/helper.py:125 cps/helper.py:235
-#, fuzzy
 msgid "This Email has been sent via Calibre-Web."
-msgstr "Tämä sähköposti on lähetetty Calibre-Web:sta."
+msgstr ""
 
 #: cps/helper.py:123
-#, fuzzy
 msgid "Calibre-Web Test Email"
-msgstr "Calibre-Web testisähköposti"
+msgstr ""
 
 #: cps/helper.py:124
-#, fuzzy
 msgid "Test Email"
-msgstr "Testi sähköposti"
+msgstr ""
 
 #: cps/helper.py:141
 msgid "Get Started with Calibre-Web"
 msgstr "Aloita Calibre-Web:in käyttö"
 
 #: cps/helper.py:146
-#, fuzzy, python-format
+#, python-format
 msgid "Registration Email for user: %(name)s"
-msgstr "Rekiströintisähköposti käyttäjälle: %(name)s"
+msgstr ""
 
 #: cps/helper.py:157 cps/helper.py:163
-#, fuzzy, python-format
+#, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
-msgstr "Muunna %(orig)s muotoon %(format)s ja lähetä Kindleen"
+msgstr ""
 
 #: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
-#, fuzzy, python-format
+#, python-format
 msgid "Send %(format)s to eReader"
-msgstr "Lähetä %(format)s Kindleen"
+msgstr ""
 
 #: cps/helper.py:230
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to eReader"
-msgstr "Lähetä Kindleen"
+msgstr ""
 
 #: cps/helper.py:237
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -793,14 +772,14 @@ msgid "Deleting book %(id)s from database only, book path in database not valid:
 msgstr ""
 
 #: cps/helper.py:404
-#, fuzzy, python-format
+#, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr "Tiedon muuttaminen arvosta: '%(src)s' arvoon '%(dest)s' epäonnistui virheeseen: %(error)s"
+msgstr ""
 
 #: cps/helper.py:443
-#, fuzzy, python-format
+#, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Tiedon muuttaminen arvosta: '%(src)s' arvoon '%(dest)s' epäonnistui virheeseen: %(error)s"
+msgstr ""
 
 #: cps/helper.py:513 cps/helper.py:522
 #, python-format
@@ -870,9 +849,8 @@ msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
 #: cps/helper.py:975 cps/helper.py:1135
-#, fuzzy
 msgid "Cover"
-msgstr "Löydä"
+msgstr ""
 
 #: cps/helper.py:992
 msgid "UnRar binary file not found"
@@ -1050,9 +1028,8 @@ msgid "Read Books"
 msgstr "Luetut kirjat"
 
 #: cps/render_template.py:63
-#, fuzzy
 msgid "Show Read and Unread"
-msgstr "Näytä luetut ja lukemattomat"
+msgstr ""
 
 #: cps/render_template.py:65 cps/templates/index.xml:70
 #: cps/templates/index.xml:74 cps/web.py:775
@@ -1078,9 +1055,8 @@ msgid "Categories"
 msgstr "Kategoriat"
 
 #: cps/render_template.py:73 cps/templates/user_table.html:158
-#, fuzzy
 msgid "Show Category Section"
-msgstr "Näytä kategoriavalinta"
+msgstr ""
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:86
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
@@ -1089,9 +1065,8 @@ msgid "Series"
 msgstr "Sarjat"
 
 #: cps/render_template.py:76 cps/templates/user_table.html:157
-#, fuzzy
 msgid "Show Series Section"
-msgstr "Näytä sarjavalinta"
+msgstr ""
 
 #: cps/render_template.py:77 cps/templates/book_table.html:92
 #: cps/templates/index.xml:79
@@ -1099,9 +1074,8 @@ msgid "Authors"
 msgstr "Kirjailijat"
 
 #: cps/render_template.py:79 cps/templates/user_table.html:160
-#, fuzzy
 msgid "Show Author Section"
-msgstr "Näytä kirjailijavalinta"
+msgstr ""
 
 #: cps/render_template.py:81 cps/templates/book_table.html:98
 #: cps/templates/index.xml:88 cps/web.py:999
@@ -1109,9 +1083,8 @@ msgid "Publishers"
 msgstr "Julkaisijat"
 
 #: cps/render_template.py:83 cps/templates/user_table.html:163
-#, fuzzy
 msgid "Show Publisher Section"
-msgstr "Näytä julkaisijavalinta"
+msgstr ""
 
 #: cps/render_template.py:84 cps/templates/book_table.html:96
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
@@ -1120,36 +1093,32 @@ msgid "Languages"
 msgstr "Kielet"
 
 #: cps/render_template.py:87 cps/templates/user_table.html:155
-#, fuzzy
 msgid "Show Language Section"
-msgstr "Näytä keilivalinta"
+msgstr ""
 
 #: cps/render_template.py:88 cps/templates/index.xml:124
 msgid "Ratings"
 msgstr "Arvostelut"
 
 #: cps/render_template.py:90 cps/templates/user_table.html:164
-#, fuzzy
 msgid "Show Ratings Section"
-msgstr "Näytä arvosteluvalinta"
+msgstr ""
 
 #: cps/render_template.py:91 cps/templates/index.xml:133
 msgid "File formats"
 msgstr "Tiedotomuodot"
 
 #: cps/render_template.py:93 cps/templates/user_table.html:165
-#, fuzzy
 msgid "Show File Formats Section"
-msgstr "Näytä tiedostomuotovalinta"
+msgstr ""
 
 #: cps/render_template.py:95 cps/web.py:798
 msgid "Archived Books"
 msgstr ""
 
 #: cps/render_template.py:97 cps/templates/user_table.html:166
-#, fuzzy
 msgid "Show Archived Books"
-msgstr "Näytä viimeisimmät kirjat"
+msgstr ""
 
 #: cps/render_template.py:100 cps/web.py:829
 msgid "Books List"
@@ -1195,9 +1164,8 @@ msgid "Invalid shelf specified"
 msgstr "Virheellinen hylly valittu"
 
 #: cps/shelf.py:55
-#, fuzzy
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Valitettavasti sinulla ei ole oikeutta lisätä kirjaa hyllyyn: %(shelfname)s"
+msgstr ""
 
 #: cps/shelf.py:64
 #, python-format
@@ -1247,9 +1215,8 @@ msgid "Create a Shelf"
 msgstr "luo hylly"
 
 #: cps/shelf.py:226
-#, fuzzy
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Valitettavsti sinulla ei ole oikeutta poistaa kirjaa hyllystä: %(sname)s"
+msgstr ""
 
 #: cps/shelf.py:228
 msgid "Edit a shelf"
@@ -1260,9 +1227,8 @@ msgid "Error deleting Shelf"
 msgstr ""
 
 #: cps/shelf.py:239
-#, fuzzy
 msgid "Shelf successfully deleted"
-msgstr "Metadata päivitetty onnistuneesti"
+msgstr ""
 
 #: cps/shelf.py:289
 #, python-format
@@ -1433,9 +1399,8 @@ msgid "File formats list"
 msgstr "Tiedostomuotolistaus"
 
 #: cps/web.py:1259
-#, fuzzy
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Ole hyvä ja aseta SMTP postiasetukset ensin..."
+msgstr ""
 
 #: cps/web.py:1265
 #, python-format
@@ -1448,9 +1413,8 @@ msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Kirjan: %(res)s lähettämisessa tapahtui virhe"
 
 #: cps/web.py:1270
-#, fuzzy
 msgid "Oops! Please update your profile with a valid eReader Email."
-msgstr "Ole hyvä ja aseta Kindle sähköpostiosoite ensin..."
+msgstr ""
 
 #: cps/web.py:1286
 msgid "Please wait one minute to register next user"
@@ -1480,18 +1444,17 @@ msgid "Success! Confirmation Email has been sent."
 msgstr "Vahvistusviesti on lähetetty sähköpostiosoitteeseesi."
 
 #: cps/web.py:1376 cps/web.py:1399
-#, fuzzy
 msgid "Cannot activate LDAP authentication"
-msgstr "LDAP autnetikoinnin aktivointi ei onnistu"
+msgstr ""
 
 #: cps/web.py:1389
 msgid "Please wait one minute before next login"
 msgstr ""
 
 #: cps/web.py:1408
-#, fuzzy, python-format
+#, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "olet nyt kirjautunut tunnuksella: \"%(nickname)s\""
+msgstr ""
 
 #: cps/web.py:1415
 #, python-format
@@ -1504,28 +1467,25 @@ msgid "Could not login: %(message)s"
 msgstr ""
 
 #: cps/web.py:1424 cps/web.py:1449
-#, fuzzy
 msgid "Wrong Username or Password"
-msgstr "Väärä käyttäjätunnus tai salasana"
+msgstr ""
 
 #: cps/web.py:1431
 msgid "New Password was sent to your email address"
 msgstr ""
 
 #: cps/web.py:1435
-#, fuzzy
 msgid "An unknown error occurred. Please try again later."
-msgstr "Tapahtui tuntematon virhe. Yritä myöhemmin uudelleen."
+msgstr ""
 
 #: cps/web.py:1437
-#, fuzzy
 msgid "Please enter valid username to reset password"
-msgstr "Väärä käyttäjätunnus tai salasana"
+msgstr ""
 
 #: cps/web.py:1445
-#, fuzzy, python-format
+#, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "olet nyt kirjautunut tunnuksella: \"%(nickname)s\""
+msgstr ""
 
 #: cps/web.py:1510 cps/web.py:1560
 #, python-format
@@ -1533,14 +1493,12 @@ msgid "%(name)s's Profile"
 msgstr "%(name)sn profiili"
 
 #: cps/web.py:1526
-#, fuzzy
 msgid "Success! Profile Updated"
-msgstr "Profiili päivitetty"
+msgstr ""
 
 #: cps/web.py:1530
-#, fuzzy
 msgid "Oops! An account already exists for this Email."
-msgstr "Tälle sähköpostiosoitteelle läytyi jo käyttäjätunnus."
+msgstr ""
 
 #: cps/services/gmail.py:59
 msgid "Found no valid gmail.json file with OAuth information"
@@ -1551,9 +1509,9 @@ msgid "Delete temp folder contents"
 msgstr ""
 
 #: cps/tasks/convert.py:112
-#, fuzzy, python-format
+#, python-format
 msgid "%(book)s send to E-Reader"
-msgstr "Lähetä Kindleen"
+msgstr ""
 
 #: cps/tasks/convert.py:177
 #, python-format
@@ -1602,9 +1560,8 @@ msgid "E-mail"
 msgstr ""
 
 #: cps/tasks/metadata_backup.py:34
-#, fuzzy
 msgid "Backing up Metadata"
-msgstr "muokkaa metadataa"
+msgstr ""
 
 #: cps/tasks/thumbnail.py:97
 #, python-format
@@ -1646,9 +1603,8 @@ msgid "Email"
 msgstr "Sähköposti"
 
 #: cps/templates/admin.html:15
-#, fuzzy
 msgid "Send to eReader Email"
-msgstr "Kindle"
+msgstr ""
 
 #: cps/templates/admin.html:17 cps/templates/layout.html:93
 #: cps/templates/user_table.html:143
@@ -1772,9 +1728,8 @@ msgid "Reverse Proxy Header Name"
 msgstr ""
 
 #: cps/templates/admin.html:159
-#, fuzzy
 msgid "Edit Calibre Database Configuration"
-msgstr "Calibre DB hakemisto"
+msgstr ""
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
@@ -2142,9 +2097,8 @@ msgid "Keyword"
 msgstr "Avainsana"
 
 #: cps/templates/book_edit.html:240
-#, fuzzy
 msgid "Search keyword"
-msgstr " Hae avainsanaa "
+msgstr ""
 
 #: cps/templates/book_edit.html:246
 msgid "Click the cover to load metadata to the form"
@@ -2173,24 +2127,20 @@ msgid "This Field is Required"
 msgstr ""
 
 #: cps/templates/book_table.html:25
-#, fuzzy
 msgid "Archive selected books"
-msgstr "Näytä viimeisimmät kirjat"
+msgstr ""
 
 #: cps/templates/book_table.html:28
-#, fuzzy
 msgid "Unarchive selected books"
-msgstr "Näytä viimeisimmät kirjat"
+msgstr ""
 
 #: cps/templates/book_table.html:34
-#, fuzzy
 msgid "Mark selected books as read"
-msgstr "Merkitse lukemattomaksi"
+msgstr ""
 
 #: cps/templates/book_table.html:37
-#, fuzzy
 msgid "Mark selected books as unread"
-msgstr "Merkitse lukemattomaksi"
+msgstr ""
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
@@ -2201,9 +2151,8 @@ msgid "Clear selections"
 msgstr ""
 
 #: cps/templates/book_table.html:63
-#, fuzzy
 msgid "Edit selected books"
-msgstr "Poista kirja"
+msgstr ""
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2271,9 +2220,8 @@ msgid "Enter Publishers"
 msgstr ""
 
 #: cps/templates/book_table.html:99
-#, fuzzy
 msgid "Enter comments"
-msgstr "Syötä domainnimi"
+msgstr ""
 
 #: cps/templates/book_table.html:99
 msgid "Comments"
@@ -2291,14 +2239,12 @@ msgstr ""
 #: cps/templates/book_table.html:110 cps/templates/book_table.html:112
 #: cps/templates/book_table.html:116 cps/templates/book_table.html:118
 #: cps/templates/book_table.html:122
-#, fuzzy
 msgid "Enter "
-msgstr "Rekisteröi"
+msgstr ""
 
 #: cps/templates/book_table.html:128
-#, fuzzy
 msgid "Delete selected books"
-msgstr "Poista kirja"
+msgstr ""
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2328,36 +2274,32 @@ msgid "The following books will be archived:"
 msgstr ""
 
 #: cps/templates/book_table.html:200 cps/templates/detail.html:275
-#, fuzzy
 msgid "Archive"
-msgstr "Hae"
+msgstr ""
 
 #: cps/templates/book_table.html:216
 msgid "The following books will be unarchived:"
 msgstr ""
 
 #: cps/templates/book_table.html:220
-#, fuzzy
 msgid "Unarchive"
-msgstr "Hae"
+msgstr ""
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
 msgstr ""
 
 #: cps/templates/book_table.html:240
-#, fuzzy
 msgid "Mark as read"
-msgstr "Merkitse luetuksi"
+msgstr ""
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
 msgstr ""
 
 #: cps/templates/book_table.html:260
-#, fuzzy
 msgid "Mark as unread"
-msgstr "Merkitse lukemattomaksi"
+msgstr ""
 
 #: cps/templates/book_table.html:272 cps/templates/detail.html:348
 msgid "Edit Metadata"
@@ -2663,14 +2605,12 @@ msgid "Path to Kepubify E-Book Converter"
 msgstr ""
 
 #: cps/templates/config_edit.html:348
-#, fuzzy
 msgid "Location of Unrar binary"
-msgstr "UnRar binäärin paikka"
+msgstr ""
 
 #: cps/templates/config_edit.html:364
-#, fuzzy
 msgid "Security Settings"
-msgstr "OAuth asetukset"
+msgstr ""
 
 #: cps/templates/config_edit.html:372
 msgid "Limit failed login attempts"
@@ -2701,9 +2641,8 @@ msgid "Strong"
 msgstr ""
 
 #: cps/templates/config_edit.html:397
-#, fuzzy
 msgid "User Password policy"
-msgstr "Nollaa käyttäjän salasana"
+msgstr ""
 
 #: cps/templates/config_edit.html:401
 msgid "Minimum password length"
@@ -2806,14 +2745,12 @@ msgid "Allow Editing Public Shelves"
 msgstr "Salli julkisten hyllyjen editointi"
 
 #: cps/templates/config_view_edit.html:123
-#, fuzzy
 msgid "Default Language"
-msgstr "Poissulje kieli"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:131
-#, fuzzy
 msgid "Default Visible Language of Books"
-msgstr "Näytä kirjat kielellä"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:147
 msgid "Default Visibilities for New Users"
@@ -2849,9 +2786,8 @@ msgid "Mark As Read"
 msgstr "Merkitse luetuksi"
 
 #: cps/templates/detail.html:262
-#, fuzzy
 msgid "Mark Book as Read or Unread"
-msgstr "Merkitse lukemattomaksi"
+msgstr ""
 
 #: cps/templates/detail.html:262 cps/templates/listenmp3.html:159
 msgid "Read"
@@ -2890,9 +2826,8 @@ msgid "Standard Email Account"
 msgstr ""
 
 #: cps/templates/email_edit.html:16
-#, fuzzy
 msgid "Gmail Account"
-msgstr "Tili"
+msgstr ""
 
 #: cps/templates/email_edit.html:22
 msgid "Setup Gmail Account"
@@ -2919,9 +2854,8 @@ msgid "Attachment Size Limit"
 msgstr ""
 
 #: cps/templates/email_edit.html:66
-#, fuzzy
 msgid "Save and Send Test Email"
-msgstr "Tallenna asetukset ja testaa sähköpostia"
+msgstr ""
 
 #: cps/templates/email_edit.html:70 cps/templates/layout.html:26
 #: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
@@ -2970,9 +2904,8 @@ msgid "Create Issue"
 msgstr "Luo virheilmoitus"
 
 #: cps/templates/http_error.html:52
-#, fuzzy
 msgid "Return to Database config"
-msgstr "Ominaisuuksien asetukset"
+msgstr ""
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3223,23 +3156,20 @@ msgid "Select"
 msgstr ""
 
 #: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:46
-#, fuzzy
 msgid "Ok"
-msgstr "Kirja"
+msgstr ""
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
 msgstr "Calibre-Web e-kirjaluettelo"
 
 #: cps/templates/read.html:7
-#, fuzzy
 msgid "epub Reader"
-msgstr "PDF lukija"
+msgstr ""
 
 #: cps/templates/read.html:80
-#, fuzzy
 msgid "Choose a theme below:"
-msgstr "Valitse käyttäjänimi"
+msgstr ""
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
@@ -3254,9 +3184,8 @@ msgid "Sepia"
 msgstr ""
 
 #: cps/templates/read.html:90
-#, fuzzy
 msgid "Black"
-msgstr "Palaa"
+msgstr ""
 
 #: cps/templates/read.html:95
 msgid "Reflow text when sidebars are open."
@@ -3271,9 +3200,8 @@ msgid "Font"
 msgstr ""
 
 #: cps/templates/read.html:106
-#, fuzzy
 msgid "Default"
-msgstr "Poista"
+msgstr ""
 
 #: cps/templates/read.html:107
 msgid "Yahei"
@@ -3284,19 +3212,16 @@ msgid "SimSun"
 msgstr ""
 
 #: cps/templates/read.html:109
-#, fuzzy
 msgid "KaiTi"
-msgstr "Odottaa"
+msgstr ""
 
 #: cps/templates/read.html:110
-#, fuzzy
 msgid "Arial"
-msgstr "Pystysuunta"
+msgstr ""
 
 #: cps/templates/read.html:113
-#, fuzzy
 msgid "Spread"
-msgstr "Luettu"
+msgstr ""
 
 #: cps/templates/read.html:114
 msgid "Two columns"
@@ -3307,9 +3232,8 @@ msgid "One column"
 msgstr ""
 
 #: cps/templates/readcbr.html:8
-#, fuzzy
 msgid "Comic Reader"
-msgstr "PDF lukija"
+msgstr ""
 
 #: cps/templates/readcbr.html:75
 msgid "Keyboard Shortcuts"
@@ -3364,9 +3288,8 @@ msgid "Display"
 msgstr ""
 
 #: cps/templates/readcbr.html:113
-#, fuzzy
 msgid "Single Page"
-msgstr "Ylläpitosivu"
+msgstr ""
 
 #: cps/templates/readcbr.html:114
 msgid "Long Strip"
@@ -3441,19 +3364,16 @@ msgid "Hide"
 msgstr ""
 
 #: cps/templates/readdjvu.html:5
-#, fuzzy
 msgid "DJVU Reader"
-msgstr "PDF lukija"
+msgstr ""
 
 #: cps/templates/readpdf.html:31
-#, fuzzy
 msgid "PDF Reader"
-msgstr "PDF lukija"
+msgstr ""
 
 #: cps/templates/readtxt.html:6
-#, fuzzy
 msgid "txt Reader"
-msgstr "PDF lukija"
+msgstr ""
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -3520,9 +3440,8 @@ msgid "Exclude Series"
 msgstr "Poissulje sarja"
 
 #: cps/templates/search_form.html:96
-#, fuzzy
 msgid "Exclude Shelves"
-msgstr "Poissulje sarja"
+msgstr ""
 
 #: cps/templates/search_form.html:116
 msgid "Exclude Languages"
@@ -3723,34 +3642,28 @@ msgid "Select..."
 msgstr ""
 
 #: cps/templates/user_table.html:131
-#, fuzzy
 msgid "Edit User"
-msgstr "Pääkäyttäjä"
+msgstr ""
 
 #: cps/templates/user_table.html:134
-#, fuzzy
 msgid "Enter Username"
-msgstr "Valitse käyttäjänimi"
+msgstr ""
 
 #: cps/templates/user_table.html:135
-#, fuzzy
 msgid "Enter Email"
-msgstr "Testi sähköposti"
+msgstr ""
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "Enter eReader Email"
-msgstr "Kindle"
+msgstr ""
 
 #: cps/templates/user_table.html:136
-#, fuzzy
 msgid "eReader Email"
-msgstr "Testi sähköposti"
+msgstr ""
 
 #: cps/templates/user_table.html:137
-#, fuzzy
 msgid "Locale"
-msgstr "Skaalaa"
+msgstr ""
 
 #: cps/templates/user_table.html:138
 msgid "Visible Book Languages"
@@ -3789,25 +3702,22 @@ msgid "Denied Column Values"
 msgstr ""
 
 #: cps/templates/user_table.html:144
-#, fuzzy
 msgid "Change Password"
-msgstr "Salli sananan vaihto"
+msgstr ""
 
 #: cps/templates/user_table.html:147
 msgid "View"
 msgstr ""
 
 #: cps/templates/user_table.html:150
-#, fuzzy
 msgid "Edit Public Shelves"
-msgstr "Muokkaa hyllyä"
+msgstr ""
 
 #: cps/templates/user_table.html:152
 msgid "Sync selected Shelves with Kobo"
 msgstr ""
 
 #: cps/templates/user_table.html:156
-#, fuzzy
 msgid "Show Read/Unread Section"
-msgstr "Näytä sarjavalinta"
+msgstr ""
 

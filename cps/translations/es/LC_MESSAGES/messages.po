@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-09-12 08:29+0200\n"
+"POT-Creation-Date: 2025-09-12 08:48+0200\n"
 "PO-Revision-Date: 2024-10-29 15:26+0100\n"
 "Last-Translator: adruki <adruki@gmail.com>\n"
 "Language: es\n"
@@ -166,9 +166,8 @@ msgid "Do you really want to delete this user?"
 msgstr "¿Seguro que quieres borrar este usuario?"
 
 #: cps/admin.py:621
-#, fuzzy
 msgid "Do you really want to delete this book?"
-msgstr "¿Seguro que deseas borrar este dominio?"
+msgstr ""
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -187,14 +186,12 @@ msgid "Are you sure you want to change the selected role for the selected user(s
 msgstr "¿Estas seguro de que deseas cambiar el rol seleccionado de el usuario seleccionado?"
 
 #: cps/admin.py:631
-#, fuzzy
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr "¿Estas seguro de que deseas cambiar las restricciones de los usuarios seleccionados?"
+msgstr ""
 
 #: cps/admin.py:633
-#, fuzzy
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr "¿Estas seguro de que deseas cambiar las restricciones de los usuarios seleccionados?"
+msgstr ""
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
@@ -583,9 +580,8 @@ msgid "There was an error converting this book: %(res)s"
 msgstr "Ocurrió un error al convertir este libro: %(res)s"
 
 #: cps/editbooks.py:297
-#, fuzzy
 msgid "Changes successfully applied"
-msgstr "Estantería eliminada correctamente"
+msgstr ""
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
@@ -779,9 +775,9 @@ msgid "Deleting book %(id)s from database only, book path in database not valid:
 msgstr "Eliminando el libro %(id)s solo de la base de datos, la ruta del libro en la base de datos no es válida: %(path)s"
 
 #: cps/helper.py:404
-#, fuzzy, python-format
+#, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr "El cambio de nombre del autor de '%(src)s' a '%(dest)s' falló con el error: %(error)s"
+msgstr ""
 
 #: cps/helper.py:443
 #, python-format
@@ -2134,38 +2130,32 @@ msgid "This Field is Required"
 msgstr "Este campo es obligatorio"
 
 #: cps/templates/book_table.html:25
-#, fuzzy
 msgid "Archive selected books"
-msgstr "Fusionar libros seleccionados"
+msgstr ""
 
 #: cps/templates/book_table.html:28
-#, fuzzy
 msgid "Unarchive selected books"
-msgstr "Fusionar libros seleccionados"
+msgstr ""
 
 #: cps/templates/book_table.html:34
-#, fuzzy
 msgid "Mark selected books as read"
-msgstr "Fusionar libros seleccionados"
+msgstr ""
 
 #: cps/templates/book_table.html:37
-#, fuzzy
 msgid "Mark selected books as unread"
-msgstr "Fusionar libros seleccionados"
+msgstr ""
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
 msgstr "Fusionar libros seleccionados"
 
 #: cps/templates/book_table.html:60 cps/templates/user_table.html:124
-#, fuzzy
 msgid "Clear selections"
-msgstr "Eliminar selección"
+msgstr ""
 
 #: cps/templates/book_table.html:63
-#, fuzzy
 msgid "Edit selected books"
-msgstr "Fusionar libros seleccionados"
+msgstr ""
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2256,9 +2246,8 @@ msgid "Enter "
 msgstr "Introducir "
 
 #: cps/templates/book_table.html:128
-#, fuzzy
 msgid "Delete selected books"
-msgstr "Fusionar libros seleccionados"
+msgstr ""
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2296,27 +2285,24 @@ msgid "The following books will be unarchived:"
 msgstr ""
 
 #: cps/templates/book_table.html:220
-#, fuzzy
 msgid "Unarchive"
-msgstr "Archivar"
+msgstr ""
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
 msgstr ""
 
 #: cps/templates/book_table.html:240
-#, fuzzy
 msgid "Mark as read"
-msgstr "Marcar como leido"
+msgstr ""
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
 msgstr ""
 
 #: cps/templates/book_table.html:260
-#, fuzzy
 msgid "Mark as unread"
-msgstr "Marcar como no leido"
+msgstr ""
 
 #: cps/templates/book_table.html:272 cps/templates/detail.html:348
 msgid "Edit Metadata"
@@ -2921,9 +2907,8 @@ msgid "Create Issue"
 msgstr "Crear una incidencia"
 
 #: cps/templates/http_error.html:52
-#, fuzzy
 msgid "Return to Database config"
-msgstr "Configuración de la base de datos"
+msgstr ""
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3033,9 +3018,8 @@ msgid "Toggle Navigation"
 msgstr "Alternar navegación"
 
 #: cps/templates/layout.html:58
-#, fuzzy
 msgid "Simple Theme"
-msgstr "Simple"
+msgstr ""
 
 #: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"

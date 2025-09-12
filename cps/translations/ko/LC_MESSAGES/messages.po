@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2025-09-12 08:29+0200\n"
+"POT-Creation-Date: 2025-09-12 08:48+0200\n"
 "PO-Revision-Date: 2024-11-01 17:50+0900\n"
 "Last-Translator: limeade23 <admin@limeade.me>\n"
 "Language: ko\n"
@@ -163,9 +163,8 @@ msgid "Do you really want to delete this user?"
 msgstr "이 사용자를 삭제하시겠습니까?"
 
 #: cps/admin.py:621
-#, fuzzy
 msgid "Do you really want to delete this book?"
-msgstr "이 도메인을 삭제하시겠습니까?"
+msgstr ""
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -184,14 +183,12 @@ msgid "Are you sure you want to change the selected role for the selected user(s
 msgstr "선택한 사용자의 권한을 변경하시겠습니까?"
 
 #: cps/admin.py:631
-#, fuzzy
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr "선택한 사용자의 제한을 변경하시겠습니까?"
+msgstr ""
 
 #: cps/admin.py:633
-#, fuzzy
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr "선택한 사용자의 제한을 변경하시겠습니까?"
+msgstr ""
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
@@ -580,9 +577,8 @@ msgid "There was an error converting this book: %(res)s"
 msgstr "책 변환 중 오류가 발생했습니다: %(res)s"
 
 #: cps/editbooks.py:297
-#, fuzzy
 msgid "Changes successfully applied"
-msgstr "서재가 삭제되었습니다."
+msgstr ""
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
@@ -776,9 +772,9 @@ msgid "Deleting book %(id)s from database only, book path in database not valid:
 msgstr "데이터베이스 경로가 올바르지 않아 책 %(id)s을(를) 데이터베이스에서만 삭제합니다: %(path)s"
 
 #: cps/helper.py:404
-#, fuzzy, python-format
+#, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr "저자명 '%(src)s'에서 '%(dest)s'(으)로 변경하지 못했습니다: %(error)s"
+msgstr ""
 
 #: cps/helper.py:443
 #, python-format
@@ -882,9 +878,9 @@ msgid "Missing calibre binaries: %(missing)s"
 msgstr "Calibre 바이너리 파일이 누락되었습니다: %(missing)s"
 
 #: cps/helper.py:1039
-#, fuzzy, python-format
+#, python-format
 msgid "Missing executable permissions: %(missing)s"
-msgstr "실행 권한이 누락되었습니다: %(missing)s"
+msgstr ""
 
 #: cps/helper.py:1044
 msgid "Error executing Calibre"
@@ -2131,38 +2127,32 @@ msgid "This Field is Required"
 msgstr "이 항목은 필수입니다."
 
 #: cps/templates/book_table.html:25
-#, fuzzy
 msgid "Archive selected books"
-msgstr "선택한 책 병합"
+msgstr ""
 
 #: cps/templates/book_table.html:28
-#, fuzzy
 msgid "Unarchive selected books"
-msgstr "선택한 책 병합"
+msgstr ""
 
 #: cps/templates/book_table.html:34
-#, fuzzy
 msgid "Mark selected books as read"
-msgstr "선택한 책 병합"
+msgstr ""
 
 #: cps/templates/book_table.html:37
-#, fuzzy
 msgid "Mark selected books as unread"
-msgstr "선택한 책 병합"
+msgstr ""
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
 msgstr "선택한 책 병합"
 
 #: cps/templates/book_table.html:60 cps/templates/user_table.html:124
-#, fuzzy
 msgid "Clear selections"
-msgstr "선택 항목 삭제"
+msgstr ""
 
 #: cps/templates/book_table.html:63
-#, fuzzy
 msgid "Edit selected books"
-msgstr "선택한 책 병합"
+msgstr ""
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2253,9 +2243,8 @@ msgid "Enter "
 msgstr "입력 "
 
 #: cps/templates/book_table.html:128
-#, fuzzy
 msgid "Delete selected books"
-msgstr "선택한 책 병합"
+msgstr ""
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2293,27 +2282,24 @@ msgid "The following books will be unarchived:"
 msgstr ""
 
 #: cps/templates/book_table.html:220
-#, fuzzy
 msgid "Unarchive"
-msgstr "보관"
+msgstr ""
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
 msgstr ""
 
 #: cps/templates/book_table.html:240
-#, fuzzy
 msgid "Mark as read"
-msgstr "읽음으로 표시"
+msgstr ""
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
 msgstr ""
 
 #: cps/templates/book_table.html:260
-#, fuzzy
 msgid "Mark as unread"
-msgstr "읽지 않음으로 표시"
+msgstr ""
 
 #: cps/templates/book_table.html:272 cps/templates/detail.html:348
 msgid "Edit Metadata"
@@ -2918,9 +2904,8 @@ msgid "Create Issue"
 msgstr "이슈 생성"
 
 #: cps/templates/http_error.html:52
-#, fuzzy
 msgid "Return to Database config"
-msgstr "데이터베이스 설정"
+msgstr ""
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3030,9 +3015,8 @@ msgid "Toggle Navigation"
 msgstr "메뉴 열기/닫기"
 
 #: cps/templates/layout.html:58
-#, fuzzy
 msgid "Simple Theme"
-msgstr "단순 인증"
+msgstr ""
 
 #: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"
@@ -3184,9 +3168,8 @@ msgid "epub Reader"
 msgstr "epub 리더"
 
 #: cps/templates/read.html:80
-#, fuzzy
 msgid "Choose a theme below:"
-msgstr "사용자 이름 선택"
+msgstr ""
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
@@ -3607,9 +3590,8 @@ msgid "Reset user Password"
 msgstr "사용자 비밀번호 초기화"
 
 #: cps/templates/user_edit.html:28
-#, fuzzy
 msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
-msgstr "전자책 리더로 전송할 이메일 (여러 전자책 리더를 사용할 경우 쉼표로 구분하여 입력)"
+msgstr ""
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
