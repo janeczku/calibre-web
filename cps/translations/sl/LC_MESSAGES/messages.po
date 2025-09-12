@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-09-08 12:20+0200\n"
+"POT-Creation-Date: 2025-09-12 08:29+0200\n"
 "PO-Revision-Date: 2024-09-18 19:45+0200\n"
 "Last-Translator: Andrej Kralj\n"
 "Language: sl\n"
@@ -70,7 +70,7 @@ msgstr "Stolpec po meri št. %(column)d ne obstaja v zbirki podatkov Calibre"
 msgid "Edit Users"
 msgstr "Urejanje uporabnikov"
 
-#: cps/admin.py:377 cps/opds.py:540 cps/templates/grid.html:14
+#: cps/admin.py:377 cps/opds.py:560 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Vse"
@@ -93,7 +93,7 @@ msgstr "Pokaži vse"
 msgid "Malformed request"
 msgstr "Napačno oblikovana zahteva"
 
-#: cps/admin.py:476 cps/admin.py:2074
+#: cps/admin.py:476 cps/admin.py:2077
 msgid "Guest Name can't be changed"
 msgstr "Imena gosta ni mogoče spremeniti"
 
@@ -101,7 +101,7 @@ msgstr "Imena gosta ni mogoče spremeniti"
 msgid "Guest can't have this role"
 msgstr "Gost ne more imeti te vloge"
 
-#: cps/admin.py:500 cps/admin.py:2028
+#: cps/admin.py:500 cps/admin.py:2031
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Ni več nobenega admin uporabnika, ne morem odstraniti vloge admin"
 
@@ -146,7 +146,7 @@ msgstr "Nepravilen stolpec za branje"
 msgid "Invalid Restricted Column"
 msgstr "Neveljavni stolpec za omejitev"
 
-#: cps/admin.py:603 cps/admin.py:1899
+#: cps/admin.py:603 cps/admin.py:1902
 msgid "Calibre-Web configuration updated"
 msgstr "Posodobljena nastavitev Calibre-Web"
 
@@ -309,8 +309,8 @@ msgstr "Urejanje nastavitev e-poštnega strežnika"
 msgid "Success! Gmail Account Verified."
 msgstr "Uspeh! Račun Gmail je potrjen."
 
-#: cps/admin.py:1339 cps/admin.py:1342 cps/admin.py:1727 cps/admin.py:1883
-#: cps/admin.py:1981 cps/admin.py:2102 cps/editbooks.py:169
+#: cps/admin.py:1339 cps/admin.py:1342 cps/admin.py:1727 cps/admin.py:1886
+#: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
 #: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
 #: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1535
@@ -352,7 +352,7 @@ msgstr "Nepravilno trajanje za določeno nalogo"
 msgid "Scheduled tasks settings updated"
 msgstr "Posodobljene nastavitve načrtovanih opravil"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2098 cps/web.py:1325
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1325
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ups! Zgodila se je neznana napaka. Prosimo, poskusite znova pozneje."
 
@@ -360,7 +360,7 @@ msgstr "Ups! Zgodila se je neznana napaka. Prosimo, poskusite znova pozneje."
 msgid "Settings DB is not Writeable"
 msgstr "DB nastavitev ni mogoče zapisati"
 
-#: cps/admin.py:1450 cps/admin.py:2090
+#: cps/admin.py:1450 cps/admin.py:2093
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Urejanje uporabnika %(nick)s"
@@ -481,57 +481,57 @@ msgstr "Lokacija datoteka Keyfile ni veljavna, vnesite pravilno pot"
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Lokacija datoteke Certfile ni veljavna, vnesite pravilno pot"
 
-#: cps/admin.py:1868
+#: cps/admin.py:1871
 msgid "Password length has to be between 1 and 40"
 msgstr "Dolžina gesla mora biti med 1 in 40"
 
-#: cps/admin.py:1922
+#: cps/admin.py:1925
 msgid "Database Settings updated"
 msgstr "Posodobljene nastavitve zbirke podatkov"
 
-#: cps/admin.py:1930
+#: cps/admin.py:1933
 msgid "Database Configuration"
 msgstr "Nastavitev zbirke podatkov"
 
-#: cps/admin.py:1945 cps/web.py:1299
+#: cps/admin.py:1948 cps/web.py:1299
 msgid "Oops! Please complete all fields."
 msgstr "Ups! Izpolnite vsa polja."
 
-#: cps/admin.py:1954
+#: cps/admin.py:1957
 msgid "E-mail is not from valid domain"
 msgstr "E-pošta ni iz veljavne domene"
 
-#: cps/admin.py:1960
+#: cps/admin.py:1963
 msgid "Add new user"
 msgstr "Dodajanje novega uporabnika"
 
-#: cps/admin.py:1971
+#: cps/admin.py:1974
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Ustvarjen uporabnik '%(user)s'"
 
-#: cps/admin.py:1977
+#: cps/admin.py:1980
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "Ups! Za to e-pošto že obstaja račun ali ime."
 
-#: cps/admin.py:2007
+#: cps/admin.py:2010
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Uporabnik '%(nick)s' je izbrisan"
 
-#: cps/admin.py:2010
+#: cps/admin.py:2013
 msgid "Can't delete Guest User"
 msgstr "Ne morem izbrisati uporabnika gosta"
 
-#: cps/admin.py:2013
+#: cps/admin.py:2016
 msgid "No admin user remaining, can't delete user"
 msgstr "Ni preostalega uporabnika administratorja, uporabnika ni mogoče izbrisati"
 
-#: cps/admin.py:2068 cps/web.py:1484
+#: cps/admin.py:2071 cps/web.py:1484
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-pošta ne sme biti prazna in mora biti veljavna."
 
-#: cps/admin.py:2094
+#: cps/admin.py:2097
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Uporabnik '%(nick)s' je posodobljen"
@@ -539,7 +539,7 @@ msgstr "Uporabnik '%(nick)s' je posodobljen"
 #: cps/basic.py:67 cps/search.py:50 cps/search.py:426
 #: cps/templates/basic_layout.html:23 cps/templates/book_edit.html:242
 #: cps/templates/feed.xml:34 cps/templates/index.xml:12
-#: cps/templates/layout.html:47 cps/templates/layout.html:50
+#: cps/templates/layout.html:46 cps/templates/layout.html:49
 #: cps/templates/search_form.html:247
 msgid "Search"
 msgstr "Iskanje"
@@ -552,7 +552,7 @@ msgstr "ni nameščen"
 msgid "Execution permissions missing"
 msgstr "Manjkajo dovoljenja za izvajanje"
 
-#: cps/db.py:1046 cps/templates/config_edit.html:203
+#: cps/db.py:1046 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
@@ -970,13 +970,13 @@ msgstr "Napaka Google Oauth, poskusite pozneje."
 msgid "Google Oauth error: {}"
 msgstr "Napaka Google Oauth: {}"
 
-#: cps/opds.py:299
+#: cps/opds.py:308
 #, python-brace-format
 msgid "{} Stars"
 msgstr "{} zvezdic"
 
-#: cps/remotelogin.py:63 cps/templates/layout.html:69
-#: cps/templates/layout.html:104 cps/templates/login.html:4
+#: cps/remotelogin.py:63 cps/templates/layout.html:68
+#: cps/templates/layout.html:103 cps/templates/login.html:4
 #: cps/templates/login.html:21 cps/web.py:1361
 msgid "Login"
 msgstr "Prijava"
@@ -1159,7 +1159,7 @@ msgstr "Prebrani status = '%(status)s'"
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "Napaka pri iskanju stolpcev po meri, ponovno zaženite Calibre-Web"
 
-#: cps/search.py:370 cps/search.py:402 cps/templates/layout.html:58
+#: cps/search.py:370 cps/search.py:402 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Napredno iskanje"
 
@@ -1214,7 +1214,7 @@ msgstr "Knjiga je bila odstranjena s police: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "Žal vam ni dovoljeno odstraniti knjige s te police"
 
-#: cps/shelf.py:218 cps/templates/layout.html:160
+#: cps/shelf.py:218 cps/templates/layout.html:159
 msgid "Create a Shelf"
 msgstr "Ustvari polico"
 
@@ -1276,7 +1276,7 @@ msgstr "Polica: '%(name)s'"
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Napaka pri odpiranju police. Polica ne obstaja ali ni dostopna"
 
-#: cps/tasks_status.py:47 cps/templates/layout.html:91
+#: cps/tasks_status.py:47 cps/templates/layout.html:90
 #: cps/templates/tasks.html:7
 msgid "Tasks"
 msgstr "Opravila"
@@ -1424,7 +1424,7 @@ msgstr "Ups! Posodobite svoj profil z veljavnim e-poštnim naslovom eReaderja."
 msgid "Please wait one minute to register next user"
 msgstr "Počakajte eno minuto za registracijo naslednjega uporabnika"
 
-#: cps/templates/layout.html:70 cps/templates/layout.html:105
+#: cps/templates/layout.html:69 cps/templates/layout.html:104
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1287
 #: cps/web.py:1291 cps/web.py:1296 cps/web.py:1300 cps/web.py:1306
 #: cps/web.py:1326 cps/web.py:1330 cps/web.py:1343 cps/web.py:1346
@@ -1587,7 +1587,7 @@ msgid "Clearing cover thumbnail cache"
 msgstr "Čiščenje predpomnilnika sličic naslovnice"
 
 #: cps/tasks/upload.py:39 cps/templates/admin.html:20
-#: cps/templates/layout.html:83 cps/templates/user_table.html:145
+#: cps/templates/layout.html:82 cps/templates/user_table.html:145
 msgid "Upload"
 msgstr "Naloži"
 
@@ -1610,7 +1610,7 @@ msgstr "E-pošta"
 msgid "Send to eReader Email"
 msgstr "Pošlji v e-pošto e-bralnika"
 
-#: cps/templates/admin.html:17 cps/templates/layout.html:94
+#: cps/templates/admin.html:17 cps/templates/layout.html:93
 #: cps/templates/user_table.html:143
 msgid "Admin"
 msgstr "Administator"
@@ -1727,7 +1727,7 @@ msgstr "Prijava v oddaljeno prijavo Magic Link"
 msgid "Reverse Proxy Login"
 msgstr "Prijava za povratni posredniški strežnik"
 
-#: cps/templates/admin.html:154 cps/templates/config_edit.html:172
+#: cps/templates/admin.html:154 cps/templates/config_edit.html:176
 msgid "Reverse Proxy Header Name"
 msgstr "Ime glave povratnega posredniškega strežnika"
 
@@ -1835,7 +1835,7 @@ msgstr "V redu"
 #: cps/templates/book_table.html:181 cps/templates/book_table.html:201
 #: cps/templates/book_table.html:221 cps/templates/book_table.html:241
 #: cps/templates/book_table.html:261 cps/templates/book_table.html:316
-#: cps/templates/config_db.html:66 cps/templates/config_edit.html:427
+#: cps/templates/config_db.html:66 cps/templates/config_edit.html:431
 #: cps/templates/config_view_edit.html:175 cps/templates/detail.html:350
 #: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
 #: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
@@ -1929,12 +1929,12 @@ msgstr "Objavljeno"
 msgid "Description:"
 msgstr "Opis:"
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:175
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
 msgid "Previous"
 msgstr "Prejšnji"
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:190
+#: cps/templates/layout.html:189
 msgid "Next"
 msgstr "Naslednji"
 
@@ -1947,12 +1947,12 @@ msgstr "Ni bilo najdenih rezultatov"
 msgid "Home"
 msgstr "Domov"
 
-#: cps/templates/basic_layout.html:21 cps/templates/layout.html:48
+#: cps/templates/basic_layout.html:21 cps/templates/layout.html:47
 msgid "Search Library"
 msgstr "Iskanje po knjižnici"
 
-#: cps/templates/basic_layout.html:29 cps/templates/layout.html:73
-#: cps/templates/layout.html:99
+#: cps/templates/basic_layout.html:29 cps/templates/layout.html:72
+#: cps/templates/layout.html:98
 msgid "Logout"
 msgstr "Odjava"
 
@@ -1988,22 +1988,22 @@ msgstr "Pretvori v:"
 msgid "Convert book"
 msgstr "Pretvori knjigo"
 
-#: cps/templates/book_edit.html:53 cps/templates/layout.html:80
-#: cps/templates/layout.html:137
+#: cps/templates/book_edit.html:53 cps/templates/layout.html:79
+#: cps/templates/layout.html:136
 msgid "Uploading..."
 msgstr "Nalaganje..."
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:80 cps/templates/layout.html:206
+#: cps/templates/layout.html:79 cps/templates/layout.html:205
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Zapri"
 
-#: cps/templates/book_edit.html:53 cps/templates/layout.html:80
+#: cps/templates/book_edit.html:53 cps/templates/layout.html:79
 msgid "Error"
 msgstr "Napaka"
 
-#: cps/templates/book_edit.html:53 cps/templates/layout.html:80
+#: cps/templates/book_edit.html:53 cps/templates/layout.html:79
 msgid "Upload done, processing, please wait..."
 msgstr "Prenos opravljen, obdelujem, prosim počakajte..."
 
@@ -2089,7 +2089,7 @@ msgid "Fetch Metadata"
 msgstr "Pridobivanje metapodatkov"
 
 #: cps/templates/book_edit.html:219 cps/templates/config_db.html:65
-#: cps/templates/config_edit.html:426 cps/templates/config_view_edit.html:174
+#: cps/templates/config_edit.html:430 cps/templates/config_view_edit.html:174
 #: cps/templates/email_edit.html:65 cps/templates/schedule_edit.html:44
 #: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
 #: cps/templates/user_edit.html:142
@@ -2463,218 +2463,222 @@ msgstr "Uporabi Goodreads"
 msgid "Goodreads API Key"
 msgstr "Ključ API Goodreads"
 
-#: cps/templates/config_edit.html:168
+#: cps/templates/config_edit.html:167
+msgid "Google Books API Key"
+msgstr ""
+
+#: cps/templates/config_edit.html:172
 msgid "Allow Reverse Proxy Authentication"
 msgstr "Omogočanje avtentikacije povratnega posrednika"
 
-#: cps/templates/config_edit.html:179
+#: cps/templates/config_edit.html:183
 msgid "Login type"
 msgstr "Vrsta prijave"
 
-#: cps/templates/config_edit.html:181
+#: cps/templates/config_edit.html:185
 msgid "Use Standard Authentication"
 msgstr "Uporaba standardnega preverjanja pristnosti"
 
-#: cps/templates/config_edit.html:183
+#: cps/templates/config_edit.html:187
 msgid "Use LDAP Authentication"
 msgstr "Uporaba overjanja LDAP"
 
-#: cps/templates/config_edit.html:186
+#: cps/templates/config_edit.html:190
 msgid "Use OAuth"
 msgstr "Uporaba protokola OAuth"
 
-#: cps/templates/config_edit.html:193
+#: cps/templates/config_edit.html:197
 msgid "LDAP Server Host Name or IP Address"
 msgstr "Gostiteljsko ime ali naslov IP strežnika LDAP"
 
-#: cps/templates/config_edit.html:197
+#: cps/templates/config_edit.html:201
 msgid "LDAP Server Port"
 msgstr "Vrata strežnika LDAP"
 
-#: cps/templates/config_edit.html:201
+#: cps/templates/config_edit.html:205
 msgid "LDAP Encryption"
 msgstr "Šifriranje LDAP"
 
-#: cps/templates/config_edit.html:204
+#: cps/templates/config_edit.html:208
 msgid "TLS"
 msgstr "TLS"
 
-#: cps/templates/config_edit.html:205
+#: cps/templates/config_edit.html:209
 msgid "SSL"
 msgstr "SSL"
 
-#: cps/templates/config_edit.html:209
+#: cps/templates/config_edit.html:213
 msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
 msgstr "Pot do CACcertifikata LDAP (potrebna samo za preverjanje pristnosti odjemalčevega certifikata)"
 
-#: cps/templates/config_edit.html:216
+#: cps/templates/config_edit.html:220
 msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
 msgstr "Pot potrdila LDAP (potrebna samo za preverjanje pristnosti potrdila odjemalca)"
 
-#: cps/templates/config_edit.html:223
+#: cps/templates/config_edit.html:227
 msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
 msgstr "Pot do datoteke ključa LDAP (potrebna samo za preverjanje pristnosti odjemalčevega potrdila)"
 
-#: cps/templates/config_edit.html:232
+#: cps/templates/config_edit.html:236
 msgid "LDAP Authentication"
 msgstr "Preverjanje pristnosti LDAP"
 
-#: cps/templates/config_edit.html:234
+#: cps/templates/config_edit.html:238
 msgid "Anonymous"
 msgstr "Anonimno"
 
-#: cps/templates/config_edit.html:235
+#: cps/templates/config_edit.html:239
 msgid "Unauthenticated"
 msgstr "Neavtentificirano"
 
-#: cps/templates/config_edit.html:236
+#: cps/templates/config_edit.html:240
 msgid "Simple"
 msgstr "Enostavno"
 
-#: cps/templates/config_edit.html:241
+#: cps/templates/config_edit.html:245
 msgid "LDAP Administrator Username"
 msgstr "Uporabniško ime skrbnika LDAP"
 
-#: cps/templates/config_edit.html:247
+#: cps/templates/config_edit.html:251
 msgid "LDAP Administrator Password"
 msgstr "Geslo skrbnika LDAP"
 
-#: cps/templates/config_edit.html:252
+#: cps/templates/config_edit.html:256
 msgid "LDAP Distinguished Name (DN)"
 msgstr "Razpoznavno ime (DN) LDAP"
 
-#: cps/templates/config_edit.html:256
+#: cps/templates/config_edit.html:260
 msgid "LDAP User Object Filter"
 msgstr "Filtriranje predmeta uporabnika LDAP"
 
-#: cps/templates/config_edit.html:261
+#: cps/templates/config_edit.html:265
 msgid "LDAP Server is OpenLDAP?"
 msgstr "Strežnik LDAP je OpenLDAP?"
 
-#: cps/templates/config_edit.html:263
+#: cps/templates/config_edit.html:267
 msgid "Following Settings are Needed For User Import"
 msgstr "Za uvoz uporabnika so potrebne naslednje nastavitve"
 
-#: cps/templates/config_edit.html:265
+#: cps/templates/config_edit.html:269
 msgid "LDAP Group Object Filter"
 msgstr "Filter objektov skupine LDAP"
 
-#: cps/templates/config_edit.html:269
+#: cps/templates/config_edit.html:273
 msgid "LDAP Group Name"
 msgstr "Ime skupine LDAP"
 
-#: cps/templates/config_edit.html:273
+#: cps/templates/config_edit.html:277
 msgid "LDAP Group Members Field"
 msgstr "Polje člani skupine LDAP"
 
-#: cps/templates/config_edit.html:277
+#: cps/templates/config_edit.html:281
 msgid "LDAP Member User Filter Detection"
 msgstr "Zaznavanje filtrov za uporabnike članov LDAP"
 
-#: cps/templates/config_edit.html:279
+#: cps/templates/config_edit.html:283
 msgid "Autodetect"
 msgstr "Samodejno zaznavanje"
 
-#: cps/templates/config_edit.html:280
+#: cps/templates/config_edit.html:284
 msgid "Custom Filter"
 msgstr "Filter po meri"
 
-#: cps/templates/config_edit.html:285
+#: cps/templates/config_edit.html:289
 msgid "LDAP Member User Filter"
 msgstr "Filtriranje uporabnikov članov LDAP"
 
-#: cps/templates/config_edit.html:296
+#: cps/templates/config_edit.html:300
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr "Pridobitev %(provider)s poverilnice OAuth"
 
-#: cps/templates/config_edit.html:299
+#: cps/templates/config_edit.html:303
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr "%(provider)s Id odjemalca OAuth"
 
-#: cps/templates/config_edit.html:303
+#: cps/templates/config_edit.html:307
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr "%(provider)s skrivnost odjemalca OAuth"
 
-#: cps/templates/config_edit.html:319
+#: cps/templates/config_edit.html:323
 msgid "External binaries"
 msgstr "Zunanje binarne datoteke"
 
-#: cps/templates/config_edit.html:325
+#: cps/templates/config_edit.html:329
 msgid "Path to Calibre Binaries"
 msgstr "Pot do binarnih datotek Calibre"
 
-#: cps/templates/config_edit.html:333
+#: cps/templates/config_edit.html:337
 msgid "Calibre E-Book Converter Settings"
 msgstr "Nastavitve pretvornika e-knjig Calibre"
 
-#: cps/templates/config_edit.html:336
+#: cps/templates/config_edit.html:340
 msgid "Path to Kepubify E-Book Converter"
 msgstr "Pot do Kepubify pretvornika e-knjig"
 
-#: cps/templates/config_edit.html:344
+#: cps/templates/config_edit.html:348
 msgid "Location of Unrar binary"
 msgstr "Lokacija binarnega programa Unrar"
 
-#: cps/templates/config_edit.html:360
+#: cps/templates/config_edit.html:364
 msgid "Security Settings"
 msgstr "Varnostne nastavitve"
 
-#: cps/templates/config_edit.html:368
+#: cps/templates/config_edit.html:372
 msgid "Limit failed login attempts"
 msgstr "Omejitev neuspelih poskusov prijave"
 
-#: cps/templates/config_edit.html:372
+#: cps/templates/config_edit.html:376
 msgid "Configure Backend for Limiter"
 msgstr "Nastavitev zalednega sistema za omejitve"
 
-#: cps/templates/config_edit.html:376
+#: cps/templates/config_edit.html:380
 msgid "Options for Limiter Backend"
 msgstr "Možnosti za omejitev zalednega sistema"
 
-#: cps/templates/config_edit.html:382
+#: cps/templates/config_edit.html:386
 msgid "Check if file extensions matches file content on upload"
 msgstr "Preveri ali se končnice datotek ujemajo z vsebino datoteke pri nalaganju"
 
-#: cps/templates/config_edit.html:385
+#: cps/templates/config_edit.html:389
 msgid "Session protection"
 msgstr "Zaščita seje"
 
-#: cps/templates/config_edit.html:387
+#: cps/templates/config_edit.html:391
 msgid "Basic"
 msgstr "Osnovna"
 
-#: cps/templates/config_edit.html:388
+#: cps/templates/config_edit.html:392
 msgid "Strong"
 msgstr "Močna"
 
-#: cps/templates/config_edit.html:393
+#: cps/templates/config_edit.html:397
 msgid "User Password policy"
 msgstr "Pravilnik o geslih uporabnikov"
 
-#: cps/templates/config_edit.html:397
+#: cps/templates/config_edit.html:401
 msgid "Minimum password length"
 msgstr "Najmanjša dolžina gesla"
 
-#: cps/templates/config_edit.html:402
+#: cps/templates/config_edit.html:406
 msgid "Enforce number"
 msgstr "Obvezna uporaba številk"
 
-#: cps/templates/config_edit.html:406
+#: cps/templates/config_edit.html:410
 msgid "Enforce lowercase characters"
 msgstr "Obvezna uporaba malih črk"
 
-#: cps/templates/config_edit.html:410
+#: cps/templates/config_edit.html:414
 msgid "Enforce uppercase characters"
 msgstr "Obvezna uporaba velikih črk"
 
-#: cps/templates/config_edit.html:414
+#: cps/templates/config_edit.html:418
 msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
 msgstr "Obvezna uporaba znakov (potrebno za kitajske/japonske/korejske znake)"
 
-#: cps/templates/config_edit.html:418
+#: cps/templates/config_edit.html:422
 msgid "Enforce special characters"
 msgstr "Obvezna uporaba posebnih znakov"
 
@@ -2821,7 +2825,7 @@ msgid "Add to shelf"
 msgstr "Dodaj na polico"
 
 #: cps/templates/detail.html:313 cps/templates/detail.html:332
-#: cps/templates/feed.xml:81 cps/templates/layout.html:157
+#: cps/templates/feed.xml:131 cps/templates/layout.html:156
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
 #: cps/templates/search.html:22
 msgid "(Public)"
@@ -3012,7 +3016,7 @@ msgstr "Knjige, razvrščene po oceni"
 msgid "Books ordered by file formats"
 msgstr "Knjige, razvrščene po vrstah datotek"
 
-#: cps/templates/index.xml:142 cps/templates/layout.html:155
+#: cps/templates/index.xml:142 cps/templates/layout.html:154
 #: cps/templates/search_form.html:88
 msgid "Shelves"
 msgstr "Police"
@@ -3025,33 +3029,33 @@ msgstr "Knjige, urejene po policah"
 msgid "Toggle Navigation"
 msgstr "Preklopi navigacijo"
 
-#: cps/templates/layout.html:59
+#: cps/templates/layout.html:58
 #, fuzzy
 msgid "Simple Theme"
 msgstr "Enostavno"
 
-#: cps/templates/layout.html:67 cps/templates/layout.html:97
+#: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"
 msgstr "Račun"
 
-#: cps/templates/layout.html:94 cps/templates/read.html:78
+#: cps/templates/layout.html:93 cps/templates/read.html:78
 #: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr "Nastavitve"
 
-#: cps/templates/layout.html:138
+#: cps/templates/layout.html:137
 msgid "Please do not refresh the page"
 msgstr "Ne osvežuj strani"
 
-#: cps/templates/layout.html:148
+#: cps/templates/layout.html:147
 msgid "Browse"
 msgstr "Brskaj"
 
-#: cps/templates/layout.html:161 cps/templates/stats.html:3
+#: cps/templates/layout.html:160 cps/templates/stats.html:3
 msgid "About"
 msgstr "O programu"
 
-#: cps/templates/layout.html:202
+#: cps/templates/layout.html:201
 msgid "Book Details"
 msgstr "Podrobnosti o knjigi"
 
