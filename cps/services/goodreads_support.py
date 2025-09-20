@@ -22,7 +22,7 @@ import requests
 
 from goodreads.client import GoodreadsClient
 from goodreads.request import GoodreadsRequest
-import xmltodict
+from lxml import etree
 
 try:
     import Levenshtein
@@ -32,6 +32,39 @@ except ImportError:
 from .. import logger
 from ..clean_html import clean_string
 
+
+
+
+def etree_to_dict(t):
+    """
+    Convert lxml ElementTree to a nested dict (similar to xmltodict).
+    """
+    d = {t.tag: {} if t.attrib else None}
+    children = list(t)
+
+    if children:
+        dd = {}
+        for dc in map(etree_to_dict, children):
+            for k, v in dc.items():
+                if k in dd:
+                    if not isinstance(dd[k], list):
+                        dd[k] = [dd[k]]
+                    dd[k].append(v)
+                else:
+                    dd[k] = v
+        d = {t.tag: dd}
+
+    if t.attrib:
+        d[t.tag].update(('@' + k, v) for k, v in t.attrib.items())
+
+    text = (t.text or '').strip()
+    if text:
+        if children or t.attrib:
+            d[t.tag]['#text'] = text
+        else:
+            d[t.tag] = text
+
+    return d
 
 class my_GoodreadsClient(GoodreadsClient):
 
@@ -59,7 +92,9 @@ class my_GoodreadsRequest(GoodreadsRequest):
         if resp.status_code != 200:
             raise GoodreadsRequestException(resp.reason, self.path)
         if self.req_format == 'xml':
-            data_dict = xmltodict.parse(resp.content)
+            root = etree.fromstring(resp.content)
+            data_dict = etree_to_dict(root)
+
             return data_dict['GoodreadsResponse']
         else:
             raise Exception("Invalid format")

@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2025-09-09 21:15:46</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2025-09-21 09:23:41</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-09-10 04:34:48</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-09-21 16:46:10</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 7 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 10 min</p>
         </div>
       </div>
       </div>
@@ -1670,12 +1670,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="passClass">
         <td>TestEditAuthorsGdrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
+        <td class="text-center">7</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c15', 7)">Detail</a>
@@ -1738,32 +1738,11 @@
     
     
     
-        <tr id="et15.7" class="none bg-info">
+        <tr id='pt15.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et15.7')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_et15.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et15.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 592, in test_rename_capital_on_upload
-    self.assertEqual(&#39;Useless&#39;, details[&#39;title&#39;])
-                                ~~~~~~~^^^^^^^^^
-KeyError: &#39;title&#39;</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2757,11 +2736,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">11</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2852,11 +2831,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.10' class='hiddenRow bg-success'>
+        <tr id="ft30.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 373, in test_sync_shelf
+    self.assertEqual(1, len(data), data)
+AssertionError: 1 != 0 : []</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3083,13 +3082,13 @@ IndexError: list index out of range</pre>
 
     <tr id="su" class="passClass">
         <td>TestSecurity</td>
-        <td class="text-center">5</td>
-        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 5)">Detail</a>
+            <a onclick="showClassDetail('c33', 6)">Detail</a>
         </td>
     </tr>
 
@@ -3134,6 +3133,15 @@ IndexError: list index out of range</pre>
         <tr id='pt33.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSecurity - test_register_limit</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt33.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSecurity - test_x_forwarded_host</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4782,11 +4790,11 @@ AssertionError: False is not true</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4859,11 +4867,31 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt52.8' class='hiddenRow bg-success'>
+        <tr id="ft52.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 317, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.004562894976745623 != 0.0 within 0.0001 delta (0.004562894976745623 difference)</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -6069,10 +6097,10 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>537</td>
+        <td>538</td>
         <td>523</td>
-        <td>5</td>
-        <td>2</td>
+        <td>7</td>
+        <td>1</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -6101,7 +6129,7 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-79-generic #79-Ubuntu SMP PREEMPT_DYNAMIC Tue Aug 12 14:42:46 UTC 2025 x86_64 x86_64</td>
+              <td>Linux 6.8.0-83-generic #83-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep  5 21:46:54 UTC 2025 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6281,13 +6309,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6311,13 +6339,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6341,13 +6369,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6371,13 +6399,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6413,13 +6441,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6449,13 +6477,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6491,13 +6519,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6521,13 +6549,13 @@ AssertionError: False is not true</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.181.0</td>
+              <td>2.182.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.30.0</td>
+              <td>0.31.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6623,7 +6651,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(523, 5, 2, 7);
+    drawCircle(523, 7, 1, 7);
     showCase(5);
 </script>
 
