@@ -410,17 +410,17 @@ $(function() {
         });
 
         // fix for infinite scroll on CaliBlur Theme (#981)
-        if ($("body").hasClass("blur")) {
-            $(".col-sm-10").bind("scroll", function () {
-                if (
-                    $(this).scrollTop() + $(this).innerHeight() >=
-                    $(this)[0].scrollHeight
-                ) {
-                    $loadMore.infiniteScroll("loadNextPage");
-                    window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
-                }
-            });
-        }
+
+        $(".col-sm-10").bind("scroll", function () {
+            if (
+                $(this).scrollTop() + $(this).innerHeight() >=
+                $(this)[0].scrollHeight
+            ) {
+                $loadMore.infiniteScroll("loadNextPage");
+                window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
+            }
+        });
+
     }
 
     $("#restart").click(function() {
