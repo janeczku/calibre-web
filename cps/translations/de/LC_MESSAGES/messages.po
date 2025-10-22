@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2025-09-12 08:48+0200\n"
-"PO-Revision-Date: 2025-10-22 19:43+0200\n"
-"Last-Translator: Ozzie Isaacs\n"
+"PO-Revision-Date: 2025-10-22 19:56+0200\n"
+"Last-Translator: Sebastian Holzer\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -1057,7 +1057,7 @@ msgstr "Kategorien"
 
 #: cps/render_template.py:73 cps/templates/user_table.html:158
 msgid "Show Category Section"
-msgstr "Zeige Kategorien"
+msgstr "Zeige Abschnitt Kategorien"
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:86
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
@@ -1067,7 +1067,7 @@ msgstr "Serien"
 
 #: cps/render_template.py:76 cps/templates/user_table.html:157
 msgid "Show Series Section"
-msgstr "Zeige Serien"
+msgstr "Zeige Abschnitt Serien"
 
 #: cps/render_template.py:77 cps/templates/book_table.html:92
 #: cps/templates/index.xml:79
@@ -1076,7 +1076,7 @@ msgstr "Autoren"
 
 #: cps/render_template.py:79 cps/templates/user_table.html:160
 msgid "Show Author Section"
-msgstr "Zeige Autoren"
+msgstr "Zeige Abschnitt Autoren"
 
 #: cps/render_template.py:81 cps/templates/book_table.html:98
 #: cps/templates/index.xml:88 cps/web.py:999
@@ -1085,7 +1085,7 @@ msgstr "Verleger"
 
 #: cps/render_template.py:83 cps/templates/user_table.html:163
 msgid "Show Publisher Section"
-msgstr "Zeige Verleger"
+msgstr "Zeige Abschnitt Verleger"
 
 #: cps/render_template.py:84 cps/templates/book_table.html:96
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
@@ -1095,7 +1095,7 @@ msgstr "Sprachen"
 
 #: cps/render_template.py:87 cps/templates/user_table.html:155
 msgid "Show Language Section"
-msgstr "Zeige Sprachen"
+msgstr "Zeige Abschnitt Sprachen"
 
 #: cps/render_template.py:88 cps/templates/index.xml:124
 msgid "Ratings"
@@ -1103,7 +1103,7 @@ msgstr "Bewertungen"
 
 #: cps/render_template.py:90 cps/templates/user_table.html:164
 msgid "Show Ratings Section"
-msgstr "Zeige Bewertungen"
+msgstr "Zeige Abschnitt Bewertungen"
 
 #: cps/render_template.py:91 cps/templates/index.xml:133
 msgid "File formats"
@@ -1111,7 +1111,7 @@ msgstr "Dateiformate"
 
 #: cps/render_template.py:93 cps/templates/user_table.html:165
 msgid "Show File Formats Section"
-msgstr "Zeige Dateiformate"
+msgstr "Zeige Abschnitt Dateiformate"
 
 #: cps/render_template.py:95 cps/web.py:798
 msgid "Archived Books"
@@ -1734,11 +1734,11 @@ msgstr "Calibre Datenbank Konfiguration editieren"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
-msgstr "Basiskonfiguration"
+msgstr "Basis-Einstellungen editieren"
 
 #: cps/templates/admin.html:161
 msgid "Edit UI Configuration"
-msgstr "Benutzeroberflächenkonfiguration"
+msgstr "Benutzeroberfläche editieren"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
@@ -3118,11 +3118,11 @@ msgstr "Dieses Buchformat wird permanent aus der Datenbank gelöscht"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database"
-msgstr "Das Buch wird endgültig aus der Datenbank"
+msgstr "Das Buch wird endgültig gelöscht, in der Datenbank"
 
 #: cps/templates/modal_dialogs.html:52
 msgid "and hard disk"
-msgstr "und von der Festplatte gelöscht"
+msgstr "und von der Festplatte"
 
 #: cps/templates/modal_dialogs.html:56
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
