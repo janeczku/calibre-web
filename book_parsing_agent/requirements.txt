@@ -1,0 +1,10 @@
+# Book Parsing Agent Dependencies
+
+# Core XML/HTML parsing
+lxml>=4.9.1
+
+# Python 3.7+ standard library (no installation needed):
+# - zipfile (for EPUB files)
+# - dataclasses (for data structures)
+# - typing (for type hints)
+# - json (for data export)
