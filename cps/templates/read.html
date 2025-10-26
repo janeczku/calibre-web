@@ -274,8 +274,12 @@
 
       // font size settings logic
       let fontSizeFader = document.getElementById("fontSizeFader");
+
+      // Save font size when changed
       fontSizeFader.addEventListener("change", function () {
-        reader.rendition.themes.fontSize(`${this.value}%`);
+        const fontSize = this.value;
+        localStorage.setItem("calibre.reader.fontSize", fontSize);
+        reader.rendition.themes.fontSize(`${fontSize}%`);
       });
 
       let defaultFont;

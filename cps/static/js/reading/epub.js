@@ -2,7 +2,7 @@
 
 var reader;
 
-(function() {
+(function () {
     "use strict";
 
     EPUBJS.filePath = calibre.filePath;
@@ -10,7 +10,7 @@ var reader;
 
     reader = ePubReader(calibre.bookUrl, {
         restore: true,
-        bookmarks: calibre.bookmark ? [calibre.bookmark] : []
+        bookmarks: calibre.bookmark ? [calibre.bookmark] : [],
     });
 
     Object.keys(themes).forEach(function (theme) {
@@ -29,54 +29,61 @@ var reader;
     var touchStart = 0;
     var touchEnd = 0;
 
-    reader.rendition.on('touchstart', function(event) {
+    reader.rendition.on("touchstart", function (event) {
         touchStart = event.changedTouches[0].screenX;
     });
-    reader.rendition.on('touchend', function(event) {
-      touchEnd = event.changedTouches[0].screenX;
+    reader.rendition.on("touchend", function (event) {
+        touchEnd = event.changedTouches[0].screenX;
         if (touchStart < touchEnd) {
-            if(reader.book.package.metadata.direction === "rtl") {
-    			reader.rendition.next();
-    		} else {
-    			reader.rendition.prev();
-    		}
+            if (reader.book.package.metadata.direction === "rtl") {
+                reader.rendition.next();
+            } else {
+                reader.rendition.prev();
+            }
             // Swiped Right
         }
         if (touchStart > touchEnd) {
-            if(reader.book.package.metadata.direction === "rtl") {
-    			reader.rendition.prev();
-    		} else {
+            if (reader.book.package.metadata.direction === "rtl") {
+                reader.rendition.prev();
+            } else {
                 reader.rendition.next();
-    		}
+            }
             // Swiped Left
         }
     });
 
     // Update progress percentage
     let progressDiv = document.getElementById("progress");
-    reader.book.ready.then((()=>{
-        let locations_key = reader.book.key()+'-locations';
+    reader.book.ready.then(() => {
+        let locations_key = reader.book.key() + "-locations";
         let stored_locations = localStorage.getItem(locations_key);
         let make_locations, save_locations;
         if (stored_locations) {
-            make_locations = Promise.resolve(reader.book.locations.load(stored_locations));
+            make_locations = Promise.resolve(
+                reader.book.locations.load(stored_locations)
+            );
             // No-op because locations are already saved
-            save_locations = ()=>{};
+            save_locations = () => {};
         } else {
             make_locations = reader.book.locations.generate();
-            save_locations = ()=>{
-                localStorage.setItem(locations_key, reader.book.locations.save());
+            save_locations = () => {
+                localStorage.setItem(
+                    locations_key,
+                    reader.book.locations.save()
+                );
             };
         }
-        make_locations.then(()=>{
-            reader.rendition.on('relocated', (location)=>{
-                let percentage = Math.round(location.end.percentage*100);
-                progressDiv.textContent=percentage+"%";
-            });
-            reader.rendition.reportLocation();
-            progressDiv.style.visibility = "visible";
-        }).then(save_locations);
-    }));
+        make_locations
+            .then(() => {
+                reader.rendition.on("relocated", (location) => {
+                    let percentage = Math.round(location.end.percentage * 100);
+                    progressDiv.textContent = percentage + "%";
+                });
+                reader.rendition.reportLocation();
+                progressDiv.style.visibility = "visible";
+            })
+            .then(save_locations);
+    });
 
     /**
      * @param {string} action - Add or remove bookmark
@@ -85,26 +92,42 @@ var reader;
     function updateBookmark(action, location) {
         // Remove other bookmarks (there can only be one)
         if (action === "add") {
-            this.settings.bookmarks.filter(function (bookmark) {
-                return bookmark && bookmark !== location;
-            }).map(function (bookmark) {
-                this.removeBookmark(bookmark);
-            }.bind(this));
+            this.settings.bookmarks
+                .filter(function (bookmark) {
+                    return bookmark && bookmark !== location;
+                })
+                .map(
+                    function (bookmark) {
+                        this.removeBookmark(bookmark);
+                    }.bind(this)
+                );
         }
-        
+
         var csrftoken = $("input[name='csrf_token']").val();
 
         // Save to database
         $.ajax(calibre.bookmarkUrl, {
             method: "post",
             data: { bookmark: location || "" },
-            headers: { "X-CSRFToken": csrftoken }
+            headers: { "X-CSRFToken": csrftoken },
         }).fail(function (xhr, status, error) {
             alert(error);
         });
     }
-    
+
     // Default settings load
     const theme = localStorage.getItem("calibre.reader.theme") ?? "lightTheme";
     selectTheme(theme);
+
+    // Restore saved font size after reader is ready
+    reader.book.ready.then(() => {
+        const savedFontSize = localStorage.getItem("calibre.reader.fontSize");
+        if (savedFontSize) {
+            const fontSizeFader = document.getElementById("fontSizeFader");
+            if (fontSizeFader) {
+                fontSizeFader.value = savedFontSize;
+                reader.rendition.themes.fontSize(`${savedFontSize}%`);
+            }
+        }
+    });
 })();
