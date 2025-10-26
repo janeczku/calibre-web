@@ -123,11 +123,7 @@ var reader;
     reader.book.ready.then(() => {
         const savedFontSize = localStorage.getItem("calibre.reader.fontSize");
         if (savedFontSize) {
-            const fontSizeFader = document.getElementById("fontSizeFader");
-            if (fontSizeFader) {
-                fontSizeFader.value = savedFontSize;
-                reader.rendition.themes.fontSize(`${savedFontSize}%`);
-            }
+            reader.rendition.themes.fontSize(`${savedFontSize}%`);
         }
     });
 })();

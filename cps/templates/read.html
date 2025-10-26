@@ -158,16 +158,40 @@
           </p>
         </div>
         <div class="form-group fontSizeWrapper">
-          <div class="slider">
-            <label for="fader">{{ _('Font Sizes') }}</label>
-            <input
-              type="range"
-              min="75"
-              max="200"
-              value="100"
-              id="fontSizeFader"
-              step="25"
-            />
+          <label>{{ _('Font Size') }}</label>
+          <div
+            class="font-size-controls"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-top: 2px;
+            "
+          >
+            <button
+              type="button"
+              id="fontSizeDecrease"
+              style="padding: 8px 15px; font-size: 18px; cursor: pointer"
+            >
+              −
+            </button>
+            <span
+              id="fontSizeDisplay"
+              style="
+                min-width: 60px;
+                text-align: center;
+                font-size: 14px;
+                font-weight: bold;
+              "
+              >100%</span
+            >
+            <button
+              type="button"
+              id="fontSizeIncrease"
+              style="padding: 8px 15px; font-size: 18px; cursor: pointer"
+            >
+              +
+            </button>
           </div>
         </div>
         <div class="font" id="font">
@@ -273,13 +297,40 @@
       }
 
       // font size settings logic
-      let fontSizeFader = document.getElementById("fontSizeFader");
+      let currentFontSize = 100; // default 100%
+      const minFontSize = 50;
+      const maxFontSize = 300;
+      const stepSize = 5;
 
-      // Save font size when changed
-      fontSizeFader.addEventListener("change", function () {
-        const fontSize = this.value;
-        localStorage.setItem("calibre.reader.fontSize", fontSize);
-        reader.rendition.themes.fontSize(`${fontSize}%`);
+      const fontSizeDisplay = document.getElementById("fontSizeDisplay");
+      const fontSizeDecrease = document.getElementById("fontSizeDecrease");
+      const fontSizeIncrease = document.getElementById("fontSizeIncrease");
+
+      function updateFontSize(newSize) {
+        if (newSize < minFontSize) newSize = minFontSize;
+        if (newSize > maxFontSize) newSize = maxFontSize;
+
+        currentFontSize = newSize;
+        fontSizeDisplay.textContent = newSize + "%";
+        localStorage.setItem("calibre.reader.fontSize", newSize);
+        if (reader && reader.rendition) {
+          reader.rendition.themes.fontSize(`${newSize}%`);
+        }
+      }
+
+      // Restore saved font size on load
+      const savedFontSize = localStorage.getItem("calibre.reader.fontSize");
+      if (savedFontSize) {
+        currentFontSize = parseInt(savedFontSize);
+        fontSizeDisplay.textContent = savedFontSize + "%";
+      }
+
+      fontSizeDecrease.addEventListener("click", function () {
+        updateFontSize(currentFontSize - stepSize);
+      });
+
+      fontSizeIncrease.addEventListener("click", function () {
+        updateFontSize(currentFontSize + stepSize);
       });
 
       let defaultFont;
