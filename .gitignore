@@ -35,3 +35,5 @@ gdrive_credentials
 client_secrets.json
 gmail.json
 /.key
+calibre-volume
+calibre-web-env

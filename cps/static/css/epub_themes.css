@@ -1,19 +1,24 @@
 .lightTheme {
-	background: #fff;
-	color: #000;
+  background: #fff;
+  color: #000;
 }
 
 .darkTheme {
-	background: #202124;
-	color: #fff
+  background: #202124;
+  color: #fff;
 }
 
 .sepiaTheme {
-	background: #ece1ca;
-	color: #000;
+  background: #ece1ca;
+  color: #000;
+}
+
+.amberTheme {
+  background: #e8bf5e;
+  color: #000;
 }
 
 .blackTheme {
-	background: #000;
-	color: #fff;
+  background: #000;
+  color: #fff;
 }
