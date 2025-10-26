@@ -335,7 +335,7 @@
 
       let defaultFont;
 
-      function selectFont(id) {
+      window.selectFont = function (id) {
         if (!defaultFont) {
           defaultFont = reader.rendition.getContents()[0]?.css("font-family");
         }
@@ -346,12 +346,15 @@
         }
         document.getElementById(id).querySelector("span").textContent = "✓";
 
+        // Save font selection to localStorage
+        localStorage.setItem("calibre.reader.font", id);
+
         if (id == "default") {
           reader.rendition.themes.font(defaultFont);
           return;
         }
         reader.rendition.themes.font(id);
-      }
+      };
 
       function spread(id) {
         spans = document.getElementById("layout").querySelectorAll("span");

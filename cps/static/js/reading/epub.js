@@ -119,11 +119,16 @@ var reader;
     const theme = localStorage.getItem("calibre.reader.theme") ?? "lightTheme";
     selectTheme(theme);
 
-    // Restore saved font size after reader is ready
+    // Restore saved font and font size after reader is ready
     reader.book.ready.then(() => {
         const savedFontSize = localStorage.getItem("calibre.reader.fontSize");
         if (savedFontSize) {
             reader.rendition.themes.fontSize(`${savedFontSize}%`);
+        }
+
+        const savedFont = localStorage.getItem("calibre.reader.font");
+        if (savedFont && window.selectFont) {
+            window.selectFont(savedFont);
         }
     });
 })();
