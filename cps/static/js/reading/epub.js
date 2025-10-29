@@ -166,6 +166,8 @@ var reader;
 
     reader.book.ready.then(() => {
         let locations_key = reader.book.key() + "-locations";
+        // Key to persist last-read position for this book in localStorage
+        let position_key = "calibre.reader.position." + reader.book.key();
         let stored_locations = localStorage.getItem(locations_key);
         let make_locations, save_locations;
         if (stored_locations) {
@@ -185,6 +187,22 @@ var reader;
         }
         make_locations
             .then(() => {
+                // Try to restore last position (CFI) from localStorage if present
+                try {
+                    var _savedPos = localStorage.getItem(position_key);
+                    if (_savedPos) {
+                        try {
+                            var _posObj = JSON.parse(_savedPos);
+                            if (_posObj && _posObj.cfi) {
+                                // Display the saved CFI location
+                                try {
+                                    reader.rendition.display(_posObj.cfi);
+                                } catch (e) {}
+                            }
+                        } catch (e) {}
+                    }
+                } catch (e) {}
+
                 reader.rendition.on("relocated", (location) => {
                     let percentage = Math.round(location.end.percentage * 100);
                     progressDiv.textContent = percentage + "%";
@@ -194,7 +212,6 @@ var reader;
                     const current =
                         reader.book.locations.locationFromCfi(cfi) || 0; // 1-based index typically
                     const total = reader.book.locations.length() || 0;
-                    const remaining = Math.max(total - current, 0);
 
                     if (total > 0) {
                         pagesDiv.textContent = current + "/" + total;
@@ -203,6 +220,18 @@ var reader;
                         pagesDiv.textContent = "";
                         pagesDiv.style.visibility = "hidden";
                     }
+
+                    // Persist last position (CFI + percentage) to localStorage so reader can restore on next open
+                    try {
+                        var posObj = {
+                            cfi: location.start.cfi,
+                            percentage: location.start.percentage,
+                        };
+                        localStorage.setItem(
+                            position_key,
+                            JSON.stringify(posObj)
+                        );
+                    } catch (e) {}
                 });
                 reader.rendition.reportLocation();
                 progressDiv.style.visibility = "visible";
