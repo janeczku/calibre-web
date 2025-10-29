@@ -658,7 +658,7 @@ msgstr "Keine Erlaubnis zum Löschen von Büchern"
 #: cps/editbooks.py:1139
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr ""
+msgstr "Buch mit id \"{}\" konnte nicht gelöscht werden: nicht gefunden"
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -778,7 +778,7 @@ msgstr "Lösche Buch %(id)s nur aus Datenbank, Pfad zum Buch in Datenbank ist ni
 #: cps/helper.py:404
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr ""
+msgstr "Verschieben des Verzeichnisses von Buch %(book_id)s nach: '%(src)s' mit Fehler: %(error)s fehlgeschlagen"
 
 #: cps/helper.py:443
 #, python-format
@@ -2278,11 +2278,11 @@ msgstr "Zusammenführen"
 
 #: cps/templates/book_table.html:176
 msgid "The following books will be deleted:"
-msgstr ""
+msgstr "Die folgenden Bücher werden gelöscht:"
 
 #: cps/templates/book_table.html:196
 msgid "The following books will be archived:"
-msgstr ""
+msgstr "Die folgenden Bücher werden archiviert:"
 
 #: cps/templates/book_table.html:200 cps/templates/detail.html:275
 msgid "Archive"
@@ -2290,7 +2290,7 @@ msgstr "Archiviert"
 
 #: cps/templates/book_table.html:216
 msgid "The following books will be unarchived:"
-msgstr ""
+msgstr "Die folgenden Bücher werden aus dem Archiv geholt:"
 
 #: cps/templates/book_table.html:220
 #, fuzzy
@@ -2299,7 +2299,7 @@ msgstr "Archiviert"
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
-msgstr ""
+msgstr "Die folgenden Bücher werden als gelesen markiert:"
 
 #: cps/templates/book_table.html:240
 #, fuzzy
@@ -2308,7 +2308,7 @@ msgstr "Als gelesen markieren"
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
-msgstr ""
+msgstr "Die folgenden Bücher werden als ungelesen markiert:"
 
 #: cps/templates/book_table.html:260
 #, fuzzy
@@ -2321,7 +2321,7 @@ msgstr "Metadaten bearbeiten"
 
 #: cps/templates/book_table.html:275
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
-msgstr ""
+msgstr "Editiere die Felder, die Du ändern möchtest. Leere Felder werden ignoriert:"
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
