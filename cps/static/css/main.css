@@ -538,7 +538,7 @@ input:-moz-placeholder {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100vw;
+  width: 97vw;
   height: 90dvh;
   max-width: 630px;
   z-index: 2000;
@@ -565,7 +565,7 @@ input:-moz-placeholder {
 }
 
 .md-show ~ .overlay {
-  opacity: 1;
+  /* opacity: 1; */
   visibility: visible;
 }
 
