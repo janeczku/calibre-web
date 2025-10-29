@@ -57,6 +57,13 @@
           data-view="Bookmarks"
           >Bookmarks</a
         >
+        <a
+          id="back-button"
+          data-view="Back to Books"
+          href="{{ url_for('web.index') }}"
+        >
+          Books
+        </a>
         <!--a id="show-Notes" class="show_view icon-edit" data-view="Notes">Notes</a-->
       </div>
       <div id="tocView" class="view"></div>
@@ -95,7 +102,10 @@
       <div id="prev" class="arrow">‹</div>
       <div id="viewer"></div>
       <div id="next" class="arrow">›</div>
-      <div id="progress">0%</div>
+      <div class="read-footer">
+        <div id="pages-count"></div>
+        <div id="progress">0%</div>
+      </div>
       <div id="loader">
         <img src="{{ url_for('static', filename='img/loader.gif') }}" />
       </div>
@@ -167,8 +177,17 @@
             id="navGestures"
             onclick="selectNavMode('gestures')"
           >
-            <span id="navGesturesTick"> </span>{{_('Gestures')}}
+            <span id="navGesturesTick"> </span>{{_('Gestures (for mobile)')}}
           </button>
+        </div>
+        <div class="form-group">
+          <p>
+            <input
+              type="checkbox"
+              id="showPagesCount"
+              name="showPagesCount"
+            />{{_('Show pages count')}}
+          </p>
         </div>
         <div class="form-group fontSizeWrapper">
           <label>{{ _('Font Size') }}</label>
@@ -390,8 +409,27 @@
       // Initialize nav mode on load
       (function () {
         var savedMode =
-          localStorage.getItem("calibre.reader.navMode") || "gestures";
+          localStorage.getItem("calibre.reader.navMode") || "sizes";
         selectNavMode(savedMode);
+      })();
+
+      // Pages counter visibility setting
+      (function () {
+        var checkbox = document.getElementById("showPagesCount");
+        var pagesEl = document.getElementById("pages-count");
+        var key = "calibre.reader.showPages";
+        var saved = localStorage.getItem(key);
+        var show = saved === null ? true : saved === "true";
+        if (checkbox) checkbox.checked = show;
+        if (pagesEl) pagesEl.style.display = show ? "" : "none";
+        if (checkbox) {
+          checkbox.addEventListener("change", function () {
+            var val = checkbox.checked;
+            localStorage.setItem(key, String(val));
+            var target = document.getElementById("pages-count");
+            if (target) target.style.visibility = val ? "visible" : "hidden";
+          });
+        }
       })();
     </script>
     <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>

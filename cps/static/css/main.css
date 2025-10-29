@@ -539,7 +539,7 @@ input:-moz-placeholder {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100vw;
-  height: auto;
+  height: 90dvh;
   max-width: 630px;
   z-index: 2000;
   visibility: hidden;
@@ -580,7 +580,7 @@ input:-moz-placeholder {
 }
 
 .md-content > div {
-  padding: 15px 40px 30px;
+  padding: 10px 20px;
   margin: 0;
   font-weight: 300;
   font-size: 14px;

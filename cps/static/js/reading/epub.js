@@ -102,6 +102,24 @@ var reader;
         if (reader && reader.rendition && reader.rendition.container) {
             bindHammer(reader.rendition.container, false);
         }
+        // Bind swipe on sidebar to close/open main
+        try {
+            var sidebarEl = document.getElementById("tocView");
+            if (sidebarEl && typeof Hammer !== "undefined") {
+                var sidebarMc = new Hammer(sidebarEl);
+                sidebarMc.get("swipe").set({
+                    direction: Hammer.DIRECTION_HORIZONTAL,
+                    threshold: 25,
+                    velocity: 0.3,
+                });
+                sidebarMc.on("swipeleft swiperight", function (ev) {
+                    if ($("#sidebar").hasClass("open")) {
+                        $("#slider").click();
+                    }
+                });
+                hammerManagers.push(sidebarMc);
+            }
+        } catch (e) {}
         // Bind to inner iframes when rendered
         reader.rendition.on("rendered", function (section, contents) {
             var docEl = contents.document;
@@ -129,12 +147,23 @@ var reader;
     };
 
     // Apply saved or default mode on load
-    var savedMode =
-        localStorage.getItem("calibre.reader.navMode") || "gestures";
+    var savedMode = localStorage.getItem("calibre.reader.navMode") || "sizes";
     window.applyNavigationMode(savedMode);
 
     // Update progress percentage
     let progressDiv = document.getElementById("progress");
+    // Pages counter (virtual pages via EPUB locations)
+    let pagesDiv = document.getElementById("pages-count");
+    // Honor saved visibility preference for pages counter
+    (function () {
+        try {
+            var pref = localStorage.getItem("calibre.reader.showPages");
+            var show = pref === null ? true : pref === "true";
+            if (pagesDiv)
+                pagesDiv.style.visibility = show ? "visible" : "hidden";
+        } catch (e) {}
+    })();
+
     reader.book.ready.then(() => {
         let locations_key = reader.book.key() + "-locations";
         let stored_locations = localStorage.getItem(locations_key);
@@ -159,6 +188,21 @@ var reader;
                 reader.rendition.on("relocated", (location) => {
                     let percentage = Math.round(location.end.percentage * 100);
                     progressDiv.textContent = percentage + "%";
+
+                    // Pages based on generated EPUB locations (CFI positions)
+                    const cfi = location.start.cfi;
+                    const current =
+                        reader.book.locations.locationFromCfi(cfi) || 0; // 1-based index typically
+                    const total = reader.book.locations.length() || 0;
+                    const remaining = Math.max(total - current, 0);
+
+                    if (total > 0) {
+                        pagesDiv.textContent = current + "/" + total;
+                        pagesDiv.style.visibility = "visible";
+                    } else {
+                        pagesDiv.textContent = "";
+                        pagesDiv.style.visibility = "hidden";
+                    }
                 });
                 reader.rendition.reportLocation();
                 progressDiv.style.visibility = "visible";

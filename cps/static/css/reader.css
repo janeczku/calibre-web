@@ -47,6 +47,28 @@
 }
 
 #main,
-#viewer {
+#viewer,
+#sidebar,
+#tocView {
   touch-action: pan-y;
+}
+
+.read-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+.read-footer #pages-count {
+  font-size: 12px;
+
+  position: absolute;
+  left: 12px;
+  bottom: 2px;
+}
+
+#back-button {
+  width: 50px !important;
+  right: 50px;
+  position: absolute;
 }
