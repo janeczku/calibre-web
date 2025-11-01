@@ -924,8 +924,9 @@ class CalibreDB:
                     authors_ordered.append(author)
                     ids_remaining.discard(author.id)
                 else:
+                    # This can happen if author_sort has stale data or formatting issues
                     book_id = entry.id if isinstance(entry, Books) else (entry.Books.id if combined else entry.id)
-                    log.debug("Author '{}' of book {} not found in author list".format(auth, book_id))
+                    log.warning("Author '{}' of book {} not found in author list, skipping in sort order".format(auth, book_id))
 
             # Add any remaining authors not in sort order
             for author_id in ids_remaining:
@@ -967,16 +968,30 @@ class CalibreDB:
 
         # Try FTS5 search first for better performance
         fts_ids = None
-        try:
-            fts_results = self.session.execute(
-                text("SELECT DISTINCT rowid FROM books_fts WHERE books_fts MATCH :term"),
-                {"term": term}
-            ).fetchall()
-            if fts_results:
-                fts_ids = [r[0] for r in fts_results]
-        except Exception as ex:
-            # FTS5 not available or query failed, fall back to traditional search
-            log.debug("FTS5 search failed, using traditional search: {}".format(ex))
+        # Check if FTS5 table exists before attempting search
+        if not hasattr(self, '_fts_available'):
+            try:
+                result = self.session.execute(
+                    text("SELECT name FROM sqlite_master WHERE type='table' AND name='books_fts'")
+                ).fetchone()
+                self._fts_available = result is not None
+            except Exception:
+                self._fts_available = False
+
+        if self._fts_available:
+            try:
+                # Escape FTS5 special characters to prevent query errors
+                term_fts = term.replace('"', '""')
+                # Wrap in quotes for phrase matching and better accuracy
+                fts_results = self.session.execute(
+                    text("SELECT DISTINCT rowid FROM books_fts WHERE books_fts MATCH :term"),
+                    {"term": f'"{term_fts}"'}
+                ).fetchall()
+                if fts_results:
+                    fts_ids = [r[0] for r in fts_results]
+            except Exception as ex:
+                # FTS5 query failed, fall back to traditional search
+                log.debug("FTS5 search failed for term '{}', using fallback: {}".format(term, ex))
 
         # Build base query with optimized joins
         base_query = self.session.query(Books).filter(self.common_filters(True))
