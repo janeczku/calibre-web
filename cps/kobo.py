@@ -358,9 +358,12 @@ def get_download_url_for_book(book_id, book_format):
             host = "".join(request.host.split(':')[:-1])
         else:
             host = request.host
-
+        if "X-Forwarded-Proto" in request.headers:
+            scheme = request.headers["X-Forwarded-Proto"]
+        else:
+            scheme = request.scheme
         return "{url_scheme}://{url_base}:{url_port}/kobo/{auth_token}/download/{book_id}/{book_format}".format(
-            url_scheme=request.scheme,
+            url_scheme=scheme,
             url_base=host,
             url_port=config.config_external_port,
             auth_token=get_auth_token(),
@@ -1077,8 +1080,12 @@ def HandleInitRequest():
             host = "".join(request.host.split(':')[:-1])
         else:
             host = request.host
+        if "X-Forwarded-Proto" in request.headers:
+            scheme = request.headers["X-Forwarded-Proto"]
+        else:
+            scheme = request.scheme
         calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
-            url_scheme=request.scheme,
+            url_scheme=scheme,
             url_base=host,
             url_port=config.config_external_port
         )
