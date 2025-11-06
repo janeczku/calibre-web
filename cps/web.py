@@ -39,7 +39,7 @@ from sqlalchemy.sql.functions import coalesce
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services
+from . import constants, logger, isoLanguages, services, helper
 from . import db, ub, config, app
 from . import calibre_db, kobo_sync_status
 from .search import render_search_results, render_adv_search_results
@@ -328,6 +328,17 @@ def generate_char_list(entries): # data_colum, db_link):
     char_list = list()
     for entry in entries:
         upper_char = entry[0].name[0].upper()
+        if upper_char not in char_list:
+            char_list.append(upper_char)
+    return char_list
+
+
+def generate_char_list_hierarchical(entries):
+    """Generate character list using leaf names for hierarchical tags."""
+    char_list = list()
+    for entry in entries:
+        leaf_name = helper.get_tag_leaf_name(entry[0].name)
+        upper_char = leaf_name[0].upper()
         if upper_char not in char_list:
             char_list.append(upper_char)
     return char_list
@@ -1135,10 +1146,23 @@ def category_list():
                          .count())
         if no_tag_count:
             entries.append([db.Category(_("None"), "-1"), no_tag_count])
-        entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
-        char_list = generate_char_list(entries)
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=char_list,
-                                     title=_("Categories"), page="catlist", data="category", order=order_no)
+
+        # Build hierarchical tree structure
+        tag_tree = helper.build_tag_tree(entries)
+        # Pass reverse parameter based on sort order (order_no: 0=desc, 1=asc)
+        tree_list = helper.tree_to_list(tag_tree, reverse=(order_no == 0))
+
+        # Generate character list for root-level tags (for letter filter buttons)
+        char_list = []
+        for node in tree_list:
+            if node['level'] == 0:  # Only root level tags
+                upper_char = node['name'][0].upper()
+                if upper_char not in char_list:
+                    char_list.append(upper_char)
+
+        return render_title_template('category_tree.html', entries=tree_list, folder='web.books_list',
+                                     charlist=char_list, title=_("Categories"), page="catlist",
+                                     data="category", order=order_no)
     else:
         abort(404)
 

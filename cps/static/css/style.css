@@ -438,3 +438,93 @@ div.log {
 .error-list {
     margin-top: 5px;
   }
+
+/* Hierarchical tag styles */
+.hierarchical-tag {
+  cursor: help;
+}
+
+.tags .hierarchical-tag:hover {
+  opacity: 0.8;
+}
+
+/* Tree view styles for category list */
+.tag-tree {
+  list-style: none;
+  padding-left: 0;
+  margin: 20px 0;
+}
+
+.tag-tree li {
+  margin: 0;
+  position: relative;
+}
+
+.tag-tree li[data-level="1"] {
+  padding-left: 25px;
+}
+
+.tag-tree li[data-level="2"] {
+  padding-left: 50px;
+}
+
+.tag-tree li[data-level="3"] {
+  padding-left: 75px;
+}
+
+.tag-tree li[data-level="4"] {
+  padding-left: 100px;
+}
+
+.tag-node {
+  display: flex;
+  align-items: center;
+  padding: 8px 5px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.tag-node:hover {
+  background: #f5f5f5;
+}
+
+.tag-node.leaf {
+  cursor: default;
+}
+
+.tag-node .toggle {
+  width: 20px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+.tag-node .icon {
+  margin-right: 8px;
+  color: #45b29d;
+  font-size: 14px;
+}
+
+.tag-node .name {
+  flex: 1;
+  color: #333;
+  text-decoration: none;
+}
+
+.tag-node a.name:hover {
+  text-decoration: underline;
+  color: #45b29d;
+}
+
+.tag-node .count {
+  margin-left: 10px;
+  background: #45b29d;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
