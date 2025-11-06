@@ -1150,6 +1150,7 @@ def category_list():
         # Build hierarchical tree structure
         tag_tree = helper.build_tag_tree(entries)
         # Pass reverse parameter based on sort order (order_no: 0=desc, 1=asc)
+        # reverse=True means descending (Z-A), which corresponds to order_no=0
         tree_list = helper.tree_to_list(tag_tree, reverse=(order_no == 0))
 
         # Generate character list for root-level tags (for letter filter buttons)
@@ -1159,6 +1160,9 @@ def category_list():
                 upper_char = node['name'][0].upper()
                 if upper_char not in char_list:
                     char_list.append(upper_char)
+
+        # Sort character list in same order as tags
+        char_list.sort(reverse=(order_no == 0))
 
         return render_title_template('category_tree.html', entries=tree_list, folder='web.books_list',
                                      charlist=char_list, title=_("Categories"), page="catlist",

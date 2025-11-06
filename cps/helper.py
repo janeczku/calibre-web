@@ -1109,15 +1109,19 @@ def get_tag_display_name(tag_name, max_depth=2, separator='.'):
         separator: The hierarchy separator (default: '.')
 
     Returns:
-        Shortened display name (e.g., "Otherworld > Isekai" for max_depth=2)
+        Shortened display name (e.g., "Otherworld › Isekai" for max_depth=2)
     """
     parts = parse_tag_hierarchy(tag_name, separator)
-    if len(parts) <= max_depth:
+    if len(parts) <= 1:
         return tag_name
 
     # Take only the last max_depth levels
-    display_parts = parts[-max_depth:]
-    return ' > '.join(display_parts)
+    if len(parts) > max_depth:
+        display_parts = parts[-max_depth:]
+    else:
+        display_parts = parts
+
+    return ' › '.join(display_parts)
 
 
 def is_hierarchical_tag(tag_name, separator='.'):
