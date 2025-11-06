@@ -151,19 +151,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add sort button handlers
     const currentDirection = parseInt(document.getElementById('asc').getAttribute('data-order'));
+    const csrfInput = document.querySelector('input[name="csrf_token"]');
+    const basePath = (typeof getPath === 'function' ? getPath() : '');
+
+    function postSortPreference(page, direction) {
+        const headers = { 'Content-Type': 'application/json' };
+        if (csrfInput && csrfInput.value) {
+            headers['X-CSRFToken'] = csrfInput.value;
+        }
+
+        fetch(basePath + '/ajax/view', {
+            method: 'POST',
+            headers: headers,
+            credentials: 'same-origin',
+            body: JSON.stringify({ [page]: { dir: direction } })
+        }).then(function() {
+            window.location.reload();
+        });
+    }
 
     document.getElementById('asc').addEventListener('click', function() {
         if (currentDirection === 1) return; // Already in ascending order
 
         // Send AJAX request to save preference, then reload
         const page = this.getAttribute('data-id');
-        fetch(window.location.origin + '/ajax/view', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ [page]: { dir: 'asc' } })
-        }).then(function() {
-            window.location.reload();
-        });
+        postSortPreference(page, 'asc');
     });
 
     document.getElementById('desc').addEventListener('click', function() {
@@ -171,13 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Send AJAX request to save preference, then reload
         const page = this.getAttribute('data-id');
-        fetch(window.location.origin + '/ajax/view', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ [page]: { dir: 'desc' } })
-        }).then(function() {
-            window.location.reload();
-        });
+        postSortPreference(page, 'desc');
     });
 });
 </script>
