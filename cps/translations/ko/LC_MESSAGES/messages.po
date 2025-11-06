@@ -164,7 +164,7 @@ msgstr "이 사용자를 삭제하시겠습니까?"
 
 #: cps/admin.py:621
 msgid "Do you really want to delete this book?"
-msgstr ""
+msgstr "이 책을 삭제하시겠습니까?"
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -184,11 +184,11 @@ msgstr "선택한 사용자의 권한을 변경하시겠습니까?"
 
 #: cps/admin.py:631
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr ""
+msgstr "선택한 책(들)에 대해 아카이브 상태를 변경하시겠습니까?"
 
 #: cps/admin.py:633
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr ""
+msgstr "선택한 책(들)에 대해 읽음 상태를 변경하시겠습니까?"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
@@ -578,11 +578,11 @@ msgstr "책 변환 중 오류가 발생했습니다: %(res)s"
 
 #: cps/editbooks.py:297
 msgid "Changes successfully applied"
-msgstr ""
+msgstr "변경이 성공적으로 반영되었습니다."
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
-msgstr ""
+msgstr "요청에서 값이 누락되었습니다."
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
 #: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1576 cps/web.py:1622
@@ -654,7 +654,7 @@ msgstr "책을 삭제할 권한이 없습니다."
 #: cps/editbooks.py:1139
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr ""
+msgstr "책 (\"{}\")을 찾을 수 없습니다."
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -774,7 +774,7 @@ msgstr "데이터베이스 경로가 올바르지 않아 책 %(id)s을(를) 데�
 #: cps/helper.py:404
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr ""
+msgstr "도서 %(book_id)s의 경로를 '%(src)s'로 이동하는데 실패했습니다: %(error)s"
 
 #: cps/helper.py:443
 #, python-format
@@ -880,7 +880,7 @@ msgstr "Calibre 바이너리 파일이 누락되었습니다: %(missing)s"
 #: cps/helper.py:1039
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
-msgstr ""
+msgstr "실행 권한이 없습니다: %(missing)s"
 
 #: cps/helper.py:1044
 msgid "Error executing Calibre"
@@ -1954,7 +1954,7 @@ msgstr "로그아웃"
 
 #: cps/templates/basic_layout.html:35
 msgid "Normal Theme"
-msgstr ""
+msgstr "기본 테마"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -2128,19 +2128,19 @@ msgstr "이 항목은 필수입니다."
 
 #: cps/templates/book_table.html:25
 msgid "Archive selected books"
-msgstr ""
+msgstr "선택한 책 보관"
 
 #: cps/templates/book_table.html:28
 msgid "Unarchive selected books"
-msgstr ""
+msgstr "선택한 책 보관 해제"
 
 #: cps/templates/book_table.html:34
 msgid "Mark selected books as read"
-msgstr ""
+msgstr "선택한 책 읽음으로 표시"
 
 #: cps/templates/book_table.html:37
 msgid "Mark selected books as unread"
-msgstr ""
+msgstr "선택한 책 읽지 않음으로 표시"
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
@@ -2148,11 +2148,11 @@ msgstr "선택한 책 병합"
 
 #: cps/templates/book_table.html:60 cps/templates/user_table.html:124
 msgid "Clear selections"
-msgstr ""
+msgstr "선택 초기화"
 
 #: cps/templates/book_table.html:63
 msgid "Edit selected books"
-msgstr ""
+msgstr "선택된 책 수정"
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2244,7 +2244,7 @@ msgstr "입력 "
 
 #: cps/templates/book_table.html:128
 msgid "Delete selected books"
-msgstr ""
+msgstr "선택된 책 삭제제"
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2267,11 +2267,11 @@ msgstr "병합"
 
 #: cps/templates/book_table.html:176
 msgid "The following books will be deleted:"
-msgstr ""
+msgstr "아래의 책들이 삭제될 예정입니다:"
 
 #: cps/templates/book_table.html:196
 msgid "The following books will be archived:"
-msgstr ""
+msgstr "아래의 책들이 보관될 예정입니다:"
 
 #: cps/templates/book_table.html:200 cps/templates/detail.html:275
 msgid "Archive"
@@ -2279,27 +2279,27 @@ msgstr "보관"
 
 #: cps/templates/book_table.html:216
 msgid "The following books will be unarchived:"
-msgstr ""
+msgstr "아래의 책들이 보관해제될 예정입니다:"
 
 #: cps/templates/book_table.html:220
 msgid "Unarchive"
-msgstr ""
+msgstr "보관 해제"
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
-msgstr ""
+msgstr "아래의 책들이읽음표시될 예정입니다 :"
 
 #: cps/templates/book_table.html:240
 msgid "Mark as read"
-msgstr ""
+msgstr "읽음처리"
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
-msgstr ""
+msgstr "아래의 책들이읽지 않음 표시될 예정입니다 :"
 
 #: cps/templates/book_table.html:260
 msgid "Mark as unread"
-msgstr ""
+msgstr "읽음 처리 취소"
 
 #: cps/templates/book_table.html:272 cps/templates/detail.html:348
 msgid "Edit Metadata"
@@ -2307,7 +2307,7 @@ msgstr "메타데이터 편집"
 
 #: cps/templates/book_table.html:275
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
-msgstr ""
+msgstr "바꾸고 싶은 필드를 바꿔주세요. 공백필드는 무시됩니다: "
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
@@ -2451,7 +2451,7 @@ msgstr "Goodreads API 키"
 
 #: cps/templates/config_edit.html:167
 msgid "Google Books API Key"
-msgstr ""
+msgstr "Google Books API 키키"
 
 #: cps/templates/config_edit.html:172
 msgid "Allow Reverse Proxy Authentication"
@@ -2905,7 +2905,7 @@ msgstr "이슈 생성"
 
 #: cps/templates/http_error.html:52
 msgid "Return to Database config"
-msgstr ""
+msgstr "데이터베이스 설정으로 복귀"
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3016,7 +3016,7 @@ msgstr "메뉴 열기/닫기"
 
 #: cps/templates/layout.html:58
 msgid "Simple Theme"
-msgstr ""
+msgstr "간단한 테마"
 
 #: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"
@@ -3169,7 +3169,7 @@ msgstr "epub 리더"
 
 #: cps/templates/read.html:80
 msgid "Choose a theme below:"
-msgstr ""
+msgstr "테마를 선택해주세요:"
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"
@@ -3591,7 +3591,7 @@ msgstr "사용자 비밀번호 초기화"
 
 #: cps/templates/user_edit.html:28
 msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
-msgstr ""
+msgstr "eReader 이메일주소로 보내기. 콤마(,)를 사용하여 이메일을 분리해주세요"
 
 #: cps/templates/user_edit.html:43
 msgid "Language of Books"
