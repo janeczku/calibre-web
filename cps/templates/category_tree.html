@@ -148,6 +148,37 @@ document.addEventListener('DOMContentLoaded', function() {
             this.classList.add('active');
         });
     }
+
+    // Add sort button handlers
+    const currentDirection = parseInt(document.getElementById('asc').getAttribute('data-order'));
+
+    document.getElementById('asc').addEventListener('click', function() {
+        if (currentDirection === 1) return; // Already in ascending order
+
+        // Send AJAX request to save preference, then reload
+        const page = this.getAttribute('data-id');
+        fetch(window.location.origin + '/ajax/view', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ [page]: { dir: 'asc' } })
+        }).then(function() {
+            window.location.reload();
+        });
+    });
+
+    document.getElementById('desc').addEventListener('click', function() {
+        if (currentDirection === 0) return; // Already in descending order
+
+        // Send AJAX request to save preference, then reload
+        const page = this.getAttribute('data-id');
+        fetch(window.location.origin + '/ajax/view', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ [page]: { dir: 'desc' } })
+        }).then(function() {
+            window.location.reload();
+        });
+    });
 });
 </script>
 {% endblock %}
