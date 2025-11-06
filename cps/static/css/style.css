@@ -453,11 +453,14 @@ div.log {
   list-style: none;
   padding-left: 0;
   margin: 20px 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .tag-tree li {
   margin: 0;
   position: relative;
+  max-width: 100%;
 }
 
 .tag-tree li[data-level="1"] {
@@ -483,6 +486,7 @@ div.log {
   cursor: pointer;
   border-radius: 3px;
   transition: background-color 0.2s;
+  max-width: 100%;
 }
 
 .tag-node:hover {
@@ -504,27 +508,23 @@ div.log {
 
 .tag-node .icon {
   margin-right: 8px;
-  color: #45b29d;
   font-size: 14px;
 }
 
 .tag-node .name {
   flex: 1;
-  color: #333;
   text-decoration: none;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .tag-node a.name:hover {
   text-decoration: underline;
-  color: #45b29d;
 }
 
-.tag-node .count {
+/* Badge styling for tag tree */
+.tag-tree .tag-node .badge,
+.tag-node .badge {
   margin-left: 10px;
-  background: #45b29d;
-  color: white;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
+  flex-shrink: 0;
 }
