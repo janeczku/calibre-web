@@ -31,8 +31,10 @@
               {% endif %}
             </span>
             <span class="glyphicon {% if entry.has_children %}glyphicon-folder-close{% else %}glyphicon-tag{% endif %} icon"></span>
-            {% if entry.is_leaf and entry.tag_id %}
-              <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=entry.tag_id) }}" class="name">{{ entry.name }}</a>
+            {% if entry.has_children %}
+              <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id='path:' ~ entry.full_path) }}" class="name" onclick="event.stopPropagation()">{{ entry.name }}</a>
+            {% elif entry.is_leaf and entry.tag_id %}
+              <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=entry.tag_id) }}" class="name" onclick="event.stopPropagation()">{{ entry.name }}</a>
             {% else %}
               <span class="name">{{ entry.name }}</span>
             {% endif %}
