@@ -683,6 +683,9 @@ def render_formats_books(page, book_id, order):
 
 
 def render_category_books(page, book_id, order):
+    def _escape_like(value):
+        return value.replace('\\', '\\\\').replace('%', '\\%').replace('_', '\\_')
+
     if book_id == '-1':
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
@@ -696,6 +699,30 @@ def render_category_books(page, book_id, order):
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
         tagsname = _("None")
+    elif isinstance(book_id, str) and book_id.startswith('path:'):
+        tag_path = book_id[5:]
+        if not tag_path:
+            abort(404)
+
+        escaped_path = _escape_like(tag_path)
+        like_pattern = f"{escaped_path}.%"
+        tag_filter = or_(db.Tags.name == tag_path,
+                         db.Tags.name.like(like_pattern, escape='\\'))
+
+        branch_exists = calibre_db.session.query(db.Tags.id).filter(tag_filter).first()
+        if not branch_exists:
+            abort(404)
+
+        entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db.Books.tags.any(tag_filter),
+                                                                [order[0][0], db.Series.name,
+                                                                 db.Books.series_index],
+                                                                True, config.config_read_column,
+                                                                db.books_series_link,
+                                                                db.Books.id == db.books_series_link.c.book,
+                                                                db.Series)
+        tagsname = tag_path.replace('.', ' › ')
     else:
         tagsname = calibre_db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
         if tagsname:
