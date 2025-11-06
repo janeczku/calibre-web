@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="{{page}}">{{_(title)}}</h1>
+
+<div class="filterheader hidden-xs">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div id="asc" data-order="{{ order }}" data-id="{{ data }}" class="btn btn-primary {% if order == 1 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet"></span></div>
+  <div id="desc" data-id="{{ data }}" class="btn btn-primary{% if order == 0 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></div>
+  {% if charlist|length %}
+  <div id="all" class="active btn btn-primary {% if charlist|length > 9 %}hidden-sm{% endif %}">{{_('All')}}</div>
+  {% endif %}
+  <div class="btn-group character {% if charlist|length > 9 %}hidden-sm{% endif %}" role="group">
+    {% for char in charlist %}
+    <div class="btn btn-primary char">{{char}}</div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-xs-12">
+    <ul class="tag-tree" id="category-tree">
+      {% for entry in entries %}
+        <li data-level="{{ entry.level }}" data-tag-id="{{ entry.tag_id }}" data-full-path="{{ entry.full_path }}">
+          <div class="tag-node {% if not entry.has_children %}leaf{% endif %}"
+               {% if entry.has_children %}onclick="toggleCategoryNode(this)"{% endif %}>
+            <span class="toggle">
+              {% if entry.has_children %}
+                ►
+              {% else %}
+                <!-- Empty space for alignment -->
+              {% endif %}
+            </span>
+            <span class="glyphicon {% if entry.has_children %}glyphicon-folder-close{% else %}glyphicon-tag{% endif %} icon"></span>
+            {% if entry.is_leaf and entry.tag_id %}
+              <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=entry.tag_id) }}" class="name">{{ entry.name }}</a>
+            {% else %}
+              <span class="name">{{ entry.name }}</span>
+            {% endif %}
+            <span class="count">{{ entry.count }}</span>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+function toggleCategoryNode(element) {
+    const li = element.parentElement;
+    const currentLevel = parseInt(li.getAttribute('data-level'));
+    const toggle = element.querySelector('.toggle');
+    const icon = element.querySelector('.glyphicon');
+
+    // Find all siblings after this element with level > currentLevel
+    let nextSibling = li.nextElementSibling;
+    const childElements = [];
+
+    while (nextSibling && parseInt(nextSibling.getAttribute('data-level')) > currentLevel) {
+        childElements.push(nextSibling);
+        nextSibling = nextSibling.nextElementSibling;
+    }
+
+    // Check if currently expanded by looking at first child visibility
+    const isExpanded = childElements.length > 0 &&
+                      childElements[0].style.display !== 'none';
+
+    if (isExpanded) {
+        // Collapse: hide all children
+        toggle.textContent = '►';
+        icon.classList.remove('glyphicon-folder-open');
+        icon.classList.add('glyphicon-folder-close');
+
+        childElements.forEach(child => {
+            child.style.display = 'none';
+        });
+    } else {
+        // Expand: show direct children only
+        toggle.textContent = '▼';
+        icon.classList.remove('glyphicon-folder-close');
+        icon.classList.add('glyphicon-folder-open');
+
+        const directChildLevel = currentLevel + 1;
+        childElements.forEach(child => {
+            const childLevel = parseInt(child.getAttribute('data-level'));
+            if (childLevel === directChildLevel) {
+                child.style.display = '';
+            }
+        });
+    }
+}
+
+// Letter filter functionality
+function filterByLetter(letter) {
+    const allNodes = document.querySelectorAll('#category-tree li');
+
+    allNodes.forEach(node => {
+        const level = parseInt(node.getAttribute('data-level'));
+        const nodeName = node.querySelector('.name').textContent.trim();
+
+        if (level === 0) {
+            // Root level nodes
+            if (letter === 'all' || nodeName[0].toUpperCase() === letter.toUpperCase()) {
+                node.style.display = '';
+            } else {
+                node.style.display = 'none';
+            }
+        } else {
+            // Child nodes - hide all, will be shown by expand if parent is visible
+            node.style.display = 'none';
+        }
+    });
+}
+
+// Initialize tree - collapse all by default except root level
+document.addEventListener('DOMContentLoaded', function() {
+    const allNodes = document.querySelectorAll('#category-tree li');
+
+    // Hide all non-root level nodes
+    allNodes.forEach(node => {
+        const level = parseInt(node.getAttribute('data-level'));
+        if (level > 0) {
+            node.style.display = 'none';
+        }
+    });
+
+    // Add letter filter click handlers
+    document.querySelectorAll('.char').forEach(button => {
+        button.addEventListener('click', function() {
+            const letter = this.textContent.trim();
+            filterByLetter(letter);
+
+            // Update active state
+            document.querySelectorAll('.char, #all').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Add "All" button handler
+    const allButton = document.getElementById('all');
+    if (allButton) {
+        allButton.addEventListener('click', function() {
+            filterByLetter('all');
+
+            // Update active state
+            document.querySelectorAll('.char, #all').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    }
+});
+</script>
+{% endblock %}
