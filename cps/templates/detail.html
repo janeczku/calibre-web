@@ -187,7 +187,10 @@
 
                         {% for tag in entry.tags %}
                             <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}"
-                               class="btn btn-xs btn-info" role="button">{{ tag.name }}</a>
+                               class="btn btn-xs btn-info hierarchical-tag" role="button"
+                               {% if tag.name|is_hierarchical_tag %}title="{{ tag.name }}"{% endif %}>
+                                {{ tag.name|tag_display_name(2) }}
+                            </a>
                         {% endfor %}
                     </p>
 

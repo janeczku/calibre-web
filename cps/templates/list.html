@@ -47,7 +47,9 @@
           {% if entry.format %}
             {{entry.format}}
           {% else %}
-            {{entry[0].name}}{% endif %}{% endif %}</a></div>
+            <span {% if data == 'category' and entry[0].name|is_hierarchical_tag %}title="{{entry[0].name}}"{% endif %}>
+              {% if data == 'category' %}{{entry[0].name|tag_display_name(2)}}{% else %}{{entry[0].name}}{% endif %}
+            </span>{% endif %}{% endif %}</a></div>
       </div>
     {% endfor %}
     </div>

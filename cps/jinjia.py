@@ -31,7 +31,7 @@ from flask import Blueprint, request, url_for, g
 from flask_babel import format_date
 from .cw_login import current_user
 
-from . import constants, logger
+from . import constants, logger, helper
 
 jinjia = Blueprint('jinjia', __name__)
 log = logger.create()
@@ -181,3 +181,18 @@ def contains_music(book_formats):
         if format.format.lower() in g.constants.EXTENSIONS_AUDIO:
             result = True
     return result
+
+
+@jinjia.app_template_filter('tag_display_name')
+def tag_display_name(tag_name, max_depth=2):
+    return helper.get_tag_display_name(tag_name, max_depth)
+
+
+@jinjia.app_template_filter('tag_leaf_name')
+def tag_leaf_name(tag_name):
+    return helper.get_tag_leaf_name(tag_name)
+
+
+@jinjia.app_template_filter('is_hierarchical_tag')
+def is_hierarchical_tag(tag_name):
+    return helper.is_hierarchical_tag(tag_name)

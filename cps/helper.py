@@ -1067,6 +1067,163 @@ def tags_filters():
     return and_(pos_content_tags_filter, ~neg_content_tags_filter)
 
 
+def parse_tag_hierarchy(tag_name, separator='.'):
+    """
+    Parse a hierarchical tag name into its components.
+
+    Args:
+        tag_name: The full tag name (e.g., "Fantasy.Magic.Dark")
+        separator: The hierarchy separator (default: '.')
+
+    Returns:
+        List of tag components (e.g., ["Fantasy", "Magic", "Dark"])
+    """
+    if not tag_name:
+        return []
+    return [part.strip() for part in tag_name.split(separator) if part.strip()]
+
+
+def get_tag_leaf_name(tag_name, separator='.'):
+    """
+    Get the leaf (last) component of a hierarchical tag.
+
+    Args:
+        tag_name: The full tag name (e.g., "Fantasy.Magic.Dark")
+        separator: The hierarchy separator (default: '.')
+
+    Returns:
+        The leaf name (e.g., "Dark")
+    """
+    parts = parse_tag_hierarchy(tag_name, separator)
+    return parts[-1] if parts else tag_name
+
+
+def get_tag_display_name(tag_name, max_depth=2, separator='.'):
+    """
+    Get a shortened display name for a hierarchical tag.
+    Shows only the deepest max_depth levels.
+
+    Args:
+        tag_name: The full tag name (e.g., "Fantasy.Otherworld.Isekai")
+        max_depth: Maximum number of levels to display (default: 2)
+        separator: The hierarchy separator (default: '.')
+
+    Returns:
+        Shortened display name (e.g., "Otherworld › Isekai" for max_depth=2)
+    """
+    parts = parse_tag_hierarchy(tag_name, separator)
+    if len(parts) <= 1:
+        return tag_name
+
+    # Take only the last max_depth levels
+    if len(parts) > max_depth:
+        display_parts = parts[-max_depth:]
+    else:
+        display_parts = parts
+
+    return ' › '.join(display_parts)
+
+
+def is_hierarchical_tag(tag_name, separator='.'):
+    """
+    Check if a tag name is hierarchical (contains the separator).
+
+    Args:
+        tag_name: The tag name to check
+        separator: The hierarchy separator (default: '.')
+
+    Returns:
+        True if the tag is hierarchical, False otherwise
+    """
+    return separator in tag_name if tag_name else False
+
+
+def build_tag_tree(tags_with_counts, separator='.'):
+    """
+    Build a hierarchical tree structure from flat tag list.
+
+    Args:
+        tags_with_counts: List of (tag_object, count) tuples
+        separator: The hierarchy separator (default: '.')
+
+    Returns:
+        Nested dictionary representing the tag tree with counts
+    """
+    tree = {}
+
+    for tag_entry in tags_with_counts:
+        tag_obj = tag_entry[0]
+        count = tag_entry[1]
+        tag_name = tag_obj.name
+
+        # Split the tag into parts
+        parts = parse_tag_hierarchy(tag_name, separator)
+
+        # Navigate/create the tree structure
+        current_level = tree
+        full_path = []
+
+        for i, part in enumerate(parts):
+            full_path.append(part)
+            is_leaf = (i == len(parts) - 1)
+
+            if part not in current_level:
+                current_level[part] = {
+                    '_count': 0,
+                    '_children': {},
+                    '_is_leaf': False,
+                    '_tag_id': None,
+                    '_full_path': separator.join(full_path)
+                }
+
+            # Add count to this level
+            current_level[part]['_count'] += count
+
+            if is_leaf:
+                current_level[part]['_is_leaf'] = True
+                current_level[part]['_tag_id'] = tag_obj.id
+
+            # Move to next level
+            current_level = current_level[part]['_children']
+
+    return tree
+
+
+def tree_to_list(tree, level=0, reverse=False):
+    """
+    Convert tree dictionary to a flat list for template rendering.
+
+    Args:
+        tree: Tree dictionary from build_tag_tree()
+        level: Current indentation level
+        reverse: If True, sort in reverse alphabetical order
+
+    Returns:
+        List of dictionaries with tree node information
+    """
+    result = []
+
+    for name in sorted(tree.keys(), reverse=reverse):
+        node = tree[name]
+        has_children = len(node['_children']) > 0
+
+        result.append({
+            'name': name,
+            'count': node['_count'],
+            'level': level,
+            'is_leaf': node['_is_leaf'],
+            'has_children': has_children,
+            'tag_id': node['_tag_id'],
+            'full_path': node['_full_path']
+        })
+
+        # Recursively add children
+        if has_children:
+            result.extend(tree_to_list(node['_children'], level + 1, reverse=reverse))
+
+    return result
+
+
 # checks if domain is in database (including wildcards)
 # example SELECT * FROM @TABLE WHERE 'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
