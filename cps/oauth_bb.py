@@ -297,28 +297,26 @@ if ub.oauth_support:
     # notify on OAuth provider error
     @oauth_error.connect_via(oauthblueprints[0]['blueprint'])
     def github_error(blueprint, error, error_description=None, error_uri=None):
-        msg = (
+        msg = _(
             "OAuth error from {name}! "
-            "error={error} description={description} uri={uri}"
-        ).format(
+            "error={error} description={description} uri={uri}",
             name=blueprint.name,
             error=error,
             description=error_description,
             uri=error_uri,
-        )  # ToDo: Translate
+        )
         flash(msg, category="error")
 
     @oauth_error.connect_via(oauthblueprints[1]['blueprint'])
     def google_error(blueprint, error, error_description=None, error_uri=None):
-        msg = (
+        msg = _(
             "OAuth error from {name}! "
-            "error={error} description={description} uri={uri}"
-        ).format(
+            "error={error} description={description} uri={uri}",
             name=blueprint.name,
             error=error,
             description=error_description,
             uri=error_uri,
-        )  # ToDo: Translate
+        )
         flash(msg, category="error")
 
 

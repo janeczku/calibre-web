@@ -2,9 +2,9 @@
 
 Calibre-Web is a web app that offers a clean and intuitive interface for browsing, reading, and downloading eBooks using a valid [Calibre](https://calibre-ebook.com) database.
 
-[![License](https://img.shields.io/github/license/janeczku/calibre-web?style=flat-square)](https://github.com/janeczku/calibre-web/blob/master/LICENSE)
-![Commit Activity](https://img.shields.io/github/commit-activity/w/janeczku/calibre-web?logo=github&style=flat-square&label=commits)
-[![All Releases](https://img.shields.io/github/downloads/janeczku/calibre-web/total?logo=github&style=flat-square)](https://github.com/janeczku/calibre-web/releases)
+[![License](https://img.shields.io/github/license/ajcuellar/calibre-web?style=flat-square)](https://github.com/ajcuellar/calibre-web/blob/master/LICENSE)
+![Commit Activity](https://img.shields.io/github/commit-activity/w/ajcuellar/calibre-web?logo=github&style=flat-square&label=commits)
+[![All Releases](https://img.shields.io/github/downloads/ajcuellar/calibre-web/total?logo=github&style=flat-square)](https://github.com/ajcuellar/calibre-web/releases)
 [![PyPI](https://img.shields.io/pypi/v/calibreweb?logo=pypi&logoColor=fff&style=flat-square)](https://pypi.org/project/calibreweb/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/calibreweb?logo=pypi&logoColor=fff&style=flat-square)](https://pypi.org/project/calibreweb/)
 [![Discord](https://img.shields.io/discord/838810113564344381?label=Discord&logo=discord&style=flat-square)](https://discord.gg/h2VsJ2NEfB)
@@ -28,7 +28,7 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
-![Main screen](https://github.com/janeczku/calibre-web/wiki/images/main_screen.png)
+![Main screen](https://github.com/ajcuellar/calibre-web/wiki/images/main_screen.png)
 
 ## Features
 
@@ -36,7 +36,7 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 - Full graphical setup
 - Comprehensive user management with fine-grained per-user permissions
 - Admin interface
-- Multilingual user interface supporting 20+ languages ([supported languages](https://github.com/janeczku/calibre-web/wiki/Translation-Status))
+- Multilingual user interface supporting 20+ languages ([supported languages](https://github.com/ajcuellar/calibre-web/wiki/Translation-Status))
 - OPDS feed for eBook reader apps
 - Advanced search and filtering options
 - Custom book collection (shelves) creation
@@ -71,7 +71,7 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
    ```
    pip install calibreweb
    ```
-4. **Install optional features**: For additional functionality, you may need to install optional features. Refer to [this page](https://github.com/janeczku/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-and-Windows) for details on what can be installed.
+4. **Install optional features**: For additional functionality, you may need to install optional features. Refer to [this page](https://github.com/ajcuellar/calibre-web/wiki/Dependencies-in-Calibre-Web-Linux-and-Windows) for details on what can be installed.
 5. **Start Calibre-Web**: After installation, you can start the application with:
    ```
    cps
@@ -85,9 +85,9 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 
 ### Important Links
 - For additional installation examples, check the following:
-   - [Manual installation](https://github.com/janeczku/calibre-web/wiki/Manual-installation)
-   - [Linux Mint installation](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-in-Linux-Mint-19-or-20)
-   - [Cloud Provider setup](https://github.com/janeczku/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider)
+   - [Manual installation](https://github.com/ajcuellar/calibre-web/wiki/Manual-installation)
+   - [Linux Mint installation](https://github.com/ajcuellar/calibre-web/wiki/How-To:-Install-Calibre-Web-in-Linux-Mint-19-or-20)
+   - [Cloud Provider setup](https://github.com/ajcuellar/calibre-web/wiki/How-To:-Install-Calibre-Web-on-a-Cloud-Provider)
 
 ## Quick Start
 
@@ -104,12 +104,12 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
    - **Password:** admin123
 3. **Database Setup**: If you do not have a Calibre database, download a sample from:
    ```
-   https://github.com/janeczku/calibre-web/raw/master/library/metadata.db
+   https://github.com/ajcuellar/calibre-web/raw/master/library/metadata.db
    ```
    Move it out of the Calibre-Web folder to avoid overwriting during updates.
 4. **Configure Calibre Database**: In the admin interface, set the `Location of Calibre database` to the path of the folder containing your Calibre library (where `metadata.db` is located) and click "Save".
-5. **Google Drive Integration**: For hosting your Calibre library on Google Drive, refer to the [Google Drive integration guide](https://github.com/janeczku/calibre-web/wiki/G-Drive-Setup#using-google-drive-integration).
-6. **Admin Configuration**: Configure your instance via the admin page, referring to the [Basic Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#basic-configuration) and [UI Configuration](https://github.com/janeczku/calibre-web/wiki/Configuration#ui-configuration) guides.
+5. **Google Drive Integration**: For hosting your Calibre library on Google Drive, refer to the [Google Drive integration guide](https://github.com/ajcuellar/calibre-web/wiki/G-Drive-Setup#using-google-drive-integration).
+6. **Admin Configuration**: Configure your instance via the admin page, referring to the [Basic Configuration](https://github.com/ajcuellar/calibre-web/wiki/Configuration#basic-configuration) and [UI Configuration](https://github.com/ajcuellar/calibre-web/wiki/Configuration#ui-configuration) guides.
 
 ## Requirements
 
@@ -152,25 +152,36 @@ in your Docker run/compose file. Omit this variable for a lightweight image.
 
 - **User Management Issues**: If users are unable to log in or register, check the user permission settings in the admin interface. Ensure that registration is enabled and that users are being assigned appropriate roles.
 
-- **Support Resources**: For additional help, consider visiting the [FAQ section](https://github.com/janeczku/calibre-web/wiki/FAQ) of the wiki or posting your questions in the [Discord community](https://discord.gg/h2VsJ2NEfB).
+- **Support Resources**: For additional help, consider visiting the [FAQ section](https://github.com/ajcuellar/calibre-web/wiki/FAQ) of the wiki or posting your questions in the [Discord community](https://discord.gg/h2VsJ2NEfB).
 
 ## Contributor Recognition
 
-We would like to thank all the [contributors](https://github.com/janeczku/calibre-web/graphs/contributors) and maintainers of Calibre-Web for their valuable input and dedication to the project. Your contributions are greatly appreciated.
+We would like to thank all the [contributors](https://github.com/ajcuellar/calibre-web/graphs/contributors) and maintainers of Calibre-Web for their valuable input and dedication to the project. Your contributions are greatly appreciated.
 
 ## Contact
 
 Join us on [Discord](https://discord.gg/h2VsJ2NEfB)
 
-For more information, How To's, and FAQs, please visit the [Wiki](https://github.com/janeczku/calibre-web/wiki)
+For more information, How To's, and FAQs, please visit the [Wiki](https://github.com/ajcuellar/calibre-web/wiki)
+
+## Recent Improvements
+
+This fork includes several enhancements over the original Calibre-Web:
+
+- **Updated Dependencies**: All dependencies have been updated to their latest compatible versions for improved security and performance.
+- **Enhanced Error Handling**: Improved error handling in critical functions, including image downloads and file operations.
+- **Resolved TODOs**: Addressed pending tasks in the codebase, including translation improvements and better error messages.
+- **Added Tests**: Basic test suite added for improved code reliability.
+- **Extended Format Support**: Added support for additional eBook formats like DOCX and RTF.
+- **Fork-Specific Updates**: All documentation and links updated to reflect this fork's repository.
 
 ## Contributing to Calibre-Web
 
-To contribute, please check our [Contributing Guidelines](https://github.com/janeczku/calibre-web/blob/master/CONTRIBUTING.md). We welcome issues, feature requests, and pull requests from the community.
+To contribute, please check our [Contributing Guidelines](https://github.com/ajcuellar/calibre-web/blob/master/CONTRIBUTING.md). We welcome issues, feature requests, and pull requests from the community.
 
 ### Reporting Bugs
 
-If you encounter bugs or issues, please report them in the [issues section](https://github.com/janeczku/calibre-web/issues) of the repository. Be sure to include detailed information about your setup and the problem encountered.
+If you encounter bugs or issues, please report them in the [issues section](https://github.com/ajcuellar/calibre-web/issues) of the repository. Be sure to include detailed information about your setup and the problem encountered.
 
 ### Feature Requests
 
@@ -178,8 +189,8 @@ We welcome suggestions for new features. Please create a new issue in the reposi
 
 ## Additional Resources
 
-- **Documentation**: Comprehensive documentation is available on the [Calibre-Web wiki](https://github.com/janeczku/calibre-web/wiki).
-- **Community Contributions**: Explore the [community contributions](https://github.com/janeczku/calibre-web/pulls) to see ongoing work and how you can get involved.
+- **Documentation**: Comprehensive documentation is available on the [Calibre-Web wiki](https://github.com/ajcuellar/calibre-web/wiki).
+- **Community Contributions**: Explore the [community contributions](https://github.com/ajcuellar/calibre-web/pulls) to see ongoing work and how you can get involved.
 
 ---
 

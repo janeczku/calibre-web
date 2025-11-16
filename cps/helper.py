@@ -163,6 +163,18 @@ def check_send_to_ereader_with_converter(formats):
                              'text': _('Convert %(orig)s to %(format)s and send to eReader',
                                        orig='Azw3',
                                        format='Epub')})
+    if 'DOCX' in formats and 'EPUB' not in formats:
+        book_formats.append({'format': 'Epub',
+                             'convert': 3,
+                             'text': _('Convert %(orig)s to %(format)s and send to eReader',
+                                       orig='Docx',
+                                       format='Epub')})
+    if 'RTF' in formats and 'EPUB' not in formats:
+        book_formats.append({'format': 'Epub',
+                             'convert': 4,
+                             'text': _('Convert %(orig)s to %(format)s and send to eReader',
+                                       orig='Rtf',
+                                       format='Epub')})
     return book_formats
 
 
@@ -188,6 +200,14 @@ def check_send_to_ereader(entry):
             book_formats.append({'format': 'Azw',
                                  'convert': 0,
                                  'text': _('Send %(format)s to eReader', format='Azw')})
+        if 'DOCX' in formats:
+            book_formats.append({'format': 'Docx',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to eReader', format='Docx')})
+        if 'RTF' in formats:
+            book_formats.append({'format': 'Rtf',
+                                 'convert': 0,
+                                 'text': _('Send %(format)s to eReader', format='Rtf')})
         if config.config_converterpath:
             book_formats.extend(check_send_to_ereader_with_converter(formats))
         return book_formats
@@ -825,14 +845,20 @@ def get_series_thumbnail(series_id, resolution):
 def save_cover_from_url(url, book_path):
     try:
         if cli_param.allow_localhost:
-            img = requests.get(url, timeout=(10, 200), allow_redirects=False)  # ToDo: Error Handling
+            img = requests.get(url, timeout=(10, 200), allow_redirects=False)
         elif use_advocate:
-            img = cw_advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
+            img = cw_advocate.get(url, timeout=(10, 200), allow_redirects=False)
         else:
             log.error("python module advocate is not installed but is needed")
             return False, _("Python module 'advocate' is not installed but is needed for cover uploads")
         img.raise_for_status()
         return save_cover(img, book_path)
+    except requests.exceptions.RequestException as e:
+        log.error("Error downloading cover from URL {}: {}".format(url, e))
+        return False, _("Error downloading cover from URL")
+    except Exception as e:
+        log.error("Unexpected error saving cover from URL {}: {}".format(url, e))
+        return False, _("Unexpected error saving cover")
     except (socket.gaierror,
             requests.exceptions.HTTPError,
             requests.exceptions.InvalidURL,
@@ -942,8 +968,8 @@ def do_download_file(book, book_format, client, data, headers):
     else:
         filename = os.path.join(config.get_book_path(), book.path)
         if not os.path.isfile(os.path.join(filename, book_name + "." + book_format)):
-            # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, book_name + "." + book_format))
+            abort(404)
 
         if client == "kobo" and book_format == "kepub":
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")

@@ -6,7 +6,7 @@ Please report security issues to ozzie.fernandez.isaacs@googlemail.com
 
 ## Supported Versions
 
-To receive fixes for security vulnerabilities it is required to always upgrade to the latest version of Calibre-Web. See https://github.com/janeczku/calibre-web/releases/latest for the latest release.
+To receive fixes for security vulnerabilities it is required to always upgrade to the latest version of Calibre-Web. See https://github.com/ajcuellar/calibre-web/releases/latest for the latest release.
 
 ## History
 
