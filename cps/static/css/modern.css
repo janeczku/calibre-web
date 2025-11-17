@@ -1,0 +1,249 @@
+﻿/* ===========================================
+   Calibre-Web Modern Professional Theme
+   =========================================== */
+
+/* ===== MODERN ENHANCEMENTS ===== */
+
+/* Improved typography */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* Enhanced navigation bar */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  background: linear-gradient(to right, #ffffff, #f8fafc);
+}
+
+.navbar-brand {
+  font-weight: 600;
+  color: #2563eb !important;
+  transition: color 0.2s ease;
+}
+
+.navbar-brand:hover {
+  color: #1d4ed8 !important;
+}
+
+/* Modern form controls */
+.form-control {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Enhanced buttons */
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.4);
+}
+
+/* Modern book cards */
+.book {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  background: #ffffff;
+}
+
+.book:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  border-color: #2563eb;
+}
+
+.book .cover {
+  position: relative;
+  overflow: hidden;
+}
+
+.book .cover img {
+  transition: transform 0.3s ease;
+}
+
+.book:hover .cover img {
+  transform: scale(1.05);
+}
+
+.book .meta {
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.book .title {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.book .title:hover {
+  color: #2563eb;
+}
+
+.book .author a {
+  color: #059669;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.book .author a:hover {
+  color: #047857;
+  text-decoration: underline;
+}
+
+/* Enhanced sidebar */
+.navigation {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.navigation li a {
+  border-radius: 6px;
+  margin: 2px 0;
+  transition: all 0.2s ease;
+}
+
+.navigation li a:hover,
+.navigation li.active a {
+  background: #dbeafe;
+  color: #2563eb;
+  transform: translateX(4px);
+}
+
+/* Modern alerts */
+.alert {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #991b1b;
+}
+
+/* Enhanced pagination */
+.pagination li a,
+.pagination li span {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin: 0 2px;
+  transition: all 0.2s ease;
+}
+
+.pagination li a:hover,
+.pagination li.active span {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+/* Modern modal dialogs */
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Login page enhancements */
+.well {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+}
+
+.well h2 {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* Subtle animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.book {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .book {
+    margin-bottom: 1rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus indicators */
+.btn:focus,
+.form-control:focus,
+.navbar-nav > li > a:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
