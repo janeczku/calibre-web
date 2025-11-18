@@ -161,6 +161,19 @@
       <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col">
+      <h2>{{_('Library Management')}}</h2>
+      <a class="btn btn-primary" id="find_duplicates" href="{{url_for('admin.find_duplicates')}}">
+        <span class="glyphicon glyphicon-search"></span>
+        {{_('Find Duplicate Books')}}
+      </a>
+      <p class="text-muted" style="margin-top: 10px;">
+        {{_('Scan your library for books with the same title and author, and remove unwanted copies.')}}
+      </p>
+    </div>
+  </div>
 {%  if feature_support['scheduler'] %}
   <div class="row">
     <div class="col">

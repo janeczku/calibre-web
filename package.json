@@ -1,0 +1,24 @@
+{
+  "name": "calibre-web-audiobook",
+  "version": "1.0.0",
+  "description": "Node.js dependencies for Calibre-Web audiobook generation",
+  "main": "cps/static/js/tts-generator.js",
+  "scripts": {
+    "test": "node cps/static/js/tts-generator.js \"Hello world\" test.wav null 1.0",
+    "install-global": "npm install -g say"
+  },
+  "keywords": [
+    "audiobook",
+    "tts",
+    "text-to-speech",
+    "calibre"
+  ],
+  "author": "Calibre-Web Contributors",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "say": "^0.16.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

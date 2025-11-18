@@ -1,0 +1,247 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{_('Duplicate Books')}}</h1>
+
+  {% if duplicate_count == 0 %}
+    <div class="alert alert-success">
+      <span class="glyphicon glyphicon-ok-sign"></span>
+      {{_('No duplicate books found in your library!')}}
+    </div>
+    <p>
+      <a href="{{url_for('admin.admin')}}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left"></span> {{_('Back to Admin')}}
+      </a>
+    </p>
+  {% else %}
+    <div class="alert alert-warning">
+      <span class="glyphicon glyphicon-warning-sign"></span>
+      {{_('Found %(count)d groups of duplicate books', count=duplicate_count)}}
+    </div>
+
+    <p class="text-muted">
+      {{_('Books are considered duplicates if they have the same title and author. Review each group and delete the copies you don\'t need.')}}
+    </p>
+
+    <div style="margin-bottom: 20px;">
+      <a href="{{url_for('admin.admin')}}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left"></span> {{_('Back to Admin')}}
+      </a>
+    </div>
+
+    {% for group in duplicate_groups %}
+    <div class="panel panel-default" style="margin-bottom: 30px;">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <strong>{{group.title}}</strong> by {{group.author}}
+          <span class="badge">{{group.books|length}} {{_('copies')}}</span>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>{{_('Cover')}}</th>
+                <th>{{_('Title')}}</th>
+                <th>{{_('Formats')}}</th>
+                <th>{{_('Size')}}</th>
+                <th>{{_('Added')}}</th>
+                <th>{{_('Actions')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in group.books %}
+              <tr id="book-row-{{book.id}}">
+                <td>
+                  {% if book.has_cover %}
+                    <img src="{{url_for('web.get_cover', book_id=book.id)}}"
+                         alt="{{book.title}}"
+                         style="max-height: 80px; max-width: 60px;"
+                         class="img-thumbnail">
+                  {% else %}
+                    <div style="width: 60px; height: 80px; background: #e0e0e0; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
+                      <span class="glyphicon glyphicon-book" style="font-size: 24px; color: #999;"></span>
+                    </div>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{url_for('web.show_book', book_id=book.id)}}" target="_blank">
+                    {{book.title}}
+                  </a>
+                  <br>
+                  <small class="text-muted">ID: {{book.id}}</small>
+                  <br>
+                  <small class="text-muted">{{book.path}}</small>
+                </td>
+                <td>
+                  <span class="badge">{{book.format_count}}</span>
+                  {{book.formats}}
+                </td>
+                <td>{{book.size}}</td>
+                <td>
+                  {% if book.timestamp %}
+                    {{book.timestamp.strftime('%Y-%m-%d')}}
+                  {% else %}
+                    <span class="text-muted">{{_('Unknown')}}</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="btn-group" role="group">
+                    <a href="{{url_for('web.show_book', book_id=book.id)}}"
+                       class="btn btn-sm btn-primary"
+                       target="_blank"
+                       title="{{_('View Book')}}">
+                      <span class="glyphicon glyphicon-eye-open"></span>
+                    </a>
+                    <button type="button"
+                            class="btn btn-sm btn-danger delete-btn"
+                            data-book-id="{{book.id}}"
+                            data-book-title="{{book.title}}"
+                            title="{{_('Delete this copy')}}">
+                      <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-info" style="margin-top: 15px; margin-bottom: 0;">
+          <span class="glyphicon glyphicon-info-sign"></span>
+          <strong>{{_('Tip:')}}</strong>
+          {{_('Keep the copy with more formats or better quality. The oldest copy is listed first.')}}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="deleteModalLabel">
+          <span class="glyphicon glyphicon-warning-sign text-danger"></span>
+          {{_('Confirm Deletion')}}
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 16px; margin-bottom: 15px;">
+          {{_('Are you sure you want to delete this book?')}}
+        </p>
+        <p style="font-size: 18px; margin-bottom: 15px;">
+          <strong id="delete-book-title"></strong>
+        </p>
+        <p class="text-muted" style="font-size: 13px;">
+          <span class="glyphicon glyphicon-info-sign"></span>
+          {{_('This action cannot be undone.')}}
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          <span class="glyphicon glyphicon-remove"></span>
+          {{_('Cancel')}}
+        </button>
+        <form id="delete-form" method="POST" style="display: inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-danger" id="confirm-delete-btn">
+            <span class="glyphicon glyphicon-trash"></span>
+            {{_('Delete Book')}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Manejar click en botones de eliminar
+  document.querySelectorAll('.delete-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var bookId = this.getAttribute('data-book-id');
+      var bookTitle = this.getAttribute('data-book-title');
+
+      // Actualizar el modal
+      document.getElementById('delete-book-title').textContent = bookTitle;
+      document.getElementById('delete-form').action =
+        '{{url_for("admin.delete_duplicate_book", book_id=0)}}'.replace('0', bookId);
+
+      // Mostrar el modal
+      $('#deleteModal').modal('show');
+    });
+  });
+
+  // Opcional: Resaltar la fila cuando se hace hover en el botón de eliminar
+  document.querySelectorAll('.delete-btn').forEach(function(btn) {
+    btn.addEventListener('mouseenter', function() {
+      var bookId = this.getAttribute('data-book-id');
+      var row = document.getElementById('book-row-' + bookId);
+      if (row) {
+        row.style.backgroundColor = '#f8d7da';
+      }
+    });
+
+    btn.addEventListener('mouseleave', function() {
+      var bookId = this.getAttribute('data-book-id');
+      var row = document.getElementById('book-row-' + bookId);
+      if (row) {
+        row.style.backgroundColor = '';
+      }
+    });
+  });
+});
+</script>
+
+<style>
+  .panel {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .panel-heading {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  .table > thead > tr > th {
+    background: #f8f9fa;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  .btn-group {
+    white-space: nowrap;
+  }
+
+  .delete-btn:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .table-responsive {
+      border: none;
+    }
+
+    .btn-group .btn {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+    }
+  }
+</style>
+{% endblock %}

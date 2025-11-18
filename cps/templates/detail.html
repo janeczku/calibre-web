@@ -129,6 +129,37 @@
                             {% endif %}
                         </div>
                     {% endif %}
+
+                    <!-- Generate Audiobook Button -->
+                    {% if entry.data|length %}
+                        {% set text_formats = [] %}
+                        {% for format in entry.data %}
+                            {% if format.format|upper in ['EPUB', 'PDF', 'TXT'] %}
+                                {% set _ = text_formats.append(format.format) %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if text_formats|length > 0 %}
+                            <div class="btn-group" role="group">
+                                <button id="audiobook-btn" type="button" class="btn btn-success dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-headphones"></span> {{ _('Generate Audiobook') }}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="audiobook-btn">
+                                    {% for format in text_formats %}
+                                        <li><a href="#" class="generate-audiobook-link" data-format="{{ format }}">
+                                            <span class="glyphicon glyphicon-cog"></span> {{ _('Full Audiobook') }} ({{ format }})
+                                        </a></li>
+                                        <li><a href="{{ url_for('web.quick_audiobook_preview', book_id=entry.id, book_format=format|lower) }}" target="_blank">
+                                            <span class="glyphicon glyphicon-play"></span> {{ _('Quick Preview') }} ({{ format }})
+                                        </a></li>
+                                        {% if not loop.last %}<li role="separator" class="divider"></li>{% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
             <h2 id="title">{{ entry.title }}</h2>
@@ -371,7 +402,154 @@
 </script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>
 <script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>
+
+<!-- Modal for Audiobook Generation Settings -->
+<div class="modal fade" id="audiobookModal" tabindex="-1" role="dialog" aria-labelledby="audiobookModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="audiobookModalLabel">
+                    <span class="glyphicon glyphicon-headphones"></span>
+                    {{ _('Generate Audiobook') }}
+                </h4>
+            </div>
+            <form id="audiobook-form" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        {{ _('This will generate an audiobook using macOS text-to-speech. The process may take several minutes depending on the book length.') }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="voice-select">{{ _('Voice') }}</label>
+                        <select id="voice-select" name="voice" class="form-control">
+                            <option value="Alex">Alex (US English - Male)</option>
+                            <option value="Samantha">Samantha (US English - Female)</option>
+                            <option value="Victoria">Victoria (US English - Female)</option>
+                            <option value="Daniel">Daniel (UK English - Male)</option>
+                            <option value="Karen">Karen (Australian English - Female)</option>
+                            <option value="Monica">Monica (Spanish - Female)</option>
+                            <option value="Jorge">Jorge (Spanish - Male)</option>
+                            <option value="Paulina">Paulina (Spanish Mexico - Female)</option>
+                        </select>
+                        <p class="help-block">{{ _('Select the voice for the audiobook narration') }}</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="words-per-part">{{ _('Words per Audio File') }}</label>
+                        <select id="words-per-part" name="words_per_part" class="form-control">
+                            <option value="3000">3,000 words (~20-30 minutes)</option>
+                            <option value="5000" selected>5,000 words (~30-45 minutes)</option>
+                            <option value="10000">10,000 words (~60-90 minutes)</option>
+                            <option value="15000">15,000 words (~90-120 minutes)</option>
+                        </select>
+                        <p class="help-block">{{ _('The audiobook will be split into multiple files for easier handling') }}</p>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        <strong>{{ _('Note:') }}</strong> {{ _('Generation is done in the background. You can continue using the application and will be notified when complete.') }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Cancel') }}</button>
+                    <button type="submit" class="btn btn-success">
+                        <span class="glyphicon glyphicon-cog"></span>
+                        {{ _('Generate Audiobook') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+$(document).ready(function() {
+    // Handle Generate Audiobook button click
+    $('.generate-audiobook-link').on('click', function(e) {
+        e.preventDefault();
+
+        var format = $(this).data('format');
+        var bookId = {{ entry.id }};
+
+        // Set form action URL
+        var formAction = '/book/' + bookId + '/generate-audiobook/' + format.toLowerCase();
+        $('#audiobook-form').attr('action', formAction);
+
+        // Show modal
+        $('#audiobookModal').modal('show');
+    });
+
+    // Handle form submission
+    $('#audiobook-form').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = $(this);
+        var url = form.attr('action');
+
+        // Show loading state
+        var submitBtn = form.find('button[type="submit"]');
+        var originalText = submitBtn.html();
+        submitBtn.prop('disabled', true).html('<span class="glyphicon glyphicon-refresh glyphicon-spin"></span> ' + '{{ _("Starting...") }}');
+
+        // Submit form via AJAX to stay on page
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: form.serialize(),
+            success: function(response) {
+                // Close modal
+                $('#audiobookModal').modal('hide');
+
+                // Show success message
+                var alertHtml = '<div class="alert alert-success alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '<span class="glyphicon glyphicon-ok-sign"></span> ' +
+                    '{{ _("Audiobook generation started! Check the Tasks page for progress.") }}' +
+                    '</div>';
+
+                // Insert alert at the top of the page
+                $('.single').prepend(alertHtml);
+
+                // Auto-dismiss after 5 seconds
+                setTimeout(function() {
+                    $('.alert-success').fadeOut();
+                }, 5000);
+
+                // Reset button
+                submitBtn.prop('disabled', false).html(originalText);
+            },
+            error: function(xhr, status, error) {
+                // Show error message
+                var errorMsg = '{{ _("Error starting audiobook generation") }}';
+                if (xhr.responseText) {
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.error) {
+                            errorMsg = response.error;
+                        }
+                    } catch (e) {
+                        // Ignore JSON parse error
+                    }
+                }
+
+                alert(errorMsg);
+
+                // Reset button
+                submitBtn.prop('disabled', false).html(originalText);
+            }
+        });
+    });
+
+    // Reset modal when closed
+    $('#audiobookModal').on('hidden.bs.modal', function () {
+        $('#audiobook-form').trigger('reset');
+    });
+});
 </script>
 
 {% endblock %}

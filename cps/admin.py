@@ -2106,8 +2106,138 @@ def _handle_edit_user(to_save, content, languages, translations, kobo_support):
     return ""
 
 
+@admi.route("/admin/duplicates")
+@user_login_required
+@admin_required
+def find_duplicates():
+    """Find duplicate books in the library"""
+
+    def format_file_size(size_bytes):
+        """Format file size in bytes to human readable format"""
+        if size_bytes == 0:
+            return "0 B"
+
+        units = ['B', 'KB', 'MB', 'GB', 'TB']
+        unit_index = 0
+        size = float(size_bytes)
+
+        while size >= 1024.0 and unit_index < len(units) - 1:
+            size /= 1024.0
+            unit_index += 1
+
+        if unit_index == 0:
+            return "{:.0f} {}".format(size, units[unit_index])
+        else:
+            return "{:.2f} {}".format(size, units[unit_index])
+
+    try:
+        # Get all books with their authors
+        all_books = calibre_db.session.query(db.Books).all()
+
+        # Dictionary to track potential duplicates
+        # Key: (normalized_title, normalized_author)
+        # Value: list of book objects
+        potential_duplicates = {}
+
+        for book in all_books:
+            # Normalize title (lowercase, remove extra spaces)
+            normalized_title = ' '.join(book.title.lower().split())
+
+            # Get first author (most books have one primary author)
+            if book.authors:
+                normalized_author = ' '.join(book.authors[0].name.lower().split())
+            else:
+                normalized_author = "unknown"
+
+            key = (normalized_title, normalized_author)
+
+            if key not in potential_duplicates:
+                potential_duplicates[key] = []
+            potential_duplicates[key].append(book)
+
+        # Filter to only actual duplicates (more than one book per key)
+        duplicates = {k: v for k, v in potential_duplicates.items() if len(v) > 1}
+
+        # Convert to list format for template
+        duplicate_groups = []
+        for (title, author), books in duplicates.items():
+            group = {
+                'title': books[0].title,  # Use original title from first book
+                'author': books[0].authors[0].name if books[0].authors else "Unknown",
+                'books': []
+            }
+
+            for book in books:
+                # Get formats for this book
+                formats = [d.format for d in book.data] if book.data else []
+
+                # Get file size total
+                total_size = sum(d.uncompressed_size for d in book.data) if book.data else 0
+
+                group['books'].append({
+                    'id': book.id,
+                    'title': book.title,
+                    'path': book.path,
+                    'formats': ', '.join(formats),
+                    'format_count': len(formats),
+                    'size': format_file_size(total_size),
+                    'timestamp': book.timestamp,
+                    'has_cover': book.has_cover
+                })
+
+            # Sort books within group by timestamp (oldest first)
+            group['books'].sort(key=lambda x: x['timestamp'] if x['timestamp'] else datetime.min)
+            duplicate_groups.append(group)
+
+        # Sort groups by title
+        duplicate_groups.sort(key=lambda x: x['title'].lower())
+
+        return render_title_template("admin_duplicates.html",
+                                     duplicate_groups=duplicate_groups,
+                                     duplicate_count=len(duplicate_groups),
+                                     title=_("Duplicate Books"),
+                                     page="duplicates")
+
+    except Exception as e:
+        log.error("Error finding duplicates: {}".format(str(e)))
+        flash(_("Error finding duplicate books: %(error)s", error=str(e)), category="error")
+        return redirect(url_for('admin.admin'))
+
+
+@admi.route("/admin/duplicates/delete/<int:book_id>", methods=["POST"])
+@user_login_required
+@admin_required
+def delete_duplicate_book(book_id):
+    """Delete a duplicate book"""
+    try:
+        from . import editbooks
+
+        # Check if book exists
+        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+        if not book:
+            flash(_("Book not found"), category="error")
+            return redirect(url_for('admin.find_duplicates'))
+
+        book_title = book.title
+
+        # Use the existing delete function from editbooks (only takes book_id)
+        result = editbooks.delete_book_from_table(book_id)
+
+        if not result:
+            flash(_("Book '%(title)s' deleted successfully", title=book_title), category="success")
+        else:
+            flash(_("Error deleting book: %(error)s", error=result), category="error")
+
+        return redirect(url_for('admin.find_duplicates'))
+
+    except Exception as e:
+        log.error("Error deleting duplicate book {}: {}".format(book_id, str(e)))
+        flash(_("Error deleting book: %(error)s", error=str(e)), category="error")
+        return redirect(url_for('admin.find_duplicates'))
+
+
 def extract_user_data_from_field(user, field):
-    match = re.search(field + r"=(.*?)($|(?<!\\),)", user, re.IGNORECASE | re.UNICODE)    
+    match = re.search(field + r"=(.*?)($|(?<!\\),)", user, re.IGNORECASE | re.UNICODE)
     if match:
         return match.group(1)
     else:

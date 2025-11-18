@@ -1,0 +1,155 @@
+/* ===================================
+   Calibre-Web Professional Theme
+   Clean, Modern Enhancement
+   =================================== */
+
+/* Variables */
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --accent: #ec4899;
+  --success: #10b981;
+}
+
+/* Global */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(to bottom, #fafafa, #f4f4f5);
+}
+
+/* Navbar */
+.navbar {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: none;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sidebar */
+.navigation {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+}
+
+.navigation li a {
+  border-radius: 8px;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem;
+}
+
+.navigation li a:hover,
+.navigation li.active a {
+  background: var(--primary);
+  color: white !important;
+  text-decoration: none;
+}
+
+/* Book Cards */
+.container-fluid .book {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.container-fluid .book:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+.container-fluid .book .cover {
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(135deg, #f4f4f5, #e4e4e7);
+}
+
+.container-fluid .book .cover span img {
+  transition: transform 0.3s;
+}
+
+.container-fluid .book:hover .cover span img {
+  transform: scale(1.05);
+}
+
+.container-fluid .book .meta {
+  padding: 1rem !important;
+}
+
+.container-fluid .book .meta .title {
+  font-weight: 700 !important;
+  color: #18181b !important;
+}
+
+.container-fluid .book:hover .meta .title {
+  color: var(--primary) !important;
+}
+
+.container-fluid .book .meta .author a {
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* Filter Buttons */
+.filterheader {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.filterheader .btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Pagination */
+.pagination li a:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.pagination li.active span {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* Rating */
+.rating .glyphicon-star.good {
+  color: #fbbf24 !important;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-left: 4px solid;
+}
+
+/* Panels */
+.panel {
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: none;
+}

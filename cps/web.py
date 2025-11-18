@@ -1672,3 +1672,255 @@ def show_book(book_id):
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
+
+
+@web.route("/book/<int:book_id>/generate-audiobook/<book_format>", methods=["POST"])
+@login_required_if_no_ano
+def generate_audiobook(book_id, book_format):
+    """Generate audiobook for a book using macOS 'say' command"""
+    try:
+        from .tasks.audiobook import TaskGenerateAudiobook
+        from .services.worker import WorkerThread
+
+        # Check if book exists
+        book = calibre_db.get_book(book_id)
+        if not book:
+            flash(_("Book not found"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Check if format exists
+        book_data = calibre_db.get_book_format(book_id, book_format.upper())
+        if not book_data:
+            flash(_("Format %(format)s not available for this book", format=book_format.upper()), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Check if Node.js is available
+        import shutil
+        if not shutil.which('node'):
+            flash(_("Node.js is not installed. This feature requires Node.js with the 'say' library."), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Check if tts-generator.js exists
+        tts_script = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'static', 'js', 'tts-generator.js'
+        )
+        if not os.path.exists(tts_script):
+            flash(_("TTS script not found. Please ensure tts-generator.js is in static/js/"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Get voice and words_per_part from request
+        voice = request.form.get('voice', 'Alex')
+        try:
+            words_per_part = int(request.form.get('words_per_part', 5000))
+            if words_per_part < 1000 or words_per_part > 20000:
+                words_per_part = 5000
+        except ValueError:
+            words_per_part = 5000
+
+        # Create task
+        task = TaskGenerateAudiobook(
+            book_id=book_id,
+            book_format=book_format.upper(),
+            voice=voice,
+            words_per_part=words_per_part,
+            user=current_user.name if current_user.is_authenticated else "Guest"
+        )
+
+        # Add task to worker thread
+        WorkerThread.add(current_user.name if current_user.is_authenticated else "Guest", task)
+
+        flash(_("Audiobook generation started. You will be notified when it's ready."), category="success")
+        log.info(f"Audiobook generation task queued for book {book_id} ({book.title})")
+
+        return redirect(url_for("web.show_book", book_id=book_id))
+
+    except Exception as e:
+        log.error(f"Error starting audiobook generation: {str(e)}")
+        flash(_("Error starting audiobook generation: %(error)s", error=str(e)), category="error")
+        return redirect(url_for("web.show_book", book_id=book_id))
+
+
+@web.route("/book/<int:book_id>/quick-audiobook/<book_format>")
+@login_required_if_no_ano
+def quick_audiobook_preview(book_id, book_format):
+    """Generate a quick audio preview (first 1000 words) for immediate playback"""
+    try:
+        import tempfile
+        import shutil
+        from .subproc_wrapper import process_open
+
+        # Check if book exists
+        book = calibre_db.get_book(book_id)
+        if not book:
+            flash(_("Book not found"), category="error")
+            return redirect(url_for("web.index"))
+
+        # Check if format exists
+        book_data = calibre_db.get_book_format(book_id, book_format.upper())
+        if not book_data:
+            flash(_("Format not available"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Check if Node.js is available
+        if not shutil.which('node'):
+            flash(_("Node.js is not installed. This feature requires Node.js with the 'say' library."), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Get TTS script path
+        tts_script = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'static', 'js', 'tts-generator.js'
+        )
+
+        if not os.path.exists(tts_script):
+            flash(_("TTS script not found"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Get book file path
+        book_path = os.path.join(config.config_calibre_dir, book.path)
+        book_file = os.path.join(book_path, book_data.name + "." + book_format.lower())
+
+        if not os.path.exists(book_file):
+            flash(_("Book file not found"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Extract a preview of text (first 1000 words)
+        preview_text = extract_text_preview(book_file, book_format.upper(), max_words=1000)
+
+        if not preview_text:
+            flash(_("Could not extract text from book"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+        # Generate audio in a temporary file
+        temp_dir = tempfile.gettempdir()
+        temp_audio = os.path.join(temp_dir, f"preview_{book_id}_{int(time.time())}.wav")
+
+        command = [
+            'node',
+            tts_script,
+            preview_text,
+            temp_audio,
+            'Alex',  # Default voice
+            '1.0'    # Speed
+        ]
+
+        p = process_open(command)
+        p.wait(timeout=300)  # 5 minute timeout
+
+        if p.returncode == 0 and os.path.exists(temp_audio):
+            # Return the audio file
+            def cleanup_file():
+                try:
+                    os.remove(temp_audio)
+                except:
+                    pass
+
+            response = send_from_directory(
+                temp_dir,
+                os.path.basename(temp_audio),
+                as_attachment=True,
+                download_name=f"{book.title}_preview.wav"
+            )
+
+            # Schedule cleanup after response is sent
+            response.call_on_close(cleanup_file)
+
+            return response
+        else:
+            flash(_("Failed to generate audio preview"), category="error")
+            return redirect(url_for("web.show_book", book_id=book_id))
+
+    except Exception as e:
+        log.error(f"Error generating quick audiobook preview: {str(e)}")
+        flash(_("Error generating audio preview: %(error)s", error=str(e)), category="error")
+        return redirect(url_for("web.show_book", book_id=book_id))
+
+
+def extract_text_preview(book_file, book_format, max_words=1000):
+    """Extract a preview of text from a book file"""
+    try:
+        if book_format == "TXT":
+            with open(book_file, 'r', encoding='utf-8', errors='ignore') as f:
+                text = f.read()
+                words = text.split()
+                return ' '.join(words[:max_words])
+
+        elif book_format == "EPUB":
+            try:
+                import ebooklib
+                from ebooklib import epub
+                from bs4 import BeautifulSoup
+
+                book = epub.read_epub(book_file)
+                text_parts = []
+                word_count = 0
+
+                for item in book.get_items():
+                    if item.get_type() == ebooklib.ITEM_DOCUMENT:
+                        soup = BeautifulSoup(item.get_content(), 'html.parser')
+                        text = soup.get_text()
+                        words = text.split()
+                        remaining = max_words - word_count
+                        if remaining > 0:
+                            text_parts.extend(words[:remaining])
+                            word_count += len(words[:remaining])
+                        if word_count >= max_words:
+                            break
+
+                return ' '.join(text_parts)
+
+            except ImportError:
+                log.warning("ebooklib not installed")
+                return None
+
+        elif book_format == "PDF":
+            try:
+                import pdfplumber
+
+                text_parts = []
+                word_count = 0
+
+                with pdfplumber.open(book_file) as pdf:
+                    for page in pdf.pages:
+                        text = page.extract_text()
+                        if text:
+                            words = text.split()
+                            remaining = max_words - word_count
+                            if remaining > 0:
+                                text_parts.extend(words[:remaining])
+                                word_count += len(words[:remaining])
+                            if word_count >= max_words:
+                                break
+
+                return ' '.join(text_parts)
+
+            except ImportError:
+                try:
+                    import PyPDF2
+
+                    text_parts = []
+                    word_count = 0
+
+                    with open(book_file, 'rb') as f:
+                        pdf_reader = PyPDF2.PdfReader(f)
+                        for page in pdf_reader.pages:
+                            text = page.extract_text()
+                            if text:
+                                words = text.split()
+                                remaining = max_words - word_count
+                                if remaining > 0:
+                                    text_parts.extend(words[:remaining])
+                                    word_count += len(words[:remaining])
+                                if word_count >= max_words:
+                                    break
+
+                    return ' '.join(text_parts)
+
+                except ImportError:
+                    log.error("Neither pdfplumber nor PyPDF2 installed")
+                    return None
+
+    except Exception as e:
+        log.error(f"Error extracting text preview: {str(e)}")
+        return None

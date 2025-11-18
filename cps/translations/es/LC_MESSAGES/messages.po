@@ -3724,3 +3724,56 @@ msgstr "Sincronizar estanterías seleccionadas con Kobo"
 msgid "Show Read/Unread Section"
 msgstr "Mostrar sección de leidos/no leidos"
 
+# Custom additions for duplicate books feature
+#: cps/admin.py
+msgid "Find Duplicate Books"
+msgstr "Buscar libros duplicados"
+
+#: cps/admin.py
+msgid "Duplicate Books"
+msgstr "Libros duplicados"
+
+#: cps/admin.py
+msgid "Scan your library for books with the same title and author"
+msgstr "Escanea tu biblioteca en busca de libros con el mismo título y autor"
+
+#: cps/admin.py
+msgid "No duplicate books found in your library."
+msgstr "No se encontraron libros duplicados en tu biblioteca."
+
+#: cps/admin.py
+msgid "Found %(count)d groups of duplicate books"
+msgstr "Se encontraron %(count)d grupos de libros duplicados"
+
+#: cps/admin.py
+msgid "copies"
+msgstr "copias"
+
+#: cps/admin.py
+msgid "Delete this book"
+msgstr "Eliminar este libro"
+
+#: cps/admin.py
+msgid "Are you sure you want to delete this book?"
+msgstr "¿Estás seguro de que quieres eliminar este libro?"
+
+#: cps/admin.py
+msgid "This action cannot be undone."
+msgstr "Esta acción no se puede deshacer."
+
+#: cps/admin.py
+msgid "Book '%(title)s' deleted successfully"
+msgstr "Libro '%(title)s' eliminado con éxito"
+
+#: cps/admin.py
+msgid "Error deleting book: %(error)s"
+msgstr "Error al eliminar el libro: %(error)s"
+
+#: cps/admin.py
+msgid "Error finding duplicate books: %(error)s"
+msgstr "Error al buscar libros duplicados: %(error)s"
+
+#: cps/admin.py
+msgid "Library Management"
+msgstr "Gestión de biblioteca"
+

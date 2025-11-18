@@ -214,6 +214,13 @@ def create_app():
     register_scheduled_tasks(config.schedule_reconnect)
     register_startup_tasks()
 
+    # Initialize audiobook dependencies (auto-install 'say' if needed)
+    try:
+        from .setup_audiobook import init_audiobook_dependencies
+        init_audiobook_dependencies()
+    except Exception as e:
+        log.warning(f"Could not initialize audiobook dependencies: {e}")
+
     return app
 
 
