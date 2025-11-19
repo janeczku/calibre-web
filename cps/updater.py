@@ -35,7 +35,7 @@ from .file_helper import get_temp_dir
 
 
 log = logger.create()
-_REPOSITORY_API_URL = 'https://api.github.com/repos/janeczku/calibre-web'
+_REPOSITORY_API_URL = 'https://api.github.com/repos/ajcuellar/calibre-web'
 
 
 def is_sha1(sha1):

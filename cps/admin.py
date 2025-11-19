@@ -2186,7 +2186,17 @@ def find_duplicates():
                 })
 
             # Sort books within group by timestamp (oldest first)
-            group['books'].sort(key=lambda x: x['timestamp'] if x['timestamp'] else datetime.min)
+            # Handle timezone-aware and timezone-naive datetimes
+            def get_sortable_timestamp(book_dict):
+                ts = book_dict['timestamp']
+                if ts is None:
+                    return datetime.min.replace(tzinfo=None)
+                # Remove timezone info to make all timestamps comparable
+                if hasattr(ts, 'tzinfo') and ts.tzinfo is not None:
+                    return ts.replace(tzinfo=None)
+                return ts
+
+            group['books'].sort(key=get_sortable_timestamp)
             duplicate_groups.append(group)
 
         # Sort groups by title
