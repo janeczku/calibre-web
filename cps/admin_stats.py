@@ -137,17 +137,41 @@ def get_user_stats():
         week_ago = now - timedelta(days=7)
         month_ago = now - timedelta(days=30)
 
-        # Count unique users with downloads (if we had timestamps)
-        # For now, we'll count users with any downloads
-        users_with_downloads = ub.session.query(
-            func.count(func.distinct(ub.Downloads.user_id))
-        ).scalar() or 0
+        # Count active users based on sessions
+        now_timestamp = int(datetime.now().timestamp())
+        week_ago_timestamp = int((datetime.now() - timedelta(days=7)).timestamp())
+        month_ago_timestamp = int((datetime.now() - timedelta(days=30)).timestamp())
 
-        # Estimate active users (users with downloads / total users ratio)
-        if total_users > 0:
-            activity_ratio = users_with_downloads / total_users
-            stats['active_users_week'] = int(total_users * activity_ratio * 0.3)
-            stats['active_users_month'] = int(total_users * activity_ratio * 0.6)
+        # Users with active sessions in the last week
+        active_week = ub.session.query(
+            func.count(func.distinct(ub.User_Sessions.user_id))
+        ).filter(ub.User_Sessions.expiry >= week_ago_timestamp).scalar() or 0
+
+        # Users with active sessions in the last month
+        active_month = ub.session.query(
+            func.count(func.distinct(ub.User_Sessions.user_id))
+        ).filter(ub.User_Sessions.expiry >= month_ago_timestamp).scalar() or 0
+
+        stats['active_users_week'] = active_week
+        stats['active_users_month'] = active_month
+
+        # Get list of active users this week with their last activity
+        active_users_list = ub.session.query(
+            ub.User.name,
+            func.max(ub.User_Sessions.expiry).label('last_activity')
+        ).join(
+            ub.User_Sessions, ub.User.id == ub.User_Sessions.user_id
+        ).filter(
+            ub.User_Sessions.expiry >= week_ago_timestamp
+        ).group_by(ub.User.name).order_by(text('last_activity DESC')).all()
+
+        stats['active_users_list'] = [
+            {
+                'name': user[0],
+                'last_activity': datetime.fromtimestamp(user[1]).strftime('%Y-%m-%d %H:%M:%S') if user[1] else 'Unknown'
+            }
+            for user in active_users_list
+        ]
 
         return stats
     except Exception as e:
