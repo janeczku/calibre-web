@@ -48,11 +48,20 @@
       </table>
     {% endif %}
         {% if not simple %}
-          <a class="btn btn-default" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">{{_('Edit Users')}}</a>
+          <a class="btn btn-default" id="admin_user_table" href="{{url_for('admin.edit_user_table')}}">
+            <span class="glyphicon glyphicon-edit"></span>
+            {{_('Edit Users')}}
+          </a>
         {% endif %}
-        <a class="btn btn-default" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
+        <a class="btn btn-default" id="admin_new_user" href="{{url_for('admin.new_user')}}">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Add New User')}}
+        </a>
       {% if (config.config_login_type == 1) %}
-        <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
+        <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">
+          <span class="glyphicon glyphicon-import"></span>
+          {{_('Import LDAP Users')}}
+        </div>
       {% endif %}
     </div>
   </div>
@@ -97,7 +106,10 @@
         </div>
       {% endif %}
     {% endif %}
-      <a class="btn btn-default emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">{{_('Edit Email Server Settings')}}</a>
+      <a class="btn btn-default emailconfig" id="admin_edit_email" href="{{url_for('admin.edit_mailsettings')}}">
+        <span class="glyphicon glyphicon-envelope"></span>
+        {{_('Edit Email Server Settings')}}
+      </a>
     </div>
   </div>
 
@@ -156,17 +168,26 @@
         </div>
         {% endif %}
       </div>
-      <a class="btn btn-default" id="db_config" href="{{url_for('admin.db_configuration')}}">{{_('Edit Calibre Database Configuration')}}</a>
-      <a class="btn btn-default" id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Edit Basic Configuration')}}</a>
-      <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('Edit UI Configuration')}}</a>
+      <a class="btn btn-default" id="db_config" href="{{url_for('admin.db_configuration')}}">
+        <span class="glyphicon glyphicon-hdd"></span>
+        {{_('Edit Calibre Database Configuration')}}
+      </a>
+      <a class="btn btn-default" id="basic_config" href="{{url_for('admin.configuration')}}">
+        <span class="glyphicon glyphicon-cog"></span>
+        {{_('Edit Basic Configuration')}}
+      </a>
+      <a class="btn btn-default" id="view_config" href="{{url_for('admin.view_configuration')}}">
+        <span class="glyphicon glyphicon-eye-open"></span>
+        {{_('Edit UI Configuration')}}
+      </a>
     </div>
   </div>
 
   <div class="row">
     <div class="col">
       <h2>{{_('Library Management')}}</h2>
-      <a class="btn btn-primary" id="find_duplicates" href="{{url_for('admin.find_duplicates')}}">
-        <span class="glyphicon glyphicon-search"></span>
+      <a class="btn btn-default" id="find_duplicates" href="{{url_for('admin.find_duplicates')}}">
+        <span class="glyphicon glyphicon-duplicate"></span>
         {{_('Find Duplicate Books')}}
       </a>
       <p class="text-muted" style="margin-top: 10px;">
@@ -205,28 +226,52 @@
           </div>
 
         </div>
-      <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>
+      <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">
+        <span class="glyphicon glyphicon-time"></span>
+        {{_('Edit Scheduled Tasks Settings')}}
+      </a>
       {% if config.schedule_generate_book_covers %}
-        <a class="btn btn-default" id="admin_refresh_cover_cache">{{_('Refresh Thumbnail Cache')}}</a>
+        <a class="btn btn-default" id="admin_refresh_cover_cache">
+          <span class="glyphicon glyphicon-refresh"></span>
+          {{_('Refresh Thumbnail Cache')}}
+        </a>
       {%  endif %}
     </div>
   </div>
 {%  endif %}
   <div class="row form-group">
     <h2>{{_('Administration')}}</h2>
-    <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
-    <a class="btn btn-default" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
+    <a class="btn btn-default" id="debug" href="{{url_for('admin.download_debug')}}">
+      <span class="glyphicon glyphicon-download-alt"></span>
+      {{_('Download Debug Package')}}
+    </a>
+    <a class="btn btn-default" id="logfile" href="{{url_for('admin.view_logfile')}}">
+      <span class="glyphicon glyphicon-list-alt"></span>
+      {{_('View Logs')}}
+    </a>
   </div>
   <div class="row form-group">
-    <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
+    <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">
+      <span class="glyphicon glyphicon-transfer"></span>
+      {{_('Reconnect Calibre Database')}}
+    </div>
   </div>
   <div class="row form-group">
-    <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
-    <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
+    <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">
+      <span class="glyphicon glyphicon-repeat"></span>
+      {{_('Restart')}}
+    </div>
+    <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">
+      <span class="glyphicon glyphicon-off"></span>
+      {{_('Shutdown')}}
+    </div>
   </div>
 {% if config.schedule_metadata_backup %}
   <div class="row form-group">
-    <div class="btn btn-default" id="metadata_backup" data-toggle="modal" data-target="#StatusDialog">{{_('Queue all books for metadata backup')}}</div>
+    <div class="btn btn-default" id="metadata_backup" data-toggle="modal" data-target="#StatusDialog">
+      <span class="glyphicon glyphicon-floppy-disk"></span>
+      {{_('Queue all books for metadata backup')}}
+    </div>
   </div>
 {%  endif %}
   <div class="row">
@@ -235,22 +280,36 @@
       <table class="table table-striped" id="update_table">
         <thead>
           <tr>
-              <th class="col-xs-3">{{_('Version')}}</th>
-              <th class="col-xl-8">{{_('Details')}}</th>
+              <th class="col-xs-3">Componente</th>
+              <th class="col-xl-8">{{_('Version')}}</th>
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td>Calibre-Web</td>
+            <td>{{calibre_web_version}}</td>
+          </tr>
+          <tr>
+            <td>Calibre</td>
+            <td>{{calibre_version}}</td>
+          </tr>
           <tr id="current_version">
-            <td>{{commit}} </td>
-            <td><i>{{_('Current Version')}}</i></td>
+            <td>{{_('Current Version')}}</td>
+            <td>{{commit}}</td>
           </tr>
         </tbody>
       </table>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       {%  if feature_support['updater'] %}
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
-      <div class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</div>
-      <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
+      <div class="btn btn-primary" id="check_for_update">
+        <span class="glyphicon glyphicon-search"></span>
+        {{_('Check for Update')}}
+      </div>
+      <div class="btn btn-primary hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">
+        <span class="glyphicon glyphicon-arrow-up"></span>
+        {{_('Perform Update')}}
+      </div>
       {%  endif %}
     </div>
   </div>

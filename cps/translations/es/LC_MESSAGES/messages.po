@@ -3775,5 +3775,5 @@ msgstr "Error al buscar libros duplicados: %(error)s"
 
 #: cps/admin.py
 msgid "Library Management"
-msgstr "Gestión de biblioteca"
+msgstr "Mantenimiento de librería"
 

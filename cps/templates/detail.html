@@ -141,9 +141,10 @@
 
                         {% if text_formats|length > 0 %}
                             <div class="btn-group" role="group">
-                                <button id="audiobook-btn" type="button" class="btn btn-success dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-headphones"></span> {{ _('Generate Audiobook') }}
+                                <button id="audiobook-btn" type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                        title="{{ _('Generate Audiobook') }}">
+                                    <span class="glyphicon glyphicon-headphones"></span>
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="audiobook-btn">

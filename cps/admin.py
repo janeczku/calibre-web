@@ -43,7 +43,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError, ArgumentError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services, cli_param
+from . import constants, logger, helper, services, cli_param, converter
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
@@ -227,9 +227,17 @@ def admin():
     t = timedelta(hours=config.schedule_duration // 60, minutes=config.schedule_duration % 60)
     schedule_duration = format_timedelta(t, threshold=.99)
 
+    # Get Calibre-Web version
+    calibre_web_version = constants.STABLE_VERSION.replace("b", " Beta")
+
+    # Get Calibre version
+    calibre_version = converter.get_calibre_version()
+
     return render_title_template("admin.html", allUser=all_user, config=config, commit=commit,
                                  feature_support=feature_support, schedule_time=schedule_time,
                                  schedule_duration=schedule_duration,
+                                 calibre_web_version=calibre_web_version,
+                                 calibre_version=calibre_version,
                                  title=_("Admin page"), page="admin")
 
 
@@ -2135,7 +2143,7 @@ def find_duplicates():
         all_books = calibre_db.session.query(db.Books).all()
 
         # Dictionary to track potential duplicates
-        # Key: (normalized_title, normalized_author)
+        # Key: (normalized_title, normalized_author, language_code)
         # Value: list of book objects
         potential_duplicates = {}
 
@@ -2149,7 +2157,14 @@ def find_duplicates():
             else:
                 normalized_author = "unknown"
 
-            key = (normalized_title, normalized_author)
+            # Get language (use first language if multiple)
+            if book.languages:
+                language_code = book.languages[0].lang_code.lower()
+            else:
+                language_code = "unknown"
+
+            # Include language in the key to differentiate books in different languages
+            key = (normalized_title, normalized_author, language_code)
 
             if key not in potential_duplicates:
                 potential_duplicates[key] = []
