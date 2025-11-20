@@ -5817,7 +5817,7 @@ body.authorlist .blur-wrapper:after {
 
 .book:not(body) {
     width: 180px !important;
-    max-width: 180px !important;
+    max-width: 150px !important;
     min-width: 180px !important
 }
 
@@ -6500,14 +6500,14 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     .container-fluid .book .cover {
-        height: 180px;
+        height: 150px;
         margin-bottom: 0
     }
     .container-fluid .book .cover img {
-    width: 120px !important;
+    width: 100px !important;
     }
     #books .cover img, #books_rand .cover img, .book.isotope-item .cover img {
-        width: 120px !important
+        width: 100px !important
     }
 
     #books > .cover > a:before, #books_rand > .cover > a:before, .book.isotope-item > .cover > a:before {
@@ -6588,14 +6588,14 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
-        width: 120px !important;
-        max-width: 120px !important;
-        min-width: 120px !important
+        width: 100px !important;
+        max-width: 100px !important;
+        min-width: 100px !important
     }
 
     body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a > img, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img {
-        width: 120px !important;
-        height: 180px !important
+        width: 100px !important;
+        height: 150px !important
     }
 
     body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit {
@@ -6917,16 +6917,16 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 {
         position: absolute;
-        height: 180px;
-        width: 120px;
+        height: 150px;
+        width: 100px;
         padding: 0;
-        max-width: 120px;
+        max-width: 100px;
         margin-top: 75px
     }
 
     #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img {
-        width: 120px;
-        height: 180px
+        width: 100px;
+        height: 150px
     }
 
     body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-9.col-lg-9.book-meta {
@@ -7130,7 +7130,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
-        height: 180px;
+        height: 150px;
         padding: 0;
         margin: 7.5px auto
     }
@@ -7523,7 +7523,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 }
 
 .container-fluid .book .meta .author, .container-fluid .book .meta .title {
-    max-width: 180px;
+    max-width: 150px;
     overflow: hidden;
     text-overflow: ellipsis
 }
@@ -7998,86 +7998,10 @@ div.comments[data-readmore] {
 }
 
 /* ===================================================================
-   AUDIOBOOK BUTTONS - Icon-only styling with perfect alignment
+   AUDIOBOOK BUTTONS - Minimal styling to match existing buttons
    =================================================================== */
 
-/* Play Online Button - Quick Preview (1000 words) */
-#audiobook-play-btn,
-a[href*="audiobook/play/"] {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    margin-right: 5px;
-    background-color: #2196F3;
-    border: 1px solid #1976D2;
-    border-radius: 4px;
-    color: #fff !important;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    vertical-align: middle;
-}
-
-#audiobook-play-btn:hover,
-a[href*="audiobook/play/"]:hover {
-    background-color: #1976D2;
-    border-color: #0D47A1;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
-}
-
-/* Get Audiobook Button - Full generation via tasks */
-#audiobook-download-btn,
-.generate-audiobook-link,
-a[href="#"].btn.generate-audiobook-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 12px;
-    margin-right: 5px;
-    background-color: #4CAF50;
-    border: 1px solid #388E3C;
-    border-radius: 4px;
-    color: #fff !important;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    vertical-align: middle;
-}
-
-#audiobook-download-btn:hover,
-.generate-audiobook-link:hover,
-a[href="#"].btn.generate-audiobook-link:hover {
-    background-color: #388E3C;
-    border-color: #1B5E20;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
-}
-
-/* Icon-only styling - NO TEXT, perfect alignment */
-#audiobook-play-btn .glyphicon-play,
-#audiobook-download-btn .glyphicon-headphones,
-.generate-audiobook-link .glyphicon-headphones,
-a.btn .glyphicon-play,
-a.btn .glyphicon-headphones {
-    vertical-align: middle;
-    margin: 0 !important;  /* No margin for icon-only buttons */
-    top: 0;
-    font-size: 14px;
-}
-
-/* Ensure buttons align with Download, Send to eReader, Read */
-.btn-toolbar .btn {
-    vertical-align: middle;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
 /* Audiobook dropdown menu positioning fix */
-.audiobook-dropdown {
-    position: relative;
-}
-
 .audiobook-dropdown .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -8123,14 +8047,6 @@ a.btn .glyphicon-headphones {
 
 /* Responsive adjustments for mobile */
 @media (max-width: 767px) {
-    #audiobook-play-btn,
-    #audiobook-download-btn,
-    .generate-audiobook-link {
-        padding: 8px 12px;
-        margin: 2px;
-        width: auto;
-    }
-
     .audiobook-dropdown .dropdown-menu {
         position: fixed;
         left: 10px !important;

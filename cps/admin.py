@@ -46,6 +46,11 @@ from sqlalchemy.sql.expression import func, or_, text
 from . import constants, logger, helper, services, cli_param, converter
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
+try:
+    from . import admin_stats
+    stats_available = True
+except ImportError:
+    stats_available = False
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .embed_helper import get_calibre_binarypath
@@ -239,6 +244,27 @@ def admin():
                                  calibre_web_version=calibre_web_version,
                                  calibre_version=calibre_version,
                                  title=_("Admin page"), page="admin")
+
+
+@admi.route("/admin/statistics")
+@user_login_required
+@admin_required
+def admin_statistics():
+    """Display statistics and KPIs dashboard"""
+    if not stats_available:
+        flash(_("Statistics module not available"), category="error")
+        return redirect(url_for('admin.admin'))
+
+    try:
+        stats = admin_stats.get_all_stats()
+        return render_title_template("admin_statistics.html",
+                                     stats=stats,
+                                     title=_("Statistics & KPIs"),
+                                     page="admin_statistics")
+    except Exception as e:
+        log.error(f"Error loading statistics: {e}")
+        flash(_("Error loading statistics: %(error)s", error=str(e)), category="error")
+        return redirect(url_for('admin.admin'))
 
 
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
