@@ -170,6 +170,7 @@ class _Settings(_Base):
     config_password_character = Column(Boolean, default=True)
     config_password_special = Column(Boolean, default=True)
     config_session = Column(Integer, default=1)
+    config_session_duration = Column(Integer, default=43200)  # Default 30 days in minutes (30*24*60)
     config_ratelimiter = Column(Boolean, default=True)
     config_limiter_uri = Column(String, default="")
     config_limiter_options = Column(String, default="")

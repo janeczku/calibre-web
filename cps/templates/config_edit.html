@@ -393,6 +393,11 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="config_session_duration">{{_('Session Duration (days)')}}</label>
+                <input type="number" min="1" max="365" class="form-control" name="config_session_duration" id="config_session_duration" value="{% if config.config_session_duration != None %}{{ (config.config_session_duration / 1440)|int }}{% else %}30{% endif %}" autocomplete="off" required>
+                <p class="help-block">{{_('How long a user session remains active (1-365 days). Default: 30 days')}}</p>
+            </div>
+            <div class="form-group">
                 <input type="checkbox" id="config_password_policy" data-control="password_settings" name="config_password_policy" {% if config.config_password_policy %}checked{% endif %}>
                 <label for="config_password_policy">{{_('User Password policy')}}</label>
             </div>

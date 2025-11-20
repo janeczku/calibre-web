@@ -1878,6 +1878,17 @@ def _configuration_update_helper():
         else:
             return _configuration_result(_('Password length has to be between 1 and 40'))
         reboot_required |= _config_int(to_save, "config_session")
+        # Session duration: Convert days to minutes for storage
+        if "config_session_duration" in to_save:
+            try:
+                duration_days = int(to_save.get("config_session_duration", "30"))
+                if 1 <= duration_days <= 365:
+                    config.config_session_duration = duration_days * 1440  # Convert days to minutes
+                    reboot_required = True
+                else:
+                    return _configuration_result(_('Session duration must be between 1 and 365 days'))
+            except ValueError:
+                return _configuration_result(_('Invalid session duration value'))
         reboot_required |= _config_checkbox(to_save, "config_ratelimiter")
         reboot_required |= _config_string(to_save, "config_limiter_uri")
         reboot_required |= _config_string(to_save, "config_limiter_options")

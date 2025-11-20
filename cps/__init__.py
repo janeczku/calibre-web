@@ -24,6 +24,7 @@ __package__ = "cps"
 import sys
 import os
 import mimetypes
+from datetime import timedelta
 
 from flask import Flask
 from .MyLoginManager import MyLoginManager
@@ -89,7 +90,8 @@ app.config.update(
     REMEMBER_COOKIE_SAMESITE='Strict',
     WTF_CSRF_SSL_STRICT=False,
     SESSION_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "session",
-    REMEMBER_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "remember_token"
+    REMEMBER_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "remember_token",
+    PERMANENT_SESSION_LIFETIME=timedelta(minutes=43200)  # Default 30 days, will be updated from config
 )
 
 lm = MyLoginManager()
@@ -146,6 +148,11 @@ def create_app():
     lm.login_view = 'web.login'
     lm.anonymous_user = ub.Anonymous
     lm.session_protection = 'strong' if config.config_session == 1 else "basic"
+
+    # Update session lifetime from config (stored in minutes, convert to timedelta)
+    if hasattr(config, 'config_session_duration') and config.config_session_duration:
+        app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=config.config_session_duration)
+        log.info(f'Session duration set to {config.config_session_duration // 1440} days')
 
     db.CalibreDB.update_config(config, config.config_calibre_dir, cli_param.settings_path)
 

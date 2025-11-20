@@ -140,18 +140,18 @@
                         {% endfor %}
 
                         {% if text_formats|length > 0 %}
-                            <!-- Button 1: Play Online (Quick Preview) -->
+                            <!-- Button 1: Play Online (Quick Preview) - Icon Only -->
                             <div class="btn-group" role="group">
                                 {% if text_formats|length == 1 %}
                                     <a href="{{ url_for('web.quick_audiobook_preview', book_id=entry.id, book_format=text_formats[0]|lower) }}"
-                                       target="_blank" class="btn btn-primary" title="{{ _('Play Quick Preview') }}">
-                                        <span class="glyphicon glyphicon-play"></span> {{ _('Play Online') }}
+                                       target="_blank" class="btn btn-primary" title="{{ _('Play Online - Quick Preview') }}">
+                                        <span class="glyphicon glyphicon-play"></span>
                                     </a>
                                 {% else %}
                                     <button id="audiobook-play-btn" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            title="{{ _('Play Quick Preview') }}">
-                                        <span class="glyphicon glyphicon-play"></span> {{ _('Play Online') }}
+                                            title="{{ _('Play Online - Quick Preview') }}">
+                                        <span class="glyphicon glyphicon-play"></span>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="audiobook-play-btn">
@@ -164,19 +164,19 @@
                                 {% endif %}
                             </div>
 
-                            <!-- Button 2: Download/Generate Audiobook -->
+                            <!-- Button 2: Generate Audiobook - Icon Only -->
                             <div class="btn-group" role="group">
                                 {% if text_formats|length == 1 %}
                                     <a href="#" class="btn btn-primary generate-audiobook-link"
                                        data-format="{{ text_formats[0] }}"
-                                       title="{{ _('Generate or Download Full Audiobook') }}">
-                                        <span class="glyphicon glyphicon-headphones"></span> {{ _('Get Audiobook') }}
+                                       title="{{ _('Generate Full Audiobook') }}">
+                                        <span class="glyphicon glyphicon-headphones"></span>
                                     </a>
                                 {% else %}
                                     <button id="audiobook-download-btn" type="button" class="btn btn-primary dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                            title="{{ _('Generate or Download Full Audiobook') }}">
-                                        <span class="glyphicon glyphicon-headphones"></span> {{ _('Get Audiobook') }}
+                                            title="{{ _('Generate Full Audiobook') }}">
+                                        <span class="glyphicon glyphicon-headphones"></span>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="audiobook-download-btn">

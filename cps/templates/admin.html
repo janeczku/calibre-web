@@ -186,12 +186,16 @@
   <div class="row">
     <div class="col">
       <h2>{{_('Library Management')}}</h2>
+      <a class="btn btn-primary" id="view_statistics" href="{{url_for('admin.admin_statistics')}}">
+        <span class="glyphicon glyphicon-stats"></span>
+        {{_('View Statistics & KPIs')}}
+      </a>
       <a class="btn btn-default" id="find_duplicates" href="{{url_for('admin.find_duplicates')}}">
         <span class="glyphicon glyphicon-duplicate"></span>
         {{_('Find Duplicate Books')}}
       </a>
       <p class="text-muted" style="margin-top: 10px;">
-        {{_('Scan your library for books with the same title and author, and remove unwanted copies.')}}
+        {{_('View detailed statistics, KPIs, and analytics about your library usage.')}}
       </p>
     </div>
   </div>

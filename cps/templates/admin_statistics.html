@@ -1,0 +1,301 @@
+{% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/admin_stats.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="container-fluid admin-statistics">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>
+        <span class="glyphicon glyphicon-stats"></span>
+        {{_('Statistics & KPIs')}}
+      </h1>
+      <p class="text-muted">{{_('Generated at')}}: {{ stats.generated_at }}</p>
+    </div>
+  </div>
+
+  <!-- Library Overview KPIs -->
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>{{_('Library Overview')}}</h2>
+    </div>
+  </div>
+
+  <div class="row kpi-cards">
+    <div class="col-xs-6 col-sm-4 col-md-2">
+      <div class="kpi-card kpi-primary">
+        <div class="kpi-icon">
+          <span class="glyphicon glyphicon-book"></span>
+        </div>
+        <div class="kpi-value">{{ stats.library.total_books or 0 }}</div>
+        <div class="kpi-label">{{_('Total Books')}}</div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4 col-md-2">
+      <div class="kpi-card kpi-success">
+        <div class="kpi-icon">
+          <span class="glyphicon glyphicon-user"></span>
+        </div>
+        <div class="kpi-value">{{ stats.library.total_authors or 0 }}</div>
+        <div class="kpi-label">{{_('Authors')}}</div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4 col-md-2">
+      <div class="kpi-card kpi-info">
+        <div class="kpi-icon">
+          <span class="glyphicon glyphicon-list-alt"></span>
+        </div>
+        <div class="kpi-value">{{ stats.library.total_series or 0 }}</div>
+        <div class="kpi-label">{{_('Series')}}</div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4 col-md-2">
+      <div class="kpi-card kpi-warning">
+        <div class="kpi-icon">
+          <span class="glyphicon glyphicon-tags"></span>
+        </div>
+        <div class="kpi-value">{{ stats.library.total_tags or 0 }}</div>
+        <div class="kpi-label">{{_('Tags')}}</div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4 col-md-2">
+      <div class="kpi-card kpi-danger">
+        <div class="kpi-icon">
+          <span class="glyphicon glyphicon-home"></span>
+        </div>
+        <div class="kpi-value">{{ stats.library.total_publishers or 0 }}</div>
+        <div class="kpi-label">{{_('Publishers')}}</div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-4 col-md-2">
+      <div class="kpi-card kpi-purple">
+        <div class="kpi-icon">
+          <span class="glyphicon glyphicon-hdd"></span>
+        </div>
+        <div class="kpi-value">{{ stats.library.total_size_gb or 0 }} GB</div>
+        <div class="kpi-label">{{_('Library Size')}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download & User Statistics -->
+  <div class="row">
+    <div class="col-xs-12 col-md-6">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-download-alt"></span>
+          {{_('Download Statistics')}}
+        </h3>
+        <div class="stats-content">
+          <div class="stat-row">
+            <span class="stat-label">{{_('Total Downloads')}}:</span>
+            <span class="stat-value">{{ stats.downloads.total_downloads or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Downloads This Week')}}:</span>
+            <span class="stat-value">{{ stats.downloads.downloads_week or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Downloads This Month')}}:</span>
+            <span class="stat-value">{{ stats.downloads.downloads_month or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Downloads This Year')}}:</span>
+            <span class="stat-value">{{ stats.downloads.downloads_year or 0 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-user"></span>
+          {{_('User Statistics')}}
+        </h3>
+        <div class="stats-content">
+          <div class="stat-row">
+            <span class="stat-label">{{_('Total Users')}}:</span>
+            <span class="stat-value">{{ stats.users.total_users or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Active This Week')}}:</span>
+            <span class="stat-value">{{ stats.users.active_users_week or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Active This Month')}}:</span>
+            <span class="stat-value">{{ stats.users.active_users_month or 0 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-6">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-eye-open"></span>
+          {{_('Reading Statistics')}}
+        </h3>
+        <div class="stats-content">
+          <div class="stat-row">
+            <span class="stat-label">{{_('Books Read')}}:</span>
+            <span class="stat-value">{{ stats.reading.total_read_books or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Currently Reading')}}:</span>
+            <span class="stat-value">{{ stats.reading.currently_reading or 0 }}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">{{_('Books in Shelves')}}:</span>
+            <span class="stat-value">{{ stats.reading.books_in_shelves or 0 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-file"></span>
+          {{_('Top File Formats')}}
+        </h3>
+        <div class="stats-content">
+          {% if stats.library.top_formats %}
+            {% for format in stats.library.top_formats[:5] %}
+              <div class="stat-row">
+                <span class="stat-label">{{ format.format }}:</span>
+                <span class="stat-value">{{ format.count }}</span>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted">{{_('No data available')}}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Most Downloaded Books -->
+  {% if stats.downloads.most_downloaded %}
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-star"></span>
+          {{_('Most Downloaded Books')}}
+        </h3>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{_('Title')}}</th>
+                <th>{{_('Author')}}</th>
+                <th>{{_('Downloads')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in stats.downloads.most_downloaded[:10] %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ url_for('web.show_book', book_id=book.book_id) }}">{{ book.title }}</a></td>
+                <td>{{ book.author }}</td>
+                <td><span class="badge">{{ book.downloads }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Most Active Users -->
+  {% if stats.downloads.most_active_users %}
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-fire"></span>
+          {{_('Most Active Users')}}
+        </h3>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{_('Username')}}</th>
+                <th>{{_('Downloads')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in stats.downloads.most_active_users[:10] %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ user.username }}</td>
+                <td><span class="badge">{{ user.downloads }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Most Read Books -->
+  {% if stats.reading.most_read %}
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-heart"></span>
+          {{_('Most Read Books')}}
+        </h3>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{_('Title')}}</th>
+                <th>{{_('Author')}}</th>
+                <th>{{_('Times Read')}}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for book in stats.reading.most_read[:10] %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td><a href="{{ url_for('web.show_book', book_id=book.book_id) }}">{{ book.title }}</a></td>
+                <td>{{ book.author }}</td>
+                <td><span class="badge">{{ book.reads }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Back Button -->
+  <div class="row">
+    <div class="col-xs-12">
+      <a href="{{ url_for('admin.admin') }}" class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        {{_('Back to Admin')}}
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

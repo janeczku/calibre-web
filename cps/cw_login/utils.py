@@ -186,6 +186,7 @@ def login_user(user, remember=False, duration=None, force=False, fresh=True):
     session["_fresh"] = fresh
     session["_id"] = current_app.login_manager._session_identifier_generator()
     session["_random"] = os.urandom(10).hex()
+    session.permanent = True  # Make session permanent to use PERMANENT_SESSION_LIFETIME
 
     if remember:
         session["_remember"] = "set"
