@@ -126,3 +126,50 @@ input.datepicker:focus + input {color: #555}
 .book .rating .glyphicon {
     margin-right: 1px;
 }
+
+/* ========================================
+   Estilos para botón de audiobook
+   ======================================== */
+
+/* Centrar icono de audiobook verticalmente */
+#audiobook-btn {
+    vertical-align: middle;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+}
+
+#audiobook-btn .glyphicon-headphones {
+    vertical-align: middle;
+    margin-right: 0;
+    top: 0;
+}
+
+#audiobook-btn .caret {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Prevenir que el dropdown se salga de la pantalla */
+.btn-group > #audiobook-btn + .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 250px;
+}
+
+/* Responsive: En móviles centrar el dropdown */
+@media (max-width: 767px) {
+    .btn-group > #audiobook-btn + .dropdown-menu {
+        right: auto;
+        left: 0;
+    }
+}
+
+/* Espaciado entre iconos y texto en el dropdown */
+.dropdown-menu .glyphicon {
+    margin-right: 8px;
+}
+
+/* Mejorar separadores en el menú */
+.dropdown-menu .divider {
+    margin: 5px 0;
+}

@@ -25,6 +25,8 @@
        <link href="{{ url_for('static', filename='css/modern.css') }}" rel="stylesheet" media="screen">
     {% elif g.current_theme == 3 %}
        <link href="{{ url_for('static', filename='css/professional.css') }}" rel="stylesheet" media="screen">
+    {% elif g.current_theme == 4 %}
+       <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
     {% endif %}
   </head>
   <body class="{{ page }} {{ bodyClass }}{% if g.current_theme == 1 %} blur{% endif %}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
