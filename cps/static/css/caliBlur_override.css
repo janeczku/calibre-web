@@ -128,43 +128,60 @@ input.datepicker:focus + input {color: #555}
 }
 
 /* ========================================
-   Estilos para botón de audiobook
+   Estilos para botones de audiobook
    ======================================== */
 
-/* Centrar icono de audiobook verticalmente */
-#audiobook-btn {
+/* Botón 1: Play Online */
+#audiobook-play-btn {
     vertical-align: middle;
     padding: 6px 12px;
     line-height: 1.42857143;
 }
 
-#audiobook-btn .glyphicon-headphones {
+#audiobook-play-btn .glyphicon-play {
     vertical-align: middle;
-    margin-right: 0;
+    margin-right: 5px;
     top: 0;
 }
 
-#audiobook-btn .caret {
+/* Botón 2: Get Audiobook (Download/Generate) */
+#audiobook-download-btn {
+    vertical-align: middle;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+}
+
+#audiobook-download-btn .glyphicon-headphones {
+    vertical-align: middle;
+    margin-right: 5px;
+    top: 0;
+}
+
+/* Carets en ambos botones */
+#audiobook-play-btn .caret,
+#audiobook-download-btn .caret {
     vertical-align: middle;
     margin-left: 5px;
 }
 
-/* Prevenir que el dropdown se salga de la pantalla */
-.btn-group > #audiobook-btn + .dropdown-menu {
+/* Prevenir que los dropdowns se salgan de la pantalla */
+.btn-group > #audiobook-play-btn + .dropdown-menu,
+.btn-group > #audiobook-download-btn + .dropdown-menu {
     right: 0;
     left: auto;
     min-width: 250px;
 }
 
-/* Responsive: En móviles centrar el dropdown */
+/* Responsive: En móviles centrar los dropdowns */
 @media (max-width: 767px) {
-    .btn-group > #audiobook-btn + .dropdown-menu {
+    .btn-group > #audiobook-play-btn + .dropdown-menu,
+    .btn-group > #audiobook-download-btn + .dropdown-menu {
         right: auto;
         left: 0;
     }
 }
 
-/* Espaciado entre iconos y texto en el dropdown */
+/* Espaciado entre iconos y texto en los dropdowns */
 .dropdown-menu .glyphicon {
     margin-right: 8px;
 }
@@ -172,4 +189,12 @@ input.datepicker:focus + input {color: #555}
 /* Mejorar separadores en el menú */
 .dropdown-menu .divider {
     margin: 5px 0;
+}
+
+/* Iconos en botones simples (sin dropdown) */
+.btn .glyphicon-play,
+.btn .glyphicon-headphones {
+    margin-right: 5px;
+    vertical-align: middle;
+    top: 0;
 }

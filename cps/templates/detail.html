@@ -130,7 +130,7 @@
                         </div>
                     {% endif %}
 
-                    <!-- Generate Audiobook Button -->
+                    <!-- Audiobook Buttons: Play Online & Download/Generate -->
                     {% if entry.data|length %}
                         {% set text_formats = [] %}
                         {% for format in entry.data %}
@@ -140,24 +140,53 @@
                         {% endfor %}
 
                         {% if text_formats|length > 0 %}
+                            <!-- Button 1: Play Online (Quick Preview) -->
                             <div class="btn-group" role="group">
-                                <button id="audiobook-btn" type="button" class="btn btn-primary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                        title="{{ _('Generate Audiobook') }}">
-                                    <span class="glyphicon glyphicon-headphones"></span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="audiobook-btn">
-                                    {% for format in text_formats %}
-                                        <li><a href="#" class="generate-audiobook-link" data-format="{{ format }}">
-                                            <span class="glyphicon glyphicon-cog"></span> {{ _('Full Audiobook') }} ({{ format }})
-                                        </a></li>
-                                        <li><a href="{{ url_for('web.quick_audiobook_preview', book_id=entry.id, book_format=format|lower) }}" target="_blank">
-                                            <span class="glyphicon glyphicon-play"></span> {{ _('Quick Preview') }} ({{ format }})
-                                        </a></li>
-                                        {% if not loop.last %}<li role="separator" class="divider"></li>{% endif %}
-                                    {% endfor %}
-                                </ul>
+                                {% if text_formats|length == 1 %}
+                                    <a href="{{ url_for('web.quick_audiobook_preview', book_id=entry.id, book_format=text_formats[0]|lower) }}"
+                                       target="_blank" class="btn btn-primary" title="{{ _('Play Quick Preview') }}">
+                                        <span class="glyphicon glyphicon-play"></span> {{ _('Play Online') }}
+                                    </a>
+                                {% else %}
+                                    <button id="audiobook-play-btn" type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            title="{{ _('Play Quick Preview') }}">
+                                        <span class="glyphicon glyphicon-play"></span> {{ _('Play Online') }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="audiobook-play-btn">
+                                        {% for format in text_formats %}
+                                            <li><a href="{{ url_for('web.quick_audiobook_preview', book_id=entry.id, book_format=format|lower) }}" target="_blank">
+                                                <span class="glyphicon glyphicon-play"></span> {{ _('Quick Preview') }} ({{ format }})
+                                            </a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+
+                            <!-- Button 2: Download/Generate Audiobook -->
+                            <div class="btn-group" role="group">
+                                {% if text_formats|length == 1 %}
+                                    <a href="#" class="btn btn-primary generate-audiobook-link"
+                                       data-format="{{ text_formats[0] }}"
+                                       title="{{ _('Generate or Download Full Audiobook') }}">
+                                        <span class="glyphicon glyphicon-headphones"></span> {{ _('Get Audiobook') }}
+                                    </a>
+                                {% else %}
+                                    <button id="audiobook-download-btn" type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                            title="{{ _('Generate or Download Full Audiobook') }}">
+                                        <span class="glyphicon glyphicon-headphones"></span> {{ _('Get Audiobook') }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="audiobook-download-btn">
+                                        {% for format in text_formats %}
+                                            <li><a href="#" class="generate-audiobook-link" data-format="{{ format }}">
+                                                <span class="glyphicon glyphicon-cog"></span> {{ _('Generate from') }} {{ format }}
+                                            </a></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </div>
                         {% endif %}
                     {% endif %}
