@@ -1454,7 +1454,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     box-shadow: 0 0 2px rgba(0, 0, 0, .35);
     position: relative;
     z-index: -9;
-    width: 150px !important;
+    width: 180px !important;
 }
 
 #books > .cover > a, #books_rand > .cover > a, .book.isotope-item > .cover > a, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a {
@@ -5822,7 +5822,7 @@ body.authorlist .blur-wrapper:after {
 }
 
 #books .cover img, #books_rand .cover img, .book.isotope-item .cover img {
-    width: 150px !important
+    width: 180px !important
 }
 
 .container-fluid .book .meta .author, .container-fluid .book .meta .title {
@@ -6504,10 +6504,10 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-bottom: 0
     }
     .container-fluid .book .cover img {
-    width: 100px !important;
+    width: 120px !important;
     }
     #books .cover img, #books_rand .cover img, .book.isotope-item .cover img {
-        width: 100px !important
+        width: 120px !important
     }
 
     #books > .cover > a:before, #books_rand > .cover > a:before, .book.isotope-item > .cover > a:before {
@@ -6588,14 +6588,14 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
-        width: 100px !important;
-        max-width: 100px !important;
-        min-width: 100px !important
+        width: 120px !important;
+        max-width: 120px !important;
+        min-width: 120px !important
     }
 
     body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a > img, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img {
-        width: 100px !important;
-        height: 150px !important
+        width: 120px !important;
+        height: 180px !important
     }
 
     body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit {
@@ -7953,3 +7953,46 @@ div.comments[data-readmore] {
 }
 
 .dropdown-menu > .offscreen
+
+
+/* ========================================
+   Estilos para botón de audiobook
+   ======================================== */
+
+#audiobook-btn {
+    vertical-align: middle;
+    padding: 6px 12px;
+    line-height: 1.42857143;
+}
+
+#audiobook-btn .glyphicon-headphones {
+    vertical-align: middle;
+    margin-right: 0;
+    top: 0;
+}
+
+#audiobook-btn .caret {
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.btn-group > #audiobook-btn + .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 250px;
+}
+
+@media (max-width: 767px) {
+    .btn-group > #audiobook-btn + .dropdown-menu {
+        right: auto;
+        left: 0;
+    }
+}
+
+.dropdown-menu .glyphicon {
+    margin-right: 8px;
+}
+
+.dropdown-menu .divider {
+    margin: 5px 0;
+}
