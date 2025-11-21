@@ -186,11 +186,12 @@
   <div class="row">
     <div class="col">
       <h2>{{_('Library Management')}}</h2>
-      <a class="btn btn-primary" id="view_statistics" href="{{url_for('admin.admin_statistics')}}">
+      <a class="btn btn-primary" id="view_statistics" href="{{url_for('admin.admin_statistics')}}" style="background-color: #f39c12; border-color: #e67e22;">
         <span class="glyphicon glyphicon-stats"></span>
-        {{_('View Statistics & KPIs')}}
+        Ver Estadísticas y KPIs
       </a>
-      <a class="btn btn-default" id="find_duplicates" href="{{url_for('admin.find_duplicates')}}">
+      <p style="color: #888; margin-top: 10px;">Ver estadísticas detalladas, KPIs y análisis sobre el uso de tu biblioteca.</p>
+      <a class="btn btn-primary" id="find_duplicates" href="{{url_for('admin.find_duplicates')}}" style="background-color: #f39c12; border-color: #e67e22;">
         <span class="glyphicon glyphicon-duplicate"></span>
         {{_('Find Duplicate Books')}}
       </a>

@@ -155,21 +155,19 @@ def get_user_stats():
         stats['active_users_week'] = active_week
         stats['active_users_month'] = active_month
 
-        # Get list of active users this week with their last activity
+        # Get list of active users this week
+        # Note: We can't get exact last activity time because User_Sessions.expiry
+        # is the session expiration time (future), not the activity timestamp
         active_users_list = ub.session.query(
-            ub.User.name,
-            func.max(ub.User_Sessions.expiry).label('last_activity')
+            ub.User.name
         ).join(
             ub.User_Sessions, ub.User.id == ub.User_Sessions.user_id
         ).filter(
-            ub.User_Sessions.expiry >= week_ago_timestamp
-        ).group_by(ub.User.name).order_by(text('last_activity DESC')).all()
+            ub.User_Sessions.expiry >= now_timestamp  # Sessions that haven't expired yet
+        ).group_by(ub.User.name).order_by(ub.User.name).all()
 
         stats['active_users_list'] = [
-            {
-                'name': user[0],
-                'last_activity': datetime.fromtimestamp(user[1]).strftime('%Y-%m-%d %H:%M:%S') if user[1] else 'Unknown'
-            }
+            {'name': user[0]}
             for user in active_users_list
         ]
 

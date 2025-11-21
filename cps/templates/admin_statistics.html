@@ -136,32 +136,23 @@
     </div>
   </div>
 
-  <!-- Active Users This Week -->
+  <!-- Active Users (with valid sessions) -->
   {% if stats.users.active_users_list %}
   <div class="row">
     <div class="col-xs-12">
       <div class="stats-panel">
         <h3>
           <span class="glyphicon glyphicon-user"></span>
-          {{_('Active Users This Week')}}
+          {{_('Users with Active Sessions')}} ({{ stats.users.active_users_list|length }})
         </h3>
         <div class="stats-content">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>{{_('Username')}}</th>
-                <th>{{_('Last Activity')}}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for user in stats.users.active_users_list %}
-              <tr>
-                <td>{{ user.name }}</td>
-                <td>{{ user.last_activity }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          <div style="padding: 15px;">
+            {% for user in stats.users.active_users_list %}
+              <span class="label label-primary" style="font-size: 14px; margin: 5px; padding: 8px 12px; display: inline-block;">
+                <span class="glyphicon glyphicon-user"></span> {{ user.name }}
+              </span>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
