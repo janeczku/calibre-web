@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-09-12 08:48+0200\n"
+"POT-Creation-Date: 2025-11-22 15:08+0100\n"
 "PO-Revision-Date: 2024-11-21 22:04+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
@@ -310,7 +310,7 @@ msgstr "Gmail 账户验证成功。"
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
 #: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1535
+#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1540
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "数据库错误：%(error)s。"
@@ -349,7 +349,7 @@ msgstr "指定任务的持续时间无效"
 msgid "Scheduled tasks settings updated"
 msgstr "已更新计划任务设置"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1325
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1330
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
@@ -490,7 +490,7 @@ msgstr "数据库设置已更新"
 msgid "Database Configuration"
 msgstr "数据库配置"
 
-#: cps/admin.py:1948 cps/web.py:1299
+#: cps/admin.py:1948 cps/web.py:1304
 msgid "Oops! Please complete all fields."
 msgstr "请填写所有字段。"
 
@@ -524,7 +524,7 @@ msgstr "无法删除访客用户"
 msgid "No admin user remaining, can't delete user"
 msgstr "管理员账户不存在，无法删除用户"
 
-#: cps/admin.py:2071 cps/web.py:1484
+#: cps/admin.py:2071 cps/web.py:1489
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "电子邮件地址不能为空，并且必须是有效的电子邮件"
 
@@ -552,8 +552,8 @@ msgstr "缺少执行权限"
 #: cps/db.py:1046 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
-#: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
-#: cps/web.py:1137
+#: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
+#: cps/web.py:1142
 msgid "None"
 msgstr "无"
 
@@ -585,8 +585,8 @@ msgid "Value is missing on request"
 msgstr ""
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
-#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1576 cps/web.py:1622
-#: cps/web.py:1672
+#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
+#: cps/web.py:1677
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
 
@@ -973,7 +973,7 @@ msgstr "{} 星"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:68
 #: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1361
+#: cps/templates/login.html:21 cps/web.py:1366
 msgid "Login"
 msgstr "登录"
 
@@ -1050,7 +1050,7 @@ msgid "Show Random Books"
 msgstr "显示随机书籍"
 
 #: cps/render_template.py:71 cps/templates/book_table.html:93
-#: cps/templates/index.xml:97 cps/web.py:1141
+#: cps/templates/index.xml:97 cps/web.py:1146
 msgid "Categories"
 msgstr "分类"
 
@@ -1060,7 +1060,7 @@ msgstr "显示分类栏目"
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:86
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
-#: cps/templates/search_form.html:70 cps/web.py:1031 cps/web.py:1043
+#: cps/templates/search_form.html:70 cps/web.py:1036 cps/web.py:1048
 msgid "Series"
 msgstr "丛书"
 
@@ -1078,7 +1078,7 @@ msgid "Show Author Section"
 msgstr "显示作者栏目"
 
 #: cps/render_template.py:81 cps/templates/book_table.html:98
-#: cps/templates/index.xml:88 cps/web.py:999
+#: cps/templates/index.xml:88 cps/web.py:1004
 msgid "Publishers"
 msgstr "出版社"
 
@@ -1088,7 +1088,7 @@ msgstr "显示出版社栏目"
 
 #: cps/render_template.py:84 cps/templates/book_table.html:96
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
-#: cps/web.py:1113
+#: cps/web.py:1118
 msgid "Languages"
 msgstr "语言"
 
@@ -1120,7 +1120,7 @@ msgstr "归档书籍"
 msgid "Show Archived Books"
 msgstr "显示归档书籍"
 
-#: cps/render_template.py:100 cps/web.py:829
+#: cps/render_template.py:100 cps/web.py:834
 msgid "Books List"
 msgstr "书籍列表"
 
@@ -1386,117 +1386,117 @@ msgstr "分类：%(name)s"
 msgid "Language: %(name)s"
 msgstr "语言：%(name)s"
 
-#: cps/templates/admin.html:16 cps/web.py:971
+#: cps/templates/admin.html:16 cps/web.py:976
 msgid "Downloads"
 msgstr "下载次数"
 
-#: cps/web.py:1073
+#: cps/web.py:1078
 msgid "Ratings list"
 msgstr "评分列表"
 
-#: cps/web.py:1100
+#: cps/web.py:1105
 msgid "File formats list"
 msgstr "文件格式列表"
 
-#: cps/web.py:1259
+#: cps/web.py:1264
 msgid "Please configure the SMTP mail settings first..."
 msgstr "请先配置 SMTP 邮箱设置..."
 
-#: cps/web.py:1265
+#: cps/web.py:1270
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "书籍已经成功加入 %(eReadermail)s 的发送队列"
 
-#: cps/web.py:1268
+#: cps/web.py:1273
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "糟糕！发送这本书籍的时候出现错误：%(res)s"
 
-#: cps/web.py:1270
+#: cps/web.py:1275
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "请先配置您的 Kindle 邮箱。"
 
-#: cps/web.py:1286
+#: cps/web.py:1291
 msgid "Please wait one minute to register next user"
 msgstr "请等待一分钟注册下一个用户"
 
 #: cps/templates/layout.html:69 cps/templates/layout.html:104
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1287
-#: cps/web.py:1291 cps/web.py:1296 cps/web.py:1300 cps/web.py:1306
-#: cps/web.py:1326 cps/web.py:1330 cps/web.py:1343 cps/web.py:1346
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1292
+#: cps/web.py:1296 cps/web.py:1301 cps/web.py:1305 cps/web.py:1311
+#: cps/web.py:1331 cps/web.py:1335 cps/web.py:1348 cps/web.py:1351
 msgid "Register"
 msgstr "注册"
 
-#: cps/web.py:1290 cps/web.py:1393
+#: cps/web.py:1295 cps/web.py:1398
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr "限制器后台连接错误，请联系管理员"
 
-#: cps/web.py:1295 cps/web.py:1342
+#: cps/web.py:1300 cps/web.py:1347
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "邮件服务未配置，请联系网站管理员。"
 
-#: cps/web.py:1328
+#: cps/web.py:1333
 msgid "Oops! Your Email is not allowed."
 msgstr "您的电子邮件不允许注册。"
 
-#: cps/web.py:1331
+#: cps/web.py:1336
 msgid "Success! Confirmation Email has been sent."
 msgstr "确认邮件已经发送到您的邮箱。"
 
-#: cps/web.py:1376 cps/web.py:1399
+#: cps/web.py:1381 cps/web.py:1404
 msgid "Cannot activate LDAP authentication"
 msgstr "无法激活 LDAP 认证"
 
-#: cps/web.py:1389
+#: cps/web.py:1394
 msgid "Please wait one minute before next login"
 msgstr "下次登录前请等待一分钟"
 
-#: cps/web.py:1408
+#: cps/web.py:1413
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1415
+#: cps/web.py:1420
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
-#: cps/web.py:1420
+#: cps/web.py:1425
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "无法登录：%(message)s"
 
-#: cps/web.py:1424 cps/web.py:1449
+#: cps/web.py:1429 cps/web.py:1454
 msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
-#: cps/web.py:1431
+#: cps/web.py:1436
 msgid "New Password was sent to your email address"
 msgstr "新密码已发送到您的邮箱"
 
-#: cps/web.py:1435
+#: cps/web.py:1440
 msgid "An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
-#: cps/web.py:1437
+#: cps/web.py:1442
 msgid "Please enter valid username to reset password"
 msgstr "请输入有效的用户名进行密码重置"
 
-#: cps/web.py:1445
+#: cps/web.py:1450
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1510 cps/web.py:1560
+#: cps/web.py:1515 cps/web.py:1565
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
-#: cps/web.py:1526
+#: cps/web.py:1531
 msgid "Success! Profile Updated"
 msgstr "资料已更新"
 
-#: cps/web.py:1530
+#: cps/web.py:1535
 msgid "Oops! An account already exists for this Email."
 msgstr "使用此邮箱的账号已经存在。"
 
