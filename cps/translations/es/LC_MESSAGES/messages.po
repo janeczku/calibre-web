@@ -167,7 +167,7 @@ msgstr "¿Seguro que quieres borrar este usuario?"
 
 #: cps/admin.py:621
 msgid "Do you really want to delete this book?"
-msgstr ""
+msgstr "¿Seguro que quieres borrar este libro"
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -187,11 +187,11 @@ msgstr "¿Estas seguro de que deseas cambiar el rol seleccionado de el usuario s
 
 #: cps/admin.py:631
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr ""
+msgstr "¿Estás seguro de que deseas cambiar el estado de archivado del(los) libro(s) seleccionados?"
 
 #: cps/admin.py:633
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr ""
+msgstr "¿Estás seguro de que deseas cambiar el estado de lectura del(los) libro(s) libros seleccionados?"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
@@ -581,11 +581,11 @@ msgstr "Ocurrió un error al convertir este libro: %(res)s"
 
 #: cps/editbooks.py:297
 msgid "Changes successfully applied"
-msgstr ""
+msgstr "Cambios aplicados con éxito"
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
-msgstr ""
+msgstr "Falta el valor en la solicitud"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
 #: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1576 cps/web.py:1622
@@ -657,7 +657,7 @@ msgstr "Te faltan permisos para eliminar libros"
 #: cps/editbooks.py:1139
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr ""
+msgstr "El libro con id \"{}\" no pudo ser eliminado: no encontrado"
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -777,7 +777,7 @@ msgstr "Eliminando el libro %(id)s solo de la base de datos, la ruta del libro e
 #: cps/helper.py:404
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr ""
+msgstr "Fallo al mover la ruta del libro %(book_id)s a: '%(src)s' con el error: %(error)s"
 
 #: cps/helper.py:443
 #, python-format
@@ -1957,7 +1957,7 @@ msgstr "Cerrar sesión"
 
 #: cps/templates/basic_layout.html:35
 msgid "Normal Theme"
-msgstr ""
+msgstr "Tema normal"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -2131,19 +2131,19 @@ msgstr "Este campo es obligatorio"
 
 #: cps/templates/book_table.html:25
 msgid "Archive selected books"
-msgstr ""
+msgstr "Archivar libros seleccionados"
 
 #: cps/templates/book_table.html:28
 msgid "Unarchive selected books"
-msgstr ""
+msgstr "Desarchivar libros seleccionados"
 
 #: cps/templates/book_table.html:34
 msgid "Mark selected books as read"
-msgstr ""
+msgstr "Marcar libros seleccionados como leídos"
 
 #: cps/templates/book_table.html:37
 msgid "Mark selected books as unread"
-msgstr ""
+msgstr "Marcar libros seleccionados como no leídos"
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
@@ -2151,11 +2151,11 @@ msgstr "Fusionar libros seleccionados"
 
 #: cps/templates/book_table.html:60 cps/templates/user_table.html:124
 msgid "Clear selections"
-msgstr ""
+msgstr "Limpiar selección"
 
 #: cps/templates/book_table.html:63
 msgid "Edit selected books"
-msgstr ""
+msgstr "Editar libros seleccionados"
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2247,7 +2247,7 @@ msgstr "Introducir "
 
 #: cps/templates/book_table.html:128
 msgid "Delete selected books"
-msgstr ""
+msgstr "Eliminar libros seleccionados"
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2270,11 +2270,11 @@ msgstr "Fusionar"
 
 #: cps/templates/book_table.html:176
 msgid "The following books will be deleted:"
-msgstr ""
+msgstr "Los siguientes libros serán eliminados:"
 
 #: cps/templates/book_table.html:196
 msgid "The following books will be archived:"
-msgstr ""
+msgstr "Los siguientes libros serán archivados:"
 
 #: cps/templates/book_table.html:200 cps/templates/detail.html:275
 msgid "Archive"
@@ -2282,27 +2282,27 @@ msgstr "Archivar"
 
 #: cps/templates/book_table.html:216
 msgid "The following books will be unarchived:"
-msgstr ""
+msgstr "Los siguientes libros serán desarchivados:"
 
 #: cps/templates/book_table.html:220
 msgid "Unarchive"
-msgstr ""
+msgstr "Desarchivar"
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
-msgstr ""
+msgstr "Los siguientes libros se marcarán como leídos:"
 
 #: cps/templates/book_table.html:240
 msgid "Mark as read"
-msgstr ""
+msgstr "Marcar como leído"
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
-msgstr ""
+msgstr "Los siguientes libros se marcarán como no leídos:"
 
 #: cps/templates/book_table.html:260
 msgid "Mark as unread"
-msgstr ""
+msgstr "Marcar como no leído"
 
 #: cps/templates/book_table.html:272 cps/templates/detail.html:348
 msgid "Edit Metadata"
@@ -2310,7 +2310,7 @@ msgstr "Editar metadatos"
 
 #: cps/templates/book_table.html:275
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
-msgstr ""
+msgstr "Edita los campos que quieras cambiar. Los campos en blanco serán ignorados:"
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
@@ -2454,7 +2454,7 @@ msgstr "Clave de API de Goodreads"
 
 #: cps/templates/config_edit.html:167
 msgid "Google Books API Key"
-msgstr ""
+msgstr "Clave de la API de Google Books"
 
 #: cps/templates/config_edit.html:172
 msgid "Allow Reverse Proxy Authentication"
@@ -2908,7 +2908,7 @@ msgstr "Crear una incidencia"
 
 #: cps/templates/http_error.html:52
 msgid "Return to Database config"
-msgstr ""
+msgstr "Volver a la configuración de la base de datos"
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3019,7 +3019,7 @@ msgstr "Alternar navegación"
 
 #: cps/templates/layout.html:58
 msgid "Simple Theme"
-msgstr ""
+msgstr "Tema simple"
 
 #: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"
