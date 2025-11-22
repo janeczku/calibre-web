@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2021-06-12 08:52)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-22 15:17+0100\n"
+"POT-Creation-Date: 2025-11-22 15:29+0100\n"
 "PO-Revision-Date: 2021-06-12 15:35+0200\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language: pl\n"
@@ -1644,7 +1644,7 @@ msgstr "Edycja"
 # ???
 #: cps/templates/admin.html:25 cps/templates/book_edit.html:17
 #: cps/templates/book_table.html:131 cps/templates/book_table.html:180
-#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:116
+#: cps/templates/modal_dialogs.html:62 cps/templates/modal_dialogs.html:115
 #: cps/templates/user_edit.html:67 cps/templates/user_table.html:149
 msgid "Delete"
 msgstr "Usuń"
@@ -1844,8 +1844,8 @@ msgstr "OK"
 #: cps/templates/book_table.html:261 cps/templates/book_table.html:316
 #: cps/templates/config_db.html:66 cps/templates/config_edit.html:431
 #: cps/templates/config_view_edit.html:175 cps/templates/detail.html:350
-#: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
-#: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
+#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:98
+#: cps/templates/modal_dialogs.html:116 cps/templates/modal_dialogs.html:134
 #: cps/templates/schedule_edit.html:45 cps/templates/shelf_edit.html:27
 #: cps/templates/tasks.html:47 cps/templates/user_edit.html:144
 msgid "Cancel"
@@ -3133,47 +3133,42 @@ msgid "This book format will be permanently erased from database"
 msgstr "Ten format książki zostanie trwale usunięty z bazy danych"
 
 #: cps/templates/modal_dialogs.html:51
-msgid "This book will be permanently erased from database"
-msgstr "Książka zostanie usunięta z bazy danych Calibre"
+msgid "This book will be permanently erased from database and hard disk"
+msgstr ""
 
-# ???
-#: cps/templates/modal_dialogs.html:52
-msgid "and hard disk"
-msgstr "i z dysku twardego"
-
-#: cps/templates/modal_dialogs.html:56
+#: cps/templates/modal_dialogs.html:55
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
 msgstr "Ważne dla Kobo: usunięte książki pozostaną na każdym połączonym urządzeniu Kobo."
 
-#: cps/templates/modal_dialogs.html:57
+#: cps/templates/modal_dialogs.html:56
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
 msgstr "Książki muszą najpierw zostać zarchiwizowane a urządzenie zsynchronizowane, zanim książka będzie mogła zostać bezpiecznie usunięta."
 
-#: cps/templates/modal_dialogs.html:76
+#: cps/templates/modal_dialogs.html:75
 msgid "Choose File Location"
 msgstr "Wybierz lokalizację pliku"
 
-#: cps/templates/modal_dialogs.html:82
+#: cps/templates/modal_dialogs.html:81
 msgid "type"
 msgstr "typ"
 
-#: cps/templates/modal_dialogs.html:83
+#: cps/templates/modal_dialogs.html:82
 msgid "name"
 msgstr "nazwa"
 
-#: cps/templates/modal_dialogs.html:84
+#: cps/templates/modal_dialogs.html:83
 msgid "size"
 msgstr "rozmiar"
 
-#: cps/templates/modal_dialogs.html:90
+#: cps/templates/modal_dialogs.html:89
 msgid "Parent Directory"
 msgstr "Główny katalog"
 
-#: cps/templates/modal_dialogs.html:98
+#: cps/templates/modal_dialogs.html:97
 msgid "Select"
 msgstr "Wybierz"
 
-#: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:46
+#: cps/templates/modal_dialogs.html:133 cps/templates/tasks.html:46
 msgid "Ok"
 msgstr "OK"
 

@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-11-22 15:17+0100\n"
-"PO-Revision-Date: 2024-11-16 20:41+0100\n"
-"Last-Translator: Ozzie Isaacs\n"
+"POT-Creation-Date: 2025-11-22 15:29+0100\n"
+"PO-Revision-Date: 2025-10-22 19:56+0200\n"
+"Last-Translator: Sebastian Holzer\n"
 "Language: de\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -163,9 +163,8 @@ msgid "Do you really want to delete this user?"
 msgstr "Möchten Sie diesen Benutzer wirklich löschen?"
 
 #: cps/admin.py:621
-#, fuzzy
 msgid "Do you really want to delete this book?"
-msgstr "Möchten Sie diese Domain wirklich löschen?"
+msgstr "Möchten Sie dieses Buch wirklich löschen?"
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -177,29 +176,27 @@ msgstr "Möchten Sie die Anzeigesprache der ausgewählten Benutzer wirklich änd
 
 #: cps/admin.py:627
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
-msgstr "Möchten Sie die Büchersprachen für die ausgewählten Benutzer wirklich ändern?"
+msgstr "Möchten Sie die sichtbare Büchersprachen für die ausgewählten Benutzer wirklich ändern?"
 
 #: cps/admin.py:629
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr "Möchten Sie die ausgewählte Rolle für die ausgewählten Benutzer wirklich verändern?"
 
 #: cps/admin.py:631
-#, fuzzy
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr "Möchten Sie die ausgewählten Sichtbarkeitsbeschränkungen der ausgewählten Benutzer wirklich ändern?"
+msgstr "Möchten Sie den Archivierungsstatus für die ausgewählten Bücher wirklich ändern?"
 
 #: cps/admin.py:633
-#, fuzzy
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr "Möchten Sie die ausgewählten Sichtbarkeitsbeschränkungen der ausgewählten Benutzer wirklich ändern?"
+msgstr "Möchten Sie den Lesestatus für die ausgewählten Bücher wirklich ändern?"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
-msgstr "Möchten Sie die ausgewählten Sichtbarkeitsbeschränkungen der ausgewählten Benutzer wirklich ändern?"
+msgstr "Möchten Sie die ausgewählten Restriktionen für die ausgewählten Benutzer wirklich ändern?"
 
 #: cps/admin.py:637
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
-msgstr "Möchten Sie die Sichtbarkeiten für die ausgewählten Benutzer wirklich verändern?"
+msgstr "Möchten Sie die Sichtbarkeitsrestriktionen für die ausgewählten Benutzer wirklich verändern?"
 
 #: cps/admin.py:640
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
@@ -580,13 +577,12 @@ msgid "There was an error converting this book: %(res)s"
 msgstr "Es trat ein Fehler beim Konvertieren des Buches auf: %(res)s"
 
 #: cps/editbooks.py:297
-#, fuzzy
 msgid "Changes successfully applied"
-msgstr "Bücherregal erfolgreich gelöscht"
+msgstr "Änderungen erfolgreich durchgeführt"
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
-msgstr ""
+msgstr "Wert fehlt bei Anfrage"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
 #: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
@@ -631,7 +627,7 @@ msgstr "Dateiendung '%(ext)s' kann nicht auf diesen Server hochgeladen werden"
 
 #: cps/editbooks.py:960 cps/editbooks.py:1436
 msgid "File to be uploaded must have an extension"
-msgstr "Dateien müssen eine Erweiterung haben, um hochgeladen zu werden"
+msgstr "Dateien müssen eine Dateiendung haben, um hochgeladen zu werden"
 
 #: cps/editbooks.py:968
 #, python-format
@@ -653,12 +649,12 @@ msgstr "Buch erfolgreich gelöscht"
 
 #: cps/editbooks.py:1065
 msgid "You are missing permissions to delete books"
-msgstr "Keine Erlaubnis zum Löschen von Büchern"
+msgstr "Keine Berechtigung zum Löschen von Büchern"
 
 #: cps/editbooks.py:1139
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr "Buch mit id \"{}\" konnte nicht gelöscht werden: nicht gefunden"
+msgstr "Das Buch mit der ID \"{}\" konnte nicht gelöscht werden: nicht gefunden"
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -778,7 +774,7 @@ msgstr "Lösche Buch %(id)s nur aus Datenbank, Pfad zum Buch in Datenbank ist ni
 #: cps/helper.py:404
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr "Verschieben des Verzeichnisses von Buch %(book_id)s nach: '%(src)s' mit Fehler: %(error)s fehlgeschlagen"
+msgstr "Verschieben des Buchpfads von Buch %(book_id)s nach: '%(src)s' ist fehlgeschlagen: %(error)s"
 
 #: cps/helper.py:443
 #, python-format
@@ -814,7 +810,7 @@ msgstr "Ungültiges E-Mail Adressformat"
 
 #: cps/helper.py:687
 msgid "Password doesn't comply with password validation rules"
-msgstr "Passwort stimmt nicht mit den Passwortregeln überein"
+msgstr "Passwort erfüllt die Passwortregeln nicht"
 
 #: cps/helper.py:833
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
@@ -1060,7 +1056,7 @@ msgstr "Kategorien"
 
 #: cps/render_template.py:73 cps/templates/user_table.html:158
 msgid "Show Category Section"
-msgstr "Zeige Kategorien"
+msgstr "Zeige Abschnitt Kategorien"
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:86
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
@@ -1070,7 +1066,7 @@ msgstr "Serien"
 
 #: cps/render_template.py:76 cps/templates/user_table.html:157
 msgid "Show Series Section"
-msgstr "Zeige Serien"
+msgstr "Zeige Abschnitt Serien"
 
 #: cps/render_template.py:77 cps/templates/book_table.html:92
 #: cps/templates/index.xml:79
@@ -1079,7 +1075,7 @@ msgstr "Autoren"
 
 #: cps/render_template.py:79 cps/templates/user_table.html:160
 msgid "Show Author Section"
-msgstr "Zeige Autoren"
+msgstr "Zeige Abschnitt Autoren"
 
 #: cps/render_template.py:81 cps/templates/book_table.html:98
 #: cps/templates/index.xml:88 cps/web.py:1004
@@ -1088,7 +1084,7 @@ msgstr "Verleger"
 
 #: cps/render_template.py:83 cps/templates/user_table.html:163
 msgid "Show Publisher Section"
-msgstr "Zeige Verleger"
+msgstr "Zeige Abschnitt Verleger"
 
 #: cps/render_template.py:84 cps/templates/book_table.html:96
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
@@ -1098,7 +1094,7 @@ msgstr "Sprachen"
 
 #: cps/render_template.py:87 cps/templates/user_table.html:155
 msgid "Show Language Section"
-msgstr "Zeige Sprachen"
+msgstr "Zeige Abschnitt Sprachen"
 
 #: cps/render_template.py:88 cps/templates/index.xml:124
 msgid "Ratings"
@@ -1106,7 +1102,7 @@ msgstr "Bewertungen"
 
 #: cps/render_template.py:90 cps/templates/user_table.html:164
 msgid "Show Ratings Section"
-msgstr "Zeige Bewertungen"
+msgstr "Zeige Abschnitt Bewertungen"
 
 #: cps/render_template.py:91 cps/templates/index.xml:133
 msgid "File formats"
@@ -1114,7 +1110,7 @@ msgstr "Dateiformate"
 
 #: cps/render_template.py:93 cps/templates/user_table.html:165
 msgid "Show File Formats Section"
-msgstr "Zeige Dateiformate"
+msgstr "Zeige Abschnitt Dateiformate"
 
 #: cps/render_template.py:95 cps/web.py:798
 msgid "Archived Books"
@@ -1637,7 +1633,7 @@ msgstr "Editieren"
 
 #: cps/templates/admin.html:25 cps/templates/book_edit.html:17
 #: cps/templates/book_table.html:131 cps/templates/book_table.html:180
-#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:116
+#: cps/templates/modal_dialogs.html:62 cps/templates/modal_dialogs.html:115
 #: cps/templates/user_edit.html:67 cps/templates/user_table.html:149
 msgid "Delete"
 msgstr "Löschen"
@@ -1737,11 +1733,11 @@ msgstr "Calibre Datenbank Konfiguration editieren"
 
 #: cps/templates/admin.html:160
 msgid "Edit Basic Configuration"
-msgstr "Basiskonfiguration"
+msgstr "Basis-Einstellungen editieren"
 
 #: cps/templates/admin.html:161
 msgid "Edit UI Configuration"
-msgstr "Benutzeroberflächenkonfiguration"
+msgstr "Benutzeroberfläche editieren"
 
 #: cps/templates/admin.html:167
 msgid "Scheduled Tasks"
@@ -1837,8 +1833,8 @@ msgstr "OK"
 #: cps/templates/book_table.html:261 cps/templates/book_table.html:316
 #: cps/templates/config_db.html:66 cps/templates/config_edit.html:431
 #: cps/templates/config_view_edit.html:175 cps/templates/detail.html:350
-#: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
-#: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
+#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:98
+#: cps/templates/modal_dialogs.html:116 cps/templates/modal_dialogs.html:134
 #: cps/templates/schedule_edit.html:45 cps/templates/shelf_edit.html:27
 #: cps/templates/tasks.html:47 cps/templates/user_edit.html:144
 msgid "Cancel"
@@ -1958,7 +1954,7 @@ msgstr "Logout"
 
 #: cps/templates/basic_layout.html:35
 msgid "Normal Theme"
-msgstr ""
+msgstr "Normales Design"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -2131,38 +2127,32 @@ msgid "This Field is Required"
 msgstr "Dieses Feld ist erforderlich"
 
 #: cps/templates/book_table.html:25
-#, fuzzy
 msgid "Archive selected books"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Selektierte Bücher archivieren"
 
 #: cps/templates/book_table.html:28
-#, fuzzy
 msgid "Unarchive selected books"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Selektierte Bücher de-archivieren"
 
 #: cps/templates/book_table.html:34
-#, fuzzy
 msgid "Mark selected books as read"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Markiere selektierte Bücher als gelesen"
 
 #: cps/templates/book_table.html:37
-#, fuzzy
 msgid "Mark selected books as unread"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Markiere selektierte Bücher als ungelesen"
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Ausgewählte Bücher zusammenführen"
 
 #: cps/templates/book_table.html:60 cps/templates/user_table.html:124
-#, fuzzy
 msgid "Clear selections"
 msgstr "Auswahl aufheben"
 
 #: cps/templates/book_table.html:63
-#, fuzzy
 msgid "Edit selected books"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Selektierte Bücher editieren"
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2253,9 +2243,8 @@ msgid "Enter "
 msgstr "Eingeben "
 
 #: cps/templates/book_table.html:128
-#, fuzzy
 msgid "Delete selected books"
-msgstr "Buchauswahl zusammenführen"
+msgstr "Selektierte Bücher löschen"
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2290,19 +2279,17 @@ msgstr "Archiviert"
 
 #: cps/templates/book_table.html:216
 msgid "The following books will be unarchived:"
-msgstr "Die folgenden Bücher werden aus dem Archiv geholt:"
+msgstr "Die folgenden Bücher werden de-archiviert:"
 
 #: cps/templates/book_table.html:220
-#, fuzzy
 msgid "Unarchive"
-msgstr "Archiviert"
+msgstr "De-Archivieren"
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
 msgstr "Die folgenden Bücher werden als gelesen markiert:"
 
 #: cps/templates/book_table.html:240
-#, fuzzy
 msgid "Mark as read"
 msgstr "Als gelesen markieren"
 
@@ -2311,7 +2298,6 @@ msgid "The following books will be marked unread:"
 msgstr "Die folgenden Bücher werden als ungelesen markiert:"
 
 #: cps/templates/book_table.html:260
-#, fuzzy
 msgid "Mark as unread"
 msgstr "Als ungelesen markieren"
 
@@ -2321,7 +2307,7 @@ msgstr "Metadaten bearbeiten"
 
 #: cps/templates/book_table.html:275
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
-msgstr "Editiere die Felder, die Du ändern möchtest. Leere Felder werden ignoriert:"
+msgstr "Bearbeite die Felder, die Du ändern möchtest. Leere Felder werden ignoriert:"
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
@@ -2461,11 +2447,11 @@ msgstr "Benutze Goodreads"
 
 #: cps/templates/config_edit.html:161
 msgid "Goodreads API Key"
-msgstr "Öffentlicher Goodreads API Schlüssel"
+msgstr "Goodreads API Schlüssel"
 
 #: cps/templates/config_edit.html:167
 msgid "Google Books API Key"
-msgstr ""
+msgstr "Google Books API Schlüssel"
 
 #: cps/templates/config_edit.html:172
 msgid "Allow Reverse Proxy Authentication"
@@ -2918,9 +2904,8 @@ msgid "Create Issue"
 msgstr "Issue erzeugen"
 
 #: cps/templates/http_error.html:52
-#, fuzzy
 msgid "Return to Database config"
-msgstr "Datenbank-Konfiguration"
+msgstr "Zu Datenbank Konfiguration zurückkehren"
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3030,9 +3015,8 @@ msgid "Toggle Navigation"
 msgstr "Nagivation umschalten"
 
 #: cps/templates/layout.html:58
-#, fuzzy
 msgid "Simple Theme"
-msgstr "Einfach"
+msgstr "Einfaches Design"
 
 #: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"
@@ -3132,46 +3116,42 @@ msgid "This book format will be permanently erased from database"
 msgstr "Dieses Buchformat wird permanent aus der Datenbank gelöscht"
 
 #: cps/templates/modal_dialogs.html:51
-msgid "This book will be permanently erased from database"
-msgstr "Das Buch wird endgültig aus der Datenbank"
+msgid "This book will be permanently erased from database and hard disk"
+msgstr "Das Buch wird endgültig in der Datenbank und auf der Festplatte gelöscht"
 
-#: cps/templates/modal_dialogs.html:52
-msgid "and hard disk"
-msgstr "und von der Festplatte gelöscht"
-
-#: cps/templates/modal_dialogs.html:56
+#: cps/templates/modal_dialogs.html:55
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
 msgstr "Wichtiger Kobo Hinweis: Gelöschte Bücher bleiben auf allen verbundenen Kobo Geräten erhalten."
 
-#: cps/templates/modal_dialogs.html:57
+#: cps/templates/modal_dialogs.html:56
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
 msgstr "Bücher müssen zuerst archiviert werden und dann mit dem Gerät synchronisiert werden, bevor ein Buch sicher gelöscht werden kann."
 
-#: cps/templates/modal_dialogs.html:76
+#: cps/templates/modal_dialogs.html:75
 msgid "Choose File Location"
 msgstr "Dateispeicherort auswählen"
 
-#: cps/templates/modal_dialogs.html:82
+#: cps/templates/modal_dialogs.html:81
 msgid "type"
 msgstr "Typ"
 
-#: cps/templates/modal_dialogs.html:83
+#: cps/templates/modal_dialogs.html:82
 msgid "name"
 msgstr "Name"
 
-#: cps/templates/modal_dialogs.html:84
+#: cps/templates/modal_dialogs.html:83
 msgid "size"
 msgstr "Größe"
 
-#: cps/templates/modal_dialogs.html:90
+#: cps/templates/modal_dialogs.html:89
 msgid "Parent Directory"
 msgstr "Übergeordnetes Verzeichnis"
 
-#: cps/templates/modal_dialogs.html:98
+#: cps/templates/modal_dialogs.html:97
 msgid "Select"
 msgstr "Auswahl"
 
-#: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:46
+#: cps/templates/modal_dialogs.html:133 cps/templates/tasks.html:46
 msgid "Ok"
 msgstr "Ok"
 
