@@ -56,6 +56,7 @@ from .usermanagement import user_login_required
 from .cw_babel import get_available_translations, get_available_locale, get_user_locale_language
 from . import debug_info
 from .string_helper import strip_whitespaces
+from .tasks.shelfsync import TaskSyncShelves
 
 log = logger.create()
 
@@ -479,6 +480,8 @@ def edit_list_user(param):
                     user.email = check_email(vals['value'])
                 elif param == 'kobo_only_shelves_sync':
                     user.kobo_only_shelves_sync = int(vals['value'] == 'true')
+                elif param == 'sync_from_collections':
+                    user.sync_from_collections = int(vals['value'] == 'true')
                 elif param == 'kindle_mail':
                     user.kindle_mail = valid_email(vals['value']) if vals['value'] else ""
                 elif param.endswith('role'):
@@ -638,6 +641,8 @@ def load_dialogtexts(element_id):
                           'for the selected user(s)?')
     elif element_id == "kobo_only_shelves_sync":
         texts["main"] = _('Are you sure you want to change shelf sync behavior for the selected user(s)?')
+    elif element_id == "sync_from_collections":
+        texts["main"] = _('Are you sure you want to sync collections for the selected user(s)?')
     elif element_id == "db_submit":
         texts["main"] = _('Are you sure you want to change Calibre library location?')
     elif element_id == "admin_refresh_cover_cache":
@@ -646,6 +651,9 @@ def load_dialogtexts(element_id):
     elif element_id == "btnfullsync":
         texts["main"] = _("Are you sure you want delete Calibre-Web's sync database "
                           "to force a full sync with your Kobo Reader?")
+    elif element_id == "btn_sync_collections":
+        texts["main"] = _("Are you sure you want sync all Calibre collections to "
+                          "Calibre-Web shelves?")
     return json.dumps(texts)
 
 
@@ -937,6 +945,24 @@ def ajax_self_fullsync():
 @admin_required
 def ajax_fullsync(userid):
     return do_full_kobo_sync(userid)
+
+
+@admi.route("/ajax/synccollections", methods=["POST"])
+@user_login_required
+def ajax_self_synccollections():
+    t = TaskSyncShelves()
+    msg = t.sync()
+    return make_response(jsonify(type="success", message=msg))
+
+
+
+@admi.route("/ajax/synccollections/<int:userid>", methods=["POST"])
+@user_login_required
+@admin_required
+def ajax_synccollections(userid):
+    t = TaskSyncShelves()
+    msg = t.sync()
+    return make_response(jsonify(type="success", message=msg))
 
 
 @admi.route("/ajax/pathchooser/")
@@ -1399,6 +1425,7 @@ def update_scheduledtasks():
     _config_checkbox(to_save, "schedule_generate_series_covers")
     _config_checkbox(to_save, "schedule_metadata_backup")
     _config_checkbox(to_save, "schedule_reconnect")
+    _config_checkbox(to_save, "schedule_sync_shelves")
 
     if not error:
         try:
@@ -1969,6 +1996,7 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.denied_column_value = config.config_denied_column_value
         # No default value for kobo sync shelf setting
         content.kobo_only_shelves_sync = to_save.get("kobo_only_shelves_sync", 0) == "on"
+        content.sync_from_collections = config.config_sync_from_collections
         ub.session.add(content)
         ub.session.commit()
         flash(_("User '%(user)s' created", user=content.name), category="success")
