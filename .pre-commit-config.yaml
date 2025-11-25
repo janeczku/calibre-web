@@ -1,0 +1,73 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: trailing-whitespace
+        exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
+      - id: end-of-file-fixer
+        exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
+      - id: mixed-line-ending
+        exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.0
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.9.2
+    hooks:
+      - id: uv-lock
+        name: Sync uv.lock with pyproject.toml
+        always_run: true
+      - id: pip-compile
+        name: pip-compile requirements.txt
+        args: [pyproject.toml, -o, requirements.txt, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-dev.txt
+        args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-comics.txt
+        args: [pyproject.toml, -o, requirements-comics.txt, --extra, comics, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-gdrive.txt
+        args: [pyproject.toml, -o, requirements-gdrive.txt, --extra, gdrive, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-gmail.txt
+        args: [pyproject.toml, -o, requirements-gmail.txt, --extra, gmail, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-goodreads.txt
+        args: [pyproject.toml, -o, requirements-goodreads.txt, --extra, goodreads, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-ldap.txt
+        args: [pyproject.toml, -o, requirements-ldap.txt, --extra, ldap, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-oauth.txt
+        args: [pyproject.toml, -o, requirements-oauth.txt, --extra, oauth, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-metadata.txt
+        args: [pyproject.toml, -o, requirements-metadata.txt, --extra, metadata, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$
+      - id: pip-compile
+        name: pip-compile requirements-kobo.txt
+        args: [pyproject.toml, -o, requirements-kobo.txt, --extra, kobo, --generate-hashes, --universal, --python-version=3.8]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock)$

@@ -44,3 +44,86 @@ In case your code enhances features of Calibre-Web: Create your pull request for
 Please check if your code runs with python 3, python 2 is no longer supported. If possible and the feature is related to operating system functions, try to check it on Windows and Linux.
 Calibre-Web is automatically tested on Linux in combination with python 3.8. The code for testing is in a [separate repo](https://github.com/OzzieIsaacs/calibre-web-test) on GitHub. It uses unit tests and performs real system tests with selenium; it would be great if you could consider also writing some tests.
 A static code analysis is done by Codacy, but it's partly broken and doesn't run automatically. You could check your code with ESLint before contributing, a configuration file can be found in the projects root folder.
+
+
+### Developer Workflow
+
+This project uses the uv toolchain for dependency management, locking, and fast execution. Please install uv and use the commands below for a smooth developer experience.
+
+#### Prerequisites
+
+- Install uv: follow the official instructions at `https://docs.astral.sh/uv/getting-started/`.
+- Python 3.8+ is supported; target 3.8 when compiling requirement snapshots.
+
+#### First-time setup
+
+```bash
+uv sync
+```
+
+This resolves and installs all dependencies into a local virtual environment (`.venv`) and builds the project in editable mode.
+
+#### Running the app
+
+```bash
+uv run cps
+```
+
+Helpful env/flags:
+- Show logs to stdout: `FLASK_DEBUG=1 uv run cps` or `uv run cps -o /dev/stdout`
+- Change port/IP: `CALIBRE_PORT=9090 uv run cps`, `uv run cps -i 0.0.0.0`
+
+#### Optional features (extras)
+
+To install extras for a given feature set:
+
+```bash
+uv sync --extra metadata --extra comics --extra gmail --extra gdrive --extra kobo --extra ldap --extra oauth --extra goodreads
+```
+
+Install only what you need by selecting the extras.
+
+#### Linting and formatting
+
+Use ruff via uv:
+
+```bash
+uv run ruff check --fix
+uv run ruff format
+```
+
+**Note:** Run ruff only on files you changed. Running without file paths will scan and rewrite the entire legacy codebase, which is usually not intended.
+
+Examples:
+
+```bash
+uv run ruff check --fix cps/helper.py cps/admin.py
+uv run ruff format cps/helper.py cps/admin.py
+```
+
+Pre-commit runs ruff only on staged files automatically.
+
+Pre-commit hooks run ruff and keep requirement snapshots in sync. Enable locally with:
+
+```bash
+uv run pre-commit install
+
+# Manually run pre-commit hooks
+uv run pre-commit run
+```
+
+#### Dependency snapshots (pip-compile via uv-pre-commit)
+
+The repository includes pre-commit hooks that generate requirement snapshots per optional extra and for the `dev` group. These hooks only trigger when `pyproject.toml` or `uv.lock` change and target Python 3.8 for broad compatibility.
+
+If needed, you can regenerate a specific snapshot manually, e.g.:
+
+```bash
+uvx uv pip compile pyproject.toml -o requirements-dev.txt --group dev --generate-hashes --universal --python-version=3.8
+```
+
+#### Troubleshooting
+
+- Editable build fails with multiple top-level packages: ensure you are on the latest `pyproject.toml` with explicit discovery and package mapping.
+- Resolver errors about Python 3.7: ensure you use Python 3.8+ (current dependencies no longer support 3.7).
+- Image processing warnings: install system deps (macOS): `brew install freetype imagemagick`.
