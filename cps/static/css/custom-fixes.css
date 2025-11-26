@@ -1,0 +1,38 @@
+/* ===================================
+   Custom Fixes for caliBlur Theme
+   =================================== */
+
+/* Fix 1: Hover effect alignment on book covers */
+/* Make sure the cover container is positioned relative so hover effects align correctly */
+.container-fluid .book .cover {
+    position: relative !important;
+}
+
+/* Ensure the :before icon is positioned within the cover bounds */
+#books > .cover > a:before,
+#books_rand > .cover > a:before,
+.book.isotope-item > .cover > a:before {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin: 0 !important;
+}
+
+/* Fix 2: Book title truncation with ellipsis */
+/* Add white-space: nowrap to make text-overflow ellipsis work properly */
+.container-fluid .book .meta .title {
+    white-space: nowrap !important;
+    max-width: 150px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.container-fluid .book .meta .author {
+    white-space: nowrap !important;
+    max-width: 150px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
