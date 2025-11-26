@@ -8001,36 +8001,57 @@ div.comments[data-readmore] {
    BOOK COVER FIXES - Ensure proper proportions and prevent overlap
    =================================================================== */
 
-/* Main library view - book covers */
+/* Fix para el grid de isotope - mantener el grid pero centrar las imágenes */
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    grid-gap: 20px 15px !important;
+    justify-items: center !important;
+    align-items: start !important;
+}
+
+/* Asegurar que cada libro (isotope-item) se comporte correctamente en el grid */
+.book.isotope-item {
+    width: 100% !important;
+    max-width: 180px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* Contenedor de la portada */
+.book.isotope-item .cover,
+.container-fluid .book .cover {
+    width: 100% !important;
+    max-width: 180px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+}
+
+/* Las imágenes de las portadas */
+.book.isotope-item .cover img,
 .container-fluid .book .cover img,
 #books .cover img,
-#books_rand .cover img,
-.book.isotope-item .cover img {
+#books_rand .cover img {
     max-width: 100% !important;
+    height: auto !important;
     width: auto !important;
-    height: auto !important;
+    max-height: 280px !important;
     object-fit: contain !important;
+    display: block !important;
 }
 
-.container-fluid .book .cover {
-    max-width: 140px !important;
-    height: auto !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-/* Fix for isotope grid layout to prevent overlap */
-.book.isotope-item {
-    width: 150px !important;
-    margin: 10px !important;
-    float: left !important;
-    display: inline-block !important;
-}
-
-.discover .isotope {
+/* Metadatos del libro (título y autor) */
+.book.isotope-item .meta,
+.container-fluid .book .meta {
     width: 100% !important;
-    overflow: hidden !important;
+    text-align: center !important;
+    padding: 0 5px !important;
 }
 
 /* Book detail view */
@@ -8044,19 +8065,22 @@ div.comments[data-readmore] {
 
 /* Responsive - mobile */
 @media (max-width: 767px) {
-    .container-fluid .book .cover {
-        max-width: 100px !important;
-    }
-
-    .container-fluid .book .cover img {
-        max-width: 100% !important;
-        width: auto !important;
-        height: auto !important;
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+        grid-gap: 15px 10px !important;
     }
 
     .book.isotope-item {
-        width: 120px !important;
-        margin: 5px !important;
+        max-width: 120px !important;
+    }
+
+    .book.isotope-item .cover,
+    .container-fluid .book .cover {
+        max-width: 120px !important;
+    }
+
+    .book.isotope-item .cover img {
+        max-height: 180px !important;
     }
 }
 
