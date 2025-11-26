@@ -355,6 +355,36 @@
                 {% if current_user.is_authenticated %}
                     {% if current_user.shelf.all() or g.shelves_access %}
                         <div id="shelf-actions" class="btn-toolbar" role="toolbar">
+                            <!-- Quick access buttons for default shelves -->
+                            {% set default_shelf_names = ['Leer después', 'Favoritos', 'Leyendo ahora'] %}
+                            {% set default_shelf_icons = ['glyphicon-time', 'glyphicon-heart', 'glyphicon-eye-open'] %}
+                            {% for shelf in g.shelves_access %}
+                                {% if shelf.name in default_shelf_names %}
+                                    {% set shelf_index = default_shelf_names.index(shelf.name) %}
+                                    <div class="btn-group" role="group">
+                                        {% if shelf.id in books_shelfs %}
+                                            <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                               data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                               class="btn btn-sm btn-success quick-shelf-btn"
+                                               data-shelf-action="remove"
+                                               title="{{ _('Remove from') }} {{ shelf.name }}">
+                                                <span class="glyphicon {{ default_shelf_icons[shelf_index] }}"></span>
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </a>
+                                        {% else %}
+                                            <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                               data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                               class="btn btn-sm btn-default quick-shelf-btn"
+                                               data-shelf-action="add"
+                                               title="{{ _('Add to') }} {{ shelf.name }}">
+                                                <span class="glyphicon {{ default_shelf_icons[shelf_index] }}"></span>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            <!-- Standard dropdown for all shelves -->
                             <div class="btn-group" role="group" aria-label="Add to shelves">
                                 <button id="add-to-shelf" type="button"
                                         class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"

@@ -2016,6 +2016,28 @@ def _handle_new_user(to_save, content, languages, translations, kobo_support):
         content.kobo_only_shelves_sync = to_save.get("kobo_only_shelves_sync", 0) == "on"
         ub.session.add(content)
         ub.session.commit()
+
+        # Create default shelves for new user
+        try:
+            default_shelves = [
+                {"name": "Leer después", "is_public": 0},
+                {"name": "Favoritos", "is_public": 0},
+                {"name": "Leyendo ahora", "is_public": 0}
+            ]
+
+            for shelf_data in default_shelves:
+                shelf = ub.Shelf()
+                shelf.name = shelf_data["name"]
+                shelf.is_public = shelf_data["is_public"]
+                shelf.user_id = content.id
+                ub.session.add(shelf)
+
+            ub.session.commit()
+            log.debug("Default shelves created for user {}".format(content.name))
+        except Exception as e:
+            log.warning("Failed to create default shelves for user {}: {}".format(content.name, str(e)))
+            # Don't fail user creation if shelves fail
+
         flash(_("User '%(user)s' created", user=content.name), category="success")
         log.debug("User {} created".format(content.name))
         return redirect(url_for('admin.admin'))

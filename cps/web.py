@@ -1318,6 +1318,28 @@ def register_post():
         try:
             ub.session.add(content)
             ub.session.commit()
+
+            # Create default shelves for new user
+            try:
+                default_shelves = [
+                    {"name": "Leer después", "is_public": 0},
+                    {"name": "Favoritos", "is_public": 0},
+                    {"name": "Leyendo ahora", "is_public": 0}
+                ]
+
+                for shelf_data in default_shelves:
+                    shelf = ub.Shelf()
+                    shelf.name = shelf_data["name"]
+                    shelf.is_public = shelf_data["is_public"]
+                    shelf.user_id = content.id
+                    ub.session.add(shelf)
+
+                ub.session.commit()
+                log.debug("Default shelves created for registered user {}".format(nickname))
+            except Exception as e:
+                log.warning("Failed to create default shelves for user {}: {}".format(nickname, str(e)))
+                # Don't fail user registration if shelves fail
+
             if feature_support['oauth']:
                 register_user_with_oauth(content)
             send_registration_mail(strip_whitespaces(to_save.get("email", "")), nickname, password)

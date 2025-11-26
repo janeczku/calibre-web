@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/admin_stats.css') }}" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 {% endblock %}
 {% block body %}
 <div class="container-fluid admin-statistics">
@@ -79,6 +80,33 @@
         </div>
         <div class="kpi-value">{{ stats.library.total_size_gb or 0 }} GB</div>
         <div class="kpi-label">{{_('Library Size')}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="row">
+    <div class="col-xs-12 col-md-6">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-file"></span>
+          {{_('Format Distribution')}}
+        </h3>
+        <div class="stats-content" style="padding: 20px;">
+          <canvas id="formatsChart" style="max-height: 300px;"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-md-6">
+      <div class="stats-panel">
+        <h3>
+          <span class="glyphicon glyphicon-download-alt"></span>
+          {{_('Downloads Over Time')}}
+        </h3>
+        <div class="stats-content" style="padding: 20px;">
+          <canvas id="downloadsChart" style="max-height: 300px;"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -321,4 +349,125 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Format Distribution Chart (Doughnut)
+  {% if stats.library.top_formats %}
+  const formatsCtx = document.getElementById('formatsChart');
+  if (formatsCtx) {
+    const formatsData = {
+      labels: [
+        {% for format in stats.library.top_formats[:5] %}
+          '{{ format.format }}'{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ],
+      datasets: [{
+        data: [
+          {% for format in stats.library.top_formats[:5] %}
+            {{ format.count }}{% if not loop.last %},{% endif %}
+          {% endfor %}
+        ],
+        backgroundColor: [
+          '#3498db',
+          '#2ecc71',
+          '#f39c12',
+          '#e74c3c',
+          '#9b59b6'
+        ],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    };
+
+    new Chart(formatsCtx, {
+      type: 'doughnut',
+      data: formatsData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              font: {
+                size: 12
+              },
+              padding: 15
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed || 0;
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((value / total) * 100).toFixed(1);
+                return label + ': ' + value + ' (' + percentage + '%)';
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+  {% endif %}
+
+  // Downloads Over Time Chart (Bar)
+  const downloadsCtx = document.getElementById('downloadsChart');
+  if (downloadsCtx) {
+    const downloadsData = {
+      labels: ['{{_('This Week')}}', '{{_('This Month')}}', '{{_('This Year')}}'],
+      datasets: [{
+        label: '{{_('Downloads')}}',
+        data: [
+          {{ stats.downloads.downloads_week or 0 }},
+          {{ stats.downloads.downloads_month or 0 }},
+          {{ stats.downloads.downloads_year or 0 }}
+        ],
+        backgroundColor: [
+          'rgba(52, 152, 219, 0.8)',
+          'rgba(46, 204, 113, 0.8)',
+          'rgba(243, 156, 18, 0.8)'
+        ],
+        borderColor: [
+          'rgba(52, 152, 219, 1)',
+          'rgba(46, 204, 113, 1)',
+          'rgba(243, 156, 18, 1)'
+        ],
+        borderWidth: 2
+      }]
+    };
+
+    new Chart(downloadsCtx, {
+      type: 'bar',
+      data: downloadsData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              precision: 0
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return '{{_('Downloads')}}: ' + context.parsed.y;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
 {% endblock %}

@@ -21,6 +21,168 @@
   <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bar-ui.css') }}" />
 
+  <style>
+    /* Audio Player Enhancements */
+    .audio-controls-enhanced {
+      background: #f5f5f5;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .control-group {
+      display: inline-block;
+      margin-right: 30px;
+      vertical-align: top;
+    }
+
+    .control-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .speed-buttons button {
+      margin: 0 3px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .speed-buttons button.active {
+      background: #337ab7;
+      color: white;
+      border-color: #2e6da4;
+    }
+
+    .speed-buttons button:hover:not(.active) {
+      background: #e6e6e6;
+    }
+
+    .sleep-timer-controls input[type="number"] {
+      width: 60px;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-right: 5px;
+    }
+
+    .sleep-timer-controls button {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background: white;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+
+    .sleep-timer-controls button.btn-start {
+      background: #5cb85c;
+      color: white;
+      border-color: #4cae4c;
+    }
+
+    .sleep-timer-controls button.btn-stop {
+      background: #d9534f;
+      color: white;
+      border-color: #d43f3a;
+    }
+
+    .sleep-timer-display {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: bold;
+      color: #337ab7;
+      margin-left: 10px;
+      padding: 5px 10px;
+      background: white;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    /* Mini Player Flotante */
+    .mini-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(51, 51, 51, 0.95);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 9999;
+      display: none;
+      min-width: 280px;
+    }
+
+    .mini-player.active {
+      display: block;
+    }
+
+    .mini-player-info {
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .mini-player-title {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mini-player-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-player button {
+      background: #555;
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .mini-player button:hover {
+      background: #666;
+    }
+
+    .mini-player-close {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: transparent !important;
+      font-size: 18px;
+      padding: 2px 6px !important;
+    }
+
+    @media (max-width: 767px) {
+      .mini-player {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+      }
+
+      .control-group {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+
   <script>
     "use strict";
   </script>
@@ -231,6 +393,56 @@
     </div>
   </div>
 
+  <!-- Enhanced Audio Controls -->
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="audio-controls-enhanced">
+        <div class="control-group">
+          <label>{{_('Playback Speed')}}</label>
+          <div class="speed-buttons">
+            <button onclick="setPlaybackSpeed(0.5)" data-speed="0.5">0.5x</button>
+            <button onclick="setPlaybackSpeed(0.75)" data-speed="0.75">0.75x</button>
+            <button onclick="setPlaybackSpeed(1)" data-speed="1" class="active">1x</button>
+            <button onclick="setPlaybackSpeed(1.25)" data-speed="1.25">1.25x</button>
+            <button onclick="setPlaybackSpeed(1.5)" data-speed="1.5">1.5x</button>
+            <button onclick="setPlaybackSpeed(2)" data-speed="2">2x</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>{{_('Sleep Timer')}}</label>
+          <div class="sleep-timer-controls">
+            <input type="number" id="sleep-minutes" min="1" max="180" value="30" />
+            <span>{{_('minutes')}}</span>
+            <button class="btn-start" onclick="startSleepTimer()">
+              <span class="glyphicon glyphicon-time"></span> {{_('Start')}}
+            </button>
+            <button class="btn-stop" onclick="stopSleepTimer()" style="display: none;">
+              <span class="glyphicon glyphicon-stop"></span> {{_('Stop')}}
+            </button>
+            <span class="sleep-timer-display" id="timer-display" style="display: none;">00:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mini Player Flotante -->
+  <div class="mini-player" id="mini-player">
+    <button class="mini-player-close" onclick="toggleMiniPlayer(false)">&times;</button>
+    <div class="mini-player-info">
+      <div class="mini-player-title">{{ entry.title }}</div>
+      <div>{% for author in entry.ordered_authors %}{{author.name.replace('|',',')}}{% if not loop.last %} & {% endif %}{% endfor %}</div>
+    </div>
+    <div class="mini-player-controls">
+      <button onclick="togglePlayPause()">
+        <span class="glyphicon glyphicon-play" id="mini-play-icon"></span>
+      </button>
+      <span id="mini-time">0:00</span> / <span id="mini-duration">0:00</span>
+      <button onclick="changeSpeed()" id="mini-speed">1x</button>
+    </div>
+  </div>
+
 <div class="sm2-bar-ui full-width fixed">
 
  <div class="bd sm2-main-controls">
@@ -322,6 +534,12 @@
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 <script>
+// Global variables for audio enhancements
+var currentPlaybackRate = 1.0;
+var sleepTimerInterval = null;
+var sleepTimerSeconds = 0;
+var currentSound = null;
+
 soundManager.setup({
   useHTML5Audio: true,
   preferFlash: false,
@@ -332,6 +550,7 @@ soundManager.setup({
       // url: "{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"
     });
     mySound.play();
+    currentSound = mySound;
   },
   ontimeout: function() {
     // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
@@ -346,6 +565,192 @@ window.calibre = {
         useBookmarks: "{{ current_user.is_authenticated | tojson }}"
 
             };
+
+// Playback Speed Control
+function setPlaybackSpeed(rate) {
+  currentPlaybackRate = rate;
+
+  // Update active button
+  var buttons = document.querySelectorAll('.speed-buttons button');
+  buttons.forEach(function(btn) {
+    btn.classList.remove('active');
+    if (parseFloat(btn.getAttribute('data-speed')) === rate) {
+      btn.classList.add('active');
+    }
+  });
+
+  // Apply to HTML5 audio
+  var audioElements = document.querySelectorAll('audio');
+  audioElements.forEach(function(audio) {
+    audio.playbackRate = rate;
+  });
+
+  // Update mini player display
+  var miniSpeed = document.getElementById('mini-speed');
+  if (miniSpeed) {
+    miniSpeed.textContent = rate + 'x';
+  }
+
+  console.log('Playback speed set to: ' + rate + 'x');
+}
+
+// Sleep Timer Functions
+function startSleepTimer() {
+  var minutes = parseInt(document.getElementById('sleep-minutes').value);
+  if (isNaN(minutes) || minutes < 1) {
+    alert('{{_("Please enter a valid number of minutes")}}');
+    return;
+  }
+
+  sleepTimerSeconds = minutes * 60;
+
+  // Show timer display and stop button
+  document.querySelector('.btn-start').style.display = 'none';
+  document.querySelector('.btn-stop').style.display = 'inline-block';
+  document.getElementById('timer-display').style.display = 'inline-block';
+
+  updateTimerDisplay();
+
+  sleepTimerInterval = setInterval(function() {
+    sleepTimerSeconds--;
+
+    if (sleepTimerSeconds <= 0) {
+      stopSleepTimer();
+      pauseAudio();
+      alert('{{_("Sleep timer ended - playback paused")}}');
+    } else {
+      updateTimerDisplay();
+    }
+  }, 1000);
+}
+
+function stopSleepTimer() {
+  if (sleepTimerInterval) {
+    clearInterval(sleepTimerInterval);
+    sleepTimerInterval = null;
+  }
+
+  sleepTimerSeconds = 0;
+
+  // Hide timer display and stop button
+  document.querySelector('.btn-start').style.display = 'inline-block';
+  document.querySelector('.btn-stop').style.display = 'none';
+  document.getElementById('timer-display').style.display = 'none';
+}
+
+function updateTimerDisplay() {
+  var minutes = Math.floor(sleepTimerSeconds / 60);
+  var seconds = sleepTimerSeconds % 60;
+  var display = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+  document.getElementById('timer-display').textContent = display;
+}
+
+function pauseAudio() {
+  // Pause all audio elements
+  var audioElements = document.querySelectorAll('audio');
+  audioElements.forEach(function(audio) {
+    audio.pause();
+  });
+
+  // Trigger SoundManager pause if available
+  if (soundManager && soundManager.pauseAll) {
+    soundManager.pauseAll();
+  }
+}
+
+// Mini Player Functions
+function toggleMiniPlayer(show) {
+  var miniPlayer = document.getElementById('mini-player');
+  if (show) {
+    miniPlayer.classList.add('active');
+  } else {
+    miniPlayer.classList.remove('active');
+  }
+}
+
+function togglePlayPause() {
+  var audioElements = document.querySelectorAll('audio');
+  var icon = document.getElementById('mini-play-icon');
+
+  if (audioElements.length > 0) {
+    var audio = audioElements[0];
+    if (audio.paused) {
+      audio.play();
+      icon.classList.remove('glyphicon-play');
+      icon.classList.add('glyphicon-pause');
+    } else {
+      audio.pause();
+      icon.classList.remove('glyphicon-pause');
+      icon.classList.add('glyphicon-play');
+    }
+  }
+}
+
+function changeSpeed() {
+  var speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+  var currentIndex = speeds.indexOf(currentPlaybackRate);
+  var nextIndex = (currentIndex + 1) % speeds.length;
+  setPlaybackSpeed(speeds[nextIndex]);
+}
+
+// Show mini player when scrolling down
+var lastScrollTop = 0;
+window.addEventListener('scroll', function() {
+  var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  // Show mini player when scrolled down more than 300px
+  if (scrollTop > 300) {
+    toggleMiniPlayer(true);
+  } else {
+    toggleMiniPlayer(false);
+  }
+
+  lastScrollTop = scrollTop;
+});
+
+// Update mini player time display
+setInterval(function() {
+  var audioElements = document.querySelectorAll('audio');
+  if (audioElements.length > 0) {
+    var audio = audioElements[0];
+    if (!isNaN(audio.duration)) {
+      var currentTime = Math.floor(audio.currentTime);
+      var duration = Math.floor(audio.duration);
+
+      var currentMins = Math.floor(currentTime / 60);
+      var currentSecs = currentTime % 60;
+      var durationMins = Math.floor(duration / 60);
+      var durationSecs = duration % 60;
+
+      document.getElementById('mini-time').textContent =
+        String(currentMins).padStart(2, '0') + ':' + String(currentSecs).padStart(2, '0');
+      document.getElementById('mini-duration').textContent =
+        String(durationMins).padStart(2, '0') + ':' + String(durationSecs).padStart(2, '0');
+    }
+  }
+}, 1000);
+
+// Apply playback rate when audio element is created
+document.addEventListener('DOMContentLoaded', function() {
+  // Watch for audio elements being added
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      mutation.addedNodes.forEach(function(node) {
+        if (node.tagName === 'AUDIO') {
+          node.playbackRate = currentPlaybackRate;
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Apply to existing audio elements
+  var audioElements = document.querySelectorAll('audio');
+  audioElements.forEach(function(audio) {
+    audio.playbackRate = currentPlaybackRate;
+  });
+});
 </script>
 </body>
 

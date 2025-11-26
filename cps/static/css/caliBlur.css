@@ -7996,3 +7996,108 @@ div.comments[data-readmore] {
 .dropdown-menu .divider {
     margin: 5px 0;
 }
+
+/* ===================================================================
+   BOOK COVER FIXES - Ensure proper proportions and prevent overlap
+   =================================================================== */
+
+/* Main library view - book covers */
+.container-fluid .book .cover img,
+#books .cover img,
+#books_rand .cover img,
+.book.isotope-item .cover img {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+.container-fluid .book .cover {
+    max-width: 140px !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Fix for isotope grid layout to prevent overlap */
+.book.isotope-item {
+    width: 150px !important;
+    margin: 10px !important;
+    float: left !important;
+    display: inline-block !important;
+}
+
+.discover .isotope {
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+/* Book detail view */
+.book-meta .cover img,
+#bookDetailsModal .cover img {
+    max-width: 100% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+/* Responsive - mobile */
+@media (max-width: 767px) {
+    .container-fluid .book .cover {
+        max-width: 100px !important;
+    }
+
+    .container-fluid .book .cover img {
+        max-width: 100% !important;
+        width: auto !important;
+        height: auto !important;
+    }
+
+    .book.isotope-item {
+        width: 120px !important;
+        margin: 5px !important;
+    }
+}
+
+/* End of Book Cover Fixes */
+
+/* ===================================================================
+   QUICK SHELF BUTTONS - Icon-based quick access to default shelves
+   =================================================================== */
+
+/* Quick shelf buttons styling */
+.quick-shelf-btn {
+    margin-right: 5px !important;
+    padding: 6px 12px !important;
+    transition: all 0.3s ease !important;
+}
+
+.quick-shelf-btn .glyphicon {
+    font-size: 14px;
+}
+
+/* When book is in shelf - show green with checkmark */
+.quick-shelf-btn.btn-success .glyphicon:first-child {
+    margin-right: 3px;
+}
+
+/* Hover effects */
+.quick-shelf-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Responsive - mobile */
+@media (max-width: 767px) {
+    .quick-shelf-btn {
+        padding: 4px 8px !important;
+        margin-right: 3px !important;
+    }
+
+    .quick-shelf-btn .glyphicon {
+        font-size: 12px;
+    }
+}
+
+/* End of Quick Shelf Buttons */
