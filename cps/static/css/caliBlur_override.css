@@ -3133,7 +3133,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     float: left
 }
 
-#add-to-shelf, #btnGroupDrop1, #readbtn,  #sendbtn, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type, .book-meta .btn-toolbar > .btn-group > .btn-warning, .btn-toolbar > .btn-group > #btnGroupDrop2, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 {
+#add-to-shelf, #btnGroupDrop1, #readbtn,  #sendbtn, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type, .book-meta .btn-toolbar > .btn-group > .btn-warning, .btn-toolbar > .btn-group > #btnGroupDrop2, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2, #audiobook-play-btn, #audiobook-download-btn, .generate-audiobook-link {
     background: 0 0;
     color: transparent;
     width: 50px;
@@ -3143,15 +3143,15 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     padding: 0
 }
 
-#add-to-shelf > span.caret, #btnGroupDrop1 > span.caret, #read-in-browser > span.caret, .btn-toolbar > .btn-group > #btnGroupDrop2 > span.caret, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.caret {
+#add-to-shelf > span.caret, #btnGroupDrop1 > span.caret, #read-in-browser > span.caret, .btn-toolbar > .btn-group > #btnGroupDrop2 > span.caret, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.caret, #audiobook-play-btn > span.caret, #audiobook-download-btn > span.caret {
     padding-bottom: 5px
 }
 
-#add-to-shelf > span, #btnGroupDrop1 > span, #readbtn > span, #sendbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span, .btn-toolbar > .btn-group > #btnGroupDrop2 > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span {
+#add-to-shelf > span, #btnGroupDrop1 > span, #readbtn > span, #sendbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span, .btn-toolbar > .btn-group > #btnGroupDrop2 > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span, #audiobook-play-btn > span, #audiobook-download-btn > span, .generate-audiobook-link > span {
     color: hsla(0, 0%, 100%, .7)
 }
 
-#add-to-shelf:hover span, #btnGroupDrop1:hover > span, #readbtn:hover > span, #sendbtn:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-warning:hover > span, .btn-toolbar > .btn-group > #btnGroupDrop2:hover > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2:hover > span {
+#add-to-shelf:hover span, #btnGroupDrop1:hover > span, #readbtn:hover > span, #sendbtn:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type:hover > span, .book-meta .btn-toolbar > .btn-group > .btn-warning:hover > span, .btn-toolbar > .btn-group > #btnGroupDrop2:hover > span, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2:hover > span, #audiobook-play-btn:hover > span, #audiobook-download-btn:hover > span, .generate-audiobook-link:hover > span {
     color: #fff
 }
 
@@ -3161,7 +3161,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     font-size: 18px
 }
 
-#sendbtn > span, #readbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span.glyphicon-edit {
+#sendbtn > span, #readbtn > span, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type > span, .book-meta .btn-toolbar > .btn-group > .btn-warning > span.glyphicon-edit, #audiobook-play-btn > span, #audiobook-download-btn > span, .generate-audiobook-link > span {
     font-size: 16px;
     line-height: 54px;
     width: 100%
@@ -3172,6 +3172,19 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.
     font-family: Glyphicons Regular, serif;
     font-size: 18px;
     padding-right: 5px
+}
+
+/* Audiobook button icons */
+#audiobook-play-btn > span.glyphicon-play:before,
+.generate-audiobook-link > span.glyphicon-play:before {
+    font-size: 18px;
+    font-family: Glyphicons Regular, serif;
+}
+
+#audiobook-download-btn > span.glyphicon-headphones:before,
+.generate-audiobook-link > span.glyphicon-headphones:before {
+    font-size: 18px;
+    font-family: Glyphicons Regular, serif;
 }
 
 #read-in-browser > span.glyphicon-list:before, .btn-toolbar > .btn-group > #btnGroupDrop2 > span.glyphicon-list:before {

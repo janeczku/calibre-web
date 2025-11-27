@@ -29,6 +29,9 @@
 
     // ===== LOADING STATES =====
     setupLoadingStates();
+
+    // ===== DISABLE MODAL - GO DIRECTLY TO BOOK PAGE =====
+    disableBookModal();
   });
 
   /**
@@ -510,6 +513,41 @@
       el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
       revealObserver.observe(el);
     });
+  }
+
+  /**
+   * Disables book modal and makes clicks go directly to book detail page
+   * This improves UX by avoiding information loss in the modal
+   */
+  function disableBookModal() {
+    // Find all book links that trigger the modal
+    const bookLinks = document.querySelectorAll('a[data-toggle="modal"][data-target="#bookDetailsModal"]');
+
+    bookLinks.forEach(function(link) {
+      // Remove modal attributes
+      link.removeAttribute('data-toggle');
+      link.removeAttribute('data-target');
+      link.removeAttribute('data-remote');
+
+      // Ensure the href is preserved for direct navigation
+      // The link already has the correct href to the book detail page
+
+      // Optional: Add a smooth transition effect
+      link.style.transition = 'all 0.2s ease';
+    });
+
+    // Also disable the modal itself if it exists
+    const bookModal = document.querySelector('#bookDetailsModal');
+    if (bookModal) {
+      // Prevent modal from showing
+      bookModal.style.display = 'none';
+
+      // Remove modal backdrop if it exists
+      const modalBackdrop = document.querySelector('.modal-backdrop');
+      if (modalBackdrop) {
+        modalBackdrop.remove();
+      }
+    }
   }
 
 })();
