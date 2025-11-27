@@ -1828,9 +1828,7 @@ def quick_audiobook_preview(book_id, book_format):
             '1.0'    # Speed
         ]
 
-        cps_dir = os.path.dirname(os.path.abspath(__file__))
-        calibre_web_dir = os.path.dirname(cps_dir)
-        p = process_open(command, cwd=calibre_web_dir)
+        p = process_open(command)
         p.wait(timeout=300)  # 5 minute timeout
 
         if p.returncode == 0 and os.path.exists(temp_audio):

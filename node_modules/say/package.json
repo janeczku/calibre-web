@@ -1,0 +1,26 @@
+{
+  "name": "say",
+  "description": "TTS (Text To Speech) Module for Node.js",
+  "version": "0.16.0",
+  "author": "Marak Squires",
+  "license": "MIT",
+  "scripts": {
+    "test": "standard && ./examples/basic-callback.js",
+    "lint": "standard",
+    "lint-fix": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/Marak/say.js.git"
+  },
+  "typings": "index.d.ts",
+  "engines": {
+    "node": ">=6.9"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "one-time": "0.0.4"
+  }
+}
