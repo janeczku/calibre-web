@@ -31,7 +31,7 @@ log = logger.create()
 
 
 class Google(Metadata):
-    __name__ = "Google"
+    __name__ = "Google Books"
     __id__ = "google"
     DESCRIPTION = "Google Books"
     META_URL = "https://books.google.com/"

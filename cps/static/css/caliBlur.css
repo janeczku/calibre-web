@@ -2611,8 +2611,6 @@ textarea {
     line-height: 1.71428571;
     color: var(--color-primary);
     font-weight: 100;
-    text-align: right;
-    position: absolute;
     right: 0;
     padding: 12.5px
 }
