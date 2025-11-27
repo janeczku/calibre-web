@@ -317,7 +317,9 @@ class TaskGenerateAudiobook(CalibreTask):
             else:
                 log.error(f"Node.js TTS failed with code {p.returncode}")
                 if stderr:
-                    log.error(f"Error output: {stderr.decode('utf-8')}")
+                    # stderr might be bytes or str depending on process_open implementation
+                    error_msg = stderr.decode('utf-8') if isinstance(stderr, bytes) else stderr
+                    log.error(f"Error output: {error_msg}")
                 return None
 
         except Exception as e:
