@@ -8069,3 +8069,76 @@ div.comments[data-readmore] {
 }
 
 /* End of Audiobook Buttons Styles */
+
+/* ===================================================================
+   BOOK GRID FIXES - Fix hover effect, overlapping titles, and sizing
+   =================================================================== */
+
+/* Fix 1: Ensure consistent book cover sizes */
+.container-fluid .book .cover img {
+    width: 180px !important;
+    height: auto !important;
+    max-height: 270px !important;
+    object-fit: cover !important;
+}
+
+/* Fix 2: Add proper spacing to prevent title overlap with next row */
+.container-fluid .book {
+    margin-bottom: 40px !important;
+    padding-bottom: 10px !important;
+}
+
+.container-fluid .book .meta {
+    margin-top: 10px !important;
+    min-height: 60px !important;
+}
+
+/* Fix 3: Fix hover effect alignment - ensure :before and :after cover the correct area */
+#books > .cover > a:before,
+#books_rand > .cover > a:before,
+.book.isotope-item > .cover > a:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+#books > .cover > a:after,
+#books_rand > .cover > a:after,
+.book.isotope-item > .cover > a:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+}
+
+/* Ensure cover link container is positioned properly */
+#books > .cover > a,
+#books_rand > .cover > a,
+.book.isotope-item > .cover > a {
+    position: relative;
+    display: block;
+}
+
+/* Ensure cover container itself is positioned */
+.container-fluid .book .cover {
+    position: relative;
+    width: 180px;
+    min-height: 270px;
+}
+
+/* Fix 4: Limit title text to prevent overflow */
+.container-fluid .book .meta .title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 3em;
+    line-height: 1.5em;
+}
+
+/* End of Book Grid Fixes */

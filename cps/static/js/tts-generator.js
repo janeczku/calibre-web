@@ -1,26 +1,28 @@
 #!/usr/bin/env node
 
 /**
- * Text-to-Speech Generator using 'say' library
+ * Text-to-Speech Generator with cross-platform support
  * This script is called by Python to generate audio files
+ * Supports: macOS (say), Windows (say), Linux (espeak/festival)
  */
 
-const say = require('say');
 const fs = require('fs');
 const path = require('path');
+const { execSync, exec } = require('child_process');
+const os = require('os');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
 
 if (args.length < 3) {
   console.error('Usage: node tts-generator.js <text> <output_file> <voice> [speed]');
-  console.error('Example: node tts-generator.js "Hello world" output.wav "Microsoft David Desktop" 1.0');
+  console.error('Example: node tts-generator.js "Hello world" output.wav "default" 1.0');
   process.exit(1);
 }
 
 let text = args[0];
 const outputFile = args[1];
-const voice = args[2] || null;
+const voice = args[2] || 'default';
 const speed = parseFloat(args[3]) || 1.0;
 
 // Check if text starts with @ (file reference)
@@ -41,28 +43,223 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
+// Detect platform
+const platform = os.platform();
+console.log(`Platform detected: ${platform}`);
+
 // Generate audio
 console.log(`Generating audio...`);
 console.log(`- Text length: ${text.length} characters`);
 console.log(`- Output: ${outputFile}`);
-console.log(`- Voice: ${voice || 'default'}`);
+console.log(`- Voice: ${voice}`);
 console.log(`- Speed: ${speed}`);
 
-say.export(text, voice, speed, outputFile, (err) => {
-  if (err) {
-    console.error('Error generating audio:', err);
+/**
+ * Generate audio using platform-specific TTS
+ */
+function generateAudio() {
+  try {
+    if (platform === 'darwin') {
+      // macOS - use native 'say' command
+      generateAudioMacOS();
+    } else if (platform === 'win32') {
+      // Windows - use 'say' library
+      generateAudioWindows();
+    } else {
+      // Linux - use espeak or festival
+      generateAudioLinux();
+    }
+  } catch (err) {
+    console.error('Error generating audio:', err.message);
     process.exit(1);
   }
+}
 
-  console.log('Audio generated successfully!');
+/**
+ * macOS TTS using native 'say' command
+ */
+function generateAudioMacOS() {
+  const tempAiff = outputFile.replace('.wav', '.aiff');
 
-  // Verify file was created
+  // Write text to temp file to avoid command line length limits
+  const tempTextFile = path.join(os.tmpdir(), `tts_${Date.now()}.txt`);
+  fs.writeFileSync(tempTextFile, text);
+
+  try {
+    // Generate AIFF file
+    const sayCmd = `say -f "${tempTextFile}" -v "${voice}" -r ${Math.round(speed * 175)} -o "${tempAiff}"`;
+    execSync(sayCmd);
+
+    // Convert AIFF to WAV using ffmpeg or afconvert
+    if (commandExists('ffmpeg')) {
+      execSync(`ffmpeg -i "${tempAiff}" -y "${outputFile}"`);
+    } else if (commandExists('afconvert')) {
+      execSync(`afconvert -f WAVE -d LEI16 "${tempAiff}" "${outputFile}"`);
+    } else {
+      // Just rename if no converter available
+      fs.renameSync(tempAiff, outputFile);
+    }
+
+    // Cleanup
+    if (fs.existsSync(tempAiff) && tempAiff !== outputFile) {
+      fs.unlinkSync(tempAiff);
+    }
+    fs.unlinkSync(tempTextFile);
+
+    verifyOutput();
+  } catch (err) {
+    // Cleanup on error
+    if (fs.existsSync(tempTextFile)) fs.unlinkSync(tempTextFile);
+    if (fs.existsSync(tempAiff)) fs.unlinkSync(tempAiff);
+    throw err;
+  }
+}
+
+/**
+ * Windows TTS using 'say' library
+ */
+function generateAudioWindows() {
+  const say = require('say');
+
+  say.export(text, voice, speed, outputFile, (err) => {
+    if (err) {
+      console.error('Error generating audio:', err);
+      process.exit(1);
+    }
+    verifyOutput();
+  });
+}
+
+/**
+ * Linux TTS using espeak-ng or festival
+ */
+function generateAudioLinux() {
+  // Try espeak-ng first (better quality), then espeak, then festival
+  if (commandExists('espeak-ng')) {
+    generateWithEspeak('espeak-ng');
+  } else if (commandExists('espeak')) {
+    generateWithEspeak('espeak');
+  } else if (commandExists('festival')) {
+    generateWithFestival();
+  } else {
+    throw new Error('No TTS engine found. Please install espeak-ng, espeak, or festival');
+  }
+}
+
+/**
+ * Generate audio using espeak/espeak-ng
+ */
+function generateWithEspeak(command) {
+  console.log(`Using ${command} for TTS`);
+
+  // Write text to temp file
+  const tempTextFile = path.join(os.tmpdir(), `tts_${Date.now()}.txt`);
+  fs.writeFileSync(tempTextFile, text);
+
+  try {
+    // espeak parameters:
+    // -f: read from file
+    // -w: write to WAV file
+    // -s: speed (words per minute, default 175)
+    // -v: voice
+    const speedWpm = Math.round(speed * 175);
+    const espeakVoice = mapVoiceToEspeak(voice);
+
+    const cmd = `${command} -f "${tempTextFile}" -w "${outputFile}" -s ${speedWpm} -v ${espeakVoice}`;
+    execSync(cmd);
+
+    // Cleanup
+    fs.unlinkSync(tempTextFile);
+
+    verifyOutput();
+  } catch (err) {
+    if (fs.existsSync(tempTextFile)) fs.unlinkSync(tempTextFile);
+    throw err;
+  }
+}
+
+/**
+ * Generate audio using festival
+ */
+function generateWithFestival() {
+  console.log('Using festival for TTS');
+
+  // Write text to temp file
+  const tempTextFile = path.join(os.tmpdir(), `tts_${Date.now()}.txt`);
+  fs.writeFileSync(tempTextFile, text);
+
+  try {
+    // Festival script
+    const festivalScript = `(begin
+  (set! utt1 (Utterance Text "${text.replace(/"/g, '\\"')}"))
+  (utt.synth utt1)
+  (utt.save.wave utt1 "${outputFile}")
+)`;
+
+    const tempScriptFile = path.join(os.tmpdir(), `tts_script_${Date.now()}.scm`);
+    fs.writeFileSync(tempScriptFile, festivalScript);
+
+    execSync(`festival -b "${tempScriptFile}"`);
+
+    // Cleanup
+    fs.unlinkSync(tempTextFile);
+    fs.unlinkSync(tempScriptFile);
+
+    verifyOutput();
+  } catch (err) {
+    if (fs.existsSync(tempTextFile)) fs.unlinkSync(tempTextFile);
+    throw err;
+  }
+}
+
+/**
+ * Map voice names to espeak voices
+ */
+function mapVoiceToEspeak(voiceName) {
+  const voiceMap = {
+    'Alex': 'en-us',
+    'default': 'en',
+    'en': 'en',
+    'es': 'es',
+    'fr': 'fr',
+    'de': 'de',
+    'it': 'it',
+    'pt': 'pt',
+    'ru': 'ru',
+    'zh': 'zh',
+    'ja': 'ja'
+  };
+
+  return voiceMap[voiceName] || voiceMap[voiceName.toLowerCase()] || 'en';
+}
+
+/**
+ * Check if a command exists
+ */
+function commandExists(command) {
+  try {
+    const checkCmd = platform === 'win32' ? 'where' : 'which';
+    execSync(`${checkCmd} ${command}`, { stdio: 'ignore' });
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+/**
+ * Verify output file was created successfully
+ */
+function verifyOutput() {
   if (fs.existsSync(outputFile)) {
     const stats = fs.statSync(outputFile);
+    console.log(`Audio generated successfully!`);
     console.log(`File size: ${stats.size} bytes`);
     process.exit(0);
   } else {
     console.error('Error: Output file was not created');
     process.exit(1);
   }
-});
+}
+
+// Start generation
+generateAudio();

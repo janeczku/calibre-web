@@ -28,6 +28,16 @@ class AudiobookSetup:
         return shutil.which('npm') is not None
 
     @staticmethod
+    def check_espeak_installed():
+        """Check if espeak-ng or espeak is installed (Linux TTS)"""
+        return shutil.which('espeak-ng') is not None or shutil.which('espeak') is not None
+
+    @staticmethod
+    def check_festival_installed():
+        """Check if festival is installed (Linux TTS alternative)"""
+        return shutil.which('festival') is not None
+
+    @staticmethod
     def check_say_installed():
         """Check if 'say' library is installed"""
         try:
@@ -106,6 +116,23 @@ class AudiobookSetup:
             log.warning(msg)
             return False, msg
 
+        # Detect platform
+        platform = sys.platform
+
+        # On Linux, check for espeak-ng/espeak or festival
+        if platform.startswith('linux'):
+            if AudiobookSetup.check_espeak_installed():
+                log.info("espeak-ng/espeak found - audiobook generation available (Linux TTS)")
+                return True, "Audiobook dependencies OK (espeak)"
+            elif AudiobookSetup.check_festival_installed():
+                log.info("festival found - audiobook generation available (Linux TTS)")
+                return True, "Audiobook dependencies OK (festival)"
+            else:
+                msg = "No Linux TTS engine found. Please install espeak-ng: apt-get install espeak-ng"
+                log.warning(msg)
+                return False, msg
+
+        # On macOS/Windows, check for 'say' library
         # Check if 'say' is already installed
         if AudiobookSetup.check_say_installed():
             log.info("'say' library is already installed - audiobook generation available")
