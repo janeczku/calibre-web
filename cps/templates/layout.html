@@ -26,6 +26,8 @@
        <link href="{{ url_for('static', filename='css/modern.css') }}" rel="stylesheet" media="screen">
     {% elif g.current_theme == 3 %}
        <link href="{{ url_for('static', filename='css/professional.css') }}" rel="stylesheet" media="screen">
+    {% elif g.current_theme == 4 %}
+       <link href="{{ url_for('static', filename='css/professional-dark.css') }}" rel="stylesheet" media="screen">
     {% endif %}
   </head>
   <body class="{{ page }} {{ bodyClass }}{% if g.current_theme == 1 %} blur{% endif %}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
@@ -231,6 +233,8 @@
       <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
     {% elif g.current_theme == 3 %}
       <script src="{{ url_for('static', filename='js/professional.js') }}"></script>
+    {% elif g.current_theme == 4 %}
+      <script src="{{ url_for('static', filename='js/professional-dark.js') }}"></script>
     {% endif %}
     {% block js %}{% endblock %}
   </body>
