@@ -1688,10 +1688,9 @@ def show_book(book_id):
         if entry.path:
             book_dir = os.path.join(config.get_book_path(), entry.path)
             if os.path.exists(book_dir):
-                # Look for generated audiobook files (pattern: *_part###.mp3 or *_part###.wav)
+                # Look for generated audiobook files (pattern: *_part###.mp3)
                 import glob
                 audiobook_files = glob.glob(os.path.join(book_dir, "*_part*.mp3"))
-                audiobook_files.extend(glob.glob(os.path.join(book_dir, "*_part*.wav")))
                 if audiobook_files:
                     # Group files and get info
                     audiobook_files.sort()
@@ -1811,8 +1810,8 @@ def download_generated_audiobook(book_id, filename):
         book_dir = os.path.join(config.get_book_path(), book.path)
         file_path = os.path.join(book_dir, filename)
 
-        # Security check: ensure file is an audio file and exists in book directory
-        if not (filename.endswith('.wav') or filename.endswith('.mp3')) or not os.path.exists(file_path):
+        # Security check: ensure file is an MP3 audio file and exists in book directory
+        if not filename.endswith('.mp3') or not os.path.exists(file_path):
             abort(404)
 
         # Ensure file is within book directory (prevent path traversal)
@@ -1823,16 +1822,13 @@ def download_generated_audiobook(book_id, filename):
         if current_user.is_authenticated:
             ub.update_download(book_id, int(current_user.id))
 
-        # Determine mimetype
-        mimetype = 'audio/mpeg' if filename.endswith('.mp3') else 'audio/wav'
-
-        # Send file
+        # Send file as MP3
         return send_from_directory(
             book_dir,
             filename,
             as_attachment=True,
             download_name=filename,
-            mimetype=mimetype
+            mimetype='audio/mpeg'
         )
     except Exception as e:
         log.error(f"Error downloading audiobook file: {str(e)}")
@@ -1851,23 +1847,20 @@ def play_generated_audiobook(book_id, filename):
         book_dir = os.path.join(config.get_book_path(), book.path)
         file_path = os.path.join(book_dir, filename)
 
-        # Security check: ensure file is an audio file and exists in book directory
-        if not (filename.endswith('.wav') or filename.endswith('.mp3')) or not os.path.exists(file_path):
+        # Security check: ensure file is an MP3 audio file and exists in book directory
+        if not filename.endswith('.mp3') or not os.path.exists(file_path):
             abort(404)
 
         # Ensure file is within book directory (prevent path traversal)
         if not os.path.abspath(file_path).startswith(os.path.abspath(book_dir)):
             abort(403)
 
-        # Determine mimetype
-        mimetype = 'audio/mpeg' if filename.endswith('.mp3') else 'audio/wav'
-
-        # Send file for inline playback
+        # Send file for inline playback as MP3
         return send_from_directory(
             book_dir,
             filename,
             as_attachment=False,
-            mimetype=mimetype
+            mimetype='audio/mpeg'
         )
     except Exception as e:
         log.error(f"Error playing audiobook file: {str(e)}")

@@ -198,6 +198,11 @@
       <p class="text-muted" style="margin-top: 10px;">
         {{_('View detailed statistics, KPIs, and analytics about your library usage.')}}
       </p>
+      <a class="btn btn-primary" id="manage_audiobooks" href="{{url_for('admin.manage_audiobooks')}}" style="background-color: #3498db; border-color: #2980b9;">
+        <span class="glyphicon glyphicon-headphones"></span>
+        {{_('Manage Audiobooks')}}
+      </a>
+      <p style="color: #888; margin-top: 10px;">{{_('View and delete generated audiobook files to free up disk space.')}}</p>
     </div>
   </div>
 {%  if feature_support['scheduler'] %}

@@ -267,6 +267,111 @@ def admin_statistics():
         return redirect(url_for('admin.admin'))
 
 
+@admi.route("/admin/audiobooks")
+@user_login_required
+@admin_required
+def manage_audiobooks():
+    """Manage generated audiobook files"""
+    try:
+        import glob
+        audiobook_files = []
+        total_size = 0
+
+        # Scan all books for generated audiobook files
+        books = calibre_db.session.query(db.Books).all()
+        for book in books:
+            if book.path:
+                book_dir = os.path.join(config.get_book_path(), book.path)
+                if os.path.exists(book_dir):
+                    # Find all MP3 audiobook files
+                    audio_files = glob.glob(os.path.join(book_dir, "*_part*.mp3"))
+                    if audio_files:
+                        book_audiobooks = []
+                        book_total_size = 0
+                        for audio_file in sorted(audio_files):
+                            filename = os.path.basename(audio_file)
+                            file_size = os.path.getsize(audio_file)
+                            book_total_size += file_size
+                            total_size += file_size
+
+                            # Get duration
+                            duration_seconds = 0
+                            try:
+                                import mutagen
+                                audio = mutagen.File(audio_file)
+                                if audio and hasattr(audio.info, 'length'):
+                                    duration_seconds = int(audio.info.length)
+                            except Exception:
+                                pass
+
+                            book_audiobooks.append({
+                                'filename': filename,
+                                'size': file_size,
+                                'duration': duration_seconds,
+                                'path': audio_file
+                            })
+
+                        audiobook_files.append({
+                            'book_id': book.id,
+                            'book_title': book.title,
+                            'book_path': book.path,
+                            'files': book_audiobooks,
+                            'total_size': book_total_size,
+                            'file_count': len(book_audiobooks)
+                        })
+
+        return render_title_template("admin_audiobooks.html",
+                                     audiobook_files=audiobook_files,
+                                     total_size=total_size,
+                                     total_books=len(audiobook_files),
+                                     title=_("Manage Audiobooks"),
+                                     page="manage_audiobooks")
+    except Exception as e:
+        log.error(f"Error loading audiobooks: {e}")
+        flash(_("Error loading audiobooks: %(error)s", error=str(e)), category="error")
+        return redirect(url_for('admin.admin'))
+
+
+@admi.route("/admin/audiobooks/delete/<int:book_id>", methods=["POST"])
+@user_login_required
+@admin_required
+def delete_audiobook(book_id):
+    """Delete all audiobook files for a specific book"""
+    try:
+        import glob
+        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+        if not book or not book.path:
+            flash(_("Book not found"), category="error")
+            return redirect(url_for('admin.manage_audiobooks'))
+
+        book_dir = os.path.join(config.get_book_path(), book.path)
+        if not os.path.exists(book_dir):
+            flash(_("Book directory not found"), category="error")
+            return redirect(url_for('admin.manage_audiobooks'))
+
+        # Find and delete all audiobook files
+        audio_files = glob.glob(os.path.join(book_dir, "*_part*.mp3"))
+        deleted_count = 0
+        for audio_file in audio_files:
+            try:
+                os.remove(audio_file)
+                deleted_count += 1
+            except Exception as e:
+                log.error(f"Error deleting file {audio_file}: {e}")
+
+        if deleted_count > 0:
+            flash(_("%(count)s audiobook file(s) deleted successfully for '%(title)s'",
+                   count=deleted_count, title=book.title), category="success")
+        else:
+            flash(_("No audiobook files found for '%(title)s'", title=book.title), category="warning")
+
+        return redirect(url_for('admin.manage_audiobooks'))
+    except Exception as e:
+        log.error(f"Error deleting audiobooks: {e}")
+        flash(_("Error deleting audiobooks: %(error)s", error=str(e)), category="error")
+        return redirect(url_for('admin.manage_audiobooks'))
+
+
 @admi.route("/admin/dbconfig", methods=["GET", "POST"])
 @user_login_required
 @admin_required

@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2>{{_('Manage Generated Audiobooks')}}</h2>
+      <p class="text-muted">
+        {{_('View and delete generated audiobook files to free up disk space.')}}
+      </p>
+
+      {% if audiobook_files and audiobook_files|length > 0 %}
+      <div class="alert alert-info">
+        <strong>{{_('Summary:')}}</strong>
+        {{ total_books }} {{ _('books with audiobooks') }} &bull;
+        {{ total_size|filesizeformat }} {{ _('total size') }}
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>{{_('Book Title')}}</th>
+              <th class="hidden-xs">{{_('Files')}}</th>
+              <th class="hidden-xs">{{_('Total Size')}}</th>
+              <th class="hidden-xs">{{_('Total Duration')}}</th>
+              <th>{{_('Actions')}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book_audio in audiobook_files %}
+            <tr>
+              <td>
+                <a href="{{ url_for('web.show_book', book_id=book_audio.book_id) }}" target="_blank">
+                  <span class="glyphicon glyphicon-book"></span>
+                  {{ book_audio.book_title }}
+                </a>
+                <br class="visible-xs">
+                <small class="text-muted visible-xs">
+                  {{ book_audio.file_count }} {{ _('files') }} &bull;
+                  {{ book_audio.total_size|filesizeformat }}
+                </small>
+              </td>
+              <td class="hidden-xs">{{ book_audio.file_count }}</td>
+              <td class="hidden-xs">{{ book_audio.total_size|filesizeformat }}</td>
+              <td class="hidden-xs">
+                {% set total_duration = book_audio.files|sum(attribute='duration') %}
+                {% if total_duration > 0 %}
+                  {% set hours = total_duration // 3600 %}
+                  {% set minutes = (total_duration % 3600) // 60 %}
+                  {% if hours > 0 %}{{ hours }}h {% endif %}{{ minutes }}m
+                {% else %}
+                  <span class="text-muted">-</span>
+                {% endif %}
+              </td>
+              <td>
+                <button type="button"
+                        class="btn btn-xs btn-default"
+                        data-toggle="collapse"
+                        data-target="#details-{{ book_audio.book_id }}"
+                        title="{{_('Show/Hide Details')}}">
+                  <span class="glyphicon glyphicon-list"></span>
+                  <span class="hidden-xs">{{_('Details')}}</span>
+                </button>
+                <form method="POST"
+                      action="{{ url_for('admin.delete_audiobook', book_id=book_audio.book_id) }}"
+                      style="display: inline;"
+                      onsubmit="return confirm('{{_('Are you sure you want to delete all audiobook files for')}} \'{{ book_audio.book_title }}\'? {{_('This cannot be undone.')}}');">
+                  <button type="submit" class="btn btn-xs btn-danger" title="{{_('Delete all audiobook files')}}">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    <span class="hidden-xs">{{_('Delete')}}</span>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <tr class="collapse" id="details-{{ book_audio.book_id }}">
+              <td colspan="5">
+                <div style="padding: 10px; background-color: #f9f9f9; border-left: 3px solid #337ab7;">
+                  <h5>{{_('Audiobook Files:')}}</h5>
+                  <ul class="list-unstyled" style="margin-left: 20px;">
+                    {% for file in book_audio.files %}
+                    <li style="margin-bottom: 5px;">
+                      <span class="glyphicon glyphicon-music text-primary"></span>
+                      <strong>{{ file.filename }}</strong>
+                      <span class="text-muted">
+                        ({{ file.size|filesizeformat }}
+                        {% if file.duration > 0 %}
+                          &bull;
+                          {% set hours = file.duration // 3600 %}
+                          {% set minutes = (file.duration % 3600) // 60 %}
+                          {% set seconds = file.duration % 60 %}
+                          {% if hours > 0 %}{{ hours }}h {% endif %}{{ minutes }}m {% if hours == 0 %}{{ seconds }}s{% endif %}
+                        {% endif %}
+                        )
+                      </span>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% else %}
+      <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        {{_('No generated audiobook files found.')}}
+      </div>
+      {% endif %}
+
+      <div style="margin-top: 20px;">
+        <a href="{{ url_for('admin.admin') }}" class="btn btn-default">
+          <span class="glyphicon glyphicon-arrow-left"></span>
+          {{_('Back to Admin')}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
