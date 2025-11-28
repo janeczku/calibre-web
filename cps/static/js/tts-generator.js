@@ -16,7 +16,7 @@ const args = process.argv.slice(2);
 
 if (args.length < 3) {
   console.error('Usage: node tts-generator.js <text> <output_file> <voice> [speed]');
-  console.error('Example: node tts-generator.js "Hello world" output.wav "default" 1.0');
+  console.error('Example: node tts-generator.js "Hello world" output.mp3 "default" 1.0');
   process.exit(1);
 }
 
@@ -24,6 +24,9 @@ let text = args[0];
 const outputFile = args[1];
 const voice = args[2] || 'default';
 const speed = parseFloat(args[3]) || 1.0;
+
+// Determine output format from file extension
+const outputFormat = path.extname(outputFile).toLowerCase();
 
 // Check if text starts with @ (file reference)
 if (text.startsWith('@')) {
@@ -79,7 +82,7 @@ function generateAudio() {
  * macOS TTS using native 'say' command
  */
 function generateAudioMacOS() {
-  const tempAiff = outputFile.replace('.wav', '.aiff');
+  const tempAiff = path.join(os.tmpdir(), `tts_${Date.now()}.aiff`);
 
   // Write text to temp file to avoid command line length limits
   const tempTextFile = path.join(os.tmpdir(), `tts_${Date.now()}.txt`);
@@ -90,18 +93,33 @@ function generateAudioMacOS() {
     const sayCmd = `say -f "${tempTextFile}" -v "${voice}" -r ${Math.round(speed * 175)} -o "${tempAiff}"`;
     execSync(sayCmd);
 
-    // Convert AIFF to WAV using ffmpeg or afconvert
+    // Convert AIFF to desired format using ffmpeg
     if (commandExists('ffmpeg')) {
-      execSync(`ffmpeg -i "${tempAiff}" -y "${outputFile}"`);
+      if (outputFormat === '.mp3') {
+        // Convert to MP3 with good quality and compression
+        execSync(`ffmpeg -i "${tempAiff}" -codec:a libmp3lame -qscale:a 2 -y "${outputFile}"`);
+      } else {
+        // Convert to WAV or other format
+        execSync(`ffmpeg -i "${tempAiff}" -y "${outputFile}"`);
+      }
     } else if (commandExists('afconvert')) {
-      execSync(`afconvert -f WAVE -d LEI16 "${tempAiff}" "${outputFile}"`);
+      if (outputFormat === '.mp3') {
+        console.error('Warning: afconvert cannot create MP3. Install ffmpeg for MP3 support.');
+        // Fallback to WAV
+        const wavFile = outputFile.replace('.mp3', '.wav');
+        execSync(`afconvert -f WAVE -d LEI16 "${tempAiff}" "${wavFile}"`);
+        fs.renameSync(wavFile, outputFile);
+      } else {
+        execSync(`afconvert -f WAVE -d LEI16 "${tempAiff}" "${outputFile}"`);
+      }
     } else {
       // Just rename if no converter available
+      console.error('Warning: No audio converter found. Output may not be in desired format.');
       fs.renameSync(tempAiff, outputFile);
     }
 
     // Cleanup
-    if (fs.existsSync(tempAiff) && tempAiff !== outputFile) {
+    if (fs.existsSync(tempAiff)) {
       fs.unlinkSync(tempAiff);
     }
     fs.unlinkSync(tempTextFile);
@@ -157,16 +175,25 @@ function generateWithEspeak(command) {
   fs.writeFileSync(tempTextFile, text);
 
   try {
-    // espeak parameters:
-    // -f: read from file
-    // -w: write to WAV file
-    // -s: speed (words per minute, default 175)
-    // -v: voice
     const speedWpm = Math.round(speed * 175);
     const espeakVoice = mapVoiceToEspeak(voice);
 
-    const cmd = `${command} -f "${tempTextFile}" -w "${outputFile}" -s ${speedWpm} -v ${espeakVoice}`;
-    execSync(cmd);
+    if (outputFormat === '.mp3' && commandExists('ffmpeg')) {
+      // Generate WAV first, then convert to MP3
+      const tempWav = path.join(os.tmpdir(), `tts_${Date.now()}.wav`);
+      const cmd = `${command} -f "${tempTextFile}" -w "${tempWav}" -s ${speedWpm} -v ${espeakVoice}`;
+      execSync(cmd);
+
+      // Convert to MP3
+      execSync(`ffmpeg -i "${tempWav}" -codec:a libmp3lame -qscale:a 2 -y "${outputFile}"`);
+
+      // Cleanup temp WAV
+      if (fs.existsSync(tempWav)) fs.unlinkSync(tempWav);
+    } else {
+      // Generate WAV directly
+      const cmd = `${command} -f "${tempTextFile}" -w "${outputFile}" -s ${speedWpm} -v ${espeakVoice}`;
+      execSync(cmd);
+    }
 
     // Cleanup
     fs.unlinkSync(tempTextFile);

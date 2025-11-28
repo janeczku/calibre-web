@@ -1683,12 +1683,46 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audio_entries.append(media_format.format.lower())
 
+        # Check for generated audiobook files
+        generated_audiobooks = []
+        if entry.path:
+            book_dir = os.path.join(config.get_book_path(), entry.path)
+            if os.path.exists(book_dir):
+                # Look for generated audiobook files (pattern: *_part###.mp3 or *_part###.wav)
+                import glob
+                audiobook_files = glob.glob(os.path.join(book_dir, "*_part*.mp3"))
+                audiobook_files.extend(glob.glob(os.path.join(book_dir, "*_part*.wav")))
+                if audiobook_files:
+                    # Group files and get info
+                    audiobook_files.sort()
+                    for audio_file in audiobook_files:
+                        filename = os.path.basename(audio_file)
+                        file_size = os.path.getsize(audio_file)
+
+                        # Get duration using mutagen
+                        duration_seconds = 0
+                        try:
+                            import mutagen
+                            audio = mutagen.File(audio_file)
+                            if audio and hasattr(audio.info, 'length'):
+                                duration_seconds = int(audio.info.length)
+                        except Exception as e:
+                            log.debug(f"Could not get duration for {filename}: {str(e)}")
+
+                        generated_audiobooks.append({
+                            'filename': filename,
+                            'size': file_size,
+                            'duration': duration_seconds,
+                            'path': filename  # Relative to book directory
+                        })
+
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
                                      is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
                                      title=entry.title,
                                      books_shelfs=book_in_shelves,
+                                     generated_audiobooks=generated_audiobooks,
                                      page="book")
     else:
         log.debug("Selected book is unavailable. File does not exist or is not accessible")
@@ -1762,6 +1796,82 @@ def generate_audiobook(book_id, book_format):
         log.error(f"Error starting audiobook generation: {str(e)}")
         flash(_("Error starting audiobook generation: %(error)s", error=str(e)), category="error")
         return redirect(url_for("web.show_book", book_id=book_id))
+
+
+@web.route("/book/<int:book_id>/audiobook/<filename>")
+@login_required_if_no_ano
+@download_required
+def download_generated_audiobook(book_id, filename):
+    """Download a generated audiobook file"""
+    try:
+        book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
+        if not book:
+            abort(404)
+
+        book_dir = os.path.join(config.get_book_path(), book.path)
+        file_path = os.path.join(book_dir, filename)
+
+        # Security check: ensure file is an audio file and exists in book directory
+        if not (filename.endswith('.wav') or filename.endswith('.mp3')) or not os.path.exists(file_path):
+            abort(404)
+
+        # Ensure file is within book directory (prevent path traversal)
+        if not os.path.abspath(file_path).startswith(os.path.abspath(book_dir)):
+            abort(403)
+
+        # Update download statistics
+        if current_user.is_authenticated:
+            ub.update_download(book_id, int(current_user.id))
+
+        # Determine mimetype
+        mimetype = 'audio/mpeg' if filename.endswith('.mp3') else 'audio/wav'
+
+        # Send file
+        return send_from_directory(
+            book_dir,
+            filename,
+            as_attachment=True,
+            download_name=filename,
+            mimetype=mimetype
+        )
+    except Exception as e:
+        log.error(f"Error downloading audiobook file: {str(e)}")
+        abort(500)
+
+
+@web.route("/book/<int:book_id>/audiobook/play/<filename>")
+@login_required_if_no_ano
+def play_generated_audiobook(book_id, filename):
+    """Stream a generated audiobook file for online playback"""
+    try:
+        book = calibre_db.get_filtered_book(book_id, allow_show_archived=True)
+        if not book:
+            abort(404)
+
+        book_dir = os.path.join(config.get_book_path(), book.path)
+        file_path = os.path.join(book_dir, filename)
+
+        # Security check: ensure file is an audio file and exists in book directory
+        if not (filename.endswith('.wav') or filename.endswith('.mp3')) or not os.path.exists(file_path):
+            abort(404)
+
+        # Ensure file is within book directory (prevent path traversal)
+        if not os.path.abspath(file_path).startswith(os.path.abspath(book_dir)):
+            abort(403)
+
+        # Determine mimetype
+        mimetype = 'audio/mpeg' if filename.endswith('.mp3') else 'audio/wav'
+
+        # Send file for inline playback
+        return send_from_directory(
+            book_dir,
+            filename,
+            as_attachment=False,
+            mimetype=mimetype
+        )
+    except Exception as e:
+        log.error(f"Error playing audiobook file: {str(e)}")
+        abort(500)
 
 
 @web.route("/book/<int:book_id>/quick-audiobook/<book_format>")

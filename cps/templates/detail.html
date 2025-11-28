@@ -192,6 +192,54 @@
                     {% endif %}
                 </div>
             </div>
+
+            <!-- Generated Audiobooks Section -->
+            {% if generated_audiobooks and generated_audiobooks|length > 0 %}
+            <div class="generated-audiobooks-section">
+                <h4>
+                    <span class="glyphicon glyphicon-headphones"></span>
+                    {{ _('Generated Audiobooks') }} ({{ generated_audiobooks|length }} {{ _('parts') }})
+                </h4>
+                <div class="audiobook-files-list">
+                    {% for audiobook in generated_audiobooks %}
+                    <div class="audiobook-file-item">
+                        <div class="audiobook-info">
+                            <span class="audiobook-filename">
+                                <span class="glyphicon glyphicon-music"></span>
+                                {{ audiobook.filename }}
+                            </span>
+                            <span class="audiobook-metadata">
+                                <span class="audiobook-filesize">{{ audiobook.size|filesizeformat }}</span>
+                                {% if audiobook.duration > 0 %}
+                                <span class="audiobook-duration">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    {% set hours = audiobook.duration // 3600 %}
+                                    {% set minutes = (audiobook.duration % 3600) // 60 %}
+                                    {% set seconds = audiobook.duration % 60 %}
+                                    {% if hours > 0 %}{{ hours }}h {% endif %}{{ minutes }}m {% if hours == 0 %}{{ seconds }}s{% endif %}
+                                </span>
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="audiobook-actions">
+                            <a href="{{ url_for('web.play_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
+                               class="btn btn-xs btn-primary audiobook-play-btn"
+                               target="_blank"
+                               title="{{ _('Play Online') }}">
+                                <span class="glyphicon glyphicon-play"></span> {{ _('Play') }}
+                            </a>
+                            <a href="{{ url_for('web.download_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
+                               class="btn btn-xs btn-success audiobook-download-btn"
+                               title="{{ _('Download') }}">
+                                <span class="glyphicon glyphicon-download"></span> {{ _('Download') }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
             <h2 id="title">{{ entry.title }}</h2>
             <p class="author">
                 {% for author in entry.ordered_authors %}

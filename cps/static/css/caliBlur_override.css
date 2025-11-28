@@ -8074,60 +8074,77 @@ div.comments[data-readmore] {
    BOOK GRID FIXES - Fix hover effect, overlapping titles, and sizing
    =================================================================== */
 
-/* Fix 1: Ensure consistent book cover sizes */
-.container-fluid .book .cover img {
+/* Fix 1: Ensure consistent book cover sizes - STRICT sizing */
+.container-fluid .book .cover {
+    position: relative;
     width: 180px !important;
-    height: auto !important;
-    max-height: 270px !important;
+    height: 270px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.container-fluid .book .cover img {
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover !important;
+    object-position: center !important;
 }
 
 /* Fix 2: Add proper spacing to prevent title overlap with next row */
 .container-fluid .book {
-    margin-bottom: 40px !important;
-    padding-bottom: 10px !important;
+    margin-bottom: 50px !important;
+    padding-bottom: 15px !important;
 }
 
 .container-fluid .book .meta {
     margin-top: 10px !important;
-    min-height: 60px !important;
+    min-height: 80px !important;
+    padding: 10px !important;
 }
 
-/* Fix 3: Fix hover effect alignment - ensure :before and :after cover the correct area */
-#books > .cover > a:before,
-#books_rand > .cover > a:before,
-.book.isotope-item > .cover > a:before {
+/* Fix 3: Fix hover effect alignment - position relative to cover container */
+#books .cover > a:before,
+#books_rand .cover > a:before,
+.book.isotope-item .cover > a:before {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) !important;
     z-index: 10;
+    width: auto !important;
+    height: auto !important;
 }
 
-#books > .cover > a:after,
-#books_rand > .cover > a:after,
-.book.isotope-item > .cover > a:after {
+#books .cover > a:after,
+#books_rand .cover > a:after,
+.book.isotope-item .cover > a:after {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     z-index: 9;
 }
 
-/* Ensure cover link container is positioned properly */
-#books > .cover > a,
-#books_rand > .cover > a,
-.book.isotope-item > .cover > a {
-    position: relative;
-    display: block;
+/* Ensure cover link container fills the cover area */
+#books .cover > a,
+#books_rand .cover > a,
+.book.isotope-item .cover > a {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
 }
 
-/* Ensure cover container itself is positioned */
-.container-fluid .book .cover {
-    position: relative;
-    width: 180px;
-    min-height: 270px;
+/* Fix the span wrapper inside cover */
+.container-fluid .book .cover span {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
 }
 
 /* Fix 4: Limit title text to prevent overflow */
@@ -8142,3 +8159,118 @@ div.comments[data-readmore] {
 }
 
 /* End of Book Grid Fixes */
+
+/* Generated Audiobooks Section */
+.generated-audiobooks-section {
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.generated-audiobooks-section h4 {
+  color: #00d9ff;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.audiobook-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.audiobook-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  transition: all 0.2s;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.audiobook-file-item:hover {
+  background: rgba(0, 217, 255, 0.1);
+  border-color: #00d9ff;
+  box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+}
+
+.audiobook-info {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.audiobook-filename {
+  font-weight: 500;
+  color: #fff;
+  display: block;
+}
+
+.audiobook-filename .glyphicon {
+  margin-right: 0.5rem;
+  color: #00d9ff;
+}
+
+.audiobook-metadata {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.audiobook-filesize {
+  display: inline-block;
+}
+
+.audiobook-duration {
+  display: inline-block;
+}
+
+.audiobook-duration .glyphicon {
+  margin-right: 0.25rem;
+}
+
+.audiobook-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.audiobook-play-btn,
+.audiobook-download-btn {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .audiobook-file-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .audiobook-info {
+    min-width: auto;
+  }
+
+  .audiobook-metadata {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .audiobook-actions {
+    justify-content: stretch;
+  }
+
+  .audiobook-actions a {
+    flex: 1;
+  }
+}

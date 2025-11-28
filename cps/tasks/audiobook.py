@@ -253,10 +253,10 @@ class TaskGenerateAudiobook(CalibreTask):
         return parts
 
     def _generate_audio_part(self, text, book_path, base_name, part_number):
-        """Generate audio file for a text part using Node.js 'say' library"""
+        """Generate audio file for a text part using Node.js TTS"""
         try:
-            # Create output filename
-            audio_filename = f"{base_name}_part{part_number:03d}.wav"
+            # Create output filename - use MP3 format for smaller file size
+            audio_filename = f"{base_name}_part{part_number:03d}.mp3"
             audio_path = os.path.join(book_path, audio_filename)
 
             # Get path to the Node.js TTS script
