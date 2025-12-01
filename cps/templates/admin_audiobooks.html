@@ -65,6 +65,7 @@
                       action="{{ url_for('admin.delete_audiobook', book_id=book_audio.book_id) }}"
                       style="display: inline;"
                       onsubmit="return confirm('{{_('Are you sure you want to delete all audiobook files for')}} \'{{ book_audio.book_title }}\'? {{_('This cannot be undone.')}}');">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <button type="submit" class="btn btn-xs btn-danger" title="{{_('Delete all audiobook files')}}">
                     <span class="glyphicon glyphicon-trash"></span>
                     <span class="hidden-xs">{{_('Delete')}}</span>

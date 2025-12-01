@@ -38,10 +38,26 @@ node -e "const say = require('say'); say.speak('Hello world');"
 ## 📚 Uso
 
 1. Ve a cualquier libro en Calibre-Web
-2. Haz clic en el botón verde **"Generate Audiobook"**
-3. Selecciona opciones y genera
-4. Espera a que termine (se procesa en segundo plano)
-5. Descarga o reproduce los archivos WAV generados
+2. Haz clic en el botón con icono de audífonos **"Generate Audiobook"**
+3. Selecciona la voz/idioma y el tamaño de las partes
+4. Haz clic en "Generate Audiobook"
+5. Espera a que termine (se procesa en segundo plano)
+6. Descarga o reproduce los archivos MP3 generados
+
+### 🗣️ Voces Disponibles
+
+**Linux/Docker (espeak/espeak-ng):**
+- **Spanish (Female/Male)**: Voces en español
+- **Spanish Latin America (Female)**: Voz en español latinoamericano
+- **English US (Male/Female)**: Inglés estadounidense
+- **English UK (Male)**: Inglés británico
+- **English AU (Female)**: Inglés australiano
+
+**macOS:**
+- Usa las voces nativas del sistema (Alex, Monica, Jorge, etc.)
+
+**Windows:**
+- Usa las voces SAPI instaladas en el sistema
 
 ---
 
@@ -63,7 +79,10 @@ node -e "const say = require('say'); say.speak('Hello world');"
 **No se escucha audio**
 → Windows: Verifica que SAPI funciona
 → macOS: Ya debería funcionar
-→ Linux: Instala `festival` o `espeak`
+→ Linux: Instala `espeak-ng` o `espeak` y `ffmpeg`:
+  ```bash
+  sudo apt-get install espeak-ng ffmpeg
+  ```
 
 ---
 
@@ -87,14 +106,16 @@ Todos estos archivos ya están incluidos.
 
 ## ✅ Requisitos del Sistema
 
-| Requisito | Versión | Obligatorio |
-|-----------|---------|-------------|
-| Node.js | v14+ | ✅ Sí |
-| npm | 6+ | ✅ Sí (viene con Node.js) |
-| say | 0.16+ | ✅ Sí |
-| Python | 3.6+ | ✅ Sí (ya lo tienes) |
-| ebooklib | latest | ❌ Opcional (EPUB) |
-| pdfplumber | latest | ❌ Opcional (PDF) |
+| Requisito | Versión | Plataforma | Obligatorio |
+|-----------|---------|------------|-------------|
+| Node.js | v14+ | Todas | ✅ Sí |
+| npm | 6+ | Todas | ✅ Sí (viene con Node.js) |
+| espeak-ng/espeak | latest | Linux/Docker | ✅ Sí |
+| ffmpeg | latest | Linux/Docker | ✅ Sí (para MP3) |
+| say | 0.16+ | Windows | ✅ Sí |
+| Python | 3.6+ | Todas | ✅ Sí (ya lo tienes) |
+| ebooklib | latest | Todas | ❌ Opcional (EPUB) |
+| pdfplumber | latest | Todas | ❌ Opcional (PDF) |
 
 ---
 

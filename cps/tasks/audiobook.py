@@ -75,6 +75,8 @@ class TaskGenerateAudiobook(CalibreTask):
                 self.title = book.title
                 self.message = N_("Generating audiobook for '%(title)s'", title=self.title)
 
+                log.info(f"Starting audiobook generation for '{self.title}' - Voice: {self.voice}, Words per part: {self.words_per_part}")
+
                 # Get the book file data
                 book_data = worker_db.get_book_format(self.book_id, self.book_format)
                 if not book_data:
@@ -298,11 +300,20 @@ class TaskGenerateAudiobook(CalibreTask):
                     '1.0'
                 ]
 
-            log.info(f"Generating audio part {part_number}: {audio_filename}")
+            log.info(f"Generating audio part {part_number}: {audio_filename} with voice '{self.voice}'")
+            log.debug(f"TTS command: {' '.join(command)}")
 
             calibre_web_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
             p = process_open(command, cwd=calibre_web_dir)
             stdout, stderr = p.communicate(timeout=600)  # 10 minute timeout
+
+            # Log output for debugging
+            if stdout:
+                stdout_msg = stdout.decode('utf-8') if isinstance(stdout, bytes) else stdout
+                log.debug(f"TTS stdout: {stdout_msg}")
+            if stderr:
+                stderr_msg = stderr.decode('utf-8') if isinstance(stderr, bytes) else stderr
+                log.debug(f"TTS stderr: {stderr_msg}")
 
             # Clean up temp file
             if os.path.exists(temp_text_file):

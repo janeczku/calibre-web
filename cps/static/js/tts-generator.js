@@ -52,9 +52,10 @@ console.log(`Platform detected: ${platform}`);
 
 // Generate audio
 console.log(`Generating audio...`);
+console.log(`- Platform: ${platform}`);
 console.log(`- Text length: ${text.length} characters`);
 console.log(`- Output: ${outputFile}`);
-console.log(`- Voice: ${voice}`);
+console.log(`- Voice (original): ${voice}`);
 console.log(`- Speed: ${speed}`);
 
 /**
@@ -91,6 +92,7 @@ function generateAudioMacOS() {
   try {
     // Generate AIFF file
     const sayCmd = `say -f "${tempTextFile}" -v "${voice}" -r ${Math.round(speed * 175)} -o "${tempAiff}"`;
+    console.log(`Executing command: ${sayCmd}`);
     execSync(sayCmd);
 
     // Convert AIFF to desired format using ffmpeg
@@ -177,21 +179,26 @@ function generateWithEspeak(command) {
   try {
     const speedWpm = Math.round(speed * 175);
     const espeakVoice = mapVoiceToEspeak(voice);
+    console.log(`Voice mapping: ${voice} -> ${espeakVoice}`);
 
     if (outputFormat === '.mp3' && commandExists('ffmpeg')) {
       // Generate WAV first, then convert to MP3
       const tempWav = path.join(os.tmpdir(), `tts_${Date.now()}.wav`);
       const cmd = `${command} -f "${tempTextFile}" -w "${tempWav}" -s ${speedWpm} -v ${espeakVoice}`;
+      console.log(`Executing: ${cmd}`);
       execSync(cmd);
 
       // Convert to MP3
-      execSync(`ffmpeg -i "${tempWav}" -codec:a libmp3lame -qscale:a 2 -y "${outputFile}"`);
+      const ffmpegCmd = `ffmpeg -i "${tempWav}" -codec:a libmp3lame -qscale:a 2 -y "${outputFile}"`;
+      console.log(`Converting to MP3: ${ffmpegCmd}`);
+      execSync(ffmpegCmd);
 
       // Cleanup temp WAV
       if (fs.existsSync(tempWav)) fs.unlinkSync(tempWav);
     } else {
       // Generate WAV directly
       const cmd = `${command} -f "${tempTextFile}" -w "${outputFile}" -s ${speedWpm} -v ${espeakVoice}`;
+      console.log(`Executing: ${cmd}`);
       execSync(cmd);
     }
 
@@ -244,10 +251,25 @@ function generateWithFestival() {
  */
 function mapVoiceToEspeak(voiceName) {
   const voiceMap = {
+    // macOS English voices -> espeak English
     'Alex': 'en-us',
+    'Samantha': 'en-us',
+    'Victoria': 'en-us',
+    'Daniel': 'en-gb',
+    'Karen': 'en-au',
+
+    // macOS Spanish voices -> espeak Spanish
+    'Monica': 'es',
+    'Jorge': 'es',
+    'Paulina': 'es-la',
+
+    // Generic language codes
     'default': 'en',
     'en': 'en',
+    'en-us': 'en-us',
+    'en-gb': 'en-gb',
     'es': 'es',
+    'es-la': 'es-la',
     'fr': 'fr',
     'de': 'de',
     'it': 'it',

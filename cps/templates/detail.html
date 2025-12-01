@@ -529,22 +529,21 @@
                 <div class="modal-body">
                     <div class="alert alert-info">
                         <span class="glyphicon glyphicon-info-sign"></span>
-                        {{ _('This will generate an audiobook using macOS text-to-speech. The process may take several minutes depending on the book length.') }}
+                        {{ _('This will generate an audiobook using text-to-speech. The process may take several minutes depending on the book length.') }}
                     </div>
 
                     <div class="form-group">
                         <label for="voice-select">{{ _('Voice') }}</label>
                         <select id="voice-select" name="voice" class="form-control">
-                            <option value="Alex">Alex (US English - Male)</option>
-                            <option value="Samantha">Samantha (US English - Female)</option>
-                            <option value="Victoria">Victoria (US English - Female)</option>
-                            <option value="Daniel">Daniel (UK English - Male)</option>
-                            <option value="Karen">Karen (Australian English - Female)</option>
-                            <option value="Monica">Monica (Spanish - Female)</option>
-                            <option value="Jorge">Jorge (Spanish - Male)</option>
-                            <option value="Paulina">Paulina (Spanish Mexico - Female)</option>
+                            <option value="Alex">English US (Male)</option>
+                            <option value="Samantha">English US (Female)</option>
+                            <option value="Daniel">English UK (Male)</option>
+                            <option value="Karen">English AU (Female)</option>
+                            <option value="Monica" selected>Spanish (Female)</option>
+                            <option value="Jorge">Spanish (Male)</option>
+                            <option value="Paulina">Spanish Latin America (Female)</option>
                         </select>
-                        <p class="help-block">{{ _('Select the voice for the audiobook narration') }}</p>
+                        <p class="help-block">{{ _('Select the language and voice for the audiobook narration') }}</p>
                     </div>
 
                     <div class="form-group">

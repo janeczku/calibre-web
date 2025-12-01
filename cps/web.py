@@ -1774,6 +1774,8 @@ def generate_audiobook(book_id, book_format):
         except ValueError:
             words_per_part = 5000
 
+        log.info(f"Audiobook generation requested - Voice: {voice}, Words per part: {words_per_part}")
+
         # Create task
         task = TaskGenerateAudiobook(
             book_id=book_id,
