@@ -574,11 +574,16 @@ $(function() {
             };
             preFilters.add(useCache);
 
-            $.get(e.relatedTarget.href).done(function(content) {
-                $modalBody.html(content);
+            // Check if relatedTarget and href exist before trying to fetch
+            if (e.relatedTarget && e.relatedTarget.href) {
+                $.get(e.relatedTarget.href).done(function(content) {
+                    $modalBody.html(content);
+                    preFilters.remove(useCache);
+                    $("#back").remove();
+                });
+            } else {
                 preFilters.remove(useCache);
-                $("#back").remove();
-            });
+            }
         })
         .on("hidden.bs.modal", function() {
             $(this).find(".modal-body").html("...");

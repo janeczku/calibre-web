@@ -1920,7 +1920,7 @@ def quick_audiobook_preview(book_id, book_format):
 
         # Generate audio in a temporary file
         temp_dir = tempfile.gettempdir()
-        temp_audio = os.path.join(temp_dir, f"preview_{book_id}_{int(time.time())}.wav")
+        temp_audio = os.path.join(temp_dir, f"preview_{book_id}_{int(time.time())}.mp3")
 
         command = [
             'node',
@@ -1948,7 +1948,7 @@ def quick_audiobook_preview(book_id, book_format):
                 temp_dir,
                 os.path.basename(temp_audio),
                 as_attachment=True,
-                download_name=f"{book.title}_preview.wav"
+                download_name=f"{book.title}_preview.mp3"
             )
 
             # Schedule cleanup after response is sent
