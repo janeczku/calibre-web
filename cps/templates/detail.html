@@ -224,12 +224,13 @@
                                 </span>
                             </div>
                             <div class="audiobook-actions">
-                                <a href="{{ url_for('web.play_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
-                                   class="btn btn-xs btn-primary audiobook-play-btn"
-                                   target="_blank"
-                                   title="{{ _('Play Online') }}">
+                                <button type="button"
+                                        class="btn btn-xs btn-primary audiobook-play-btn-inline"
+                                        data-audio-url="{{ url_for('web.play_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
+                                        data-audio-title="{{ audiobook.filename }}"
+                                        title="{{ _('Play Online') }}">
                                     <span class="glyphicon glyphicon-play"></span> {{ _('Play') }}
-                                </a>
+                                </button>
                                 <a href="{{ url_for('web.download_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
                                    class="btn btn-xs btn-success audiobook-download-btn"
                                    title="{{ _('Download') }}">
@@ -537,14 +538,39 @@
 
                     <div class="form-group">
                         <label for="voice-select">{{ _('Voice') }} <small class="text-muted">(Neural TTS - High Quality)</small></label>
-                        <select id="voice-select" name="voice" class="form-control">
-                            <option value="Monica" selected>🇪🇸 Spanish (Female) - Natural</option>
-                            <option value="Jorge">🇪🇸 Spanish (Male)</option>
-                            <option value="Paulina">🇲🇽 Spanish Latin America (Female)</option>
-                            <option value="Alex">🇺🇸 English US (Male)</option>
-                            <option value="Daniel">🇬🇧 English UK (Male)</option>
-                        </select>
+                        <div style="display: flex; gap: 10px;">
+                            <select id="voice-select" name="voice" class="form-control" style="flex: 1;">
+                                <option value="Monica" selected>🇪🇸 Spanish (Female) - Natural</option>
+                                <option value="Jorge">🇪🇸 Spanish (Male)</option>
+                                <option value="Paulina">🇲🇽 Spanish Latin America (Female)</option>
+                                <option value="Alex">🇺🇸 English US (Male)</option>
+                                <option value="Daniel">🇬🇧 English UK (Male)</option>
+                            </select>
+                            <button type="button" id="preview-voice-btn" class="btn btn-primary" title="{{ _('Preview Voice') }}">
+                                <span class="glyphicon glyphicon-volume-up"></span>
+                                <span class="hidden-xs">{{ _('Preview') }}</span>
+                            </button>
+                        </div>
                         <p class="help-block">{{ _('Select the language and voice for audiobook narration. Powered by Piper neural TTS for natural-sounding voices.') }}</p>
+
+                        <!-- Voice Preview Player (hidden by default) -->
+                        <div id="voice-preview-player" style="display: none; margin-top: 10px;">
+                            <div class="alert alert-info" style="margin-bottom: 10px; padding: 8px;">
+                                <span class="glyphicon glyphicon-info-sign"></span>
+                                <strong>{{ _('Voice Preview') }}</strong>
+                            </div>
+                            <audio id="voice-preview-audio" controls style="width: 100%;">
+                                {{ _('Your browser does not support the audio element.') }}
+                            </audio>
+                        </div>
+
+                        <!-- Loading indicator for preview -->
+                        <div id="voice-preview-loading" style="display: none; margin-top: 10px;">
+                            <div class="alert alert-info" style="padding: 8px;">
+                                <span class="glyphicon glyphicon-hourglass"></span>
+                                {{ _('Generating voice preview...') }}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -575,6 +601,83 @@
     </div>
 </div>
 
+<!-- Audio Player Modal -->
+<div id="audioPlayerModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                    <span class="glyphicon glyphicon-headphones"></span>
+                    {{ _('Audiobook Player') }}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h5 id="audio-player-title" style="margin-bottom: 15px; font-weight: bold;"></h5>
+                <audio id="audiobook-player" controls style="width: 100%;" preload="metadata">
+                    {{ _('Your browser does not support the audio element.') }}
+                </audio>
+                <div style="margin-top: 15px;">
+                    <small class="text-muted">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        {{ _('Tip: You can close this dialog and the audio will continue playing in the background.') }}
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ _('Close') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Progress Modal -->
+<div id="audiobookProgressModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    {{ _('Generating Audiobook') }}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    {{ _('Your audiobook is being generated in the background. You can close this dialog and continue browsing.') }}
+                </div>
+
+                <h5 id="progress-book-title" style="margin-bottom: 15px; font-weight: bold;"></h5>
+
+                <div class="progress" style="height: 30px; margin-bottom: 10px;">
+                    <div id="audiobook-progress-bar" class="progress-bar progress-bar-striped active" role="progressbar"
+                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; min-width: 2em;">
+                        <span id="progress-percentage">0%</span>
+                    </div>
+                </div>
+
+                <p id="progress-message" style="text-align: center; color: #555;">
+                    {{ _('Initializing...') }}
+                </p>
+
+                <div style="margin-top: 20px; padding: 10px; background-color: #f5f5f5; border-radius: 4px; display: none;" id="progress-stats">
+                    <small class="text-muted">
+                        <span class="glyphicon glyphicon-time"></span>
+                        <span id="progress-elapsed">0s</span>
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="progress-close-btn">
+                    {{ _('Close & Continue in Background') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 $(document).ready(function() {
     // Handle Generate Audiobook button click
@@ -591,6 +694,10 @@ $(document).ready(function() {
         // Show modal
         $('#audiobookModal').modal('show');
     });
+
+    // Progress polling variables
+    var progressPollingInterval = null;
+    var progressStartTime = null;
 
     // Handle form submission
     $('#audiobook-form').on('submit', function(e) {
@@ -610,23 +717,20 @@ $(document).ready(function() {
             url: url,
             data: form.serialize(),
             success: function(response) {
-                // Close modal
+                // Close generation modal
                 $('#audiobookModal').modal('hide');
 
-                // Show success message
-                var alertHtml = '<div class="alert alert-success alert-dismissible" role="alert">' +
-                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                    '<span class="glyphicon glyphicon-ok-sign"></span> ' +
-                    '{{ _("Audiobook generation started! Check the Tasks page for progress.") }}' +
-                    '</div>';
+                // Show progress modal
+                $('#audiobookProgressModal').modal('show');
+                $('#progress-book-title').text('{{ entry.title }}');
+                $('#progress-stats').show();
 
-                // Insert alert at the top of the page
-                $('.single').prepend(alertHtml);
+                // Reset progress
+                updateProgress(0, '{{ _("Starting audiobook generation...") }}');
 
-                // Auto-dismiss after 5 seconds
-                setTimeout(function() {
-                    $('.alert-success').fadeOut();
-                }, 5000);
+                // Start progress tracking
+                progressStartTime = Date.now();
+                startProgressPolling({{ entry.id }});
 
                 // Reset button
                 submitBtn.prop('disabled', false).html(originalText);
@@ -653,6 +757,83 @@ $(document).ready(function() {
         });
     });
 
+    // Function to update progress UI
+    function updateProgress(percentage, message) {
+        percentage = Math.round(percentage);
+        $('#audiobook-progress-bar').css('width', percentage + '%')
+                                    .attr('aria-valuenow', percentage);
+        $('#progress-percentage').text(percentage + '%');
+        $('#progress-message').text(message);
+
+        // Update elapsed time
+        if (progressStartTime) {
+            var elapsed = Math.round((Date.now() - progressStartTime) / 1000);
+            var minutes = Math.floor(elapsed / 60);
+            var seconds = elapsed % 60;
+            var timeStr = minutes > 0 ? minutes + 'm ' + seconds + 's' : seconds + 's';
+            $('#progress-elapsed').text(timeStr);
+        }
+    }
+
+    // Function to start polling for progress
+    function startProgressPolling(bookId) {
+        // Clear any existing polling
+        if (progressPollingInterval) {
+            clearInterval(progressPollingInterval);
+        }
+
+        // Poll every 2 seconds
+        progressPollingInterval = setInterval(function() {
+            $.ajax({
+                url: '/audiobook/task-status/' + bookId,
+                type: 'GET',
+                success: function(data) {
+                    if (data.active) {
+                        // Update progress
+                        updateProgress(data.progress, data.message || '{{ _("Processing...") }}');
+                    } else {
+                        // Task completed or not found
+                        clearInterval(progressPollingInterval);
+                        progressPollingInterval = null;
+
+                        // Show completion
+                        updateProgress(100, '{{ _("Audiobook generation completed!") }}');
+
+                        // Change progress bar to success color
+                        $('#audiobook-progress-bar').removeClass('active')
+                                                    .addClass('progress-bar-success');
+
+                        // Auto-close after 3 seconds and reload page
+                        setTimeout(function() {
+                            $('#audiobookProgressModal').modal('hide');
+                            location.reload();
+                        }, 3000);
+                    }
+                },
+                error: function() {
+                    // Continue polling even on error (might be temporary)
+                    console.log('Error fetching progress, will retry...');
+                }
+            });
+        }, 2000);
+    }
+
+    // Stop polling when modal is closed
+    $('#progress-close-btn').on('click', function() {
+        if (progressPollingInterval) {
+            clearInterval(progressPollingInterval);
+            progressPollingInterval = null;
+        }
+        $('#audiobookProgressModal').modal('hide');
+    });
+
+    // Clean up on page unload
+    $(window).on('beforeunload', function() {
+        if (progressPollingInterval) {
+            clearInterval(progressPollingInterval);
+        }
+    });
+
     // Reset modal when closed
     $('#audiobookModal').on('hidden.bs.modal', function () {
         $('#audiobook-form').trigger('reset');
@@ -667,6 +848,106 @@ $(document).ready(function() {
             chevron.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
         }
     });
+
+    // Voice Preview functionality
+    $('#preview-voice-btn').on('click', function() {
+        var voice = $('#voice-select').val();
+        var btn = $(this);
+        var originalHtml = btn.html();
+
+        // Hide previous preview if any
+        $('#voice-preview-player').hide();
+
+        // Show loading indicator
+        $('#voice-preview-loading').show();
+
+        // Disable button during generation
+        btn.prop('disabled', true);
+        btn.html('<span class="glyphicon glyphicon-hourglass"></span> {{ _("Generating...") }}');
+
+        // Call preview endpoint
+        $.ajax({
+            url: '{{ url_for("web.preview_voice") }}',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                voice: voice
+            }),
+            success: function(data) {
+                if (data.success) {
+                    // Convert base64 to blob and create URL
+                    var audioData = atob(data.audio);
+                    var arrayBuffer = new ArrayBuffer(audioData.length);
+                    var uint8Array = new Uint8Array(arrayBuffer);
+                    for (var i = 0; i < audioData.length; i++) {
+                        uint8Array[i] = audioData.charCodeAt(i);
+                    }
+                    var blob = new Blob([uint8Array], { type: data.mime_type });
+                    var audioUrl = URL.createObjectURL(blob);
+
+                    // Set audio source and show player
+                    var audioPlayer = $('#voice-preview-audio')[0];
+                    audioPlayer.src = audioUrl;
+                    $('#voice-preview-loading').hide();
+                    $('#voice-preview-player').show();
+
+                    // Auto-play the preview
+                    audioPlayer.play();
+                } else {
+                    $('#voice-preview-loading').hide();
+                    alert('{{ _("Error generating preview:") }} ' + (data.error || '{{ _("Unknown error") }}'));
+                }
+
+                // Re-enable button
+                btn.prop('disabled', false);
+                btn.html(originalHtml);
+            },
+            error: function(xhr, status, error) {
+                $('#voice-preview-loading').hide();
+                var errorMsg = '{{ _("Error generating voice preview") }}';
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errorMsg += ': ' + xhr.responseJSON.error;
+                }
+                alert(errorMsg);
+
+                // Re-enable button
+                btn.prop('disabled', false);
+                btn.html(originalHtml);
+            }
+        });
+    });
+
+    // Hide preview when voice changes
+    $('#voice-select').on('change', function() {
+        $('#voice-preview-player').hide();
+        $('#voice-preview-loading').hide();
+    });
+
+    // Audiobook inline player functionality
+    $('.audiobook-play-btn-inline').on('click', function() {
+        var audioUrl = $(this).data('audio-url');
+        var audioTitle = $(this).data('audio-title');
+
+        // Set audio source and title
+        $('#audio-player-title').text(audioTitle);
+        var audioPlayer = $('#audiobook-player')[0];
+        audioPlayer.src = audioUrl;
+
+        // Show modal
+        $('#audioPlayerModal').modal('show');
+
+        // Auto-play when modal is shown
+        $('#audioPlayerModal').on('shown.bs.modal', function() {
+            audioPlayer.play();
+        });
+    });
+
+    // Pause audio when modal is closed (optional - user might want it to continue)
+    // Uncomment the following lines if you want to pause on close:
+    // $('#audioPlayerModal').on('hidden.bs.modal', function() {
+    //     var audioPlayer = $('#audiobook-player')[0];
+    //     audioPlayer.pause();
+    // });
 });
 </script>
 

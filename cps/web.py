@@ -1799,6 +1799,135 @@ def generate_audiobook(book_id, book_format):
         return redirect(url_for("web.show_book", book_id=book_id))
 
 
+@web.route("/audiobook/task-status/<int:book_id>", methods=["GET"])
+@login_required_if_no_ano
+def audiobook_task_status(book_id):
+    """Get the status of audiobook generation task for a specific book"""
+    try:
+        from .services.worker import WorkerThread
+
+        # Find active audiobook task for this book
+        for user_tasks in WorkerThread.getInstance().tasks.values():
+            for task in user_tasks:
+                # Check if it's an audiobook task for this book
+                if (hasattr(task, 'book_id') and
+                    task.book_id == book_id and
+                    task.name.startswith('Audiobook')):
+
+                    # Get task status
+                    status = {
+                        'active': True,
+                        'progress': getattr(task, 'progress', 0) * 100,  # Convert to percentage
+                        'message': str(task.message) if hasattr(task, 'message') else 'Processing...',
+                        'title': getattr(task, 'title', ''),
+                        'stat': task.stat if hasattr(task, 'stat') else 0
+                    }
+
+                    return jsonify(status)
+
+        # No active task found
+        return jsonify({
+            'active': False,
+            'progress': 0,
+            'message': ''
+        })
+
+    except Exception as e:
+        log.error(f"Error getting task status: {str(e)}")
+        return jsonify({
+            'active': False,
+            'error': str(e)
+        }), 500
+
+
+@web.route("/audiobook/preview-voice", methods=["POST"])
+@login_required_if_no_ano
+def preview_voice():
+    """Generate a short voice preview for testing different voices"""
+    try:
+        import tempfile
+        import shutil
+        from .subproc_wrapper import process_open
+
+        voice = request.json.get('voice', 'Monica')
+
+        # Sample text for preview (short and representative)
+        sample_texts = {
+            'es': 'Hola, esta es una prueba de la voz en español. La calidad de síntesis de voz neural permite crear audiolibros con sonido natural y profesional.',
+            'en': 'Hello, this is a voice preview test. Neural voice synthesis quality allows creating audiobooks with natural and professional sound.'
+        }
+
+        # Detect language based on voice
+        if voice in ['Monica', 'Jorge', 'Paulina']:
+            text = sample_texts['es']
+        else:
+            text = sample_texts['en']
+
+        # Check if Node.js is available
+        if not shutil.which('node'):
+            return jsonify({'success': False, 'error': 'Node.js is not installed'}), 500
+
+        # Get TTS script path
+        tts_script = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'static', 'js', 'tts-generator.js'
+        )
+
+        if not os.path.exists(tts_script):
+            return jsonify({'success': False, 'error': 'TTS script not found'}), 500
+
+        # Create temporary file for audio output
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_audio:
+            audio_path = temp_audio.name
+
+        try:
+            # Generate preview audio
+            command = [
+                'node',
+                tts_script,
+                text,
+                audio_path,
+                voice,
+                '1.0'
+            ]
+
+            log.info(f"Generating voice preview for voice '{voice}'")
+            p = process_open(command, cwd=os.path.dirname(os.path.abspath(__file__)))
+            stdout, stderr = p.communicate(timeout=30)  # 30 second timeout for preview
+
+            if p.returncode != 0 or not os.path.exists(audio_path):
+                error_msg = stderr.decode('utf-8') if stderr else 'Unknown error'
+                log.error(f"Voice preview generation failed: {error_msg}")
+                return jsonify({'success': False, 'error': 'Failed to generate preview'}), 500
+
+            # Read the audio file
+            with open(audio_path, 'rb') as audio_file:
+                audio_data = audio_file.read()
+
+            # Clean up temp file
+            os.remove(audio_path)
+
+            # Return audio as base64
+            import base64
+            audio_base64 = base64.b64encode(audio_data).decode('utf-8')
+
+            return jsonify({
+                'success': True,
+                'audio': audio_base64,
+                'mime_type': 'audio/mpeg'
+            })
+
+        except Exception as e:
+            # Clean up on error
+            if os.path.exists(audio_path):
+                os.remove(audio_path)
+            raise e
+
+    except Exception as e:
+        log.error(f"Error generating voice preview: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @web.route("/book/<int:book_id>/audiobook/<filename>")
 @login_required_if_no_ano
 @download_required
