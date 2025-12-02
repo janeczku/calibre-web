@@ -529,21 +529,19 @@
                 <div class="modal-body">
                     <div class="alert alert-info">
                         <span class="glyphicon glyphicon-info-sign"></span>
-                        {{ _('This will generate an audiobook using text-to-speech. The process may take several minutes depending on the book length.') }}
+                        {{ _('This will generate an audiobook using high-quality neural text-to-speech (Piper TTS). The process may take several minutes depending on the book length.') }}
                     </div>
 
                     <div class="form-group">
-                        <label for="voice-select">{{ _('Voice') }}</label>
+                        <label for="voice-select">{{ _('Voice') }} <small class="text-muted">(Neural TTS - High Quality)</small></label>
                         <select id="voice-select" name="voice" class="form-control">
-                            <option value="Alex">English US (Male)</option>
-                            <option value="Samantha">English US (Female)</option>
-                            <option value="Daniel">English UK (Male)</option>
-                            <option value="Karen">English AU (Female)</option>
-                            <option value="Monica" selected>Spanish (Female)</option>
-                            <option value="Jorge">Spanish (Male)</option>
-                            <option value="Paulina">Spanish Latin America (Female)</option>
+                            <option value="Monica" selected>🇪🇸 Spanish (Female) - Natural</option>
+                            <option value="Jorge">🇪🇸 Spanish (Male)</option>
+                            <option value="Paulina">🇲🇽 Spanish Latin America (Female)</option>
+                            <option value="Alex">🇺🇸 English US (Male)</option>
+                            <option value="Daniel">🇬🇧 English UK (Male)</option>
                         </select>
-                        <p class="help-block">{{ _('Select the language and voice for the audiobook narration') }}</p>
+                        <p class="help-block">{{ _('Select the language and voice for audiobook narration. Powered by Piper neural TTS for natural-sounding voices.') }}</p>
                     </div>
 
                     <div class="form-group">

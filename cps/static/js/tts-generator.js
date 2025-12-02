@@ -151,18 +151,79 @@ function generateAudioWindows() {
 }
 
 /**
- * Linux TTS using espeak-ng or festival
+ * Linux TTS using Piper (preferred), espeak-ng or festival
  */
 function generateAudioLinux() {
-  // Try espeak-ng first (better quality), then espeak, then festival
-  if (commandExists('espeak-ng')) {
+  // Try Piper first (best quality), then espeak-ng, then espeak, then festival
+  if (commandExists('piper')) {
+    generateWithPiper();
+  } else if (commandExists('espeak-ng')) {
+    console.log('Piper not found, falling back to espeak-ng');
     generateWithEspeak('espeak-ng');
   } else if (commandExists('espeak')) {
+    console.log('Piper and espeak-ng not found, falling back to espeak');
     generateWithEspeak('espeak');
   } else if (commandExists('festival')) {
+    console.log('Piper and espeak not found, falling back to festival');
     generateWithFestival();
   } else {
-    throw new Error('No TTS engine found. Please install espeak-ng, espeak, or festival');
+    throw new Error('No TTS engine found. Please install Piper, espeak-ng, espeak, or festival');
+  }
+}
+
+/**
+ * Generate audio using Piper TTS (best quality)
+ */
+function generateWithPiper() {
+  console.log('Using Piper TTS for high-quality voice synthesis');
+
+  // Write text to temp file
+  const tempTextFile = path.join(os.tmpdir(), `tts_${Date.now()}.txt`);
+  fs.writeFileSync(tempTextFile, text);
+
+  try {
+    const piperVoice = mapVoiceToPiper(voice);
+    const voiceModelPath = `/app/piper-voices/${piperVoice}.onnx`;
+
+    console.log(`Voice mapping: ${voice} -> ${piperVoice}`);
+    console.log(`Using model: ${voiceModelPath}`);
+
+    // Check if voice model exists
+    if (!fs.existsSync(voiceModelPath)) {
+      console.error(`Voice model not found: ${voiceModelPath}`);
+      console.log('Falling back to espeak-ng...');
+      generateWithEspeak('espeak-ng');
+      return;
+    }
+
+    if (outputFormat === '.mp3' && commandExists('ffmpeg')) {
+      // Generate WAV first, then convert to MP3
+      const tempWav = path.join(os.tmpdir(), `tts_${Date.now()}.wav`);
+      const cmd = `piper --model "${voiceModelPath}" --output_file "${tempWav}" < "${tempTextFile}"`;
+      console.log(`Executing: ${cmd}`);
+      execSync(cmd);
+
+      // Convert to MP3
+      const ffmpegCmd = `ffmpeg -i "${tempWav}" -codec:a libmp3lame -qscale:a 2 -y "${outputFile}"`;
+      console.log(`Converting to MP3: ${ffmpegCmd}`);
+      execSync(ffmpegCmd);
+
+      // Cleanup temp WAV
+      if (fs.existsSync(tempWav)) fs.unlinkSync(tempWav);
+    } else {
+      // Generate WAV directly
+      const cmd = `piper --model "${voiceModelPath}" --output_file "${outputFile}" < "${tempTextFile}"`;
+      console.log(`Executing: ${cmd}`);
+      execSync(cmd);
+    }
+
+    // Cleanup
+    fs.unlinkSync(tempTextFile);
+
+    verifyOutput();
+  } catch (err) {
+    if (fs.existsSync(tempTextFile)) fs.unlinkSync(tempTextFile);
+    throw err;
   }
 }
 
@@ -280,6 +341,38 @@ function mapVoiceToEspeak(voiceName) {
   };
 
   return voiceMap[voiceName] || voiceMap[voiceName.toLowerCase()] || 'en';
+}
+
+/**
+ * Map voice names to Piper voice models
+ */
+function mapVoiceToPiper(voiceName) {
+  const voiceMap = {
+    // Spanish voices (Piper has excellent Spanish voices)
+    'Monica': 'es_ES-davefx-medium',           // Spanish (Spain) Female - Natural voice
+    'Jorge': 'es_ES-mls_10246-low',            // Spanish (Spain) Male
+    'Paulina': 'es_MX-ald-medium',             // Spanish (Mexico) - Latin American
+
+    // English voices
+    'Alex': 'en_US-lessac-medium',             // English (US) Male
+    'Samantha': 'en_US-lessac-medium',         // English (US) - same as Alex
+    'Victoria': 'en_US-lessac-medium',         // English (US) - same as Alex
+    'Daniel': 'en_GB-alan-medium',             // English (UK) Male
+    'Karen': 'en_US-lessac-medium',            // English (AU) - use US voice as fallback
+
+    // Generic language codes
+    'default': 'en_US-lessac-medium',
+    'es': 'es_ES-davefx-medium',
+    'es-ES': 'es_ES-davefx-medium',
+    'es-MX': 'es_MX-ald-medium',
+    'es-la': 'es_MX-ald-medium',
+    'es-419': 'es_MX-ald-medium',
+    'en': 'en_US-lessac-medium',
+    'en-us': 'en_US-lessac-medium',
+    'en-gb': 'en_GB-alan-medium'
+  };
+
+  return voiceMap[voiceName] || voiceMap[voiceName.toLowerCase()] || 'en_US-lessac-medium';
 }
 
 /**

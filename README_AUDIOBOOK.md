@@ -44,14 +44,17 @@ node -e "const say = require('say'); say.speak('Hello world');"
 5. Espera a que termine (se procesa en segundo plano)
 6. Descarga o reproduce los archivos MP3 generados
 
-### 🗣️ Voces Disponibles
+### 🗣️ Voces Disponibles (Neural TTS - Alta Calidad)
 
-**Linux/Docker (espeak/espeak-ng):**
-- **Spanish (Female/Male)**: Voces en español
-- **Spanish Latin America (Female)**: Voz en español latinoamericano
-- **English US (Male/Female)**: Inglés estadounidense
-- **English UK (Male)**: Inglés británico
-- **English AU (Female)**: Inglés australiano
+**Linux/Docker (Piper TTS - RECOMENDADO):**
+- **🇪🇸 Spanish Female (Monica)**: Voz natural femenina española - ¡Excelente calidad!
+- **🇪🇸 Spanish Male (Jorge)**: Voz masculina española
+- **🇲🇽 Spanish Latin America (Paulina)**: Voz femenina mexicana
+- **🇺🇸 English US (Alex)**: Voz masculina estadounidense
+- **🇬🇧 English UK (Daniel)**: Voz masculina británica
+
+**Fallback (espeak-ng):**
+Si Piper no está disponible, el sistema usa automáticamente espeak-ng como respaldo.
 
 **macOS:**
 - Usa las voces nativas del sistema (Alex, Monica, Jorge, etc.)
@@ -76,12 +79,15 @@ node -e "const say = require('say'); say.speak('Hello world');"
 **"Cannot find module 'say'"**
 → Ejecuta: `npm install -g say`
 
-**No se escucha audio**
+**No se escucha audio o voces robóticas**
 → Windows: Verifica que SAPI funciona
 → macOS: Ya debería funcionar
-→ Linux: Instala `espeak-ng` o `espeak` y `ffmpeg`:
+→ Linux/Docker:
+  - **Voces naturales (Piper TTS)**: Ya incluido en Docker, reconstruye la imagen
+  - **Voces robóticas (espeak)**: Actualiza a Piper TTS para mejor calidad
   ```bash
-  sudo apt-get install espeak-ng ffmpeg
+  # En Docker, reconstruir la imagen incluye Piper automáticamente
+  docker-compose build
   ```
 
 ---
@@ -106,16 +112,17 @@ Todos estos archivos ya están incluidos.
 
 ## ✅ Requisitos del Sistema
 
-| Requisito | Versión | Plataforma | Obligatorio |
-|-----------|---------|------------|-------------|
-| Node.js | v14+ | Todas | ✅ Sí |
-| npm | 6+ | Todas | ✅ Sí (viene con Node.js) |
-| espeak-ng/espeak | latest | Linux/Docker | ✅ Sí |
-| ffmpeg | latest | Linux/Docker | ✅ Sí (para MP3) |
-| say | 0.16+ | Windows | ✅ Sí |
-| Python | 3.6+ | Todas | ✅ Sí (ya lo tienes) |
-| ebooklib | latest | Todas | ❌ Opcional (EPUB) |
-| pdfplumber | latest | Todas | ❌ Opcional (PDF) |
+| Requisito | Versión | Plataforma | Obligatorio | Notas |
+|-----------|---------|------------|-------------|-------|
+| Node.js | v14+ | Todas | ✅ Sí | |
+| npm | 6+ | Todas | ✅ Sí (viene con Node.js) | |
+| **Piper TTS** | latest | Linux/Docker | ⭐ Recomendado | Voces neuronales de alta calidad |
+| ffmpeg | latest | Linux/Docker | ✅ Sí (para MP3) | |
+| espeak-ng | latest | Linux/Docker | ❌ Fallback | Solo si Piper no funciona |
+| say | 0.16+ | Windows | ✅ Sí | |
+| Python | 3.6+ | Todas | ✅ Sí (ya lo tienes) | |
+| ebooklib | latest | Todas | ❌ Opcional (EPUB) | |
+| pdfplumber | latest | Todas | ❌ Opcional (PDF) | |
 
 ---
 
