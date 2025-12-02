@@ -196,46 +196,49 @@
             <!-- Generated Audiobooks Section -->
             {% if generated_audiobooks and generated_audiobooks|length > 0 %}
             <div class="generated-audiobooks-section">
-                <h4>
+                <h4 style="cursor: pointer; user-select: none;" data-toggle="collapse" data-target="#audiobook-files-collapse" aria-expanded="true">
+                    <span class="glyphicon glyphicon-chevron-down" id="audiobook-chevron"></span>
                     <span class="glyphicon glyphicon-headphones"></span>
                     {{ _('Generated Audiobooks') }} ({{ generated_audiobooks|length }} {{ _('parts') }})
                 </h4>
-                <div class="audiobook-files-list">
-                    {% for audiobook in generated_audiobooks %}
-                    <div class="audiobook-file-item">
-                        <div class="audiobook-info">
-                            <span class="audiobook-filename">
-                                <span class="glyphicon glyphicon-music"></span>
-                                {{ audiobook.filename }}
-                            </span>
-                            <span class="audiobook-metadata">
-                                <span class="audiobook-filesize">{{ audiobook.size|filesizeformat }}</span>
-                                {% if audiobook.duration > 0 %}
-                                <span class="audiobook-duration">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                    {% set hours = audiobook.duration // 3600 %}
-                                    {% set minutes = (audiobook.duration % 3600) // 60 %}
-                                    {% set seconds = audiobook.duration % 60 %}
-                                    {% if hours > 0 %}{{ hours }}h {% endif %}{{ minutes }}m {% if hours == 0 %}{{ seconds }}s{% endif %}
+                <div id="audiobook-files-collapse" class="collapse in">
+                    <div class="audiobook-files-list">
+                        {% for audiobook in generated_audiobooks %}
+                        <div class="audiobook-file-item">
+                            <div class="audiobook-info">
+                                <span class="audiobook-filename">
+                                    <span class="glyphicon glyphicon-music"></span>
+                                    {{ audiobook.filename }}
                                 </span>
-                                {% endif %}
-                            </span>
+                                <span class="audiobook-metadata">
+                                    <span class="audiobook-filesize">{{ audiobook.size|filesizeformat }}</span>
+                                    {% if audiobook.duration > 0 %}
+                                    <span class="audiobook-duration">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                        {% set hours = audiobook.duration // 3600 %}
+                                        {% set minutes = (audiobook.duration % 3600) // 60 %}
+                                        {% set seconds = audiobook.duration % 60 %}
+                                        {% if hours > 0 %}{{ hours }}h {% endif %}{{ minutes }}m {% if hours == 0 %}{{ seconds }}s{% endif %}
+                                    </span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="audiobook-actions">
+                                <a href="{{ url_for('web.play_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
+                                   class="btn btn-xs btn-primary audiobook-play-btn"
+                                   target="_blank"
+                                   title="{{ _('Play Online') }}">
+                                    <span class="glyphicon glyphicon-play"></span> {{ _('Play') }}
+                                </a>
+                                <a href="{{ url_for('web.download_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
+                                   class="btn btn-xs btn-success audiobook-download-btn"
+                                   title="{{ _('Download') }}">
+                                    <span class="glyphicon glyphicon-download"></span> {{ _('Download') }}
+                                </a>
+                            </div>
                         </div>
-                        <div class="audiobook-actions">
-                            <a href="{{ url_for('web.play_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
-                               class="btn btn-xs btn-primary audiobook-play-btn"
-                               target="_blank"
-                               title="{{ _('Play Online') }}">
-                                <span class="glyphicon glyphicon-play"></span> {{ _('Play') }}
-                            </a>
-                            <a href="{{ url_for('web.download_generated_audiobook', book_id=entry.id, filename=audiobook.filename) }}"
-                               class="btn btn-xs btn-success audiobook-download-btn"
-                               title="{{ _('Download') }}">
-                                <span class="glyphicon glyphicon-download"></span> {{ _('Download') }}
-                            </a>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
             </div>
             {% endif %}
@@ -653,6 +656,16 @@ $(document).ready(function() {
     // Reset modal when closed
     $('#audiobookModal').on('hidden.bs.modal', function () {
         $('#audiobook-form').trigger('reset');
+    });
+
+    // Toggle chevron icon when audiobook section is collapsed/expanded
+    $('#audiobook-files-collapse').on('show.bs.collapse hide.bs.collapse', function(e) {
+        var chevron = $('#audiobook-chevron');
+        if (e.type === 'show') {
+            chevron.removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-down');
+        } else {
+            chevron.removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-right');
+        }
     });
 });
 </script>
