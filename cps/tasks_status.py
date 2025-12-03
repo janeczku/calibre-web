@@ -81,7 +81,8 @@ def render_task_status(tasklist):
             # Hidden fields
             ret['task_id'] = task.id
             ret['stat'] = task.stat
-            ret['is_cancellable'] = task.is_cancellable()
+            # Handle both method and property forms of is_cancellable
+            ret['is_cancellable'] = task.is_cancellable() if callable(task.is_cancellable) else task.is_cancellable
             ret['error'] = task.error
 
             rendered_tasklist.append(ret)
