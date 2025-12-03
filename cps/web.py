@@ -406,6 +406,8 @@ def render_books_list(data, sort_param, book_id, page):
         return render_language_books(page, book_id, order)
     elif data == "archived":
         return render_archived_books(page, order)
+    elif data == "audiobooks":
+        return render_audiobooks(page, order)
     elif data == "search":
         term = request.args.get('query', None)
         offset = int(int(config.config_books_per_page) * (page - 1))
@@ -800,6 +802,50 @@ def render_archived_books(page, sort_param):
     page_name = "archived"
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=name, page=page_name, order=sort_param[1])
+
+
+def render_audiobooks(page, sort_param):
+    """Render books that have generated audiobook files"""
+    if current_user.check_visibility(constants.SIDEBAR_AUDIOBOOKS):
+        # Get all books
+        query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+        all_books = query.filter(calibre_db.common_filters()).all()
+
+        # Filter books that have audiobook files
+        audiobook_book_ids = []
+        import glob
+        for book in all_books:
+            if book.path:
+                book_dir = os.path.join(config.get_book_path(), book.path)
+                if os.path.exists(book_dir):
+                    # Check for audiobook files (pattern: *_part*.mp3)
+                    audiobook_files = glob.glob(os.path.join(book_dir, "*_part*.mp3"))
+                    if audiobook_files:
+                        audiobook_book_ids.append(book.id)
+
+        # Create filter for books with audiobooks
+        if audiobook_book_ids:
+            audiobook_filter = db.Books.id.in_(audiobook_book_ids)
+            entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                    db.Books,
+                                                                    audiobook_filter,
+                                                                    sort_param[0],
+                                                                    True, config.config_read_column,
+                                                                    db.books_series_link,
+                                                                    db.Books.id == db.books_series_link.c.book,
+                                                                    db.Series)
+        else:
+            # No audiobooks found - return empty result
+            from flask_paginate import Pagination as Paginate
+            entries = []
+            random = false()
+            pagination = Paginate(page, config.config_books_per_page, 0)
+
+        name = _('Audiobooks') + ' (' + str(len(audiobook_book_ids)) + ')'
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=name, page="audiobooks", order=sort_param[1])
+    else:
+        abort(404)
 
 
 # ################################### View Books list ##################################################################

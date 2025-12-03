@@ -199,7 +199,7 @@
                 <h4 style="cursor: pointer; user-select: none;" data-toggle="collapse" data-target="#audiobook-files-collapse" aria-expanded="true">
                     <span class="glyphicon glyphicon-chevron-down" id="audiobook-chevron"></span>
                     <span class="glyphicon glyphicon-headphones"></span>
-                    {{ _('Generated Audiobooks') }} ({{ generated_audiobooks|length }} {{ _('parts') }})
+                    Audiobook disponible ({{ generated_audiobooks|length }} {% if generated_audiobooks|length == 1 %}parte{% else %}partes{% endif %})
                 </h4>
                 <div id="audiobook-files-collapse" class="collapse in">
                     <div class="audiobook-files-list">

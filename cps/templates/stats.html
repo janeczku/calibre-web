@@ -1,49 +1,431 @@
 {% extends "layout.html" %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+.stats-dashboard {
+    padding: 20px 0;
+}
+
+.kpi-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.kpi-card.green {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.kpi-card.orange {
+    background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+}
+
+.kpi-card.blue {
+    background: linear-gradient(135deg, #3494e6 0%, #ec6ead 100%);
+}
+
+.kpi-card.red {
+    background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+}
+
+.kpi-card.purple {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.kpi-card.teal {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.kpi-number {
+    font-size: 42px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.kpi-label {
+    font-size: 14px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.kpi-icon {
+    font-size: 30px;
+    opacity: 0.8;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-container h4 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 2px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 30px 0 20px 0;
+    color: #333;
+}
+
+.stats-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar-custom {
+    height: 25px;
+    background-color: #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    transition: width 1s ease;
+}
+</style>
+{% endblock %}
+
 {% block body %}
-  <h3>{{_('About')}} {{instance}}</h3>
-<p>{{instance}} powered by
-<a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre-Web</a>.
-</p>
-  <h3>{{_('Library Statistics')}}</h3>
-<table id="stats" class="table">
-  <tbody>
-    <tr>
-      <th>{{bookcounter}}</th>
-      <td>{{_('Books in this Library')}}</td>
-    </tr>
-    <tr>
-      <th>{{authorcounter}}</th>
-      <td>{{_('Authors in this Library')}}</td>
-    </tr>
-    <tr>
-      <th>{{categorycounter}}</th>
-      <td>{{_('Categories in this Library')}}</td>
-    </tr>
-    <tr>
-      <th>{{seriecounter}}</th>
-      <td>{{_('Series in this Library')}}</td>
-    </tr>
-  </tbody>
-</table>
-{% if current_user.role_admin() %}
-  <h3>{{_('System Statistics')}}</h3>
-<table id="libs" class="table">
-  <thead>
-    <tr>
-      <th>{{_('Program')}}</th>
-      <th>{{_('Installed Version')}}</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for library,version in versions.items() %}
-  {% if version %}
-    <tr>
-      <th>{{library}}</th>
-      <td>{{version}}</td>
-    </tr>
+<div class="stats-dashboard">
+  <h2>{{_('About')}} {{instance}}</h2>
+  <p>{{instance}} powered by <a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre-Web</a>.</p>
+
+  <!-- Library Statistics KPIs -->
+  <h3 class="section-title"><span class="glyphicon glyphicon-book"></span> {{_('Library Statistics')}}</h3>
+  <div class="row">
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card purple">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-book"></span></div>
+        <div class="kpi-number">{{bookcounter}}</div>
+        <div class="kpi-label">{{_('Books in Library')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card green">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-user"></span></div>
+        <div class="kpi-number">{{authorcounter}}</div>
+        <div class="kpi-label">{{_('Authors')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card orange">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-bookmark"></span></div>
+        <div class="kpi-number">{{seriecounter}}</div>
+        <div class="kpi-label">{{_('Series')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card blue">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-tags"></span></div>
+        <div class="kpi-number">{{categorycounter}}</div>
+        <div class="kpi-label">{{_('Categories')}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card red">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-text-size"></span></div>
+        <div class="kpi-number">{{publishercounter}}</div>
+        <div class="kpi-label">{{_('Publishers')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card teal">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-flag"></span></div>
+        <div class="kpi-number">{{languagecounter}}</div>
+        <div class="kpi-label">{{_('Languages')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card purple">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-download-alt"></span></div>
+        <div class="kpi-number">{{global_downloads}}</div>
+        <div class="kpi-label">{{_('Total Downloads')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card green">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-ok-circle"></span></div>
+        <div class="kpi-number">{{global_reads}}</div>
+        <div class="kpi-label">{{_('Books Read (All Users)')}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audiobook Statistics -->
+  {% if audiobook_stats and audiobook_stats.count > 0 %}
+  <h3 class="section-title"><span class="glyphicon glyphicon-headphones"></span> {{_('Audiobook Statistics')}}</h3>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="kpi-card orange">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-headphones"></span></div>
+        <div class="kpi-number">{{audiobook_stats.count}}</div>
+        <div class="kpi-label">{{_('Audiobooks Generated')}}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="kpi-card blue">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-hdd"></span></div>
+        <div class="kpi-number">{{audiobook_stats.total_size_mb}} MB</div>
+        <div class="kpi-label">{{_('Total Storage Used')}}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="kpi-card teal">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-time"></span></div>
+        <div class="kpi-number">{{audiobook_stats.total_duration_hours}}h {{audiobook_stats.total_duration_minutes}}m</div>
+        <div class="kpi-label">{{_('Total Audio Duration')}}</div>
+      </div>
+    </div>
+  </div>
   {% endif %}
-  {% endfor %}
-  </tbody>
-</table>
+
+  <!-- User Statistics -->
+  {% if user_stats %}
+  <h3 class="section-title"><span class="glyphicon glyphicon-user"></span> {{_('Your Personal Statistics')}}</h3>
+  <div class="row">
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card green">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-ok"></span></div>
+        <div class="kpi-number">{{user_stats.read_books}}</div>
+        <div class="kpi-label">{{_('Books Finished')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card orange">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-book"></span></div>
+        <div class="kpi-number">{{user_stats.in_progress_books}}</div>
+        <div class="kpi-label">{{_('Books In Progress')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card blue">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-download"></span></div>
+        <div class="kpi-number">{{user_stats.downloaded_books}}</div>
+        <div class="kpi-label">{{_('Books Downloaded')}}</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <div class="kpi-card purple">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-list"></span></div>
+        <div class="kpi-number">{{user_stats.series_read}}</div>
+        <div class="kpi-label">{{_('Series Read')}}</div>
+      </div>
+    </div>
+  </div>
+
+  {% if user_stats.reading_time_hours > 0 or user_stats.reading_time_minutes > 0 %}
+  <div class="row">
+    <div class="col-md-12">
+      <div class="kpi-card red">
+        <div class="kpi-icon"><span class="glyphicon glyphicon-time"></span></div>
+        <div class="kpi-number">{{user_stats.reading_time_hours}}h {{user_stats.reading_time_minutes}}m</div>
+        <div class="kpi-label">{{_('Total Reading Time')}}</div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Reading Progress Chart -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="chart-container">
+        <h4><span class="glyphicon glyphicon-stats"></span> {{_('Your Reading Progress')}}</h4>
+        <canvas id="readingProgressChart" height="80"></canvas>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Library Distribution Charts -->
+  <div class="row">
+    <div class="col-md-6">
+      <div class="chart-container">
+        <h4><span class="glyphicon glyphicon-stats"></span> {{_('Library Composition')}}</h4>
+        <canvas id="libraryCompositionChart"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="chart-container">
+        <h4><span class="glyphicon glyphicon-stats"></span> {{_('Activity Overview')}}</h4>
+        <canvas id="activityOverviewChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Statistics (Admin Only) -->
+  {% if current_user.role_admin() %}
+  <h3 class="section-title"><span class="glyphicon glyphicon-cog"></span> {{_('System Information')}}</h3>
+  <div class="stats-table">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{{_('Component')}}</th>
+          <th>{{_('Version')}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for library,version in versions.items() %}
+        {% if version %}
+        <tr>
+          <td><strong>{{library}}</strong></td>
+          <td>{{version}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+// Chart.js configuration
+Chart.defaults.font.family = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+
+{% if user_stats %}
+// Reading Progress Chart
+const readingProgressCtx = document.getElementById('readingProgressChart').getContext('2d');
+new Chart(readingProgressCtx, {
+    type: 'bar',
+    data: {
+        labels: ['{{_("Finished")}}', '{{_("In Progress")}}', '{{_("Downloaded")}}'],
+        datasets: [{
+            label: '{{_("Number of Books")}}',
+            data: [{{user_stats.read_books}}, {{user_stats.in_progress_books}}, {{user_stats.downloaded_books}}],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 159, 64, 0.8)',
+                'rgba(75, 192, 192, 0.8)'
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    precision: 0
+                }
+            }
+        }
+    }
+});
 {% endif %}
+
+// Library Composition Chart
+const libraryCompositionCtx = document.getElementById('libraryCompositionChart').getContext('2d');
+new Chart(libraryCompositionCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['{{_("Books")}}', '{{_("Authors")}}', '{{_("Series")}}', '{{_("Categories")}}'],
+        datasets: [{
+            data: [{{bookcounter}}, {{authorcounter}}, {{seriecounter}}, {{categorycounter}}],
+            backgroundColor: [
+                'rgba(102, 126, 234, 0.8)',
+                'rgba(17, 153, 142, 0.8)',
+                'rgba(238, 9, 121, 0.8)',
+                'rgba(52, 148, 230, 0.8)'
+            ],
+            borderWidth: 2,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Activity Overview Chart
+const activityOverviewCtx = document.getElementById('activityOverviewChart').getContext('2d');
+new Chart(activityOverviewCtx, {
+    type: 'polarArea',
+    data: {
+        labels: [
+            '{{_("Total Downloads")}}',
+            '{{_("Books Read (All)")}}',
+            {% if audiobook_stats and audiobook_stats.count > 0 %}'{{_("Audiobooks")}}',{% endif %}
+            '{{_("Publishers")}}',
+            '{{_("Languages")}}'
+        ],
+        datasets: [{
+            data: [
+                {{global_downloads}},
+                {{global_reads}},
+                {% if audiobook_stats and audiobook_stats.count > 0 %}{{audiobook_stats.count}},{% endif %}
+                {{publishercounter}},
+                {{languagecounter}}
+            ],
+            backgroundColor: [
+                'rgba(102, 126, 234, 0.7)',
+                'rgba(17, 153, 142, 0.7)',
+                'rgba(238, 9, 121, 0.7)',
+                'rgba(235, 51, 73, 0.7)',
+                'rgba(67, 233, 123, 0.7)'
+            ],
+            borderWidth: 2,
+            borderColor: '#fff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
 {% endblock %}

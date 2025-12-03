@@ -54,6 +54,10 @@ def get_sidebar_config(kwargs=None):
                         "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not current_user.is_anonymous),
                         "page": "download", "show_text": _('Show Downloaded Books'),
                         "config_show": content})
+    sidebar.append({"glyph": "glyphicon-headphones", "text": _('Audiobooks'), "link": 'web.books_list',
+                    "id": "audiobooks", "visibility": constants.SIDEBAR_AUDIOBOOKS, 'public': True,
+                    "page": "audiobooks", "show_text": _('Show Books with Audiobooks'),
+                    "config_show": True})
     sidebar.append(
         {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
