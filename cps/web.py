@@ -869,7 +869,7 @@ def books_list(data, sort_param, book_id, page):
 
 # Limit number of routes to avoid redirects
 data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", "ratings", "formats",
-       "category", "language", "archived", "search", "advsearch", "newest"]
+       "category", "language", "archived", "search", "advsearch", "newest", "audiobooks"]
 for d in data:
     web.add_url_rule('/{}/<sort_param>'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
     web.add_url_rule('/{}/<sort_param>/'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
