@@ -104,6 +104,13 @@ def get_sidebar_config(kwargs=None):
             {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
              "visibility": constants.SIDEBAR_LIST, 'public': (not current_user.is_anonymous), "page": "list",
              "show_text": _('Show Books List'), "config_show": content})
+
+    # Agregar enlace a Logros y Premios
+    sidebar.append(
+        {"glyph": "glyphicon-trophy", "text": _('Achievements'), "link": 'web.show_achievements', "id": "achievements",
+         "visibility": constants.SIDEBAR_ACHIEVEMENTS, 'public': (not current_user.is_anonymous), "page": "achievements",
+         "show_text": _('Show Achievements & Awards'), "config_show": True})
+
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
 

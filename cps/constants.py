@@ -96,6 +96,7 @@ SIDEBAR_ARCHIVED        = 1 << 15
 SIDEBAR_DOWNLOAD        = 1 << 16
 SIDEBAR_LIST            = 1 << 17
 SIDEBAR_AUDIOBOOKS      = 1 << 18
+SIDEBAR_ACHIEVEMENTS    = 1 << 19
 
 sidebar_settings = {
                 "detail_random": DETAIL_RANDOM,
@@ -115,11 +116,12 @@ sidebar_settings = {
                 "sidebar_download": SIDEBAR_DOWNLOAD,
                 "sidebar_list": SIDEBAR_LIST,
                 "sidebar_audiobooks": SIDEBAR_AUDIOBOOKS,
+                "sidebar_achievements": SIDEBAR_ACHIEVEMENTS,
             }
 
 
 ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_ANONYMOUS
-ADMIN_USER_SIDEBAR      = (SIDEBAR_AUDIOBOOKS << 1) - 1
+ADMIN_USER_SIDEBAR      = (SIDEBAR_ACHIEVEMENTS << 1) - 1
 
 UPDATE_STABLE       = 0 << 0
 AUTO_UPDATE_STABLE  = 1 << 0
@@ -174,7 +176,7 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
                                   'series_id, languages, publisher, pubdate, identifiers')
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
-STABLE_VERSION =  '0.40.0'
+STABLE_VERSION =  '0.41.0'
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
