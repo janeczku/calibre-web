@@ -648,7 +648,7 @@ def edit_list_user(param):
                     if user.name == "Guest" and value == constants.SIDEBAR_READ_AND_UNREAD:
                         raise Exception(_("Guest can't have this view"))
                     # check for valid value, last on checks for power of 2 value
-                    if value > 0 and value <= constants.SIDEBAR_LIST and (value & value - 1 == 0 or value == 1):
+                    if value > 0 and value <= constants.SIDEBAR_AUDIOBOOKS and (value & value - 1 == 0 or value == 1):
                         if vals['value'] == 'true':
                             user.sidebar_view |= value
                         elif vals['value'] == 'false':
