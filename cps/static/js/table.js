@@ -1215,7 +1215,7 @@ function checkboxChange(checkbox, userId, field, field_index) {
     $.ajax({
         method: "post",
         url: getPath() + "/ajax/editlistusers/" + field,
-        data: {"pk": userId, "field_index": field_index, "value": checkbox.checked},
+        data: {"pk": userId, "field_index": field_index, "value": checkbox.checked ? "true" : "false"},
         error: function(data) {
             handleListServerResponse([{type:"danger", message:data.responseText}])
         },

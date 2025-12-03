@@ -115,6 +115,177 @@
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
+<style>
+/* Mejoras en la tabla de usuarios */
+#user-table {
+    font-size: 13px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Encabezados de la tabla */
+#user-table thead th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    padding: 12px 8px !important;
+    border: none !important;
+    vertical-align: middle;
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 100px;
+}
+
+#user-table thead th[data-field="name"],
+#user-table thead th[data-field="email"] {
+    min-width: 150px;
+}
+
+/* Filas de la tabla */
+#user-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#user-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#user-table tbody td {
+    padding: 10px 8px !important;
+    vertical-align: middle !important;
+    border-color: #e9ecef !important;
+}
+
+/* Alternar colores de fila */
+#user-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Checkboxes y radio buttons */
+.form-check {
+    margin: 0;
+    padding: 0;
+}
+
+.form-check div {
+    margin: 4px 0;
+}
+
+.form-check input[type="radio"] {
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+/* Botones de acción */
+.btn-default {
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-default:hover:not(.disabled) {
+    background-color: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+/* Selectores múltiples */
+.multi_select {
+    width: 100%;
+}
+
+.multi_selector {
+    width: 100%;
+    max-width: 200px;
+}
+
+/* Botones de la cabecera */
+.button_head, .check_head, .multi_head {
+    font-size: 11px;
+    padding: 4px 8px;
+}
+
+/* Contenedor de la tabla */
+.table-no-bordered {
+    border: none !important;
+}
+
+.fixed-table-container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.fixed-table-toolbar {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+}
+
+/* Botones de selección masiva */
+#user_delete_selection {
+    margin: 10px 0 15px 0;
+    border-radius: 4px;
+}
+
+/* Responsivo - mejor ajuste en móviles */
+@media (max-width: 768px) {
+    #user-table {
+        font-size: 11px;
+    }
+
+    #user-table thead th {
+        font-size: 10px;
+        padding: 8px 4px !important;
+        min-width: 80px;
+    }
+
+    #user-table tbody td {
+        padding: 8px 4px !important;
+    }
+}
+
+/* Mejoras en el paginador */
+.fixed-table-pagination {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 0 0 8px 8px;
+}
+
+.pagination > li > a {
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.pagination > .active > a {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+/* Estilos para editables */
+.editable-input input,
+.editable-input select {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+}
+
+.editable-buttons button {
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+/* Tooltip mejorado */
+.tooltip-inner {
+    background-color: #333;
+    border-radius: 4px;
+    padding: 8px 12px;
+}
+</style>
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
@@ -166,6 +337,7 @@
             {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show Archived Books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_download", _('Show Downloaded Books'), visiblility, sidebar_settings)}}
             {{ user_checkbox_row("sidebar_view", "sidebar_list", _('Show Books List'), visiblility, sidebar_settings)}}
+            {{ user_checkbox_row("sidebar_view", "sidebar_audiobooks", _('Show Books with Audiobooks'), visiblility, sidebar_settings)}}
             <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-default button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
         </tr>
       </thead>
