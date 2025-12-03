@@ -1,0 +1,646 @@
+{% extends "layout.html" %}
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* Estilos generales de la página de logros */
+.achievements-dashboard {
+    padding: 20px 0;
+}
+
+/* Tarjeta de nivel del usuario (destac
+
+ada) */
+.user-level-card {
+    background: linear-gradient(135deg, {{ user_level.color }} 0%, #764ba2 100%);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    color: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.user-level-icon {
+    font-size: 80px;
+    margin: 10px 0;
+    display: block;
+}
+
+.user-level-name {
+    font-size: 36px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.user-level-subtitle {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* Anillos de lectura (estilo Apple Fitness) */
+.reading-rings-container {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.reading-ring {
+    margin: 20px 0;
+}
+
+.ring-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ring-progress {
+    height: 30px;
+    background: #e0e0e0;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.ring-fill {
+    height: 100%;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: width 1s ease;
+}
+
+.ring-fill.books-read {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+.ring-fill.downloads {
+    background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+}
+
+.ring-fill.reading-time {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* Tarjetas de logros */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.achievement-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.achievement-card.unlocked {
+    border: 2px solid;
+}
+
+.achievement-card.locked {
+    opacity: 0.5;
+    filter: grayscale(80%);
+}
+
+.achievement-icon {
+    font-size: 60px;
+    margin: 10px 0;
+}
+
+.achievement-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #333;
+}
+
+.achievement-description {
+    font-size: 14px;
+    color: #666;
+    margin: 10px 0;
+}
+
+.achievement-date {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
+}
+
+.achievement-progress {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #666;
+}
+
+.achievement-progress-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.achievement-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Secciones */
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 30px 0 20px 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.section-title .glyphicon {
+    margin-right: 10px;
+}
+
+/* Estadísticas de géneros */
+.genre-stats-list {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.genre-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.genre-item:last-child {
+    border-bottom: none;
+}
+
+.genre-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.genre-count {
+    font-size: 18px;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* Progreso de series */
+.series-progress-list {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.series-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.series-item:last-child {
+    border-bottom: none;
+}
+
+.series-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.series-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.series-progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.series-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+}
+
+.series-progress-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+}
+
+.series-completed {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* Recomendaciones */
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.recommendation-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-5px);
+}
+
+.recommendation-cover {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.recommendation-info {
+    padding: 15px;
+}
+
+.recommendation-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recommendation-reason {
+    font-size: 12px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.recommendation-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.recommendation-actions .btn {
+    flex: 1;
+    font-size: 12px;
+    padding: 5px;
+}
+
+/* Botón de generar recomendaciones */
+.generate-recommendations-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.generate-recommendations-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Estadísticas anuales */
+.yearly-stats-table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin: 20px 0;
+}
+
+.yearly-stats-table table {
+    width: 100%;
+    margin: 0;
+}
+
+.yearly-stats-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+}
+
+.yearly-stats-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.yearly-stats-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .achievements-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .user-level-icon {
+        font-size: 60px;
+    }
+
+    .user-level-name {
+        font-size: 28px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="achievements-dashboard">
+    <h2>{{_('Achievements & Awards')}}</h2>
+
+    <!-- Tarjeta de nivel del usuario -->
+    <div class="user-level-card" style="background: linear-gradient(135deg, {{ user_level.color }} 0%, #764ba2 100%);">
+        <span class="user-level-icon">{{ user_level.icon }}</span>
+        <div class="user-level-name">{{_('Level')}} {{ user_level.level }} - {{ user_level.name }}</div>
+        <div class="user-level-subtitle">{{_('%(count)s books read', count=books_read)}}</div>
+    </div>
+
+    <!-- Anillos de lectura (estilo Apple Fitness) -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="reading-rings-container">
+                <h3><span class="glyphicon glyphicon-stats"></span> {{_('Reading Goals for %(year)s', year=current_year)}}</h3>
+
+                <!-- Anillo de libros leídos -->
+                <div class="reading-ring">
+                    <div class="ring-label">
+                        <span><span class="glyphicon glyphicon-book"></span> {{_('Books Read')}}</span>
+                        <span>{{ reading_rings.books_read.value }} / {{ reading_rings.books_read.goal }}</span>
+                    </div>
+                    <div class="ring-progress">
+                        <div class="ring-fill books-read" style="width: {{ reading_rings.books_read.percentage }}%">
+                            {{ '%.0f'|format(reading_rings.books_read.percentage) }}%
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anillo de descargas -->
+                <div class="reading-ring">
+                    <div class="ring-label">
+                        <span><span class="glyphicon glyphicon-download-alt"></span> {{_('Books Downloaded')}}</span>
+                        <span>{{ reading_rings.books_downloaded.value }} / {{ reading_rings.books_downloaded.goal }}</span>
+                    </div>
+                    <div class="ring-progress">
+                        <div class="ring-fill downloads" style="width: {{ reading_rings.books_downloaded.percentage }}%">
+                            {{ '%.0f'|format(reading_rings.books_downloaded.percentage) }}%
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anillo de tiempo de lectura -->
+                <div class="reading-ring">
+                    <div class="ring-label">
+                        <span><span class="glyphicon glyphicon-time"></span> {{_('Reading Time')}}</span>
+                        <span>{{ reading_rings.reading_time.value // 60 }}h {{ reading_rings.reading_time.value % 60 }}m / {{ reading_rings.reading_time.goal // 60 }}h</span>
+                    </div>
+                    <div class="ring-progress">
+                        <div class="ring-fill reading-time" style="width: {{ reading_rings.reading_time.percentage }}%">
+                            {{ '%.0f'|format(reading_rings.reading_time.percentage) }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logros desbloqueados -->
+    {% if unlocked_achievements %}
+    <h3 class="section-title"><span class="glyphicon glyphicon-star"></span> {{_('Unlocked Achievements')}} ({{ unlocked_achievements|length }})</h3>
+    <div class="achievements-grid">
+        {% for user_achievement in unlocked_achievements %}
+        <div class="achievement-card unlocked" style="border-color: {{ user_achievement.achievement.color }}">
+            <div class="achievement-icon">{{ user_achievement.achievement.icon }}</div>
+            <div class="achievement-name">{{ user_achievement.achievement.description }}</div>
+            <div class="achievement-description">{{ user_achievement.achievement.category|capitalize }}</div>
+            <div class="achievement-date">
+                {{_('Unlocked on')}} {{ user_achievement.unlocked_at.strftime('%d/%m/%Y') }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        {{_('Start reading to unlock achievements!')}}
+    </div>
+    {% endif %}
+
+    <!-- Logros bloqueados -->
+    {% if locked_achievements %}
+    <h3 class="section-title"><span class="glyphicon glyphicon-lock"></span> {{_('Locked Achievements')}}</h3>
+    <div class="achievements-grid">
+        {% for achievement in locked_achievements[:12] %}
+        <div class="achievement-card locked">
+            <div class="achievement-icon">{{ achievement.icon }}</div>
+            <div class="achievement-name">???</div>
+            <div class="achievement-description">{{ achievement.description }}</div>
+            <div class="achievement-progress">
+                {{_('Requirement')}}: {{ achievement.threshold }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Estadísticas de géneros -->
+    {% if genre_stats %}
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="section-title"><span class="glyphicon glyphicon-tags"></span> {{_('Top Genres')}}</h3>
+            <div class="genre-stats-list">
+                {% for genre in genre_stats %}
+                <div class="genre-item">
+                    <span class="genre-name">{{ genre.genre_name }}</span>
+                    <span class="genre-count">{{ genre.books_read }} {{_('read')}}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Progreso de series -->
+        {% if series_progress %}
+        <div class="col-md-6">
+            <h3 class="section-title"><span class="glyphicon glyphicon-th-list"></span> {{_('Series Progress')}}</h3>
+            <div class="series-progress-list">
+                {% for series in series_progress %}
+                <div class="series-item">
+                    <div class="series-name">{{ series.series_name }}</div>
+                    <div class="series-progress">
+                        <div class="series-progress-bar">
+                            <div class="series-progress-fill" style="width: {{ (series.books_read / series.total_books * 100) if series.total_books > 0 else 0 }}%"></div>
+                        </div>
+                        <span class="series-progress-text {% if series.is_completed %}series-completed{% endif %}">
+                            {{ series.books_read }} / {{ series.total_books }}
+                            {% if series.is_completed %} ✓{% endif %}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Estadísticas anuales -->
+    {% if yearly_stats %}
+    <h3 class="section-title"><span class="glyphicon glyphicon-calendar"></span> {{_('Yearly Statistics')}}</h3>
+    <div class="yearly-stats-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{_('Year')}}</th>
+                    <th>{{_('Books Read')}}</th>
+                    <th>{{_('Books Downloaded')}}</th>
+                    <th>{{_('Reading Time')}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stats in yearly_stats %}
+                <tr>
+                    <td><strong>{{ stats.year }}</strong></td>
+                    <td>{{ stats.books_read }}</td>
+                    <td>{{ stats.books_downloaded }}</td>
+                    <td>{{ stats.reading_time_minutes // 60 }}h {{ stats.reading_time_minutes % 60 }}m</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Recomendaciones personalizadas -->
+    <h3 class="section-title"><span class="glyphicon glyphicon-heart"></span> {{_('Personalized Recommendations')}}</h3>
+    <div style="margin-bottom: 20px;">
+        <button class="generate-recommendations-btn" onclick="generateRecommendations()">
+            <span class="glyphicon glyphicon-refresh"></span> {{_('Generate New Recommendations')}}
+        </button>
+    </div>
+
+    {% if recommended_books %}
+    <div class="recommendations-grid">
+        {% for book in recommended_books %}
+        <div class="recommendation-card">
+            <a href="{{ url_for('web.show_book', book_id=book.id) }}">
+                <img class="recommendation-cover" src="{{ url_for('web.get_cover', book_id=book.id) }}" alt="{{ book.title }}">
+            </a>
+            <div class="recommendation-info">
+                <div class="recommendation-title">{{ book.title }}</div>
+                <div class="recommendation-reason">
+                    {% for rec in recommendations if rec.book_id == book.id %}
+                    {{ rec.reason }}
+                    {% endfor %}
+                </div>
+                <div class="recommendation-actions">
+                    <a href="{{ url_for('web.show_book', book_id=book.id) }}" class="btn btn-primary btn-sm">
+                        {{_('View')}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        {{_('Click "Generate New Recommendations" to get personalized book suggestions!')}}
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function generateRecommendations() {
+    const btn = document.querySelector('.generate-recommendations-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="glyphicon glyphicon-refresh spinning"></span> {{_("Generating...")}}';
+
+    fetch('{{ url_for("web.generate_recommendations") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            location.reload();
+        } else {
+            alert(data.message || '{{_("Error generating recommendations")}}');
+            btn.disabled = false;
+            btn.innerHTML = '<span class="glyphicon glyphicon-refresh"></span> {{_("Generate New Recommendations")}}';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('{{_("Error generating recommendations")}}');
+        btn.disabled = false;
+        btn.innerHTML = '<span class="glyphicon glyphicon-refresh"></span> {{_("Generate New Recommendations")}}';
+    });
+}
+
+// Animación de spinning para el icono de refresh
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    .spinning {
+        animation: spin 1s linear infinite;
+        display: inline-block;
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

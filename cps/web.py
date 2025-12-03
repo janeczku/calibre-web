@@ -97,6 +97,11 @@ def add_security_headers(resp):
     csp = "default-src " + ' '.join(default_src)
     if request.endpoint == "web.read_book" and config.config_use_google_drive:
         csp +=" blob: "
+
+    # Allow Chart.js from CDN for stats page
+    if request.endpoint == "about.stats":
+        csp += "; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net"
+
     csp += "; font-src 'self' data:"
     if request.endpoint == "web.read_book":
         csp += " blob: "
@@ -1857,7 +1862,7 @@ def audiobook_task_status(book_id):
         from .services.worker import WorkerThread
 
         # Find active audiobook task for this book
-        for user_tasks in WorkerThread.getInstance().tasks.values():
+        for user_tasks in WorkerThread.get_instance().tasks.values():
             for task in user_tasks:
                 # Check if it's an audiobook task for this book
                 if (hasattr(task, 'book_id') and
@@ -2233,3 +2238,251 @@ def extract_text_preview(book_file, book_format, max_words=1000):
     except Exception as e:
         log.error(f"Error extracting text preview: {str(e)}")
         return None
+
+
+# =====================================
+# Rutas de Logros y Premios (Achievements)
+# =====================================
+
+@web.route("/achievements")
+@login_required_if_no_ano
+def show_achievements():
+    """Muestra la página de logros y premios del usuario"""
+    try:
+        from . import achievements as ach
+        from flask_login import current_user
+        import datetime
+
+        user_id = current_user.id if not current_user.is_anonymous else None
+
+        if not user_id:
+            flash(_("Please log in to view your achievements"), category="error")
+            return redirect(url_for("web.index"))
+
+        # Inicializar logros si no existen
+        ach.initialize_achievements()
+
+        # Verificar y desbloquear logros
+        ach.check_and_unlock_achievements(user_id)
+
+        # Obtener estadísticas del usuario
+        books_read = ub.session.query(ub.ReadBook).filter(
+            ub.ReadBook.user_id == user_id,
+            ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED
+        ).count()
+
+        books_downloaded = ub.session.query(ub.Downloads).filter(
+            ub.Downloads.user_id == user_id
+        ).count()
+
+        # Obtener nivel del usuario
+        user_level = ach.get_user_level(books_read)
+
+        # Obtener anillos de lectura (estilo Apple Fitness)
+        current_year = datetime.datetime.now().year
+        reading_rings = ach.get_reading_rings(user_id, current_year)
+
+        # Obtener logros desbloqueados
+        unlocked_achievements = ub.session.query(ub.UserAchievement).filter(
+            ub.UserAchievement.user_id == user_id
+        ).join(ub.AchievementDefinition).order_by(
+            ub.UserAchievement.unlocked_at.desc()
+        ).all()
+
+        # Obtener todos los logros disponibles
+        all_achievements = ub.session.query(ub.AchievementDefinition).order_by(
+            ub.AchievementDefinition.category,
+            ub.AchievementDefinition.threshold
+        ).all()
+
+        # Separar logros por estado (desbloqueados vs bloqueados)
+        unlocked_ids = {ua.achievement_id for ua in unlocked_achievements}
+        locked_achievements = [a for a in all_achievements if a.id not in unlocked_ids]
+
+        # Obtener estadísticas de géneros
+        genre_stats = ub.session.query(ub.UserGenreStats).filter(
+            ub.UserGenreStats.user_id == user_id
+        ).order_by(ub.UserGenreStats.books_read.desc()).limit(10).all()
+
+        # Obtener progreso de series
+        series_progress = ub.session.query(ub.UserSeriesProgress).filter(
+            ub.UserSeriesProgress.user_id == user_id
+        ).order_by(ub.UserSeriesProgress.updated_at.desc()).limit(10).all()
+
+        # Obtener estadísticas anuales
+        yearly_stats = ub.session.query(ub.ReadingYearlyStats).filter(
+            ub.ReadingYearlyStats.user_id == user_id
+        ).order_by(ub.ReadingYearlyStats.year.desc()).limit(5).all()
+
+        # Obtener recomendaciones
+        recommendations = ub.session.query(ub.UserRecommendation).filter(
+            ub.UserRecommendation.user_id == user_id,
+            ub.UserRecommendation.dismissed == False
+        ).order_by(ub.UserRecommendation.score.desc()).limit(5).all()
+
+        # Obtener los libros recomendados
+        recommended_books = []
+        if recommendations:
+            book_ids = [r.book_id for r in recommendations]
+            recommended_books = calibre_db.session.query(db.Books).filter(
+                db.Books.id.in_(book_ids)
+            ).all()
+
+        return render_title_template(
+            'achievements.html',
+            title=_("Achievements & Awards"),
+            page="achievements",
+            user_level=user_level,
+            reading_rings=reading_rings,
+            unlocked_achievements=unlocked_achievements,
+            locked_achievements=locked_achievements,
+            books_read=books_read,
+            books_downloaded=books_downloaded,
+            genre_stats=genre_stats,
+            series_progress=series_progress,
+            yearly_stats=yearly_stats,
+            recommendations=recommendations,
+            recommended_books=recommended_books,
+            current_year=current_year
+        )
+
+    except Exception as e:
+        log.error(f"Error mostrando logros: {str(e)}")
+        flash(_("Error loading achievements page"), category="error")
+        return redirect(url_for("web.index"))
+
+
+@web.route("/achievements/dismiss-recommendation/<int:recommendation_id>", methods=["POST"])
+@login_required_if_no_ano
+def dismiss_recommendation(recommendation_id):
+    """Descartar una recomendación de libro"""
+    try:
+        from flask_login import current_user
+
+        recommendation = ub.session.query(ub.UserRecommendation).filter(
+            ub.UserRecommendation.id == recommendation_id,
+            ub.UserRecommendation.user_id == current_user.id
+        ).first()
+
+        if recommendation:
+            recommendation.dismissed = True
+            ub.session.commit()
+            return jsonify({'success': True})
+        else:
+            return jsonify({'success': False, 'error': 'Recommendation not found'}), 404
+
+    except Exception as e:
+        log.error(f"Error descartando recomendación: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
+@web.route("/achievements/generate-recommendations", methods=["POST"])
+@login_required_if_no_ano
+def generate_recommendations():
+    """Genera recomendaciones personalizadas basadas en el historial de lectura"""
+    try:
+        from flask_login import current_user
+        from collections import Counter
+        import datetime
+
+        user_id = current_user.id
+
+        # Obtener libros leídos por el usuario
+        read_books = ub.session.query(ub.ReadBook).filter(
+            ub.ReadBook.user_id == user_id,
+            ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED
+        ).all()
+
+        if not read_books:
+            return jsonify({'success': False, 'message': _('No reading history found')}), 400
+
+        # Obtener IDs de libros leídos
+        read_book_ids = [rb.book_id for rb in read_books]
+
+        # Obtener información de los libros leídos
+        books = calibre_db.session.query(db.Books).filter(
+            db.Books.id.in_(read_book_ids)
+        ).all()
+
+        # Analizar géneros favoritos
+        genre_counter = Counter()
+        author_counter = Counter()
+        series_ids = []
+
+        for book in books:
+            if book.tags:
+                for tag in book.tags:
+                    genre_counter[tag.id] += 1
+            if book.authors:
+                for author in book.authors:
+                    author_counter[author.id] += 1
+            if book.series:
+                for series in book.series:
+                    series_ids.append(series.id)
+
+        # Obtener géneros más leídos
+        top_genres = [genre_id for genre_id, count in genre_counter.most_common(5)]
+
+        # Buscar libros similares que no hayan sido leídos
+        recommended_books = []
+
+        # Recomendación 1: Libros del mismo género
+        if top_genres:
+            genre_books = calibre_db.session.query(db.Books).join(
+                db.books_tags_link
+            ).filter(
+                db.books_tags_link.c.tag.in_(top_genres),
+                ~db.Books.id.in_(read_book_ids)
+            ).limit(3).all()
+
+            for book in genre_books:
+                recommended_books.append({
+                    'book': book,
+                    'score': 0.8,
+                    'reason': _('Based on your favorite genres')
+                })
+
+        # Recomendación 2: Libros del mismo autor
+        top_authors = [author_id for author_id, count in author_counter.most_common(3)]
+        if top_authors:
+            author_books = calibre_db.session.query(db.Books).join(
+                db.books_authors_link
+            ).filter(
+                db.books_authors_link.c.author.in_(top_authors),
+                ~db.Books.id.in_(read_book_ids)
+            ).limit(2).all()
+
+            for book in author_books:
+                recommended_books.append({
+                    'book': book,
+                    'score': 0.9,
+                    'reason': _('From your favorite authors')
+                })
+
+        # Guardar recomendaciones en la base de datos
+        # Primero eliminar recomendaciones antiguas
+        ub.session.query(ub.UserRecommendation).filter(
+            ub.UserRecommendation.user_id == user_id
+        ).delete()
+
+        for rec in recommended_books:
+            recommendation = ub.UserRecommendation(
+                user_id=user_id,
+                book_id=rec['book'].id,
+                score=rec['score'],
+                reason=rec['reason'],
+                created_at=datetime.datetime.now(datetime.timezone.utc)
+            )
+            ub.session.add(recommendation)
+
+        ub.session.commit()
+
+        return jsonify({
+            'success': True,
+            'message': _('Generated %(count)s recommendations', count=len(recommended_books))
+        })
+
+    except Exception as e:
+        log.error(f"Error generando recomendaciones: {str(e)}")
+        ub.session.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500

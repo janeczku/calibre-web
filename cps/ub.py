@@ -566,12 +566,120 @@ class Thumbnail(Base):
     expiration = Column(DateTime, nullable=True)
 
 
+# Achievement definitions
+class AchievementDefinition(Base):
+    __tablename__ = 'achievement_definition'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    description = Column(String)
+    category = Column(String)  # 'books_read', 'series', 'genres', 'downloads', 'reading_time'
+    level = Column(Integer, default=1)  # For multi-level achievements
+    threshold = Column(Integer)  # Number required to unlock
+    icon = Column(String)  # Icon name or emoji
+    color = Column(String, default='#667eea')  # Color for display
+
+
+# User achievements (unlocked achievements per user)
+class UserAchievement(Base):
+    __tablename__ = 'user_achievement'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    achievement_id = Column(Integer, ForeignKey('achievement_definition.id'), nullable=False)
+    unlocked_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    progress = Column(Integer, default=0)  # Current progress towards achievement
+
+    # Relationships
+    user = relationship('User', foreign_keys=[user_id])
+    achievement = relationship('AchievementDefinition', foreign_keys=[achievement_id])
+
+
+# Reading statistics per year
+class ReadingYearlyStats(Base):
+    __tablename__ = 'reading_yearly_stats'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    year = Column(Integer, nullable=False)
+    books_read = Column(Integer, default=0)
+    books_downloaded = Column(Integer, default=0)
+    reading_time_minutes = Column(Integer, default=0)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    user = relationship('User', foreign_keys=[user_id])
+
+
+# Genre statistics per user
+class UserGenreStats(Base):
+    __tablename__ = 'user_genre_stats'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    genre_id = Column(Integer, nullable=False)  # References Tags (categories)
+    genre_name = Column(String)
+    books_read = Column(Integer, default=0)
+    books_downloaded = Column(Integer, default=0)
+    last_read = Column(DateTime)
+
+    # Relationships
+    user = relationship('User', foreign_keys=[user_id])
+
+
+# Series progress tracking
+class UserSeriesProgress(Base):
+    __tablename__ = 'user_series_progress'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    series_id = Column(Integer, nullable=False)  # References Series table
+    series_name = Column(String)
+    total_books = Column(Integer, default=0)
+    books_read = Column(Integer, default=0)
+    books_downloaded = Column(Integer, default=0)
+    is_completed = Column(Boolean, default=False)
+    last_read_date = Column(DateTime)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relationships
+    user = relationship('User', foreign_keys=[user_id])
+
+
+# Book recommendations for users
+class UserRecommendation(Base):
+    __tablename__ = 'user_recommendation'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    book_id = Column(Integer, nullable=False)
+    score = Column(Float, default=0.0)  # Recommendation score
+    reason = Column(String)  # Why this book is recommended
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    dismissed = Column(Boolean, default=False)
+
+    # Relationships
+    user = relationship('User', foreign_keys=[user_id])
+
+
 # Add missing tables during migration of database
 def add_missing_tables(engine, _session):
     if not engine.dialect.has_table(engine.connect(), "archived_book"):
         ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "thumbnail"):
         Thumbnail.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "achievement_definition"):
+        AchievementDefinition.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "user_achievement"):
+        UserAchievement.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "reading_yearly_stats"):
+        ReadingYearlyStats.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "user_genre_stats"):
+        UserGenreStats.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "user_series_progress"):
+        UserSeriesProgress.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "user_recommendation"):
+        UserRecommendation.__table__.create(bind=engine)
 
 
 # migrate all settings missing in registration table
