@@ -227,7 +227,10 @@ def generate_oauth_blueprints():
     ele2 = dict(provider_name='google',
                 id=oauth_ids[1].id,
                 active=oauth_ids[1].active,
-                scope=["https://www.googleapis.com/auth/userinfo.email"],
+                scope=[
+                    "openid",
+                    "https://www.googleapis.com/auth/userinfo.email",
+                ]
                 oauth_client_id=oauth_ids[1].oauth_client_id,
                 oauth_client_secret=oauth_ids[1].oauth_client_secret,
                 obtain_link='https://console.developers.google.com/apis/credentials')
