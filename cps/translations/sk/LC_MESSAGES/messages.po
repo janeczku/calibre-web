@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-09-12 08:48+0200\n"
+"POT-Creation-Date: 2025-11-22 15:29+0100\n"
 "PO-Revision-Date: 2023-11-01 06:12+0100\n"
 "Last-Translator: Branislav Hanáček <brango@brango.sk>\n"
 "Language: sk_SK\n"
@@ -310,7 +310,7 @@ msgstr "Úspech! Gmail konto bolo verifikované."
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
 #: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:150
 #: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1535
+#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1540
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Chyba databázy: %(error)s."
@@ -349,7 +349,7 @@ msgstr "Bol uvedený neplatný doba behu"
 msgid "Scheduled tasks settings updated"
 msgstr "Nastavenia naplánovaných úloh boli aktualizované"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1325
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1330
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Vyskytla sa neočakávaná chyba. Prosím, skúste to opäť neskôr."
 
@@ -490,7 +490,7 @@ msgstr "Nastavenia databáze boli aktualizované"
 msgid "Database Configuration"
 msgstr "Konfigurácia databázy"
 
-#: cps/admin.py:1948 cps/web.py:1299
+#: cps/admin.py:1948 cps/web.py:1304
 msgid "Oops! Please complete all fields."
 msgstr "Vyplňte prosím všetky polia."
 
@@ -524,7 +524,7 @@ msgstr "Nie je možné zmazať používateľa Hosť"
 msgid "No admin user remaining, can't delete user"
 msgstr "Nezostáva žiadny používateľ, nie je možné odobrať rolu správcu"
 
-#: cps/admin.py:2071 cps/web.py:1484
+#: cps/admin.py:2071 cps/web.py:1489
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-mailová adresa nemôže byť prázdna a musí byť platná"
 
@@ -552,8 +552,8 @@ msgstr "Chýba právo na vykonanie"
 #: cps/db.py:1046 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
-#: cps/web.py:995 cps/web.py:1025 cps/web.py:1070 cps/web.py:1098
-#: cps/web.py:1137
+#: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
+#: cps/web.py:1142
 msgid "None"
 msgstr "Žiadne"
 
@@ -585,8 +585,8 @@ msgid "Value is missing on request"
 msgstr ""
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
-#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1576 cps/web.py:1622
-#: cps/web.py:1672
+#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
+#: cps/web.py:1677
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Vybraná kniha nie je dostupná. Súbor neexistuje alebo sa k nemu nedá pristupovať"
 
@@ -973,7 +973,7 @@ msgstr "{} Hviezdičiek"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:68
 #: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1361
+#: cps/templates/login.html:21 cps/web.py:1366
 msgid "Login"
 msgstr "Prihlásiť sa"
 
@@ -1050,7 +1050,7 @@ msgid "Show Random Books"
 msgstr "Zobraziť náhodné knihy"
 
 #: cps/render_template.py:71 cps/templates/book_table.html:93
-#: cps/templates/index.xml:97 cps/web.py:1141
+#: cps/templates/index.xml:97 cps/web.py:1146
 msgid "Categories"
 msgstr "Kategórie"
 
@@ -1060,7 +1060,7 @@ msgstr "Zobraziť časť Kategórie"
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:86
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
-#: cps/templates/search_form.html:70 cps/web.py:1031 cps/web.py:1043
+#: cps/templates/search_form.html:70 cps/web.py:1036 cps/web.py:1048
 msgid "Series"
 msgstr "Série"
 
@@ -1078,7 +1078,7 @@ msgid "Show Author Section"
 msgstr "Zobraziť časť Autori"
 
 #: cps/render_template.py:81 cps/templates/book_table.html:98
-#: cps/templates/index.xml:88 cps/web.py:999
+#: cps/templates/index.xml:88 cps/web.py:1004
 msgid "Publishers"
 msgstr "Vydavatelia"
 
@@ -1088,7 +1088,7 @@ msgstr "Zobraziť časť vydavatelia"
 
 #: cps/render_template.py:84 cps/templates/book_table.html:96
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
-#: cps/web.py:1113
+#: cps/web.py:1118
 msgid "Languages"
 msgstr "Jazyky"
 
@@ -1120,7 +1120,7 @@ msgstr "Archivované knihy"
 msgid "Show Archived Books"
 msgstr "Zobraziť archivované knihy"
 
-#: cps/render_template.py:100 cps/web.py:829
+#: cps/render_template.py:100 cps/web.py:834
 msgid "Books List"
 msgstr "Zoznam kníh"
 
@@ -1386,117 +1386,117 @@ msgstr "Kategória: %(name)s"
 msgid "Language: %(name)s"
 msgstr "Jazyk: %(name)s"
 
-#: cps/templates/admin.html:16 cps/web.py:971
+#: cps/templates/admin.html:16 cps/web.py:976
 msgid "Downloads"
 msgstr "Stiahnutia"
 
-#: cps/web.py:1073
+#: cps/web.py:1078
 msgid "Ratings list"
 msgstr "Zoznam hodnotení"
 
-#: cps/web.py:1100
+#: cps/web.py:1105
 msgid "File formats list"
 msgstr "Zoznam súborových formátov"
 
-#: cps/web.py:1259
+#: cps/web.py:1264
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Najskôr nastavte poštový server, prosím..."
 
-#: cps/web.py:1265
+#: cps/web.py:1270
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Úspech! Kniha bola zaradená na odoslanie do %(eReadermail)s"
 
-#: cps/web.py:1268
+#: cps/web.py:1273
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Vyskytla sa chyba pri posielaní knihy: %(res)s"
 
-#: cps/web.py:1270
+#: cps/web.py:1275
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Nastavte vo vašom profile platnú e-mailovú adresu pre vašu čítačku."
 
-#: cps/web.py:1286
+#: cps/web.py:1291
 msgid "Please wait one minute to register next user"
 msgstr "Počkajte, prosím minútku pred registráciou ďalšieho používateľa"
 
 #: cps/templates/layout.html:69 cps/templates/layout.html:104
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1287
-#: cps/web.py:1291 cps/web.py:1296 cps/web.py:1300 cps/web.py:1306
-#: cps/web.py:1326 cps/web.py:1330 cps/web.py:1343 cps/web.py:1346
+#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1292
+#: cps/web.py:1296 cps/web.py:1301 cps/web.py:1305 cps/web.py:1311
+#: cps/web.py:1331 cps/web.py:1335 cps/web.py:1348 cps/web.py:1351
 msgid "Register"
 msgstr "Registrovať"
 
-#: cps/web.py:1290 cps/web.py:1393
+#: cps/web.py:1295 cps/web.py:1398
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1295 cps/web.py:1342
+#: cps/web.py:1300 cps/web.py:1347
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Poštový server nie je nastavený, kontaktujte prosím správcu."
 
-#: cps/web.py:1328
+#: cps/web.py:1333
 msgid "Oops! Your Email is not allowed."
 msgstr "Vaša e-mailová adresa nie je povolená."
 
-#: cps/web.py:1331
+#: cps/web.py:1336
 msgid "Success! Confirmation Email has been sent."
 msgstr "Úspech! Potvrdzujúci e-mail bol odoslaný."
 
-#: cps/web.py:1376 cps/web.py:1399
+#: cps/web.py:1381 cps/web.py:1404
 msgid "Cannot activate LDAP authentication"
 msgstr "Nie je možné aktivovať LDAP autentifikáciu"
 
-#: cps/web.py:1389
+#: cps/web.py:1394
 msgid "Please wait one minute before next login"
 msgstr "Počkajte, prosím minútku pred opätovným prihlásením"
 
-#: cps/web.py:1408
+#: cps/web.py:1413
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ste prihlásený ako: '%(nickname)s'"
 
-#: cps/web.py:1415
+#: cps/web.py:1420
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Záložné prihlásenie ako: '%(nickname)s', LDAP server je nedostupný alebo používateľ je neznámy"
 
-#: cps/web.py:1420
+#: cps/web.py:1425
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Nemôžem prihlásiť: %(message)s"
 
-#: cps/web.py:1424 cps/web.py:1449
+#: cps/web.py:1429 cps/web.py:1454
 msgid "Wrong Username or Password"
 msgstr "Nesprávne používateľské meno alebo heslo"
 
-#: cps/web.py:1431
+#: cps/web.py:1436
 msgid "New Password was sent to your email address"
 msgstr "Na vašu e-mailovú adresu bolo odoslané nové heslo"
 
-#: cps/web.py:1435
+#: cps/web.py:1440
 msgid "An unknown error occurred. Please try again later."
 msgstr "Vyskytla sa neočakávaná chyba. Prosím, skúste to opäť neskôr."
 
-#: cps/web.py:1437
+#: cps/web.py:1442
 msgid "Please enter valid username to reset password"
 msgstr "Na resetovanie hesla zadajte platné používateľské meno"
 
-#: cps/web.py:1445
+#: cps/web.py:1450
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Teraz ste prihlásený ako: '%(nickname)s'"
 
-#: cps/web.py:1510 cps/web.py:1560
+#: cps/web.py:1515 cps/web.py:1565
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "Profil pre %(name)s"
 
-#: cps/web.py:1526
+#: cps/web.py:1531
 msgid "Success! Profile Updated"
 msgstr "Úspech! Profil bol aktualizovaný"
 
-#: cps/web.py:1530
+#: cps/web.py:1535
 msgid "Oops! An account already exists for this Email."
 msgstr "Účet s touto e-mailovou adresou už existuje."
 
@@ -1633,7 +1633,7 @@ msgstr "Upraviť"
 
 #: cps/templates/admin.html:25 cps/templates/book_edit.html:17
 #: cps/templates/book_table.html:131 cps/templates/book_table.html:180
-#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:116
+#: cps/templates/modal_dialogs.html:62 cps/templates/modal_dialogs.html:115
 #: cps/templates/user_edit.html:67 cps/templates/user_table.html:149
 msgid "Delete"
 msgstr "Zmazať"
@@ -1833,8 +1833,8 @@ msgstr "V poriadku"
 #: cps/templates/book_table.html:261 cps/templates/book_table.html:316
 #: cps/templates/config_db.html:66 cps/templates/config_edit.html:431
 #: cps/templates/config_view_edit.html:175 cps/templates/detail.html:350
-#: cps/templates/modal_dialogs.html:64 cps/templates/modal_dialogs.html:99
-#: cps/templates/modal_dialogs.html:117 cps/templates/modal_dialogs.html:135
+#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:98
+#: cps/templates/modal_dialogs.html:116 cps/templates/modal_dialogs.html:134
 #: cps/templates/schedule_edit.html:45 cps/templates/shelf_edit.html:27
 #: cps/templates/tasks.html:47 cps/templates/user_edit.html:144
 msgid "Cancel"
@@ -3116,46 +3116,42 @@ msgid "This book format will be permanently erased from database"
 msgstr "Tento formát knihy bude navždy vymazaný z databázy"
 
 #: cps/templates/modal_dialogs.html:51
-msgid "This book will be permanently erased from database"
-msgstr "Táto kniha bude navždy vymazaná z databázy"
+msgid "This book will be permanently erased from database and hard disk"
+msgstr ""
 
-#: cps/templates/modal_dialogs.html:52
-msgid "and hard disk"
-msgstr "a pevný disk"
-
-#: cps/templates/modal_dialogs.html:56
+#: cps/templates/modal_dialogs.html:55
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
 msgstr "Dôležitá poznámka pre Kobo: zmazané knihy zostanú na každom spárovanom Kobo zariadení."
 
-#: cps/templates/modal_dialogs.html:57
+#: cps/templates/modal_dialogs.html:56
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
 msgstr "Kniha musí byť najskôr archivovaná a zariadenie synchronizované pred tým než môže byť kniha bezpečne zmazaná."
 
-#: cps/templates/modal_dialogs.html:76
+#: cps/templates/modal_dialogs.html:75
 msgid "Choose File Location"
 msgstr "Vyberte umiestnenie súboru"
 
-#: cps/templates/modal_dialogs.html:82
+#: cps/templates/modal_dialogs.html:81
 msgid "type"
 msgstr "typ"
 
-#: cps/templates/modal_dialogs.html:83
+#: cps/templates/modal_dialogs.html:82
 msgid "name"
 msgstr "meno"
 
-#: cps/templates/modal_dialogs.html:84
+#: cps/templates/modal_dialogs.html:83
 msgid "size"
 msgstr "veľkosť"
 
-#: cps/templates/modal_dialogs.html:90
+#: cps/templates/modal_dialogs.html:89
 msgid "Parent Directory"
 msgstr "Rodičovský adresár"
 
-#: cps/templates/modal_dialogs.html:98
+#: cps/templates/modal_dialogs.html:97
 msgid "Select"
 msgstr "Vybrať"
 
-#: cps/templates/modal_dialogs.html:134 cps/templates/tasks.html:46
+#: cps/templates/modal_dialogs.html:133 cps/templates/tasks.html:46
 msgid "Ok"
 msgstr "Ok"
 
