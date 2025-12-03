@@ -807,9 +807,8 @@ def render_archived_books(page, sort_param):
 def render_audiobooks(page, sort_param):
     """Render books that have generated audiobook files"""
     if current_user.check_visibility(constants.SIDEBAR_AUDIOBOOKS):
-        # Get all books
-        query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
-        all_books = query.filter(calibre_db.common_filters()).all()
+        # Get all books with full object properties
+        all_books = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).all()
 
         # Filter books that have audiobook files
         audiobook_book_ids = []
