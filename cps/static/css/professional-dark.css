@@ -127,24 +127,54 @@ body {
 .btn-primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   border: none;
-  color: white;
+  color: white !important;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus {
+  color: white !important;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.5);
 }
 
-.btn-default {
+.btn-default,
+.btn,
+.btn-default:visited {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  color: white !important;
 }
 
-.btn-default:hover {
-  background: var(--bg-secondary);
+.btn-default:hover,
+.btn-default:active,
+.btn-default:focus {
+  background: var(--primary);
   border-color: var(--primary);
-  color: var(--primary);
+  color: white !important;
+}
+
+/* All button variants */
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+  color: white !important;
+}
+
+.btn-success:hover,
+.btn-success:active,
+.btn-success:focus,
+.btn-info:hover,
+.btn-info:active,
+.btn-info:focus,
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning:focus,
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:focus {
+  color: white !important;
 }
 
 /* Filter Buttons */
@@ -157,27 +187,36 @@ body {
   border: 1px solid var(--border-color);
 }
 
+.filterheader .btn {
+  color: white !important;
+}
+
 .filterheader .btn.active {
   background: var(--primary);
-  color: white;
+  color: white !important;
+}
+
+.filterheader .btn:hover {
+  color: white !important;
 }
 
 /* Pagination */
 .pagination li a {
   background: var(--bg-secondary);
   border-color: var(--border-color);
-  color: var(--text-primary);
+  color: white !important;
 }
 
 .pagination li a:hover {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: white !important;
 }
 
 .pagination li.active span {
   background: var(--primary);
   border-color: var(--primary);
+  color: white !important;
 }
 
 /* Rating */
@@ -486,6 +525,12 @@ a:hover {
 .audiobook-play-btn,
 .audiobook-download-btn {
   white-space: nowrap;
+  color: white !important;
+}
+
+.audiobook-play-btn:hover,
+.audiobook-download-btn:hover {
+  color: white !important;
 }
 
 @media (max-width: 768px) {
