@@ -2392,7 +2392,7 @@ def generate_recommendations():
         ).all()
 
         if not read_books:
-            return jsonify({'success': False, 'message': _('No reading history found')}), 400
+            return jsonify({'success': True, 'message': _('No reading history found. Read some books first!'), 'count': 0})
 
         # Obtener IDs de libros leídos
         read_book_ids = [rb.book_id for rb in read_books]
@@ -2481,6 +2481,8 @@ def generate_recommendations():
         })
 
     except Exception as e:
-        log.error(f"Error generando recomendaciones: {str(e)}")
+        import traceback
+        error_details = traceback.format_exc()
+        log.error(f"Error generando recomendaciones: {str(e)}\n{error_details}")
         ub.session.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
