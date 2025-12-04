@@ -2380,7 +2380,6 @@ def dismiss_recommendation(recommendation_id):
 def generate_recommendations():
     """Genera recomendaciones personalizadas basadas en el historial de lectura"""
     try:
-        from flask_login import current_user
         from collections import Counter
         import datetime
 
@@ -2428,9 +2427,9 @@ def generate_recommendations():
         # Recomendación 1: Libros del mismo género
         if top_genres:
             genre_books = calibre_db.session.query(db.Books).join(
-                db.books_tags_link
+                db.Books.tags
             ).filter(
-                db.books_tags_link.c.tag.in_(top_genres),
+                db.Tags.id.in_(top_genres),
                 ~db.Books.id.in_(read_book_ids)
             ).limit(3).all()
 
@@ -2445,9 +2444,9 @@ def generate_recommendations():
         top_authors = [author_id for author_id, count in author_counter.most_common(3)]
         if top_authors:
             author_books = calibre_db.session.query(db.Books).join(
-                db.books_authors_link
+                db.Books.authors
             ).filter(
-                db.books_authors_link.c.author.in_(top_authors),
+                db.Authors.id.in_(top_authors),
                 ~db.Books.id.in_(read_book_ids)
             ).limit(2).all()
 
