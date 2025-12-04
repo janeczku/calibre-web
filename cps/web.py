@@ -100,7 +100,7 @@ def add_security_headers(resp):
 
     # Allow Chart.js from CDN for stats page
     if request.endpoint == "about.stats":
-        csp += "; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net"
+        csp += "; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; script-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net"
 
     csp += "; font-src 'self' data:"
     if request.endpoint == "web.read_book":
