@@ -107,7 +107,7 @@ def get_sidebar_config(kwargs=None):
 
     # Agregar enlace a Logros y Premios
     sidebar.append(
-        {"glyph": "glyphicon-trophy", "text": _('Achievements'), "link": 'web.show_achievements', "id": "achievements",
+        {"glyph": "glyphicon-certificate", "text": _('Achievements'), "link": 'web.show_achievements', "id": "achievements",
          "visibility": constants.SIDEBAR_ACHIEVEMENTS, 'public': (not current_user.is_anonymous), "page": "achievements",
          "show_text": _('Show Achievements & Awards'), "config_show": True})
 

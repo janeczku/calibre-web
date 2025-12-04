@@ -100,7 +100,7 @@ def add_security_headers(resp):
 
     # Allow Chart.js from CDN for stats page
     if request.endpoint == "about.stats":
-        csp += "; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net"
+        csp += "; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net"
 
     csp += "; font-src 'self' data:"
     if request.endpoint == "web.read_book":
@@ -2250,7 +2250,6 @@ def show_achievements():
     """Muestra la página de logros y premios del usuario"""
     try:
         from . import achievements as ach
-        from flask_login import current_user
         import datetime
 
         user_id = current_user.id if not current_user.is_anonymous else None
