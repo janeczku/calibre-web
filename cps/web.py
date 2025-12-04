@@ -2381,7 +2381,7 @@ def generate_recommendations():
     """Genera recomendaciones personalizadas basadas en el historial de lectura"""
     try:
         from collections import Counter
-        import datetime
+        from datetime import datetime, timezone
 
         user_id = current_user.id
 
@@ -2469,7 +2469,7 @@ def generate_recommendations():
                 book_id=rec['book'].id,
                 score=rec['score'],
                 reason=rec['reason'],
-                created_at=datetime.datetime.now(datetime.timezone.utc)
+                created_at=datetime.now(timezone.utc)
             )
             ub.session.add(recommendation)
 
