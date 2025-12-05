@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2025-08-03 18:23:44</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2025-12-04 20:11:40</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-08-04 01:42:17</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2025-12-05 03:15:12</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 6 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>5h 48 min</p>
         </div>
       </div>
       </div>
@@ -462,11 +462,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestCli</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
-        <td class="text-center">1</td>
+        <td class="text-center">13</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -530,31 +530,11 @@
     
     
     
-        <tr id="ft4.7" class="none bg-danger">
+        <tr id='pt4.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestCli - test_dryrun_update</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.7')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft4.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft4.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_cli.py&#34;, line 541, in test_dryrun_update
-    self.assertFalse(&#34;favicon.ico&#34; in output)
-AssertionError: True is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1043,12 +1023,12 @@ AssertionError: True is not false</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">12</td>
+        <td class="text-center">1</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c12', 18)">Detail</a>
@@ -1138,56 +1118,231 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt12.10' class='hiddenRow bg-success'>
+        <tr id="ft12.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_title_sort</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft12.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft12.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 782, in test_title_sort
+    self.assertEqual(7, len(self.search(&#39; book &#39;)))
+AssertionError: 7 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.11' class='hiddenRow bg-success'>
+        <tr id="et12.11" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_cbz_coverformats</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 106, in test_upload_cbz_coverformats
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.12' class='hiddenRow bg-success'>
+        <tr id="et12.12" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_edit_role</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.12')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 609, in test_upload_edit_role
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.13' class='hiddenRow bg-success'>
+        <tr id="et12.13" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cb7</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 235, in test_upload_metadata_cb7
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.14' class='hiddenRow bg-success'>
+        <tr id="et12.14" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbr</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.14')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 162, in test_upload_metadata_cbr
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt12.15' class='hiddenRow bg-success'>
+        <tr id="et12.15" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_upload_metadata_cbt</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.15')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et12.15" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et12.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 203, in test_upload_metadata_cbt
+    self.fill_basic_config({&#39;config_uploading&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1220,12 +1375,12 @@ AssertionError: True is not false</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooks</td>
         <td class="text-center">38</td>
-        <td class="text-center">37</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">29</td>
+        <td class="text-center">1</td>
+        <td class="text-center">7</td>
         <td class="text-center">1</td>
         <td class="text-center">
             <a onclick="showClassDetail('c13', 38)">Detail</a>
@@ -1279,74 +1434,241 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt13.6' class='hiddenRow bg-success'>
+        <tr id="ft13.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_categories</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft13.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft13.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft13.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 619, in test_edit_custom_categories
+    self.assertEqual(len(self.search(u&#39;人 Ü&#39;)), 1)
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.7' class='hiddenRow bg-success'>
+        <tr id="et13.7" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_comment</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 590, in test_edit_custom_comment
+    self.assertEqual(len(self.adv_search({u&#39;custom_column_5&#39;: u&#39;人1 Ä&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.8' class='hiddenRow bg-success'>
+        <tr id="et13.8" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_date</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 672, in test_edit_custom_date
+    self.assertEqual(len(self.adv_search({u&#39;custom_column_2_start&#39;: u&#39;16/7/2015&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.9' class='hiddenRow bg-success'>
+        <tr id="et13.9" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_float</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 628, in test_edit_custom_float
+    self.assertEqual(len(self.adv_search({&#39;custom_column_8_low&#39;: &#39;-2.5&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.10' class='hiddenRow bg-success'>
+        <tr id="et13.10" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_int</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 649, in test_edit_custom_int
+    self.assertEqual(len(self.adv_search({u&#39;custom_column_4_low&#39;: u&#39;0&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.11' class='hiddenRow bg-success'>
+        <tr id="et13.11" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_rating</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 527, in test_edit_custom_rating
+    self.assertEqual(len(self.adv_search({u&#39;custom_column_1&#39;: u&#39;3&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.12' class='hiddenRow bg-success'>
+        <tr id="et13.12" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_single_select</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.12')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 553, in test_edit_custom_single_select
+    self.assertEqual(len(self.adv_search({u&#39;custom_column_9&#39;: u&#39;人物&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt13.13' class='hiddenRow bg-success'>
+        <tr id="et13.13" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditBooks - test_edit_custom_text</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et13.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et13.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books.py&#34;, line 571, in test_edit_custom_text
+    self.assertEqual(len(self.adv_search({u&#39;custom_column_10&#39;: u&#39;人 Ä&#39;})), 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1690,12 +2012,12 @@ AssertionError: True is not false</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestEditAuthorsGdrive</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c15', 7)">Detail</a>
@@ -1758,11 +2080,32 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt15.7' class='hiddenRow bg-success'>
+        <tr id="et15.7" class="none bg-info">
             <td>
                 <div class='testcase'>TestEditAuthorsGdrive - test_rename_capital_on_upload</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et15.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et15.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et15.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_gdrive.py&#34;, line 592, in test_rename_capital_on_upload
+    self.assertEqual(&#39;Useless&#39;, details[&#39;title&#39;])
+                                ~~~~~~~^^^^^^^^^
+KeyError: &#39;title&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1864,21 +2207,50 @@ AssertionError: True is not false</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditBooksList</td>
-        <td class="text-center">19</td>
-        <td class="text-center">19</td>
-        <td class="text-center">0</td>
+        <td class="text-center">20</td>
+        <td class="text-center">17</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 19)">Detail</a>
+            <a onclick="showClassDetail('c17', 20)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id="ft17.1" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestEditBooksList - test_booklist_archive_read</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft17.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft17.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 546, in test_booklist_archive_read
+    self.assertTrue(bl[&#39;table&#39;][0][&#39;Read Status&#39;][&#39;element&#39;].is_selected())
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_booklist_xss</div>
             </td>
@@ -1887,7 +2259,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id='pt17.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_author</div>
             </td>
@@ -1896,7 +2268,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt17.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_categories</div>
             </td>
@@ -1905,7 +2277,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt17.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_comment</div>
             </td>
@@ -1914,7 +2286,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt17.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_category</div>
             </td>
@@ -1923,7 +2295,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt17.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_comment</div>
             </td>
@@ -1932,7 +2304,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt17.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_enum</div>
             </td>
@@ -1941,7 +2313,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.8' class='hiddenRow bg-success'>
+        <tr id='pt17.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_float</div>
             </td>
@@ -1950,7 +2322,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt17.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_int</div>
             </td>
@@ -1959,7 +2331,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.10' class='hiddenRow bg-success'>
+        <tr id='pt17.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_ratings</div>
             </td>
@@ -1968,7 +2340,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.11' class='hiddenRow bg-success'>
+        <tr id='pt17.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_cust_text</div>
             </td>
@@ -1977,7 +2349,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.12' class='hiddenRow bg-success'>
+        <tr id='pt17.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_languages</div>
             </td>
@@ -1986,7 +2358,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.13' class='hiddenRow bg-success'>
+        <tr id='pt17.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_publisher</div>
             </td>
@@ -1995,7 +2367,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.14' class='hiddenRow bg-success'>
+        <tr id='pt17.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_series</div>
             </td>
@@ -2004,7 +2376,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.15' class='hiddenRow bg-success'>
+        <tr id='pt17.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_seriesindex</div>
             </td>
@@ -2013,7 +2385,7 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.16' class='hiddenRow bg-success'>
+        <tr id='pt17.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_bookslist_edit_title</div>
             </td>
@@ -2022,16 +2394,36 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.17' class='hiddenRow bg-success'>
+        <tr id="ft17.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksList - test_list_visibility</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft17.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft17.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 311, in test_list_visibility
+    self.assertEqual(20, len(bl[&#39;column_elements&#39;]))
+AssertionError: 20 != 19</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt17.18' class='hiddenRow bg-success'>
+        <tr id='pt17.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditBooksList - test_restricted_rights</div>
             </td>
@@ -2040,21 +2432,44 @@ AssertionError: True is not false</pre>
     
     
     
-        <tr id='pt17.19' class='hiddenRow bg-success'>
+        <tr id="ft17.20" class="none bg-danger">
             <td>
                 <div class='testcase'>TestEditBooksList - test_search_books_list</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.20')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft17.20" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft17.20').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 86, in test_search_books_list
+    bl = self.check_search(bl, &#34;genot&#34;, 4, &#34;Categories&#34;, &#34;Gênot&#34;)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_list.py&#34;, line 51, in check_search
+    self.assertEqual(count, len(bl[&#39;table&#39;]))
+AssertionError: 4 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2064,11 +2479,31 @@ AssertionError: True is not false</pre>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id="ft18.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 59, in test_load_metadata
+    self.assertTrue(google)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2260,11 +2695,11 @@ AssertionError: True is not false</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadataScholar</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2274,11 +2709,31 @@ AssertionError: True is not false</pre>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id="ft20.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft20.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft20.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_metadata_scholar.py&#34;, line 66, in test_load_metadata
+    self.assertTrue(google)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2647,7 +3102,7 @@ AssertionError: True is not false</pre>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_filepicker.py&#34;, line 87, in test_two_filepickers
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_filepicker.py&#34;, line 88, in test_two_filepickers
     accordions[0].click()
     ~~~~~~~~~~^^^
 IndexError: list index out of range</pre>
@@ -2727,11 +3182,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
+        <td class="text-center">11</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2822,11 +3277,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt30.10' class='hiddenRow bg-success'>
+        <tr id="ft30.10" class="none bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft30.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft30.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft30.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 373, in test_sync_shelf
+    self.assertEqual(1, len(data), data)
+AssertionError: 1 != 0 : []</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3053,13 +3528,13 @@ IndexError: list index out of range</pre>
 
     <tr id="su" class="passClass">
         <td>TestSecurity</td>
-        <td class="text-center">5</td>
-        <td class="text-center">5</td>
+        <td class="text-center">6</td>
+        <td class="text-center">6</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c33', 5)">Detail</a>
+            <a onclick="showClassDetail('c33', 6)">Detail</a>
         </td>
     </tr>
 
@@ -3109,14 +3584,23 @@ IndexError: list index out of range</pre>
         </tr>
     
     
+    
+        <tr id='pt33.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestSecurity - test_x_forwarded_host</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestCalibreWebListOrders</td>
         <td class="text-center">16</td>
-        <td class="text-center">16</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">13</td>
+        <td class="text-center">1</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c34', 16)">Detail</a>
@@ -3179,29 +3663,91 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt34.7' class='hiddenRow bg-success'>
+        <tr id="et34.7" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_authors_all_links</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et34.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et34.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et34.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_list_orders.py&#34;, line 458, in test_order_authors_all_links
+    books[0][&#39;author_ele&#39;][0].click()
+    ~~~~~^^^
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt34.8' class='hiddenRow bg-success'>
+        <tr id="ft34.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_order_series_all_links</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft34.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft34.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft34.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_list_orders.py&#34;, line 367, in test_order_series_all_links
+    self.assertTrue(list)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt34.9' class='hiddenRow bg-success'>
+        <tr id="et34.9" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebListOrders - test_publisher_click_none</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et34.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et34.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et34.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_list_orders.py&#34;, line 557, in test_publisher_click_none
+    self.assertTrue(int(element[&#39;count&#39;]) &gt; 0)
+                        ^^^^^^^
+UnboundLocalError: cannot access local variable &#39;element&#39; where it is not associated with a value</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3383,11 +3929,11 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLogin</td>
         <td class="text-center">19</td>
-        <td class="text-center">19</td>
-        <td class="text-center">0</td>
+        <td class="text-center">17</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3460,11 +4006,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.8' class='hiddenRow bg-success'>
+        <tr id="ft36.8" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLogin - test_login_protected</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft36.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft36.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft36.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 78, in test_login_protected
+    self.assertEqual(self.fail_access_page(host + &#34;/admin/user&#34;), 2)
+AssertionError: 1 != 2</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3514,11 +4080,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt36.14' class='hiddenRow bg-success'>
+        <tr id="ft36.14" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLogin - test_next</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft36.14')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft36.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft36.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_login.py&#34;, line 714, in test_next
+    self.assertTrue(&#34;&lt;title&gt;Calibre-Web | Books&lt;/title&gt;&#34; in page.text)
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3569,15 +4155,15 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestMassEditBooksList</td>
-        <td class="text-center">5</td>
-        <td class="text-center">5</td>
-        <td class="text-center">0</td>
+        <td class="text-center">11</td>
+        <td class="text-center">8</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c37', 5)">Detail</a>
+            <a onclick="showClassDetail('c37', 11)">Detail</a>
         </td>
     </tr>
 
@@ -3592,18 +4178,40 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt37.2' class='hiddenRow bg-success'>
+        <tr id="ft37.2" class="none bg-danger">
             <td>
                 <div class='testcase'>TestMassEditBooksList - test_invalid_author_title</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft37.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft37.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft37.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_mass_edit_books_list.py&#34;, line 221, in test_invalid_author_title
+    self.assertEqual(bl[&#39;table&#39;][4][&#39;Authors&#39;][&#39;text&#39;], &#34;Kurt Jilo&#34;)
+AssertionError: &#39;Sigurd Lindgren&#39; != &#39;Kurt Jilo&#39;
+- Sigurd Lindgren
++ Kurt Jilo</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
         <tr id='pt37.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestMassEditBooksList - test_protected_author_title</div>
+                <div class='testcase'>TestMassEditBooksList - test_mass_edit_archive</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3612,7 +4220,7 @@ IndexError: list index out of range</pre>
     
         <tr id='pt37.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_multi</div>
+                <div class='testcase'>TestMassEditBooksList - test_mass_edit_categories</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -3620,6 +4228,104 @@ IndexError: list index out of range</pre>
     
     
         <tr id='pt37.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_mass_edit_languages</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_mass_edit_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_mass_edit_read</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="ft37.8" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_mass_edit_series</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft37.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft37.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft37.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_mass_edit_books_list.py&#34;, line 462, in test_mass_edit_series
+    self.assertEqual(bl[&#39;table&#39;][5][&#39;Series&#39;][&#39;text&#39;], &#34;Tuto&#34;)
+AssertionError: &#39;+&#39; != &#39;Tuto&#39;
+- +
++ Tuto</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft37.9" class="none bg-danger">
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_protected_author_title</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft37.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft37.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft37.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_mass_edit_books_list.py&#34;, line 322, in test_protected_author_title
+    self.assertEqual(bl[&#39;table&#39;][3][&#39;Authors&#39;][&#39;text&#39;], &#34;Kurt Jilo&#34;)
+AssertionError: &#39;Peter Parker&#39; != &#39;Kurt Jilo&#39;
+- Peter Parker
++ Kurt Jilo</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_multi</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt37.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_single</div>
             </td>
@@ -3629,12 +4335,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestMergeBooksList</td>
         <td class="text-center">2</td>
-        <td class="text-center">2</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c38', 2)">Detail</a>
@@ -3643,20 +4349,61 @@ IndexError: list index out of range</pre>
 
     
     
-        <tr id='pt38.1' class='hiddenRow bg-success'>
+        <tr id="ft38.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestMergeBooksList - test_book_merge</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft38.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft38.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft38.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_merge_books_list.py&#34;, line 124, in test_book_merge
+    self.assertTrue(bl[&#39;table&#39;][0][&#39;selector&#39;][&#39;element&#39;].is_selected())
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt38.2' class='hiddenRow bg-success'>
+        <tr id="et38.2" class="none bg-info">
             <td>
                 <div class='testcase'>TestMergeBooksList - test_delete_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et38.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et38.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et38.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_merge_books_list.py&#34;, line 61, in test_delete_book
+    bl[&#39;table&#39;][0][&#39;Delete&#39;][&#39;element&#39;].click()
+    ~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: &#39;Delete&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3695,12 +4442,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestOPDSFeed</td>
         <td class="text-center">26</td>
-        <td class="text-center">26</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">24</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c40', 26)">Detail</a>
@@ -3745,11 +4492,32 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt40.5' class='hiddenRow bg-success'>
+        <tr id="et40.5" class="none bg-info">
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_books</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et40.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et40.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et40.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_opds_feed.py&#34;, line 295, in test_opds_books
+    self.assertEqual(entries[&#39;elements&#39;][0][&#39;content&#39;][&#39;TAGS&#39;], &#34;Gênot&#34;)
+                     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+KeyError: &#39;content&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3871,11 +4639,31 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt40.19' class='hiddenRow bg-success'>
+        <tr id="ft40.19" class="none bg-danger">
             <td>
                 <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft40.19')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft40.19" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft40.19').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_opds_feed.py&#34;, line 634, in test_opds_search
+    self.assertEqual(200, r.status_code)
+AssertionError: 200 != 500</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -4268,15 +5056,15 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="skipClass">
+    <tr id="su" class="errorClass">
         <td>TestShelf</td>
-        <td class="text-center">17</td>
-        <td class="text-center">16</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">32</td>
+        <td class="text-center">1</td>
+        <td class="text-center">11</td>
+        <td class="text-center">19</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c47', 17)">Detail</a>
+            <a onclick="showClassDetail('c47', 32)">Detail</a>
         </td>
     </tr>
 
@@ -4291,127 +5079,871 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt47.2' class='hiddenRow bg-success'>
+        <tr id="et47.2" class="none bg-info">
             <td>
                 <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.2" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 460, in test_add_shelf_from_search
+    self.check_element_on_page((By.ID, &#34;add-to-shelf&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.3' class='hiddenRow bg-success'>
+        <tr id="et47.3" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_add_shelf_from_search</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.3" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.4" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_adv_search_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.4" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 557, in test_adv_search_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.4' class='hiddenRow bg-success'>
+        <tr id="et47.5" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_adv_search_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.6" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_arrange_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 306, in test_arrange_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.5' class='hiddenRow bg-success'>
+        <tr id="et47.7" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_arrange_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.7')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et47.8" class="none bg-info">
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 190, in test_create_public_shelf
+    self.create_user(&#39;invalid&#39;, {&#39;edit_shelf_role&#39;: 0, &#39;password&#39;: &#39;123AbC*!&#39;, &#39;email&#39;: &#39;bac@b.com&#39;})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1026, in create_user
+    return cls.change_user(config)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1080, in change_user
+    ele = cls.driver.find_element(By.ID, checkbox)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 922, in find_element
+    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 454, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;edit_shelf_role&#34;]; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.6' class='hiddenRow bg-success'>
+        <tr id="et47.9" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_create_public_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et47.10" class="none bg-info">
             <td>
                 <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.10')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 601, in test_create_public_shelf_no_permission
+    self.create_user(&#34;test1&#34;, {&#39;password&#39;: &#39;123AbC*!&#39;, &#39;email&#39;: &#39;a11@bc.com&#39;})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1026, in create_user
+    return cls.change_user(config)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1096, in change_user
+    ele = cls.driver.find_element(By.ID, key)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 922, in find_element
+    return self.execute(Command.FIND_ELEMENT, {&#34;using&#34;: by, &#34;value&#34;: value})[&#34;value&#34;]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 454, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id=&#34;password&#34;]; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.7' class='hiddenRow bg-success'>
+        <tr id="et47.11" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_create_public_shelf_no_permission</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.11')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.11" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.11').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.12" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.12')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 290, in test_delete_book_of_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.8' class='hiddenRow bg-success'>
+        <tr id="et47.13" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_delete_book_of_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.13')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.13" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.13').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.14" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_private_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.14')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.14" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.14').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 65, in test_private_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.9' class='hiddenRow bg-success'>
+        <tr id="et47.15" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_private_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.15')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.15" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.15').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.16" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_public_private_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.16')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.16" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 375, in test_public_private_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.10' class='hiddenRow bg-success'>
+        <tr id="et47.17" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_public_private_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.17')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.17" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.17').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_public_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 126, in test_public_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.11' class='hiddenRow bg-success'>
+        <tr id="et47.19" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_public_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.19')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.19" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.19').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.20" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_rename_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.20')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.20" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.20').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 213, in test_rename_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.12' class='hiddenRow bg-success'>
+        <tr id="et47.21" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_rename_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.21')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.21" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.21').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.22" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.22')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.22" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.22').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 416, in test_shelf_action_non_shelf_edit_role
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.13' class='hiddenRow bg-success'>
+        <tr id="et47.23" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_action_non_shelf_edit_role</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.23')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.23" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.23').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et47.24" class="none bg-info">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_anonymous</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.24')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.24" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.24').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 494, in test_shelf_anonymous
+    self.fill_basic_config({&#39;config_anonbrowse&#39;: 1})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 392, in fill_basic_config
+    cls._fill_basic_config(elements)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 304, in _fill_basic_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;config_port&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id="st47.14" class="none bg-warning">
+        <tr id="et47.25" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_anonymous</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.25')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.25" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.25').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="st47.26" class="none bg-warning">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st47.14')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st47.26')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_st47.14" class="popup_window test_output" style="display:none;">
+                <div id="div_st47.26" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_st47.14').style.display='none'"><span
+                                onclick="document.getElementById('div_st47.26').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -4425,29 +5957,203 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt47.15' class='hiddenRow bg-success'>
+        <tr id="ft47.27" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_long_name</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.27')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.27" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.27').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 409, in test_shelf_long_name
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.16' class='hiddenRow bg-success'>
+        <tr id="et47.28" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_long_name</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.28')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.28" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.28').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.29" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_shelf_order</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.29')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.29" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.29').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 349, in test_shelf_order
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt47.17' class='hiddenRow bg-success'>
+        <tr id="et47.30" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_shelf_order</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.30')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.30" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.30').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="ft47.31" class="none bg-danger">
             <td>
                 <div class='testcase'>TestShelf - test_xss_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft47.31')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft47.31" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft47.31').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 583, in test_xss_shelf
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id="et47.32" class="none bg-info">
+            <td>
+                <div class='testcase'>TestShelf - test_xss_shelf</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et47.32')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et47.32" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et47.32').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_shelf.py&#34;, line 52, in tearDown
+    self.login(&#39;admin&#39;,&#39;admin123&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 91, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, &#34;username&#34;)))
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/support/wait.py&#34;, line 138, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+NoSuchElementError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:555:5
+dom.find/&lt;/&lt;@chrome://remote/content/shared/DOM.sys.mjs:136:16</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5409,12 +7115,12 @@ IndexError: list index out of range</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestCalibreWebVisibilitys</td>
         <td class="text-center">35</td>
-        <td class="text-center">35</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">21</td>
+        <td class="text-center">4</td>
+        <td class="text-center">10</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c59', 35)">Detail</a>
@@ -5567,38 +7273,119 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt59.17' class='hiddenRow bg-success'>
+        <tr id="ft59.17" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_columns</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft59.17')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft59.17" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft59.17').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 782, in test_allow_columns
+    self.assertEqual(len(self.search(&#39;Loko&#39;)), 1)
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.18' class='hiddenRow bg-success'>
+        <tr id="ft59.18" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_allow_tags</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft59.18')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft59.18" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft59.18').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 609, in test_allow_tags
+    self.assertTrue(self.check_element_on_page((By.ID, &#34;flash_success&#34;)))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.19' class='hiddenRow bg-success'>
+        <tr id="ft59.19" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_archive_books</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft59.19')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft59.19" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft59.19').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 1071, in test_archive_books
+    self.assertIsNotNone(details[&#39;archived&#39;])
+AssertionError: unexpectedly None</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.20' class='hiddenRow bg-success'>
+        <tr id="et59.20" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_authors_max_settings</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.20')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.20" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.20').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 1039, in test_authors_max_settings
+    self.assertEqual(len(list_element[1][10][&#39;author&#39;]), 4)
+                         ~~~~~~~~~~~~~~~^^^^
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5621,20 +7408,62 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt59.23' class='hiddenRow bg-success'>
+        <tr id="et59.23" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_hide_custom_column</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.23')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.23" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.23').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 980, in test_hide_custom_column
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.24' class='hiddenRow bg-success'>
+        <tr id="et59.24" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_link_column_to_read_status</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.24')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.24" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.24').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 814, in test_link_column_to_read_status
+    self.check_element_on_page((By.ID, &#34;edit_book&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5648,11 +7477,32 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt59.26' class='hiddenRow bg-success'>
+        <tr id="et59.26" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_read_status_visible</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.26')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.26" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.26').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 928, in test_read_status_visible
+    self.check_element_on_page((By.XPATH, &#34;//*[@id=&#39;have_read_cb&#39;]&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5666,29 +7516,91 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt59.28' class='hiddenRow bg-success'>
+        <tr id="ft59.28" class="none bg-danger">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_columns</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft59.28')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft59.28" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft59.28').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 691, in test_restrict_columns
+    self.assertEqual(len(restricts), 0)
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.29' class='hiddenRow bg-success'>
+        <tr id="et59.29" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_restrict_tags</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.29')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.29" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.29').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 537, in test_restrict_tags
+    self.assertEqual(len(elements[&#39;include_tags&#39;]), 1)
+                         ~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: &#39;bool&#39; object is not subscriptable</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.30' class='hiddenRow bg-success'>
+        <tr id="et59.30" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_save_views_recent</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.30')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.30" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.30').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 1119, in test_save_views_recent
+    self.check_element_on_page((By.ID, &#34;desc&#34;)).click()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: &#39;bool&#39; object has no attribute &#39;click&#39;</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5702,38 +7614,174 @@ IndexError: list index out of range</pre>
     
     
     
-        <tr id='pt59.32' class='hiddenRow bg-success'>
+        <tr id="et59.32" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_order</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.32')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.32" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.32').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 498, in test_search_order
+    self.search(&#39;book&#39;)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 2119, in search
+    send.click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 120, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 573, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 454, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: Element &lt;button id=&#34;query_submit&#34; class=&#34;btn btn-default&#34; type=&#34;submit&#34;&gt; is not clickable at point (311,23) because another element &lt;div id=&#34;restrictModal&#34; class=&#34;modal fade in&#34;&gt; obscures it; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+ElementClickInterceptedError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:354:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:175:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:134:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:327:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:210:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.33' class='hiddenRow bg-success'>
+        <tr id="et59.33" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_search_string</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.33')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.33" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.33').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 489, in test_search_string
+    self.assertEqual(7, len(self.adv_search({&#39;title&#39;: &#39; book &#39;})))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: object of type &#39;bool&#39; has no len()</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.34' class='hiddenRow bg-success'>
+        <tr id="et59.34" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_email_available</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.34')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.34" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.34').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 107, in test_user_email_available
+    self.driver.find_element(By.ID, &#34;top_user&#34;).click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 120, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 573, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 454, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: Element &lt;a id=&#34;top_user&#34; href=&#34;/me&#34;&gt; is not clickable at point (1220,25) because another element &lt;div id=&#34;restrictModal&#34; class=&#34;modal fade in&#34;&gt; obscures it; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+ElementClickInterceptedError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:354:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:175:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:134:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:327:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:210:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt59.35' class='hiddenRow bg-success'>
+        <tr id="et59.35" class="none bg-info">
             <td>
                 <div class='testcase'>TestCalibreWebVisibilitys - test_user_visibility_sidebar</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et59.35')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et59.35" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et59.35').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_visiblilitys.py&#34;, line 124, in test_user_visibility_sidebar
+    self.change_user({&#39;show_32&#39;: 0})
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_ui.py&#34;, line 1082, in change_user
+    ele.click()
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 120, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webelement.py&#34;, line 573, in _execute
+    return self._parent.execute(command, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py&#34;, line 454, in execute
+    self.error_handler.check_response(response)
+  File &#34;/home/ozzie/Development/calibre-web-test/venv/lib/python3.12/site-packages/selenium/webdriver/remote/errorhandler.py&#34;, line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: Message: Element &lt;input id=&#34;show_32&#34; name=&#34;show_32&#34; type=&#34;checkbox&#34;&gt; is not clickable at point (287,674) because another element &lt;div id=&#34;restrictModal&#34; class=&#34;modal fade in&#34;&gt; obscures it; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#elementclickinterceptedexception
+Stacktrace:
+RemoteError@chrome://remote/content/shared/RemoteError.sys.mjs:8:8
+WebDriverError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:202:5
+ElementClickInterceptedError@chrome://remote/content/shared/webdriver/Errors.sys.mjs:354:5
+webdriverClickElement@chrome://remote/content/marionette/interaction.sys.mjs:175:11
+interaction.clickElement@chrome://remote/content/marionette/interaction.sys.mjs:134:11
+clickElement@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:327:29
+receiveMessage@chrome://remote/content/marionette/actors/MarionetteCommandsChild.sys.mjs:210:31</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5899,10 +7947,10 @@ IndexError: list index out of range</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>530</td>
-        <td>521</td>
-        <td>1</td>
-        <td>1</td>
+        <td>553</td>
+        <td>468</td>
+        <td>31</td>
+        <td>47</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -5931,7 +7979,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-71-generic #71-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:52:38 UTC 2025 x86_64 x86_64</td>
+              <td>Linux 6.8.0-88-generic #89-Ubuntu SMP PREEMPT_DYNAMIC Sat Oct 11 01:02:46 UTC 2025 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -5943,7 +7991,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>APScheduler</th>
-              <td>3.11.0</td>
+              <td>3.11.1</td>
               <td>Basic</td>
             </tr>
           
@@ -5956,6 +8004,12 @@ IndexError: list index out of range</pre>
             <tr>
               <th>bleach</th>
               <td>6.2.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>certifi</th>
+              <td>2025.8.3</td>
               <td>Basic</td>
             </tr>
           
@@ -5973,7 +8027,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Flask</th>
-              <td>3.1.1</td>
+              <td>3.1.2</td>
               <td>Basic</td>
             </tr>
           
@@ -6009,7 +8063,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>greenlet</th>
-              <td>3.2.3</td>
+              <td>3.3.0</td>
               <td>Basic</td>
             </tr>
           
@@ -6027,7 +8081,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>netifaces-plus</th>
-              <td>0.12.4</td>
+              <td>0.12.5</td>
               <td>Basic</td>
             </tr>
           
@@ -6063,19 +8117,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>requests</th>
-              <td>2.32.4</td>
+              <td>2.32.5</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>2.0.42</td>
+              <td>2.0.44</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>tornado</th>
-              <td>6.5.1</td>
+              <td>6.5.2</td>
               <td>Basic</td>
             </tr>
           
@@ -6099,19 +8153,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>Werkzeug</th>
-              <td>3.1.3</td>
+              <td>3.1.4</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6129,19 +8183,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6159,19 +8213,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6189,19 +8243,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6219,7 +8273,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6237,13 +8291,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6261,25 +8315,25 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
             <tr>
               <th>beautifulsoup4</th>
-              <td>4.13.4</td>
+              <td>4.14.3</td>
               <td>TestLoadMetadata</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6297,13 +8351,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
             <tr>
               <th>beautifulsoup4</th>
-              <td>4.13.4</td>
+              <td>4.14.3</td>
               <td>TestLoadMetadataScholar</td>
             </tr>
           
@@ -6315,13 +8369,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6339,19 +8393,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.177.0</td>
+              <td>2.187.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
-              <td>0.22.0</td>
+              <td>0.31.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6369,7 +8423,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>PyYAML</th>
-              <td>6.0.2</td>
+              <td>6.0.3</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6381,19 +8435,19 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>python-Levenshtein</th>
-              <td>0.27.1</td>
+              <td>0.27.3</td>
               <td>TestGoodreads</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.25.0</td>
+              <td>4.25.1</td>
               <td>TestKoboSync</td>
             </tr>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.25.0</td>
+              <td>4.25.1</td>
               <td>TestKoboSyncBig</td>
             </tr>
           
@@ -6405,13 +8459,13 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>jsonschema</th>
-              <td>4.25.0</td>
+              <td>4.25.1</td>
               <td>TestLdapLogin</td>
             </tr>
           
             <tr>
               <th>python-ldap</th>
-              <td>3.4.4</td>
+              <td>3.4.5</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -6423,7 +8477,7 @@ IndexError: list index out of range</pre>
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.41.2</td>
+              <td>0.42.0</td>
               <td>TestOAuthLogin</td>
             </tr>
           
@@ -6447,7 +8501,7 @@ IndexError: list index out of range</pre>
 </div>
 
 <script>
-    drawCircle(521, 1, 1, 7);
+    drawCircle(468, 31, 47, 7);
     showCase(5);
 </script>
 
