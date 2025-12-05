@@ -999,7 +999,6 @@ class CalibreDB:
 
         # Apply eager loading for authors to avoid N+1 queries
         base_query = base_query.options(selectinload(Books.authors))
-        
 
         if len(join) == 6:
             base_query = base_query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
@@ -1015,7 +1014,7 @@ class CalibreDB:
             return base_query.filter(Books.id.in_(fts_ids))
 
         # Fallback to traditional search with optimized subqueries
-        q = list()
+        # q = list()
         author_terms = re.split("[, ]+", term)
 
         # Use subquery for authors to avoid expensive .any() with OR
@@ -1026,7 +1025,7 @@ class CalibreDB:
         for author_term in author_terms:
             author_filters.append(func.lower(Authors.name).ilike("%" + author_term + "%"))
         if author_filters:
-            author_subquery = author_subquery.filter(or_(*author_filters))
+            author_subquery = author_subquery.filter(and_(*author_filters))
 
         # Build optimized filter expressions
         cc = self.get_cc_columns(config, filter_config_custom_read=True)
