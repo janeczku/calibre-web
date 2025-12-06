@@ -235,7 +235,7 @@ class CalibreTask:
 
     @property
     def dead(self):
-        """Determines whether this task can be garbage collected
+        """Determines whether or not this task can be garbage collected
 
         We have a separate dictating this because there may be certain tasks that want to override this
         """

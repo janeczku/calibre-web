@@ -63,7 +63,57 @@
               term="{{tag.name}}"
               label="{{tag.name}}"/>
     {% endfor %}
-    {% if entry.Books.comments[0] %}<summary>{{entry.Books.comments[0].text|striptags}}</summary>{% endif %}
+    <content type="xhtml"><div xmlns="http://www.w3.org/1999/xhtml">
+    {% if entry.Books.ratings.__len__() > 0 %}
+      RATING: {% for number in range((entry.Books.ratings[0].rating/2)|int(2)) %}★{% endfor %}<br/>
+    {% endif %}
+    {% if entry.Books.tags|length > 0 %}
+    TAGS: {% for tag in entry.Books.tags %}{{tag.name}}{{ ", " if not loop.last else "" }}{% endfor %}<br/>
+    {% endif %}
+    {% if entry.Books.series.__len__() > 0 %}
+    SERIES: {{entry.Books.series[0].name}} [{{entry.Books.series_index|formatfloat(2)}}]<br/>
+    {% endif %}
+
+    {% if cc|length > 0 %}
+        {% for c in cc %}
+            {% if entry.Books['custom_column_' ~ c.id]|length > 0 %}
+                {{ c.name }}:
+                {% for column in entry.Books['custom_column_' ~ c.id] %}
+                    {% if c.datatype == 'rating' %}
+                        {{ (column.value / 2)|formatfloat }}
+                    {% else %}
+                        {% if c.datatype == 'bool' %}
+                            {% if column.value == true %}
+                                ✓
+                            {% else %}
+                                ✕
+                            {% endif %}
+                        {% else %}
+                            {% if c.datatype == 'float' %}
+                                {{ column.value|formatfloat(2) }}
+                            {% elif c.datatype == 'datetime' %}
+                                {{ column.value|formatdate }}
+                            {% elif c.datatype == 'comments' %}
+                                {{ column.value|safe }}
+                            {% elif c.datatype == 'series' %}
+                                {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                            {% elif c.datatype == 'text' %}
+                                {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                            {% else %}
+                                {{ column.value }}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <br/>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if entry.Books.comments[0] %}
+        <p>{{entry.Books.comments[0].text}}</p>
+    {% endif %}
+    </div></content>
     {% if entry.Books.has_cover %}
     <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry.Books.id)}}" rel="http://opds-spec.org/image"/>
     <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry.Books.id)}}" rel="http://opds-spec.org/image/thumbnail"/>

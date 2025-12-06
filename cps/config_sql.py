@@ -117,6 +117,7 @@ class _Settings(_Base):
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
+    config_googlebooks_api_key = Column(String, default='')
     config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
 
@@ -325,7 +326,7 @@ class ConfigSQL(object):
     def to_dict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("_e") and not k == "cli":
+            if k[0] != '_' and not k.endswith("_e") and not k == "cli" and 'api' not in k.lower():
                 storage[k] = v
         return storage
 

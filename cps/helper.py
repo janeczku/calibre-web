@@ -303,7 +303,7 @@ def get_sorted_author(value):
     return value2
 
 
-def edit_book_read_status(book_id, read_status=None, archived=False):
+def edit_book_read_status(book_id, read_status=None):
     if not config.config_read_column:
         book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
                                                          ub.ReadBook.book_id == book_id)).first()
@@ -327,7 +327,7 @@ def edit_book_read_status(book_id, read_status=None, archived=False):
     else:
         try:
             calibre_db.create_functions(config)
-            book = calibre_db.get_filtered_book(book_id, archived)
+            book = calibre_db.get_filtered_book(book_id, True)
             book_read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
             if len(book_read_status):
                 if read_status is None:

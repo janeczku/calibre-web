@@ -812,13 +812,18 @@ def index(page):
     return render_books_list("newest", sort_param, 1, page)
 
 
-@web.route('/<data>/<sort_param>', defaults={'page': 1, 'book_id': 1})
-@web.route('/<data>/<sort_param>/', defaults={'page': 1, 'book_id': 1})
-@web.route('/<data>/<sort_param>/<book_id>', defaults={'page': 1})
-@web.route('/<data>/<sort_param>/<book_id>/<int:page>')
 @login_required_if_no_ano
 def books_list(data, sort_param, book_id, page):
     return render_books_list(data, sort_param, book_id, page)
+
+# Limit number of routes to avoid redirects
+data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", "ratings", "formats",
+       "category", "language", "archived", "search", "advsearch", "newest"]
+for d in data:
+    web.add_url_rule('/{}/<sort_param>'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
+    web.add_url_rule('/{}/<sort_param>/'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
+    web.add_url_rule('/{}/<sort_param>/<book_id>'.format(d), view_func=books_list, defaults={'page': 1, "data": d})
+    web.add_url_rule('/{}/<sort_param>/<book_id>/<int:page>'.format(d), defaults={"data": d}, view_func=books_list)
 
 
 @web.route("/table")

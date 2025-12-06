@@ -406,7 +406,7 @@ def edit_book_param(param, vals, multi=False):
                     kobo_sync_status.remove_synced_book(book.id)
                 continue
             elif param == 'read_status':
-                error = helper.edit_book_read_status(book.id, vals['value'] == "True", True)
+                error = helper.edit_book_read_status(book.id, vals['value'] == "True")
                 if error:
                     if multi:
                         out.append({"success":False, "msg":error})

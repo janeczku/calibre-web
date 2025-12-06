@@ -164,6 +164,10 @@
     </div>
     {% endif %}
     <div class="form-group">
+      <label for="config_googlebooks_api_key">{{_('Google Books API Key')}}</label>
+      <input type="text" class="form-control" id="config_googlebooks_api_key" name="config_googlebooks_api_key" value="{% if config.config_googlebooks_api_key != '' %}{{ config.config_googlebooks_api_key }}{% endif %}" autocomplete="off">
+    </div>
+    <div class="form-group">
       <input type="checkbox" id="config_allow_reverse_proxy_header_login" name="config_allow_reverse_proxy_header_login" data-control="reverse-proxy-login-settings" {% if config.config_allow_reverse_proxy_header_login %}checked{% endif %}>
       <label for="config_allow_reverse_proxy_header_login">{{_('Allow Reverse Proxy Authentication')}}</label>
     </div>
