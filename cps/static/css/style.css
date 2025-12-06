@@ -438,3 +438,93 @@ div.log {
 .error-list {
     margin-top: 5px;
   }
+
+/* Hierarchical tag styles */
+.hierarchical-tag {
+  cursor: help;
+}
+
+.tags .hierarchical-tag:hover {
+  opacity: 0.8;
+}
+
+/* Tree view styles for category list */
+.tag-tree {
+  list-style: none;
+  padding-left: 0;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.tag-tree li {
+  margin: 0;
+  position: relative;
+  max-width: 100%;
+}
+
+.tag-tree li[data-level="1"] {
+  padding-left: 25px;
+}
+
+.tag-tree li[data-level="2"] {
+  padding-left: 50px;
+}
+
+.tag-tree li[data-level="3"] {
+  padding-left: 75px;
+}
+
+.tag-tree li[data-level="4"] {
+  padding-left: 100px;
+}
+
+.tag-node {
+  display: flex;
+  align-items: center;
+  padding: 8px 5px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+  max-width: 100%;
+}
+
+.tag-node:hover {
+  background: #f5f5f5;
+}
+
+.tag-node.leaf {
+  cursor: default;
+}
+
+.tag-node .toggle {
+  width: 20px;
+  text-align: center;
+  margin-right: 5px;
+  font-size: 12px;
+  color: #666;
+  font-family: monospace;
+}
+
+.tag-node .icon {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.tag-node .name {
+  flex: 1;
+  text-decoration: none;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tag-node a.name:hover {
+  text-decoration: underline;
+}
+
+/* Badge styling for tag tree */
+.tag-tree .tag-node .badge,
+.tag-node .badge {
+  margin-left: 10px;
+  flex-shrink: 0;
+}
