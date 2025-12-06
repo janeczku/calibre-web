@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-22 15:29+0100\n"
-"PO-Revision-Date: 2024-11-21 22:04+0800\n"
+"POT-Creation-Date: 2025-12-06 11:51+0100\n"
+"PO-Revision-Date: 2025-12-06 13:53+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
@@ -164,7 +164,7 @@ msgstr "您确定要删除此用户吗？"
 
 #: cps/admin.py:621
 msgid "Do you really want to delete this book?"
-msgstr ""
+msgstr "您确定要删除这本书吗？"
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -184,11 +184,11 @@ msgstr "您确定要修改选定用户的选定角色吗？"
 
 #: cps/admin.py:631
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr ""
+msgstr "您确定要修改所选书籍的归档状态吗？"
 
 #: cps/admin.py:633
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr ""
+msgstr "您确定要修改所选书记的已读状态吗？"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
@@ -578,17 +578,17 @@ msgstr "转换此书籍时出现错误： %(res)s"
 
 #: cps/editbooks.py:297
 msgid "Changes successfully applied"
-msgstr ""
+msgstr "修改成功"
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
-msgstr ""
+msgstr "请求中缺少数值"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
 #: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
 #: cps/web.py:1677
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
-msgstr "糟糕！选择书名无法打开。文件不存在或者文件不可访问"
+msgstr "糟糕！所选书籍无法打开。文件不存在或者文件不可访问"
 
 #: cps/editbooks.py:673 cps/editbooks.py:1503
 msgid "User has no rights to upload cover"
@@ -654,7 +654,7 @@ msgstr "您没有删除书籍的权限"
 #: cps/editbooks.py:1139
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr ""
+msgstr "ID为\"{}\"的书籍无法被删除，原因：未找到"
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -774,7 +774,7 @@ msgstr "仅从数据库中删除书籍 %(id)s，数据库中的书籍路径无�
 #: cps/helper.py:404
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr ""
+msgstr "将书籍%(book_id)s的移动路径更改为：'%(src)s'失败，错误：%(error)s"
 
 #: cps/helper.py:443
 #, python-format
@@ -1954,7 +1954,7 @@ msgstr "注销"
 
 #: cps/templates/basic_layout.html:35
 msgid "Normal Theme"
-msgstr ""
+msgstr "标准主题"
 
 #: cps/templates/book_edit.html:11
 msgid "Delete Book"
@@ -2128,19 +2128,19 @@ msgstr "此栏必须填写"
 
 #: cps/templates/book_table.html:25
 msgid "Archive selected books"
-msgstr ""
+msgstr "归档所选书籍"
 
 #: cps/templates/book_table.html:28
 msgid "Unarchive selected books"
-msgstr ""
+msgstr "取消归档所选书籍"
 
 #: cps/templates/book_table.html:34
 msgid "Mark selected books as read"
-msgstr ""
+msgstr "将所选书籍标记为已读"
 
 #: cps/templates/book_table.html:37
 msgid "Mark selected books as unread"
-msgstr ""
+msgstr "将所选书籍标记为未读"
 
 #: cps/templates/book_table.html:57
 msgid "Merge selected books"
@@ -2148,11 +2148,11 @@ msgstr "合并选中的书籍"
 
 #: cps/templates/book_table.html:60 cps/templates/user_table.html:124
 msgid "Clear selections"
-msgstr ""
+msgstr "清除选择"
 
 #: cps/templates/book_table.html:63
 msgid "Edit selected books"
-msgstr ""
+msgstr "编辑所选书籍"
 
 #: cps/templates/book_table.html:67
 msgid "Exchange author and title"
@@ -2229,7 +2229,7 @@ msgstr "简介"
 
 #: cps/templates/book_table.html:101
 msgid "Archive Status"
-msgstr "存档状态"
+msgstr "归档状态"
 
 #: cps/templates/book_table.html:103 cps/templates/search_form.html:42
 msgid "Read Status"
@@ -2244,7 +2244,7 @@ msgstr "输入"
 
 #: cps/templates/book_table.html:128
 msgid "Delete selected books"
-msgstr ""
+msgstr "删除所选书籍"
 
 #: cps/templates/book_table.html:148 cps/templates/book_table.html:172
 #: cps/templates/book_table.html:192 cps/templates/book_table.html:212
@@ -2267,11 +2267,11 @@ msgstr "合并"
 
 #: cps/templates/book_table.html:176
 msgid "The following books will be deleted:"
-msgstr ""
+msgstr "以下书籍将被删除："
 
 #: cps/templates/book_table.html:196
 msgid "The following books will be archived:"
-msgstr ""
+msgstr "以下书籍将被归档："
 
 #: cps/templates/book_table.html:200 cps/templates/detail.html:275
 msgid "Archive"
@@ -2279,27 +2279,27 @@ msgstr "归档"
 
 #: cps/templates/book_table.html:216
 msgid "The following books will be unarchived:"
-msgstr ""
+msgstr "以下书籍将取消归档："
 
 #: cps/templates/book_table.html:220
 msgid "Unarchive"
-msgstr ""
+msgstr "取消归档"
 
 #: cps/templates/book_table.html:236
 msgid "The following books will be marked read:"
-msgstr ""
+msgstr "以下书籍将被标记为已读："
 
 #: cps/templates/book_table.html:240
 msgid "Mark as read"
-msgstr ""
+msgstr "标记为已读"
 
 #: cps/templates/book_table.html:256
 msgid "The following books will be marked unread:"
-msgstr ""
+msgstr "以下书籍将被标记为未读："
 
 #: cps/templates/book_table.html:260
 msgid "Mark as unread"
-msgstr ""
+msgstr "标记为未读"
 
 #: cps/templates/book_table.html:272 cps/templates/detail.html:348
 msgid "Edit Metadata"
@@ -2307,7 +2307,7 @@ msgstr "编辑元数据"
 
 #: cps/templates/book_table.html:275
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
-msgstr ""
+msgstr "请编辑您想要修改的内容域，留空的内容域将被忽略："
 
 #: cps/templates/config_db.html:12
 msgid "Location of Calibre Database"
@@ -2451,7 +2451,7 @@ msgstr "Goodreads API Key"
 
 #: cps/templates/config_edit.html:167
 msgid "Google Books API Key"
-msgstr ""
+msgstr "Google Books API Key"
 
 #: cps/templates/config_edit.html:172
 msgid "Allow Reverse Proxy Authentication"
@@ -2795,7 +2795,7 @@ msgstr "已读"
 
 #: cps/templates/detail.html:272 cps/templates/listenmp3.html:166
 msgid "Restore from archive"
-msgstr "从档案还原"
+msgstr "从归档还原"
 
 #: cps/templates/detail.html:273 cps/templates/listenmp3.html:166
 msgid "Add to archive"
@@ -2803,7 +2803,7 @@ msgstr "添加到归档"
 
 #: cps/templates/detail.html:275
 msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
-msgstr "将书籍标记为已存档或未存档，以便在 Calibre-Web 中隐藏书籍并从 Kobo 阅读器中删除书籍"
+msgstr "将书籍标记为已归档或未归档，以便在 Calibre-Web 中隐藏书籍并从 Kobo 阅读器中删除书籍"
 
 #: cps/templates/detail.html:301 cps/templates/listenmp3.html:190
 #: cps/templates/search.html:16
@@ -2905,7 +2905,7 @@ msgstr "创建问题"
 
 #: cps/templates/http_error.html:52
 msgid "Return to Database config"
-msgstr ""
+msgstr "回到数据库配置"
 
 #: cps/templates/http_error.html:54
 msgid "Return to Home"
@@ -3016,7 +3016,7 @@ msgstr "切换导航"
 
 #: cps/templates/layout.html:58
 msgid "Simple Theme"
-msgstr ""
+msgstr "简易主题"
 
 #: cps/templates/layout.html:66 cps/templates/layout.html:96
 msgid "Account"
@@ -3117,7 +3117,7 @@ msgstr "书籍的此格式副本将从数据库中永久删除"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database and hard disk"
-msgstr ""
+msgstr "这本书籍将永久从数据库和本地磁盘中删除"
 
 #: cps/templates/modal_dialogs.html:55
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
@@ -3165,7 +3165,7 @@ msgstr "epub 阅读器"
 
 #: cps/templates/read.html:80
 msgid "Choose a theme below:"
-msgstr ""
+msgstr "请从下方选取一个主题："
 
 #: cps/templates/read.html:84 cps/templates/readcbr.html:104
 msgid "Light"

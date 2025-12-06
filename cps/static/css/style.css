@@ -438,3 +438,43 @@ div.log {
 .error-list {
     margin-top: 5px;
   }
+
+body > div.container-fluid > div.row-fluid > div.col-sm-10 {
+  max-height: calc(100vh - 111px);
+  overflow-y: auto;
+}
+
+body > div.container-fluid > div.row-fluid > div.col-sm-2 {
+  max-height: calc(100vh - 111px);
+  overflow-y: auto;
+  /* hide scrollbar in IE, Edge */
+  -ms-overflow-style: none;
+
+  /* hide scrollbar in Firefox */
+  scrollbar-width: none;
+}
+
+/* hide scrollbar in WebKit browsers (Chrome, Safari, Opera) */
+body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollable-col {
+  /* keep vertical scrolling */
+  overflow-y: auto;
+
+  /* hide scrollbar in IE, Edge */
+  -ms-overflow-style: none;
+
+  /* hide scrollbar in Firefox */
+  scrollbar-width: none;
+}
+
+/* hide scrollbar in WebKit browsers (Chrome, Safari, Opera) */
+.scrollable-col::-webkit-scrollbar {
+  display: none;
+}
+
+body > div.container-fluid  {
+  padding-right: 0px;
+}
