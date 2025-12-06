@@ -1014,7 +1014,6 @@ class CalibreDB:
             return base_query.filter(Books.id.in_(fts_ids))
 
         # Fallback to traditional search with optimized subqueries
-        # q = list()
         author_terms = re.split("[, ]+", term)
 
         # Use subquery for authors to avoid expensive .any() with OR
