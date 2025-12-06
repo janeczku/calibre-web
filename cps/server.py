@@ -216,6 +216,12 @@ class WebServer(object):
         try:
             sock, output = self._make_gevent_listener()
             log.info('Starting Gevent server on %s', output)
+            # Also print to stdout so interactive terminals show a clear success message
+            try:
+                print(f"Calibre-Web: server started on {output}")
+            except Exception:
+                print(f"Calibre-Web: error {output}")
+                pass
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, handler_class=MyWSGIHandler,
                                          error_log=log,
                                          spawn=Pool(), **ssl_args)
@@ -266,6 +272,12 @@ class WebServer(object):
                 output = _readable_listen_address(self.listen_address, self.listen_port)
                 http_server.listen(self.listen_port, self.listen_address)
             log.info('Starting Tornado server on %s', output)
+            # Also print to stdout so interactive terminals show a clear success message
+            try:
+                print(f"Calibre-Web: server started on {output}")
+            except Exception:
+                print(f"Calibre-Web: error {output}")
+                pass
 
             self.wsgiserver = IOLoop.current()
             self.wsgiserver.start()
