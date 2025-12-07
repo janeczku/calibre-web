@@ -30,7 +30,7 @@ from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
-from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from sqlalchemy.orm import relationship, sessionmaker, scoped_session, selectinload
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import OperationalError
@@ -901,29 +901,36 @@ class CalibreDB:
         for entry in entries:
             if combined:
                 sort_authors = entry.Books.author_sort.split('&')
-                ids = [a.id for a in entry.Books.authors]
-
+                authors_list = entry.Books.authors
             else:
                 sort_authors = entry.author_sort.split('&')
-                ids = [a.id for a in entry.authors]
-            authors_ordered = list()
-            # error = False
+                authors_list = entry.authors
+
+            # Create dictionary for O(1) lookup instead of nested loops
+            authors_by_sort = {}
+            authors_by_id = {}
+            for author in authors_list:
+                authors_by_sort[author.sort] = author
+                authors_by_id[author.id] = author
+
+            authors_ordered = []
+            ids_remaining = set(authors_by_id.keys())
+
+            # Order authors based on sort field using dictionary lookup
             for auth in sort_authors:
                 auth = strip_whitespaces(auth)
-                results = self.session.query(Authors).filter(Authors.sort == auth).all()
-                # ToDo: How to handle not found author name
-                if not len(results):
-                    book_id = entry.id if isinstance(entry, Books) else entry[0].id
-                    log.error("Author '{}' of book {} not found to display name in right order".format(auth, book_id))
-                    # error = True
-                    break
-                for r in results:
-                    if r.id in ids:
-                        authors_ordered.append(r)
-                        ids.remove(r.id)
-            for author_id in ids:
-                result = self.session.query(Authors).filter(Authors.id == author_id).first()
-                authors_ordered.append(result)
+                if auth in authors_by_sort:
+                    author = authors_by_sort[auth]
+                    authors_ordered.append(author)
+                    ids_remaining.discard(author.id)
+                else:
+                    # This can happen if author_sort has stale data or formatting issues
+                    book_id = entry.id if isinstance(entry, Books) else (entry.Books.id if combined else entry.id)
+                    log.warning("Author '{}' of book {} not found in author list, skipping in sort order".format(auth, book_id))
+
+            # Add any remaining authors not in sort order
+            for author_id in ids_remaining:
+                authors_ordered.append(authors_by_id[author_id])
 
             if list_return:
                 if combined:
@@ -956,36 +963,93 @@ class CalibreDB:
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     def search_query(self, term, config, *join):
-        strip_whitespaces(term).lower()
+        term = strip_whitespaces(term).lower()
         self.create_functions()
-        # self.session.connection().connection.connection.create_function("lower", 1, lcase)
-        q = list()
-        author_terms = re.split("[, ]+", term)
-        for author_term in author_terms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
-        query = self.generate_linked_query(config.config_read_column, Books)
-        if len(join) == 6:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
-        if len(join) == 3:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
-        elif len(join) == 2:
-            query = query.outerjoin(join[0], join[1])
-        elif len(join) == 1:
-            query = query.outerjoin(join[0])
 
+        # Try FTS5 search first for better performance
+        fts_ids = None
+        # Check if FTS5 table exists before attempting search
+        if not hasattr(self, '_fts_available'):
+            try:
+                result = self.session.execute(
+                    text("SELECT name FROM sqlite_master WHERE type='table' AND name='books_fts'")
+                ).fetchone()
+                self._fts_available = result is not None
+            except Exception:
+                self._fts_available = False
+
+        if self._fts_available:
+            try:
+                # Escape FTS5 special characters to prevent query errors
+                term_fts = term.replace('"', '""')
+                # Wrap in quotes for phrase matching and better accuracy
+                fts_results = self.session.execute(
+                    text("SELECT DISTINCT rowid FROM books_fts WHERE books_fts MATCH :term"),
+                    {"term": f'"{term_fts}"'}
+                ).fetchall()
+                if fts_results:
+                    fts_ids = [r[0] for r in fts_results]
+            except Exception as ex:
+                # FTS5 query failed, fall back to traditional search
+                log.debug("FTS5 search failed for term '{}', using fallback: {}".format(term, ex))
+
+        # Build base query with optimized joins
+        base_query = self.generate_linked_query(config.config_read_column, Books)
+        base_query = base_query.filter(self.common_filters(True))
+
+        # Apply eager loading for authors to avoid N+1 queries
+        base_query = base_query.options(selectinload(Books.authors))
+
+        if len(join) == 6:
+            base_query = base_query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
+        if len(join) == 3:
+            base_query = base_query.outerjoin(join[0], join[1]).outerjoin(join[2])
+        elif len(join) == 2:
+            base_query = base_query.outerjoin(join[0], join[1])
+        elif len(join) == 1:
+            base_query = base_query.outerjoin(join[0])
+
+        # If FTS5 found results, use those IDs
+        if fts_ids:
+            return base_query.filter(Books.id.in_(fts_ids))
+
+        # Fallback to traditional search with optimized subqueries
+        author_terms = re.split("[, ]+", term)
+
+        # Use subquery for authors to avoid expensive .any() with OR
+        author_subquery = self.session.query(books_authors_link.c.book).join(
+            Authors, books_authors_link.c.author == Authors.id
+        )
+        author_filters = []
+        for author_term in author_terms:
+            author_filters.append(func.lower(Authors.name).ilike("%" + author_term + "%"))
+        if author_filters:
+            author_subquery = author_subquery.filter(and_(*author_filters))
+
+        # Build optimized filter expressions
         cc = self.get_cc_columns(config, filter_config_custom_read=True)
-        filter_expression = [Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
-                             Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
-                             Books.authors.any(and_(*q)),
-                             Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
-                             func.lower(Books.title).ilike("%" + term + "%")]
+        filter_expression = [
+            Books.id.in_(self.session.query(books_tags_link.c.book).join(
+                Tags, books_tags_link.c.tag == Tags.id
+            ).filter(func.lower(Tags.name).ilike("%" + term + "%"))),
+            Books.id.in_(self.session.query(books_series_link.c.book).join(
+                Series, books_series_link.c.series == Series.id
+            ).filter(func.lower(Series.name).ilike("%" + term + "%"))),
+            Books.id.in_(author_subquery),
+            Books.id.in_(self.session.query(books_publishers_link.c.book).join(
+                Publishers, books_publishers_link.c.publisher == Publishers.id
+            ).filter(func.lower(Publishers.name).ilike("%" + term + "%"))),
+            func.lower(Books.title).ilike("%" + term + "%")
+        ]
+
         for c in cc:
             if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
                         func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
-        return query.filter(self.common_filters(True)).filter(or_(*filter_expression))
+
+        return base_query.filter(or_(*filter_expression))
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
         tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
@@ -1007,18 +1071,32 @@ class CalibreDB:
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(*order).all()
-        result_count = len(result)
+
         if offset is not None and limit is not None:
             offset = int(offset)
-            limit_all = offset + int(limit)
-            pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
+            limit_int = int(limit)
+
+            # Use LIMIT+1 pattern to estimate total count without expensive count()
+            query = self.search_query(term, config, *join).order_by(*order)
+            result = query.limit(offset + limit_int + 1).all()
+
+            # Check if there are more results
+            has_more = len(result) > (offset + limit_int)
+            if has_more:
+                result_count = offset + limit_int + 1  # Estimate: at least this many
+            else:
+                result_count = len(result)
+
+            # Extract the page of results
+            result = result[offset:offset + limit_int]
+            pagination = Pagination((offset / limit_int + 1), limit_int, result_count)
         else:
-            offset = 0
-            limit_all = result_count
+            # No pagination, fetch all results
+            result = self.search_query(term, config, *join).order_by(*order).all()
+            result_count = len(result)
 
         ub.store_combo_ids(result)
-        entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
+        entries = self.order_authors(result, list_return=True, combined=True)
 
         return entries, result_count, pagination
 
