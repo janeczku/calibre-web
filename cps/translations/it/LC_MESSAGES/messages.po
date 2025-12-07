@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-06 11:51+0100\n"
-"PO-Revision-Date: 2025-09-11 01:30+0200\n"
+"POT-Creation-Date: 2025-12-07 14:32+0100\n"
+"PO-Revision-Date: 2025-12-07 04:05+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -549,7 +549,7 @@ msgstr "non installato"
 msgid "Execution permissions missing"
 msgstr "Mancano i permessi di esecuzione"
 
-#: cps/db.py:1046 cps/templates/config_edit.html:207
+#: cps/db.py:1124 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
@@ -2451,7 +2451,7 @@ msgstr "Chiave API Goodreads"
 
 #: cps/templates/config_edit.html:167
 msgid "Google Books API Key"
-msgstr ""
+msgstr "Chiave API di Google Libri"
 
 #: cps/templates/config_edit.html:172
 msgid "Allow Reverse Proxy Authentication"
@@ -3022,7 +3022,7 @@ msgstr "Tema semplice"
 msgid "Account"
 msgstr "Account"
 
-#: cps/templates/layout.html:93 cps/templates/read.html:78
+#: cps/templates/layout.html:93 cps/templates/read.html:83
 #: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr "Impostazioni"
@@ -3117,7 +3117,7 @@ msgstr "Questo formato di libro verrà definitivamente cancellato dal database"
 
 #: cps/templates/modal_dialogs.html:51
 msgid "This book will be permanently erased from database and hard disk"
-msgstr ""
+msgstr "Questo libro verrà cancellato definitivamente dal database e dal disco rigido"
 
 #: cps/templates/modal_dialogs.html:55
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
@@ -3163,67 +3163,75 @@ msgstr "Catalogo eBook Calibre-Web"
 msgid "epub Reader"
 msgstr "Lettore epub"
 
-#: cps/templates/read.html:80
+#: cps/templates/read.html:85
 msgid "Choose a theme below:"
 msgstr "Scegli un tema qui sotto:"
 
-#: cps/templates/read.html:84 cps/templates/readcbr.html:104
+#: cps/templates/read.html:89 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr "Chiaro"
 
-#: cps/templates/read.html:86 cps/templates/readcbr.html:105
+#: cps/templates/read.html:91 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr "Scuro"
 
-#: cps/templates/read.html:88
+#: cps/templates/read.html:93
 msgid "Sepia"
 msgstr "Seppia"
 
-#: cps/templates/read.html:90
+#: cps/templates/read.html:95
+msgid "Amber"
+msgstr ""
+
+#: cps/templates/read.html:97
 msgid "Black"
 msgstr "Nero"
 
-#: cps/templates/read.html:95
+#: cps/templates/read.html:109
 msgid "Reflow text when sidebars are open."
 msgstr "Adatta il testo quando le barre laterali sono aperte."
 
-#: cps/templates/read.html:100
-msgid "Font Sizes"
-msgstr "Dimensioni caratteri"
+#: cps/templates/read.html:114
+msgid "Show pages count"
+msgstr ""
 
-#: cps/templates/read.html:105
+#: cps/templates/read.html:118
+msgid "Font Size"
+msgstr ""
+
+#: cps/templates/read.html:126
 msgid "Font"
 msgstr "Carattere"
 
-#: cps/templates/read.html:106
+#: cps/templates/read.html:127
 msgid "Default"
 msgstr "Predefinito"
 
-#: cps/templates/read.html:107
+#: cps/templates/read.html:128
 msgid "Yahei"
 msgstr "Yahei"
 
-#: cps/templates/read.html:108
+#: cps/templates/read.html:129
 msgid "SimSun"
 msgstr "SimSun"
 
-#: cps/templates/read.html:109
+#: cps/templates/read.html:130
 msgid "KaiTi"
 msgstr "KaiTi"
 
-#: cps/templates/read.html:110
+#: cps/templates/read.html:131
 msgid "Arial"
 msgstr "Arial"
 
-#: cps/templates/read.html:113
+#: cps/templates/read.html:134
 msgid "Spread"
 msgstr "Doppia pagina"
 
-#: cps/templates/read.html:114
+#: cps/templates/read.html:135
 msgid "Two columns"
 msgstr "Due colonne"
 
-#: cps/templates/read.html:115
+#: cps/templates/read.html:136
 msgid "One column"
 msgstr "Una colonna"
 

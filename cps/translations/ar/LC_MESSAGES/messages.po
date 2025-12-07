@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-12-06 11:51+0100\n"
+"POT-Creation-Date: 2025-12-07 14:32+0100\n"
 "PO-Revision-Date: 2025-06-07 14:44+0300\n"
 "Last-Translator: UsamaFoad <usamafoad@gmail.com>\n"
 "Language: ar\n"
@@ -549,7 +549,7 @@ msgstr "غير مثبت"
 msgid "Execution permissions missing"
 msgstr "أذونات التنفيذ مفقودة"
 
-#: cps/db.py:1046 cps/templates/config_edit.html:207
+#: cps/db.py:1124 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
@@ -3022,7 +3022,7 @@ msgstr "السمة البسيطة"
 msgid "Account"
 msgstr "الحساب"
 
-#: cps/templates/layout.html:93 cps/templates/read.html:78
+#: cps/templates/layout.html:93 cps/templates/read.html:83
 #: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr "الإعدادات"
@@ -3163,67 +3163,75 @@ msgstr "كتالوج الكتب الإلكترونية Calibre-Web"
 msgid "epub Reader"
 msgstr "قارئ epub"
 
-#: cps/templates/read.html:80
+#: cps/templates/read.html:85
 msgid "Choose a theme below:"
 msgstr "اختر سمة أدناه:"
 
-#: cps/templates/read.html:84 cps/templates/readcbr.html:104
+#: cps/templates/read.html:89 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr "فاتح"
 
-#: cps/templates/read.html:86 cps/templates/readcbr.html:105
+#: cps/templates/read.html:91 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr "داكن"
 
-#: cps/templates/read.html:88
+#: cps/templates/read.html:93
 msgid "Sepia"
 msgstr "بني داكن"
 
-#: cps/templates/read.html:90
+#: cps/templates/read.html:95
+msgid "Amber"
+msgstr ""
+
+#: cps/templates/read.html:97
 msgid "Black"
 msgstr "أسود"
 
-#: cps/templates/read.html:95
+#: cps/templates/read.html:109
 msgid "Reflow text when sidebars are open."
 msgstr "إعادة تدفق النص عند فتح الأشرطة الجانبية."
 
-#: cps/templates/read.html:100
-msgid "Font Sizes"
-msgstr "أحجام الخطوط"
+#: cps/templates/read.html:114
+msgid "Show pages count"
+msgstr ""
 
-#: cps/templates/read.html:105
+#: cps/templates/read.html:118
+msgid "Font Size"
+msgstr ""
+
+#: cps/templates/read.html:126
 msgid "Font"
 msgstr "الخط"
 
-#: cps/templates/read.html:106
+#: cps/templates/read.html:127
 msgid "Default"
 msgstr "افتراضي"
 
-#: cps/templates/read.html:107
+#: cps/templates/read.html:128
 msgid "Yahei"
 msgstr "ياهاي"
 
-#: cps/templates/read.html:108
+#: cps/templates/read.html:129
 msgid "SimSun"
 msgstr "SimSun"
 
-#: cps/templates/read.html:109
+#: cps/templates/read.html:130
 msgid "KaiTi"
 msgstr "KaiTi"
 
-#: cps/templates/read.html:110
+#: cps/templates/read.html:131
 msgid "Arial"
 msgstr "Arial"
 
-#: cps/templates/read.html:113
+#: cps/templates/read.html:134
 msgid "Spread"
 msgstr "انتشار"
 
-#: cps/templates/read.html:114
+#: cps/templates/read.html:135
 msgid "Two columns"
 msgstr "عمودان"
 
-#: cps/templates/read.html:115
+#: cps/templates/read.html:136
 msgid "One column"
 msgstr "عمود واحد"
 
