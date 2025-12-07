@@ -70,8 +70,28 @@ var reader;
         }
         make_locations.then(()=>{
             reader.rendition.on('relocated', (location)=>{
-                let percentage = Math.round(location.end.percentage*100);
-                progressDiv.textContent=percentage+"%";
+                const spineItem = reader.book.spine.get(location.start.index);
+                const baseCfi = spineItem.cfiBase;
+                const allLocations = reader.book.locations._locations;
+
+                const bookNormalized = reader.book.locations.percentageFromCfi(location.start.cfi);
+                const percentageBook = Math.round(bookNormalized*100);
+
+                let percentageSection = 0;
+                const sectionStartCfi = allLocations.find(cfi => cfi.includes(baseCfi));
+                const sectionEndCfi = allLocations.findLast(cfi => cfi.includes(baseCfi));
+
+                if (sectionStartCfi == sectionEndCfi) {
+                    percentageSection = 100;
+                } else {
+                    const sectionStartNormalized = reader.book.locations.percentageFromCfi(sectionStartCfi);
+                    const sectionEndNormalized = reader.book.locations.percentageFromCfi(sectionEndCfi);
+                    const sectionBookProportion = sectionEndNormalized - sectionStartNormalized;
+                    const sectionNormalized = (bookNormalized-sectionStartNormalized)/sectionBookProportion;
+                    percentageSection = Math.round(sectionNormalized*100);
+                }
+
+                progressDiv.textContent=`${percentageSection}% (${percentageBook}% in book)`;
             });
             reader.rendition.reportLocation();
             progressDiv.style.visibility = "visible";
