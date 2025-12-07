@@ -42,9 +42,26 @@ def hide_console_windows():
 
 
 if __name__ == '__main__':
-    if os.name == "nt":
+    # Only hide the console window on Windows when there is no interactive
+    # console attached. This preserves the ability to use Ctrl+C from a
+    # terminal (stdin is a tty) to stop the server.
+    if os.name == "nt" and not sys.stdin.isatty():
         hide_console_windows()
-    main()
+
+    try:
+        main()
+    except KeyboardInterrupt:
+        # Allow stopping the server with Ctrl+C from an interactive console, after reboot of calibre-web
+        # (initally the SIGINT signal CTRL+C is catched in server.py via the signal callback).
+        try:
+            # Try to perform a graceful stop if web_server is available.
+            # Import here to avoid import-time side-effects when not needed.
+            from cps import web_server
+            web_server.stop()
+        except Exception:
+            pass
+        print('\nCalibre-Web: received interrupt, shutting down')
+        sys.exit(0)
 
 
 

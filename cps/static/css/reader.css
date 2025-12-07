@@ -1,47 +1,74 @@
 .fontSizeWrapper {
-    position: relative;
+  position: relative;
 }
 .slider {
-    position: absolute;
-    top: 50%;
-    transform: translate(0,-50%);
-    width: 90%;
-    height: 60px;
-    background: transparent;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    box-shadow: 0px 15px 40px #7E6D5766;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 90%;
+  height: 60px;
+  background: transparent;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 15px 40px #7e6d5766;
 }
 .slider label {
-    font-size: 20px;
-    font-weight: 400;
-    font-family: Open Sans;
-    padding-right: 10px;
-    color: white;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: Open Sans;
+  padding-right: 10px;
+  color: white;
 }
 .slider input[type="range"] {
-    width: 80%;
-    height: 5px;
-    background: black;
-    border: none;
-    outline: none;
+  width: 80%;
+  height: 5px;
+  background: black;
+  border: none;
+  outline: none;
 }
 
 .item {
-    font-size: 20px;
-    font-weight: 400;
-    font-family: Open Sans;
-    padding-right: 10px;
-    color: white;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: Open Sans;
+  padding-right: 10px;
+  color: white;
 }
 
-.item~button {
-    display: inline-block;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    margin-top: 5%;
-    margin-right: 1%;
-    font-size: 16px;
+.item ~ button {
+  display: inline-block;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  margin-top: 5%;
+  margin-right: 1%;
+  font-size: 16px;
+}
+
+#main,
+#viewer,
+#sidebar,
+#tocView {
+  touch-action: pan-y;
+}
+
+.read-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+}
+.read-footer #pages-count {
+  font-size: 12px;
+
+  position: absolute;
+  left: 12px;
+  bottom: 2px;
+}
+
+#back-button {
+  width: 50px !important;
+  right: 50px;
+  // position: absolute;
 }
