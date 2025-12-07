@@ -2018,7 +2018,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previo
     display: none
 }
 
-body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container > div.col-xs-12, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container > div.col-xs-12, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container > div.col-sm-6, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container > div.col-sm-6 {
+body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6 {
     width: 100%
 }
 
@@ -2042,7 +2042,7 @@ body.serieslist > div.container-fluid > div > div.col-sm-10:before {
   }
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 {
     width: calc(80% - 30px);
     margin: 120px 0 30px 20%;
     border-top: 2px solid rgba(0, 0, 0, .3);
@@ -2051,19 +2051,19 @@ body > div.container-fluid > div > div.col-sm-10 > div.container {
     max-width: calc(80% - 30px)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container > div {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 > div {
     padding: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
     padding: 4px 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row:nth-of-type(even) {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:nth-of-type(even) {
     background: hsla(0, 0%, 100%, .02)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row > .col-xs-6 {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row > .col-xs-6 {
     width: calc(91.666% - 30px);
     overflow: hidden;
     -o-text-overflow: ellipsis;
@@ -2072,7 +2072,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row > 
     padding-left: 60px
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row > .col-xs-6 > a {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row > .col-xs-6 > a {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2082,7 +2082,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row > 
 }
 
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 {
     width: calc(80% - 30px);
     margin: 120px 0 30px 20%;
     border-top: 2px solid rgba(0, 0, 0, .3);
@@ -2091,19 +2091,19 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container 
     max-width: calc(80% - 30px)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container > div {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div {
     padding: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container > div > .row {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row {
     padding: 4px 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container > div > .row:nth-of-type(even) {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row:nth-of-type(even) {
     background: hsla(0, 0%, 100%, .02)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container > div > .row > .col-xs-6 {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row > .col-xs-6 {
     width: calc(91.666% - 30px);
     overflow: hidden;
     -o-text-overflow: ellipsis;
@@ -2112,7 +2112,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container 
     padding-left: 60px
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container > div > .row > .col-xs-6 > a {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row > .col-xs-6 > a {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -2146,7 +2146,6 @@ body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
   }
 }
 
-
 body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.langlist > div.container-fluid > div > div.col-sm-10:before {
     font-family: 'Glyphicons Halflings', serif;
     font-style: normal;
@@ -2172,10 +2171,12 @@ body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
 }
 
 body.langlist > div.container-fluid > div > div.col-sm-10:before {
-    content: "\e034"
+    content: "\e034";
+    top: 240px;
 }
 
-body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+
+body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     top: 60px;
     font-size: 24px;
     color: #eee;
@@ -2186,63 +2187,104 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:befo
     font-weight: 400
 }
 
-body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "Authors";
     top: 115px;
+    display: table;
 }
 
 @media screen and (max-width: 992px) {
-  body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
-body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+@media screen and (max-width: 992px) {
+  body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
+      top: 60px;
+  }
+}
+
+body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+    font-family: Glyphicons Halflings, serif;
+    content: "\E026";
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    font-size: 6vw;
+    position: fixed;
+    left: 240px;
+    top: 240px;
+    width: calc(20% - 55px);
+    text-align: center
+}
+
+
+@media screen and (max-width: 992px) {
+  body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+      top: 180px;
+  }
+}
+
+body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
+    content: "Downloads";
+    top: 115px;
+    display: table;
+}
+
+
+body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "Categories";
     top: 115px;
+    display: table;
 }
 
 @media screen and (max-width: 992px) {
-  body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
-body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "Series";
     top: 115px;
+    display: table;
 }
 
 @media screen and (max-width: 992px) {
-  body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
-body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "File formats";
     top: 115px;
+    display: table;
 }
 
 @media screen and (max-width: 992px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
-body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "File formats";
     top: 115px;
+    display: table;
 }
 
 @media screen and (max-width: 992px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
-body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
-    content: "Languages"
+body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
+    content: "Languages";
+    top: 115px;
+    display: table;
 }
 
 body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
@@ -6421,7 +6463,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         display: none !important
     }
 
-    .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container:before, body.login .navbar > .container-fluid > .navbar-header > button.navbar-toggle, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+    .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.login .navbar > .container-fluid > .navbar-header > button.navbar-toggle, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
         display: none
     }
 
@@ -6527,7 +6569,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         background-size: 30px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.langlist > div.container-fluid > div > div.col-sm-10:before, body.ratingslist > div.container-fluid > div > div.col-sm-10:before, body.serieslist > div.container-fluid > div > div.col-sm-10:before, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.langlist > div.container-fluid > div > div.col-sm-10:before, body.ratingslist > div.container-fluid > div > div.col-sm-10:before, body.serieslist > div.container-fluid > div > div.col-sm-10:before, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
         position: fixed;
         top: 62px;
         right: 23px;
@@ -6547,7 +6589,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         border-top: 1px solid hsla(0, 0%, 78%, .15)
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container {
+    body > div.container-fluid > div > div.col-sm-10 > div.container1 {
         left: 0;
         width: auto;
         margin: 0 !important;
@@ -6674,7 +6716,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-bottom: 5px
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
         padding: 0
     }
 
@@ -7441,11 +7483,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         text-decoration: none
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row:nth-of-type(even) {
+    body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:nth-of-type(even) {
         background: 0 0
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
         border-bottom: 1px solid hsla(0, 0%, 78%, .15)
     }
 
@@ -7600,7 +7642,7 @@ body.formatslist > div.container-fluid > div > div.col-sm-10:before {
   }
 }
 
-body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "Publishers";
     top: 115px;
     font-size: 24px;
@@ -7608,17 +7650,18 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container:b
     line-height: 1;
     padding-left: 15px;
     position: absolute;
+    display: table;
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: 400
 }
 
 @media screen and (max-width: 992px) {
-  body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
-body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "Ratings";
     top: 115px;
     font-size: 24px;
@@ -7626,23 +7669,24 @@ body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container:bef
     line-height: 1;
     padding-left: 15px;
     position: absolute;
+    display: table;
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
     font-weight: 400
 }
 
 @media screen and (max-width: 992px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       display: none;
   }
 }
 
-body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     content: "File formats";
     top: 115px;
     font-size: 24px;
@@ -7655,18 +7699,18 @@ body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container:bef
 }
 
 @media screen and (max-width: 992px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       display: none;
   }
 }
 
-body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container > div.col-sm-6 {
+body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6 {
     width: 100%
 }
 
@@ -7705,7 +7749,7 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container >
         color: hsla(0, 0%, 100%, .7)
     }
 
-    body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container:before {
+    body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
         display: none !important
     }
 }

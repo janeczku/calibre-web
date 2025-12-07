@@ -429,6 +429,9 @@ div.log {
   padding: 0.5em;
 }
 
+.badge-sm{
+    font-size: 70%;
+}
 #detailcover { cursor:zoom-in; }
 #detailcover:-webkit-full-screen { cursor:zoom-out; border: 0; }
 #detailcover:-moz-full-screen { cursor:zoom-out; border: 0; }
