@@ -92,7 +92,7 @@ def get_sidebar_config(kwargs=None):
                     "visibility": constants.SIDEBAR_FORMAT, 'public': True,
                     "page": "format", "show_text": _('Show File Formats Section'), "config_show": True})
     sidebar.append(
-        {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
+        {"glyph": "glyphicon-folder-open", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not current_user.is_anonymous), "page": "archived",
          "show_text": _('Show Archived Books'), "config_show": content})
     if not simple:
