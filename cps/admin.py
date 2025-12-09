@@ -1979,7 +1979,12 @@ def _configuration_update_helper():
 
         # Google Books API configuration
         reboot_required |=_config_string(to_save, "config_googlebooks_api_key")
-        
+
+        # Telegram configuration
+        _config_checkbox(to_save, "config_use_telegram")
+        _config_string(to_save, "config_telegram_bot_token")
+        _config_string(to_save, "config_telegram_bot_username")
+
         _config_int(to_save, "config_updatechannel")
 
         # Reverse proxy login configuration
