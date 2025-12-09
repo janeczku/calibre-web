@@ -2425,6 +2425,124 @@ def delete_duplicate_book(book_id):
         return redirect(url_for('admin.find_duplicates'))
 
 
+@admi.route("/admin/telegram/test", methods=["POST"])
+@user_login_required
+@admin_required
+def test_telegram():
+    """Test Telegram bot connection"""
+    try:
+        from . import telegram as tg
+        bot_token = request.form.get('bot_token', '').strip()
+        bot_username = request.form.get('bot_username', '').strip()
+
+        if not bot_token or not bot_username:
+            return jsonify({'success': False, 'message': _('Bot token and username are required')})
+
+        success, message = tg.test_telegram_connection(bot_token, bot_username)
+        return jsonify({'success': success, 'message': message})
+
+    except Exception as e:
+        log.error(f"Error testing Telegram: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@admi.route("/admin/telegram/search")
+@user_login_required
+@admin_required
+def telegram_search_page():
+    """Show Telegram book search interface"""
+    if not config.config_use_telegram:
+        flash(_("Telegram integration is not enabled"), category="error")
+        return redirect(url_for('admin.configuration'))
+
+    return render_title_template('telegram_search.html',
+                                title=_("Telegram Book Search"),
+                                page="telegram_search")
+
+
+@admi.route("/admin/telegram/search/query", methods=["POST"])
+@user_login_required
+@admin_required
+def telegram_search_books():
+    """Search for books using Telegram bot"""
+    try:
+        from . import telegram as tg
+
+        if not config.config_use_telegram:
+            return jsonify({'success': False, 'message': _('Telegram integration is not enabled')})
+
+        query = request.form.get('query', '').strip()
+        if not query:
+            return jsonify({'success': False, 'message': _('Search query is required')})
+
+        bot = tg.TelegramBot(config.config_telegram_bot_token, config.config_telegram_bot_username)
+        results = bot.search_books(query)
+
+        return jsonify({'success': True, 'results': results})
+
+    except Exception as e:
+        log.error(f"Error searching Telegram: {str(e)}")
+        return jsonify({'success': False, 'message': str(e)})
+
+
+@admi.route("/admin/telegram/download", methods=["POST"])
+@user_login_required
+@admin_required
+def telegram_download_book():
+    """Download a book from Telegram and add it to the library"""
+    try:
+        from . import telegram as tg
+        import tempfile
+        import os
+        from werkzeug.utils import secure_filename
+        from . import uploader
+
+        if not config.config_use_telegram:
+            return jsonify({'success': False, 'message': _('Telegram integration is not enabled')})
+
+        file_id = request.form.get('file_id', '').strip()
+        title = request.form.get('title', 'Unknown').strip()
+
+        if not file_id:
+            return jsonify({'success': False, 'message': _('File ID is required')})
+
+        # Download file from Telegram
+        bot = tg.TelegramBot(config.config_telegram_bot_token, config.config_telegram_bot_username)
+
+        # Create temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.epub') as tmp_file:
+            tmp_path = tmp_file.name
+
+        try:
+            # Download the file
+            if not bot.download_file(file_id, tmp_path):
+                return jsonify({'success': False, 'message': _('Failed to download file from Telegram')})
+
+            # Add book to library using uploader
+            # This is a simplified version - you may need to adjust based on actual uploader API
+            meta = uploader.process_file(tmp_path, config.config_calibre_dir)
+
+            if meta:
+                return jsonify({
+                    'success': True,
+                    'message': _('Book added to library successfully'),
+                    'book_id': meta.id if hasattr(meta, 'id') else None
+                })
+            else:
+                return jsonify({'success': False, 'message': _('Failed to add book to library')})
+
+        finally:
+            # Clean up temporary file
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+
+    except Exception as e:
+        log.error(f"Error downloading book from Telegram: {str(e)}")
+        import traceback
+        log.error(traceback.format_exc())
+        return jsonify({'success': False, 'message': str(e)})
+
+
 def extract_user_data_from_field(user, field):
     match = re.search(field + r"=(.*?)($|(?<!\\),)", user, re.IGNORECASE | re.UNICODE)
     if match:

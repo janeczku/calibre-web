@@ -164,6 +164,26 @@
     </div>
     {% endif %}
     <div class="form-group">
+      <input type="checkbox" id="config_use_telegram" name="config_use_telegram" data-control="telegram-settings" {% if config.config_use_telegram %}checked{% endif %}>
+      <label for="config_use_telegram">{{_('Enable Telegram Book Search')}}</label>
+    </div>
+    <div data-related="telegram-settings">
+      <div class="form-group">
+        <label for="config_telegram_bot_token">{{_('Telegram Bot Token')}}</label>
+        <input type="text" class="form-control" id="config_telegram_bot_token" name="config_telegram_bot_token" value="{% if config.config_telegram_bot_token != None %}{{ config.config_telegram_bot_token }}{% endif %}" autocomplete="off">
+        <span class="help-block">{{_('Get this from @BotFather on Telegram')}}</span>
+      </div>
+      <div class="form-group">
+        <label for="config_telegram_bot_username">{{_('Telegram Bot Username')}}</label>
+        <input type="text" class="form-control" id="config_telegram_bot_username" name="config_telegram_bot_username" value="{% if config.config_telegram_bot_username != None %}{{ config.config_telegram_bot_username }}{% endif %}" autocomplete="off" placeholder="@bookbot">
+        <span class="help-block">{{_('Username of the bot to search for books')}}</span>
+      </div>
+      <div class="form-group">
+        <button type="button" id="test_telegram" class="btn btn-default">{{_('Test Telegram Connection')}}</button>
+        <span id="telegram_test_result"></span>
+      </div>
+    </div>
+    <div class="form-group">
       <label for="config_googlebooks_api_key">{{_('Google Books API Key')}}</label>
       <input type="text" class="form-control" id="config_googlebooks_api_key" name="config_googlebooks_api_key" value="{% if config.config_googlebooks_api_key != '' %}{{ config.config_googlebooks_api_key }}{% endif %}" autocomplete="off">
     </div>
@@ -438,6 +458,51 @@
   </form>
 </div>
 {% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function() {
+    // Test Telegram connection
+    $('#test_telegram').click(function() {
+        var $btn = $(this);
+        var $result = $('#telegram_test_result');
+        var botToken = $('#config_telegram_bot_token').val().trim();
+        var botUsername = $('#config_telegram_bot_username').val().trim();
+
+        if (!botToken || !botUsername) {
+            $result.html('<span class="text-danger">{{_("Please enter bot token and username")}}</span>');
+            return;
+        }
+
+        $btn.prop('disabled', true).text('{{_("Testing...")}}');
+        $result.html('<span class="text-info">{{_("Connecting...")}}</span>');
+
+        $.ajax({
+            url: '{{url_for("admin.test_telegram")}}',
+            type: 'POST',
+            data: {
+                bot_token: botToken,
+                bot_username: botUsername
+            },
+            success: function(response) {
+                if (response.success) {
+                    $result.html('<span class="text-success"><span class="glyphicon glyphicon-ok"></span> ' + response.message + '</span>');
+                } else {
+                    $result.html('<span class="text-danger"><span class="glyphicon glyphicon-remove"></span> ' + response.message + '</span>');
+                }
+            },
+            error: function() {
+                $result.html('<span class="text-danger">{{_("Connection error")}}</span>');
+            },
+            complete: function() {
+                $btn.prop('disabled', false).text('{{_("Test Telegram Connection")}}');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+
 {% block modal %}
 {{ filechooser_modal() }}
 {% endblock %}

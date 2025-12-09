@@ -123,6 +123,10 @@ class _Settings(_Base):
 
     config_kobo_proxy = Column(Boolean, default=False)
 
+    config_use_telegram = Column(Boolean, default=False)
+    config_telegram_bot_token = Column(String, default='')
+    config_telegram_bot_username = Column(String, default='')
+
     config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
     config_ldap_authentication = Column(SmallInteger, default=constants.LDAP_AUTH_SIMPLE)

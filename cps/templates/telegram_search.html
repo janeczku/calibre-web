@@ -1,0 +1,174 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h2>{{_('Telegram Book Search')}}</h2>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{_('Search Books')}}</h3>
+        </div>
+        <div class="panel-body">
+          <form id="telegram-search-form">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" id="search-query" placeholder="{{_('Enter book title, author, or ISBN...')}}" autocomplete="off">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="submit" id="search-btn">
+                    <span class="glyphicon glyphicon-search"></span> {{_('Search')}}
+                  </button>
+                </span>
+              </div>
+            </div>
+          </form>
+
+          <div id="search-status" style="margin-top: 15px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="results-container" style="display: none;">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{_('Search Results')}}</h3>
+        </div>
+        <div class="panel-body">
+          <div id="search-results"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+$(document).ready(function() {
+    $('#telegram-search-form').submit(function(e) {
+        e.preventDefault();
+
+        var query = $('#search-query').val().trim();
+        if (!query) {
+            $('#search-status').html('<div class="alert alert-warning">{{_("Please enter a search term")}}</div>');
+            return;
+        }
+
+        var $btn = $('#search-btn');
+        var $status = $('#search-status');
+        var $results = $('#search-results');
+        var $resultsContainer = $('#results-container');
+
+        // Disable button and show loading
+        $btn.prop('disabled', true).html('<span class="glyphicon glyphicon-refresh glyphicon-spin"></span> {{_("Searching...")}}');
+        $status.html('<div class="alert alert-info">{{_("Searching Telegram for books...")}}</div>');
+        $results.html('');
+        $resultsContainer.hide();
+
+        $.ajax({
+            url: '{{url_for("admin.telegram_search_books")}}',
+            type: 'POST',
+            data: { query: query },
+            success: function(response) {
+                if (response.success) {
+                    if (response.results && response.results.length > 0) {
+                        displayResults(response.results);
+                        $status.html('<div class="alert alert-success">{{_("Found")}} ' + response.results.length + ' {{_("results")}}</div>');
+                        $resultsContainer.show();
+                    } else {
+                        $status.html('<div class="alert alert-info">{{_("No books found for your search")}}</div>');
+                        $resultsContainer.hide();
+                    }
+                } else {
+                    $status.html('<div class="alert alert-danger">{{_("Error")}}: ' + response.message + '</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                $status.html('<div class="alert alert-danger">{{_("Connection error. Please try again.")}}</div>');
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<span class="glyphicon glyphicon-search"></span> {{_("Search")}}');
+            }
+        });
+    });
+
+    function displayResults(results) {
+        var html = '<div class="table-responsive"><table class="table table-striped table-hover">';
+        html += '<thead><tr>';
+        html += '<th>{{_("Title")}}</th>';
+        html += '<th>{{_("Author")}}</th>';
+        html += '<th>{{_("Format")}}</th>';
+        html += '<th>{{_("Size")}}</th>';
+        html += '<th>{{_("Actions")}}</th>';
+        html += '</tr></thead><tbody>';
+
+        results.forEach(function(book) {
+            html += '<tr>';
+            html += '<td>' + escapeHtml(book.title || '{{_("Unknown")}}') + '</td>';
+            html += '<td>' + escapeHtml(book.author || '{{_("Unknown")}}') + '</td>';
+            html += '<td>' + escapeHtml(book.format || '{{_("Unknown")}}') + '</td>';
+            html += '<td>' + escapeHtml(book.size || '{{_("Unknown")}}') + '</td>';
+            html += '<td>';
+            html += '<button class="btn btn-sm btn-primary download-book" data-file-id="' + book.file_id + '" data-title="' + escapeHtml(book.title) + '">';
+            html += '<span class="glyphicon glyphicon-download-alt"></span> {{_("Download")}}';
+            html += '</button>';
+            html += '</td>';
+            html += '</tr>';
+        });
+
+        html += '</tbody></table></div>';
+        $('#search-results').html(html);
+
+        // Attach download handlers
+        $('.download-book').click(function() {
+            var fileId = $(this).data('file-id');
+            var title = $(this).data('title');
+            downloadBook(fileId, title, $(this));
+        });
+    }
+
+    function downloadBook(fileId, title, $btn) {
+        var originalHtml = $btn.html();
+        $btn.prop('disabled', true).html('<span class="glyphicon glyphicon-refresh glyphicon-spin"></span> {{_("Downloading...")}}');
+
+        $.ajax({
+            url: '{{url_for("admin.telegram_download_book")}}',
+            type: 'POST',
+            data: {
+                file_id: fileId,
+                title: title
+            },
+            success: function(response) {
+                if (response.success) {
+                    $btn.html('<span class="glyphicon glyphicon-ok"></span> {{_("Added to library!")}}');
+                    setTimeout(function() {
+                        $btn.prop('disabled', false).html(originalHtml);
+                    }, 3000);
+                } else {
+                    alert('{{_("Error")}}: ' + response.message);
+                    $btn.prop('disabled', false).html(originalHtml);
+                }
+            },
+            error: function() {
+                alert('{{_("Error downloading book")}}');
+                $btn.prop('disabled', false).html(originalHtml);
+            }
+        });
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+});
+</script>
+{% endblock %}

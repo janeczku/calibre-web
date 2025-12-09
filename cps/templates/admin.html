@@ -203,6 +203,13 @@
         {{_('Manage Audiobooks')}}
       </a>
       <p style="color: #888; margin-top: 10px;">{{_('View and delete generated audiobook files to free up disk space.')}}</p>
+      {% if config.config_use_telegram %}
+      <a class="btn btn-primary" id="telegram_search" href="{{url_for('admin.telegram_search_page')}}" style="background-color: #0088cc; border-color: #006699;">
+        <span class="glyphicon glyphicon-search"></span>
+        {{_('Telegram Book Search')}}
+      </a>
+      <p style="color: #888; margin-top: 10px;">{{_('Search and download books from Telegram bots.')}}</p>
+      {% endif %}
     </div>
   </div>
 {%  if feature_support['scheduler'] %}
