@@ -208,12 +208,18 @@ def create_app():
     if config.config_limiter_uri != "" and not cli_param.memory_backend:
         app.config.update(RATELIMIT_STORAGE_URI=config.config_limiter_uri)
         if config.config_limiter_options != "":
-            app.config.update(RATELIMIT_STORAGE_OPTIONS=config.config_limiter_options)
+            try:
+                import json
+                limiter_opts = json.loads(config.config_limiter_options)
+                app.config.update(RATELIMIT_STORAGE_OPTIONS=limiter_opts)
+            except (json.JSONDecodeError, TypeError) as e:
+                log.warning('Invalid JSON in limiter options, ignoring: {}'.format(e))
     try:
         limiter.init_app(app)
     except Exception as e:
         log.error('Wrong Flask Limiter configuration, falling back to default: {}'.format(e))
         app.config.update(RATELIMIT_STORAGE_URI=None)
+        app.config.update(RATELIMIT_STORAGE_OPTIONS={})
         limiter.init_app(app)
 
     # Register scheduled tasks
