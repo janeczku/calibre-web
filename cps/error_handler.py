@@ -33,6 +33,7 @@ log = logger.create()
 # custom error page
 
 def error_http(error):
+    headers = {'WWW-Authenticate': 'Basic realm="calibre-web"'} if error.code == 401 else {}
     return render_template('http_error.html',
                            error_code="Error {0}".format(error.code),
                            error_name=error.name,
@@ -40,7 +41,7 @@ def error_http(error):
                            goto_admin=False,
                            unconfigured=not config.db_configured,
                            instance=config.config_calibre_web_title
-                           ), error.code
+                           ), error.code, headers
 
 
 def internal_error(error):
