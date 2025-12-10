@@ -1,28 +1,349 @@
 {% extends "layout.html" %}
 {% block body %}
-   <div id="log_group" class="inputs">
-     {% if log_enable %}
-      <div><input type="radio" name="log_radio" id="log1" value="0" checked>
-      <label for="log1">{{_('Show Calibre-Web Log: ')}}</label>{{logfiles[0]}}</div>
-     {% else %}
-     <div><label for="log1">{{_('Calibre-Web Log: ')}}</label> {{_("Stream output, can't be displayed")}}</div>
-     {% endif %}
-     {% if accesslog_enable %}
-      <div><input type="radio" name="log_radio" id="log0" value="1" {% if not log_enable %}checked{% endif %}>
-      <label for="log0">{{_('Show Access Log: ')}}</label>{{logfiles[1]}}</div>
-     {% endif %}
-   </div>
-  <div class="row">
-    <div class="col-xs-6 col-sm-7">
-      {% if log_enable %}
-      <a class="btn btn-default" id="log_file_0" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a>
-      {% endif %}
-      {% if accesslog_enable %}
-      <a class="btn btn-default" id="log_file_1" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a>
-      {% endif %}
+<style>
+/* Modern Log Viewer Styles */
+#log-viewer-container {
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+#log-controls {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.log-control-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#log_group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+#log_group > div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#log_group input[type="radio"] {
+    margin: 0;
+}
+
+#log-search-container {
+    flex: 1;
+    min-width: 300px;
+}
+
+#log-search {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+#log-search:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+#log-filter-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.filter-btn:hover {
+    background: #f0f0f0;
+}
+
+.filter-btn.active {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+.filter-btn.filter-error.active {
+    background: #f44336;
+    border-color: #f44336;
+}
+
+.filter-btn.filter-warning.active {
+    background: #ff9800;
+    border-color: #ff9800;
+}
+
+.filter-btn.filter-info.active {
+    background: #2196F3;
+    border-color: #2196F3;
+}
+
+.filter-btn.filter-debug.active {
+    background: #9e9e9e;
+    border-color: #9e9e9e;
+}
+
+#log-stats {
+    display: flex;
+    gap: 20px;
+    padding: 10px 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+#log-stats span {
+    font-weight: bold;
+}
+
+.download-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#renderer {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    max-height: 600px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#renderer .log-line {
+    padding: 4px 0;
+    border-bottom: 1px solid #2d2d2d;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#renderer .log-line:hover {
+    background: #2d2d2d;
+}
+
+#renderer .log-line.highlight {
+    background: #3a3a00;
+}
+
+#renderer .log-line.hidden {
+    display: none;
+}
+
+#renderer .log-line.error {
+    color: #f48771;
+    background: #3f1e1e;
+}
+
+#renderer .log-line.warning {
+    color: #dcdcaa;
+    background: #3f3f1e;
+}
+
+#renderer .log-line.info {
+    color: #9cdcfe;
+}
+
+#renderer .log-line.debug {
+    color: #858585;
+}
+
+#renderer .timestamp {
+    color: #6a9955;
+}
+
+#renderer .level-ERROR {
+    color: #f48771;
+    font-weight: bold;
+}
+
+#renderer .level-WARNING {
+    color: #dcdcaa;
+    font-weight: bold;
+}
+
+#renderer .level-INFO {
+    color: #9cdcfe;
+    font-weight: bold;
+}
+
+#renderer .level-DEBUG {
+    color: #858585;
+    font-weight: bold;
+}
+
+#log-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #4CAF50;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#log-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.action-btn {
+    padding: 8px 16px;
+    border: none;
+    background: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-size: 13px;
+}
+
+.action-btn:hover {
+    background: #45a049;
+}
+
+.action-btn.secondary {
+    background: #2196F3;
+}
+
+.action-btn.secondary:hover {
+    background: #0b7dda;
+}
+
+@media (max-width: 768px) {
+    .log-control-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #log-search-container {
+        min-width: 100%;
+    }
+
+    #log-stats {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+</style>
+
+<div id="log-viewer-container">
+    <div id="log-controls">
+        <div id="log_group" class="inputs">
+            {% if log_enable %}
+            <div>
+                <input type="radio" name="log_radio" id="log1" value="0" checked>
+                <label for="log1">{{_('Calibre-Web Log: ')}}</label>
+                <span>{{logfiles[0]}}</span>
+            </div>
+            {% else %}
+            <div>
+                <label for="log1">{{_('Calibre-Web Log: ')}}</label>
+                <span>{{_("Stream output, can't be displayed")}}</span>
+            </div>
+            {% endif %}
+            {% if accesslog_enable %}
+            <div>
+                <input type="radio" name="log_radio" id="log0" value="1" {% if not log_enable %}checked{% endif %}>
+                <label for="log0">{{_('Access Log: ')}}</label>
+                <span>{{logfiles[1]}}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="download-buttons">
+            {% if log_enable %}
+            <a class="btn btn-default" id="log_file_0" href="{{url_for('admin.download_log', logtype=0)}}">
+                <i class="glyphicon glyphicon-download"></i> {{_('Download Calibre-Web Log')}}
+            </a>
+            {% endif %}
+            {% if accesslog_enable %}
+            <a class="btn btn-default" id="log_file_1" href="{{url_for('admin.download_log', logtype=1)}}">
+                <i class="glyphicon glyphicon-download"></i> {{_('Download Access Log')}}
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="log-control-row">
+            <div id="log-search-container">
+                <input type="text" id="log-search" placeholder="{{_('Search logs...')}} (Ctrl+F)">
+            </div>
+            <div id="log-filter-container">
+                <button class="filter-btn filter-error" data-level="ERROR">ERROR</button>
+                <button class="filter-btn filter-warning" data-level="WARNING">WARNING</button>
+                <button class="filter-btn filter-info" data-level="INFO">INFO</button>
+                <button class="filter-btn filter-debug" data-level="DEBUG">DEBUG</button>
+                <button class="filter-btn" id="filter-reset">{{_('All')}}</button>
+            </div>
+        </div>
+
+        <div id="log-stats">
+            <div>{{_('Total lines:')}}} <span id="total-lines">0</span></div>
+            <div>{{_('Visible:')}}} <span id="visible-lines">0</span></div>
+            <div>{{_('Errors:')}}} <span id="error-count">0</span></div>
+            <div>{{_('Warnings:')}}} <span id="warning-count">0</span></div>
+        </div>
+
+        <div id="log-actions">
+            <button class="action-btn" id="refresh-log">
+                <i class="glyphicon glyphicon-refresh"></i> {{_('Refresh')}}
+            </button>
+            <button class="action-btn secondary" id="scroll-to-bottom">
+                <i class="glyphicon glyphicon-arrow-down"></i> {{_('Scroll to Bottom')}}
+            </button>
+            <button class="action-btn secondary" id="scroll-to-top">
+                <i class="glyphicon glyphicon-arrow-up"></i> {{_('Scroll to Top')}}
+            </button>
+        </div>
     </div>
-  </div>
-   <div id="renderer" class="log"></div>
+
+    <div id="renderer" class="log">
+        <div id="log-loading">
+            <div class="spinner"></div>
+            {{_('Loading log file...')}}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 {% block js %}
