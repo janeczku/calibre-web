@@ -2,6 +2,7 @@ from datetime import datetime
 from datetime import timezone
 from datetime import timedelta
 import hashlib
+import os
 
 from flask import abort
 from flask import current_app
@@ -315,7 +316,7 @@ class LoginManager:
     def _update_request_context_with_user(self, user=None):
         """Store the given user as ctx.user."""
 
-        if user is None:
+        if user is None and os.environ.get("CALIBRE_ANONYMOUS_ENABLED", "true") == "true":
             user = self.anonymous_user()
 
         g._login_user = user
