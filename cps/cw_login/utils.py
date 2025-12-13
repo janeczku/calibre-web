@@ -287,11 +287,8 @@ def login_required(func):
     def decorated_view(*args, **kwargs):
         if request.method in EXEMPT_METHODS or current_app.config.get("LOGIN_DISABLED"):
             pass
-        else:
-            if not current_user and os.environ.get("CALIBRE_ANONYMOUS_ENABLED", "true") == "false":
-                return current_app.login_manager.unauthorized()
-            if not current_user.is_authenticated :
-                return current_app.login_manager.unauthorized()
+        elif not current_user.is_authenticated:
+            return current_app.login_manager.unauthorized()
 
         # flask 1.x compatibility
         # current_app.ensure_sync is only available in Flask >= 2.0
