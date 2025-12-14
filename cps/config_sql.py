@@ -480,6 +480,9 @@ def _migrate_table(session, orm_class, secret_key=None):
 
 
 def autodetect_calibre_binaries():
+    override = if os.environ.get("CALIBRE_BINARIES")
+    if override:
+        calibre_path = [override]
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\calibre\\",
                         "C:\\program files(x86)\\calibre\\",
@@ -504,6 +507,9 @@ def autodetect_calibre_binaries():
 
 
 def autodetect_converter_binary(calibre_path):
+    override = if os.environ.get("CALIBRE_CONVERTER")
+    if override:
+        converter_path = override
     if sys.platform == "win32":
         converter_path = os.path.join(calibre_path, "ebook-convert.exe")
     else:
@@ -514,6 +520,9 @@ def autodetect_converter_binary(calibre_path):
 
 
 def autodetect_unrar_binary():
+    override = if os.environ.get("CALIBRE_UNRAR")
+    if override:
+        calibre_path = [override]
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
