@@ -537,6 +537,9 @@ def autodetect_unrar_binary():
 
 
 def autodetect_kepubify_binary():
+    override = if os.environ.get("CALIBRE_KEPUBIFY")
+    if override:
+        calibre_path = [override]
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
