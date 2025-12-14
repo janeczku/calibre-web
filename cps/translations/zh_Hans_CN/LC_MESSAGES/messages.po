@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-07 14:32+0100\n"
+"POT-Creation-Date: 2025-12-14 14:44+0100\n"
 "PO-Revision-Date: 2025-12-06 13:53+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
@@ -966,7 +966,7 @@ msgstr "Google Oauth 错误，请重试。"
 msgid "Google Oauth error: {}"
 msgstr "Google Oauth 错误: {}"
 
-#: cps/opds.py:308
+#: cps/opds.py:307
 #, python-brace-format
 msgid "{} Stars"
 msgstr "{} 星"
@@ -1925,12 +1925,12 @@ msgstr "出版日期"
 msgid "Description:"
 msgstr "简介:"
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
 msgid "Previous"
 msgstr "上一个"
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:189
+#: cps/templates/layout.html:187
 msgid "Next"
 msgstr "下一个"
 
@@ -1990,7 +1990,7 @@ msgid "Uploading..."
 msgstr "正在上传..."
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:205
+#: cps/templates/layout.html:79 cps/templates/layout.html:203
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "关闭"
@@ -3039,7 +3039,7 @@ msgstr "按条件浏览"
 msgid "About"
 msgstr "关于"
 
-#: cps/templates/layout.html:201
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "书籍详情"
 

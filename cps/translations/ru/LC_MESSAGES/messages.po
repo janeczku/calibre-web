@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-12-07 14:32+0100\n"
+"POT-Creation-Date: 2025-12-14 14:44+0100\n"
 "PO-Revision-Date: 2020-04-29 01:20+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -967,7 +967,7 @@ msgstr "Ошибка Google Oauth, пожалуйста попробуйте п�
 msgid "Google Oauth error: {}"
 msgstr ""
 
-#: cps/opds.py:308
+#: cps/opds.py:307
 #, python-brace-format
 msgid "{} Stars"
 msgstr ""
@@ -1926,12 +1926,12 @@ msgstr "Опубликованный"
 msgid "Description:"
 msgstr "Описание:"
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
 msgid "Previous"
 msgstr "Предыдущий"
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:189
+#: cps/templates/layout.html:187
 msgid "Next"
 msgstr "Далее"
 
@@ -1991,7 +1991,7 @@ msgid "Uploading..."
 msgstr "Загружается..."
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:205
+#: cps/templates/layout.html:79 cps/templates/layout.html:203
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Закрыть"
@@ -3040,7 +3040,7 @@ msgstr "Просмотр"
 msgid "About"
 msgstr "О программе"
 
-#: cps/templates/layout.html:201
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "Подробнее о книге"
 

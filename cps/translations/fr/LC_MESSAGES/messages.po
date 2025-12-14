@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-07 14:32+0100\n"
+"POT-Creation-Date: 2025-12-14 14:44+0100\n"
 "PO-Revision-Date: 2025-09-10 19:25+0000\n"
 "Last-Translator: <thovi98@gmail.com>\n"
 "Language: fr\n"
@@ -962,7 +962,7 @@ msgstr "Erreur Oauth Google, veuillez réessayer plus tard."
 msgid "Google Oauth error: {}"
 msgstr "Erreur Oauth Google : {}"
 
-#: cps/opds.py:308
+#: cps/opds.py:307
 #, python-brace-format
 msgid "{} Stars"
 msgstr "{} Étoiles"
@@ -1921,12 +1921,12 @@ msgstr "Publié"
 msgid "Description:"
 msgstr "Description :"
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
 msgid "Previous"
 msgstr "Précédent"
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:189
+#: cps/templates/layout.html:187
 msgid "Next"
 msgstr "Suivant"
 
@@ -1986,7 +1986,7 @@ msgid "Uploading..."
 msgstr "Téléversement en cours..."
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:205
+#: cps/templates/layout.html:79 cps/templates/layout.html:203
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Fermer"
@@ -3035,7 +3035,7 @@ msgstr "Explorer"
 msgid "About"
 msgstr "À propos"
 
-#: cps/templates/layout.html:201
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "Détails du livre"
 

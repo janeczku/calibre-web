@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-12-07 14:32+0100\n"
+"POT-Creation-Date: 2025-12-14 14:44+0100\n"
 "PO-Revision-Date: 2024-09-18 19:45+0200\n"
 "Last-Translator: Andrej Kralj\n"
 "Language: sl\n"
@@ -966,7 +966,7 @@ msgstr "Napaka Google Oauth, poskusite pozneje."
 msgid "Google Oauth error: {}"
 msgstr "Napaka Google Oauth: {}"
 
-#: cps/opds.py:308
+#: cps/opds.py:307
 #, python-brace-format
 msgid "{} Stars"
 msgstr "{} zvezdic"
@@ -1925,12 +1925,12 @@ msgstr "Objavljeno"
 msgid "Description:"
 msgstr "Opis:"
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
 msgid "Previous"
 msgstr "Prejšnji"
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:189
+#: cps/templates/layout.html:187
 msgid "Next"
 msgstr "Naslednji"
 
@@ -1990,7 +1990,7 @@ msgid "Uploading..."
 msgstr "Nalaganje..."
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:205
+#: cps/templates/layout.html:79 cps/templates/layout.html:203
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Zapri"
@@ -3039,7 +3039,7 @@ msgstr "Brskaj"
 msgid "About"
 msgstr "O programu"
 
-#: cps/templates/layout.html:201
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "Podrobnosti o knjigi"
 
