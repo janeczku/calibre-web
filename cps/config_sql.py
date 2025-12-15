@@ -480,7 +480,7 @@ def _migrate_table(session, orm_class, secret_key=None):
 
 
 def autodetect_calibre_binaries():
-    override = if os.environ.get("CALIBRE_BINARIES")
+    override = os.environ.get("CALIBRE_BINARIES")
     if override:
         calibre_path = [override]
     if sys.platform == "win32":
@@ -507,7 +507,7 @@ def autodetect_calibre_binaries():
 
 
 def autodetect_converter_binary(calibre_path):
-    override = if os.environ.get("CALIBRE_CONVERTER")
+    override = os.environ.get("CALIBRE_CONVERTER")
     if override:
         converter_path = override
     if sys.platform == "win32":
@@ -520,7 +520,7 @@ def autodetect_converter_binary(calibre_path):
 
 
 def autodetect_unrar_binary():
-    override = if os.environ.get("CALIBRE_UNRAR")
+    override = os.environ.get("CALIBRE_UNRAR")
     if override:
         calibre_path = [override]
     if sys.platform == "win32":
@@ -537,7 +537,7 @@ def autodetect_unrar_binary():
 
 
 def autodetect_kepubify_binary():
-    override = if os.environ.get("CALIBRE_KEPUBIFY")
+    override = os.environ.get("CALIBRE_KEPUBIFY")
     if override:
         calibre_path = [override]
     if sys.platform == "win32":
