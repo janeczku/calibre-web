@@ -481,9 +481,10 @@ def _migrate_table(session, orm_class, secret_key=None):
 
 def autodetect_calibre_binaries():
     override = os.environ.get("CALIBRE_BINARIES")
+    log.debug("CALIBRE_BINARIES %s", override)
     if override:
         calibre_path = [override]
-    if sys.platform == "win32":
+    elif sys.platform == "win32":
         calibre_path = ["C:\\program files\\calibre\\",
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
@@ -508,9 +509,10 @@ def autodetect_calibre_binaries():
 
 def autodetect_converter_binary(calibre_path):
     override = os.environ.get("CALIBRE_CONVERTER")
+    log.debug("CALIBRE_CONVERTER %s", override)
     if override:
         converter_path = override
-    if sys.platform == "win32":
+    elif sys.platform == "win32":
         converter_path = os.path.join(calibre_path, "ebook-convert.exe")
     else:
         converter_path = os.path.join(calibre_path, "ebook-convert")
@@ -521,9 +523,10 @@ def autodetect_converter_binary(calibre_path):
 
 def autodetect_unrar_binary():
     override = os.environ.get("CALIBRE_UNRAR")
+    log.debug("CALIBRE_UNRAR %s", override)
     if override:
         calibre_path = [override]
-    if sys.platform == "win32":
+    elif sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
     elif sys.platform.startswith("freebsd"):
@@ -538,9 +541,10 @@ def autodetect_unrar_binary():
 
 def autodetect_kepubify_binary():
     override = os.environ.get("CALIBRE_KEPUBIFY")
+    log.debug("CALIBRE_KEPUBIFY %s", override)
     if override:
         calibre_path = [override]
-    if sys.platform == "win32":
+    elif sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
     elif sys.platform.startswith("freebsd"):
