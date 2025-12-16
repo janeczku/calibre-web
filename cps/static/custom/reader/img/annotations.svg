@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg8"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient858">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop856" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2280">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop2278" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 18.9992,7.0000717 1.000762,-1.0000002 c 0.006,-0.9123241 -0.693323,-1.7854982 -1.595532,-1.951644 -0.133484,-0.02394 -0.269169,-0.031102 -0.403533,-0.048356 l -1.000762,0.9999998 z"
+     id="path4" />
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="m 18,8 -9,9 -2,-2.3e-5 V 15 l 9,-9 z"
+     id="path3" />
+  <path
+     style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 5.9991296,17.999694 V 6.0003685 h 8.0011784 l 1.999065,-2.000297 H 5.9991296 C 4.9246747,3.9905688 3.9971849,4.9274123 4.0000649,6.0003685 V 17.999694 c -0.00905,1.074614 0.9271829,1.998447 1.9990647,2.000294 l 12.0017674,2e-6 c 1.079777,0.0034 1.995829,-0.926213 1.999062,-2.000296 l 3e-6,-9.9990282 -1.999065,1.9978399 v 8.0011883 z"
+     id="path2" />
+  <path
+     style="fill:none;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 0,24 H 24 V 0 H 0 Z"
+     id="path1" />
+</svg>
