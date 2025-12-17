@@ -204,6 +204,7 @@ class ConfigSQL(object):
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
+        log.debug("config_rarfile_location %s", self.config_rarfile_location)
         if self.config_rarfile_location is None:
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
