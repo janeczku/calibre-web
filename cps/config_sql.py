@@ -195,6 +195,7 @@ class ConfigSQL(object):
 
         change = False
 
+        log.debug("config_binariesdir %s", self.config_binariesdir)
         if self.config_binariesdir is None:
             change = True
             self.config_binariesdir = autodetect_calibre_binaries()
