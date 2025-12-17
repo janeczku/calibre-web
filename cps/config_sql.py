@@ -196,7 +196,7 @@ class ConfigSQL(object):
         change = False
 
         log.debug("config_binariesdir %s", self.config_binariesdir)
-        if self.config_binariesdir is None:
+        if not self.config_binariesdir:
             change = True
             self.config_binariesdir = autodetect_calibre_binaries()
             self.config_converterpath = autodetect_converter_binary(self.config_binariesdir)
@@ -206,7 +206,7 @@ class ConfigSQL(object):
             self.config_kepubifypath = autodetect_kepubify_binary()
 
         log.debug("config_rarfile_location %s", self.config_rarfile_location)
-        if self.config_rarfile_location is None:
+        if not self.config_rarfile_location:
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
         if change:
