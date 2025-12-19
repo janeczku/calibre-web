@@ -511,7 +511,7 @@ def autodetect_converter_binary(calibre_path):
     override = os.environ.get("CALIBRE_CONVERTER")
     log.debug("CALIBRE_CONVERTER %s", override)
     if override:
-        rerurn override
+        return override
     elif sys.platform == "win32":
         converter_path = os.path.join(calibre_path, "ebook-convert.exe")
     else:
