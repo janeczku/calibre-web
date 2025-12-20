@@ -438,7 +438,6 @@ def feed_shelf(book_id):
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 def opds_download_link(book_id, book_format):
-    return abort(401)
     if not auth.current_user().role_download():
         return abort(401)
     client = "kobo" if "Kobo" in request.headers.get('User-Agent') else ""
