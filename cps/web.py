@@ -61,6 +61,13 @@ from .tasks_status import render_task_status
 from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
 
+#新增内容
+from flask import request, jsonify
+from flask_login import login_required
+
+from .crawler.crawler_service import CrawlerService
+
+
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -1672,3 +1679,24 @@ def show_book(book_id):
         flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
               category="error")
         return redirect(url_for("web.index"))
+
+
+# 新增接口内容
+@web.route("/crawler/gutenberg/import", methods=["GET"])
+@login_required
+def import_gutenberg_books():
+    """
+        触发 Project Gutenberg 热门公共领域电子书下载
+    """
+    count = request.args.get("count", default=30, type=int)
+
+    if count > 200:
+        count = 200
+
+    results = CrawlerService.import_books(limit=count)
+
+    return jsonify({
+        "status": "success",
+        "message": f"Gutenberg books download triggered ({count} books)",
+        "results": results
+    })

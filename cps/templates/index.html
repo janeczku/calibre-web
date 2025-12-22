@@ -1,6 +1,52 @@
 {% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
+
+<!-- 👇👇👇 在这里插入 Gutenberg 按钮区域 👇👇👇 -->
+<div class="discover" style="margin-bottom: 20px;">
+    <h2>公共领域书籍</h2>
+    <label for="gutenberg-count">下载数量：</label>
+    <select id="gutenberg-count" class="form-control"
+            style="display:inline-block;width:120px;margin-right:10px;">
+        <option value="10">10 本</option>
+        <option value="20">20 本</option>
+        <option value="30" selected>30 本</option>
+        <option value="50">50 本</option>
+        <option value="100">100 本</option>
+    </select>
+
+    <button id="gutenberg-btn" class="btn btn-success">
+        📚 获取热门公共领域电子书
+    </button>
+
+    <span id="gutenberg-status" style="margin-left:10px;"></span>
+    <span id="gutenberg-loading" style="display:none;margin-left:10px;">
+        <i class="glyphicon glyphicon-refresh spinning"></i>
+    </span>
+
+</div>
+
+<!-- 👆👆👆 在这里插入 Gutenberg 按钮区域 👆👆👆 -->
+
+<!-- 👇👇👇 Calibre 桌面版说明与下载 👇👇👇 -->
+<div class="discover" style="margin-bottom: 30px;">
+    <h3>📦 Calibre 桌面版（必需）</h3>
+    <p style="color:#666;">
+        本系统下载的电子书需要通过 <strong>Calibre 桌面版</strong> 手动导入后， 才能在 Calibre Web 中显示。
+    </p>
+    <p style="color:#666;">
+        【Calibre数据库目录配置为：本地Calibre目录下的 <strong>\Calibre 书库</strong> 】
+    </p>
+
+    <a href="https://calibre-ebook.com/download" target="_blank">
+        <button class="btn btn-info">
+            🔗 前往官网下载 Calibre
+        </button>
+    </a>
+</div>
+<!-- 👆👆👆 Calibre 桌面版说明与下载 👆👆👆 -->
+
+
 {% if current_user.show_detail_random() and page != "discover" %}
 <div class="discover random-books">
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
@@ -153,4 +199,66 @@
   {% endif %}
   </div>
 </div>
+
+<!-- 👇👇👇 新增下载书籍JS代码 👇👇👇 -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("gutenberg-btn");
+  const statusEl = document.getElementById("gutenberg-status");
+  const loadingEl = document.getElementById("gutenberg-loading");
+  const countEl = document.getElementById("gutenberg-count");
+
+  if (!btn) return; // 防止某些页面没有该按钮时报错
+
+  btn.addEventListener("click", function () {
+    const count = countEl.value;
+
+    // UI 进入 loading 状态
+    btn.disabled = true;
+    btn.innerText = "⏳ 下载中...";
+    statusEl.innerText = `正在下载 ${count} 本公共领域电子书`;
+    loadingEl.style.display = "inline";
+
+    fetch(`/crawler/gutenberg/import?count=${count}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          statusEl.innerText = "✅ 下载完成，请使用 Calibre 桌面版导入书籍";
+          alert(
+            `下载完成：${data.results.length} 本\n\n` +
+            `保存位置：calibre-web/library 目录\n\n` +
+            `请打开 Calibre 桌面版手动导入`
+          );
+        } else {
+          statusEl.innerText = "❌ 下载失败";
+          alert("下载失败，请查看后台日志");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        statusEl.innerText = "❌ 请求失败";
+        alert("请求失败，请确认后端服务是否运行");
+      })
+      .finally(() => {
+        // UI 恢复
+        btn.disabled = false;
+        btn.innerText = "📚 获取热门公共领域电子书";
+        loadingEl.style.display = "none";
+      });
+  });
+});
+</script>
+
+<!-- 👆👆👆 新增下载书籍JS代码 👆👆👆 -->
+
 {% endblock %}
+
+<!--新增内容-->
+<style>
+.spinning {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+</style>
