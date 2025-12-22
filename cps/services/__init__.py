@@ -48,3 +48,10 @@ try:
 except ImportError as err:
     log.debug("Cannot import gmail, sending books via Gmail Oauth2 Verification will not work: %s", err)
     gmail = None
+
+# AI assistant
+try:
+    from . import deepseek_ai
+except ImportError as err:
+    log.debug("Cannot import deepseek_ai, AI assistant will be disabled: %s", err)
+    deepseek_ai = None

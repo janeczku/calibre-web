@@ -280,6 +280,13 @@
                 </div>
             {% endif %}
 
+            
+            <!-- AI 助手区块开始 -->
+                         <div class="ai-section">                
+                            <h3>AI 助手</h3>
+                            <p class="text-muted">                    
+                                使用 DeepSeek AI 获取本书概述和相关书籍推荐（结果仅供参考）。                
+                            </p>                <div class="btn-toolbar" role="toolbar">                    <div class="btn-group" role="group">                        <button id="ai-summary-btn"                                type="button"                                class="btn btn-info btn-sm"                                data-book-id="{{ entry.id }}">                            生成 AI 概述                        </button>                        <button id="ai-related-btn"                                type="button"                                class="btn btn-default btn-sm"                                data-book-id="{{ entry.id }}">                            推荐相关书籍                        </button>                    </div>                </div>                <div id="ai-loading" class="text-muted" style="display:none;margin-top:8px;">                    AI 正在思考，请稍候…                </div>                <div id="ai-summary-result" class="well" style="display:none;margin-top:8px;"></div>                <div id="ai-related-result" class="well" style="display:none;margin-top:8px;"></div>            </div>            <!-- AI 助手区块结束 -->
 
             {% if entry.comments|length > 0 and entry.comments[0].text|length > 0 %}
                 <div class="comments">
@@ -369,6 +376,7 @@
         <span class="glyphicon glyphicon-remove"></span> <%= content %>
     </a>
 </script>
+<script src="{{ url_for('static', filename='js/ai.js') }}"></script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>
 <script src="{{ url_for('static', filename='js/fullscreen.js') }}"></script>
 <script type="text/javascript">

@@ -1623,6 +1623,41 @@ def read_book(book_id, book_format):
               category="error")
         return redirect(url_for("web.index"))
 
+# new AI 添加
+@web.route("/ajax/ai/book_summary/<int:book_id>", methods=['GET'])
+@user_login_required
+def ai_book_summary(book_id):
+    if not getattr(services, "deepseek_ai", None):
+        return jsonify({"error": "ai_not_configured"}), 500
+    try:
+        content = services.deepseek_ai.get_book_summary(book_id)
+        return jsonify({"content": content})
+    except ValueError as ex:
+        if "book_not_found" in str(ex):
+            return jsonify({"error": "book_not_found"}), 404
+        return jsonify({"error": "invalid_request"}), 400
+    except Exception as ex:
+        log.error("DeepSeek book summary failed for %s: %r", book_id, ex)
+        return jsonify({"error": "ai_failed", "detail": str(ex)}), 500
+
+
+@web.route("/ajax/ai/book_recommendations/<int:book_id>", methods=['GET'])
+@user_login_required
+def ai_book_recommendations(book_id):
+    if not getattr(services, "deepseek_ai", None):
+        return jsonify({"error": "ai_not_configured"}), 500
+    try:
+        content = services.deepseek_ai.get_related_books(book_id)
+        return jsonify({"content": content})
+    except ValueError as ex:
+        if "book_not_found" in str(ex):
+            return jsonify({"error": "book_not_found"}), 404
+        return jsonify({"error": "invalid_request"}), 400
+    except Exception as ex:
+        log.error("DeepSeek book recommendations failed for %s: %r", book_id, ex)
+        return jsonify({"error": "ai_failed", "detail": str(ex)}), 500
+
+
 
 @web.route("/book/<int:book_id>")
 @login_required_if_no_ano
