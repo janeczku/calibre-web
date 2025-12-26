@@ -1089,6 +1089,14 @@ def get_download_link(book_id, book_format, client):
             if current_user.is_authenticated:
                 ub.update_download(book_id, int(current_user.id))
             file_name = book.title
+            if config.config_series_in_filename and len(book.series) > 0:
+                series_name = book.series[0].name
+                series_num = float(book.series_index)
+                if series_num == int(series_num):
+                    series_num = int(series_num)
+                series_id = f'{series_name} {series_num}'
+                file_name = file_name + " (" + series_id + ")"
+
             if len(book.authors) > 0:
                 file_name = file_name + ' - ' + book.authors[0].name
             if client == "kindle":
