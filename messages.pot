@@ -1726,6 +1726,14 @@ msgstr ""
 msgid "Reverse Proxy Header Name"
 msgstr ""
 
+#: cps/templates/admin.html:158 cps/templates/config_edit.html:178
+msgid "Create Reverse Proxy Users"
+msgstr ""
+
+#: cps/templates/admin.html:162 cps/templates/config_edit.html:181
+msgid "Reverse Proxy Email Header Name"
+msgstr ""
+
 #: cps/templates/admin.html:159
 msgid "Edit Calibre Database Configuration"
 msgstr ""
