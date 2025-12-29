@@ -72,3 +72,10 @@
   right: 50px;
   // position: absolute;
 }
+
+#progress {
+  right: 4rem;
+  bottom: 2px;
+  width: fit-content;
+  position: absolute;
+}

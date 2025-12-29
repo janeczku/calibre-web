@@ -918,10 +918,3 @@ input:-moz-placeholder {
 .icon-resize-small::before {
   content: "\e808";
 } /* '' */
-
-#progress {
-  right: 4rem;
-  bottom: 2px;
-  width: fit-content;
-  position: absolute;
-}
