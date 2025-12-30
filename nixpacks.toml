@@ -1,0 +1,13 @@
+# Nixpacks configuration for Railway deployment
+# Let Nixpacks auto-detect Python from requirements.txt
+# Just add extra system packages needed for image processing
+
+[phases.setup]
+aptPkgs = ["imagemagick", "ghostscript", "libmagic1"]
+
+[start]
+cmd = "mkdir -p /app/config /app/cache && python cps.py"
+
+[variables]
+CALIBRE_DBPATH = "/app/config"
+CACHE_DIRECTORY = "/app/cache"
