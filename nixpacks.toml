@@ -3,7 +3,7 @@
 # Just add extra system packages needed for image processing
 
 [phases.setup]
-aptPkgs = ["imagemagick", "ghostscript", "libmagic1"]
+aptPkgs = ["imagemagick", "ghostscript", "libmagic1", "libmagic-dev", "file"]
 
 [start]
 cmd = "mkdir -p /app/config /app/cache && if [ ! -f /app/config/metadata.db ] && [ -f /app/library/metadata.db ]; then cp /app/library/metadata.db /app/config/metadata.db; fi && python cps.py"
