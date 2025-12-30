@@ -1,10 +1,10 @@
-### Python ###
-# Byte-compiled / optimized / DLL files
+# Railway ignore file - overrides .gitignore for deployments
+# Include library/metadata.db which is excluded by *.db in .gitignore
+
+# Standard ignores
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Distribution / packaging
 .Python
 .python-version
 env/
@@ -19,18 +19,18 @@ vendor/
 .installed.cfg
 *.egg
 .pylint.d
-
-# calibre-web
 *.log
 cps/cache
-
 .idea/
 *.bak
 *.log.*
 .key
-
 settings.yaml
 gdrive_credentials
 client_secrets.json
 gmail.json
 /.key
+.git/
+.claude/
+
+# Do NOT ignore library/metadata.db - we need it for deployment
