@@ -1,0 +1,36 @@
+# Railway ignore file - overrides .gitignore for deployments
+# Include library/metadata.db which is excluded by *.db in .gitignore
+
+# Standard ignores
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.python-version
+env/
+venv/
+eggs/
+dist/
+executable/
+build/
+vendor/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+.pylint.d
+*.log
+cps/cache
+.idea/
+*.bak
+*.log.*
+.key
+settings.yaml
+gdrive_credentials
+client_secrets.json
+gmail.json
+/.key
+.git/
+.claude/
+
+# Do NOT ignore library/metadata.db - we need it for deployment
