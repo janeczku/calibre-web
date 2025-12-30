@@ -21,7 +21,6 @@ vendor/
 .pylint.d
 
 # calibre-web
-*.db
 *.log
 cps/cache
 
