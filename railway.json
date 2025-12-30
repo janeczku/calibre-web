@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "mkdir -p /app/config /app/cache && if [ ! -f /app/config/metadata.db ] && [ -f /app/library/metadata.db ]; then cp /app/library/metadata.db /app/config/metadata.db; fi && python cps.py",
+    "startCommand": "echo '=== DEBUG ===' && ls -la /app/library/ 2>&1 || echo 'No /app/library dir' && ls -la /app/config/ 2>&1 || echo 'Empty /app/config' && mkdir -p /app/config /app/cache && if [ ! -f /app/config/metadata.db ] && [ -f /app/library/metadata.db ]; then echo 'Copying metadata.db...' && cp /app/library/metadata.db /app/config/metadata.db && echo 'Done copying'; else echo 'Skip copy: config exists or library missing'; fi && ls -la /app/config/ && python cps.py",
     "healthcheckPath": "/",
     "healthcheckTimeout": 300,
     "restartPolicyType": "ON_FAILURE",
