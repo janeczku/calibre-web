@@ -29,6 +29,8 @@ from werkzeug.security import check_password_hash
 from . import lm, ub, config, logger, limiter, constants, services
 
 
+from .helper import generate_random_password, generate_password_hash, check_email
+
 log = logger.create()
 auth = HTTPBasicAuth()
 
@@ -119,10 +121,50 @@ def load_user_from_reverse_proxy_header(req):
         rp_header_username = req.headers.get(rp_header_name)
         if rp_header_username:
             user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == rp_header_username.lower()).first()
+            if not user and config.config_reverse_proxy_create_users:
+                create_user_from_reverse_proxy_header(req)
+                user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == rp_header_username.lower()).first()
             if user:
                 [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
                 return user
     return None
+
+
+def create_user_from_reverse_proxy_header(req):
+    rp_header_name = config.config_reverse_proxy_login_header_name
+    username = req.headers.get(rp_header_name)
+
+    # generate a random password
+    password = generate_random_password(config.config_password_min_length)
+    pwhash = generate_password_hash(password)
+
+    user = ub.User()
+    user.name = username
+    user.password = pwhash
+    user.default_language = config.config_default_language
+    user.locale = config.config_default_locale
+    user.role = config.config_default_role
+    user.sidebar_view = config.config_default_show
+    user.allowed_tags = config.config_allowed_tags
+    user.denied_tags = config.config_denied_tags
+    user.allowed_column_value = config.config_allowed_column_value
+    user.denied_column_value = config.config_denied_column_value
+
+    # does the user have an email address in the headers?
+    rp_email_header_name = config.config_reverse_proxy_email_header_name
+    if rp_email_header_name:
+        try:
+            user.email = check_email(req.headers.get(rp_email_header_name))
+        except Exception:
+            log.debug('No email address found in Reverse Proxy headers')
+
+    # save the user
+    ub.session.add(user)
+    try:
+        ub.session.commit()
+    except Exception as ex:
+        log.warning("Failed to create Reverse Proxy user: %s - %s", username, ex)
+        ub.session.rollback()
 
 
 @lm.user_loader
@@ -138,4 +180,3 @@ def load_user(user_id, random, session_key):
         if not entry or entry.user_id != user.id:
             return None
     return user
-
