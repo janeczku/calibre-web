@@ -284,5 +284,11 @@ var reader;
         if (savedFont && window.selectFont) {
             window.selectFont(savedFont);
         }
+
+        // Restore saved spread/columns setting
+        const savedSpread = localStorage.getItem("calibre.reader.spread");
+        if (savedSpread && (savedSpread === "spread" || savedSpread === "nonespread")) {
+            reader.rendition.spread(savedSpread === "spread" ? true : "none");
+        }
     });
 })();

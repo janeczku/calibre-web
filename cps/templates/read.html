@@ -461,6 +461,8 @@
           spans[i].textContent = "";
         }
         document.getElementById(id).querySelector("span").textContent = "✓";
+        // Save spread selection to localStorage
+        localStorage.setItem("calibre.reader.spread", id);
         reader.rendition.spread(id === "spread" ? true : "none");
       }
       function selectNavMode(mode) {
@@ -478,6 +480,38 @@
         var savedMode =
           localStorage.getItem("calibre.reader.navMode") || "sizes";
         selectNavMode(savedMode);
+      })();
+
+      // Initialize spread/columns setting on load
+      (function () {
+        var savedSpread = localStorage.getItem("calibre.reader.spread");
+        if (
+          savedSpread &&
+          (savedSpread === "spread" || savedSpread === "nonespread")
+        ) {
+          // Restore UI state (checkmarks) immediately
+          var spans = document
+            .getElementById("layout")
+            .querySelectorAll("span");
+          for (var i = 0; i < spans.length; i++) {
+            spans[i].textContent = "";
+          }
+          var btn = document.getElementById(savedSpread);
+          if (btn) {
+            var sp = btn.querySelector("span");
+            if (sp) sp.textContent = "✓";
+          }
+          // Apply spread setting once reader is ready
+          if (reader && reader.book) {
+            reader.book.ready.then(function () {
+              if (reader.rendition) {
+                reader.rendition.spread(
+                  savedSpread === "spread" ? true : "none"
+                );
+              }
+            });
+          }
+        }
       })();
 
       // Pages counter visibility setting
