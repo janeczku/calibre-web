@@ -2,13 +2,13 @@
 # Copyright (C) 2016 Smart Cities Community
 # This file is distributed under the same license as the Calibre-Web
 # Juan F. Villa <juan.villa@paisdelconocimiento.org>, 2016.
-# SPDX-FileCopyrightText: 2023, 2024, 2025 Massimo Pissarello <mapi68@gmail.com>
+# SPDX-FileCopyrightText: 2023, 2024, 2025, 2026 Massimo Pissarello <mapi68@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-12-14 14:44+0100\n"
-"PO-Revision-Date: 2025-12-07 04:05+0100\n"
+"PO-Revision-Date: 2026-01-04 02:22+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -3181,7 +3181,7 @@ msgstr "Seppia"
 
 #: cps/templates/read.html:95
 msgid "Amber"
-msgstr ""
+msgstr "Ambra"
 
 #: cps/templates/read.html:97
 msgid "Black"
@@ -3193,11 +3193,11 @@ msgstr "Adatta il testo quando le barre laterali sono aperte."
 
 #: cps/templates/read.html:114
 msgid "Show pages count"
-msgstr ""
+msgstr "Mostra conteggio delle pagine"
 
 #: cps/templates/read.html:118
 msgid "Font Size"
-msgstr ""
+msgstr "Dimensione carattere"
 
 #: cps/templates/read.html:126
 msgid "Font"
