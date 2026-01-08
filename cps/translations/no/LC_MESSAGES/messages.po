@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-12-06 11:51+0100\n"
+"POT-Creation-Date: 2025-12-14 14:44+0100\n"
 "PO-Revision-Date: 2023-01-06 11:00+0000\n"
 "Last-Translator: Vegard Fladby <vegard.fladby@gmail.com>\n"
 "Language: no\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -549,7 +549,7 @@ msgstr "ikke installert"
 msgid "Execution permissions missing"
 msgstr "Utførelsestillatelser mangler"
 
-#: cps/db.py:1046 cps/templates/config_edit.html:207
+#: cps/db.py:1124 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
@@ -966,7 +966,7 @@ msgstr "Google Oauth-feil, prøv igjen senere."
 msgid "Google Oauth error: {}"
 msgstr "Google Oauth-feil: {}"
 
-#: cps/opds.py:308
+#: cps/opds.py:307
 #, python-brace-format
 msgid "{} Stars"
 msgstr "{} Stjerner"
@@ -1925,12 +1925,12 @@ msgstr ""
 msgid "Description:"
 msgstr ""
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
 msgid "Previous"
 msgstr ""
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:189
+#: cps/templates/layout.html:187
 msgid "Next"
 msgstr ""
 
@@ -1990,7 +1990,7 @@ msgid "Uploading..."
 msgstr ""
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:205
+#: cps/templates/layout.html:79 cps/templates/layout.html:203
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "Lukk"
@@ -3022,7 +3022,7 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#: cps/templates/layout.html:93 cps/templates/read.html:78
+#: cps/templates/layout.html:93 cps/templates/read.html:83
 #: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr ""
@@ -3039,7 +3039,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: cps/templates/layout.html:201
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr ""
 
@@ -3163,67 +3163,75 @@ msgstr ""
 msgid "epub Reader"
 msgstr ""
 
-#: cps/templates/read.html:80
+#: cps/templates/read.html:85
 msgid "Choose a theme below:"
 msgstr ""
 
-#: cps/templates/read.html:84 cps/templates/readcbr.html:104
+#: cps/templates/read.html:89 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr ""
 
-#: cps/templates/read.html:86 cps/templates/readcbr.html:105
+#: cps/templates/read.html:91 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr ""
 
-#: cps/templates/read.html:88
+#: cps/templates/read.html:93
 msgid "Sepia"
 msgstr ""
 
-#: cps/templates/read.html:90
+#: cps/templates/read.html:95
+msgid "Amber"
+msgstr ""
+
+#: cps/templates/read.html:97
 msgid "Black"
 msgstr ""
 
-#: cps/templates/read.html:95
+#: cps/templates/read.html:109
 msgid "Reflow text when sidebars are open."
 msgstr ""
 
-#: cps/templates/read.html:100
-msgid "Font Sizes"
+#: cps/templates/read.html:114
+msgid "Show pages count"
 msgstr ""
 
-#: cps/templates/read.html:105
+#: cps/templates/read.html:118
+msgid "Font Size"
+msgstr ""
+
+#: cps/templates/read.html:126
 msgid "Font"
 msgstr ""
 
-#: cps/templates/read.html:106
+#: cps/templates/read.html:127
 msgid "Default"
 msgstr ""
 
-#: cps/templates/read.html:107
+#: cps/templates/read.html:128
 msgid "Yahei"
 msgstr ""
 
-#: cps/templates/read.html:108
+#: cps/templates/read.html:129
 msgid "SimSun"
 msgstr ""
 
-#: cps/templates/read.html:109
+#: cps/templates/read.html:130
 msgid "KaiTi"
 msgstr ""
 
-#: cps/templates/read.html:110
+#: cps/templates/read.html:131
 msgid "Arial"
 msgstr ""
 
-#: cps/templates/read.html:113
+#: cps/templates/read.html:134
 msgid "Spread"
 msgstr ""
 
-#: cps/templates/read.html:114
+#: cps/templates/read.html:135
 msgid "Two columns"
 msgstr ""
 
-#: cps/templates/read.html:115
+#: cps/templates/read.html:136
 msgid "One column"
 msgstr ""
 

@@ -21,7 +21,6 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-# import json
 from urllib.parse import unquote_plus
 
 from flask import Blueprint, request, render_template, make_response, abort, g, jsonify

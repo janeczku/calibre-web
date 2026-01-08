@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-06 11:51+0100\n"
+"POT-Creation-Date: 2025-12-14 14:44+0100\n"
 "PO-Revision-Date: 2025-12-06 13:53+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.15.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -549,7 +549,7 @@ msgstr "未安装"
 msgid "Execution permissions missing"
 msgstr "缺少执行权限"
 
-#: cps/db.py:1046 cps/templates/config_edit.html:207
+#: cps/db.py:1124 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
 #: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
@@ -966,7 +966,7 @@ msgstr "Google Oauth 错误，请重试。"
 msgid "Google Oauth error: {}"
 msgstr "Google Oauth 错误: {}"
 
-#: cps/opds.py:308
+#: cps/opds.py:307
 #, python-brace-format
 msgid "{} Stars"
 msgstr "{} 星"
@@ -1925,12 +1925,12 @@ msgstr "出版日期"
 msgid "Description:"
 msgstr "简介:"
 
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:174
+#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
 msgid "Previous"
 msgstr "上一个"
 
 #: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:189
+#: cps/templates/layout.html:187
 msgid "Next"
 msgstr "下一个"
 
@@ -1990,7 +1990,7 @@ msgid "Uploading..."
 msgstr "正在上传..."
 
 #: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:205
+#: cps/templates/layout.html:79 cps/templates/layout.html:203
 #: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
 msgid "Close"
 msgstr "关闭"
@@ -3022,7 +3022,7 @@ msgstr "简易主题"
 msgid "Account"
 msgstr "账号"
 
-#: cps/templates/layout.html:93 cps/templates/read.html:78
+#: cps/templates/layout.html:93 cps/templates/read.html:83
 #: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
 msgid "Settings"
 msgstr "设置"
@@ -3039,7 +3039,7 @@ msgstr "按条件浏览"
 msgid "About"
 msgstr "关于"
 
-#: cps/templates/layout.html:201
+#: cps/templates/layout.html:199
 msgid "Book Details"
 msgstr "书籍详情"
 
@@ -3163,67 +3163,75 @@ msgstr "Caliebre-Web 电子书路径"
 msgid "epub Reader"
 msgstr "epub 阅读器"
 
-#: cps/templates/read.html:80
+#: cps/templates/read.html:85
 msgid "Choose a theme below:"
 msgstr "请从下方选取一个主题："
 
-#: cps/templates/read.html:84 cps/templates/readcbr.html:104
+#: cps/templates/read.html:89 cps/templates/readcbr.html:104
 msgid "Light"
 msgstr "浅色"
 
-#: cps/templates/read.html:86 cps/templates/readcbr.html:105
+#: cps/templates/read.html:91 cps/templates/readcbr.html:105
 msgid "Dark"
 msgstr "深色"
 
-#: cps/templates/read.html:88
+#: cps/templates/read.html:93
 msgid "Sepia"
 msgstr "棕色"
 
-#: cps/templates/read.html:90
+#: cps/templates/read.html:95
+msgid "Amber"
+msgstr ""
+
+#: cps/templates/read.html:97
 msgid "Black"
 msgstr "黑色"
 
-#: cps/templates/read.html:95
+#: cps/templates/read.html:109
 msgid "Reflow text when sidebars are open."
 msgstr "打开侧栏时重排文本。"
 
-#: cps/templates/read.html:100
-msgid "Font Sizes"
-msgstr "字体大小"
+#: cps/templates/read.html:114
+msgid "Show pages count"
+msgstr ""
 
-#: cps/templates/read.html:105
+#: cps/templates/read.html:118
+msgid "Font Size"
+msgstr ""
+
+#: cps/templates/read.html:126
 msgid "Font"
 msgstr "字体"
 
-#: cps/templates/read.html:106
+#: cps/templates/read.html:127
 msgid "Default"
 msgstr "默认"
 
-#: cps/templates/read.html:107
+#: cps/templates/read.html:128
 msgid "Yahei"
 msgstr "微软雅黑"
 
-#: cps/templates/read.html:108
+#: cps/templates/read.html:129
 msgid "SimSun"
 msgstr "宋体"
 
-#: cps/templates/read.html:109
+#: cps/templates/read.html:130
 msgid "KaiTi"
 msgstr "楷体"
 
-#: cps/templates/read.html:110
+#: cps/templates/read.html:131
 msgid "Arial"
 msgstr "Arial"
 
-#: cps/templates/read.html:113
+#: cps/templates/read.html:134
 msgid "Spread"
 msgstr "分配"
 
-#: cps/templates/read.html:114
+#: cps/templates/read.html:135
 msgid "Two columns"
 msgstr "双栏"
 
-#: cps/templates/read.html:115
+#: cps/templates/read.html:136
 msgid "One column"
 msgstr "单栏"
 
