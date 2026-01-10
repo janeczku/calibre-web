@@ -1044,6 +1044,7 @@ def make_calibre_web_auth_response():
 
 
 @csrf.exempt
+@kobo.route("/v1/auth/refresh", methods=["POST"])
 @kobo.route("/v1/auth/device", methods=["POST"])
 @requires_kobo_auth
 def HandleAuthRequest():
