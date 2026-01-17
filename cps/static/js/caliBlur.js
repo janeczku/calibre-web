@@ -112,7 +112,7 @@ if ($("body.book").length > 0) {
     // If only one download type exists still put the items into a drop-drown list.
     downloads = $("a[id^=btnGroupDrop]").get();
     if ($(downloads).length === 1) {
-        $('<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-download"></span>Download :<span class="caret"></span></button><ul class="dropdown-menu leramslist aria-labelledby="btnGroupDrop1"></ul>').insertBefore(downloads[downloads.length - 1]);
+        $('<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-download"></span>Download<span class="caret"></span></button><ul class="dropdown-menu leramslist aria-labelledby="btnGroupDrop1"></ul>').insertBefore(downloads[downloads.length - 1]);
         $(downloads).detach();
         $.each(downloads, function (i, val) {
             $("<li>" + downloads[i].outerHTML + "</li>").appendTo(".leramslist");
@@ -154,7 +154,7 @@ if ($("body.book").length > 0) {
     // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
     $('ul[aria-labelledby="read-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
     $('ul[aria-labelledby="listen-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
-    $('ul[aria-labelledby="send-to-kereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
+    $('ul[aria-labelledby="send-to-ereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
     $(".leramslist").insertBefore(".blur-wrapper");
     $('ul[aria-labelledby="btnGroupDrop1"]').insertBefore(".blur-wrapper").addClass("leramslist");
     $("#add-to-shelves").insertBefore(".blur-wrapper");
@@ -592,7 +592,7 @@ $('.btn-group[aria-label="Edit/Delete book"] a').attr({
 
 $("#sendbtn").attr({
     "data-toggle": "tooltip",
-    "title": $("#sendbtn").attr("data-text"),
+    "title": $("#sendbtn").text(),                  // "Send to eReader"
     "data-placement": "bottom",
     "data-viewport": ".btn-toolbar"
 })
@@ -712,4 +712,3 @@ $(window).on("resize", function () {
 //  id = setTimeout(mobileSupport, 500);
     mobileSupport();
 });
-
