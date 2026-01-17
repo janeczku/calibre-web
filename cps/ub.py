@@ -432,6 +432,21 @@ class Bookmark(Base):
     bookmark_key = Column(String)
 
 
+class ReadingProgress(Base):
+    __tablename__ = 'reading_progress'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+    format = Column(String(collation='NOCASE'))
+    location_type = Column(String)
+    location = Column(String)
+    progress_percent = Column(Float)
+    data = Column(JSON)
+    last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc),
+                           onupdate=lambda: datetime.now(timezone.utc))
+
+
 # Baseclass representing books that are archived on the user's Kobo device.
 class ArchivedBook(Base):
     __tablename__ = 'archived_book'
@@ -572,6 +587,8 @@ def add_missing_tables(engine, _session):
         ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "thumbnail"):
         Thumbnail.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "reading_progress"):
+        ReadingProgress.__table__.create(bind=engine)
 
 
 # migrate all settings missing in registration table
