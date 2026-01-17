@@ -115,7 +115,7 @@ comics = [
     "comicapi>=2.2.0,<3.3.0",
 ]
 kobo = [
-    "jsonschema>=3.2.0,<4.24.0",
+    "jsonschema>=3.2.0,<4.30.0",
 ]
 
 [project.scripts]
