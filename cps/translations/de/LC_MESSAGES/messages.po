@@ -3181,7 +3181,7 @@ msgstr "Sepia"
 
 #: cps/templates/read.html:95
 msgid "Amber"
-msgstr ""
+msgstr "Amber"
 
 #: cps/templates/read.html:97
 msgid "Black"
@@ -3193,11 +3193,11 @@ msgstr "Text umbrechen, wenn Seitenleiste geöffnet ist."
 
 #: cps/templates/read.html:114
 msgid "Show pages count"
-msgstr ""
+msgstr "Zeige Seitenanzahl"
 
 #: cps/templates/read.html:118
 msgid "Font Size"
-msgstr ""
+msgstr "Schriftgröße"
 
 #: cps/templates/read.html:126
 msgid "Font"
