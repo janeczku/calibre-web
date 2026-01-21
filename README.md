@@ -143,6 +143,7 @@ in your Docker run/compose file. Omit this variable for a lightweight image.
 - **Common Issues**: 
    - If you experience issues starting the application, check the log files located in the `logs` directory for error messages.
    - If eBooks fail to load, verify that the `Location of Calibre database` is correctly set and that the database file is accessible.
+   - You need to enable uploads under `Basic settings` for this option to appear
 
 - **Configuration Errors**: Ensure that your Calibre database is compatible and properly formatted. Refer to the Calibre documentation for guidance on maintaining the database.
 
