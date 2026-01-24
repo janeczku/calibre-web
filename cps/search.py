@@ -27,7 +27,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
-from . import logger, db, calibre_db, config, ub, constants
+from . import logger, db, calibre_db, config, ub
 from .string_helper import strip_whitespaces
 from .usermanagement import login_required_if_no_ano
 from .render_template import render_title_template
