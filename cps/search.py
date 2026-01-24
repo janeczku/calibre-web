@@ -447,30 +447,29 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                 raw_conn = fts_conn.connection.driver_connection
                             except AttributeError:
                                 raw_conn = fts_conn.connection
-                            raw_conn.enable_load_extension(True)
-                            extension_path = os.path.join(constants.BASE_DIR,
-                                                          "bin",
-                                                          "calibre",
-                                                          "calibre-extensions",
-                                                          "sqlite_extension")
-                            if os.path.exists(extension_path):
-                                raw_conn.load_extension(extension_path)
+
+                            raw_conn.load_extension(
+                                "/app/calibre/lib/calibre-extensions/sqlite_extension.so"
+                            )
+                                
                             raw_conn.enable_load_extension(False)
                         except Exception as ex:
                             log.debug("FTS extension load failed: %s", ex)
 
                         fts_rows = fts_conn.execute(
                             text("""
-                                SELECT DISTINCT book
+                                SELECT
+                                    books_text.book,
+                                    bm25(books_fts) AS rank
                                 FROM books_fts
-                                JOIN books_text
-                                  ON id = books_fts.rowid
+                                JOIN books_text ON books_text.id = books_fts.rowid
                                 WHERE books_fts MATCH :term
+                                ORDER BY rank
                             """),
                             {"term": fts_term}
                         ).fetchall()
                         if fts_rows:
-                            fts_ids = [row[0] for row in fts_rows]
+                            fts_ids = list(dict.fromkeys(row[0] for row in fts_rows))
                 finally:
                     fts_engine.dispose()
             except Exception as ex:
