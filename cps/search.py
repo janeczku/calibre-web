@@ -433,7 +433,7 @@ def render_search_results(term, offset=None, order=None, limit=None):
         if config.config_calibre_dir:
             fts_db_path = os.path.join(config.config_calibre_dir, "full-text-search.db")
 
-        if fts_term and fts_db_path and os.path.exists(fts_db_path):
+        if config.config_fulltext_search and fts_term and fts_db_path and os.path.exists(fts_db_path):
             try:
                 fts_conn = sqlite3.connect(fts_db_path)
                 try:

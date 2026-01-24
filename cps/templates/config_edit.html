@@ -108,6 +108,10 @@
       <label for="config_embed_metadata">{{_('Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)')}}</label>
     </div>
     <div class="form-group">
+      <input type="checkbox" id="config_fulltext_search" name="config_fulltext_search" {% if config.config_fulltext_search %}checked{% endif %}>
+      <label for="config_fulltext_search">{{_('Enable Full Text Search')}}</label>
+    </div>
+    <div class="form-group">
         <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}} {{_('(Please ensure that users also have upload permissions)')}}</label>
     </div>
