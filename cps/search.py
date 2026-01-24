@@ -27,7 +27,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
-from . import logger, db, calibre_db, config, ub
+from . import logger, db, calibre_db, config, ub, constants
 from .string_helper import strip_whitespaces
 from .usermanagement import login_required_if_no_ano
 from .render_template import render_title_template
@@ -448,12 +448,13 @@ def render_search_results(term, offset=None, order=None, limit=None):
                             except AttributeError:
                                 raw_conn = fts_conn.connection
                             raw_conn.enable_load_extension(True)
-                            if config.config_binariesdir:
-                                extension_path = os.path.join(config.config_binariesdir,
-                                                              "calibre-extensions",
-                                                              "sqlite_extension")
-                                if os.path.exists(extension_path):
-                                    raw_conn.load_extension(extension_path)
+                            extension_path = os.path.join(constants.BASE_DIR,
+                                                          "bin",
+                                                          "calibre",
+                                                          "calibre-extensions",
+                                                          "sqlite_extension")
+                            if os.path.exists(extension_path):
+                                raw_conn.load_extension(extension_path)
                             raw_conn.enable_load_extension(False)
                         except Exception as ex:
                             log.debug("FTS extension load failed: %s", ex)
