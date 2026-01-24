@@ -15,6 +15,8 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import json
+import os
+import sqlite3
 from datetime import datetime
 
 from flask import Blueprint, request, redirect, url_for, flash
@@ -420,12 +422,84 @@ def render_prepare_search_form(cc):
 def render_search_results(term, offset=None, order=None, limit=None):
     if term:
         join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-        entries, result_count, pagination = calibre_db.get_search_results(term,
-                                                                          config,
-                                                                          offset,
-                                                                          order,
-                                                                          limit,
-                                                                          *join)
+        entries = []
+        result_count = 0
+        pagination = None
+        order_by = order[0] if order else [db.Books.sort]
+
+        fts_ids = None
+        fts_term = strip_whitespaces(term)
+        fts_db_path = None
+        if config.config_calibre_dir:
+            fts_db_path = os.path.join(config.config_calibre_dir, "full-text-search.db")
+
+        if fts_term and fts_db_path and os.path.exists(fts_db_path):
+            try:
+                fts_conn = sqlite3.connect(fts_db_path)
+                try:
+                    fts_conn.enable_load_extension(True)
+                    if config.config_binariesdir:
+                        extension_path = os.path.join(config.config_binariesdir,
+                                                      "calibre-extensions",
+                                                      "sqlite_extension")
+                        if os.path.exists(extension_path):
+                            fts_conn.load_extension(extension_path)
+                    fts_conn.enable_load_extension(False)
+                except Exception as ex:
+                    log.debug("FTS extension load failed: %s", ex)
+
+                try:
+                    fts_rows = fts_conn.execute(
+                        """
+                        SELECT DISTINCT book
+                        FROM books_fts
+                        JOIN books_text
+                          ON id = books_fts.rowid
+                        WHERE books_fts MATCH ?
+                        """,
+                        (fts_term,)
+                    ).fetchall()
+                    if fts_rows:
+                        fts_ids = [row[0] for row in fts_rows]
+                finally:
+                    fts_conn.close()
+            except Exception as ex:
+                log.debug("FTS search failed, falling back to default: %s", ex)
+
+        if fts_ids:
+            query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+            query = (query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)
+                          .outerjoin(db.Series)
+                          .filter(calibre_db.common_filters(True))
+                          .filter(db.Books.id.in_(fts_ids))
+                          .order_by(*order_by))
+
+            if offset is not None and limit is not None:
+                offset = int(offset)
+                limit_int = int(limit)
+                result = query.limit(offset + limit_int + 1).all()
+
+                has_more = len(result) > (offset + limit_int)
+                if has_more:
+                    result_count = offset + limit_int + 1
+                else:
+                    result_count = len(result)
+
+                result = result[offset:offset + limit_int]
+                pagination = Pagination((offset / limit_int + 1), limit_int, result_count)
+            else:
+                result = query.all()
+                result_count = len(result)
+
+            ub.store_combo_ids(result)
+            entries = calibre_db.order_authors(result, list_return=True, combined=True)
+        else:
+            entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                              config,
+                                                                              offset,
+                                                                              order,
+                                                                              limit,
+                                                                              *join)
     else:
         entries = list()
         order = [None, None]
