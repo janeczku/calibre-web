@@ -16,7 +16,6 @@
 
 import json
 import os
-import sqlite3
 from datetime import datetime
 
 from flask import Blueprint, request, redirect, url_for, flash
@@ -24,6 +23,7 @@ from flask import session as flask_session
 from .cw_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
+from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
@@ -435,34 +435,43 @@ def render_search_results(term, offset=None, order=None, limit=None):
 
         if config.config_fulltext_search and fts_term and fts_db_path and os.path.exists(fts_db_path):
             try:
-                fts_conn = sqlite3.connect(fts_db_path)
+                fts_engine = create_engine(
+                    f"sqlite:///{fts_db_path}",
+                    echo=False,
+                    connect_args={'check_same_thread': False}
+                )
                 try:
-                    fts_conn.enable_load_extension(True)
-                    if config.config_binariesdir:
-                        extension_path = os.path.join(config.config_binariesdir,
-                                                      "calibre-extensions",
-                                                      "sqlite_extension")
-                        if os.path.exists(extension_path):
-                            fts_conn.load_extension(extension_path)
-                    fts_conn.enable_load_extension(False)
-                except Exception as ex:
-                    log.debug("FTS extension load failed: %s", ex)
+                    with fts_engine.connect() as fts_conn:
+                        try:
+                            try:
+                                raw_conn = fts_conn.connection.driver_connection
+                            except AttributeError:
+                                raw_conn = fts_conn.connection
+                            raw_conn.enable_load_extension(True)
+                            if config.config_binariesdir:
+                                extension_path = os.path.join(config.config_binariesdir,
+                                                              "calibre-extensions",
+                                                              "sqlite_extension")
+                                if os.path.exists(extension_path):
+                                    raw_conn.load_extension(extension_path)
+                            raw_conn.enable_load_extension(False)
+                        except Exception as ex:
+                            log.debug("FTS extension load failed: %s", ex)
 
-                try:
-                    fts_rows = fts_conn.execute(
-                        """
-                        SELECT DISTINCT book
-                        FROM books_fts
-                        JOIN books_text
-                          ON id = books_fts.rowid
-                        WHERE books_fts MATCH ?
-                        """,
-                        (fts_term,)
-                    ).fetchall()
-                    if fts_rows:
-                        fts_ids = [row[0] for row in fts_rows]
+                        fts_rows = fts_conn.execute(
+                            text("""
+                                SELECT DISTINCT book
+                                FROM books_fts
+                                JOIN books_text
+                                  ON id = books_fts.rowid
+                                WHERE books_fts MATCH :term
+                            """),
+                            {"term": fts_term}
+                        ).fetchall()
+                        if fts_rows:
+                            fts_ids = [row[0] for row in fts_rows]
                 finally:
-                    fts_conn.close()
+                    fts_engine.dispose()
             except Exception as ex:
                 log.debug("FTS search failed, falling back to default: %s", ex)
 
