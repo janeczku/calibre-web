@@ -7,7 +7,6 @@ from flask import abort
 from flask import current_app
 from flask import flash
 from flask import g
-from flask import has_app_context
 from flask import redirect
 from flask import request
 from flask import session
@@ -469,7 +468,7 @@ class LoginManager:
         config = current_app.config
         cookie_name = config.get("REMEMBER_COOKIE_NAME", COOKIE_NAME)
         domain = config.get("REMEMBER_COOKIE_DOMAIN")
-        path = config.get("REMEMBER_COOKIE_PATH", "/")
+        path = config.get("REMEMBER_COOKIE_PATH", current_app.wsgi_app.script_name)
 
         secure = config.get("REMEMBER_COOKIE_SECURE", COOKIE_SECURE)
         httponly = config.get("REMEMBER_COOKIE_HTTPONLY", COOKIE_HTTPONLY)
@@ -520,36 +519,5 @@ class LoginManager:
         config = current_app.config
         cookie_name = config.get("REMEMBER_COOKIE_NAME", COOKIE_NAME)
         domain = config.get("REMEMBER_COOKIE_DOMAIN")
-        path = config.get("REMEMBER_COOKIE_PATH", "/")
+        path = config.get("REMEMBER_COOKIE_PATH", current_app.wsgi_app.script_name)
         response.delete_cookie(cookie_name, domain=domain, path=path)
-
-    @property
-    def _login_disabled(self):
-        """Legacy property, use app.config['LOGIN_DISABLED'] instead."""
-        import warnings
-
-        warnings.warn(
-            "'_login_disabled' is deprecated and will be removed in"
-            " Flask-Login 0.7. Use 'LOGIN_DISABLED' in 'app.config'"
-            " instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-
-        if has_app_context():
-            return current_app.config.get("LOGIN_DISABLED", False)
-        return False
-
-    @_login_disabled.setter
-    def _login_disabled(self, newvalue):
-        """Legacy property setter, use app.config['LOGIN_DISABLED'] instead."""
-        import warnings
-
-        warnings.warn(
-            "'_login_disabled' is deprecated and will be removed in"
-            " Flask-Login 0.7. Use 'LOGIN_DISABLED' in 'app.config'"
-            " instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        current_app.config["LOGIN_DISABLED"] = newvalue
