@@ -429,11 +429,20 @@ def render_search_results(term, offset=None, order=None, limit=None):
 
         fts_ids = None
         fts_term = strip_whitespaces(term)
+        fts_query = None
+        if fts_term:
+            tokens = [token for token in fts_term.split() if token]
+            if tokens:
+                fts_query = " AND ".join(
+                    f'"{token.replace("\"", "\"\"")}"' for token in tokens
+                )
+            else:
+                fts_query = fts_term
         fts_db_path = None
         if config.config_calibre_dir:
             fts_db_path = os.path.join(config.config_calibre_dir, "full-text-search.db")
 
-        if config.config_fulltext_search and fts_term and fts_db_path and os.path.exists(fts_db_path):
+        if config.config_fulltext_search and fts_query and fts_db_path and os.path.exists(fts_db_path):
             try:
                 fts_engine = create_engine(
                     f"sqlite:///{fts_db_path}",
@@ -466,7 +475,7 @@ def render_search_results(term, offset=None, order=None, limit=None):
                                 WHERE books_fts MATCH :term
                                 ORDER BY rank
                             """),
-                            {"term": fts_term}
+                            {"term": fts_query}
                         ).fetchall()
                         if fts_rows:
                             fts_ids = list(dict.fromkeys(row[0] for row in fts_rows))
