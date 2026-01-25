@@ -25,7 +25,8 @@ import sys
 import os
 import mimetypes
 
-from flask import Flask
+from flask import Flask, request
+from flask.sessions import SecureCookieSessionInterface
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
 
@@ -114,8 +115,14 @@ if limiter_present:
 else:
     limiter = None
 
+class ScriptNameSessionInterface(SecureCookieSessionInterface):
+    def get_cookie_path(self, app):
+        # Called once per response, after request context exists
+        return app.wsgi_app.script_name.rstrip("/") or "/"
+
 
 def create_app():
+    app.session_interface = ScriptNameSessionInterface()
     if csrf:
         csrf.init_app(app)
 

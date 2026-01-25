@@ -102,6 +102,52 @@ def add_to_shelf(shelf_id, book_id):
     return "", 204
 
 
+@shelf.route("/shelf/massremove/<int:shelf_id>", methods=["POST"])
+@user_login_required
+def search_from_shelf(shelf_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        log.error("Invalid shelf specified: {}".format(shelf_id))
+        flash(_("Invalid shelf specified"), category="error")
+        return redirect(url_for('web.index'))
+
+    if not check_shelf_edit_permissions(shelf):
+        log.warning("You are not allowed to remove a book from the shelf".format(shelf.name))
+        flash(_("You are not allowed to remove a book from the shelf"), category="error")
+        return redirect(url_for('web.index'))
+
+    if current_user.id in ub.searched_ids and ub.searched_ids[current_user.id]:
+        books_from_shelf = list()
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
+        if books_in_shelf:
+            book_ids = [book_id.book_id for book_id in books_in_shelf]
+            for searchid in ub.searched_ids[current_user.id]:
+                if searchid in book_ids:
+                    books_from_shelf.append(searchid)
+        else:
+            log.error("No Books are part of {}".format(shelf.name))
+            flash(_("No Books are part of the shelf: %(name)s", name=shelf.name), category="error")
+            return redirect(url_for('web.index'))
+
+        # maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()[0] or 0
+
+        for book in books_from_shelf:
+            ub.session.delete(ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).filter(
+                ub.BookShelf.book_id == book).first())
+        shelf.last_modified = datetime.now(timezone.utc)
+        try:
+            ub.session.commit()
+            flash(_("Books have been removed from shelf: %(sname)s", sname=shelf.name), category="success")
+        except (OperationalError, InvalidRequestError) as e:
+            ub.session.rollback()
+            log.error_or_exception("Settings Database error: {}".format(e))
+            flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+    else:
+        log.error("Could not remove books from shelf: {}".format(shelf.name))
+        flash(_("Could not remove books from shelf: %(sname)s", sname=shelf.name), category="error")
+    return redirect(url_for('web.index'))
+
+
 @shelf.route("/shelf/massadd/<int:shelf_id>", methods=["POST"])
 @user_login_required
 def search_to_shelf(shelf_id):
@@ -120,9 +166,7 @@ def search_to_shelf(shelf_id):
         books_for_shelf = list()
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
         if books_in_shelf:
-            book_ids = list()
-            for book_id in books_in_shelf:
-                book_ids.append(book_id.book_id)
+            book_ids = [book_id.book_id for book_id in books_in_shelf]
             for searchid in ub.searched_ids[current_user.id]:
                 if searchid not in book_ids:
                     books_for_shelf.append(searchid)

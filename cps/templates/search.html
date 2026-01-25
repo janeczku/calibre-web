@@ -24,6 +24,20 @@
                 {%endfor%}
               </ul>
             </div>
+            <div class="btn-group" role="group" aria-label="Remove from shelves">
+              <button id="remove-from-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-list"></span> {{_('Remove from shelf')}}
+                <span class="caret"></span>
+              </button>
+              <ul id="remove-from-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+                {% for shelf in g.shelves_access %}
+                  {% if not shelf.is_public or current_user.role_edit_shelfs() %}
+                    <li><a class="postAction" role="button" data-action="{{ url_for('shelf.search_from_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  {% endif %}
+                {%endfor%}
+              </ul>
+            </div>
+
           </div>
         {% endif %}
       {% endif %}
