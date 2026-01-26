@@ -153,7 +153,16 @@
               {% if current_user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge badge-sm">{{shelf.books.all()|length}}</span></a></li>
+                  <li>
+                    <a class="shelf-link" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}">
+                      <span class="glyphicon {% if shelf.is_public == 1 %}glyphicon-globe{% else %}glyphicon-lock{% endif %} shelf"></span>
+                      <span class="shelf-name">{{shelf.name|shortentitle(40)}}</span>
+                      {% set shelf_len = shelf.books.all()|length %}
+                      {% if shelf_len != 1 %}
+                        <span class="badge badge-sm">{{shelf_len}}</span>
+                      {% endif %}
+                    </a>
+                  </li>
                 {% endfor %}
               {% if not current_user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
