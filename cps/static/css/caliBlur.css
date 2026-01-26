@@ -1320,7 +1320,8 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     line-height: 1.71428571;
     width: 100%;
     white-space: nowrap;
-    overflow: hidden
+    overflow: hidden;
+    text-overflow: clip
 }
 
 .navigation li {
