@@ -152,7 +152,8 @@
               {% endfor %}
               {% if current_user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
-                {% for shelf in g.shelves_access %}
+                {# Show private shelves first, then public shelves #}
+                {% for shelf in g.shelves_access|sort(attribute='is_public') %}
                   <li>
                     <a class="shelf-link" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}">
                       <span class="glyphicon {% if shelf.is_public == 1 %}glyphicon-globe{% else %}glyphicon-lock{% endif %} shelf"></span>
