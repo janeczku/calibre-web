@@ -1316,12 +1316,14 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     text-decoration: none;
     padding: 4px 25px;
     font-size: 13px;
-    height: 30px;
-    line-height: 1.71428571;
+    height: auto;
+    line-height: 1.3;
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: clip
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    overflow-wrap: anywhere;
+    word-break: break-word
 }
 
 .navigation li {
