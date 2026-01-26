@@ -241,6 +241,23 @@ span.glyphicon.glyphicon-tags {
 
 .navbar-default .navbar-toggle .icon-bar { background-color: #000; }
 .navbar-default .navbar-toggle { border-color: #000; }
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:active,
+.navbar-default .navbar-toggle.active {
+  background-color: transparent;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-form.navbar-left {
+    border-color: #f8f8f8;
+    box-shadow: none;
+  }
+
+  .navbar-default .navbar-form.navbar-left .form-control {
+    border-color: #d9d9d9;
+  }
+}
 
 .cover .badge {
   position: absolute;
@@ -298,6 +315,15 @@ span.glyphicon.glyphicon-tags {
 .btn-primary:active,
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary { background-color: #1c5484; }
+
+#shelf-actions #add-to-shelf.btn-primary:focus:not(:hover):not(:active),
+#shelf-actions #add-to-shelf.btn-primary:active,
+#shelf-actions #add-to-shelf.btn-primary.active,
+#shelf-actions .btn-group.open > #add-to-shelf.btn-primary {
+  background-color: #45b29d;
+  border-color: #3a9a88;
+  box-shadow: none;
+}
 
 .btn-primary.disabled,
 .btn-primary[disabled],

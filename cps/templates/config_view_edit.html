@@ -39,8 +39,10 @@
         <div class="form-group">
         <label for="config_theme">{{_('Theme')}}</label>
             <select name="config_theme" id="config_theme" class="form-control">
-                <option value="0" {% if conf.config_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
-                <option value="1" {% if conf.config_theme == 1 %}selected{% endif %}>{{ _("caliBlur! Dark Theme") }}</option>
+              <option value="0" {% if conf.config_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
+              <option value="2" {% if conf.config_theme == 2 %}selected{% endif %}>{{ _("Standard Dark Theme") }}</option>
+              <option value="3" {% if conf.config_theme == 3 %}selected{% endif %}>{{ _("Standard Auto Theme") }}</option>
+              <option value="1" {% if conf.config_theme == 1 %}selected{% endif %}>{{ _("caliBlur! Dark Theme") }}</option>
             </select>
         </div>
         <div class="form-group">
