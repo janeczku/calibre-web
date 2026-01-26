@@ -156,7 +156,9 @@
                 {% for shelf in g.shelves_access|sort(attribute='is_public') %}
                   <li>
                     <a class="shelf-link" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}">
+                      {% if not current_user.is_anonymous %}
                       <span class="glyphicon {% if shelf.is_public == 1 %}glyphicon-globe{% else %}glyphicon-lock{% endif %} shelf"></span>
+                      {% endif %}
                       <span class="shelf-name">{{shelf.name|shortentitle(40)}}</span>
                       {% set shelf_len = shelf.books.all()|length %}
                       {% if shelf_len != 1 %}
