@@ -30,6 +30,13 @@ except (ImportError, RuntimeError) as e:
 log = logger.create()
 
 try:
+    from natsort import natsorted as sort
+except ImportError:
+    log.debug("Natural sorting unavailable: using standard "
+              "sorted() method instead.")
+    sort = sorted
+
+try:
     from comicapi.comicarchive import ComicArchive, MetaDataStyle
     use_comic_meta = True
     try:
@@ -65,7 +72,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
     cover_data = extension = None
     if original_file_extension.upper() == '.CBZ':
         cf = zipfile.ZipFile(tmp_file_name)
-        for name in sorted(cf.namelist()):
+        for name in sort(cf.namelist()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
@@ -74,7 +81,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
                     break
     elif original_file_extension.upper() == '.CBT':
         cf = tarfile.TarFile(tmp_file_name)
-        for name in sorted(cf.getnames()):
+        for name in sort(cf.getnames()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
@@ -85,7 +92,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
         try:
             rarfile.UNRAR_TOOL = rar_executable
             cf = rarfile.RarFile(tmp_file_name)
-            for name in sorted(cf.namelist()):
+            for name in sort(cf.namelist()):
                 ext = os.path.splitext(name)
                 if len(ext) > 1:
                     extension = ext[1].lower()
@@ -96,7 +103,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
             log.error('Rarfile failed with error: {}'.format(ex))
     elif original_file_extension.upper() == '.CB7' and use_7zip:
         cf = py7zr.SevenZipFile(tmp_file_name)
-        for name in sorted(cf.getnames()):
+        for name in sort(cf.getnames()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
