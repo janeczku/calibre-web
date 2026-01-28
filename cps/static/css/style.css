@@ -1,4 +1,4 @@
-#add-to-shelves.dropdown-menu {
+#add-to-shelves.dropdown-menu, #remove-from-shelves.dropdown-menu {
   max-height: 300px;
   overflow-y: auto;
 }
