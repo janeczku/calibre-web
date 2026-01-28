@@ -294,7 +294,7 @@
                 {% if current_user.is_authenticated %}
                     {% if current_user.shelf.all() or g.shelves_access %}
                         <div id="shelf-actions" class="btn-toolbar" role="toolbar">
-                            <div class="btn-group" role="group" aria-label="Add to shelves">
+                            <div class="btn-group dropup" role="group" aria-label="Add to shelves">
                                 <button id="add-to-shelf" type="button"
                                         class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
