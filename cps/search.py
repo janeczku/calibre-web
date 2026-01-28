@@ -467,9 +467,7 @@ def render_search_results(term, offset=None, order=None, limit=None):
 
                         fts_rows = fts_conn.execute(
                             text("""
-                                SELECT
-                                    books_text.book,
-                                    bm25(books_fts) AS rank
+                                SELECT DISTINCT books_text.book
                                 FROM books_fts
                                 JOIN books_text ON books_text.id = books_fts.rowid
                                 WHERE books_fts MATCH :term
@@ -488,27 +486,10 @@ def render_search_results(term, offset=None, order=None, limit=None):
             query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
             query = (query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)
                           .outerjoin(db.Series)
-                          .filter(calibre_db.common_filters(True))
-                          .filter(db.Books.id.in_(fts_ids))
-                          .order_by(*order_by))
-
-            if offset is not None and limit is not None:
-                offset = int(offset)
-                limit_int = int(limit)
-                result = query.limit(offset + limit_int + 1).all()
-
-                has_more = len(result) > (offset + limit_int)
-                if has_more:
-                    result_count = offset + limit_int + 1
-                else:
-                    result_count = len(result)
-
-                result = result[offset:offset + limit_int]
-                pagination = Pagination((offset / limit_int + 1), limit_int, result_count)
-            else:
-                result = query.all()
-                result_count = len(result)
-
+                          .filter(db.Books.id.in_(fts_ids)))
+            
+            result = query.all()
+            result_count = len(result)
             ub.store_combo_ids(result)
             entries = calibre_db.order_authors(result, list_return=True, combined=True)
         else:
