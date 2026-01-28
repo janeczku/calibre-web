@@ -468,9 +468,9 @@ def render_search_results(term, offset=None, order=None, limit=None):
                         fts_rows = fts_conn.execute(
                             text("""
                                 SELECT DISTINCT books_text.book
-                                FROM books_fts
-                                JOIN books_text ON books_text.id = books_fts.rowid
-                                WHERE books_fts MATCH :term
+                                FROM books_fts_stemmed
+                                JOIN books_text ON books_text.id = books_fts_stemmed.rowid
+                                WHERE books_fts_stemmed MATCH :term
                                 ORDER BY rank
                             """),
                             {"term": fts_query}
@@ -483,15 +483,39 @@ def render_search_results(term, offset=None, order=None, limit=None):
                 log.debug("FTS search failed, falling back to default: %s", ex)
 
         if fts_ids:
+            # When using full-text search, prepend the "common" search results
+            # (same as the non-FTS path) to the beginning of the FTS results.
+            base_entries, base_count, pagination = calibre_db.get_search_results(
+                term, config, offset, order, limit, *join
+            )
+
             query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
             query = (query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)
                           .outerjoin(db.Series)
                           .filter(db.Books.id.in_(fts_ids)))
-            
-            result = query.all()
-            result_count = len(result)
-            ub.store_combo_ids(result)
-            entries = calibre_db.order_authors(result, list_return=True, combined=True)
+
+            fts_result = query.all()
+            ub.store_combo_ids(fts_result)
+            fts_entries = calibre_db.order_authors(fts_result, list_return=True, combined=True)
+
+            # Merge: base results first, then FTS results, de-duplicated by book id.
+            merged = []
+            seen_ids = set()
+            for item in (base_entries or []):
+                book_id = getattr(item, 'id', None)
+                if book_id is None or book_id not in seen_ids:
+                    if book_id is not None:
+                        seen_ids.add(book_id)
+                    merged.append(item)
+            for item in (fts_entries or []):
+                book_id = getattr(item, 'id', None)
+                if book_id is None or book_id not in seen_ids:
+                    if book_id is not None:
+                        seen_ids.add(book_id)
+                    merged.append(item)
+
+            entries = merged
+            result_count = len(entries)
         else:
             entries, result_count, pagination = calibre_db.get_search_results(term,
                                                                               config,
