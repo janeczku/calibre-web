@@ -24,7 +24,6 @@ from .cw_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
 from sqlalchemy import create_engine
-from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
