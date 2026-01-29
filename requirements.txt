@@ -25,3 +25,5 @@ python-magic-bin>=0.4.0,<0.5.0;sys_platform=='win32'
 flask-httpAuth>=4.4.0,<5.0.0
 cryptography>=39.0.0,<45.0.0
 certifi>=2024.7.4,<2025.8.24
+fastapi>=0.110.0,<1.0.0
+a2wsgi>=1.10.0,<2.0.0

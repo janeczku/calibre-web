@@ -67,6 +67,10 @@ def main():
     app.register_blueprint(web)
     app.register_blueprint(basic)
     app.register_blueprint(opds)
+
+    # Mount FastAPI under /api (Swagger UI at /api)
+    app.wsgi_app = _mount_api(app.wsgi_app)
+
     limiter.limit("3/minute", key_func=request_username)(opds)
     app.register_blueprint(jinjia)
     app.register_blueprint(about)
@@ -84,3 +88,20 @@ def main():
         app.register_blueprint(oauth)
     success = web_server.start()
     sys.exit(0 if success else 1)
+
+
+def _mount_api(original_wsgi_app):
+    """Wrap the existing Flask WSGI app and dispatch /api to FastAPI."""
+    from werkzeug.middleware.dispatcher import DispatcherMiddleware
+    from .api import api_app
+    from a2wsgi import ASGIMiddleware
+
+    mounted = DispatcherMiddleware(original_wsgi_app, {
+        "/api": ASGIMiddleware(api_app),
+    })
+
+    # Calibre-Web's custom session interface expects app.wsgi_app to expose
+    # a `script_name` attribute (used for cookie path calculation).
+    # Werkzeug's DispatcherMiddleware doesn't provide it, so we add it.
+    mounted.script_name = ""
+    return mounted
