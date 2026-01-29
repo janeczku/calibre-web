@@ -112,6 +112,10 @@
       <label for="config_fulltext_search">{{_('Enable Full Text Search ')}} (<a href="https://manual.calibre-ebook.com/gui.html#searching-the-full-text-of-all-books" target="_blank" rel="noopener">{{_('needs calibre full text')}}</a>)</label>
     </div>
     <div class="form-group">
+      <input type="checkbox" id="config_hide_archived_search" name="config_hide_archived_search" {% if config.config_hide_archived_search %}checked{% endif %}>
+      <label for="config_hide_archived_search">{{_('Hide archived books from searches by default')}}</label>
+    </div>
+    <div class="form-group">
         <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}} {{_('(Please ensure that users also have upload permissions)')}}</label>
     </div>

@@ -531,6 +531,19 @@ def render_search_results(term, offset=None, order=None, limit=None):
             ub.store_combo_ids(fts_result_ordered)
             fts_entries = calibre_db.order_authors(fts_result_ordered, list_return=True, combined=True)
 
+            # Exclude archived books from the merged results: build set of archived ids
+            archived_book_ids = set()
+            # Only load archived ids if config says to hide archived books from searches
+            try:
+                if getattr(config, 'config_hide_archived_search', True):
+                    archived_books = (ub.session.query(ub.ArchivedBook)
+                                      .filter(ub.ArchivedBook.user_id == int(current_user.id))
+                                      .filter(ub.ArchivedBook.is_archived == True)
+                                      .all())
+                    archived_book_ids = set(ab.book_id for ab in archived_books)
+            except Exception:
+                archived_book_ids = set()
+
             # Merge: base results first, then FTS results, de-duplicated by book id.
             merged = []
             seen_ids = set()
@@ -544,12 +557,18 @@ def render_search_results(term, offset=None, order=None, limit=None):
 
             for item in (base_entries or []):
                 book_id = _get_book_id(item)
+                # Skip archived books
+                if book_id is not None and book_id in archived_book_ids:
+                    continue
                 if book_id is None or book_id not in seen_ids:
                     if book_id is not None:
                         seen_ids.add(book_id)
                     merged.append(item)
             for item in (fts_entries or []):
                 book_id = _get_book_id(item)
+                # Skip archived books
+                if book_id is not None and book_id in archived_book_ids:
+                    continue
                 if book_id is None or book_id not in seen_ids:
                     if book_id is not None:
                         seen_ids.add(book_id)
