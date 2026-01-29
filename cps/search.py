@@ -504,9 +504,10 @@ def render_search_results(term, offset=None, order=None, limit=None):
             # Default/relevance is `stored`.
             has_explicit_order = bool(requested_sort_param and requested_sort_param != 'stored')
 
-            base_entries, base_count, pagination = calibre_db.get_search_results(
-                term, config, offset, order, limit, *join
-            )
+            if config.config_merge_search:
+                base_entries, base_count, pagination = calibre_db.get_search_results(
+                    term, config, offset, order, limit, *join
+                )
 
             query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
             query = (query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)
@@ -554,15 +555,16 @@ def render_search_results(term, offset=None, order=None, limit=None):
                     return getattr(entry.Books, 'id', None)
                 return getattr(entry, 'id', None)
 
-            for item in (base_entries or []):
-                book_id = _get_book_id(item)
-                # Skip archived books
-                if book_id is not None and book_id in archived_book_ids:
-                    continue
-                if book_id is None or book_id not in seen_ids:
-                    if book_id is not None:
-                        seen_ids.add(book_id)
-                    merged.append(item)
+            if config.config_merge_search:
+                for item in (base_entries or []):
+                    book_id = _get_book_id(item)
+                    # Skip archived books
+                    if book_id is not None and book_id in archived_book_ids:
+                        continue
+                    if book_id is None or book_id not in seen_ids:
+                        if book_id is not None:
+                            seen_ids.add(book_id)
+                        merged.append(item)
             for item in (fts_entries or []):
                 book_id = _get_book_id(item)
                 # Skip archived books

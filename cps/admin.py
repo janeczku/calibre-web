@@ -1794,6 +1794,7 @@ def _configuration_update_helper():
         _config_checkbox_int(to_save, "config_unicode_filename")
         _config_checkbox_int(to_save, "config_embed_metadata")
         _config_checkbox(to_save, "config_fulltext_search")
+        _config_checkbox(to_save, "config_merge_search")
         _config_checkbox(to_save, "config_hide_archived_search")
         # Reboot on config_anonbrowse with enabled ldap, as decoraters are changed in this case
         reboot_required |= (_config_checkbox_int(to_save, "config_anonbrowse")
