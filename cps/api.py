@@ -243,8 +243,7 @@ def create_api_app() -> FastAPI:
                     "last_modified": b.last_modified.isoformat() if b.last_modified else None,
                     "path": b.path,
                     "has_cover": bool(b.has_cover),
-                    "uuid": b.uuid,
-                    "isbn": b.isbn,
+                    "uuid": b.uuid
                 }
                 for b in items
             ],
