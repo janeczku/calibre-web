@@ -438,6 +438,61 @@ def create_api_app() -> FastAPI:
         }
 
     @api.get(
+        "/publishers/{publisher_id}/books",
+        tags=["library"],
+        summary="List books for a publisher",
+        description=(
+            "Lists books that are associated with the given publisher id from the Calibre library database."
+        ),
+        response_model=ListBooksResponse,
+        dependencies=[Depends(require_api_token)],
+    )
+    def list_books_by_publisher(
+        publisher_id: int,
+        page: int = Query(1, ge=1, description="Page number (1-based)"),
+        per_page: int = Query(250, ge=1, le=10000, description="Items per page (max 10000)"),
+        q: str | None = Query(None, description="Optional title search (substring, case-insensitive)"),
+    ) -> ListBooksResponse:
+        """List books for a specific publisher (basic fields)."""
+        from sqlalchemy import func
+        from . import db
+
+        session = _calibre_session()
+        # Join via the relationship to Publishers and filter by id
+        query = session.query(db.Books).join(db.Books.publishers).filter(db.Publishers.id == publisher_id)
+        if q:
+            query = query.filter(func.lower(db.Books.title).contains(q.lower()))
+
+        total = query.count()
+        items = (
+            query.order_by(db.Books.id.desc())
+            .offset((page - 1) * per_page)
+            .limit(per_page)
+            .all()
+        )
+
+        return {
+            "page": page,
+            "per_page": per_page,
+            "total": total,
+            "items": [
+                {
+                    "id": b.id,
+                    "title": b.title,
+                    "sort": b.sort,
+                    "author_sort": b.author_sort,
+                    "timestamp": b.timestamp.isoformat() if b.timestamp else None,
+                    "pubdate": b.pubdate.isoformat() if b.pubdate else None,
+                    "last_modified": b.last_modified.isoformat() if b.last_modified else None,
+                    "path": b.path,
+                    "has_cover": bool(b.has_cover),
+                    "uuid": b.uuid,
+                }
+                for b in items
+            ],
+        }
+
+    @api.get(
         "/languages",
         tags=["library"],
         summary="List languages",
