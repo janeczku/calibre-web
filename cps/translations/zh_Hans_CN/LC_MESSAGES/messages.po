@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 10:40+0100\n"
+"POT-Creation-Date: 2026-01-31 12:43+0100\n"
 "PO-Revision-Date: 2025-12-06 13:53+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
@@ -1184,22 +1184,22 @@ msgstr "此书籍已被添加到书架：%(sname)s"
 
 #: cps/shelf.py:116
 msgid "You are not allowed to remove a book from the shelf"
-msgstr ""
+msgstr "您没有权限从书架中删除书籍"
 
 #: cps/shelf.py:129
 #, python-format
 msgid "No Books are part of the shelf: %(name)s"
-msgstr ""
+msgstr "书架 %(name)s 中没有书籍"
 
 #: cps/shelf.py:140
 #, python-format
 msgid "Books have been removed from shelf: %(sname)s"
-msgstr ""
+msgstr "书籍已从书架 %(sname)s 中删除"
 
 #: cps/shelf.py:147
 #, python-format
 msgid "Could not remove books from shelf: %(sname)s"
-msgstr ""
+msgstr "不能从书架 %(sname)s 中删除书籍"
 
 #: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
@@ -3200,7 +3200,7 @@ msgstr "棕色"
 
 #: cps/templates/read.html:95
 msgid "Amber"
-msgstr ""
+msgstr "琥珀色"
 
 #: cps/templates/read.html:97
 msgid "Black"
@@ -3212,11 +3212,11 @@ msgstr "打开侧栏时重排文本。"
 
 #: cps/templates/read.html:114
 msgid "Show pages count"
-msgstr ""
+msgstr "显示页数"
 
 #: cps/templates/read.html:118
 msgid "Font Size"
-msgstr ""
+msgstr "字体大小"
 
 #: cps/templates/read.html:126
 msgid "Font"
@@ -3440,7 +3440,7 @@ msgstr "结果："
 
 #: cps/templates/search.html:29
 msgid "Remove from shelf"
-msgstr ""
+msgstr "从书架中移除"
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"
