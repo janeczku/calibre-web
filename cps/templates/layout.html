@@ -87,7 +87,7 @@
                   </li>
               {% endif %}
               {% if request.path.startswith('/admin') %}
-                <li class="top_api"><a id="top_api" href="/api" target="_blank"><span class="glyphicon glyphicon-flash"></span> <span class="hidden-sm">{{_('API')}}</span></a></li>
+                <li class="top_api"><a id="top_api" href="/api/v1" target="_blank"><span class="glyphicon glyphicon-flash"></span> <span class="hidden-sm">{{_('API')}}</span></a></li>
               {% endif %}
               {% if not current_user.is_anonymous and not simple%}
                 <li class="top_tasks"><a id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>

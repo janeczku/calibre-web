@@ -38,6 +38,7 @@ from starlette.exceptions import HTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+from .models import ListBooksResponse
 
 
 def create_api_app() -> FastAPI:
@@ -201,13 +202,14 @@ def create_api_app() -> FastAPI:
             "This endpoint intentionally returns a small payload and avoids heavy joins. "
             "Use `page`/`per_page` for pagination and `q` to search by title substring."
         ),
+        response_model=ListBooksResponse,
         dependencies=[Depends(require_api_token)],
     )
     def list_books(
         page: int = Query(1, ge=1, description="Page number (1-based)"),
         per_page: int = Query(25, ge=1, le=200, description="Items per page (max 200)"),
         q: str | None = Query(None, description="Optional title search (substring, case-insensitive)"),
-    ) -> dict:
+    ) -> ListBooksResponse:
         """List books (basic fields).
 
         This intentionally returns a small payload and avoids heavy joins.

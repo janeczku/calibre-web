@@ -68,7 +68,6 @@ def main():
     app.register_blueprint(basic)
     app.register_blueprint(opds)
 
-    # Mount FastAPI under /api (Swagger UI at /api)
     app.wsgi_app = _mount_api(app.wsgi_app)
 
     limiter.limit("3/minute", key_func=request_username)(opds)
@@ -97,7 +96,7 @@ def _mount_api(original_wsgi_app):
     from a2wsgi import ASGIMiddleware
 
     mounted = DispatcherMiddleware(original_wsgi_app, {
-        "/api": ASGIMiddleware(api_app),
+        "/api/v1": ASGIMiddleware(api_app),
     })
 
     # Calibre-Web's custom session interface expects app.wsgi_app to expose
