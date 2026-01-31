@@ -3177,7 +3177,7 @@ msgstr "Catálogo de e-books Calibre-Web"
 
 #: cps/templates/read.html:7
 msgid "epub Reader"
-msgstr "Leitor EPUB"
+msgstr "leitor de epub"
 
 #: cps/templates/read.html:85
 msgid "Choose a theme below:"
