@@ -207,8 +207,9 @@ def create_api_app() -> FastAPI:
     )
     def list_books(
         page: int = Query(1, ge=1, description="Page number (1-based)"),
-        per_page: int = Query(25, ge=1, le=200, description="Items per page (max 200)"),
+        per_page: int = Query(250, ge=1, le=10000, description="Items per page (max 10000)"),
         q: str | None = Query(None, description="Optional title search (substring, case-insensitive)"),
+        publisher_id: int | None = Query(None, ge=1, description="Optional publisher id filter"),
     ) -> ListBooksResponse:
         """List books (basic fields).
 
@@ -221,6 +222,8 @@ def create_api_app() -> FastAPI:
         query = session.query(db.Books)
         if q:
             query = query.filter(func.lower(db.Books.title).contains(q.lower()))
+        if publisher_id is not None:
+            query = query.join(db.Books.publishers).filter(db.Publishers.id == publisher_id)
 
         total = query.count()
         items = (
@@ -250,66 +253,6 @@ def create_api_app() -> FastAPI:
                 for b in items
             ],
         }
-
-    @api.get(
-        "/shelfs",
-        tags=["library"],
-        summary="List shelves",
-        description=(
-            "Lists Calibre-Web shelves (stored in the settings database, not in the Calibre library DB).\n\n"
-            "Use `public_only=true` to return only public shelves, and `q` to search by shelf name."
-        ),
-        dependencies=[Depends(require_api_token)],
-    )
-    def list_shelfs(
-        page: int = Query(1, ge=1, description="Page number (1-based)"),
-        per_page: int = Query(25, ge=1, le=200, description="Items per page (max 200)"),
-        q: str | None = Query(None, description="Optional shelf name search (substring, case-insensitive)"),
-        public_only: bool = Query(False, description="Only include public shelves"),
-    ) -> dict:
-        """List shelves (Calibre-Web settings DB)."""
-        from sqlalchemy import func
-        from . import ub
-
-        # ub.session relies on Flask app context.
-        from . import app as flask_app
-
-        with flask_app.app_context():
-            query = ub.session.query(ub.Shelf)
-            if public_only:
-                query = query.filter(ub.Shelf.is_public == 1)
-            if q:
-                query = query.filter(func.lower(ub.Shelf.name).contains(q.lower()))
-
-            total = query.count()
-            rows = (
-                query.order_by(ub.Shelf.id.desc())
-                .offset((page - 1) * per_page)
-                .limit(per_page)
-                .all()
-            )
-
-            items = [
-                {
-                    "id": s.id,
-                    "uuid": s.uuid,
-                    "name": s.name,
-                    "is_public": bool(s.is_public),
-                    "user_id": s.user_id,
-                    "kobo_sync": bool(getattr(s, "kobo_sync", False)),
-                    "created": s.created.isoformat() if getattr(s, "created", None) else None,
-                    "last_modified": s.last_modified.isoformat() if getattr(s, "last_modified", None) else None,
-                }
-                for s in rows
-            ]
-
-        return {
-            "page": page,
-            "per_page": per_page,
-            "total": total,
-            "items": items,
-        }
-
     @api.get(
         "/series",
         tags=["library"],
@@ -434,61 +377,6 @@ def create_api_app() -> FastAPI:
                     "sort": getattr(p, "sort", None),
                 }
                 for p in rows
-            ],
-        }
-
-    @api.get(
-        "/publishers/{publisher_id}/books",
-        tags=["library"],
-        summary="List books for a publisher",
-        description=(
-            "Lists books that are associated with the given publisher id from the Calibre library database."
-        ),
-        response_model=ListBooksResponse,
-        dependencies=[Depends(require_api_token)],
-    )
-    def list_books_by_publisher(
-        publisher_id: int,
-        page: int = Query(1, ge=1, description="Page number (1-based)"),
-        per_page: int = Query(250, ge=1, le=10000, description="Items per page (max 10000)"),
-        q: str | None = Query(None, description="Optional title search (substring, case-insensitive)"),
-    ) -> ListBooksResponse:
-        """List books for a specific publisher (basic fields)."""
-        from sqlalchemy import func
-        from . import db
-
-        session = _calibre_session()
-        # Join via the relationship to Publishers and filter by id
-        query = session.query(db.Books).join(db.Books.publishers).filter(db.Publishers.id == publisher_id)
-        if q:
-            query = query.filter(func.lower(db.Books.title).contains(q.lower()))
-
-        total = query.count()
-        items = (
-            query.order_by(db.Books.id.desc())
-            .offset((page - 1) * per_page)
-            .limit(per_page)
-            .all()
-        )
-
-        return {
-            "page": page,
-            "per_page": per_page,
-            "total": total,
-            "items": [
-                {
-                    "id": b.id,
-                    "title": b.title,
-                    "sort": b.sort,
-                    "author_sort": b.author_sort,
-                    "timestamp": b.timestamp.isoformat() if b.timestamp else None,
-                    "pubdate": b.pubdate.isoformat() if b.pubdate else None,
-                    "last_modified": b.last_modified.isoformat() if b.last_modified else None,
-                    "path": b.path,
-                    "has_cover": bool(b.has_cover),
-                    "uuid": b.uuid,
-                }
-                for b in items
             ],
         }
 
