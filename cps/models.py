@@ -16,6 +16,13 @@ class BookItem(BaseModel):
     title: str = Field(..., description="Book title")
     sort: Optional[str] = Field(None, description="Sort title")
     author_sort: Optional[str] = Field(None, description="Primary author (sort order)")
+    authors: Optional[List[str]] = Field(
+        None,
+        description=(
+            "Optional list of author names for this book. "
+            "When requested, derived by splitting `author_sort` on '&' and looking up each part in `authors.sort`."
+        ),
+    )
     timestamp: Optional[datetime] = Field(None, description="Record creation timestamp (ISO 8601)")
     pubdate: Optional[datetime] = Field(None, description="Publication date (ISO 8601)")
     last_modified: Optional[datetime] = Field(None, description="Last modified timestamp (ISO 8601)")
@@ -31,6 +38,7 @@ class BookItem(BaseModel):
                 "title": "The Example Book",
                 "sort": "Example, The",
                 "author_sort": "Doe, John",
+                "authors": ["John Doe"],
                 "timestamp": "2023-01-01T12:00:00Z",
                 "pubdate": "2022-12-01T12:00:00Z",
                 "last_modified": "2023-02-01T10:30:00Z",

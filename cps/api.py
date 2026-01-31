@@ -210,6 +210,7 @@ def create_api_app() -> FastAPI:
         per_page: int = Query(250, ge=1, le=10000, description="Items per page (max 10000)"),
         q: str | None = Query(None, description="Optional title search (substring, case-insensitive)"),
         publisher_id: int | None = Query(None, ge=1, description="Optional publisher id filter"),
+        include_authors: bool = Query(False, description="Include resolved author names for each book"),
     ) -> ListBooksResponse:
         """List books (basic fields).
 
@@ -233,6 +234,33 @@ def create_api_app() -> FastAPI:
             .all()
         )
 
+        # Optionally resolve authors from Books.author_sort.
+        # Calibre may store multiple authors in `author_sort` separated by '&'.
+        # Each part is looked up against Authors.sort.
+        authors_by_book_id: dict[int, list[str]] = {}
+        if include_authors:
+            requested_sorts_by_book_id: dict[int, list[str]] = {}
+            all_requested_sorts: set[str] = set()
+
+            for b in items:
+                raw = (b.author_sort or "").strip()
+                if not raw:
+                    requested_sorts_by_book_id[b.id] = []
+                    continue
+
+                sorts = [part.strip() for part in raw.split("&") if part.strip()]
+                requested_sorts_by_book_id[b.id] = sorts
+                all_requested_sorts.update(sorts)
+
+            if all_requested_sorts:
+                rows = session.query(db.Authors.sort, db.Authors.name).filter(db.Authors.sort.in_(all_requested_sorts)).all()
+                name_by_sort = {s: n for s, n in rows}
+                for book_id, sorts in requested_sorts_by_book_id.items():
+                    authors_by_book_id[book_id] = [name_by_sort.get(s, s) for s in sorts]
+            else:
+                for book_id in requested_sorts_by_book_id:
+                    authors_by_book_id[book_id] = []
+
         return {
             "page": page,
             "per_page": per_page,
@@ -243,6 +271,7 @@ def create_api_app() -> FastAPI:
                     "title": b.title,
                     "sort": b.sort,
                     "author_sort": b.author_sort,
+                    **({"authors": authors_by_book_id.get(b.id, [])} if include_authors else {}),
                     "timestamp": b.timestamp.isoformat() if b.timestamp else None,
                     "pubdate": b.pubdate.isoformat() if b.pubdate else None,
                     "last_modified": b.last_modified.isoformat() if b.last_modified else None,
