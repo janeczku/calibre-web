@@ -21,15 +21,15 @@ msgstr "Estatísticas"
 
 #: cps/admin.py:151
 msgid "Server restarted, please reload page."
-msgstr ""
+msgstr "Servidor reiniciado, por favor recarregue a página."
 
 #: cps/admin.py:153
 msgid "Performing Server shutdown, please close window."
-msgstr ""
+msgstr "Desligando o servidor, por favor feche a janela."
 
 #: cps/admin.py:161
 msgid "Success! Database Reconnected"
-msgstr ""
+msgstr "Sucesso! Banco de dados reconectado"
 
 #: cps/admin.py:164
 msgid "Unknown command"
@@ -37,7 +37,7 @@ msgstr "Comando desconhecido"
 
 #: cps/admin.py:175
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
-msgstr ""
+msgstr "Sucesso! Livros enfileirados para backup de Metadados, por favor verifique Tarefas para o resultado"
 
 #: cps/admin.py:208 cps/editbooks.py:808 cps/editbooks.py:852
 #: cps/editbooks.py:1520 cps/updater.py:615 cps/uploader.py:108
@@ -161,7 +161,7 @@ msgstr "Você realmente quer apagar este usuário?"
 
 #: cps/admin.py:621
 msgid "Do you really want to delete this book?"
-msgstr ""
+msgstr "Você realmente quer apagar este livro?"
 
 #: cps/admin.py:623
 msgid "Are you sure you want to delete this shelf?"
@@ -181,11 +181,11 @@ msgstr "Tem certeza que quer alterar a função selecionada para o(s) usuário(s
 
 #: cps/admin.py:631
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
-msgstr ""
+msgstr "Tem certeza que quer alterar o status de arquivamento do(s) livro(s) selecionado(s)?"
 
 #: cps/admin.py:633
 msgid "Are you sure you want to change the read status for the selected book(s)?"
-msgstr ""
+msgstr "Tem certeza que quer alterar o status de leitura do(s) livro(s) selecionado(s)?"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
@@ -301,7 +301,7 @@ msgstr "Editar configurações do servidor de e-mail"
 
 #: cps/admin.py:1319
 msgid "Success! Gmail Account Verified."
-msgstr ""
+msgstr "Sucesso! Conta do Gmail verificada."
 
 #: cps/admin.py:1339 cps/admin.py:1342 cps/admin.py:1727 cps/admin.py:1886
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
@@ -362,11 +362,11 @@ msgstr "Editar Usuário %(nick)s"
 #: cps/admin.py:1462
 #, python-format
 msgid "Success! Password for user %(user)s reset"
-msgstr ""
+msgstr "Sucesso! Senha do usuário %(user)s redefinida"
 
 #: cps/admin.py:1468
 msgid "Oops! Please configure the SMTP mail settings."
-msgstr ""
+msgstr "Ops! Por favor, altere as configurações SMTP do servidor de e-mail."
 
 #: cps/admin.py:1479
 msgid "Logfile viewer"
@@ -457,7 +457,7 @@ msgstr "{} Usuário Importado com Sucesso"
 
 #: cps/admin.py:1739
 msgid "Books path not valid"
-msgstr ""
+msgstr "A localização dos livros não é válida"
 
 #: cps/admin.py:1745
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -523,7 +523,7 @@ msgstr "Nenhum usuário administrador restante, não é possível apagar o usuá
 
 #: cps/admin.py:2071 cps/web.py:1493
 msgid "Email can't be empty and has to be a valid Email"
-msgstr ""
+msgstr "O e-mail não pode ficar vazio e deve ser um endereço de e-mail válido"
 
 #: cps/admin.py:2097
 #, python-format
@@ -579,7 +579,7 @@ msgstr ""
 
 #: cps/editbooks.py:317
 msgid "Value is missing on request"
-msgstr ""
+msgstr "Valor ausente na requisição"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
 #: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1585 cps/web.py:1631
@@ -615,7 +615,7 @@ msgstr "O livro carregado provavelmente existe na biblioteca, considere alterar 
 
 #: cps/editbooks.py:950 cps/editbooks.py:1420
 msgid "File type isn't allowed to be uploaded to this server"
-msgstr ""
+msgstr "Este tipo de arquivo não pode ser enviado para este servidor"
 
 #: cps/editbooks.py:956 cps/editbooks.py:1431
 #, python-format
@@ -651,7 +651,7 @@ msgstr "Você não tem permissão para apagar livros"
 #: cps/editbooks.py:1139
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
-msgstr ""
+msgstr "Livro com id \"{}\" não pôde ser apagado: não encontrado"
 
 #: cps/editbooks.py:1181
 msgid "edit metadata"
@@ -660,7 +660,7 @@ msgstr "editar metadados"
 #: cps/editbooks.py:1234
 #, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
-msgstr ""
+msgstr "Seriesindex: %(seriesindex)s não é um número válido, ignorando"
 
 #: cps/editbooks.py:1425
 msgid "User has no rights to upload additional file formats"
@@ -710,15 +710,15 @@ msgstr "Enviar para E-Reader"
 
 #: cps/helper.py:105 cps/helper.py:125 cps/helper.py:235
 msgid "This Email has been sent via Calibre-Web."
-msgstr ""
+msgstr "Este e-mail foi enviado via Calibre-Web."
 
 #: cps/helper.py:123
 msgid "Calibre-Web Test Email"
-msgstr ""
+msgstr "E-mail de teste do Calibre-Web"
 
 #: cps/helper.py:124
 msgid "Test Email"
-msgstr ""
+msgstr "E-mail de teste"
 
 #: cps/helper.py:141
 msgid "Get Started with Calibre-Web"
@@ -727,22 +727,22 @@ msgstr "Comece a usar o calibre-web"
 #: cps/helper.py:146
 #, python-format
 msgid "Registration Email for user: %(name)s"
-msgstr ""
+msgstr "E-mail de registro para o usuário: %(name)s"
 
 #: cps/helper.py:157 cps/helper.py:163
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
-msgstr ""
+msgstr "Converter %(orig)s para %(format)s e enviar para E-Reader"
 
 #: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
 #, python-format
 msgid "Send %(format)s to eReader"
-msgstr ""
+msgstr "Enviar %(format)s para E-Reader"
 
 #: cps/helper.py:230
 #, python-format
 msgid "%(book)s send to eReader"
-msgstr ""
+msgstr "%(book)s enviado para E-Reader"
 
 #: cps/helper.py:237
 msgid "The requested file could not be read. Maybe wrong permissions?"
@@ -771,7 +771,7 @@ msgstr "Excluindo livro %(id)s somente do banco de dados, caminho do livro invá
 #: cps/helper.py:404
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
-msgstr ""
+msgstr "Falha ao mover o caminho do livro %(book_id)s para '%(src)s': %(error)s"
 
 #: cps/helper.py:443
 #, python-format
@@ -795,7 +795,7 @@ msgstr "Caminho do livro %(path)s não encontrado no Google Drive"
 
 #: cps/helper.py:643
 msgid "Found an existing account for this Email address"
-msgstr ""
+msgstr "Encontrada uma conta existente para este endereço de e-mail."
 
 #: cps/helper.py:651
 msgid "This username is already taken"
@@ -803,11 +803,11 @@ msgstr "Este nome de usuário já está registrado"
 
 #: cps/helper.py:665
 msgid "Invalid Email address format"
-msgstr ""
+msgstr "Formato de endereço de e-mail inválido"
 
 #: cps/helper.py:687
 msgid "Password doesn't comply with password validation rules"
-msgstr ""
+msgstr "A senha não atende às regras de validação de senha"
 
 #: cps/helper.py:833
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
@@ -847,7 +847,7 @@ msgstr "Apenas arquivos jpg/jpeg são suportados como arquivos de capa"
 
 #: cps/helper.py:975 cps/helper.py:1133
 msgid "Cover"
-msgstr ""
+msgstr "Capa"
 
 #: cps/helper.py:992
 msgid "UnRar binary file not found"
@@ -855,37 +855,37 @@ msgstr "Binário UnRar não encontrado"
 
 #: cps/helper.py:1003
 msgid "Error executing UnRar"
-msgstr ""
+msgstr "Erro ao executar UnRar"
 
 #: cps/helper.py:1011
 msgid "Could not find the specified directory"
-msgstr ""
+msgstr "Não foi possível encontrar o diretório especificado"
 
 #: cps/helper.py:1014
 msgid "Please specify a directory, not a file"
-msgstr ""
+msgstr "Por favor, especifique um diretório, não um arquivo"
 
 #: cps/helper.py:1028
 msgid "Calibre binaries not viable"
-msgstr ""
+msgstr "Binários do Calibre não são utilizáveis"
 
 #: cps/helper.py:1037
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
-msgstr ""
+msgstr "Binários do Calibre ausentes: %(missing)s"
 
 #: cps/helper.py:1039
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
-msgstr ""
+msgstr "Permissões de execução ausentes: %(missing)s"
 
 #: cps/helper.py:1044
 msgid "Error executing Calibre"
-msgstr ""
+msgstr "Erro ao executar Calibre"
 
 #: cps/helper.py:1135 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
-msgstr ""
+msgstr "Enfileirar todos os livros para backup de Metadados"
 
 #: cps/kobo_auth.py:92
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
@@ -3743,5 +3743,5 @@ msgstr "Sincronizar Estantes Selecionadas com Kobo"
 
 #: cps/templates/user_table.html:156
 msgid "Show Read/Unread Section"
-msgstr ""
+msgstr "Mostrar seção Lidos/Não Lidos"
 
