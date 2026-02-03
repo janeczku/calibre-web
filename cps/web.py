@@ -443,7 +443,22 @@ def render_rated_books(page, book_id, order):
 
 def render_discover_books(book_id):
     if current_user.check_visibility(constants.SIDEBAR_RANDOM):
-        entries, __, ___ = calibre_db.fill_indexpage(1, 0, db.Books, True, [func.randomblob(2)],
+        if not config.config_read_column:
+            db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
+        else:
+            try:
+                db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
+            except (KeyError, AttributeError, IndexError):
+                log.error("Custom Column No.{} does not exist in calibre database".format(config.config_read_column))
+                flash(_(
+                        "Custom Column No.%(column)d does not exist in calibre database",
+                        column=config.config_read_column
+                    ),
+                    category="error"
+                )
+                db_filter = True
+
+        entries, __, ___ = calibre_db.fill_indexpage(1, 0, db.Books, db_filter, [func.randomblob(2)],
                                                             join_archive_read=True,
                                                             config_read_column=config.config_read_column)
         pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
