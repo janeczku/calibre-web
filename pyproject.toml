@@ -10,7 +10,6 @@ maintainers = [{name = "@OzzieIsaacs"}]
 license = "GPL-3.0-or-later"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: GNU Affero General Public License v3",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
