@@ -1,8 +1,8 @@
 # GDrive Integration
 google-api-python-client>=2.73.00,<2.200.0
-gevent>20.6.0,<24.12.0
-greenlet>=0.4.17,<3.3.0
-httplib2>=0.9.2,<0.23.0
+gevent>20.6.0,<25.9.2
+greenlet>=0.4.17,<3.4.0
+httplib2>=0.9.2,<0.32.0
 oauth2client>=4.0.0,<4.1.4
 uritemplate>=3.0.0,<4.3.0
 pyasn1-modules>=0.0.8,<0.7.0
@@ -21,19 +21,19 @@ python-Levenshtein>=0.12.0,<0.28.0
 
 # ldap login
 python-ldap>=3.0.0,<3.5.0
-Flask-SimpleLDAP>=1.4.0,<2.1.0
+Flask-SimpleLDAP>=1.4.0,<2.2.0
 
 # oauth
 Flask-Dance>=2.0.0,<7.2.0
-SQLAlchemy-Utils>=0.33.5,<0.42.0
+SQLAlchemy-Utils>=0.33.5,<0.43.0
 
 # metadata extraction
 rarfile>=3.2,<5.0
 scholarly>=1.2.0,<1.8
 markdown2>=2.0.0,<2.6.0
-html2text>=2020.1.16,<2025.2.26
+html2text>=2020.1.16,<2025.4.16
 python-dateutil>=2.1,<2.10.0
-beautifulsoup4>=4.0.1,<4.14.0
+beautifulsoup4>=4.0.1,<4.15.0
 faust-cchardet>=2.1.18,<2.1.20
 py7zr>=0.15.0,<0.21.0
 mutagen>=1.40.0,<1.50.0
