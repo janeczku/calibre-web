@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-31 12:43+0100\n"
+"POT-Creation-Date: 2026-02-13 19:17+0100\n"
 "PO-Revision-Date: 2026-01-04 02:22+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
@@ -3654,7 +3654,7 @@ msgstr "Aggiungi valori personali consentiti/negati nelle colonne"
 
 #: cps/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
-msgstr "Sincronizza con Kobo unicamene i libri negli scaffali selezionati"
+msgstr "Sincronizza con Kobo unicamente i libri negli scaffali selezionati"
 
 #: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
 msgid "Delete User"
