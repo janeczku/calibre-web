@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-12-14 14:44+0100\n"
+"POT-Creation-Date: 2026-02-13 19:17+0100\n"
 "PO-Revision-Date: 2023-11-01 06:12+0100\n"
 "Last-Translator: Branislav Hanáček <brango@brango.sk>\n"
 "Language: sk_SK\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -70,7 +70,7 @@ msgstr "Používateľom definovaný stĺpec č. %(column)d v Calibre databáze n
 msgid "Edit Users"
 msgstr "Upraviť používateľov"
 
-#: cps/admin.py:377 cps/opds.py:560 cps/templates/grid.html:14
+#: cps/admin.py:377 cps/opds.py:559 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Všetko"
@@ -308,9 +308,9 @@ msgstr "Úspech! Gmail konto bolo verifikované."
 
 #: cps/admin.py:1339 cps/admin.py:1342 cps/admin.py:1727 cps/admin.py:1886
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
-#: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:150
-#: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1540
+#: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:144
+#: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:324
+#: cps/shelf.py:398 cps/shelf.py:520 cps/tasks/convert.py:160 cps/web.py:1544
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Chyba databázy: %(error)s."
@@ -349,7 +349,7 @@ msgstr "Bol uvedený neplatný doba behu"
 msgid "Scheduled tasks settings updated"
 msgstr "Nastavenia naplánovaných úloh boli aktualizované"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1330
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1334
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Vyskytla sa neočakávaná chyba. Prosím, skúste to opäť neskôr."
 
@@ -524,7 +524,7 @@ msgstr "Nie je možné zmazať používateľa Hosť"
 msgid "No admin user remaining, can't delete user"
 msgstr "Nezostáva žiadny používateľ, nie je možné odobrať rolu správcu"
 
-#: cps/admin.py:2071 cps/web.py:1489
+#: cps/admin.py:2071 cps/web.py:1493
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-mailová adresa nemôže byť prázdna a musí byť platná"
 
@@ -533,7 +533,7 @@ msgstr "E-mailová adresa nemôže byť prázdna a musí byť platná"
 msgid "User '%(nick)s' updated"
 msgstr "Používateľ '%(nick)s' bol aktualizovaný"
 
-#: cps/basic.py:67 cps/search.py:50 cps/search.py:426
+#: cps/basic.py:67 cps/search.py:50 cps/search.py:441
 #: cps/templates/basic_layout.html:23 cps/templates/book_edit.html:242
 #: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
@@ -585,8 +585,8 @@ msgid "Value is missing on request"
 msgstr ""
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
-#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
-#: cps/web.py:1677
+#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1585 cps/web.py:1631
+#: cps/web.py:1681
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Vybraná kniha nie je dostupná. Súbor neexistuje alebo sa k nemu nedá pristupovať"
 
@@ -848,7 +848,7 @@ msgstr "Neplatný obsah súboru obalky knihy"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Ako súbor obálky knihy sú podporované iba súbory jpg/jpeg"
 
-#: cps/helper.py:975 cps/helper.py:1135
+#: cps/helper.py:975 cps/helper.py:1133
 msgid "Cover"
 msgstr "Obálka knihy"
 
@@ -886,7 +886,7 @@ msgstr ""
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1137 cps/templates/admin.html:216
+#: cps/helper.py:1135 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Zaradiť všetky knihy na zálohovanie metadát"
 
@@ -973,7 +973,7 @@ msgstr "{} Hviezdičiek"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:68
 #: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1366
+#: cps/templates/login.html:21 cps/web.py:1370
 msgid "Login"
 msgstr "Prihlásiť sa"
 
@@ -1128,38 +1128,38 @@ msgstr "Zoznam kníh"
 msgid "Show Books List"
 msgstr "Zobraziť zoznam kníh"
 
-#: cps/search.py:201
+#: cps/search.py:214
 msgid "Published after "
 msgstr "Vydané po "
 
-#: cps/search.py:208
+#: cps/search.py:221
 msgid "Published before "
 msgstr "Vydané pred "
 
-#: cps/search.py:230
+#: cps/search.py:243
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Hodnotenie <= %(rating)s"
 
-#: cps/search.py:232
+#: cps/search.py:245
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Hodnotenie >= %(rating)s"
 
-#: cps/search.py:234
+#: cps/search.py:247
 #, python-format
 msgid "Read Status = '%(status)s'"
 msgstr ""
 
-#: cps/search.py:351
+#: cps/search.py:366
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "Chyba pri čítaní používateľom definovaných stĺpcov, reštartujte prosím Calibre-Web"
 
-#: cps/search.py:370 cps/search.py:402 cps/templates/layout.html:57
+#: cps/search.py:385 cps/search.py:417 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Rozšírené hľadanie"
 
-#: cps/shelf.py:49 cps/shelf.py:111
+#: cps/shelf.py:49 cps/shelf.py:111 cps/shelf.py:157
 msgid "Invalid shelf specified"
 msgstr "Vybraná neplatná polica"
 
@@ -1183,92 +1183,111 @@ msgid "Book has been added to shelf: %(sname)s"
 msgstr "Kniha bola pridaná do police: %(sname)s"
 
 #: cps/shelf.py:116
+msgid "You are not allowed to remove a book from the shelf"
+msgstr ""
+
+#: cps/shelf.py:129
+#, python-format
+msgid "No Books are part of the shelf: %(name)s"
+msgstr ""
+
+#: cps/shelf.py:140
+#, python-format
+msgid "Books have been removed from shelf: %(sname)s"
+msgstr ""
+
+#: cps/shelf.py:147
+#, python-format
+msgid "Could not remove books from shelf: %(sname)s"
+msgstr ""
+
+#: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
 msgstr "Nemáte povolené pridať knihu do tejto police"
 
-#: cps/shelf.py:134
+#: cps/shelf.py:178
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Táto polica už obssahuje knihu: %(name)s"
 
-#: cps/shelf.py:146
+#: cps/shelf.py:190
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Do police sa pridala kniha: %(sname)s"
 
-#: cps/shelf.py:153
+#: cps/shelf.py:197
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Nemôžem pridať knihu do police: %(sname)s"
 
-#: cps/shelf.py:199
+#: cps/shelf.py:243
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Kniha bola odstránená z police: %(sname)s"
 
-#: cps/shelf.py:208
+#: cps/shelf.py:252
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "Ľutujeme, ale nie ste oprávnený odstrániť knihu z tejto police"
 
-#: cps/shelf.py:218 cps/templates/layout.html:159
+#: cps/shelf.py:262 cps/templates/layout.html:159
 msgid "Create a Shelf"
 msgstr "Vytvoriť policu"
 
-#: cps/shelf.py:226
+#: cps/shelf.py:270
 msgid "Sorry you are not allowed to edit this shelf"
 msgstr "Ľutujeme, ale nie ste oprávnený upravovať túto policu"
 
-#: cps/shelf.py:228
+#: cps/shelf.py:272
 msgid "Edit a shelf"
 msgstr "Upraviť policu"
 
-#: cps/shelf.py:237
+#: cps/shelf.py:281
 msgid "Error deleting Shelf"
 msgstr "Chyba pri mazaní police"
 
-#: cps/shelf.py:239
+#: cps/shelf.py:283
 msgid "Shelf successfully deleted"
 msgstr "Polica bol úspešne vymazaná"
 
-#: cps/shelf.py:289
+#: cps/shelf.py:333
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Zmeniť poradie police: '%(name)s'"
 
-#: cps/shelf.py:324
+#: cps/shelf.py:368
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr "Ľutujeme, ale nie ste oprávnený vytvoriť verejnú policu"
 
-#: cps/shelf.py:341
+#: cps/shelf.py:385
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Polica %(title)s bola vytvorená"
 
-#: cps/shelf.py:344
+#: cps/shelf.py:388
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Polica %(title)s bola zmenená"
 
-#: cps/shelf.py:358
+#: cps/shelf.py:402
 msgid "There was an error"
 msgstr "Nastala chyba"
 
-#: cps/shelf.py:380
+#: cps/shelf.py:424
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr "Verejná polica s názvom '%(title)s' už existuje."
 
-#: cps/shelf.py:391
+#: cps/shelf.py:435
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Súkromná polica s názvom '%(title)s' už existuje."
 
-#: cps/shelf.py:481
+#: cps/shelf.py:525
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Polica: '%(name)s'"
 
-#: cps/shelf.py:487
+#: cps/shelf.py:531
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Chyba pri otváraní police. Polica neexistuje alebo je neprístupná"
 
@@ -1423,80 +1442,80 @@ msgstr "Počkajte, prosím minútku pred registráciou ďalšieho používateľa
 #: cps/templates/layout.html:69 cps/templates/layout.html:104
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1292
 #: cps/web.py:1296 cps/web.py:1301 cps/web.py:1305 cps/web.py:1311
-#: cps/web.py:1331 cps/web.py:1335 cps/web.py:1348 cps/web.py:1351
+#: cps/web.py:1335 cps/web.py:1339 cps/web.py:1352 cps/web.py:1355
 msgid "Register"
 msgstr "Registrovať"
 
-#: cps/web.py:1295 cps/web.py:1398
+#: cps/web.py:1295 cps/web.py:1402
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1300 cps/web.py:1347
+#: cps/web.py:1300 cps/web.py:1351
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Poštový server nie je nastavený, kontaktujte prosím správcu."
 
-#: cps/web.py:1333
+#: cps/web.py:1337
 msgid "Oops! Your Email is not allowed."
 msgstr "Vaša e-mailová adresa nie je povolená."
 
-#: cps/web.py:1336
+#: cps/web.py:1340
 msgid "Success! Confirmation Email has been sent."
 msgstr "Úspech! Potvrdzujúci e-mail bol odoslaný."
 
-#: cps/web.py:1381 cps/web.py:1404
+#: cps/web.py:1385 cps/web.py:1408
 msgid "Cannot activate LDAP authentication"
 msgstr "Nie je možné aktivovať LDAP autentifikáciu"
 
-#: cps/web.py:1394
+#: cps/web.py:1398
 msgid "Please wait one minute before next login"
 msgstr "Počkajte, prosím minútku pred opätovným prihlásením"
 
-#: cps/web.py:1413
+#: cps/web.py:1417
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ste prihlásený ako: '%(nickname)s'"
 
-#: cps/web.py:1420
+#: cps/web.py:1424
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Záložné prihlásenie ako: '%(nickname)s', LDAP server je nedostupný alebo používateľ je neznámy"
 
-#: cps/web.py:1425
+#: cps/web.py:1429
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Nemôžem prihlásiť: %(message)s"
 
-#: cps/web.py:1429 cps/web.py:1454
+#: cps/web.py:1433 cps/web.py:1458
 msgid "Wrong Username or Password"
 msgstr "Nesprávne používateľské meno alebo heslo"
 
-#: cps/web.py:1436
+#: cps/web.py:1440
 msgid "New Password was sent to your email address"
 msgstr "Na vašu e-mailovú adresu bolo odoslané nové heslo"
 
-#: cps/web.py:1440
+#: cps/web.py:1444
 msgid "An unknown error occurred. Please try again later."
 msgstr "Vyskytla sa neočakávaná chyba. Prosím, skúste to opäť neskôr."
 
-#: cps/web.py:1442
+#: cps/web.py:1446
 msgid "Please enter valid username to reset password"
 msgstr "Na resetovanie hesla zadajte platné používateľské meno"
 
-#: cps/web.py:1450
+#: cps/web.py:1454
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Teraz ste prihlásený ako: '%(nickname)s'"
 
-#: cps/web.py:1515 cps/web.py:1565
+#: cps/web.py:1519 cps/web.py:1569
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "Profil pre %(name)s"
 
-#: cps/web.py:1531
+#: cps/web.py:1535
 msgid "Success! Profile Updated"
 msgstr "Úspech! Profil bol aktualizovaný"
 
-#: cps/web.py:1535
+#: cps/web.py:1539
 msgid "Oops! An account already exists for this Email."
 msgstr "Účet s touto e-mailovou adresou už existuje."
 
@@ -1857,38 +1876,38 @@ msgid "In Library"
 msgstr "V knižnici"
 
 #: cps/templates/author.html:26 cps/templates/index.html:74
-#: cps/templates/search.html:31 cps/templates/shelf.html:20
+#: cps/templates/search.html:45 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
 msgstr "Triediť podľa dátumu knihy, najnovšie najskôr"
 
 #: cps/templates/author.html:27 cps/templates/index.html:75
-#: cps/templates/search.html:32 cps/templates/shelf.html:21
+#: cps/templates/search.html:46 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
 msgstr "Triediť podľa dátumu knihy, najstaršie najskôr"
 
 #: cps/templates/author.html:28 cps/templates/index.html:76
-#: cps/templates/search.html:33 cps/templates/shelf.html:22
+#: cps/templates/search.html:47 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
 msgstr "Triediť podľa názvu v abecednom poradí"
 
 #: cps/templates/author.html:29 cps/templates/index.html:77
-#: cps/templates/search.html:34 cps/templates/shelf.html:23
+#: cps/templates/search.html:48 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
 msgstr "Triediť podľa názvu v obrátenom abecednom poradí"
 
 #: cps/templates/author.html:30 cps/templates/index.html:80
-#: cps/templates/search.html:37 cps/templates/shelf.html:26
+#: cps/templates/search.html:51 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
 msgstr "Triediť podľa dátumu vydania, najnovšie najskôr"
 
 #: cps/templates/author.html:31 cps/templates/index.html:81
-#: cps/templates/search.html:38 cps/templates/shelf.html:27
+#: cps/templates/search.html:52 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
 msgstr "Triediť podľa dátumu vydania, najstaršie najskôr"
 
 #: cps/templates/author.html:56 cps/templates/author.html:113
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:58
+#: cps/templates/search.html:81 cps/templates/shelf.html:58
 msgid "reduce"
 msgstr "znížiť"
 
@@ -2813,7 +2832,7 @@ msgstr "Pridať do police"
 #: cps/templates/detail.html:313 cps/templates/detail.html:332
 #: cps/templates/feed.xml:131 cps/templates/layout.html:156
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
-#: cps/templates/search.html:22
+#: cps/templates/search.html:22 cps/templates/search.html:35
 msgid "(Public)"
 msgstr "(Verejné)"
 
@@ -2923,12 +2942,12 @@ msgstr "Zotriediť podľa počtu stiahnutí vzostupne"
 msgid "Sort descending according to download count"
 msgstr "Zotriediť podľa počtu stiahnutí zostupne"
 
-#: cps/templates/index.html:78 cps/templates/search.html:35
+#: cps/templates/index.html:78 cps/templates/search.html:49
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
 msgstr "Zotriediť autorov v abecednom poradí"
 
-#: cps/templates/index.html:79 cps/templates/search.html:36
+#: cps/templates/index.html:79 cps/templates/search.html:50
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
 msgstr "Zotriediť autorov v obrátenom abecednom poradí"
@@ -3418,6 +3437,10 @@ msgstr "Vyhľadať výraz:"
 #: cps/templates/search.html:9
 msgid "Results for:"
 msgstr "Výsledky pre:"
+
+#: cps/templates/search.html:29
+msgid "Remove from shelf"
+msgstr ""
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"

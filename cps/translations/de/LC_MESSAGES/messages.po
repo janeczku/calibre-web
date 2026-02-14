@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2025-12-14 14:44+0100\n"
+"POT-Creation-Date: 2026-02-13 19:17+0100\n"
 "PO-Revision-Date: 2025-10-22 19:56+0200\n"
 "Last-Translator: Sebastian Holzer\n"
 "Language: de\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -70,7 +70,7 @@ msgstr "Benutzerdefinierte Spalte Nr. %(column)d ist nicht in Calibre Datenbank 
 msgid "Edit Users"
 msgstr "Benutzer bearbeiten"
 
-#: cps/admin.py:377 cps/opds.py:560 cps/templates/grid.html:14
+#: cps/admin.py:377 cps/opds.py:559 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "Alle"
@@ -308,9 +308,9 @@ msgstr "G-Mail Konto verifiziert."
 
 #: cps/admin.py:1339 cps/admin.py:1342 cps/admin.py:1727 cps/admin.py:1886
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
-#: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:150
-#: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1540
+#: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:144
+#: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:324
+#: cps/shelf.py:398 cps/shelf.py:520 cps/tasks/convert.py:160 cps/web.py:1544
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Datenbankfehler: %(error)s."
@@ -349,7 +349,7 @@ msgstr "Ungültige Laufzeit für Aufgaben spezifiziert"
 msgid "Scheduled tasks settings updated"
 msgstr "Einstellungen für Geplante Aufgaben aktualisiert"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1330
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1334
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuchen."
 
@@ -524,7 +524,7 @@ msgstr "Benutzer 'Guest' kann nicht gelöscht werden"
 msgid "No admin user remaining, can't delete user"
 msgstr "Benutzer kann nicht gelöscht werden, es wäre kein Admin Benutzer übrig"
 
-#: cps/admin.py:2071 cps/web.py:1489
+#: cps/admin.py:2071 cps/web.py:1493
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-Mail kann nicht leer sein und muss gültig sein"
 
@@ -533,7 +533,7 @@ msgstr "E-Mail kann nicht leer sein und muss gültig sein"
 msgid "User '%(nick)s' updated"
 msgstr "Benutzer '%(nick)s' aktualisiert"
 
-#: cps/basic.py:67 cps/search.py:50 cps/search.py:426
+#: cps/basic.py:67 cps/search.py:50 cps/search.py:441
 #: cps/templates/basic_layout.html:23 cps/templates/book_edit.html:242
 #: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
@@ -585,8 +585,8 @@ msgid "Value is missing on request"
 msgstr "Wert fehlt bei Anfrage"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
-#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
-#: cps/web.py:1677
+#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1585 cps/web.py:1631
+#: cps/web.py:1681
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Öffnen des Buches fehlgeschlagen. Datei existiert nicht oder ist nicht zugänglich"
 
@@ -848,7 +848,7 @@ msgstr "Ungültiger Coverdatei-Inhalt"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Es werden nur jpg/jpeg Dateien als Cover unterstützt"
 
-#: cps/helper.py:975 cps/helper.py:1135
+#: cps/helper.py:975 cps/helper.py:1133
 msgid "Cover"
 msgstr "Titelbild"
 
@@ -886,7 +886,7 @@ msgstr "Ausführberechtigung fehlt: %(missing)s"
 msgid "Error executing Calibre"
 msgstr "Fehler beim Ausführen von Calibre"
 
-#: cps/helper.py:1137 cps/templates/admin.html:216
+#: cps/helper.py:1135 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Alle Bücher für Metadaten Backup einreihen"
 
@@ -973,7 +973,7 @@ msgstr "{} Sterne"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:68
 #: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1366
+#: cps/templates/login.html:21 cps/web.py:1370
 msgid "Login"
 msgstr "Login"
 
@@ -1128,38 +1128,38 @@ msgstr "Bücherliste"
 msgid "Show Books List"
 msgstr "Zeige Bücherliste"
 
-#: cps/search.py:201
+#: cps/search.py:214
 msgid "Published after "
 msgstr "Herausgegeben nach dem "
 
-#: cps/search.py:208
+#: cps/search.py:221
 msgid "Published before "
 msgstr "Herausgegeben vor dem "
 
-#: cps/search.py:230
+#: cps/search.py:243
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Bewertung <= %(rating)s"
 
-#: cps/search.py:232
+#: cps/search.py:245
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Bewertung >= %(rating)s"
 
-#: cps/search.py:234
+#: cps/search.py:247
 #, python-format
 msgid "Read Status = '%(status)s'"
 msgstr "Gelesenstatus = '%(status)s'"
 
-#: cps/search.py:351
+#: cps/search.py:366
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "Fehler bei der Suche nach eigenen Spalten, bitte Calibre-Web neustarten"
 
-#: cps/search.py:370 cps/search.py:402 cps/templates/layout.html:57
+#: cps/search.py:385 cps/search.py:417 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
-#: cps/shelf.py:49 cps/shelf.py:111
+#: cps/shelf.py:49 cps/shelf.py:111 cps/shelf.py:157
 msgid "Invalid shelf specified"
 msgstr "Ungültiges Bücherregal angegeben"
 
@@ -1183,92 +1183,111 @@ msgid "Book has been added to shelf: %(sname)s"
 msgstr "Das Buch wurde zum Bücherregal %(sname)s hinzugefügt"
 
 #: cps/shelf.py:116
+msgid "You are not allowed to remove a book from the shelf"
+msgstr ""
+
+#: cps/shelf.py:129
+#, python-format
+msgid "No Books are part of the shelf: %(name)s"
+msgstr ""
+
+#: cps/shelf.py:140
+#, python-format
+msgid "Books have been removed from shelf: %(sname)s"
+msgstr ""
+
+#: cps/shelf.py:147
+#, python-format
+msgid "Could not remove books from shelf: %(sname)s"
+msgstr ""
+
+#: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
 msgstr "Keine Erlaubnis Bücher zu diesem Bücherregal hinzuzufügen"
 
-#: cps/shelf.py:134
+#: cps/shelf.py:178
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Bücher sind bereits Teil des Bücherregals %(name)s"
 
-#: cps/shelf.py:146
+#: cps/shelf.py:190
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Bücher wurden zum Bücherregal %(sname)s hinzugefügt"
 
-#: cps/shelf.py:153
+#: cps/shelf.py:197
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Bücher konnten nicht zum Bücherregal %(sname)s hinzugefügt werden"
 
-#: cps/shelf.py:199
+#: cps/shelf.py:243
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Das Buch wurde aus dem Bücherregal: %(sname)s entfernt"
 
-#: cps/shelf.py:208
+#: cps/shelf.py:252
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "Sie haben keine Berechtigung um Bücher aus diesem Bücherregal zu löschen"
 
-#: cps/shelf.py:218 cps/templates/layout.html:159
+#: cps/shelf.py:262 cps/templates/layout.html:159
 msgid "Create a Shelf"
 msgstr "Bücherregal erzeugen"
 
-#: cps/shelf.py:226
+#: cps/shelf.py:270
 msgid "Sorry you are not allowed to edit this shelf"
 msgstr "Sie dürfen dieses Bücherregal nicht editieren"
 
-#: cps/shelf.py:228
+#: cps/shelf.py:272
 msgid "Edit a shelf"
 msgstr "Bücherregal editieren"
 
-#: cps/shelf.py:237
+#: cps/shelf.py:281
 msgid "Error deleting Shelf"
 msgstr "Fehler beim Löschen des Bücherregals"
 
-#: cps/shelf.py:239
+#: cps/shelf.py:283
 msgid "Shelf successfully deleted"
 msgstr "Bücherregal erfolgreich gelöscht"
 
-#: cps/shelf.py:289
+#: cps/shelf.py:333
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Reihenfolge in Bücherregal '%(name)s' verändern"
 
-#: cps/shelf.py:324
+#: cps/shelf.py:368
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr "Sie haben keine Berechtigung um ein öffentliches Bücherregal zu erzeugen"
 
-#: cps/shelf.py:341
+#: cps/shelf.py:385
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Bücherregal %(title)s erzeugt"
 
-#: cps/shelf.py:344
+#: cps/shelf.py:388
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Bücherregal %(title)s verändert"
 
-#: cps/shelf.py:358
+#: cps/shelf.py:402
 msgid "There was an error"
 msgstr "Es trat ein Fehler auf"
 
-#: cps/shelf.py:380
+#: cps/shelf.py:424
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr "Es existiert bereit ein öffentliches Bücherregal mit dem Namen '%(title)s'."
 
-#: cps/shelf.py:391
+#: cps/shelf.py:435
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "Es existiert bereit ein privates Bücherregal mit dem Namen '%(title)s'."
 
-#: cps/shelf.py:481
+#: cps/shelf.py:525
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Bücherregal: '%(name)s'"
 
-#: cps/shelf.py:487
+#: cps/shelf.py:531
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Fehler beim Öffnen des Bücherregals. Bücherregal exisitert nicht oder ist nicht zugänglich"
 
@@ -1423,80 +1442,80 @@ msgstr "Bitte eine Minute warten vor der Registrierung des nächsten Benutzers"
 #: cps/templates/layout.html:69 cps/templates/layout.html:104
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1292
 #: cps/web.py:1296 cps/web.py:1301 cps/web.py:1305 cps/web.py:1311
-#: cps/web.py:1331 cps/web.py:1335 cps/web.py:1348 cps/web.py:1351
+#: cps/web.py:1335 cps/web.py:1339 cps/web.py:1352 cps/web.py:1355
 msgid "Register"
 msgstr "Registrieren"
 
-#: cps/web.py:1295 cps/web.py:1398
+#: cps/web.py:1295 cps/web.py:1402
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr "Verbindugnsfehler zu Limiter Backend, bitte Administrator kontaktieren"
 
-#: cps/web.py:1300 cps/web.py:1347
+#: cps/web.py:1300 cps/web.py:1351
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Der E-Mail Server ist nicht konfiguriert, bitte den Administrator kontaktieren."
 
-#: cps/web.py:1333
+#: cps/web.py:1337
 msgid "Oops! Your Email is not allowed."
 msgstr "Diese E-Mail ist nicht für die Registrierung zugelassen."
 
-#: cps/web.py:1336
+#: cps/web.py:1340
 msgid "Success! Confirmation Email has been sent."
 msgstr "Eine Bestätigungs-E-Mail wurde an deinen E-Mail Account versendet."
 
-#: cps/web.py:1381 cps/web.py:1404
+#: cps/web.py:1385 cps/web.py:1408
 msgid "Cannot activate LDAP authentication"
 msgstr "LDAP-Authentifizierung kann nicht aktiviert werden"
 
-#: cps/web.py:1394
+#: cps/web.py:1398
 msgid "Please wait one minute before next login"
 msgstr "Bitte eine Minute vor dem nächsten Loginversuch warten"
 
-#: cps/web.py:1413
+#: cps/web.py:1417
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Du bist nun eingeloggt als '%(nickname)s'"
 
-#: cps/web.py:1420
+#: cps/web.py:1424
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Fallback Login als: '%(nickname)s', LDAP Server ist nicht erreichbar, oder der Nutzer ist unbekannt"
 
-#: cps/web.py:1425
+#: cps/web.py:1429
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Login nicht erfolgreich: %(message)s"
 
-#: cps/web.py:1429 cps/web.py:1454
+#: cps/web.py:1433 cps/web.py:1458
 msgid "Wrong Username or Password"
 msgstr "Falscher Benutzername oder Passwort"
 
-#: cps/web.py:1436
+#: cps/web.py:1440
 msgid "New Password was sent to your email address"
 msgstr "Das neue Passwort wurde an die E-Mail Adresse verschickt"
 
-#: cps/web.py:1440
+#: cps/web.py:1444
 msgid "An unknown error occurred. Please try again later."
 msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuchen."
 
-#: cps/web.py:1442
+#: cps/web.py:1446
 msgid "Please enter valid username to reset password"
 msgstr "Bitte einen gültigen Benutzernamen zum Zurücksetzen des Passworts angeben"
 
-#: cps/web.py:1450
+#: cps/web.py:1454
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Du bist nun eingeloggt als: '%(nickname)s'"
 
-#: cps/web.py:1515 cps/web.py:1565
+#: cps/web.py:1519 cps/web.py:1569
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s's Profil"
 
-#: cps/web.py:1531
+#: cps/web.py:1535
 msgid "Success! Profile Updated"
 msgstr "Profil aktualisiert"
 
-#: cps/web.py:1535
+#: cps/web.py:1539
 msgid "Oops! An account already exists for this Email."
 msgstr "Es existiert bereits ein Benutzer für diese E-Mailadresse."
 
@@ -1857,38 +1876,38 @@ msgid "In Library"
 msgstr "In Bibliothek"
 
 #: cps/templates/author.html:26 cps/templates/index.html:74
-#: cps/templates/search.html:31 cps/templates/shelf.html:20
+#: cps/templates/search.html:45 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
 msgstr "Sortiere nach Buchdatum, neuestes zuerst"
 
 #: cps/templates/author.html:27 cps/templates/index.html:75
-#: cps/templates/search.html:32 cps/templates/shelf.html:21
+#: cps/templates/search.html:46 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
 msgstr "Sortiere nach Buchdatum, ältestes zuerst"
 
 #: cps/templates/author.html:28 cps/templates/index.html:76
-#: cps/templates/search.html:33 cps/templates/shelf.html:22
+#: cps/templates/search.html:47 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
 msgstr "Sortiere Titel in alphabetischer Reihenfolge"
 
 #: cps/templates/author.html:29 cps/templates/index.html:77
-#: cps/templates/search.html:34 cps/templates/shelf.html:23
+#: cps/templates/search.html:48 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
 msgstr "Sortiere Titel in umgekehrt alphabetischer Reihenfolge"
 
 #: cps/templates/author.html:30 cps/templates/index.html:80
-#: cps/templates/search.html:37 cps/templates/shelf.html:26
+#: cps/templates/search.html:51 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
 msgstr "Sortiere nach Herausgabedatum, neueste zuerst"
 
 #: cps/templates/author.html:31 cps/templates/index.html:81
-#: cps/templates/search.html:38 cps/templates/shelf.html:27
+#: cps/templates/search.html:52 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
 msgstr "Sortiere nach Herausgabedatum, älteste zuerst"
 
 #: cps/templates/author.html:56 cps/templates/author.html:113
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:58
+#: cps/templates/search.html:81 cps/templates/shelf.html:58
 msgid "reduce"
 msgstr "Reduzieren"
 
@@ -2813,7 +2832,7 @@ msgstr "Zu Bücherregal hinzufügen"
 #: cps/templates/detail.html:313 cps/templates/detail.html:332
 #: cps/templates/feed.xml:131 cps/templates/layout.html:156
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
-#: cps/templates/search.html:22
+#: cps/templates/search.html:22 cps/templates/search.html:35
 msgid "(Public)"
 msgstr "(Öffentlich)"
 
@@ -2923,12 +2942,12 @@ msgstr "Aufsteigend nach Downloadzahlen sortieren"
 msgid "Sort descending according to download count"
 msgstr "Absteigend nach Downloadzahlen sortieren"
 
-#: cps/templates/index.html:78 cps/templates/search.html:35
+#: cps/templates/index.html:78 cps/templates/search.html:49
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
 msgstr "Sortiere Autoren in alphabetischer Reihenfolge"
 
-#: cps/templates/index.html:79 cps/templates/search.html:36
+#: cps/templates/index.html:79 cps/templates/search.html:50
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
 msgstr "Sortiere Autoren in umgekehrt alphabetischer Reihenfolge"
@@ -3181,7 +3200,7 @@ msgstr "Sepia"
 
 #: cps/templates/read.html:95
 msgid "Amber"
-msgstr ""
+msgstr "Bernstein"
 
 #: cps/templates/read.html:97
 msgid "Black"
@@ -3193,11 +3212,11 @@ msgstr "Text umbrechen, wenn Seitenleiste geöffnet ist."
 
 #: cps/templates/read.html:114
 msgid "Show pages count"
-msgstr ""
+msgstr "Zeige Seitenanzahl"
 
 #: cps/templates/read.html:118
 msgid "Font Size"
-msgstr ""
+msgstr "Schriftgröße"
 
 #: cps/templates/read.html:126
 msgid "Font"
@@ -3418,6 +3437,10 @@ msgstr "Suchbegriff:"
 #: cps/templates/search.html:9
 msgid "Results for:"
 msgstr "Ergebnisse für:"
+
+#: cps/templates/search.html:29
+msgid "Remove from shelf"
+msgstr ""
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"

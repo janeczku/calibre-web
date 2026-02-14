@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-14 14:44+0100\n"
+"POT-Creation-Date: 2026-02-13 19:17+0100\n"
 "PO-Revision-Date: 2025-12-06 13:53+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.15.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -70,7 +70,7 @@ msgstr "自定义列号：%(column)d 在 Calibre 数据库中不存在"
 msgid "Edit Users"
 msgstr "管理用户"
 
-#: cps/admin.py:377 cps/opds.py:560 cps/templates/grid.html:14
+#: cps/admin.py:377 cps/opds.py:559 cps/templates/grid.html:14
 #: cps/templates/list.html:13
 msgid "All"
 msgstr "全部"
@@ -308,9 +308,9 @@ msgstr "Gmail 账户验证成功。"
 
 #: cps/admin.py:1339 cps/admin.py:1342 cps/admin.py:1727 cps/admin.py:1886
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
-#: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:150
-#: cps/shelf.py:193 cps/shelf.py:243 cps/shelf.py:280 cps/shelf.py:354
-#: cps/shelf.py:476 cps/tasks/convert.py:160 cps/web.py:1540
+#: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:144
+#: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:324
+#: cps/shelf.py:398 cps/shelf.py:520 cps/tasks/convert.py:160 cps/web.py:1544
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "数据库错误：%(error)s。"
@@ -349,7 +349,7 @@ msgstr "指定任务的持续时间无效"
 msgid "Scheduled tasks settings updated"
 msgstr "已更新计划任务设置"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1330
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1334
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
@@ -524,7 +524,7 @@ msgstr "无法删除访客用户"
 msgid "No admin user remaining, can't delete user"
 msgstr "管理员账户不存在，无法删除用户"
 
-#: cps/admin.py:2071 cps/web.py:1489
+#: cps/admin.py:2071 cps/web.py:1493
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "电子邮件地址不能为空，并且必须是有效的电子邮件"
 
@@ -533,7 +533,7 @@ msgstr "电子邮件地址不能为空，并且必须是有效的电子邮件"
 msgid "User '%(nick)s' updated"
 msgstr "用户“%(nick)s”已更新"
 
-#: cps/basic.py:67 cps/search.py:50 cps/search.py:426
+#: cps/basic.py:67 cps/search.py:50 cps/search.py:441
 #: cps/templates/basic_layout.html:23 cps/templates/book_edit.html:242
 #: cps/templates/feed.xml:34 cps/templates/index.xml:12
 #: cps/templates/layout.html:46 cps/templates/layout.html:49
@@ -585,8 +585,8 @@ msgid "Value is missing on request"
 msgstr "请求中缺少数值"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
-#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1581 cps/web.py:1627
-#: cps/web.py:1677
+#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1585 cps/web.py:1631
+#: cps/web.py:1681
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！所选书籍无法打开。文件不存在或者文件不可访问"
 
@@ -848,7 +848,7 @@ msgstr "封面文件内容无效"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
-#: cps/helper.py:975 cps/helper.py:1135
+#: cps/helper.py:975 cps/helper.py:1133
 msgid "Cover"
 msgstr "封面"
 
@@ -886,7 +886,7 @@ msgstr "缺少执行权限: %(missing)s"
 msgid "Error executing Calibre"
 msgstr "执行 Calibre 时出错"
 
-#: cps/helper.py:1137 cps/templates/admin.html:216
+#: cps/helper.py:1135 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "将所有书籍加入元数据备份队列"
 
@@ -973,7 +973,7 @@ msgstr "{} 星"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:68
 #: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1366
+#: cps/templates/login.html:21 cps/web.py:1370
 msgid "Login"
 msgstr "登录"
 
@@ -1128,38 +1128,38 @@ msgstr "书籍列表"
 msgid "Show Books List"
 msgstr "显示书籍列表"
 
-#: cps/search.py:201
+#: cps/search.py:214
 msgid "Published after "
 msgstr "出版时间晚于 "
 
-#: cps/search.py:208
+#: cps/search.py:221
 msgid "Published before "
 msgstr "出版时间早于 "
 
-#: cps/search.py:230
+#: cps/search.py:243
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "评分 <= %(rating)s"
 
-#: cps/search.py:232
+#: cps/search.py:245
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "评分 >= %(rating)s"
 
-#: cps/search.py:234
+#: cps/search.py:247
 #, python-format
 msgid "Read Status = '%(status)s'"
 msgstr "阅读状态 = '%(status)s'"
 
-#: cps/search.py:351
+#: cps/search.py:366
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr "搜索自定义栏目时出错，请重启 Calibre-Web"
 
-#: cps/search.py:370 cps/search.py:402 cps/templates/layout.html:57
+#: cps/search.py:385 cps/search.py:417 cps/templates/layout.html:57
 msgid "Advanced Search"
 msgstr "高级搜索"
 
-#: cps/shelf.py:49 cps/shelf.py:111
+#: cps/shelf.py:49 cps/shelf.py:111 cps/shelf.py:157
 msgid "Invalid shelf specified"
 msgstr "指定的书架无效"
 
@@ -1183,92 +1183,111 @@ msgid "Book has been added to shelf: %(sname)s"
 msgstr "此书籍已被添加到书架：%(sname)s"
 
 #: cps/shelf.py:116
+msgid "You are not allowed to remove a book from the shelf"
+msgstr "您没有权限从书架中删除书籍"
+
+#: cps/shelf.py:129
+#, python-format
+msgid "No Books are part of the shelf: %(name)s"
+msgstr "书架 %(name)s 中没有书籍"
+
+#: cps/shelf.py:140
+#, python-format
+msgid "Books have been removed from shelf: %(sname)s"
+msgstr "书籍已从书架 %(sname)s 中删除"
+
+#: cps/shelf.py:147
+#, python-format
+msgid "Could not remove books from shelf: %(sname)s"
+msgstr "不能从书架 %(sname)s 中删除书籍"
+
+#: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
 msgstr "您没有向书架添加书籍的权限"
 
-#: cps/shelf.py:134
+#: cps/shelf.py:178
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "书籍已经在书架 %(name)s 中了"
 
-#: cps/shelf.py:146
+#: cps/shelf.py:190
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "书籍已经被添加到书架 %(sname)s 中"
 
-#: cps/shelf.py:153
+#: cps/shelf.py:197
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "无法添加书籍到书架：%(sname)s"
 
-#: cps/shelf.py:199
+#: cps/shelf.py:243
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "此书已从书架 %(sname)s 中删除"
 
-#: cps/shelf.py:208
+#: cps/shelf.py:252
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "抱歉，您没有从这个书架删除书籍的权限"
 
-#: cps/shelf.py:218 cps/templates/layout.html:159
+#: cps/shelf.py:262 cps/templates/layout.html:159
 msgid "Create a Shelf"
 msgstr "创建书架"
 
-#: cps/shelf.py:226
+#: cps/shelf.py:270
 msgid "Sorry you are not allowed to edit this shelf"
 msgstr "对不起，您没有编辑这个书架的权限"
 
-#: cps/shelf.py:228
+#: cps/shelf.py:272
 msgid "Edit a shelf"
 msgstr "编辑书架"
 
-#: cps/shelf.py:237
+#: cps/shelf.py:281
 msgid "Error deleting Shelf"
 msgstr "删除书架时出错"
 
-#: cps/shelf.py:239
+#: cps/shelf.py:283
 msgid "Shelf successfully deleted"
 msgstr "书架已成功删除"
 
-#: cps/shelf.py:289
+#: cps/shelf.py:333
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "修改书架 %(name)s 顺序"
 
-#: cps/shelf.py:324
+#: cps/shelf.py:368
 msgid "Sorry you are not allowed to create a public shelf"
 msgstr "抱歉，您没有创建公开书架的权限"
 
-#: cps/shelf.py:341
+#: cps/shelf.py:385
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "书架 %(title)s 已创建"
 
-#: cps/shelf.py:344
+#: cps/shelf.py:388
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "书架 %(title)s 已修改"
 
-#: cps/shelf.py:358
+#: cps/shelf.py:402
 msgid "There was an error"
 msgstr "发生错误"
 
-#: cps/shelf.py:380
+#: cps/shelf.py:424
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr "公共书架：%(title)s 已经存在已经存在。"
 
-#: cps/shelf.py:391
+#: cps/shelf.py:435
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr "私有书架：%(title)s 已经存在已经存在。"
 
-#: cps/shelf.py:481
+#: cps/shelf.py:525
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "书架：%(name)s"
 
-#: cps/shelf.py:487
+#: cps/shelf.py:531
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打开书架出错。书架不存在或不可访问"
 
@@ -1423,80 +1442,80 @@ msgstr "请等待一分钟注册下一个用户"
 #: cps/templates/layout.html:69 cps/templates/layout.html:104
 #: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1292
 #: cps/web.py:1296 cps/web.py:1301 cps/web.py:1305 cps/web.py:1311
-#: cps/web.py:1331 cps/web.py:1335 cps/web.py:1348 cps/web.py:1351
+#: cps/web.py:1335 cps/web.py:1339 cps/web.py:1352 cps/web.py:1355
 msgid "Register"
 msgstr "注册"
 
-#: cps/web.py:1295 cps/web.py:1398
+#: cps/web.py:1295 cps/web.py:1402
 msgid "Connection error to limiter backend, please contact your administrator"
 msgstr "限制器后台连接错误，请联系管理员"
 
-#: cps/web.py:1300 cps/web.py:1347
+#: cps/web.py:1300 cps/web.py:1351
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "邮件服务未配置，请联系网站管理员。"
 
-#: cps/web.py:1333
+#: cps/web.py:1337
 msgid "Oops! Your Email is not allowed."
 msgstr "您的电子邮件不允许注册。"
 
-#: cps/web.py:1336
+#: cps/web.py:1340
 msgid "Success! Confirmation Email has been sent."
 msgstr "确认邮件已经发送到您的邮箱。"
 
-#: cps/web.py:1381 cps/web.py:1404
+#: cps/web.py:1385 cps/web.py:1408
 msgid "Cannot activate LDAP authentication"
 msgstr "无法激活 LDAP 认证"
 
-#: cps/web.py:1394
+#: cps/web.py:1398
 msgid "Please wait one minute before next login"
 msgstr "下次登录前请等待一分钟"
 
-#: cps/web.py:1413
+#: cps/web.py:1417
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1420
+#: cps/web.py:1424
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "后备登录“%(nickname)s”：无法访问 LDAP 服务器，或用户未知"
 
-#: cps/web.py:1425
+#: cps/web.py:1429
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "无法登录：%(message)s"
 
-#: cps/web.py:1429 cps/web.py:1454
+#: cps/web.py:1433 cps/web.py:1458
 msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
-#: cps/web.py:1436
+#: cps/web.py:1440
 msgid "New Password was sent to your email address"
 msgstr "新密码已发送到您的邮箱"
 
-#: cps/web.py:1440
+#: cps/web.py:1444
 msgid "An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
-#: cps/web.py:1442
+#: cps/web.py:1446
 msgid "Please enter valid username to reset password"
 msgstr "请输入有效的用户名进行密码重置"
 
-#: cps/web.py:1450
+#: cps/web.py:1454
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "您现在已以“%(nickname)s”身份登录"
 
-#: cps/web.py:1515 cps/web.py:1565
+#: cps/web.py:1519 cps/web.py:1569
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "%(name)s 的用户配置"
 
-#: cps/web.py:1531
+#: cps/web.py:1535
 msgid "Success! Profile Updated"
 msgstr "资料已更新"
 
-#: cps/web.py:1535
+#: cps/web.py:1539
 msgid "Oops! An account already exists for this Email."
 msgstr "使用此邮箱的账号已经存在。"
 
@@ -1857,38 +1876,38 @@ msgid "In Library"
 msgstr "在书库"
 
 #: cps/templates/author.html:26 cps/templates/index.html:74
-#: cps/templates/search.html:31 cps/templates/shelf.html:20
+#: cps/templates/search.html:45 cps/templates/shelf.html:20
 msgid "Sort according to book date, newest first"
 msgstr "按书籍日期排序，最新优先"
 
 #: cps/templates/author.html:27 cps/templates/index.html:75
-#: cps/templates/search.html:32 cps/templates/shelf.html:21
+#: cps/templates/search.html:46 cps/templates/shelf.html:21
 msgid "Sort according to book date, oldest first"
 msgstr "按书籍日期排序，最旧优先"
 
 #: cps/templates/author.html:28 cps/templates/index.html:76
-#: cps/templates/search.html:33 cps/templates/shelf.html:22
+#: cps/templates/search.html:47 cps/templates/shelf.html:22
 msgid "Sort title in alphabetical order"
 msgstr "按标题按字母顺序排序"
 
 #: cps/templates/author.html:29 cps/templates/index.html:77
-#: cps/templates/search.html:34 cps/templates/shelf.html:23
+#: cps/templates/search.html:48 cps/templates/shelf.html:23
 msgid "Sort title in reverse alphabetical order"
 msgstr "按标题逆字母顺序排序"
 
 #: cps/templates/author.html:30 cps/templates/index.html:80
-#: cps/templates/search.html:37 cps/templates/shelf.html:26
+#: cps/templates/search.html:51 cps/templates/shelf.html:26
 msgid "Sort according to publishing date, newest first"
 msgstr "按出版日期排序，最新优先"
 
 #: cps/templates/author.html:31 cps/templates/index.html:81
-#: cps/templates/search.html:38 cps/templates/shelf.html:27
+#: cps/templates/search.html:52 cps/templates/shelf.html:27
 msgid "Sort according to publishing date, oldest first"
 msgstr "按出版日期排序，最旧优先"
 
 #: cps/templates/author.html:56 cps/templates/author.html:113
 #: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:67 cps/templates/shelf.html:58
+#: cps/templates/search.html:81 cps/templates/shelf.html:58
 msgid "reduce"
 msgstr "减少"
 
@@ -2813,7 +2832,7 @@ msgstr "添加到书架"
 #: cps/templates/detail.html:313 cps/templates/detail.html:332
 #: cps/templates/feed.xml:131 cps/templates/layout.html:156
 #: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
-#: cps/templates/search.html:22
+#: cps/templates/search.html:22 cps/templates/search.html:35
 msgid "(Public)"
 msgstr "(公共)"
 
@@ -2923,12 +2942,12 @@ msgstr "按下载数排序"
 msgid "Sort descending according to download count"
 msgstr "按下载数逆序排序"
 
-#: cps/templates/index.html:78 cps/templates/search.html:35
+#: cps/templates/index.html:78 cps/templates/search.html:49
 #: cps/templates/shelf.html:24
 msgid "Sort authors in alphabetical order"
 msgstr "按作者字母顺序排序"
 
-#: cps/templates/index.html:79 cps/templates/search.html:36
+#: cps/templates/index.html:79 cps/templates/search.html:50
 #: cps/templates/shelf.html:25
 msgid "Sort authors in reverse alphabetical order"
 msgstr "按作者逆字母顺序排序"
@@ -3181,7 +3200,7 @@ msgstr "棕色"
 
 #: cps/templates/read.html:95
 msgid "Amber"
-msgstr ""
+msgstr "琥珀色"
 
 #: cps/templates/read.html:97
 msgid "Black"
@@ -3193,11 +3212,11 @@ msgstr "打开侧栏时重排文本。"
 
 #: cps/templates/read.html:114
 msgid "Show pages count"
-msgstr ""
+msgstr "显示页数"
 
 #: cps/templates/read.html:118
 msgid "Font Size"
-msgstr ""
+msgstr "字体大小"
 
 #: cps/templates/read.html:126
 msgid "Font"
@@ -3418,6 +3437,10 @@ msgstr "搜索项："
 #: cps/templates/search.html:9
 msgid "Results for:"
 msgstr "结果："
+
+#: cps/templates/search.html:29
+msgid "Remove from shelf"
+msgstr "从书架中移除"
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"

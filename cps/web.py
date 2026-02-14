@@ -1319,6 +1319,10 @@ def register_post():
         content.role = config.config_default_role
         content.locale = config.config_default_locale
         content.sidebar_view = config.config_default_show
+        content.allowed_tags = config.config_allowed_tags
+        content.denied_tags = config.config_denied_tags
+        content.allowed_column_value = config.config_allowed_column_value
+        content.denied_column_value = config.config_denied_column_value
         try:
             ub.session.add(content)
             ub.session.commit()

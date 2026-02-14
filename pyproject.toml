@@ -7,10 +7,9 @@ name = "calibreweb"
 description = "Web app for browsing, reading and downloading eBooks stored in a Calibre database."
 authors = [{name = "@OzzieIsaacs", email = "Ozzie.Fernandez.Isaacs@googlemail.com"}]
 maintainers = [{name = "@OzzieIsaacs"}]
-license = {text = "GPLv3+"}
+license = "GPL-3.0-or-later"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: GNU Affero General Public License v3",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -115,7 +114,7 @@ comics = [
     "comicapi>=2.2.0,<3.3.0",
 ]
 kobo = [
-    "jsonschema>=3.2.0,<4.24.0",
+    "jsonschema>=3.2.0,<4.30.0",
 ]
 
 [project.scripts]

@@ -7,7 +7,7 @@
     <title>{{_('epub Reader')}} | {{title}}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     {% if g.google_site_verification|length > 0 %}
     <meta name="google-site-verification" content="{{g.google_site_verification}}">
     {% endif %}
@@ -82,7 +82,7 @@
         <div class="md-content">
             <h3>{{_('Settings')}}</h3>
             <div class="form-group themes" id="themes">
-                {{_('Choose a theme below:')}}}<br />
+                {{_('Choose a theme below:')}}<br />
 
           <!-- Hardcoded a tick in the light theme button because it is the "default" theme. Need to find a way to do this dynamically on startup-->
                 <button type="button" id="lightTheme" class="lightTheme" onclick="selectTheme(this.id)"><span
