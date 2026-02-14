@@ -18,7 +18,7 @@
 
 import traceback
 
-from flask import render_template, request, flash, abort
+from flask import render_template, request, flash, make_response
 from flask_limiter import RateLimitExceeded
 from flask_babel import gettext as _
 from werkzeug.exceptions import default_exceptions
@@ -91,7 +91,6 @@ def init_errorhandler():
             return error_http(FailedDependency())
 
 
-
 @app.errorhandler(RateLimitExceeded)
 def handle_rate_limit(__):
     log.error("Rate limit exceeded {}".format(request.endpoint))
@@ -106,5 +105,6 @@ def handle_rate_limit(__):
     elif "opds" in request.endpoint:
         return auth.auth_error_callback(429)
     else:
-        return abort(429)
+        return make_response('', 429)
+
 

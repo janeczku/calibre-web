@@ -111,7 +111,8 @@ web_server = WebServer()
 updater_thread = Updater()
 
 if limiter_present:
-    limiter = Limiter(key_func=True, headers_enabled=True, default_limits=[], swallow_errors=False)
+    limiter = Limiter(key_func=True, headers_enabled=True, in_memory_fallback_enabled=True, default_limits=[],
+                      swallow_errors=True)
 else:
     limiter = None
 

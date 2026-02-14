@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2026-02-13 19:17+0100\n"
+"POT-Creation-Date: 2026-02-14 11:23+0100\n"
 "PO-Revision-Date: 2021-05-13 11:00+0000\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -683,6 +683,22 @@ msgstr "Det gick inte att lagra filen %(file)s."
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Filformatet %(ext)s lades till %(book)s"
+
+#: cps/error_handler.py:98
+msgid "Please wait one minute to register next user"
+msgstr ""
+
+#: cps/error_handler.py:99 cps/templates/layout.html:69
+#: cps/templates/layout.html:104 cps/templates/login.html:27
+#: cps/templates/register.html:17 cps/web.py:1301 cps/web.py:1305
+#: cps/web.py:1311 cps/web.py:1335 cps/web.py:1339 cps/web.py:1352
+#: cps/web.py:1355
+msgid "Register"
+msgstr "Registrera"
+
+#: cps/error_handler.py:103
+msgid "Please wait one minute before next login"
+msgstr ""
 
 #: cps/gdrive.py:58
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
@@ -1435,21 +1451,6 @@ msgstr "Det gick inte att skicka den här boken: %(res)s"
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr ""
 
-#: cps/web.py:1291
-msgid "Please wait one minute to register next user"
-msgstr ""
-
-#: cps/templates/layout.html:69 cps/templates/layout.html:104
-#: cps/templates/login.html:27 cps/templates/register.html:17 cps/web.py:1292
-#: cps/web.py:1296 cps/web.py:1301 cps/web.py:1305 cps/web.py:1311
-#: cps/web.py:1335 cps/web.py:1339 cps/web.py:1352 cps/web.py:1355
-msgid "Register"
-msgstr "Registrera"
-
-#: cps/web.py:1295 cps/web.py:1402
-msgid "Connection error to limiter backend, please contact your administrator"
-msgstr ""
-
 #: cps/web.py:1300 cps/web.py:1351
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "E-postservern är inte konfigurerad, kontakta din administratör!"
@@ -1464,10 +1465,6 @@ msgstr "Bekräftelsemail skickades till ditt e-postkonto."
 
 #: cps/web.py:1385 cps/web.py:1408
 msgid "Cannot activate LDAP authentication"
-msgstr ""
-
-#: cps/web.py:1398
-msgid "Please wait one minute before next login"
 msgstr ""
 
 #: cps/web.py:1417
