@@ -30,7 +30,7 @@ from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
 from .cw_login import login_user, logout_user, current_user
-from flask_limiter import RateLimitExceeded
+# from flask_limiter import RateLimitExceeded
 from flask_limiter.util import get_remote_address
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, false, not_, and_, or_
@@ -1285,15 +1285,15 @@ def register_post():
     if not config.config_public_reg:
         abort(404)
     to_save = request.form.to_dict()
-    try:
-        limiter.check()
-    except RateLimitExceeded:
-        flash(_(u"Please wait one minute to register next user"), category="error")
-        return render_title_template('register.html', config=config, title=_("Register"), page="register")
-    except (ConnectionError, Exception) as e:
-        log.error("Connection error to limiter backend: %s", e)
-        flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
-        return render_title_template('register.html', config=config, title=_("Register"), page="register")
+    #try:
+    #    limiter.check()
+    #except RateLimitExceeded:
+    #    flash(_(u"Please wait one minute to register next user"), category="error")
+    #    return render_title_template('register.html', config=config, title=_("Register"), page="register")
+    #except (ConnectionError, Exception) as e:
+    #    log.error("Connection error to limiter backend: %s", e)
+    #    flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
+    #    return render_title_template('register.html', config=config, title=_("Register"), page="register")
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if not config.get_mail_server_configured():
@@ -1388,15 +1388,15 @@ def login():
 def login_post():
     form = request.form.to_dict()
     username = strip_whitespaces(form.get('username', "")).lower().replace("\n","").replace("\r","")
-    try:
-        limiter.check()
-    except RateLimitExceeded:
-        flash(_("Please wait one minute before next login"), category="error")
-        return render_login(username, form.get("password", ""))
-    except (ConnectionError, Exception) as e:
-        log.error("Connection error to limiter backend: %s", e)
-        flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
-        return render_login(username, form.get("password", ""))
+    #try:
+    #    limiter.check()
+    #except RateLimitExceeded:
+    #    flash(_("Please wait one minute before next login"), category="error")
+    #    return render_login(username, form.get("password", ""))
+    #except (ConnectionError, Exception) as e:
+    #    log.error("Connection error to limiter backend: %s", e)
+    #    flash(_("Connection error to limiter backend, please contact your administrator"), category="error")
+    #    return render_login(username, form.get("password", ""))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:

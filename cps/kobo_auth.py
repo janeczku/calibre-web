@@ -154,13 +154,13 @@ def requires_kobo_auth(f):
     def inner(*args, **kwargs):
         auth_token = get_auth_token()
         if auth_token is not None:
-            try:
-                limiter.check()
-            except RateLimitExceeded:
-                return abort(429)
-            except (ConnectionError, Exception) as e:
-                log.error("Connection error to limiter backend: %s", e)
-                return abort(429)
+            #try:
+            #    limiter.check()
+            #except RateLimitExceeded:
+            #    return abort(429)
+            #except (ConnectionError, Exception) as e:
+            #    log.error("Connection error to limiter backend: %s", e)
+            #    return abort(429)
             user = (
                 ub.session.query(ub.User)
                 .join(ub.RemoteAuthToken)
