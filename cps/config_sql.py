@@ -353,6 +353,14 @@ class ConfigSQL(object):
             db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
+
+        # Environment variables for port always take precedence (for Railway/PaaS platforms)
+        env_port = os.environ.get("CALIBRE_PORT") or os.environ.get("PORT")
+        if env_port:
+            try:
+                self.config_port = int(env_port)
+            except ValueError:
+                pass
         
         from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
