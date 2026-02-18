@@ -43,14 +43,14 @@ def verify_password(username, password):
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
             login_result, error = services.ldap.bind_user(user.name, password)
             if login_result:
-                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
                 return user
             if error is not None:
                 log.error(error)
         else:
-            limiter.check()
+            # limiter.check()
             if check_password_hash(str(user.password), password):
-                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
                 return user
     ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
     log.warning('OPDS Login failed for user "%s" IP-address: %s', username, ip_address)
@@ -120,7 +120,7 @@ def load_user_from_reverse_proxy_header(req):
         if rp_header_username:
             user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == rp_header_username.lower()).first()
             if user:
-                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
                 return user
     return None
 

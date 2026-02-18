@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2026-01-24 20:50:12</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2026-02-18 19:25:49</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-01-25 04:15:44</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-02-19 02:59:10</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 13 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 16 min</p>
         </div>
       </div>
       </div>
@@ -2039,12 +2039,12 @@
     
 
 
-    <tr id="su" class="errorClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c18', 1)">Detail</a>
@@ -2053,27 +2053,26 @@
 
     
     
-        <tr id="et18.1" class="none bg-info">
+        <tr id="ft18.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et18.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et18.1" class="popup_window test_output" style="display:block;">
+                <div id="div_ft18.1" class="popup_window test_output" style="display:block;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_et18.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft18.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 87, in test_load_metadata
-    if results[cont][&#39;source&#39;] == &#39;https://comicvine.gamespot.com/&#39;:
-       ~~~~~~~^^^^^^
-IndexError: list index out of range</pre>
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 220, in test_load_metadata
+    self.assertLessEqual(diff(BytesIO(cover), BytesIO(new_cover), delete_diff_file=True), 0.025)
+AssertionError: 0.04218017335689641 not less than or equal to 0.025</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -4684,11 +4683,11 @@ AssertionError: 30 != 20</pre>
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="skipClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -4761,31 +4760,11 @@ AssertionError: 30 != 20</pre>
     
     
     
-        <tr id="ft52.8" class="none bg-danger">
+        <tr id='pt52.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.8')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft52.8" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft52.8').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 317, in test_sideloaded_book
-    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
-AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182775 difference)</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -5992,9 +5971,9 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>538</td>
-        <td>528</td>
+        <td>529</td>
         <td>2</td>
-        <td>1</td>
+        <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
     </tr>
@@ -6023,7 +6002,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>Platform</th>
-              <td>Linux 6.8.0-90-generic #91-Ubuntu SMP PREEMPT_DYNAMIC Tue Nov 18 14:14:30 UTC 2025 x86_64 x86_64</td>
+              <td>Linux 6.8.0-100-generic #100-Ubuntu SMP PREEMPT_DYNAMIC Tue Jan 13 16:40:06 UTC 2026 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -6041,19 +6020,19 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>babel</th>
-              <td>2.17.0</td>
+              <td>2.18.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>bleach</th>
-              <td>6.2.0</td>
+              <td>6.3.0</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>certifi</th>
-              <td>2025.8.3</td>
+              <td>2026.1.4</td>
               <td>Basic</td>
             </tr>
           
@@ -6065,7 +6044,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>cryptography</th>
-              <td>44.0.3</td>
+              <td>46.0.5</td>
               <td>Basic</td>
             </tr>
           
@@ -6089,7 +6068,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>Flask-Limiter</th>
-              <td>3.12</td>
+              <td>4.1.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6131,13 +6110,13 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>pycountry</th>
-              <td>24.6.1</td>
+              <td>26.2.16</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>pypdf</th>
-              <td>6.4.2</td>
+              <td>6.7.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6155,7 +6134,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>regex</th>
-              <td>2024.11.6</td>
+              <td>2026.1.15</td>
               <td>Basic</td>
             </tr>
           
@@ -6179,7 +6158,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>Unidecode</th>
-              <td>1.3.8</td>
+              <td>1.4.0</td>
               <td>Basic</td>
             </tr>
           
@@ -6203,7 +6182,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestBackupMetadataGdrive</td>
             </tr>
           
@@ -6233,7 +6212,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestCliGdrivedb</td>
             </tr>
           
@@ -6263,7 +6242,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestEbookConvertCalibreGDrive</td>
             </tr>
           
@@ -6293,7 +6272,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestEbookConvertGDriveKepubify</td>
             </tr>
           
@@ -6335,7 +6314,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestEditAuthorsGdrive</td>
             </tr>
           
@@ -6371,7 +6350,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestEditBooksOnGdrive</td>
             </tr>
           
@@ -6413,7 +6392,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestEmbedMetadataGdrive</td>
             </tr>
           
@@ -6443,7 +6422,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
           
             <tr>
               <th>google-api-python-client</th>
-              <td>2.188.0</td>
+              <td>2.190.0</td>
               <td>TestSetupGdrive</td>
             </tr>
           
@@ -6496,8 +6475,8 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
             </tr>
           
             <tr>
-              <th>Flask-SimpleLDAP</th>
-              <td>2.0.0</td>
+              <th>flask-simpleldap</th>
+              <td>2.1.0</td>
               <td>TestLdapLogin</td>
             </tr>
           
@@ -6545,7 +6524,7 @@ AssertionError: 0.01731210309182775 != 0.0 within 0.0001 delta (0.01731210309182
 </div>
 
 <script>
-    drawCircle(528, 2, 1, 7);
+    drawCircle(529, 2, 0, 7);
     showCase(5);
 </script>
 

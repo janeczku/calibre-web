@@ -25,7 +25,7 @@ import sys
 import os
 import mimetypes
 
-from flask import Flask, request
+from flask import Flask
 from flask.sessions import SecureCookieSessionInterface
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
@@ -111,7 +111,8 @@ web_server = WebServer()
 updater_thread = Updater()
 
 if limiter_present:
-    limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=False)
+    limiter = Limiter(key_func=True, headers_enabled=True, in_memory_fallback_enabled=True, default_limits=[],
+                      swallow_errors=True)
 else:
     limiter = None
 

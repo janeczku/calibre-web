@@ -18,7 +18,9 @@
 
 import traceback
 
-from flask import render_template
+from flask import render_template, request, flash, make_response
+from flask_limiter import RateLimitExceeded
+from flask_babel import gettext as _
 from werkzeug.exceptions import default_exceptions
 try:
     from werkzeug.exceptions import FailedDependency
@@ -26,7 +28,10 @@ except ImportError:
     from werkzeug.exceptions import UnprocessableEntity as FailedDependency
 
 from . import config, app, logger, services
-
+from .render_template import render_title_template
+from .web import render_login
+from .usermanagement import auth
+from cps.string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -84,4 +89,22 @@ def init_errorhandler():
         def handle_exception(e):
             log.debug('LDAP server not accessible while trying to login to opds feed')
             return error_http(FailedDependency())
+
+
+@app.errorhandler(RateLimitExceeded)
+def handle_rate_limit(__):
+    log.error("Rate limit exceeded {}".format(request.endpoint))
+    if "register" in request.endpoint:
+        flash(_(u"Please wait one minute to register next user"), category="error")
+        return render_title_template('register.html', config=config, title=_("Register"), page="register")
+    elif "login" in request.endpoint:
+        form = request.form.to_dict()
+        username = strip_whitespaces(form.get('username', "")).lower().replace("\n", "").replace("\r", "")
+        flash(_("Please wait one minute before next login"), category="error")
+        return render_login(username, form.get("password", ""))
+    elif "opds" in request.endpoint:
+        return auth.auth_error_callback(429)
+    else:
+        return make_response('', 429)
+
 
