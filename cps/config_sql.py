@@ -148,6 +148,7 @@ class _Settings(_Base):
     config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
     config_unicode_filename = Column(Boolean, default=False)
+    config_series_in_filename = Column(Boolean, default=False)
     config_embed_metadata = Column(Boolean, default=True)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
