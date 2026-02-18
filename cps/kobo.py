@@ -19,7 +19,6 @@
 
 import base64
 from datetime import datetime, timezone
-from functools import wraps
 import os
 import uuid
 import zipfile
@@ -28,21 +27,30 @@ import json
 from urllib.parse import unquote
 import requests
 
-from flask import Blueprint, request, make_response, jsonify, current_app, url_for, redirect, abort, g
+from flask import (
+    Blueprint,
+    request,
+    make_response,
+    jsonify,
+    current_app,
+    url_for,
+    redirect,
+    abort
+)
+from .cw_login import current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
 from sqlalchemy.exc import StatementError
-from flask_limiter.util import get_remote_address
 
-from .cw_login import current_user, login_user
 from . import config, logger, kobo_auth, db, calibre_db, helper, shelf as shelf_lib, ub, csrf, kobo_sync_status
+from . import isoLanguages, limiter
 from .epub import get_epub_layout
 from .constants import COVER_THUMBNAIL_SMALL, COVER_THUMBNAIL_MEDIUM, COVER_THUMBNAIL_LARGE, BASE_DIR
 from .helper import get_download_link
 from .services import SyncToken as SyncToken
 from .web import download_required
-from . import isoLanguages, limiter
+from .kobo_auth import requires_kobo_auth, get_auth_token
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
@@ -55,33 +63,6 @@ kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
-
-
-def get_auth_token():
-    if "auth_token" in g:
-        return g.get("auth_token")
-    else:
-        return None
-
-
-def requires_kobo_auth(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        auth_token = get_auth_token()
-        if auth_token is not None:
-            user = (
-                ub.session.query(ub.User)
-                .join(ub.RemoteAuthToken)
-                .filter(ub.RemoteAuthToken.auth_token == auth_token).filter(ub.RemoteAuthToken.token_type==1)
-                .first()
-            )
-            if user is not None:
-                login_user(user)
-                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
-                return f(*args, **kwargs)
-        log.debug("Received Kobo request without a recognizable auth token.")
-        return abort(401)
-    return inner
 
 
 def get_store_url_for_current_request():
@@ -1339,5 +1320,3 @@ def NATIVE_KOBO_RESOURCES():
         "userguide_host": "https://ereaderfiles.kobo.com",
         "wishlist_page": "https://www.kobo.com/{region}/{language}/account/wishlist"
     }
-
-limiter.limit("3/minute", key_func=get_remote_address)(kobo)
