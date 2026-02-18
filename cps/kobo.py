@@ -887,14 +887,21 @@ def get_statistics_response(statistics):
     return resp
 
 
+def _clean_progress(value):
+    """Return progress as int if it's a whole number, preserving Kobo device expectations."""
+    if value is not None and value == int(value):
+        return int(value)
+    return value
+
+
 def get_current_bookmark_response(current_bookmark):
     resp = {
         "LastModified": convert_to_kobo_timestamp_string(current_bookmark.last_modified),
     }
     if current_bookmark.progress_percent:
-        resp["ProgressPercent"] = current_bookmark.progress_percent
+        resp["ProgressPercent"] = _clean_progress(current_bookmark.progress_percent)
     if current_bookmark.content_source_progress_percent:
-        resp["ContentSourceProgressPercent"] = current_bookmark.content_source_progress_percent
+        resp["ContentSourceProgressPercent"] = _clean_progress(current_bookmark.content_source_progress_percent)
     if current_bookmark.location_value:
         resp["Location"] = {
             "Value": current_bookmark.location_value,
