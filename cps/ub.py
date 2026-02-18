@@ -449,6 +449,11 @@ class KoboSyncedBooks(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     book_id = Column(Integer)
 
+class KoboCoverMapping(Base):
+    __tablename__ = 'kobo_cover_mappings'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    book_uuid = Column(String)
+    cover_uuid = Column(String)
 # The Kobo ReadingState API keeps track of 4 timestamped entities:
 #   ReadingState, StatusInfo, Statistics, CurrentBookmark
 # Which we map to the following 4 tables:
