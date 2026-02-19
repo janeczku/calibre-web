@@ -1,0 +1,524 @@
+{
+  "shelf_order.html": {
+    "vars": [
+      "entries",
+      "page",
+      "shelf",
+      "title"
+    ],
+    "locations": [
+      "cps/shelf.py:332"
+    ]
+  },
+  "shelf_edit.html": {
+    "vars": [
+      "kobo_sync_enabled",
+      "page",
+      "shelf",
+      "sync_only_selected_shelves",
+      "title"
+    ],
+    "locations": [
+      "cps/shelf.py:403"
+    ]
+  },
+  "<dynamic>": {
+    "vars": [
+      "accept",
+      "constants",
+      "current_time",
+      "entries",
+      "instance",
+      "order",
+      "page",
+      "pagination",
+      "shelf",
+      "sidebar",
+      "simple",
+      "status",
+      "title"
+    ],
+    "locations": [
+      "cps/opds.py:532",
+      "cps/render_template.py:113",
+      "cps/shelf.py:522"
+    ]
+  },
+  "index.html": {
+    "vars": [
+      "entries",
+      "id",
+      "order",
+      "page",
+      "pagination",
+      "random",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:423",
+      "cps/web.py:438",
+      "cps/web.py:450",
+      "cps/web.py:486",
+      "cps/web.py:513",
+      "cps/web.py:586",
+      "cps/web.py:614",
+      "cps/web.py:641",
+      "cps/web.py:668",
+      "cps/web.py:703",
+      "cps/web.py:732",
+      "cps/web.py:777",
+      "cps/web.py:800"
+    ]
+  },
+  "author.html": {
+    "vars": [
+      "author",
+      "entries",
+      "id",
+      "order",
+      "other_books",
+      "page",
+      "pagination",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:550"
+    ]
+  },
+  "book_table.html": {
+    "vars": [
+      "cc",
+      "page",
+      "title",
+      "visiblility"
+    ],
+    "locations": [
+      "cps/web.py:834"
+    ]
+  },
+  "list.html": {
+    "vars": [
+      "charlist",
+      "data",
+      "entries",
+      "folder",
+      "order",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1003",
+      "cps/web.py:1032",
+      "cps/web.py:1077",
+      "cps/web.py:1104",
+      "cps/web.py:1117",
+      "cps/web.py:1145",
+      "cps/web.py:954",
+      "cps/web.py:975"
+    ]
+  },
+  "grid.html": {
+    "vars": [
+      "bodyClass",
+      "charlist",
+      "data",
+      "entries",
+      "folder",
+      "order",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1047"
+    ]
+  },
+  "register.html": {
+    "vars": [
+      "config",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1292",
+      "cps/web.py:1296",
+      "cps/web.py:1301",
+      "cps/web.py:1305",
+      "cps/web.py:1311",
+      "cps/web.py:1335",
+      "cps/web.py:1339",
+      "cps/web.py:1352",
+      "cps/web.py:1355"
+    ]
+  },
+  "login.html": {
+    "vars": [
+      "config",
+      "mail",
+      "next_url",
+      "oauth_check",
+      "page",
+      "password",
+      "title",
+      "username"
+    ],
+    "locations": [
+      "cps/web.py:1369"
+    ]
+  },
+  "user_edit.html": {
+    "vars": [
+      "config",
+      "content",
+      "kobo_support",
+      "languages",
+      "mail_configured",
+      "new_user",
+      "oauth_status",
+      "page",
+      "profile",
+      "registered_oauth",
+      "title",
+      "translations"
+    ],
+    "locations": [
+      "cps/admin.py:1289",
+      "cps/admin.py:1441",
+      "cps/admin.py:1960",
+      "cps/admin.py:2084",
+      "cps/web.py:1513",
+      "cps/web.py:1562"
+    ]
+  },
+  "read.html": {
+    "vars": [
+      "book_format",
+      "bookid",
+      "bookmark",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1600"
+    ]
+  },
+  "readpdf.html": {
+    "vars": [
+      "pdffile",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1604"
+    ]
+  },
+  "readtxt.html": {
+    "vars": [
+      "title",
+      "txtfile"
+    ],
+    "locations": [
+      "cps/web.py:1607"
+    ]
+  },
+  "readdjvu.html": {
+    "vars": [
+      "djvufile",
+      "extension",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1610"
+    ]
+  },
+  "listenmp3.html": {
+    "vars": [
+      "audioformat",
+      "bookmark",
+      "entry",
+      "mp3file"
+    ],
+    "locations": [
+      "cps/web.py:1617"
+    ]
+  },
+  "readcbr.html": {
+    "vars": [
+      "bookmark",
+      "comicfile",
+      "extension",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1628"
+    ]
+  },
+  "detail.html": {
+    "vars": [
+      "books_shelfs",
+      "cc",
+      "entry",
+      "is_xhr",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/web.py:1672"
+    ]
+  },
+  "book_exists_flash.html": {
+    "vars": [
+      "entry"
+    ],
+    "locations": [
+      "cps/editbooks.py:857"
+    ]
+  },
+  "book_edit.html": {
+    "vars": [
+      "authors",
+      "book",
+      "cc",
+      "config",
+      "conversion_formats",
+      "page",
+      "source_formats",
+      "title"
+    ],
+    "locations": [
+      "cps/editbooks.py:1180"
+    ]
+  },
+  "stats.html": {
+    "vars": [
+      "authorcounter",
+      "bookcounter",
+      "categorycounter",
+      "page",
+      "seriecounter",
+      "title",
+      "versions"
+    ],
+    "locations": [
+      "cps/about.py:84"
+    ]
+  },
+  "json.txt": {
+    "vars": [
+      "entry"
+    ],
+    "locations": [
+      "cps/opds.py:453"
+    ]
+  },
+  "admin.html": {
+    "vars": [
+      "allUser",
+      "commit",
+      "config",
+      "feature_support",
+      "page",
+      "schedule_duration",
+      "schedule_time",
+      "title"
+    ],
+    "locations": [
+      "cps/admin.py:230"
+    ]
+  },
+  "config_edit.html": {
+    "vars": [
+      "config",
+      "feature_support",
+      "page",
+      "provider",
+      "title"
+    ],
+    "locations": [
+      "cps/admin.py:249"
+    ]
+  },
+  "config_view_edit.html": {
+    "vars": [
+      "conf",
+      "languages",
+      "page",
+      "readColumns",
+      "restrictColumns",
+      "title",
+      "translations"
+    ],
+    "locations": [
+      "cps/admin.py:287"
+    ]
+  },
+  "user_table.html": {
+    "vars": [
+      "all_roles",
+      "custom_values",
+      "kobo_support",
+      "languages",
+      "page",
+      "sidebar_settings",
+      "tags",
+      "title",
+      "translations",
+      "users",
+      "visiblility"
+    ],
+    "locations": [
+      "cps/admin.py:323"
+    ]
+  },
+  "email_edit.html": {
+    "vars": [
+      "content",
+      "feature_support",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/admin.py:1300"
+    ]
+  },
+  "schedule_edit.html": {
+    "vars": [
+      "config",
+      "duration",
+      "starttime",
+      "title"
+    ],
+    "locations": [
+      "cps/admin.py:1375"
+    ]
+  },
+  "logviewer.html": {
+    "vars": [
+      "accesslog_enable",
+      "log_enable",
+      "logfiles",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/admin.py:1478"
+    ]
+  },
+  "config_db.html": {
+    "vars": [
+      "config",
+      "feature_support",
+      "gdriveError",
+      "gdrivefolders",
+      "page",
+      "show_authenticate_google_drive",
+      "title"
+    ],
+    "locations": [
+      "cps/admin.py:1927"
+    ]
+  },
+  "generate_kobo_auth_url.html": {
+    "vars": [
+      "auth_token",
+      "title",
+      "warning"
+    ],
+    "locations": [
+      "cps/kobo_auth.py:116"
+    ]
+  },
+  "basic_index.html": {
+    "vars": [
+      "adv_searchterm",
+      "entries",
+      "order",
+      "page",
+      "pagination",
+      "query",
+      "result_count",
+      "searchterm",
+      "title"
+    ],
+    "locations": [
+      "cps/basic.py:60"
+    ]
+  },
+  "basic_detail.html": {
+    "vars": [
+      "entry",
+      "is_xhr",
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/basic.py:83"
+    ]
+  },
+  "search.html": {
+    "vars": [
+      "adv_searchterm",
+      "entries",
+      "order",
+      "page",
+      "pagination",
+      "query",
+      "result_count",
+      "searchterm",
+      "title"
+    ],
+    "locations": [
+      "cps/search.py:380",
+      "cps/search.py:434",
+      "cps/search.py:47"
+    ]
+  },
+  "search_form.html": {
+    "vars": [
+      "cc",
+      "extensions",
+      "languages",
+      "page",
+      "series",
+      "shelves",
+      "tags",
+      "title"
+    ],
+    "locations": [
+      "cps/search.py:416"
+    ]
+  },
+  "http_error.html": {
+    "vars": [
+      "error_code",
+      "error_name",
+      "error_stack",
+      "goto_admin",
+      "instance",
+      "issue",
+      "unconfigured"
+    ],
+    "locations": [
+      "cps/error_handler.py:37",
+      "cps/error_handler.py:51",
+      "cps/error_handler.py:60"
+    ]
+  },
+  "tasks.html": {
+    "vars": [
+      "page",
+      "title"
+    ],
+    "locations": [
+      "cps/tasks_status.py:47"
+    ]
+  },
+  "remote_login.html": {
+    "vars": [
+      "page",
+      "title",
+      "token",
+      "verify_url"
+    ],
+    "locations": [
+      "cps/remotelogin.py:63"
+    ]
+  }
+}
