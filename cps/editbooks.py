@@ -49,7 +49,7 @@ from .file_helper import validate_mime_type
 from .usermanagement import user_login_required, login_required_if_no_ano
 from .string_helper import strip_whitespaces
 
-import tempfile
+import io
 import requests
 from werkzeug.datastructures import FileStorage
 
@@ -566,11 +566,13 @@ def do_upload_url(url: str) -> FileStorage:
         filename_sanitized = "".join(c for c in url_end if c.isalnum() or c in "._-") # sanitize filename
         filename = filename_sanitized if len(filename_sanitized) > 0 else "uploaded_file"
 
-        with tempfile.NamedTemporaryFile(delete=False) as tmp:
-            for chunk in r.iter_content():
-                tmp.write(chunk)
-            tmp.flush()
-            tmp_name = tmp.name
+        file_buffer = io.BytesIO()
+        for chunk in r.iter_content():
+            file_buffer.write(chunk)
+        file_buffer.seek(0)
+
+        return do_upload_file_list([FileStorage(file_buffer, filename=filename)])
+
 
     except Exception as e:
         log.error_or_exception("File download error: {}".format(e))
@@ -578,11 +580,6 @@ def do_upload_url(url: str) -> FileStorage:
                 category="error")
         return make_response(jsonify(location=url_for("web.index")))
         
-    with open(tmp_name, 'rb') as f:
-        file_storage = FileStorage(f, filename=filename)
-        resp = do_upload_file_list([file_storage])
-
-    return resp
 
 def do_upload_file_list(file_list: list[FileStorage]):
     for requested_file in file_list:
