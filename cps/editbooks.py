@@ -49,6 +49,10 @@ from .file_helper import validate_mime_type
 from .usermanagement import user_login_required, login_required_if_no_ano
 from .string_helper import strip_whitespaces
 
+import tempfile
+import requests
+from werkzeug.datastructures import FileStorage
+
 editbook = Blueprint('edit-book', __name__)
 log = logger.create()
 
@@ -100,77 +104,18 @@ def show_edit_book(book_id):
 def edit_book(book_id):
     return do_edit_book(book_id)
 
-
 @editbook.route("/upload", methods=["POST"])
 @login_required_if_no_ano
 @upload_required
 def upload():
-    if len(request.files.getlist("btn-upload-format")):
+    if request.form.get("upload_url"):
+        return do_upload_url(request.form.get("upload_url"))
+    elif len(request.files.getlist("btn-upload")):
+        return do_upload_file_list(request.files.getlist("btn-upload"))
+    elif len(request.files.getlist("btn-upload-format")):
         book_id = request.form.get('book_id', -1)
         return do_edit_book(book_id, request.files.getlist("btn-upload-format"))
-    elif len(request.files.getlist("btn-upload")):
-        for requested_file in request.files.getlist("btn-upload"):
-            try:
-                modify_date = False
-                # create the function for sorting...
-                calibre_db.create_functions(config)
-                meta, error = file_handling_on_upload(requested_file)
-                if error:
-                    return error
-
-                db_book, input_authors, title_dir = create_book_on_upload(modify_date, meta)
-
-                # Comments need book id therefore only possible after flush
-                modify_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
-
-                book_id = db_book.id
-                title = db_book.title
-                if config.config_use_google_drive:
-                    helper.upload_new_file_gdrive(book_id,
-                                                  input_authors[0],
-                                                  title,
-                                                  title_dir,
-                                                  meta.file_path,
-                                                  meta.extension.lower())
-                    for file_format in db_book.data:
-                        file_format.name = (helper.get_valid_filename(title, chars=42) + ' - '
-                                            + helper.get_valid_filename(input_authors[0], chars=42))
-                else:
-                    error = helper.update_dir_structure(book_id,
-                                                        config.get_book_path(),
-                                                        input_authors[0],
-                                                        meta.file_path,
-                                                        title_dir + meta.extension.lower())
-                move_coverfile(meta, db_book)
-                if modify_date:
-                    calibre_db.set_metadata_dirty(book_id)
-                # save data to database, reread data
-                calibre_db.session.commit()
-
-                if config.config_use_google_drive:
-                    gdriveutils.updateGdriveCalibreFromLocal()
-                if error:
-                    flash(error, category="error")
-                link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
-                upload_text = N_("File %(file)s uploaded", file=link)
-                WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
-                helper.add_book_to_thumbnail_cache(book_id)
-
-                if len(request.files.getlist("btn-upload")) < 2:
-                    if current_user.role_edit() or current_user.role_admin():
-                        resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
-                        return make_response(jsonify(resp))
-                    else:
-                        resp = {"location": url_for('web.show_book', book_id=book_id)}
-                        return Response(json.dumps(resp), mimetype='application/json')
-            except (OperationalError, IntegrityError, StaleDataError) as e:
-                calibre_db.session.rollback()
-                log.error_or_exception("Database error: {}".format(e))
-                flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
-                      category="error")
-        return make_response(jsonify(location=url_for("web.index")))
     abort(404)
-
 
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
@@ -613,6 +558,93 @@ def table_xchange_author_title():
         return make_response(jsonify(success=True))
     return ""
 
+def do_upload_url(url: str) -> FileStorage:
+    try:
+        r = requests.get(url, stream=True, timeout=30)
+        r.raise_for_status()
+        url_end = r.url.split('/')[-1] 
+        filename_sanitized = "".join(c for c in url_end if c.isalnum() or c in "._-") # sanitize filename
+        filename = filename_sanitized if len(filename_sanitized) > 0 else "uploaded_file"
+
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            for chunk in r.iter_content():
+                tmp.write(chunk)
+            tmp.flush()
+            tmp_name = tmp.name
+
+    except Exception as e:
+        log.error_or_exception("File download error: {}".format(e))
+        flash(_("Oops! Download failed: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
+                category="error")
+        return make_response(jsonify(location=url_for("web.index")))
+        
+    with open(tmp_name, 'rb') as f:
+        file_storage = FileStorage(f, filename=filename)
+        resp = do_upload_file_list([file_storage])
+
+    return resp
+
+def do_upload_file_list(file_list: list[FileStorage]):
+    for requested_file in file_list:
+        try:
+            modify_date = False
+            # create the function for sorting...
+            calibre_db.create_functions(config)
+            meta, error = file_handling_on_upload(requested_file)
+            if error:
+                return error
+
+            db_book, input_authors, title_dir = create_book_on_upload(modify_date, meta)
+
+            # Comments need book id therefore only possible after flush
+            modify_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
+
+            book_id = db_book.id
+            title = db_book.title
+            if config.config_use_google_drive:
+                helper.upload_new_file_gdrive(book_id,
+                                                input_authors[0],
+                                                title,
+                                                title_dir,
+                                                meta.file_path,
+                                                meta.extension.lower())
+                for file_format in db_book.data:
+                    file_format.name = (helper.get_valid_filename(title, chars=42) + ' - '
+                                        + helper.get_valid_filename(input_authors[0], chars=42))
+            else:
+                error = helper.update_dir_structure(book_id,
+                                                    config.get_book_path(),
+                                                    input_authors[0],
+                                                    meta.file_path,
+                                                    title_dir + meta.extension.lower())
+            move_coverfile(meta, db_book)
+            if modify_date:
+                calibre_db.set_metadata_dirty(book_id)
+            # save data to database, reread data
+            calibre_db.session.commit()
+
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
+            if error:
+                flash(error, category="error")
+            link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book_id), escape(title))
+            upload_text = N_("File %(file)s uploaded", file=link)
+            WorkerThread.add(current_user.name, TaskUpload(upload_text, escape(title)))
+            helper.add_book_to_thumbnail_cache(book_id)
+
+            if len(file_list) < 2:
+                if current_user.role_edit() or current_user.role_admin():
+                    resp = {"location": url_for('edit-book.show_edit_book', book_id=book_id)}
+                    return make_response(jsonify(resp))
+                else:
+                    resp = {"location": url_for('web.show_book', book_id=book_id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+        except (OperationalError, IntegrityError, StaleDataError) as e:
+            calibre_db.session.rollback()
+            log.error_or_exception("Database error: {}".format(e))
+            flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
+                    category="error")
+    return make_response(jsonify(location=url_for("web.index")))
 
 def do_edit_book(book_id, upload_formats=None):
     modify_date = False
