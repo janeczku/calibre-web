@@ -898,9 +898,9 @@ def get_current_bookmark_response(current_bookmark):
     resp = {
         "LastModified": convert_to_kobo_timestamp_string(current_bookmark.last_modified),
     }
-    if current_bookmark.progress_percent:
+    if current_bookmark.progress_percent is not None:
         resp["ProgressPercent"] = _clean_progress(current_bookmark.progress_percent)
-    if current_bookmark.content_source_progress_percent:
+    if current_bookmark.content_source_progress_percent is not None:
         resp["ContentSourceProgressPercent"] = _clean_progress(current_bookmark.content_source_progress_percent)
     if current_bookmark.location_value:
         resp["Location"] = {
