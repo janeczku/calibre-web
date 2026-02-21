@@ -817,7 +817,7 @@ class CalibreDB:
         else:
             try:
                 read_column = cc_classes[config_read_column]
-                query = (self.session.query(database, ub.ArchivedBook.is_archived, read_column.value)
+                query = (self.session.query(database, ub.ArchivedBook.is_archived, read_column.value.label("read_status"))
                          .select_from(Books)
                          .outerjoin(read_column, read_column.book == Books.id))
             except (KeyError, AttributeError, IndexError):

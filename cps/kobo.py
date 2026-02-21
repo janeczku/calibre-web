@@ -809,6 +809,15 @@ def HandleStateRequest(book_uuid):
                         and new_book_read_status != book_read.read_status:
                     book_read.times_started_reading += 1
                     book_read.last_time_started_reading = datetime.now(timezone.utc)
+                if current_user.id == config.config_kobo_read_column_sync_user:
+                    if new_book_read_status == ub.ReadBook.STATUS_FINISHED:
+                        log.info(f"Syncing new read status to Calibre: Book \
+                                 ({calibre_db.get_book(book.id).title}) -> Finished")
+                        helper.edit_book_read_status(book.id, True)
+                    elif new_book_read_status == ub.ReadBook.STATUS_UNREAD:
+                        log.info(f"Syncing new read status to Calibre: Book \
+                                 ({calibre_db.get_book(book.id).title}) -> Unread")
+                        helper.edit_book_read_status(book.id, False)
                 book_read.read_status = new_book_read_status
                 update_results_response["StatusInfoResult"] = {"Result": "Success"}
         except (KeyError, TypeError, ValueError, StatementError):
@@ -854,6 +863,23 @@ def get_or_create_reading_state(book_id):
         kobo_reading_state.current_bookmark = ub.KoboBookmark()
         kobo_reading_state.statistics = ub.KoboStatistics()
         book_read.kobo_reading_state = kobo_reading_state
+
+    # While the custom read column is set, the read_status field can be outdated so update it now
+    if config.config_read_column and current_user.id == config.config_kobo_read_column_sync_user:
+        read_column_table = db.cc_classes[config.config_read_column]
+        query = calibre_db.session.query(read_column_table.value).filter(read_column_table.book == book_id).one_or_none()
+        if query:
+            calibre_read_status = query.value
+            # Reading state cant be repr in the custom col so only update the unread and finished status
+            if not calibre_read_status and book_read.read_status == ub.ReadBook.STATUS_FINISHED:
+                log.info(f"Syncing new read status to Kobo: Book ({calibre_db.get_book(book_id).title}) -> Unread")
+                book_read.read_status = ub.ReadBook.STATUS_UNREAD
+                book_read.kobo_reading_state.last_modified = datetime.now(timezone.utc)
+            elif calibre_read_status and book_read.read_status == ub.ReadBook.STATUS_UNREAD:
+                log.info(f"Syncing new read status to Kobo: Book ({calibre_db.get_book(book_id).title}) -> Finished")
+                book_read.read_status = ub.ReadBook.STATUS_FINISHED
+                book_read.kobo_reading_state.last_modified = datetime.now(timezone.utc)
+
     ub.session.add(book_read)
     ub.session_commit()
     return book_read.kobo_reading_state
