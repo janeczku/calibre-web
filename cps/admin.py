@@ -33,7 +33,7 @@ from functools import wraps
 from urllib.parse import urlparse
 
 from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, \
-    send_from_directory, g, jsonify
+    send_from_directory, g, jsonify, current_app
 from markupsafe import Markup
 from .cw_login import current_user
 from flask_babel import gettext as _
@@ -230,6 +230,7 @@ def admin():
     return render_title_template("admin.html", allUser=all_user, config=config, commit=commit,
                                  feature_support=feature_support, schedule_time=schedule_time,
                                  schedule_duration=schedule_duration,
+                                 is_proxied=current_app.wsgi_app.is_proxied,
                                  title=_("Admin page"), page="admin")
 
 
@@ -250,6 +251,7 @@ def configuration():
                                  config=config,
                                  provider=oauthblueprints,
                                  feature_support=feature_support,
+                                 is_proxied=current_app.wsgi_app.is_proxied,
                                  title=_("Basic Configuration"), page="config")
 
 
@@ -1799,7 +1801,10 @@ def _configuration_update_helper():
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
-        _config_int(to_save, "config_external_port")
+        if not to_save.get("config_external_port", "").strip():
+            config.config_external_port = None
+        else:
+            _config_int(to_save, "config_external_port")
         _config_checkbox_int(to_save, "config_kobo_proxy")
 
         if "config_upload_formats" in to_save:
