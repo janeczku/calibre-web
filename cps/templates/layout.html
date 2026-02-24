@@ -21,9 +21,13 @@
     {% if g.current_theme == 1 %}
        <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
        <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
+     {% elif g.current_theme == 2 %}
+       <link href="{{ url_for('static', filename='css/standard_dark.css') }}" rel="stylesheet" media="screen">
+     {% elif g.current_theme == 3 %}
+       <link href="{{ url_for('static', filename='css/standard_dark.css') }}" rel="stylesheet" media="screen">
     {% endif %}
   </head>
-  <body class="{{ page }} {{ bodyClass }}{% if g.current_theme == 1 %} blur{% endif %}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
+  <body class="{{ page }} {{ bodyClass }}{% if g.current_theme == 1 %} blur{% endif %}{% if g.current_theme == 2 %} standard-dark{% endif %}{% if g.current_theme == 3 %} standard-auto{% endif %}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
@@ -92,14 +96,14 @@
               {% if current_user.role_admin() %}
                 <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
               {% endif %}
-              {% if g.current_theme == 0 %}
+              {% if g.current_theme == 0 or g.current_theme == 2 or g.current_theme == 3 %}
               <li><a id="top_user" data-text="{{_('Account')}}" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
                 {% if not current_user.is_anonymous %}
                 <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
                 {% endif %}
               {% endif %}
             {% endif %}
-            {% if g.allow_registration and not current_user.is_authenticated and g.current_theme == 0 %}
+            {% if g.allow_registration and not current_user.is_authenticated and (g.current_theme == 0 or g.current_theme == 2 or g.current_theme == 3) %}
             <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
             <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
             {% endif %}
@@ -217,6 +221,9 @@
     <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% if g.current_theme == 3 %}
+      <script src="{{ url_for('static', filename='js/standard_auto.js') }}"></script>
+    {% endif %}
     {% if g.current_theme == 1 %}
       <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
