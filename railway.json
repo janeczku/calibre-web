@@ -1,0 +1,13 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "mkdir -p /app/config /app/cache /tmp/calibre_web && chmod -R 777 /app/config /app/cache /tmp/calibre_web && if [ ! -f /app/config/metadata.db ] && [ -f /app/library/metadata.db ]; then cp /app/library/metadata.db /app/config/metadata.db; fi && python cps.py",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 300,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10
+  }
+}

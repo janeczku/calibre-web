@@ -139,11 +139,12 @@ DEFAULT_MAIL_SERVER = "mail.example.org"
 
 DEFAULT_PASSWORD    = "admin123"  # nosec
 DEFAULT_PORT        = 8083
-env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
+# Support both CALIBRE_PORT (original) and PORT (Railway/PaaS platforms)
+env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT") or os.environ.get("PORT", DEFAULT_PORT)
 try:
     DEFAULT_PORT = int(env_CALIBRE_PORT)
 except ValueError:
-    print('Environment variable CALIBRE_PORT has invalid value (%s), faling back to default (8083)' % env_CALIBRE_PORT)
+    print('Environment variable CALIBRE_PORT/PORT has invalid value (%s), falling back to default (8083)' % env_CALIBRE_PORT)
 del env_CALIBRE_PORT
 
 
