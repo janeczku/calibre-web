@@ -292,7 +292,8 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.id = None
         self.role = None
         self.name = None
-        self.loadSettings()
+        if os.environ.get("CALIBRE_ANONYMOUS_ENABLED", "true") == "true":
+            self.loadSettings()
 
     def loadSettings(self):
         data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS)\

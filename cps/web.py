@@ -41,6 +41,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import constants, logger, isoLanguages, services, limiter
 from . import db, ub, config, app
 from . import calibre_db, kobo_sync_status
+from .admin import ldap_create_user
 from .search import render_search_results, render_adv_search_results
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
@@ -1388,14 +1389,20 @@ def login_post():
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == username).first()
     remember_me = bool(form.get('remember_me'))
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap and (user or os.environ.get("CALIBRE_LDAP_AUTO_CREATE", None)) and form['password'] != "":
         login_result, error = services.ldap.bind_user(username, form['password'])
         if login_result:
-            log.debug(u"You are now logged in as: '{}'".format(user.name))
-            return handle_login_user(user,
-                                     remember_me,
-                                     _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
-                                     "success")
+            log.debug(u"You are now logged in as: '{}'".format(form['username']))
+            if not user:
+                user, error = create_user(form['username'])
+            if not user:
+                log.info(error)
+                flash(_(u"Could not create user from ldap login: %(message)s", message=error), category="error")
+            else:
+                return handle_login_user(user,
+                                         remember_me,
+                                         _(u"you are now logged in as: '%(nickname)s'", nickname=user.name),
+                                         "success")
         elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.name != "Guest":
             log.info("Local Fallback Login as: '{}'".format(user.name))
@@ -1437,6 +1444,34 @@ def login_post():
                 log.warning('Login failed for user "{}" IP-address: {}'.format(username, ip_address))
                 flash(_(u"Wrong Username or Password"), category="error")
     return render_login(username, form.get("password", ""))
+
+
+def create_user(username):
+    try:
+        user_data = services.ldap.get_object_details(user=username)
+    except Exception as e:
+        log.error('LDAP user details failed: %s', e)
+        message = _(u'Failed to get LDAP User details')
+        return None, message
+
+    admin_group_filter = os.environ.get("CALIBRE_LDAP_ADMIN_GROUP_FILTER", None)
+    role = constants.ROLE_USER
+    if admin_group_filter:
+        try:
+            log.debug(u"LDAP admin group filter: '{}'".format(admin_group_filter))
+            group_data = services.ldap.get_object_details(user=username, query_filter=admin_group_filter)
+            if group_data:
+                log.debug(u"LDAP admin group is found: '{}'".format(group_data))
+                role = constants.ROLE_ADMIN | constants.ROLE_DELETE_BOOKS | constants.ROLE_DOWNLOAD | constants.ROLE_UPLOAD | constants.ROLE_EDIT | constants.ROLE_EDIT_SHELFS | constants.ROLE_VIEWER
+            else:
+                log.debug(u"LDAP admin group is not found")
+
+        except Exception as e:
+            log.error('LDAP admin group lookup failed: %s', e)
+            message = _(u'Failed to get LDAP admin group details')
+            return None, message
+    user, error = ldap_create_user(username, user_data, role)
+    return user, error
 
 
 @web.route('/logout')
