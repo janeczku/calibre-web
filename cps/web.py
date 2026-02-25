@@ -59,7 +59,6 @@ from .tasks_status import render_task_status
 from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
 
-
 feature_support = {
     'ldap': bool(services.ldap),
     'goodreads': bool(services.goodreads_support),
@@ -95,7 +94,7 @@ def add_security_headers(resp):
     if request.endpoint == "web.read_book" and config.config_use_google_drive:
         csp +=" blob: "
     csp += "; font-src 'self' data:"
-    if request.endpoint == "web.read_book":
+    if request.endpoint == "web.read_book" or request.path.startswith("/static/custom/reader"):
         csp += " blob: "
     csp += "; img-src 'self'"
     if request.path.startswith("/author/") and config.config_use_goodreads:
@@ -103,7 +102,7 @@ def add_security_headers(resp):
     csp += " data:"
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
         csp += " *"
-    if request.endpoint == "web.read_book":
+    if request.endpoint == "web.read_book" or request.path.startswith("/static/custom/reader"):
         csp += " blob: ; style-src-elem 'self' blob: 'unsafe-inline'"
     csp += "; object-src 'none';"
     resp.headers['Content-Security-Policy'] = csp
@@ -1577,8 +1576,13 @@ def read_book(book_id, book_format):
                                                              ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub" or book_format.lower() == "kepub":
         log.debug("Start [k]epub reader for %d", book_id)
-        return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark,
-                                     book_format=book_format)
+        if os.path.exists(os.path.join(constants.STATIC_DIR, 'custom', 'reader')):
+            return redirect(url_for("static", filename="custom/reader/index.html",
+                                    bookPath=url_for('web.serve_book', book_id=book_id, book_format=book_format,
+                                                     anyname='file.epub')))
+        else:
+            return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark,
+                                         book_format=book_format)
     elif book_format.lower() == "pdf":
         log.debug("Start pdf reader for %d", book_id)
         return render_title_template('readpdf.html', pdffile=book_id, title=book.title)

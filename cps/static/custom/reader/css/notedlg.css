@@ -1,0 +1,129 @@
+#notedlg {
+    top: 0;
+    width: 100%;
+    height: 58px;
+    z-index: 20;
+    font-size: small;
+    transform: translateY(-58px);
+    transition: 0.25s;
+    justify-items: center;
+}
+
+#notedlg.open {
+    transform: translateY(0);
+    box-shadow: 0 0 16px rgba(0, 0, 0, .28);
+}
+
+#notedlg .box {
+    min-width: 390px;
+}
+
+#notedlg .box.control {
+    display: grid;
+    align-items: center;
+    grid-template: 36px / 80px auto 80px;
+}
+
+#notedlg .box label {
+    text-align: center;
+    margin-left: 11px;
+    font-weight: 500;
+}
+
+#notedlg .box input[type="text"] {
+    margin: 0 11px;
+    padding: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+    outline-color: #1A73E8 !important;
+}
+
+#notedlg .box input[type="button"] {
+    color: #fff !important;
+    margin-right: 11px;
+    height: 36px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #1A73E8 !important;
+    font-weight: bold !important;
+}
+
+#notedlg .box input[type=button]:hover {
+	box-shadow: 0 0 2px rgba(0,0,0,.28);
+	background-color: #1B66C9 !important;
+}
+
+#notedlg .box input[type="button"]:disabled {
+    cursor: auto;
+    box-shadow: none;
+    background-color: #BDC3C7 !important;
+}
+
+/**
+ * iPhone 5 : 320 x 568
+ */
+ @media
+ only screen and (width: 320px) and (orientation: portrait),
+ only screen and (height: 320px) and (orientation: landscape) {
+    #notedlg {
+        height: 52px;
+    }
+    
+    #notedlg .box {
+        min-width: 320px;
+    }
+    
+    #notedlg .box.control {
+        grid-template: 30px / 80px 160px 80px;
+    }
+
+    #notedlg .box input[type="button"] {
+        height: 30px;
+    }
+ }
+
+/**
+ * iPhone 6/7/8 : 375 x 667
+ * iPhone X     : 375 x 812
+ */
+@media
+only screen and (width: 375px) and (orientation: portrait),
+only screen and (height: 375px) and (orientation: landscape) {
+    #notedlg .box {
+        min-width: 375px;
+    }
+}
+
+/**
+ * Pixel 7 : 412 x 915
+ */
+@media
+only screen and (width: 412px) and (orientation: portrait),
+only screen and (height: 412px) and (orientation: landscape) {
+    #notedlg .box {
+        min-width: 412px;
+    }
+}
+
+/**
+ * iPhone 6/7/8 Plus : 414 x 736
+ */
+@media
+only screen and (width: 414px) and (orientation: portrait),
+only screen and (height: 414px) and (orientation: landscape) {
+    #notedlg .box {
+        min-width: 414px;
+    }
+}
+
+/**
+ * iPhone 14/15 Pro Max : 430 x 932
+ */
+@media
+only screen and (width: 430px) and (orientation: portrait),
+only screen and (height: 430px) and (orientation: landscape) {
+    #notedlg .box {
+        min-width: 430px;
+    }
+}
