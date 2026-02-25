@@ -146,6 +146,7 @@ class _Settings(_Base):
     config_binariesdir = Column(String, default=None)
     config_calibre = Column(String)
     config_rarfile_location = Column(String, default=None)
+    config_auto_convert_to_formats = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
     config_unicode_filename = Column(Boolean, default=False)
     config_embed_metadata = Column(Boolean, default=True)
