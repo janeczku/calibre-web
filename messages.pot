@@ -747,12 +747,22 @@ msgstr ""
 msgid "Registration Email for user: %(name)s"
 msgstr ""
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:158
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to eReader (%(eReadermail)s)"
+msgstr ""
+
+#: cps/helper.py:161
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr ""
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:186
+#, python-format
+msgid "Send %(format)s to eReader (%(eReadermail)s)"
+msgstr ""
+
+#: cps/helper.py:189
 #, python-format
 msgid "Send %(format)s to eReader"
 msgstr ""
@@ -3743,4 +3753,3 @@ msgstr ""
 #: cps/templates/user_table.html:156
 msgid "Show Read/Unread Section"
 msgstr ""
-
