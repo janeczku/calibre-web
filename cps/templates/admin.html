@@ -190,6 +190,10 @@
             <div class="col-xs-6 col-sm-3">{{_('Generate Metadata Backup Files')}}</div>
             <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_metadata_backup) }}</div>
           </div>
+          <div class="row">
+            <div class="col-xs-6 col-sm-3">{{_('Sync Shelves and Collections')}}</div>
+            <div class="col-xs-6 col-sm-3">{{ display_bool_setting(config.schedule_sync_shelves) }}</div>
+          </div>
 
         </div>
       <a class="btn btn-default scheduledtasks" id="admin_edit_scheduled_tasks" href="{{url_for('admin.edit_scheduledtasks')}}">{{_('Edit Scheduled Tasks Settings')}}</a>

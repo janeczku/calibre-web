@@ -110,6 +110,7 @@ class _Settings(_Base):
     config_restricted_column = Column(SmallInteger, default=0)
     config_denied_column_value = Column(String, default="")
     config_allowed_column_value = Column(String, default="")
+    config_sync_from_collections = Column(Boolean, default=False)
 
     config_use_google_drive = Column(Boolean, default=False)
     config_google_drive_folder = Column(String)
@@ -161,6 +162,7 @@ class _Settings(_Base):
     schedule_generate_series_covers = Column(Boolean, default=False)
     schedule_reconnect = Column(Boolean, default=False)
     schedule_metadata_backup = Column(Boolean, default=False)
+    schedule_sync_shelves = Column(Boolean, default=False)
 
     config_password_policy = Column(Boolean, default=True)
     config_password_min_length = Column(Integer, default=8)

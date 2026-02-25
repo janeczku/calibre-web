@@ -694,6 +694,36 @@ $(function() {
         );
     });
 
+    $("#sync_collections_now").click(function() {
+        confirmDialog(
+            "btn_sync_collections",
+            "GeneralChangeModal",
+            0,
+            function (userid) {
+                if (userid) {
+                    path = getPath() + "/ajax/synccollections/" + userid
+                }
+                else {
+                    path = getPath() + "/ajax/synccollections"
+                }
+                $.ajax({
+                    method:"post",
+                    url: path,
+                    timeout: 900,
+                    success:function(data) {
+                        data.forEach(function(item) {
+                            if (!jQuery.isEmptyObject(item)) {
+                                $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                                    '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
+                                    '</div>');
+                            }
+                        });
+                    }
+                });
+            }
+        );
+    });
+
     $("#user_submit").click(function() {
         this.closest("form").submit();
     });
