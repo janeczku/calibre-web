@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #   This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#     Copyright (C) 2019 OzzieIsaacs, pwr
+#     Copyright (C) 2019-2025 OzzieIsaacs, pwr, akharlamov
 #
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@
 import os
 import sys
 import json
+from typing import Sequence
 
+from packaging.tags import android_platforms
 from sqlalchemy import Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.sql.expression import text
@@ -39,6 +41,7 @@ from .string_helper import strip_whitespaces
 
 log = logger.create()
 _Base = declarative_base()
+CONVERSION_SOURCE_FMT_PRIORITY = ('FB2', 'FBZ', 'MOBI', 'PRC', 'TXT', 'TXTZ')
 
 
 class _Flask_Settings(_Base):
@@ -420,6 +423,14 @@ class ConfigSQL(object):
         super().__setattr__(attr_name, attr_value)
         self.__dict__["dirty"].append(attr_name)
 
+    def convertable_to(self, fmt: str) -> Sequence[str]:
+        if not self.config_converterpath:
+            return list()
+
+        convertable_formats = {
+            'EPUB': CONVERSION_SOURCE_FMT_PRIORITY
+        }
+        return convertable_formats.get(fmt.upper(), [])
 
 def _encrypt_fields(session, secret_key):
     try:

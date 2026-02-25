@@ -1,9 +1,9 @@
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2018-2019 OzzieIsaacs, cervinko, jkrehm, bodybybuddha, ok11,
+#    Copyright (C) 2018-2025 OzzieIsaacs, cervinko, jkrehm, bodybybuddha, ok11,
 #                            andy29485, idalin, Kyosfonica, wuqi, Kennyl, lemmsh,
 #                            falgh1, grunjol, csitko, ytils, xybydy, trasba, vrabe,
 #                            ruben-herold, marblepebble, JackED42, SiphonSquirrel,
-#                            apetresc, nanu-c, mutschler
+#                            apetresc, nanu-c, mutschler, akharlamov
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@
 import os
 import json
 import mimetypes
+import uuid
+from pathlib import Path
+
 import chardet  # dependency of requests
 import copy
 from importlib.metadata import metadata
@@ -29,6 +32,8 @@ from flask import Blueprint, jsonify, request, redirect, send_from_directory, ma
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
+
+from .config_sql import CONVERSION_SOURCE_FMT_PRIORITY
 from .cw_login import login_user, logout_user, current_user
 from flask_limiter.util import get_remote_address
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
@@ -46,10 +51,11 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
-    edit_book_read_status, valid_password
+    edit_book_read_status, valid_password, convert_book_format
 from .pagination import Pagination
 from .redirect import get_redirect_location
 from .cw_babel import get_available_locale
+from .tasks.convert import TaskConvert
 from .usermanagement import login_required_if_no_ano
 from .kobo_sync_status import remove_synced_book
 from .render_template import render_title_template
@@ -1555,6 +1561,39 @@ def profile():
 # ###################################Show single book ##################################################################
 
 
+def _start_epub_convert_task(book_id, filepath, source_format):
+    lib_dir = config.config_calibre_split_dir if config.config_calibre_split else config.config_calibre_dir
+    task = TaskConvert(
+        str(Path(lib_dir) / filepath),
+        book_id,
+        f'Converting {book_id} to EPUB',
+        {
+            'old_book_format': source_format,
+            'new_book_format': 'EPUB',
+        },
+        None,
+        user=current_user.name,
+    )
+    queued_task = WorkerThread.add(current_user, task)
+    return queued_task.task.id
+
+
+def _select_conversion_source(book):
+    cur_candidate = None
+    cur_name = None
+    cur_priority = -1
+    for data in book.data:
+        if data.format in CONVERSION_SOURCE_FMT_PRIORITY:
+            priority = CONVERSION_SOURCE_FMT_PRIORITY.index(data.format)
+        else:
+            priority = -1
+        if priority > cur_priority:
+            cur_candidate = data.format
+            cur_name = data.name
+            cur_priority = priority
+    return cur_candidate, cur_name
+
+
 @web.route("/read/<int:book_id>/<book_format>")
 @login_required_if_no_ano
 @viewer_required
@@ -1575,20 +1614,28 @@ def read_book(book_id, book_format):
         bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
                                                              ub.Bookmark.book_id == book_id,
                                                              ub.Bookmark.format == book_format.upper())).first()
-    if book_format.lower() == "epub" or book_format.lower() == "kepub":
+    format_id = book_format.lower()
+    if format_id in ["epub", "kepub"]:
         log.debug("Start [k]epub reader for %d", book_id)
         return render_title_template('read.html', bookid=book_id, title=book.title, bookmark=bookmark,
                                      book_format=book_format)
-    elif book_format.lower() == "pdf":
+    elif format_id == "pdf":
         log.debug("Start pdf reader for %d", book_id)
         return render_title_template('readpdf.html', pdffile=book_id, title=book.title)
-    elif book_format.lower() == "txt":
+    elif format_id == "txt":
         log.debug("Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=book.title)
-    elif book_format.lower() in ["djvu", "djv"]:
+    elif format_id in ["djvu", "djv"]:
         log.debug("Start djvu reader for %d", book_id)
         return render_title_template('readdjvu.html', djvufile=book_id, title=book.title,
-                                     extension=book_format.lower())
+                                     extension=format_id)
+    elif book_format.upper() in config.convertable_to('EPUB'):
+        log.debug("Start conversion to epub for %d", book_id)
+        src_format, name = _select_conversion_source(book)
+        task_id = _start_epub_convert_task(book_id, Path(book.path) / name, src_format)
+
+        url = url_for('web.show_book_converting', book_id=book_id, task_id=task_id)
+        return redirect(url)
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:
@@ -1612,10 +1659,7 @@ def read_book(book_id, book_format):
               category="error")
         return redirect(url_for("web.index"))
 
-
-@web.route("/book/<int:book_id>")
-@login_required_if_no_ano
-def show_book(book_id):
+def _get_book_entry(book_id):
     entries = calibre_db.get_book_read_archived(book_id, config.config_read_column, allow_show_archived=True)
     if entries:
         read_book = entries[1]
@@ -1649,15 +1693,52 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audio_entries.append(media_format.format.lower())
 
+        return entry, book_in_shelves, cc
+    else:
+        return None, None, None
+
+
+@web.route("/book/<int:book_id>")
+@login_required_if_no_ano
+def show_book(book_id):
+    entry, shelves, cc = _get_book_entry(book_id)
+    if entry:
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,
                                      is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
                                      title=entry.title,
-                                     books_shelfs=book_in_shelves,
+                                     books_shelfs=shelves,
                                      page="book")
     else:
-        log.debug("Selected book is unavailable. File does not exist or is not accessible")
-        flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
-              category="error")
-        return redirect(url_for("web.index"))
+        return _no_book_entry()
+
+
+def _no_book_entry():
+    log.debug("Selected book is unavailable. File does not exist or is not accessible")
+    flash(_("Oops! Selected book is unavailable. File does not exist or is not accessible"),
+          category="error")
+    return redirect(url_for("web.index"))
+
+
+@web.route("/book/<int:book_id>/converting/<task_id>")
+@login_required_if_no_ano
+def show_book_converting(book_id, task_id):
+    task_uuid = uuid.UUID(task_id)
+    task = WorkerThread.get_instance().get_task(task_uuid)
+    complete = not task or task.dead
+    if complete:
+        return redirect(url_for("web.read_book", book_id=book_id, book_format='epub'))
+    else:
+        entry = _get_book_entry(book_id)
+        if entry:
+            return render_title_template(
+                "converting.html",
+                entry=entry[0],
+                book_id=book_id,
+                task_id=task_id,
+            )
+        else:
+            return _no_book_entry()
+
+
