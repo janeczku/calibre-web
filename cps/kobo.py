@@ -230,10 +230,8 @@ def HandleSyncRequest():
         except AttributeError:
             pass
 
-        if ts_created > sync_token.books_last_created:
-            sync_results.append({"NewEntitlement": entitlement})
-        else:
-            sync_results.append({"ChangedEntitlement": entitlement})
+        sync_results.append({"NewEntitlement": entitlement})
+        sync_results.append({"ChangedProductMetadata": get_metadata(book.Books)})
 
         new_books_last_modified = max(
             book.Books.last_modified.replace(tzinfo=None), new_books_last_modified
@@ -461,10 +459,11 @@ def get_metadata(book):
                 log.error(e)
 
     book_uuid = book.uuid
+    cover_uuid = helper.make_book_cover_uuid(book_uuid)
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001", ],
         # "Contributors": get_author(book),
-        "CoverImageId": book_uuid,
+        "CoverImageId": cover_uuid,
         "CrossRevisionId": book_uuid,
         "CurrentDisplayPrice": {"CurrencyCode": "USD", "TotalAmount": 0},
         "CurrentLoveDisplayPrice": {"TotalAmount": 0},
