@@ -56,8 +56,6 @@ KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
 KOBO_IMAGEHOST_URL = "https://cdn.kobo.com/book-images"
 
-SYNC_ITEM_LIMIT = 100
-
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
@@ -205,8 +203,10 @@ def HandleSyncRequest():
                            .order_by(db.Books.id))
 
     reading_states_in_new_entitlements = []
-    books = changed_entries.limit(SYNC_ITEM_LIMIT)
-    log.debug("Books to Sync: {}".format(len(books.all())))
+    sync_item_limit = config.config_kobo_sync_limit
+    books = changed_entries.limit(sync_item_limit)
+    log.debug("Total Books to Sync: {}".format(len(changed_entries.all())))
+    log.debug("Max Batch Size to Sync: {}".format(sync_item_limit))
     for book in books:
         formats = [data.format for data in book.Books.data]
         if 'KEPUB' not in formats and config.config_kepubifypath and 'EPUB' in formats:
@@ -282,8 +282,8 @@ def HandleSyncRequest():
         and_(ub.KoboReadingState.user_id == current_user.id,
              ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements)))\
         .order_by(ub.KoboReadingState.last_modified)
-    cont_sync |= bool(changed_reading_states.count() > SYNC_ITEM_LIMIT)
-    for kobo_reading_state in changed_reading_states.limit(SYNC_ITEM_LIMIT).all():
+    cont_sync |= bool(changed_reading_states.count() > sync_item_limit)
+    for kobo_reading_state in changed_reading_states.limit(sync_item_limit).all():
         book = calibre_db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
         if book:
             sync_results.append({
