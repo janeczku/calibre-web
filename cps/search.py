@@ -15,6 +15,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import json
+import os
 from datetime import datetime
 
 from flask import Blueprint, request, redirect, url_for, flash
@@ -22,6 +23,7 @@ from flask import session as flask_session
 from .cw_login import current_user
 from flask_babel import format_date
 from flask_babel import gettext as _
+from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func, not_, and_, or_, text, true
 from sqlalchemy.sql.functions import coalesce
 
@@ -420,12 +422,176 @@ def render_prepare_search_form(cc):
 def render_search_results(term, offset=None, order=None, limit=None):
     if term:
         join = db.books_series_link, db.Books.id == db.books_series_link.c.book, db.Series
-        entries, result_count, pagination = calibre_db.get_search_results(term,
-                                                                          config,
-                                                                          offset,
-                                                                          order,
-                                                                          limit,
-                                                                          *join)
+        entries = []
+        result_count = 0
+        pagination = None
+        order_by = order[0] if order else [db.Books.sort]
+
+        # Determine requested sort from the URL instead of relying on `order`, which can
+        # be stale/overridden depending on how the route is called.
+        # Examples:
+        #   /search/stored?query=foo
+        #   /search/abc?query=foo
+        #   /?data=root&sort_param=stored
+        requested_sort_param = None
+        try:
+            requested_sort_param = (request.view_args or {}).get('sort_param')
+        except Exception:
+            requested_sort_param = None
+        if not requested_sort_param:
+            requested_sort_param = request.args.get('sort_param') or request.args.get('sort')
+        if requested_sort_param is not None:
+            requested_sort_param = strip_whitespaces(str(requested_sort_param)).lower()
+
+        fts_ids = None
+        fts_term = strip_whitespaces(term)
+        fts_query = None
+        if fts_term:
+            tokens = [token for token in fts_term.split() if token]
+            if tokens:
+                fts_query = " AND ".join(
+                    f'"{token.replace("\"", "\"\"")}"' for token in tokens
+                )
+            else:
+                fts_query = fts_term
+        fts_db_path = None
+        if config.config_calibre_dir:
+            fts_db_path = os.path.join(config.config_calibre_dir, "full-text-search.db")
+
+        if config.config_fulltext_search and fts_query and fts_db_path and os.path.exists(fts_db_path):
+            try:
+                fts_engine = create_engine(
+                    f"sqlite:///{fts_db_path}",
+                    echo=False,
+                    connect_args={'check_same_thread': False}
+                )
+                try:
+                    with fts_engine.connect() as fts_conn:
+                        try:
+                            try:
+                                raw_conn = fts_conn.connection.driver_connection
+                            except AttributeError:
+                                raw_conn = fts_conn.connection
+
+                            raw_conn.load_extension(
+                                "/app/calibre/lib/calibre-extensions/sqlite_extension.so"
+                            )
+                                
+                            raw_conn.enable_load_extension(False)
+                        except Exception as ex:
+                            log.debug("FTS extension load failed: %s", ex)
+
+                        # https://github.com/kovidgoyal/calibre/blob/master/src/calibre/db/fts/connect.py#L151
+                        fts_rows = fts_conn.execute(
+                            text("""
+                                SELECT DISTINCT books_text.book
+                                FROM books_fts_stemmed
+                                JOIN books_text ON books_text.id = books_fts_stemmed.rowid
+                                WHERE books_fts_stemmed MATCH :term
+                                ORDER BY rank
+                            """),
+                            {"term": fts_query}
+                        ).fetchall()
+                        if fts_rows:
+                            fts_ids = list(dict.fromkeys(row[0] for row in fts_rows))
+                finally:
+                    fts_engine.dispose()
+            except Exception as ex:
+                log.debug("FTS search failed, falling back to default: %s", ex)
+
+        if fts_ids:
+            # Apply explicit ordering only when requested via URL sort param.
+            # Default/relevance is `stored`.
+            has_explicit_order = bool(requested_sort_param and requested_sort_param != 'stored')
+
+            if config.config_merge_search:
+                base_entries, base_count, pagination = calibre_db.get_search_results(
+                    term, config, offset, order, limit, *join
+                )
+
+            query = calibre_db.generate_linked_query(config.config_read_column, db.Books)
+            query = (query.outerjoin(db.books_series_link, db.Books.id == db.books_series_link.c.book)
+                          .outerjoin(db.Series)
+                          .filter(db.Books.id.in_(fts_ids)))
+
+            if has_explicit_order:
+                query = query.order_by(*order_by)
+
+            fts_result = query.all()
+
+            if has_explicit_order:
+                # When explicitly sorted, keep DB order.
+                fts_result_ordered = fts_result
+            else:
+                # Keep FTS rank ordering (fts_ids). The ORM query `.all()` does not preserve
+                # the order of `IN (fts_ids)`.
+                fts_by_id = {row.Books.id: row for row in fts_result}
+                fts_result_ordered = [fts_by_id[book_id] for book_id in fts_ids if book_id in fts_by_id]
+
+            ub.store_combo_ids(fts_result_ordered)
+            fts_entries = calibre_db.order_authors(fts_result_ordered, list_return=True, combined=True)
+
+            # Exclude archived books from the merged results: build set of archived ids
+            archived_book_ids = set()
+            # Only load archived ids if config says to hide archived books from searches
+            try:
+                if getattr(config, 'config_hide_archived_search', True):
+                    archived_books = (ub.session.query(ub.ArchivedBook)
+                                      .filter(ub.ArchivedBook.user_id == int(current_user.id))
+                                      .filter(ub.ArchivedBook.is_archived == True)
+                                      .all())
+                    archived_book_ids = set(ab.book_id for ab in archived_books)
+            except Exception:
+                archived_book_ids = set()
+
+            # Merge: base results first, then FTS results, de-duplicated by book id.
+            merged = []
+            seen_ids = set()
+
+            def _get_book_id(entry):
+                # Search results are usually SQLAlchemy rows with `.Books`.
+                # Fall back to direct `.id` for plain `Books` objects.
+                if hasattr(entry, 'Books') and getattr(entry, 'Books') is not None:
+                    return getattr(entry.Books, 'id', None)
+                return getattr(entry, 'id', None)
+
+            if config.config_merge_search:
+                for item in (base_entries or []):
+                    book_id = _get_book_id(item)
+                    # Skip archived books
+                    if book_id is not None and book_id in archived_book_ids:
+                        continue
+                    if book_id is None or book_id not in seen_ids:
+                        if book_id is not None:
+                            seen_ids.add(book_id)
+                        merged.append(item)
+            for item in (fts_entries or []):
+                book_id = _get_book_id(item)
+                # Skip archived books
+                if book_id is not None and book_id in archived_book_ids:
+                    continue
+                if book_id is None or book_id not in seen_ids:
+                    if book_id is not None:
+                        seen_ids.add(book_id)
+                    merged.append(item)
+
+            # Apply pagination on the final merged list.
+            result_count = len(merged)
+            if offset is not None and limit is not None:
+                offset_int = int(offset)
+                limit_int = int(limit)
+                pagination = Pagination((offset_int / limit_int + 1), limit_int, result_count)
+                entries = merged[offset_int:offset_int + limit_int]
+            else:
+                pagination = None
+                entries = merged
+        else:
+            entries, result_count, pagination = calibre_db.get_search_results(term,
+                                                                              config,
+                                                                              offset,
+                                                                              order,
+                                                                              limit,
+                                                                              *join)
     else:
         entries = list()
         order = [None, None]
