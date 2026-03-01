@@ -1091,8 +1091,9 @@ def get_download_link(book_id, book_format, client):
             file_name = book.title
             if len(book.authors) > 0:
                 file_name = file_name + ' - ' + book.authors[0].name
+            file_name_utf8 = file_name.replace("/", "_").replace(":", "_").strip('\0')
             file_name = get_valid_filename(file_name, replace_whitespace=False, force_unidecode=True)
-            quoted_file_name = file_name if client == "kindle" else quote(file_name)
+            quoted_file_name = file_name if client == "kindle" else quote(file_name_utf8)
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
             headers["Content-Disposition"] = ('attachment; filename="{}.{}"; filename*=UTF-8\'\'{}.{}').format(
@@ -1101,7 +1102,6 @@ def get_download_link(book_id, book_format, client):
     else:
         log.error("Book id {} not found for downloading".format(book_id))
     abort(404)
-
 
 def clear_cover_thumbnail_cache(book_id):
     if config.schedule_generate_book_covers:
