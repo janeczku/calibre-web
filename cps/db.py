@@ -89,6 +89,21 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
                               )
 
 
+class BooksPages(Base):
+    __tablename__ = 'books_pages_link'
+
+    book = Column(Integer, ForeignKey('books.id'), primary_key=True)
+    pages = Column(Integer, nullable=False, default=0)
+    algorithm = Column(Integer, nullable=False, default=0)
+    format = Column(String(collation='NOCASE'), nullable=False, default='')
+    format_size = Column(Integer, nullable=False, default=0)
+    timestamp = Column(TIMESTAMP)
+    needs_scan = Column(Integer, nullable=False, default=0)
+
+    def __repr__(self):
+        return "<BooksPages(book={}, pages={})>".format(self.book, self.pages)
+
+
 class Library_Id(Base):
     __tablename__ = 'library_id'
     id = Column(Integer, primary_key=True)
@@ -428,6 +443,7 @@ class Books(Base):
     languages = relationship(Languages, secondary=books_languages_link, backref='books')
     publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
     identifiers = relationship(Identifiers, backref='books')
+    pages = relationship('BooksPages', uselist=False, backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
                  authors, tags, languages=None):
@@ -450,6 +466,16 @@ class Books(Base):
     @property
     def atom_timestamp(self):
         return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
+    @property
+    def page_count(self):
+        """Return page count from books_pages_link, or None if not set/available."""
+        try:
+            if self.pages and self.pages.pages:
+                return self.pages.pages
+        except Exception:
+            pass
+        return None
+
 
 
 class CustomColumns(Base):

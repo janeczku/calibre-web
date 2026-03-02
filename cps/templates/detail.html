@@ -209,6 +209,11 @@
                     <p>{{ _('Published') }}: {{ entry.pubdate|formatdate }} </p>
                 </div>
             {% endif %}
+            {% if entry.page_count %}
+                <div class="pages">
+                    <p>{{ _('Pages') }}: {{ entry.page_count }}</p>
+                </div>
+            {% endif %}
             {% if cc|length > 0 %}
 
 
