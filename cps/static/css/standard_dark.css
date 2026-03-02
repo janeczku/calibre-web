@@ -1,0 +1,653 @@
+/* Standard Dark Theme (based on standard theme, colors only) */
+
+:root {
+  /* Main backgrounds */
+  --sd-bg: #1f2328;
+  --sd-bg-elevated: #22262b;
+  --sd-bg-hover: #2a2f35;
+
+  /* Text colors */
+  --sd-text: #e6e6e6;
+  --sd-text-muted: #b0b0b0;
+  --sd-text-light: #c5c5c5;
+  --sd-text-strong: #f4f4f4;
+  --sd-text-dark: #0f1113;
+  --sd-text-disabled: #8b8b8b;
+
+  /* Borders */
+  --sd-border: #2b2f36;
+  --sd-border-strong: #454d57;
+  --sd-border-hover: #3b424b;
+  --sd-border-soft: #3a3a3a;
+
+  /* Primary green */
+  --sd-green: #2f6f63;
+  --sd-green-border: #3a7a6d;
+  --sd-green-hover: #3b8a7b;
+  --sd-green-hover-border: #4a9888;
+  --sd-green-accent: #7bd7c6;
+  --sd-green-light: #9ee6d9;
+  --sd-green-accent-shadow: rgba(123, 215, 198, 0.2);
+
+  /* Success/info */
+  --sd-success-bg: #1f3a2d;
+  --sd-success-text: #cdeedc;
+
+  /* Danger */
+  --sd-danger-bg: #8a3b3b;
+  --sd-danger-border: #9a4444;
+  --sd-danger-hover-bg: #a04a4a;
+  --sd-danger-hover-border: #b05454;
+
+  /* Warning */
+  --sd-warning-bg: #3a2f1f;
+  --sd-warning-text: #f2dfb6;
+
+  /* Error */
+  --sd-error-bg: #3b1f1f;
+  --sd-error-text: #f2c0c0;
+
+  /* Sepia tag */
+  --sd-sepia-bg: #6f4a2b;
+  --sd-sepia-border: #805636;
+
+  /* Misc */
+  --sd-hover-overlay: rgba(255, 255, 255, 0.08);
+  --sd-cancel-bg: #3a424b;
+  --sd-cancel-border: #4a5561;
+  --sd-cancel-hover-bg: #44505d;
+  --sd-cancel-hover-border: #566270;
+  --sd-shadow-strong: 0 5px 8px -6px rgba(0, 0, 0, 0.8);
+  --sd-shadow-tooltip: 0 4px 10px 0 rgba(0, 0, 0, 0.6);
+}
+
+body.standard-dark {
+  color-scheme: dark;
+}
+
+/* TinyMCE (oxide) dark UI tweaks */
+body.standard-dark .tox,
+body.standard-auto .tox {
+  color-scheme: dark;
+}
+
+body.standard-dark .tox-tinymce,
+body.standard-auto .tox-tinymce {
+  border-color: var(--sd-border-strong) !important;
+}
+
+body.standard-dark .tox .tox-editor-header,
+body.standard-auto .tox .tox-editor-header {
+  background-color: var(--sd-bg) !important;
+  border-bottom-color: var(--sd-border-strong) !important;
+}
+
+body.standard-dark,
+body.standard-dark .container-fluid {
+  background: var(--sd-bg);
+  color: var(--sd-text);
+}
+
+@media (prefers-color-scheme: dark) {
+  body.standard-auto {
+    color-scheme: dark;
+    background: var(--sd-bg);
+    color: var(--sd-text);
+  }
+
+  body.standard-auto .container-fluid {
+    background: var(--sd-bg);
+  }
+
+  body.standard-auto .form-control,
+  body.standard-auto .input-group-addon,
+  body.standard-auto select.form-control {
+    background-color: var(--sd-bg);
+    color: var(--sd-text);
+    border-color: var(--sd-border-strong);
+    color-scheme: dark;
+  }
+
+  body.standard-auto .table,
+  body.standard-auto .table > thead > tr > th,
+  body.standard-auto .table > tbody > tr > td,
+  body.standard-auto .table > tfoot > tr > td {
+    color: var(--sd-text);
+    border-color: var(--sd-border);
+  }
+
+  body.standard-auto .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: var(--sd-bg-elevated);
+  }
+
+  body.standard-auto .table-hover > tbody > tr:hover {
+    background-color: var(--sd-bg-hover);
+  }
+
+  body.standard-auto .navbar-default {
+    background-color: var(--sd-bg);
+    border-color: var(--sd-border);
+  }
+
+  body.standard-auto .navbar-default .navbar-toggle {
+    border-color: var(--sd-text-muted);
+  }
+
+  body.standard-auto .navbar-default .navbar-toggle .icon-bar {
+    background-color: var(--sd-text-muted);
+  }
+
+  body.standard-auto .navbar-default .navbar-form.navbar-left {
+    background-color: var(--sd-bg);
+    border-color: var(--sd-border);
+    box-shadow: none;
+  }
+
+  body.standard-auto .navbar-default .navbar-nav > li > a {
+    color: var(--sd-text-light);
+  }
+
+  body.standard-auto .navbar-default .navbar-nav > li > a:hover,
+  body.standard-auto .navbar-default .navbar-nav > li > a:focus {
+    color: var(--sd-text-light);
+  }
+
+  body.standard-auto .btn,
+  body.standard-auto .btn-default {
+    background-color: var(--sd-green);
+    border-color: var(--sd-green-border);
+    color: var(--sd-text);
+  }
+
+  body.standard-auto .navigation .nav-head {
+    color: var(--sd-text-muted);
+  }
+
+  body.standard-auto .panel,
+  body.standard-auto .panel-group .panel {
+    background-color: var(--sd-bg);
+    border-color: var(--sd-border-strong);
+  }
+
+  body.standard-auto .panel-default > .panel-heading {
+    color: var(--sd-text);
+    background-color: var(--sd-bg);
+    border-color: var(--sd-border-strong);
+    border-bottom-color: var(--sd-border-strong);
+  }
+
+  body.standard-auto .panel-body {
+    background-color: var(--sd-bg);
+    color: var(--sd-text);
+  }
+
+  body.standard-auto .well {
+    background-color: var(--sd-bg);
+    border-color: var(--sd-border-strong);
+    color: var(--sd-text);
+  }
+}
+
+body.standard-dark h2 {
+  color: var(--sd-text);
+}
+
+body.standard-dark a,
+body.standard-dark .book-remove,
+body.standard-dark .editable-empty,
+body.standard-dark .editable-empty:hover {
+  color: var(--sd-green-accent);
+}
+
+body.standard-dark .book-remove:hover,
+body.standard-dark .user-remove:hover {
+  color: var(--sd-green-light);
+}
+
+body.standard-dark .btn-default a {
+  color: var(--sd-text);
+}
+
+body.standard-dark .btn-default a:hover,
+body.standard-dark .btn-default:hover {
+  color: var(--sd-green-accent);
+}
+
+body.standard-dark .navigation li a {
+  color: var(--sd-text);
+}
+
+body.standard-dark .navigation .nav-head {
+  color: var(--sd-text-muted);
+}
+
+body.standard-dark .navigation .nav-head:nth-child(1n+2),
+body.standard-dark .container-fluid .new-books,
+body.standard-dark .more-stuff {
+  border-top: 1px solid var(--sd-border-soft);
+}
+
+body.standard-dark .navigation li a:hover {
+  background: var(--sd-hover-overlay);
+}
+
+body.standard-dark .nav > li > a:hover,
+body.standard-dark .nav > li > a:focus,
+body.standard-dark .list-group-item:hover,
+body.standard-dark .list-group-item:focus {
+  background-color: var(--sd-bg-hover);
+  color: var(--sd-text);
+}
+
+body.standard-dark input[type="checkbox"],
+body.standard-dark input[type="radio"] {
+  accent-color: var(--sd-green);
+}
+
+body.standard-dark a.editable,
+body.standard-dark a.editable-click,
+body.standard-dark a.editable-click:hover,
+body.standard-dark table a.editable,
+body.standard-dark table a.editable-click,
+body.standard-dark table a.editable-click:hover {
+  color: var(--sd-text);
+}
+
+body.standard-dark .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading {
+  background: var(--sd-bg);
+  color: var(--sd-text);
+}
+
+body.standard-dark .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading .loading-wrap .animation-dot,
+body.standard-dark .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading .loading-wrap .animation-wrap::after,
+body.standard-dark .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading .loading-wrap .animation-wrap::before {
+  background: var(--sd-green-accent);
+}
+
+body.standard-dark .bootstrap-table.fullscreen {
+  background: var(--sd-bg);
+}
+
+body.standard-dark .navigation .create-shelf a {
+  color: var(--sd-text);
+  background: var(--sd-green);
+}
+
+body.standard-dark .navigation .create-shelf a:hover,
+body.standard-dark .navigation .create-shelf a:focus {
+  background: var(--sd-green-hover);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .container-fluid .book .meta .title,
+body.standard-dark .container-fluid .book .meta .series {
+  color: var(--sd-text);
+}
+
+body.standard-dark .container-fluid .book .meta .author,
+body.standard-dark span.glyphicon.glyphicon-tags {
+  color: var(--sd-text-muted);
+}
+
+body.standard-dark .tags a,
+body.standard-dark .tags a:hover,
+body.standard-dark .tags a:focus,
+body.standard-dark .tag a,
+body.standard-dark .tag a:hover,
+body.standard-dark .tag a:focus {
+  color: var(--sd-text);
+  background-color: var(--sd-sepia-bg);
+  border-color: var(--sd-sepia-border);
+}
+
+body.standard-dark .rating .glyphicon-star-empty,
+body.standard-dark .rating .glyphicon-star.good {
+  color: var(--sd-text);
+}
+
+body.standard-dark .rating-clear .glyphicon-remove {
+  color: var(--sd-text-muted);
+}
+
+body.standard-dark .navbar-default {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border);
+}
+
+body.standard-dark .navbar-default .navbar-toggle {
+  border-color: var(--sd-text-muted);
+}
+
+body.standard-dark .navbar-default .navbar-toggle:hover,
+body.standard-dark .navbar-default .navbar-toggle:focus,
+body.standard-dark .navbar-default .navbar-toggle:active,
+body.standard-dark .navbar-default .navbar-toggle.active {
+  background-color: var(--sd-bg-hover);
+}
+
+body.standard-dark .navbar-default .navbar-toggle .icon-bar {
+  background-color: var(--sd-text-muted);
+}
+
+body.standard-dark .navbar-default .navbar-nav > li > a {
+  color: var(--sd-text-light) !important;
+}
+body.standard-dark .navbar-default .navbar-nav > li > a:hover {
+  color: var(--sd-text-light) !important;
+}
+
+body.standard-dark .navbar-default .navbar-form.navbar-left {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border);
+  box-shadow: none;
+}
+
+body.standard-dark .panel {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border-strong);
+}
+
+body.standard-dark .panel-default > .panel-heading {
+  color: var(--sd-text);
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border-strong);
+  border-bottom-color: var(--sd-border-strong);
+}
+
+body.standard-dark .panel-body {
+  background-color: var(--sd-bg);
+  color: var(--sd-text);
+}
+
+body.standard-dark .panel-title > a {
+  color: var(--sd-text);
+}
+
+body.standard-dark .languages .label-default {
+  background-color: var(--sd-green);
+  color: var(--sd-text);
+}
+
+body.standard-dark .well {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border-strong);
+  color: var(--sd-text);
+}
+
+body.standard-dark .table,
+body.standard-dark .table > thead > tr > th,
+body.standard-dark .table > tbody > tr > td,
+body.standard-dark .table > tfoot > tr > td {
+  color: var(--sd-text);
+  border-color: var(--sd-border);
+}
+
+body.standard-dark .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: var(--sd-bg-elevated);
+}
+
+body.standard-dark .table-hover > tbody > tr:hover {
+  background-color: var(--sd-bg-hover);
+}
+
+body.standard-dark .form-control,
+body.standard-dark .input-group-addon,
+body.standard-dark select.form-control {
+  background-color: var(--sd-bg);
+  color: var(--sd-text);
+  border-color: var(--sd-border-strong);
+  color-scheme: dark;
+}
+
+body.standard-dark .form-control:focus {
+  border-color: var(--sd-green-accent);
+  box-shadow: 0 0 0 0.2rem var(--sd-green-accent-shadow);
+}
+
+body.standard-dark select.form-control option {
+  background-color: var(--sd-bg);
+  color: var(--sd-text);
+}
+
+body.standard-dark select.form-control option:hover,
+body.standard-dark select.form-control option:focus,
+body.standard-dark select.form-control option:checked {
+  background-color: var(--sd-green) !important;
+  color: var(--sd-text) !important;
+}
+
+body.standard-dark .btn,
+body.standard-dark .btn-default {
+  background-color: var(--sd-green);
+  border-color: var(--sd-green-border);
+  color: var(--sd-text);
+}
+
+body.standard-dark .btn.editable-cancel,
+body.standard-dark .btn-default.editable-cancel,
+body.standard-dark .btn-sm.editable-cancel {
+  background-color: var(--sd-cancel-bg);
+  border-color: var(--sd-cancel-border);
+  color: var(--sd-text-light);
+}
+
+body.standard-dark .btn.editable-cancel:hover,
+body.standard-dark .btn-default.editable-cancel:hover,
+body.standard-dark .btn-sm.editable-cancel:hover,
+body.standard-dark .btn.editable-cancel:focus,
+body.standard-dark .btn-default.editable-cancel:focus,
+body.standard-dark .btn-sm.editable-cancel:focus {
+  background-color: var(--sd-cancel-hover-bg);
+  border-color: var(--sd-cancel-hover-border);
+  color: var(--sd-text-light);
+}
+
+body.standard-dark .btn-default:hover,
+body.standard-dark .btn-default:focus,
+body.standard-dark .btn:hover,
+body.standard-dark .btn:focus {
+  background-color: var(--sd-green-hover);
+  border-color: var(--sd-green-hover-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .btn-primary {
+  background-color: var(--sd-green-hover);
+  border-color: var(--sd-green-hover-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .btn-danger {
+  background-color: var(--sd-danger-bg);
+  border-color: var(--sd-danger-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .btn-danger:hover,
+body.standard-dark .btn-danger:focus,
+body.standard-dark .btn-danger:active {
+  background-color: var(--sd-danger-hover-bg);
+  border-color: var(--sd-danger-hover-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .bootstrap-select > .btn,
+body.standard-dark .bootstrap-select > .btn-primary,
+body.standard-dark .bootstrap-select .btn.dropdown-toggle,
+body.standard-dark .bootstrap-select .btn-primary.dropdown-toggle {
+  background-color: var(--sd-green);
+  border-color: var(--sd-green-border);
+  color: var(--sd-text);
+}
+
+body.standard-dark .bootstrap-select > .btn-danger,
+body.standard-dark .bootstrap-select .btn-danger.dropdown-toggle {
+  background-color: var(--sd-danger-bg);
+  border-color: var(--sd-danger-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .bootstrap-select > .btn:hover,
+body.standard-dark .bootstrap-select > .btn:focus,
+body.standard-dark .bootstrap-select > .btn:active,
+body.standard-dark .bootstrap-select > .btn-primary:hover,
+body.standard-dark .bootstrap-select > .btn-primary:focus,
+body.standard-dark .bootstrap-select > .btn-primary:active,
+body.standard-dark .bootstrap-select .btn.dropdown-toggle:hover,
+body.standard-dark .bootstrap-select .btn.dropdown-toggle:focus,
+body.standard-dark .bootstrap-select .btn.dropdown-toggle:active,
+body.standard-dark .bootstrap-select .btn-primary.dropdown-toggle:hover,
+body.standard-dark .bootstrap-select .btn-primary.dropdown-toggle:focus,
+body.standard-dark .bootstrap-select .btn-primary.dropdown-toggle:active {
+  background-color: var(--sd-green-hover);
+  border-color: var(--sd-green-hover-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .bootstrap-select > .btn-danger:hover,
+body.standard-dark .bootstrap-select > .btn-danger:focus,
+body.standard-dark .bootstrap-select > .btn-danger:active,
+body.standard-dark .bootstrap-select .btn-danger.dropdown-toggle:hover,
+body.standard-dark .bootstrap-select .btn-danger.dropdown-toggle:focus,
+body.standard-dark .bootstrap-select .btn-danger.dropdown-toggle:active {
+  background-color: var(--sd-danger-hover-bg);
+  border-color: var(--sd-danger-hover-border);
+  color: var(--sd-text-strong);
+}
+
+body.standard-dark .bootstrap-select .bs-placeholder,
+body.standard-dark .bootstrap-select .bs-placeholder:hover,
+body.standard-dark .bootstrap-select .bs-placeholder:focus {
+  color: var(--sd-text);
+}
+
+.dropdown-menu {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border);
+}
+
+.dropdown-menu > li > a {
+  color: var(--sd-text);
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background-color: var(--sd-bg-hover);
+  color: var(--sd-green-accent);
+}
+
+body.standard-dark .modal-content,
+body.standard-dark .modal-header,
+body.standard-dark .modal-footer {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-bg);
+  color: var(--sd-text);
+}
+
+body.standard-dark .modal-header {
+  border-bottom-color: var(--sd-bg);
+}
+
+body.standard-dark .modal-footer {
+  border-top-color: var(--sd-bg);
+}
+
+body.standard-dark .modal-header .close,
+body.standard-dark .modal-header .close:hover,
+body.standard-dark .modal-header .close:focus {
+  color: var(--sd-green-accent);
+  opacity: 1;
+  text-shadow: none;
+}
+
+body.standard-dark .pagination > li > a,
+body.standard-dark .pagination > li > span {
+  color: var(--sd-text);
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border);
+}
+
+body.standard-dark .pagination > li > a:hover,
+body.standard-dark .pagination > li > span:hover,
+body.standard-dark .pagination > li > a:focus,
+body.standard-dark .pagination > li > span:focus {
+  background-color: var(--sd-bg-hover);
+  border-color: var(--sd-border-hover);
+  color: var(--sd-text);
+}
+
+body.standard-dark .pagination > .disabled > span,
+body.standard-dark .pagination > .disabled > span:hover,
+body.standard-dark .pagination > .disabled > span:focus,
+body.standard-dark .pagination > .disabled > a,
+body.standard-dark .pagination > .disabled > a:hover,
+body.standard-dark .pagination > .disabled > a:focus {
+  background-color: var(--sd-bg);
+  border-color: var(--sd-border);
+  color: var(--sd-text-disabled);
+}
+
+body.standard-dark .pagination > .active > a,
+body.standard-dark .pagination > .active > span {
+  background-color: var(--sd-green-accent);
+  border-color: var(--sd-green-accent);
+  color: var(--sd-text-dark);
+}
+
+body.standard-dark .pagination > .active > a:hover,
+body.standard-dark .pagination > .active > span:hover,
+body.standard-dark .pagination > .active > a:focus,
+body.standard-dark .pagination > .active > span:focus {
+  background-color: var(--sd-green);
+  border-color: var(--sd-green-border);
+  color: var(--sd-text);
+}
+
+.alert {
+  border-color: var(--sd-border);
+}
+
+.alert-info {
+  background-color: var(--sd-success-bg);
+  color: var(--sd-success-text);
+}
+
+.alert-success {
+  background-color: var(--sd-success-bg);
+  color: var(--sd-success-text);
+}
+
+.alert-warning {
+  background-color: var(--sd-warning-bg);
+  color: var(--sd-warning-text);
+}
+
+.alert-danger {
+  background-color: var(--sd-error-bg);
+  color: var(--sd-error-text);
+}
+
+.cover .badge {
+  color: var(--sd-text-dark);
+  background-color: var(--sd-green-accent);
+}
+
+body.standard-dark .badge,
+body.standard-dark .badge-sm {
+  background-color: var(--sd-green);
+  color: var(--sd-text);
+}
+
+.container-fluid .single .cover img,
+.container-fluid .book .cover span img {
+  border-color: var(--sd-border);
+  box-shadow: var(--sd-shadow-strong);
+}
+
+.tooltip.bottom .tooltip-inner {
+  background-color: var(--sd-bg);
+  color: var(--sd-text);
+  box-shadow: var(--sd-shadow-tooltip);
+}
+
+/* Preserve standard theme layout, only colors updated */
