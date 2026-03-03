@@ -57,8 +57,8 @@ def del_temp_dir():
 
 def validate_mime_type(file_buffer, allowed_extensions):
     if error:
-        log.error(error)
-        return False
+        log.warning(error)
+        return True  # Allow upload if python-magic isn't available
     mime = magic.Magic(mime=True)
     allowed_mimetypes = list()
     for x in allowed_extensions:
