@@ -172,6 +172,80 @@ def set_bookmark(book_id, book_format):
     return "", 201
 
 
+@web.route("/ajax/reading-progress/<int:book_id>/<book_format>", methods=['GET'])
+@user_login_required
+def get_reading_progress(book_id, book_format):
+    progress = ub.session.query(ub.ReadingProgress).filter(and_(ub.ReadingProgress.user_id == int(current_user.id),
+                                                                ub.ReadingProgress.book_id == book_id,
+                                                                ub.ReadingProgress.format == book_format)).one_or_none()
+    if not progress:
+        return "", 204
+    return jsonify({
+        "location_type": progress.location_type,
+        "location": progress.location,
+        "progress_percent": progress.progress_percent,
+        "data": progress.data,
+        "last_modified": progress.last_modified.isoformat() if progress.last_modified else None,
+    }), 200
+
+
+@web.route("/ajax/reading-progress/<int:book_id>/<book_format>", methods=['POST'])
+@user_login_required
+def set_reading_progress(book_id, book_format):
+    data = request.get_json(silent=True)
+    if data is None:
+        data = request.form.to_dict()
+
+    location = data.get("location")
+    if location is None or location == "":
+        ub.session.query(ub.ReadingProgress).filter(and_(ub.ReadingProgress.user_id == int(current_user.id),
+                                                         ub.ReadingProgress.book_id == book_id,
+                                                         ub.ReadingProgress.format == book_format)).delete()
+        ub.session_commit()
+        return "", 204
+
+    location_type = data.get("location_type")
+    if not location_type:
+        log.error("Could not save reading progress (missing location_type) for user %s book %s format %s",
+                  current_user.id, book_id, book_format)
+        return "Invalid request", 400
+
+    progress_percent = data.get("progress_percent")
+    if progress_percent in (None, ""):
+        progress_percent = None
+    else:
+        try:
+            progress_percent = float(progress_percent)
+        except (TypeError, ValueError):
+            log.error("Could not save reading progress (invalid progress_percent) for user %s book %s format %s: %r",
+                      current_user.id, book_id, book_format, progress_percent)
+            return "Invalid request", 400
+
+    extra_data = data.get("data")
+    if isinstance(extra_data, str):
+        try:
+            extra_data = json.loads(extra_data)
+        except ValueError:
+            log.error("Could not parse reading progress data JSON for user %s book %s format %s",
+                      current_user.id, book_id, book_format)
+            extra_data = None
+
+    ub.session.query(ub.ReadingProgress).filter(and_(ub.ReadingProgress.user_id == int(current_user.id),
+                                                     ub.ReadingProgress.book_id == book_id,
+                                                     ub.ReadingProgress.format == book_format)).delete()
+
+    l_progress = ub.ReadingProgress(user_id=current_user.id,
+                                    book_id=book_id,
+                                    format=book_format,
+                                    location_type=location_type,
+                                    location=location,
+                                    progress_percent=progress_percent,
+                                    data=extra_data)
+    ub.session.merge(l_progress)
+    ub.session_commit("Reading progress for user {} in book {} created".format(current_user.id, book_id))
+    return "", 201
+
+
 @web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @user_login_required
 def toggle_read(book_id):
@@ -180,6 +254,38 @@ def toggle_read(book_id):
         return message, 400
     else:
         return message
+
+
+def get_continue_reading_books(limit=6):
+    """Get books with recent reading progress for the current user."""
+    if not current_user.is_authenticated:
+        return []
+    
+    try:
+        # Get reading progress entries for current user, ordered by last_modified desc
+        progress_entries = ub.session.query(ub.ReadingProgress).filter(
+            ub.ReadingProgress.user_id == int(current_user.id)
+        ).order_by(ub.ReadingProgress.last_modified.desc()).limit(limit).all()
+        
+        if not progress_entries:
+            return []
+        
+        # Get the corresponding books from calibre database
+        result = []
+        for progress in progress_entries:
+            book_query = calibre_db.session.query(db.Books).filter(db.Books.id == progress.book_id).first()
+            if book_query:
+                result.append({
+                    'book': book_query,
+                    'progress': progress,
+                    'progress_percent': int(progress.progress_percent) if progress.progress_percent else 0,
+                    'format': progress.format
+                })
+        
+        return result
+    except Exception as ex:
+        log.error_or_exception(ex)
+        return []
 
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
@@ -418,8 +524,10 @@ def render_books_list(data, sort_param, book_id, page):
                                                                 db.books_series_link,
                                                                 db.Books.id == db.books_series_link.c.book,
                                                                 db.Series)
+        continue_reading = get_continue_reading_books(limit=6) if page == 1 else []
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_("Books"), page=website, order=order[1])
+                                     title=_("Books"), page=website, order=order[1],
+                                     continue_reading=continue_reading)
 
 
 def render_rated_books(page, book_id, order):
