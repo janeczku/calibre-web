@@ -301,7 +301,6 @@ def get_matching_tags():
     tag_dict = {'tags': []}
     q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True))
     calibre_db.create_functions()
-    # calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     author_input = request.args.get('authors') or ''
     title_input = request.args.get('title') or ''
     include_tag_inputs = request.args.getlist('include_tag') or ''
@@ -1026,7 +1025,7 @@ def series_list():
                             .count())
             if no_series_count:
                 entries.append([db.Category(_("None"), "-1"), no_series_count])
-            entries = sorted(entries, key=lambda x: x[0].name.lower(), reverse=not order_no)
+            entries = sorted(entries, key=lambda x: (x[0].sort or x[0].name).lower(), reverse=not order_no)
             return render_title_template('list.html',
                                          entries=entries,
                                          folder='web.books_list',

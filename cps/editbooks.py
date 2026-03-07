@@ -1611,7 +1611,7 @@ def add_objects(db_book_object, db_object, db_session, db_type, add_elements):
             if db_type == 'author':
                 new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')))
             elif db_type == 'series':
-                new_element = db_object(add_element, add_element)
+                new_element = db_object(add_element, db.title_sort(add_element, config))
             elif db_type == 'custom':
                 new_element = db_object(value=add_element)
             elif db_type == 'publisher':
@@ -1642,7 +1642,7 @@ def create_objects_for_addition(db_element, add_element, db_type):
     elif db_type == 'series':
         if db_element.name != add_element:
             db_element.name = add_element
-            db_element.sort = add_element
+            db_element.sort = db.title_sort(add_element, config)
     elif db_type == 'author':
         if db_element.name != add_element:
             db_element.name = add_element
