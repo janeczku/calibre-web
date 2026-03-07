@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-14 11:23+0100\n"
-"PO-Revision-Date: 2026-01-04 02:22+0100\n"
+"POT-Creation-Date: 2026-03-07 09:27+0100\n"
+"PO-Revision-Date: 2026-03-05 06:42+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -61,7 +61,7 @@ msgid "UI Configuration"
 msgstr "Configurazione dell'interfaccia utente"
 
 #: cps/admin.py:315 cps/admin.py:1001 cps/db.py:801 cps/search.py:150
-#: cps/web.py:753
+#: cps/web.py:751
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr "La colonna personalizzata no.%(column)d non esiste nel database di Calibre"
@@ -310,7 +310,7 @@ msgstr "Tutto OK! Account Gmail verificato."
 #: cps/admin.py:1984 cps/admin.py:2105 cps/editbooks.py:169
 #: cps/editbooks.py:755 cps/editbooks.py:1474 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:324
-#: cps/shelf.py:398 cps/shelf.py:520 cps/tasks/convert.py:160 cps/web.py:1544
+#: cps/shelf.py:398 cps/shelf.py:520 cps/tasks/convert.py:160 cps/web.py:1524
 #, python-format
 msgid "Oops! Database Error: %(error)s."
 msgstr "Errore nel database: %(error)s."
@@ -349,7 +349,7 @@ msgstr "Durata non valida per l'attività specificata"
 msgid "Scheduled tasks settings updated"
 msgstr "Impostazioni delle attività pianificate aggiornate"
 
-#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1334
+#: cps/admin.py:1416 cps/admin.py:1465 cps/admin.py:2101 cps/web.py:1323
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Si è verificato un errore sconosciuto. Per favore riprova più tardi."
 
@@ -490,7 +490,7 @@ msgstr "Impostazioni del database aggiornate"
 msgid "Database Configuration"
 msgstr "Configurazione del database"
 
-#: cps/admin.py:1948 cps/web.py:1304
+#: cps/admin.py:1948 cps/web.py:1293
 msgid "Oops! Please complete all fields."
 msgstr "Per favore completa tutti i campi."
 
@@ -524,7 +524,7 @@ msgstr "Impossibile eliminare l'utente Guest (ospite)"
 msgid "No admin user remaining, can't delete user"
 msgstr "Non rimarrebbe nessun utente amministratore, non è possibile eliminare l'utente"
 
-#: cps/admin.py:2071 cps/web.py:1493
+#: cps/admin.py:2071 cps/web.py:1473
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "L'e-mail non può essere vuota e deve essere un'e-mail valida"
 
@@ -551,9 +551,9 @@ msgstr "Mancano i permessi di esecuzione"
 
 #: cps/db.py:1124 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:568 cps/web.py:602 cps/web.py:647 cps/web.py:687 cps/web.py:714
-#: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
-#: cps/web.py:1142
+#: cps/web.py:566 cps/web.py:600 cps/web.py:645 cps/web.py:685 cps/web.py:712
+#: cps/web.py:998 cps/web.py:1028 cps/web.py:1073 cps/web.py:1101
+#: cps/web.py:1140
 msgid "None"
 msgstr "Nessuna"
 
@@ -585,8 +585,8 @@ msgid "Value is missing on request"
 msgstr "Il valore non è presente nella richiesta"
 
 #: cps/editbooks.py:319 cps/editbooks.py:326 cps/editbooks.py:627
-#: cps/editbooks.py:1146 cps/web.py:535 cps/web.py:1585 cps/web.py:1631
-#: cps/web.py:1681
+#: cps/editbooks.py:1146 cps/web.py:533 cps/web.py:1565 cps/web.py:1611
+#: cps/web.py:1661
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "Il libro selezionato non è disponibile. Il file non esiste o non è accessibile"
 
@@ -690,9 +690,9 @@ msgstr "Attendi un minuto per registrare il prossimo utente"
 
 #: cps/error_handler.py:99 cps/templates/layout.html:69
 #: cps/templates/layout.html:104 cps/templates/login.html:27
-#: cps/templates/register.html:17 cps/web.py:1301 cps/web.py:1305
-#: cps/web.py:1311 cps/web.py:1335 cps/web.py:1339 cps/web.py:1352
-#: cps/web.py:1355
+#: cps/templates/register.html:17 cps/web.py:1290 cps/web.py:1294
+#: cps/web.py:1300 cps/web.py:1324 cps/web.py:1328 cps/web.py:1341
+#: cps/web.py:1344
 msgid "Register"
 msgstr "Registrati"
 
@@ -906,11 +906,11 @@ msgstr "Errore durante l'esecuzione di Calibre"
 msgid "Queue all books for metadata backup"
 msgstr "Metti in coda tutti i libri per il backup dei metadati"
 
-#: cps/kobo_auth.py:92
+#: cps/kobo_auth.py:91
 msgid "Please access Calibre-Web from non localhost to get valid api_endpoint for kobo device"
 msgstr "Accedi a Calibre-Web da un host non locale per ottenere un api_endpoint valido per il dispositivo Kobo"
 
-#: cps/kobo_auth.py:118
+#: cps/kobo_auth.py:117
 msgid "Kobo Setup"
 msgstr "Configurazione di Kobo"
 
@@ -989,7 +989,7 @@ msgstr "{} stelle"
 
 #: cps/remotelogin.py:63 cps/templates/layout.html:68
 #: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1370
+#: cps/templates/login.html:21 cps/web.py:1359
 msgid "Login"
 msgstr "Accesso"
 
@@ -1005,7 +1005,7 @@ msgstr "Il token è scaduto"
 msgid "Success! Please return to your device"
 msgstr "Tutto OK! Torna al tuo dispositivo"
 
-#: cps/render_template.py:41 cps/web.py:424
+#: cps/render_template.py:41 cps/web.py:422
 msgid "Books"
 msgstr "Libri"
 
@@ -1030,7 +1030,7 @@ msgstr "Libri scaricati"
 msgid "Show Downloaded Books"
 msgstr "Mostra Libri scaricati"
 
-#: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:439
+#: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:437
 msgid "Top Rated Books"
 msgstr "Libri più votati"
 
@@ -1039,7 +1039,7 @@ msgid "Show Top Rated Books"
 msgstr "Mostra Libri più votati"
 
 #: cps/render_template.py:61 cps/templates/index.xml:63
-#: cps/templates/index.xml:67 cps/web.py:772
+#: cps/templates/index.xml:67 cps/web.py:770
 msgid "Read Books"
 msgstr "Libri letti"
 
@@ -1048,7 +1048,7 @@ msgid "Show Read and Unread"
 msgstr "Mostra Libri letti e Libri da leggere"
 
 #: cps/render_template.py:65 cps/templates/index.xml:70
-#: cps/templates/index.xml:74 cps/web.py:775
+#: cps/templates/index.xml:74 cps/web.py:773
 msgid "Unread Books"
 msgstr "Libri da leggere"
 
@@ -1066,7 +1066,7 @@ msgid "Show Random Books"
 msgstr "Mostra Libri casuali"
 
 #: cps/render_template.py:71 cps/templates/book_table.html:93
-#: cps/templates/index.xml:97 cps/web.py:1146
+#: cps/templates/index.xml:97 cps/web.py:1144
 msgid "Categories"
 msgstr "Categorie"
 
@@ -1076,7 +1076,7 @@ msgstr "Mostra sezione Categorie"
 
 #: cps/render_template.py:74 cps/templates/book_edit.html:86
 #: cps/templates/book_table.html:94 cps/templates/index.xml:106
-#: cps/templates/search_form.html:70 cps/web.py:1036 cps/web.py:1048
+#: cps/templates/search_form.html:70 cps/web.py:1034 cps/web.py:1046
 msgid "Series"
 msgstr "Serie"
 
@@ -1094,7 +1094,7 @@ msgid "Show Author Section"
 msgstr "Mostra sezione Autori"
 
 #: cps/render_template.py:81 cps/templates/book_table.html:98
-#: cps/templates/index.xml:88 cps/web.py:1004
+#: cps/templates/index.xml:88 cps/web.py:1002
 msgid "Publishers"
 msgstr "Editori"
 
@@ -1104,7 +1104,7 @@ msgstr "Mostra sezione Editori"
 
 #: cps/render_template.py:84 cps/templates/book_table.html:96
 #: cps/templates/index.xml:115 cps/templates/search_form.html:108
-#: cps/web.py:1118
+#: cps/web.py:1116
 msgid "Languages"
 msgstr "Lingue"
 
@@ -1128,7 +1128,7 @@ msgstr "Formati di file"
 msgid "Show File Formats Section"
 msgstr "Mostra sezione Formati di file"
 
-#: cps/render_template.py:95 cps/web.py:798
+#: cps/render_template.py:95 cps/web.py:796
 msgid "Archived Books"
 msgstr "Libri archiviati"
 
@@ -1136,7 +1136,7 @@ msgstr "Libri archiviati"
 msgid "Show Archived Books"
 msgstr "Mostra Libri archiviati"
 
-#: cps/render_template.py:100 cps/web.py:834
+#: cps/render_template.py:100 cps/web.py:832
 msgid "Books List"
 msgstr "Elenco libri"
 
@@ -1200,22 +1200,22 @@ msgstr "Il libro è stato aggiunto allo scaffale: %(sname)s"
 
 #: cps/shelf.py:116
 msgid "You are not allowed to remove a book from the shelf"
-msgstr ""
+msgstr "Non è consentito rimuovere un libro dallo scaffale"
 
 #: cps/shelf.py:129
 #, python-format
 msgid "No Books are part of the shelf: %(name)s"
-msgstr ""
+msgstr "Nessun libro fa parte dello scaffale: %(nome)s"
 
 #: cps/shelf.py:140
 #, python-format
 msgid "Books have been removed from shelf: %(sname)s"
-msgstr ""
+msgstr "I libri sono stati rimossi dallo scaffale: %(sname)s"
 
 #: cps/shelf.py:147
 #, python-format
 msgid "Could not remove books from shelf: %(sname)s"
-msgstr ""
+msgstr "Impossibile rimuovere i libri dallo scaffale: %(sname)s"
 
 #: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
@@ -1369,150 +1369,150 @@ msgstr "È disponibile un nuovo aggiornamento. Fai clic sul pulsante in basso pe
 msgid "No release information available"
 msgstr "Nessuna informazione disponibile sulla versione"
 
-#: cps/templates/index.html:6 cps/web.py:451
+#: cps/templates/index.html:6 cps/web.py:449
 msgid "Discover (Random Books)"
 msgstr "Libri casuali"
 
-#: cps/web.py:487
+#: cps/web.py:485
 msgid "Hot Books (Most Downloaded)"
 msgstr "Libri hot (i più scaricati)"
 
-#: cps/web.py:518
+#: cps/web.py:516
 #, python-format
 msgid "Downloaded books by %(user)s"
 msgstr "Libri scaricati da %(user)s"
 
-#: cps/web.py:551
+#: cps/web.py:549
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Autore: %(name)s"
 
-#: cps/web.py:587
+#: cps/web.py:585
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Editore: %(name)s"
 
-#: cps/web.py:615
+#: cps/web.py:613
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Serie: %(serie)s"
 
-#: cps/web.py:629
+#: cps/web.py:627
 msgid "Rating: None"
 msgstr "Valutazione: nessuna"
 
-#: cps/web.py:638
+#: cps/web.py:636
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Valutazione: %(rating)s stelle"
 
-#: cps/web.py:669
+#: cps/web.py:667
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Formato file: %(format)s"
 
-#: cps/web.py:704
+#: cps/web.py:702
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Categoria: %(name)s"
 
-#: cps/web.py:733
+#: cps/web.py:731
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Lingua: %(name)s"
 
-#: cps/templates/admin.html:16 cps/web.py:976
+#: cps/templates/admin.html:16 cps/web.py:974
 msgid "Downloads"
 msgstr "Scaricati"
 
-#: cps/web.py:1078
+#: cps/web.py:1076
 msgid "Ratings list"
 msgstr "Elenco valutazioni"
 
-#: cps/web.py:1105
+#: cps/web.py:1103
 msgid "File formats list"
 msgstr "Elenco formati di file"
 
-#: cps/web.py:1264
+#: cps/web.py:1262
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Configura prima le impostazioni della posta SMTP..."
 
-#: cps/web.py:1270
+#: cps/web.py:1268
 #, python-format
 msgid "Success! Book queued for sending to %(eReadermail)s"
 msgstr "Tutto OK! Libro in coda per l'invio a %(eReadermail)s"
 
-#: cps/web.py:1273
+#: cps/web.py:1271
 #, python-format
 msgid "Oops! There was an error sending book: %(res)s"
 msgstr "Si è verificato un errore durante l'invio del libro: %(res)s"
 
-#: cps/web.py:1275
+#: cps/web.py:1273
 msgid "Oops! Please update your profile with a valid eReader Email."
 msgstr "Per favore aggiorna il tuo profilo con un'e-mail eReader valida."
 
-#: cps/web.py:1300 cps/web.py:1351
+#: cps/web.py:1289 cps/web.py:1340
 msgid "Oops! Email server is not configured, please contact your administrator."
 msgstr "Il server e-mail non è configurato, per favore contatta l'amministratore"
 
-#: cps/web.py:1337
+#: cps/web.py:1326
 msgid "Oops! Your Email is not allowed."
 msgstr "La tua email non è consentita."
 
-#: cps/web.py:1340
+#: cps/web.py:1329
 msgid "Success! Confirmation Email has been sent."
 msgstr "Tutto OK! L'e-mail di conferma è stata inviata."
 
-#: cps/web.py:1385 cps/web.py:1408
+#: cps/web.py:1374 cps/web.py:1388
 msgid "Cannot activate LDAP authentication"
 msgstr "Impossibile attivare l'autenticazione LDAP"
 
-#: cps/web.py:1417
+#: cps/web.py:1397
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ora sei connesso come: '%(nickname)s'"
 
-#: cps/web.py:1424
+#: cps/web.py:1404
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr "Accesso di riserva come: '%(nickname)s', il server LDAP non è raggiungibile o l'utente è sconosciuto"
 
-#: cps/web.py:1429
+#: cps/web.py:1409
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr "Impossibile accedere: %(message)s"
 
-#: cps/web.py:1433 cps/web.py:1458
+#: cps/web.py:1413 cps/web.py:1438
 msgid "Wrong Username or Password"
 msgstr "Nome utente o password errati"
 
-#: cps/web.py:1440
+#: cps/web.py:1420
 msgid "New Password was sent to your email address"
 msgstr "La nuova password è stata inviata al tuo indirizzo e-mail"
 
-#: cps/web.py:1444
+#: cps/web.py:1424
 msgid "An unknown error occurred. Please try again later."
 msgstr "Si è verificato un errore sconosciuto, riprova più tardi."
 
-#: cps/web.py:1446
+#: cps/web.py:1426
 msgid "Please enter valid username to reset password"
 msgstr "Inserisci un nome utente valido per reimpostare la password"
 
-#: cps/web.py:1454
+#: cps/web.py:1434
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Ora sei connesso come: '%(nickname)s'"
 
-#: cps/web.py:1519 cps/web.py:1569
+#: cps/web.py:1499 cps/web.py:1549
 #, python-format
 msgid "%(name)s's Profile"
 msgstr "Profilo di %(name)s"
 
-#: cps/web.py:1535
+#: cps/web.py:1515
 msgid "Success! Profile Updated"
 msgstr "Tutto OK! Profilo aggiornato"
 
-#: cps/web.py:1539
+#: cps/web.py:1519
 msgid "Oops! An account already exists for this Email."
 msgstr "Esiste già un account per questa e-mail."
 
@@ -3437,7 +3437,7 @@ msgstr "Risultati per:"
 
 #: cps/templates/search.html:29
 msgid "Remove from shelf"
-msgstr ""
+msgstr "Rimuovi dallo scaffale"
 
 #: cps/templates/search_form.html:21
 msgid "Published Date From"
@@ -3651,7 +3651,7 @@ msgstr "Aggiungi valori personali consentiti/negati nelle colonne"
 
 #: cps/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
-msgstr "Sincronizza con Kobo unicamente i libri negli scaffali selezionati"
+msgstr "Sincronizza con Kobo unicamene i libri negli scaffali selezionati"
 
 #: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
 msgid "Delete User"
