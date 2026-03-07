@@ -1091,8 +1091,13 @@ def get_download_link(book_id, book_format, client):
             file_name = book.title
             if len(book.authors) > 0:
                 file_name = file_name + ' - ' + book.authors[0].name
+            original_name = file_name
             file_name = get_valid_filename(file_name, replace_whitespace=False, force_unidecode=True)
-            quoted_file_name = file_name if client == "kindle" else quote(file_name)
+            if client == "kindle":
+                quoted_file_name = file_name
+            else:
+                native_name = get_valid_filename(original_name, replace_whitespace=False, force_unidecode=False)
+                quoted_file_name = quote(native_name)
             headers = Headers()
             headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
             headers["Content-Disposition"] = ('attachment; filename="{}.{}"; filename*=UTF-8\'\'{}.{}').format(
