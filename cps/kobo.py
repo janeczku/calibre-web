@@ -140,7 +140,6 @@ def convert_to_kobo_timestamp_string(timestamp):
 
 @kobo.route("/v1/library/sync")
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleSyncRequest():
     if not current_user.role_download():
         log.info("Users need download permissions for syncing library to Kobo reader")
@@ -336,7 +335,6 @@ def generate_sync_response(sync_token, sync_results, set_cont=False):
 @kobo.route("/v1/library/<book_uuid>/metadata")
 @requires_kobo_auth
 @download_required
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleMetadataRequest(book_uuid):
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
@@ -508,7 +506,6 @@ def get_metadata(book):
 @csrf.exempt
 @kobo.route("/v1/library/tags", methods=["POST", "DELETE"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
     # catch delete requests, otherwise they are handled in the book delete handler
@@ -544,7 +541,6 @@ def HandleTagCreate():
 @csrf.exempt
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleTagUpdate(tag_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
@@ -599,7 +595,6 @@ def add_items_to_shelf(items, shelf):
 @csrf.exempt
 @kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleTagAddItem(tag_id):
     items = None
     try:
@@ -630,7 +625,6 @@ def HandleTagAddItem(tag_id):
 @csrf.exempt
 @kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleTagRemoveItem(tag_id):
     items = None
     try:
@@ -764,7 +758,6 @@ def create_kobo_tag(shelf):
 @csrf.exempt
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleStateRequest(book_uuid):
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
@@ -894,14 +887,21 @@ def get_statistics_response(statistics):
     return resp
 
 
+def _clean_progress(value):
+    """Return progress as int if it's a whole number, preserving Kobo device expectations."""
+    if value is not None and value == int(value):
+        return int(value)
+    return value
+
+
 def get_current_bookmark_response(current_bookmark):
     resp = {
         "LastModified": convert_to_kobo_timestamp_string(current_bookmark.last_modified),
     }
-    if current_bookmark.progress_percent:
-        resp["ProgressPercent"] = current_bookmark.progress_percent
-    if current_bookmark.content_source_progress_percent:
-        resp["ContentSourceProgressPercent"] = current_bookmark.content_source_progress_percent
+    if current_bookmark.progress_percent is not None:
+        resp["ProgressPercent"] = _clean_progress(current_bookmark.progress_percent)
+    if current_bookmark.content_source_progress_percent is not None:
+        resp["ContentSourceProgressPercent"] = _clean_progress(current_bookmark.content_source_progress_percent)
     if current_bookmark.location_value:
         resp["Location"] = {
             "Value": current_bookmark.location_value,
@@ -914,7 +914,6 @@ def get_current_bookmark_response(current_bookmark):
 @kobo.route("/<book_uuid>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': ""})
 @kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleCoverImageRequest(book_uuid, width, height, Quality, isGreyscale):
     try:
         if int(height) > 1000:
@@ -951,7 +950,6 @@ def TopLevelEndpoint():
 @csrf.exempt
 @kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleBookDeletionRequest(book_uuid):
     log.info("Kobo book delete request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)
@@ -1062,7 +1060,6 @@ def make_calibre_web_auth_response():
 @kobo.route("/v1/auth/refresh", methods=["POST"])
 @kobo.route("/v1/auth/device", methods=["POST"])
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleAuthRequest():
     log.error(limiter.current_limit)
     log.error(limiter.current_limit)
@@ -1077,7 +1074,6 @@ def HandleAuthRequest():
 
 @kobo.route("/v1/initialization")
 @requires_kobo_auth
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def HandleInitRequest():
     log.info('Init')
 
@@ -1121,6 +1117,8 @@ def HandleInitRequest():
                                                                width="{width}",
                                                                height="{height}",
                                                                isGreyscale='false'))
+        kobo_resources["library_sync"] = calibre_web_url + url_for("kobo.HandleSyncRequest",
+                                                                    auth_token=kobo_auth.get_auth_token())
     else:
         kobo_resources["image_host"] = url_for("web.index", _external=True).strip("/")
         kobo_resources["image_url_quality_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
@@ -1138,6 +1136,9 @@ def HandleInitRequest():
                                                                height="{height}",
                                                                isGreyscale='false',
                                                                _external=True))
+        kobo_resources["library_sync"] = url_for("kobo.HandleSyncRequest",
+                                                  auth_token=kobo_auth.get_auth_token(),
+                                                  _external=True)
 
     response = make_response(jsonify({"Resources": kobo_resources}))
     response.headers["x-kobo-apitoken"] = "e30="
@@ -1148,7 +1149,6 @@ def HandleInitRequest():
 @kobo.route("/download/<book_id>/<book_format>")
 @requires_kobo_auth
 @download_required
-# @limiter.limit("3/minute", key_func=get_remote_address)
 def download_book(book_id, book_format):
     return get_download_link(book_id, book_format, "kobo")
 

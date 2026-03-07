@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2026-02-17 19:21:22</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2026-02-18 19:25:49</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-02-18 02:50:40</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-02-19 02:59:10</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 14 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 16 min</p>
         </div>
       </div>
       </div>
@@ -2269,11 +2269,11 @@ AssertionError: 0.04218017335689641 not less than or equal to 0.025</pre>
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadataScholar</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2283,11 +2283,31 @@ AssertionError: 0.04218017335689641 not less than or equal to 0.025</pre>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id="ft20.1" class="none bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft20.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft20.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_metadata_scholar.py&#34;, line 74, in test_load_metadata
+    self.assertEqual(30, len(results))
+AssertionError: 30 != 20</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5951,8 +5971,8 @@ AssertionError: 0.04218017335689641 not less than or equal to 0.025</pre>
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>538</td>
-        <td>530</td>
-        <td>1</td>
+        <td>529</td>
+        <td>2</td>
         <td>0</td>
         <td>7</td>
         <td>&nbsp;</td>
@@ -6090,13 +6110,13 @@ AssertionError: 0.04218017335689641 not less than or equal to 0.025</pre>
           
             <tr>
               <th>pycountry</th>
-              <td>24.6.1</td>
+              <td>26.2.16</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>pypdf</th>
-              <td>6.6.2</td>
+              <td>6.7.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6504,7 +6524,7 @@ AssertionError: 0.04218017335689641 not less than or equal to 0.025</pre>
 </div>
 
 <script>
-    drawCircle(530, 1, 0, 7);
+    drawCircle(529, 2, 0, 7);
     showCase(5);
 </script>
 

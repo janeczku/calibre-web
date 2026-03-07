@@ -1,3 +1,7 @@
+#add-to-shelves.dropdown-menu, #remove-from-shelves.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
 
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;

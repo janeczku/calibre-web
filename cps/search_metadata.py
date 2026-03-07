@@ -135,5 +135,5 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend([asdict(x) for x in future.result() if x])
+                data.extend([asdict(x) for x in (future.result() or []) if x])
     return  make_response(jsonify(data))

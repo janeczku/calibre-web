@@ -103,11 +103,11 @@ $(function () {
                         });
                     }
                     else {
-                        $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "!</p>" + $("#meta-info")[0].innerHTML)
+                        $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>" + $("#meta-info")[0].innerHTML)
                     }
                 },
                 error: function error() {
-                    $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
+                    $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "</p>" + $("#meta-info")[0].innerHTML);
                 },
             });
         }

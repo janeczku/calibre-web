@@ -24,7 +24,7 @@ from flask import request
 
 
 def request_username():
-    return request.authorization.username
+    return request.authorization.username if request.authorization else ""
 
 
 def main():
