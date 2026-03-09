@@ -4,22 +4,44 @@
 /* global Bloodhound, language, Modernizr, tinymce, getPath */
 
 if ($("#comments").length && typeof tinymce !== "undefined") {
+    var prefersDark = false;
+    if (window.matchMedia) {
+        prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    // Calibre-Web ships only the default content skin. Avoid requesting non-existent
+    // /skins/content/dark/content.min.css (would return HTML and trigger MIME errors).
+    var useDarkUi = document.body.classList.contains("standard-dark") || (document.body.classList.contains("standard-auto") && prefersDark);
     tinymce.init({
         selector: "#comments",
         plugins: 'code',
         branding: false,
         menubar: "edit view format",
-        language: language
+        language: language,
+        skin: useDarkUi ? "oxide-dark" : "oxide",
+        content_css: "default",
+        content_style: useDarkUi ? "body{background:#f3f5f7;color:#0f1113;}" : ""
+            ? "body{background:#f3f5f7;color:#0f1113;}"
+            : ""
     });
 }
 
 if ($(".tiny_editor").length) {
+    var prefersDark2 = false;
+    if (window.matchMedia) {
+        prefersDark2 = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+    // Calibre-Web ships only the default content skin. Avoid requesting non-existent
+    // /skins/content/dark/content.min.css (would return HTML and trigger MIME errors).
+    var useDarkUi2 = document.body.classList.contains("standard-dark") || (document.body.classList.contains("standard-auto") && prefersDark2);
     tinymce.init({
         selector: ".tiny_editor",
         plugins: 'code',
         branding: false,
         menubar: "edit view format",
-        language: language
+        language: language,
+        skin: useDarkUi2 ? "oxide-dark" : "oxide",
+        content_css: "default",
+        content_style: useDarkUi2 ? "body{background:#f3f5f7;color:#0f1113;}" : ""
     });
 }
 
