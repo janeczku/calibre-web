@@ -811,8 +811,6 @@ def HandleStateRequest(book_uuid):
 
         ub.session.merge(kobo_reading_state)
         ub.session_commit()
-        update_results_response["LastModified"] = convert_to_kobo_timestamp_string(kobo_reading_state.last_modified)
-        update_results_response["PriorityTimestamp"] = convert_to_kobo_timestamp_string(kobo_reading_state.priority_timestamp)
         return jsonify({
             "RequestResult": "Success",
             "UpdateResults": [update_results_response],
