@@ -35,7 +35,8 @@ from flask import (
     current_app,
     url_for,
     redirect,
-    abort
+    abort,
+    g
 )
 from .cw_login import current_user
 from werkzeug.datastructures import Headers
@@ -775,6 +776,13 @@ def HandleStateRequest(book_uuid):
             request_data = request.json
             request_reading_state = request_data["ReadingStates"][0]
 
+            # Use the device's own timestamp so the GET response mirrors it back,
+            # preventing the "newer PT" conflict popup. Official Kobo cloud does the same.
+            lm_str = request_reading_state.get("LastModified")
+            request_lm = (datetime.strptime(lm_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+                          if lm_str else datetime.now(timezone.utc))
+            g.kobo_reading_state_lm = request_lm
+
             request_bookmark = request_reading_state["CurrentBookmark"]
             if request_bookmark:
                 current_bookmark = kobo_reading_state.current_bookmark
@@ -785,6 +793,7 @@ def HandleStateRequest(book_uuid):
                     current_bookmark.location_value = location["Value"]
                     current_bookmark.location_type = location["Type"]
                     current_bookmark.location_source = location["Source"]
+                current_bookmark.last_modified = request_lm
                 update_results_response["CurrentBookmarkResult"] = {"Result": "Success"}
 
             request_statistics = request_reading_state["Statistics"]
@@ -792,17 +801,19 @@ def HandleStateRequest(book_uuid):
                 statistics = kobo_reading_state.statistics
                 statistics.spent_reading_minutes = int(request_statistics["SpentReadingMinutes"])
                 statistics.remaining_time_minutes = int(request_statistics["RemainingTimeMinutes"])
+                statistics.last_modified = request_lm
                 update_results_response["StatisticsResult"] = {"Result": "Success"}
 
             request_status_info = request_reading_state["StatusInfo"]
             if request_status_info:
                 book_read = kobo_reading_state.book_read_link
                 new_book_read_status = get_ub_read_status(request_status_info["Status"])
-                if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS \
-                        and new_book_read_status != book_read.read_status:
-                    book_read.times_started_reading += 1
-                    book_read.last_time_started_reading = datetime.now(timezone.utc)
-                book_read.read_status = new_book_read_status
+                if new_book_read_status != book_read.read_status:
+                    if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS:
+                        book_read.times_started_reading += 1
+                        book_read.last_time_started_reading = datetime.now(timezone.utc)
+                    book_read.read_status = new_book_read_status
+                    book_read.last_modified = request_lm
                 update_results_response["StatusInfoResult"] = {"Result": "Success"}
         except (KeyError, TypeError, ValueError, StatementError):
             log.debug("Received malformed v1/library/<book_uuid>/state request.")
