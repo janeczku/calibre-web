@@ -59,7 +59,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 {
   /* Back wall: Wood texture */
   background-image:
     radial-gradient(circle at center, rgba(30,12,0,0.5) 0%, rgba(10,4,0,0.85) 100%),
-    url('../img/wood_texture.png') !important;
+    url('../../img/wood_texture.png') !important;
   background-size: 500px auto !important;
   background-attachment: fixed !important;
   
@@ -77,7 +77,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 {
   min-height: 100% !important;
   background-image:
     linear-gradient(90deg, rgba(15,6,0,0.6) 0%, rgba(10,4,0,0.4) 100%),
-    url('../img/wood_texture.png') !important;
+    url('../../img/wood_texture.png') !important;
   background-size: 350px auto !important;
   background-attachment: fixed !important;
   border-right: 8px solid rgba(0,0,0,0.8) !important;
@@ -104,7 +104,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
 .navbar.navbar-default {
   background-image:
     linear-gradient(rgba(10,4,0,0.5), rgba(10,4,0,0.5)),
-    url('../img/wood_texture.png') !important;
+    url('../../img/wood_texture.png') !important;
   background-size: 500px auto !important;
   background-attachment: fixed !important;
   border-bottom: 6px solid rgba(0,0,0,0.9) !important;
@@ -152,7 +152,12 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
 }
 
 /* ── 3-D shelf plank (THE FRONT BAR) ── */
-.container-fluid .discover::after {
+/* Only show the shelf plank on actual book-listing pages */
+.index .discover::after, 
+.author .discover::after, 
+.search .discover::after, 
+.shelf .discover::after,
+.random-books::after {
   content: '' !important;
   display: block !important;
   position: absolute !important;
@@ -179,7 +184,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
       #4a2808 90%,
       #201004 100%   /* dark underside */
     ),
-    url('../img/wood_texture.png') !important;
+    url('../../img/wood_texture.png') !important;
   background-size: auto, auto, 450px auto !important;
 
   border-top: 2px solid rgba(255, 255, 255, 0.3) !important;
@@ -200,6 +205,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
   margin-bottom: 0 !important;
   padding: 0 2.5px !important; /* 2.5px each side = 5px gap */
   width: 130px !important;
+  max-width: 130px !important;
   flex: 0 0 130px !important;
   position: relative !important;
   perspective: 1200px !important;
@@ -209,6 +215,15 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
   
   /* Move books down so they sit slightly behind the front lip */
   transform: translateY(12px) !important;
+}
+
+/* Force override of Bootstrap column classes on books */
+.container-fluid .book.col-sm-3,
+.container-fluid .book.col-lg-2,
+.container-fluid .book.col-xs-6 {
+  width: 130px !important;
+  max-width: 130px !important;
+  flex: 0 0 130px !important;
 }
 
 /* Book cover height */
@@ -342,6 +357,137 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
   border: 1px solid #e0b060 !important;
 }
 
+/* ── Administration & Config Pages Text Visibility ── */
+.admin, .uiconfig, .config, .profile {
+  color: #f0d0a0 !important;
+}
+
+/* Form labels and generic text readability */
+.admin label, .uiconfig label, .config label, .profile label, .dbconfig label,
+.shelfcreate label, .shelfedit label, .shelforder label,
+.me label, .edituser label, .newuser label,
+.usertable label, .tasks label, .mailset label, .stat label, .logfile label,
+.editbook label, .book_table label, .advsearch label,
+.admin .form-group, .uiconfig .form-group, .config .form-group, .dbconfig .form-group,
+.shelfcreate .form-group, .shelfedit .form-group, .shelfcreate .checkbox, .shelfedit .checkbox,
+.me .form-group, .edituser .form-group, .newuser .form-group,
+.me .checkbox, .edituser .checkbox, .newuser .checkbox,
+.usertable .form-group, .tasks .form-group, .mailset .form-group,
+.editbook .form-group, .book_table .form-group, .advsearch .form-group,
+.usertable .checkbox, .mailset .checkbox, .editbook .checkbox, .advsearch .checkbox {
+  color: #f0d0a0 !important;
+}
+
+/* Inputs and Selects */
+.admin .form-control, .uiconfig .form-control, .config .form-control, .dbconfig .form-control,
+.shelfcreate .form-control, .shelfedit .form-control,
+.me .form-control, .edituser .form-control, .newuser .form-control,
+.advsearch .form-control {
+  background-color: rgba(0,0,0,0.5) !important;
+  color: #f0d0a0 !important;
+  border: 1px solid #4a2808 !important;
+}
+
+.admin .form-control:focus, .uiconfig .form-control:focus, .config .form-control:focus, .dbconfig .form-control:focus,
+.shelfcreate .form-control:focus, .shelfedit .form-control:focus,
+.me .form-control:focus, .edituser .form-control:focus, .newuser .form-control:focus,
+.advsearch .form-control:focus {
+  border-color: #e0b060 !important;
+  box-shadow: 0 0 8px rgba(224, 176, 96, 0.4) !important;
+}
+
+.admin h1, .uiconfig h1, .config h1, .dbconfig h1, .shelfcreate h1, .shelfedit h1, .me h1, .edituser h1, .newuser h1, .usertable h1, .tasks h1, .mailset h1, .stat h1, .logfile h1, .editbook h1, .advsearch h1,
+.admin h2, .uiconfig h2, .config h2, .profile h2, .dbconfig h2, .shelfcreate h2, .shelfedit h2, .me h2, .edituser h2, .newuser h2, .usertable h2, .tasks h2, .mailset h2, .stat h2, .logfile h2, .editbook h2, .advsearch h2,
+.admin h3, .uiconfig h3, .config h3, .profile h3, .dbconfig h3, .shelfcreate h3, .shelfedit h3, .me h3, .edituser h3, .newuser h3, .usertable h3, .tasks h3, .mailset h3, .stat h3, .logfile h3, .editbook h3, .advsearch h3,
+.admin h4, .uiconfig h4, .config h4, .profile h4, .dbconfig h4, .shelfcreate h4, .shelfedit h4, .me h4, .edituser h4, .newuser h4, .usertable h4, .tasks h4, .mailset h4, .stat h4, .logfile h4, .editbook h4, .advsearch h4 {
+  color: #e0b060 !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+}
+
+/* Style Bootstrap Panels for the theme */
+.panel {
+  background-color: rgba(0,0,0,0.4) !important;
+  border: 1px solid #4a2808 !important;
+}
+
+.panel-default > .panel-heading {
+  background-color: #4a2808 !important;
+  color: #e0b060 !important;
+  border-bottom: 1px solid #6b4226 !important;
+}
+
+.panel-title, .panel-title > a {
+  color: #e0b060 !important;
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+
+.panel-body {
+  color: #f0d0a0 !important;
+  background-color: #2a1505 !important;
+}
+
+.admin .table, .uiconfig .table, .usertable .table, .tasks .table,
+.edituser .table, .newuser .table, .me .table, .config .table,
+.dbconfig .table, .mailset .table, .stat .table, .logfile .table {
+  color: #f0d0a0 !important;
+  background: rgba(0,0,0,0.3) !important;
+}
+
+.usertable .table > thead > tr > th,
+.tasks .table > thead > tr > th {
+  color: #e0b060 !important;
+  background-color: #3a1a05 !important;
+  border-bottom: 2px solid #6b4226 !important;
+}
+
+.usertable .table > tbody > tr > td,
+.tasks .table > tbody > tr > td {
+  color: #f0d0a0 !important;
+  border-top: 1px solid #4a2808 !important;
+}
+
+.usertable .table-striped > tbody > tr:nth-of-type(odd),
+.tasks .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255,255,255,0.05) !important;
+}
+
+/* Alert/Info boxes readability */
+.alert-info, .alert-warning, .alert-success, .alert-danger {
+  background-color: #6b4226 !important;
+  border: 1px solid #e0b060 !important;
+  color: #f0d0a0 !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+.alert-info {
+  background: linear-gradient(180deg, #6b4226 0%, #4a2808 100%) !important;
+}
+
+.admin .table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255,255,255,0.05) !important;
+}
+
+.admin .row, .uiconfig .row, .config .row,
+.usertable .row, .tasks .row, .me .row, .edituser .row, .newuser .row,
+.mailset .row, .stat .row, .logfile .row, .dbconfig .row,
+.shelfcreate .row, .shelfedit .row, .editbook .row, .advsearch .row {
+  color: #f0d0a0 !important;
+}
+
+/* Form labels and static text in admin grid */
+.admin .col-xs-6, .admin .col-sm-3, .admin .col-sm-6, .admin .col-sm-7 {
+  color: #f0d0a0 !important;
+}
+
+/* Hide empty shelf bays on book-listing pages only */
+.index .discover:not(:has(.book)), 
+.author .discover:not(:has(.book)), 
+.search .discover:not(:has(.book)), 
+.shelf .discover:not(:has(.book)) {
+  display: none !important;
+}
+
 /* Custom Scrollbar - Brass/Wood style */
 body > div.container-fluid > div.row-fluid > div.col-sm-10::-webkit-scrollbar,
 body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar {
@@ -359,4 +505,3 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar-thu
   border-radius: 7px;
   box-shadow: inset 1px 1px 2px rgba(255,255,255,0.2);
 }
-

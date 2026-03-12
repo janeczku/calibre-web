@@ -18,7 +18,9 @@
     {% block header %}{% endblock %}
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/bookshelf.css') }}" rel="stylesheet" media="screen">
+    {% if g.theme_name %}
+      <link href="{{ url_for('static', filename='css/themes/' + g.theme_name + '.css') }}" rel="stylesheet" media="screen">
+    {% endif %}
     {% if g.current_theme == 1 %}
        <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
        <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
@@ -223,6 +225,9 @@
       <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
+    {% endif %}
+    {% if g.theme_js %}
+      <script src="{{ url_for('static', filename='js/themes/' + g.theme_name + '.js') }}"></script>
     {% endif %}
     {% block js %}{% endblock %}
   </body>

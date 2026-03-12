@@ -118,6 +118,24 @@ def before_request():
     g.allow_anonymous = config.config_anonbrowse
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
+    g.theme_name = ""
+    g.theme_js = False
+    if g.current_theme > 1:
+        themes_dir = os.path.join(constants.BASE_DIR, 'cps', 'static', 'css', 'themes')
+        custom_themes = []
+        if os.path.exists(themes_dir):
+            for f in os.listdir(themes_dir):
+                if f.endswith('.css'):
+                    custom_themes.append(f[:-4])
+        custom_themes.sort()
+        if g.current_theme - 2 < len(custom_themes):
+            g.theme_name = custom_themes[g.current_theme - 2]
+            js_path = os.path.join(constants.BASE_DIR, 'cps', 'static', 'js', 'themes', g.theme_name + '.js')
+            if os.path.exists(js_path):
+                g.theme_js = True
+        else:
+            g.current_theme = 0
+            
     g.config_authors_max = config.config_authors_max
     if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
@@ -284,10 +302,20 @@ def view_configuration():
         .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
     languages = calibre_db.speaking_language()
     translations = get_available_locale()
+    
+    themes_dir = os.path.join(constants.BASE_DIR, 'cps', 'static', 'css', 'themes')
+    custom_themes = []
+    if os.path.exists(themes_dir):
+        for f in os.listdir(themes_dir):
+            if f.endswith('.css'):
+                custom_themes.append(f[:-4])
+    custom_themes.sort()
+    
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
                                  languages=languages,
                                  translations=translations,
+                                 custom_themes=custom_themes,
                                  title=_("UI Configuration"), page="uiconfig")
 
 
