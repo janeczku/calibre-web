@@ -134,7 +134,8 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
   display: flex !important;
   flex-wrap: wrap !important;
   justify-content: flex-start !important;
-  gap: 0 !important; /* Spacing handled by book padding for easier alignment with shelves */
+  gap: 0 !important;
+  position: relative !important; /* Anchor for absolute planks */
 }
 
 /* Section label */
@@ -151,20 +152,16 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
   margin: 0 0 25px 0 !important;
 }
 
-/* ── 3-D shelf plank (THE FRONT BAR) ── */
-/* Only show the shelf plank on actual book-listing pages */
-.index .discover::after, 
-.author .discover::after, 
-.search .discover::after, 
-.shelf .discover::after,
-.random-books::after {
-  content: '' !important;
+/* ── Wooden shelf plank (Positioned by JS) ── */
+.shelf-plank {
   display: block !important;
   position: absolute !important;
-  left: -15px !important;
-  right: -15px !important;
-  bottom: -30px !important; /* Raised slightly to overlap book bottoms */
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
   height: 64px !important;
+  pointer-events: none !important;
+  z-index: 100 !important;
 
   /* Advanced lighting layers */
   background:

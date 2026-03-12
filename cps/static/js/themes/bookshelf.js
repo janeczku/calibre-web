@@ -1,72 +1,78 @@
-/* Wooden bookshelf: group books into visual rows and inject shelf planks */
+/* Wooden bookshelf: inject shelf planks at the base of book rows */
 (function () {
   function buildShelves() {
     document.querySelectorAll('.row.display-flex').forEach(function (container) {
-      // Collect book elements (direct children with class "book")
-      var books = Array.from(container.querySelectorAll(':scope > .book'));
+      // Remove existing planks first
+      container.querySelectorAll('.shelf-plank').forEach(function(p) { p.remove(); });
+
+      var books = Array.from(container.querySelectorAll('.book'));
       if (books.length === 0) return;
 
-      // Already processed — skip
-      if (container.querySelector('.shelf-row')) return;
-
-      // Group books by their top offset (= visual row)
-      var rows = [];
-      var currentRow = [];
-      var currentTop = null;
+      // Group books by their vertical position
+      var rows = {};
+      var containerRect = container.getBoundingClientRect();
 
       books.forEach(function (book) {
-        var top = book.getBoundingClientRect().top;
-        if (currentTop === null || Math.abs(top - currentTop) > 10) {
-          if (currentRow.length > 0) rows.push(currentRow);
-          currentRow = [book];
-          currentTop = top;
-        } else {
-          currentRow.push(book);
-        }
+        var rect = book.getBoundingClientRect();
+        // Use a 20px tolerance for grouping rows
+        var rowKey = Math.round(rect.top / 20) * 20;
+        if (!rows[rowKey]) rows[rowKey] = [];
+        rows[rowKey].push(rect);
       });
-      if (currentRow.length > 0) rows.push(currentRow);
 
-      // Wrap each row in a shelf-row div and append a plank
-      rows.forEach(function (rowBooks) {
-        var shelfRow = document.createElement('div');
-        shelfRow.className = 'shelf-row';
-
-        // Insert shelfRow before the first book in this row
-        container.insertBefore(shelfRow, rowBooks[0]);
-
-        rowBooks.forEach(function (book) {
-          shelfRow.appendChild(book);
+      // For each row, find the lowest point and place a plank there
+      Object.keys(rows).forEach(function (key) {
+        var rowRects = rows[key];
+        var maxBottom = 0;
+        rowRects.forEach(function(r) {
+          if (r.bottom > maxBottom) maxBottom = r.bottom;
         });
 
-        // Wooden plank
+        // Calculate relative top for the plank
+        // The plank should sit at the bottom of the books
+        var relativeTop = maxBottom - containerRect.top;
+
         var plank = document.createElement('div');
         plank.className = 'shelf-plank';
-        shelfRow.appendChild(plank);
+        // Adjust plank to sit slightly higher to overlap the book bottom as per theme style
+        plank.style.top = (relativeTop - 25) + 'px';
+        container.appendChild(plank);
       });
     });
   }
 
-  // Run after images load so getBoundingClientRect is accurate
+  // Watch for new books added via infinite scroll
+  var observer = new MutationObserver(function(mutations) {
+    var shouldUpdate = false;
+    mutations.forEach(function(mutation) {
+      for (var i = 0; i < mutation.addedNodes.length; i++) {
+        var node = mutation.addedNodes[i];
+        if (node.nodeType === 1 && (node.classList.contains('book') || node.querySelector('.book'))) {
+          shouldUpdate = true;
+          break;
+        }
+      }
+    });
+    if (shouldUpdate) {
+      // Small timeout to allow Isotope to finish positioning
+      setTimeout(buildShelves, 100);
+    }
+  });
+
+  document.querySelectorAll('.row.display-flex').forEach(function(container) {
+    observer.observe(container, { childList: true });
+  });
+
+  // Run on load and resize
   if (document.readyState === 'complete') {
     buildShelves();
   } else {
     window.addEventListener('load', buildShelves);
   }
 
-  // Re-run on resize (debounced), unwrapping first
   var resizeTimer;
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () {
-      // Unwrap: move books back out, remove shelf-rows
-      document.querySelectorAll('.shelf-row').forEach(function (row) {
-        var parent = row.parentNode;
-        Array.from(row.querySelectorAll('.book')).forEach(function (book) {
-          parent.insertBefore(book, row);
-        });
-        parent.removeChild(row);
-      });
-      buildShelves();
-    }, 200);
+    resizeTimer = setTimeout(buildShelves, 200);
   });
 })();
