@@ -384,11 +384,13 @@ $(function() {
         });
     }
 
+    /*
     $(".discover .row").isotope({
         // options
         itemSelector : ".book",
         layoutMode : "fitRows"
     });
+    */
 
     if ($(".load-more").length && $(".next").length) {
         var $loadMore = $(".load-more .row").infiniteScroll({

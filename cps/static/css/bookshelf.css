@@ -1,0 +1,362 @@
+/* ── Wooden Bookshelf Theme ── */
+
+body {
+  background: #120a03 !important; /* Deeper, richer dark base */
+}
+
+/* ── Bookcase cabinet outer frame ── */
+body, html {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+body {
+  background: #120a03 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+  width: 100vw !important;
+}
+
+.navbar {
+  flex: 0 0 auto !important; /* Take only needed height */
+  margin-bottom: 0 !important;
+  width: 100% !important;
+}
+
+/* Flash messages and other top-level blocks between navbar and container */
+body > .row-fluid {
+  flex: 0 0 auto !important;
+}
+
+/* Main layout container */
+body > div.container-fluid {
+  flex: 1 0 auto !important; /* Grow to fill remaining space */
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+body > div.container-fluid > div.row-fluid {
+  display: flex !important;
+  flex: 1 0 auto !important; /* Ensure the row fills the container height */
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Main Content Area (The back wall) */
+body > div.container-fluid > div.row-fluid > div.col-sm-10 {
+  overflow-y: auto !important;
+  flex: 1 1 auto !important; 
+  height: auto !important; /* Let flex control height */
+  min-height: 100% !important;
+  
+  /* Back wall: Wood texture */
+  background-image:
+    radial-gradient(circle at center, rgba(30,12,0,0.5) 0%, rgba(10,4,0,0.85) 100%),
+    url('../img/wood_texture.png') !important;
+  background-size: 500px auto !important;
+  background-attachment: fixed !important;
+  
+  box-shadow:
+    inset 20px 0 40px rgba(0,0,0,0.9),
+    inset -20px 0 40px rgba(0,0,0,0.9),
+    inset 0 30px 60px rgba(0,0,0,0.8) !important;
+  padding-top: 30px !important;
+}
+
+/* Sidebar - Side of the cabinet */
+body > div.container-fluid > div.row-fluid > div.col-sm-2 {
+  overflow-y: auto !important;
+  flex: 0 0 16.666667% !important;
+  min-height: 100% !important;
+  background-image:
+    linear-gradient(90deg, rgba(15,6,0,0.6) 0%, rgba(10,4,0,0.4) 100%),
+    url('../img/wood_texture.png') !important;
+  background-size: 350px auto !important;
+  background-attachment: fixed !important;
+  border-right: 8px solid rgba(0,0,0,0.8) !important;
+  box-shadow: 
+    inset -20px 0 40px rgba(0,0,0,0.7),
+    5px 0 15px rgba(0,0,0,0.5) !important;
+}
+
+body > div.container-fluid > div.row-fluid > div.col-sm-2 a,
+body > div.container-fluid > div.row-fluid > div.col-sm-2 .lead {
+  color: #f0d0a0 !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,1) !important;
+  font-family: Georgia, serif !important;
+}
+
+body > div.container-fluid > div.row-fluid > div.col-sm-2 a:hover {
+  color: #fff !important;
+  background: rgba(255,200,100,0.1) !important;
+  transform: translateX(5px);
+  transition: transform 0.2s ease;
+}
+
+/* Navbar - Top cornice of the bookcase */
+.navbar.navbar-default {
+  background-image:
+    linear-gradient(rgba(10,4,0,0.5), rgba(10,4,0,0.5)),
+    url('../img/wood_texture.png') !important;
+  background-size: 500px auto !important;
+  background-attachment: fixed !important;
+  border-bottom: 6px solid rgba(0,0,0,0.9) !important;
+  box-shadow: 0 8px 25px rgba(0,0,0,1) !important;
+  margin-bottom: 0 !important;
+}
+
+/* Each .discover = one shelf bay */
+.container-fluid .discover {
+  position: relative !important;
+  padding: 30px 20px 0 20px !important;
+  margin-bottom: 80px !important;
+  border: none !important;
+  overflow: visible !important;
+  
+  /* Create a 'floor' for the books to sit on within the bay */
+  background: 
+    linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 20px, transparent 60px),
+    linear-gradient(0deg, rgba(0,0,0,0.4) 0%, transparent 40px) !important;
+  
+  box-shadow: 
+    inset 35px 0 50px -25px rgba(0,0,0,0.8), 
+    inset -35px 0 50px -25px rgba(0,0,0,0.8) !important;
+}
+
+.container-fluid .discover .row.display-flex {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  gap: 0 !important; /* Spacing handled by book padding for easier alignment with shelves */
+}
+
+/* Section label */
+.container-fluid .discover h2 {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif !important;
+  color: #e0b060 !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  text-shadow: 
+    -1px -1px 1px rgba(0,0,0,0.8), 
+    1px 1px 1px rgba(255,255,255,0.1) !important;
+  margin: 0 0 25px 0 !important;
+}
+
+/* ── 3-D shelf plank (THE FRONT BAR) ── */
+.container-fluid .discover::after {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  left: -15px !important;
+  right: -15px !important;
+  bottom: -30px !important; /* Raised slightly to overlap book bottoms */
+  height: 64px !important;
+
+  /* Advanced lighting layers */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 250, 220, 0.9)  0px,   /* top-edge highlight */
+      rgba(255, 240, 180, 0.5)  3px,   /* top surface */
+      rgba(0,0,0,0.4)           14px,  /* the front-edge seam */
+      rgba(255, 230, 180, 0.1)  16px,  /* front face highlight */
+      transparent               24px
+    ),
+    linear-gradient(
+      180deg,
+      #d4914a  0%,    /* warm wood top */
+      #b07030 30%,
+      #8a5020 65%,
+      #4a2808 90%,
+      #201004 100%   /* dark underside */
+    ),
+    url('../img/wood_texture.png') !important;
+  background-size: auto, auto, 450px auto !important;
+
+  border-top: 2px solid rgba(255, 255, 255, 0.3) !important;
+  border-bottom: 5px solid rgba(0,0,0,0.8) !important;
+  border-radius: 2px 2px 5px 5px !important;
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,0.95),         /* cast shadow down */
+    inset 0 4px 10px rgba(255,255,255,0.1) !important; /* top edge detail */
+
+  /* CRITICAL: This bar is now in front of the books */
+  z-index: 50 !important; 
+}
+
+/* Book card - Recessed behind the front bar */
+.container-fluid .book {
+  margin-top: 15px !important;
+  margin-bottom: 0 !important;
+  padding: 0 2.5px !important; /* 2.5px each side = 5px gap */
+  width: 130px !important;
+  flex: 0 0 130px !important;
+  position: relative !important;
+  perspective: 1200px !important;
+  
+  /* Place books behind the shelf bar */
+  z-index: 20 !important; 
+  
+  /* Move books down so they sit slightly behind the front lip */
+  transform: translateY(12px) !important;
+}
+
+/* Book cover height */
+.container-fluid .book .cover {
+  height: 225px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  margin-bottom: 0 !important;
+}
+
+/* Cover image */
+.container-fluid .book .cover span img {
+  border: none !important;
+  border-radius: 1px 4px 4px 1px !important;
+  box-shadow:
+    -5px 0 10px rgba(0,0,0,0.8),          /* spine shadow */
+    0 15px 30px -10px rgba(0,0,0,1) !important; /* contact shadow */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  transform-origin: bottom center !important;
+}
+
+/* Hover - Pull book up from behind the bar */
+.container-fluid .book .cover span img:hover {
+  transform: translateY(-25px) rotateY(-5deg) scale(1.08) !important;
+  z-index: 60 !important; /* Pop in front of bar on hover */
+  box-shadow:
+    -10px 10px 30px rgba(0,0,0,0.7),
+    0 50px 80px -20px rgba(0,0,0,1) !important;
+}
+
+/* Dark contact shadow on the 'floor' behind the bar */
+.container-fluid .book::after {
+  content: '' !important;
+  position: absolute !important;
+  bottom: -2px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 90% !important;
+  height: 12px !important;
+  background: rgba(0,0,0,0.95) !important;
+  filter: blur(8px) !important;
+  border-radius: 50% !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+}
+
+/* Hide Meta text below books */
+.container-fluid .book .meta { 
+  display: none !important;
+}
+
+/* ── Brown/Brass UI Controls ── */
+
+/* Generic Buttons (Sort, Filter, Action) */
+.btn-primary, .btn-default, .btn-group .btn {
+  background: linear-gradient(180deg, #6b4226 0%, #4a2808 100%) !important;
+  border: 1px solid #3e2610 !important;
+  color: #f0d0a0 !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary.active,
+.btn-default:hover, .btn-default:focus, .btn-group .btn:hover {
+  background: linear-gradient(180deg, #8a5020 0%, #6b4226 100%) !important;
+  color: #fff !important;
+  border-color: #e0b060 !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.2) !important;
+}
+
+/* Active/Selected State for Sort Buttons */
+.btn-primary.active {
+  background: linear-gradient(180deg, #b07030 0%, #8a5020 100%) !important;
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.5) !important;
+  border-color: #f0d0a0 !important;
+}
+
+/* Search Input */
+.navbar-form .form-control {
+  background: rgba(0,0,0,0.4) !important;
+  border: 1px solid #4a2808 !important;
+  color: #f0d0a0 !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.8) !important;
+}
+
+.navbar-form .form-control::placeholder {
+  color: #8a5020 !important;
+}
+
+/* Sidebar "Create a Shelf" & Special links */
+#nav_createshelf a {
+  font-weight: bold !important;
+  color: #e0b060 !important;
+  border: 1px dashed rgba(224, 176, 96, 0.3) !important;
+  margin: 10px 15px !important;
+  padding: 8px !important;
+  text-align: center !important;
+  border-radius: 4px !important;
+  background: rgba(0,0,0,0.2) !important;
+}
+
+#nav_createshelf a:hover {
+  background: rgba(224, 176, 96, 0.1) !important;
+  border-style: solid !important;
+  color: #fff !important;
+}
+
+/* Pagination */
+.pagination > li > a, .pagination > li > span {
+  background: #2a1808 !important;
+  border: 1px solid #4a2808 !important;
+  color: #f0d0a0 !important;
+}
+
+.pagination > .active > a, .pagination > .active > span {
+  background: #8a5020 !important;
+  border-color: #e0b060 !important;
+  color: #fff !important;
+}
+
+.pagination > li > a:hover {
+  background: #4a2808 !important;
+}
+
+/* Badge (Read status / Count) */
+.badge {
+  background-color: #8a5020 !important;
+  color: #f0d0a0 !important;
+  border: 1px solid #e0b060 !important;
+}
+
+/* Custom Scrollbar - Brass/Wood style */
+body > div.container-fluid > div.row-fluid > div.col-sm-10::-webkit-scrollbar,
+body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar {
+  width: 14px;
+}
+body > div.container-fluid > div.row-fluid > div.col-sm-10::-webkit-scrollbar-track,
+body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.6);
+  box-shadow: inset 2px 0 5px rgba(0,0,0,0.5);
+}
+body > div.container-fluid > div.row-fluid > div.col-sm-10::-webkit-scrollbar-thumb,
+body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #8a5020, #4a2808);
+  border: 2px solid #120a03;
+  border-radius: 7px;
+  box-shadow: inset 1px 1px 2px rgba(255,255,255,0.2);
+}
+
