@@ -246,8 +246,11 @@ def db_configuration():
 @user_login_required
 @admin_required
 def configuration():
+    all_user = ub.session.query(ub.User)
+    all_user = all_user.filter(ub.User.role.op('&')(constants.ROLE_ANONYMOUS) != constants.ROLE_ANONYMOUS)
     return render_title_template("config_edit.html",
                                  config=config,
+                                 users=all_user.all(),
                                  provider=oauthblueprints,
                                  feature_support=feature_support,
                                  title=_("Basic Configuration"), page="config")
@@ -1801,6 +1804,7 @@ def _configuration_update_helper():
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
         _config_int(to_save, "config_external_port")
         _config_checkbox_int(to_save, "config_kobo_proxy")
+        _config_int(to_save, "config_kobo_read_column_sync_user")
 
         if "config_upload_formats" in to_save:
             to_save["config_upload_formats"] = ','.join(
