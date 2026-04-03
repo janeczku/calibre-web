@@ -74,7 +74,7 @@
 {% if entry.comments|length > 0 and entry.comments[0].text|length > 0 %}
     <div>
         <h2 id="decription">{{ _('Description:') }}</h2>
-        {{ entry.comments[0].text|safe }}
+        {{ entry.comments[0].text|clean_string|safe }}
     </div>
 {% endif %}
 </div>

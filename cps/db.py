@@ -944,16 +944,13 @@ class CalibreDB:
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
         self.create_functions()
-        # self.session.connection().connection.connection.create_function("lower", 1, lcase)
         entries = self.session.query(database).filter(tag_filter). \
             filter(func.lower(database.name).ilike("%" + query + "%")).all()
-        # json_dumps = json.dumps([dict(name=escape(r.name.replace(*replace))) for r in entries])
         json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
         return json_dumps
 
     def check_exists_book(self, authr, title):
         self.create_functions()
-        # self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         author_terms = re.split(r'\s*&\s*', authr)
         for author_term in author_terms:
@@ -1111,7 +1108,7 @@ class CalibreDB:
                     .group_by(text('books_languages_link.lang_code')).all()
             tags = list()
             for lang in languages:
-                tag = Category(isoLanguages.get_language_name(get_locale(), lang[0].lang_code), lang[0].lang_code)
+                tag = Category(isoLanguages.get_language_name(get_locale(), None, lang[0].lang_code), lang[0].lang_code)
                 tags.append([tag, lang[1]])
             # Append all books without language to list
             if not return_all_languages:
@@ -1121,7 +1118,7 @@ class CalibreDB:
                                  .filter(self.common_filters())
                                  .count())
                 if no_lang_count:
-                    tags.append([Category(_("None"), "none"), no_lang_count])
+                    tags.append([Category(_("None"), None, "none"), no_lang_count])
             return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
         else:
             if not languages:
@@ -1175,14 +1172,25 @@ def lcase(s):
         return s.lower()
 
 
+def title_sort(title, config):
+    # calibre sort stuff
+    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
+    match = title_pat.search(title)
+    if match:
+        prep = match.group(1)
+        title = title[len(prep):] + ', ' + prep
+    return strip_whitespaces(title)
+
 class Category:
     name = None
+    sort = None
     id = None
     count = None
     rating = None
 
     def __init__(self, name, cat_id, rating=None):
         self.name = name
+        self.sort = name
         self.id = cat_id
         self.rating = rating
         self.count = 1
