@@ -30,6 +30,7 @@ from uuid import uuid4
 from flask import Blueprint, request, url_for, g
 from flask_babel import format_date
 from .cw_login import current_user
+from .clean_html import clean_string as html_clean_string
 
 from . import constants, logger
 
@@ -181,3 +182,9 @@ def contains_music(book_formats):
         if format.format.lower() in g.constants.EXTENSIONS_AUDIO:
             result = True
     return result
+
+@jinjia.app_template_filter('clean_string')
+def clean_string(unsafe_text):
+    return html_clean_string(unsafe_text)
+
+
