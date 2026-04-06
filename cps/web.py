@@ -842,7 +842,8 @@ def list_books():
     order = request.args.get("order", "").lower()
     state = None
     join = tuple()
-
+    if not order in ["asc", "desc", ""]:
+        order = "asc"
     if sort_param == "state":
         state = json.loads(request.args.get("state", "[]"))
     elif sort_param == "tags":
