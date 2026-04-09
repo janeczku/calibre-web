@@ -150,6 +150,16 @@
         <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" autocomplete="off" required>
       </div>
     </div>
+    <div data-related="kobo-settings">
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_kobo_read_column_sync_user">{{_('User for Calibre Read Column')}}</label>
+        <select name="config_kobo_read_column_sync_user" id="config_kobo_read_column_sync_user" class="form-control">
+          {% for user in users %}
+            <option value="{{user.id}}" {% if user.id == config.config_kobo_read_column_sync_user %}selected{% endif %}>{{user.name}}</option>"
+          {% endfor %}
+        </select>
+      </div>
+    </div>
     {% endif %}
     {% if feature_support['goodreads'] %}
     <div class="form-group">
