@@ -66,11 +66,6 @@ var reader;
         } catch (e) {}
     })();
 
-    /**
-     * Fetch reading progress from the server (Kobo sync API).
-     * Returns null on failure or if the URL is not configured.
-     * @returns {Promise<object|null>}
-     */
     function fetchServerProgress() {
         if (!calibre.readingProgressUrl) return Promise.resolve(null);
         return fetch(calibre.readingProgressUrl, { credentials: "same-origin" })
@@ -80,22 +75,62 @@ var reader;
             .catch(function () { return null; });
     }
 
-    /**
-     * Push the current reading position to the server so it can be picked up
-     * by a Kobo device on the next sync.  The position is stored as a CFI with
-     * type "CFI" so the web reader can also restore it directly on the next load.
-     *
-     * Calls are debounced — the server is only hit once the reader has been
-     * idle for 3 seconds, avoiding a request on every single page turn.
-     *
-     * @param {string} cfi            - EPUB CFI of the current position
-     * @param {number} percentage     - Whole-book progress percentage 0–100
-     * @param {string} chapterHref    - Href of the current spine item (chapter)
-     * @param {number} inChapterPct   - Progress percentage within the current chapter 0–100
-     * @param {string} position_key   - localStorage key for storing the server timestamp
-     */
+    // Extract the nearest Kobo span ID (e.g. "kobo.2.1") from a CFI string.
+    // EPUB.js encodes element IDs in CFI step assertions, so we can usually parse
+    // the ID directly from the CFI without touching the DOM.  Falls back to DOM
+    // traversal for cases where no kobo step assertion is present.
+    // Returns a Promise resolving to the span ID, or null for plain EPUBs.
+    function extractKoboSpanFromCfi(cfi) {
+        try {
+            var stepPattern = /\[([^\]]+)\]/g;
+            var match, lastKoboId = null;
+            var localPath = cfi.indexOf("!") !== -1 ? cfi.slice(cfi.indexOf("!")) : cfi;
+            while ((match = stepPattern.exec(localPath)) !== null) {
+                if (match[1].startsWith("kobo.")) lastKoboId = match[1];
+            }
+            if (lastKoboId) return Promise.resolve(lastKoboId);
+        } catch (e) {}
+
+        try {
+            var rangeResult = reader.rendition.getRange(cfi);
+            var p = (rangeResult && typeof rangeResult.then === "function")
+                ? rangeResult
+                : Promise.resolve(rangeResult);
+            return p.then(function (range) {
+                if (!range) return null;
+                var node = range.startContainer;
+                var el = (node.nodeType === Node.TEXT_NODE) ? node.parentElement : node;
+                while (el) {
+                    if (el.id && el.id.startsWith("kobo.")) return el.id;
+                    el = el.parentElement;
+                }
+                var doc = node.ownerDocument;
+                if (!doc) return null;
+                var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_ELEMENT, {
+                    acceptNode: function (n) {
+                        return (n.id && n.id.startsWith("kobo."))
+                            ? NodeFilter.FILTER_ACCEPT
+                            : NodeFilter.FILTER_SKIP;
+                    }
+                }, false);
+                var startEl = (node.nodeType === Node.TEXT_NODE) ? node.parentElement : node;
+                var lastSpan = null, n;
+                while ((n = walker.nextNode())) {
+                    if (startEl.compareDocumentPosition(n) & Node.DOCUMENT_POSITION_FOLLOWING) break;
+                    lastSpan = n;
+                }
+                return lastSpan ? lastSpan.id : null;
+            }).catch(function () { return null; });
+        } catch (e) {
+            return Promise.resolve(null);
+        }
+    }
+
+    // Debounced sync of the current position to the server.
+    // For KEPUBs a kobo span ID is sent (type "KoboSpan"); for plain EPUBs a CFI
+    // string is sent (type "CFI").  Fires 3 s after the last page turn.
     var _syncTimer = null;
-    function syncProgressToServer(cfi, percentage, chapterHref, inChapterPct, position_key) {
+    function syncProgressToServer(cfi, percentage, chapterHref, inChapterPct, position_key, koboSpanId) {
         if (!calibre.readingProgressUrl) return;
         clearTimeout(_syncTimer);
         _syncTimer = setTimeout(function () {
@@ -107,10 +142,11 @@ var reader;
                     status: "Reading",
                     progress_percent: percentage,
                     content_source_progress_percent: inChapterPct,
-                    location: {
-                        // Store the CFI so browser-to-browser restore is exact.
-                        // Source (chapter href) lets the Kobo open the correct
-                        // chapter when it can't interpret the CFI value directly.
+                    location: koboSpanId ? {
+                        value: "#" + koboSpanId,
+                        type: "KoboSpan",
+                        source: chapterHref
+                    } : {
                         value: cfi,
                         type: "CFI",
                         source: chapterHref
@@ -119,9 +155,6 @@ var reader;
             })
             .then(function (resp) { return resp.ok ? resp.json() : null; })
             .then(function (data) {
-                // Record the server timestamp so we can compare freshness on the
-                // next load and avoid overwriting a more-recent Kobo position with
-                // a stale browser position.
                 if (data && data.last_modified) {
                     try {
                         var posStr = localStorage.getItem(position_key);
@@ -137,7 +170,6 @@ var reader;
 
     reader.book.ready.then(async () => {
         let locations_key = reader.book.key() + "-locations";
-        // Key to persist last-read position for this book in localStorage
         let position_key = "calibre.reader.position." + reader.book.key();
         let stored_locations = localStorage.getItem(locations_key);
         let make_locations, save_locations;
@@ -159,22 +191,6 @@ var reader;
 
         await make_locations;
 
-        // --- Position restoration (server vs. localStorage) ---
-        //
-        // We prefer whichever source has the most recent update.  The localStorage
-        // position object stores a `serverTimestamp` (ms since epoch) set after
-        // each successful server sync so the two clocks can be compared.
-        //
-        // Priority rules:
-        //   1. If the server has a position and its last_modified is newer than
-        //      the last time the browser synced with the server → use server position.
-        //   2. For server positions stored by this web reader (type "CFI"), navigate
-        //      directly to the CFI.
-        //   3. For server positions stored by a Kobo device (type "KoboSpan"), use
-        //      progress_percent to seek to the approximate position since the web
-        //      reader cannot interpret KoboSpan identifiers directly.
-        //   4. Fall back to the CFI stored in localStorage (pre-existing behaviour).
-
         var serverProgress = await fetchServerProgress();
         var navigated = false;
 
@@ -182,25 +198,41 @@ var reader;
             var serverTime = new Date(serverProgress.last_modified).getTime();
             var localServerTime = 0;
             try {
-                var _savedPos = localStorage.getItem(position_key);
-                if (_savedPos) {
-                    var _p = JSON.parse(_savedPos);
-                    localServerTime = _p.serverTimestamp || 0;
+                var savedPos = localStorage.getItem(position_key);
+                if (savedPos) {
+                    var savedPosObj = JSON.parse(savedPos);
+                    localServerTime = savedPosObj.serverTimestamp || 0;
                 }
             } catch (e) {}
 
+            // Use the server position if it is newer than the last browser sync
             if (serverTime > localServerTime) {
-                // Server has a position that is newer than what the browser last
-                // synced — restore from server.
                 var loc = serverProgress.location;
                 try {
                     if (loc && loc.type === "CFI" && loc.value) {
-                        // Exact CFI from a previous browser session.
                         reader.rendition.display(loc.value);
                         navigated = true;
+                    } else if (loc && loc.type === "KoboSpan" && loc.value && loc.source) {
+                        // Extract the fragment ID from the span value, which may be a
+                        // bare "#kobo.N.M" (stored by the browser) or a full Kobo device
+                        // URI ending in "#kobo.N.M"
+                        var hashIdx = loc.value.lastIndexOf("#");
+                        var fragmentId = hashIdx !== -1 ? loc.value.slice(hashIdx + 1) : null;
+                        var spanSource = loc.source;
+                        if (!spanSource && hashIdx !== -1) {
+                            var excl = loc.value.indexOf("!");
+                            if (excl !== -1) spanSource = loc.value.slice(excl + 1, hashIdx);
+                        }
+                        if (fragmentId && spanSource) {
+                            reader.rendition.display(spanSource + "#" + fragmentId);
+                            navigated = true;
+                        } else if (serverProgress.progress_percent != null) {
+                            var targetCfi = reader.book.locations.cfiFromPercentage(
+                                serverProgress.progress_percent / 100
+                            );
+                            if (targetCfi) { reader.rendition.display(targetCfi); navigated = true; }
+                        }
                     } else if (serverProgress.progress_percent != null) {
-                        // KoboSpan position or percentage-only update from a Kobo
-                        // device: jump to the nearest CFI for that percentage.
                         var targetCfi = reader.book.locations.cfiFromPercentage(
                             serverProgress.progress_percent / 100
                         );
@@ -214,15 +246,15 @@ var reader;
         }
 
         if (!navigated) {
-            // Fall back to localStorage position (pre-existing behaviour).
+            // Fall back to localStorage position
             try {
-                var _savedPos = localStorage.getItem(position_key);
-                if (_savedPos) {
+                var localPos = localStorage.getItem(position_key);
+                if (localPos) {
                     try {
-                        var _posObj = JSON.parse(_savedPos);
-                        if (_posObj && _posObj.cfi) {
+                        var localPosObj = JSON.parse(localPos);
+                        if (localPosObj && localPosObj.cfi) {
                             try {
-                                reader.rendition.display(_posObj.cfi);
+                                reader.rendition.display(localPosObj.cfi);
                             } catch (e) {}
                         }
                     } catch (e) {}
@@ -248,8 +280,7 @@ var reader;
                 pagesDiv.style.visibility = "hidden";
             }
 
-            // Persist last position (CFI + percentage) to localStorage so reader
-            // can restore on next open even without a server round-trip.
+            // Persist last position to localStorage
             try {
                 var posStr = localStorage.getItem(position_key);
                 var posObj = posStr ? JSON.parse(posStr) : {};
@@ -258,11 +289,6 @@ var reader;
                 localStorage.setItem(position_key, JSON.stringify(posObj));
             } catch (e) {}
 
-            // Sync to server (debounced) so the position is visible to the Kobo
-            // device on its next sync.
-            //
-            // chapterHref: spine item href — lets the Kobo open the right chapter.
-            // inChapterPct: position within the chapter — lets the Kobo seek within it.
             var chapterHref = (location.start && location.start.href) || "";
             if (!chapterHref) {
                 try {
@@ -277,13 +303,16 @@ var reader;
                     inChapterPct = Math.round((disp.page / disp.total) * 100);
                 }
             } catch (e) {}
-            syncProgressToServer(
-                location.start.cfi,
-                Math.round(location.start.percentage * 100),
-                chapterHref,
-                inChapterPct,
-                position_key
-            );
+            extractKoboSpanFromCfi(location.start.cfi).then(function (koboSpanId) {
+                syncProgressToServer(
+                    location.start.cfi,
+                    Math.round(location.start.percentage * 100),
+                    chapterHref,
+                    inChapterPct,
+                    position_key,
+                    koboSpanId
+                );
+            });
         });
         reader.rendition.reportLocation();
         progressDiv.style.visibility = "visible";

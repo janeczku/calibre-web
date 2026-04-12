@@ -17,34 +17,13 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
-REST API for reading progress sync.
+REST API for reading progress sync between the web reader and Kobo devices.
 
-Exposes per-user, per-book reading progress stored by the Kobo sync integration
-so that phone-based or other external EPUB readers can share a reading position
-with a Kobo device.
+Endpoints: GET and PUT /api/reading-progress/<book_id>
 
-Position format
----------------
-The ``location`` field carries a KoboSpan position string produced by the Kobo
-firmware, stored verbatim during Kobo sync.  A typical value looks like::
-
-    "file:///mnt/onboard/path/to/book.kepub.epub!OEBPS/chapter01.html#koboSpan-id"
-
-The ``location.type`` field will be ``"KoboSpan"`` for positions recorded by a
-Kobo device.  External readers that understand KoboSpan can use this directly;
-readers that only understand percentage-based progress can use
-``progress_percent`` instead.
-
-Endpoints
----------
-``GET /api/reading-progress/<book_id>``
-    Returns the current reading progress for the authenticated user.
-
-``PUT /api/reading-progress/<book_id>``
-    Accepts a JSON body to update reading progress.  All fields are optional;
-    omit any field you do not wish to change.  After a successful PUT the Kobo
-    device will receive the updated position on its next sync (via
-    ``/v1/library/sync`` or ``/v1/library/<uuid>/state``).
+The ``location`` field uses two formats depending on source:
+- type "KoboSpan": value is a Kobo device URI ending in a span ID (e.g. "#kobo.2.1")
+- type "CFI": value is an EPUB CFI string (plain EPUBs only)
 """
 
 from datetime import datetime, timezone
@@ -63,22 +42,7 @@ reading_progress = Blueprint("reading_progress", __name__, url_prefix="/api")
 @reading_progress.route("/reading-progress/<int:book_id>", methods=["GET"])
 @user_login_required
 def get_reading_progress(book_id):
-    """Return the stored reading progress for the current user and the given book.
-
-    Response JSON fields:
-        book_id                          — integer calibre book ID
-        status                           — "ReadyToRead", "Reading", or "Finished"
-        last_modified                    — ISO-8601 UTC timestamp of the last state change
-        progress_percent                 — float 0-100, overall book progress (may be absent)
-        content_source_progress_percent  — float 0-100, in-chapter progress (may be absent)
-        location                         — KoboSpan position object (may be absent):
-            value  — the raw KoboSpan position string
-            type   — position type, typically "KoboSpan"
-            source — source href of the spine item containing this span
-        statistics                       — reading time object (may be absent):
-            spent_reading_minutes        — cumulative minutes spent reading
-            remaining_time_minutes       — estimated minutes remaining
-    """
+    """Return the stored reading progress for the current user and book."""
     book = calibre_db.get_book(book_id)
     if not book:
         abort(404, description="Book not found")
@@ -121,23 +85,10 @@ def get_reading_progress(book_id):
 @reading_progress.route("/reading-progress/<int:book_id>", methods=["PUT"])
 @user_login_required
 def update_reading_progress(book_id):
-    """Update reading progress for the current user and the given book.
+    """Update reading progress for the current user and book.
 
-    All JSON body fields are optional; only the fields present in the request
-    are updated — omitted fields are left unchanged.
-
-    Request JSON fields:
-        status                           — "ReadyToRead", "Reading", or "Finished"
-        progress_percent                 — float 0-100
-        content_source_progress_percent  — float 0-100 (in-chapter progress)
-        location                         — KoboSpan position object:
-            value  — KoboSpan position string, e.g.
-                     "file:///mnt/onboard/...!OEBPS/ch01.html#koboSpan-id"
-            type   — position type; use "KoboSpan" for Kobo-compatible positions
-            source — source href of the spine item containing this span
-
-    After a successful response the Kobo device will pick up the updated
-    position on its next sync.
+    All JSON body fields are optional; omitted fields are left unchanged.
+    After a successful PUT the Kobo device picks up the position on its next sync.
     """
     book = calibre_db.get_book(book_id)
     if not book:
@@ -177,8 +128,6 @@ def update_reading_progress(book_id):
         ub.session.rollback()
         abort(400, description="Malformed request data")
 
-    # Advance priority_timestamp so the Kobo device picks up this update on
-    # next sync instead of overwriting it with an older position from the device.
     kobo_reading_state.priority_timestamp = datetime.now(timezone.utc)
 
     ub.session.merge(kobo_reading_state)

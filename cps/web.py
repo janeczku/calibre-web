@@ -382,6 +382,8 @@ def render_books_list(data, sort_param, book_id, page):
         return render_read_books(page, False, order=order)
     elif data == "read":
         return render_read_books(page, True, order=order)
+    elif data == "reading":
+        return render_currently_reading(page, order)
     elif data == "hot":
         return render_hot_books(page, order)
     elif data == "download":
@@ -775,6 +777,44 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                                      title=name, page=page_name, order=order[1])
 
 
+def render_currently_reading(page, order=None):
+    sort_param = order[0] if order else []
+    db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
+                     ub.ReadBook.read_status == ub.ReadBook.STATUS_IN_PROGRESS)
+
+    entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                            db.Books,
+                                                            db_filter,
+                                                            sort_param,
+                                                            True, config.config_read_column,
+                                                            db.books_series_link,
+                                                            db.Books.id == db.books_series_link.c.book,
+                                                            db.Series)
+
+    book_ids = [entry.Books.id for entry in entries]
+    progress_map = {}
+    if book_ids:
+        try:
+            rows = (ub.session.query(ub.KoboReadingState.book_id,
+                                     ub.KoboBookmark.progress_percent)
+                    .join(ub.KoboBookmark,
+                          ub.KoboBookmark.kobo_reading_state_id == ub.KoboReadingState.id,
+                          isouter=True)
+                    .filter(ub.KoboReadingState.user_id == int(current_user.id),
+                            ub.KoboReadingState.book_id.in_(book_ids))
+                    .all())
+            for book_id, pct in rows:
+                if pct is not None:
+                    progress_map[book_id] = pct
+        except Exception:
+            pass
+
+    name = _('Currently Reading') + ' (' + str(pagination.total_count) + ')'
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=name, page="reading", order=order[1] if order else None,
+                                 progress_map=progress_map)
+
+
 def render_archived_books(page, sort_param):
     order = sort_param[0] or []
     archived_books = (ub.session.query(ub.ArchivedBook)
@@ -814,8 +854,8 @@ def books_list(data, sort_param, book_id, page):
     return render_books_list(data, sort_param, book_id, page)
 
 # Limit number of routes to avoid redirects
-data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", "ratings", "formats",
-       "category", "language", "archived", "search", "advsearch", "newest"]
+data =["rated", "discover", "unread", "read", "reading", "hot", "download", "author", "publisher", "series", "ratings",
+       "formats", "category", "language", "archived", "search", "advsearch", "newest"]
 for d in data:
     web.add_url_rule('/{}/<sort_param>'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
     web.add_url_rule('/{}/<sort_param>/'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})

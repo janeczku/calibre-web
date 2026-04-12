@@ -61,6 +61,10 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
                     "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not current_user.is_anonymous),
                     "page": "read", "show_text": _('Show Read and Unread'), "config_show": content})
+    sidebar.append({"glyph": "glyphicon-play", "text": _('Currently Reading'), "link": 'web.books_list',
+                    "id": "reading", "visibility": constants.SIDEBAR_READING,
+                    'public': (not current_user.is_anonymous),
+                    "page": "reading", "show_text": _('Show Currently Reading Books'), "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
          "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not current_user.is_anonymous), "page": "unread",

@@ -602,7 +602,6 @@ def migrate_user_session_table(engine, _session):
 
 
 def migrate_kobo_bookmark_table(engine, _session):
-    """Add columns to kobo_bookmark that may be absent in databases predating their introduction."""
     try:
         _session.query(exists().where(KoboBookmark.content_source_progress_percent)).scalar()
         _session.commit()

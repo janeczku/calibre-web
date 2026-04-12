@@ -909,25 +909,17 @@ def get_current_bookmark_response(current_bookmark):
     loc_type = current_bookmark.location_type
     loc_source = current_bookmark.location_source
 
-    if loc_type == "CFI" and loc_source:
-        # Position was stored by the web reader as a CFI string.  The Kobo
-        # firmware cannot interpret CFI values, but it *can* use Location.Source
-        # (the chapter href) to open the correct spine item, then fall back to
-        # ContentSourceProgressPercent for in-chapter positioning when it finds
-        # no matching KoboSpan element.  Presenting the type as "KoboSpan" with
-        # an empty Value triggers exactly that fallback path.
-        resp["Location"] = {
-            "Value": "",
-            "Type": "KoboSpan",
-            "Source": loc_source,
-        }
+    # Browser-stored values (CFI strings or bare "#kobo.N.M" fragments) are not
+    # valid Kobo location URIs; send an empty Value so the Kobo falls back to
+    # ContentSourceProgressPercent.  Kobo-device values are sent back verbatim.
+    is_browser_value = (
+        loc_type == "CFI"
+        or (loc_type == "KoboSpan" and loc_value and loc_value.startswith("#"))
+    )
+    if is_browser_value and loc_source:
+        resp["Location"] = {"Value": "", "Type": "KoboSpan", "Source": loc_source}
     elif loc_value:
-        # Position was stored by a Kobo device — send it back verbatim.
-        resp["Location"] = {
-            "Value": loc_value,
-            "Type": loc_type,
-            "Source": loc_source,
-        }
+        resp["Location"] = {"Value": loc_value, "Type": loc_type, "Source": loc_source}
 
     return resp
 
