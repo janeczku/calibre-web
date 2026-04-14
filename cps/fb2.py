@@ -20,6 +20,9 @@ from lxml import etree
 
 from .constants import BookMeta
 
+# Safe parser: disable entity resolution and network access to prevent XXE attacks
+_safe_parser = etree.XMLParser(resolve_entities=False, no_network=True)
+
 
 def get_fb2_info(tmp_file_path, original_file_extension):
 
@@ -29,7 +32,7 @@ def get_fb2_info(tmp_file_path, original_file_extension):
     }
 
     fb2_file = open(tmp_file_path, encoding="utf-8")
-    tree = etree.fromstring(fb2_file.read().encode())
+    tree = etree.fromstring(fb2_file.read().encode(), parser=_safe_parser)
 
     authors = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:author', namespaces=ns)
 
