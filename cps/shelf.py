@@ -308,6 +308,9 @@ def order_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf and check_shelf_view_permissions(shelf):
         if request.method == "POST":
+            if not check_shelf_edit_permissions(shelf):
+                flash(_("Sorry you are not allowed to edit this shelf"), category="error")
+                return redirect(url_for('web.index'))
             to_save = request.form.to_dict()
             books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
                 ub.BookShelf.order.asc()).all()
