@@ -81,6 +81,8 @@ kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 @kobo_auth.route("/generate_auth_token/<int:user_id>")
 @user_login_required
 def generate_auth_token(user_id):
+    if current_user.id != user_id and not current_user.role_admin():
+        abort(403)
     warning = False
     host_list = request.host.rsplit(':')
     if len(host_list) == 1:
@@ -123,6 +125,8 @@ def generate_auth_token(user_id):
 @kobo_auth.route("/deleteauthtoken/<int:user_id>", methods=["POST"])
 @user_login_required
 def delete_auth_token(user_id):
+    if current_user.id != user_id and not current_user.role_admin():
+        abort(403)
     # Invalidate any previously generated Kobo Auth token for this user
     ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == user_id)\
         .filter(ub.RemoteAuthToken.token_type==1).delete()
