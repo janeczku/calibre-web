@@ -31,6 +31,16 @@ except ImportError:
 log = logger.create()
 
 
+def _escape_ldap_filter(s):
+    """Escape special characters for safe use in LDAP filter strings (RFC 4515)."""
+    s = s.replace('\\', '\\5c')
+    s = s.replace('*', '\\2a')
+    s = s.replace('(', '\\28')
+    s = s.replace(')', '\\29')
+    s = s.replace('\x00', '\\00')
+    return s
+
+
 class LDAPLogger(object):
 
     @staticmethod
@@ -148,9 +158,11 @@ def bind_user(username, password):
 
     :returns: True if login succeeded, False if login failed, None if server unavailable.
     '''
+    # Escape LDAP special characters to prevent LDAP injection in search filters
+    safe_username = _escape_ldap_filter(username)
     try:
-        if _ldap.get_object_details(username):
-            result = _ldap.bind_user(username, password)
+        if _ldap.get_object_details(safe_username):
+            result = _ldap.bind_user(safe_username, password)
             log.debug("LDAP login '%s': %r", username, result)
             return result is not None, None
         return None, None       # User not found
