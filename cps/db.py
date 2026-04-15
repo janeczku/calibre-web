@@ -746,7 +746,8 @@ class CalibreDB:
                 .filter(self.common_filters(allow_show_archived)).first())
 
     def get_book_by_uuid(self, book_uuid):
-        return self.session.query(Books).filter(Books.uuid == book_uuid).first()
+        return self.session.query(Books).filter(Books.uuid == book_uuid). \
+            filter(self.common_filters()).first()
 
     def get_book_format(self, book_id, file_format):
         return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == file_format).first()
