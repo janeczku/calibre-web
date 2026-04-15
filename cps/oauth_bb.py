@@ -134,6 +134,14 @@ def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider
         oauth_entry = query.first()
         # already bind with user, just login
         if oauth_entry.user:
+            # If a user is already logged in and it's a different account, reject the link
+            # to prevent account takeover via shared OAuth identities
+            if current_user and current_user.is_authenticated and oauth_entry.user_id != current_user.id:
+                flash(_("This %(oauth)s account is already linked to a different user",
+                        oauth=provider_name), category="error")
+                log.warning("User %s tried to link OAuth account already bound to user %s",
+                            current_user.id, oauth_entry.user_id)
+                return redirect(url_for('web.profile'))
             login_user(oauth_entry.user)
             log.debug("You are now logged in as: '%s'", oauth_entry.user.name)
             flash(_("Success! You are now logged in as: %(nickname)s", nickname=oauth_entry.user.name),
