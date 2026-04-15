@@ -53,16 +53,20 @@ def updateEpub(src, dest, filename, data, ):
         zf.writestr(filename, data)
 
 
+# Safe parser: disable entity resolution and network access to prevent XXE attacks
+_safe_parser = etree.XMLParser(resolve_entities=False, no_network=True)
+
+
 def get_content_opf(file_path, ns=None):
     if ns is None:
         ns = default_ns
     epubZip = zipfile.ZipFile(file_path)
     txt = epubZip.read('META-INF/container.xml')
-    tree = etree.fromstring(txt)
+    tree = etree.fromstring(txt, parser=_safe_parser)
     cf_name = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
     cf = epubZip.read(cf_name)
 
-    return etree.fromstring(cf), cf_name
+    return etree.fromstring(cf, parser=_safe_parser), cf_name
 
 
 def create_new_metadata_backup(book,  custom_columns, export_language, translated_cover_name, lang_type=3):
