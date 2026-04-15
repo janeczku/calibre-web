@@ -328,7 +328,7 @@ class ConfigSQL(object):
         for k, v in self.__dict__.items():
             if k[0] != '_' and not k.endswith("_e") and not k == "cli" \
                     and 'api' not in k.lower() and 'token' not in k.lower() \
-                    and 'secret' not in k.lower()
+                    and 'secret' not in k.lower():
                 storage[k] = v
         return storage
 
