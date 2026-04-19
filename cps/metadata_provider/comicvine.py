@@ -21,7 +21,7 @@ from typing import Dict, List, Optional
 from urllib.parse import quote
 
 import requests
-from cps import logger
+from cps import config, logger
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
 log = logger.create()
@@ -33,11 +33,9 @@ class ComicVine(Metadata):
     DESCRIPTION = "ComicVine Books"
     META_URL = "https://comicvine.gamespot.com/"
     API_KEY = "57558043c53943d5d1e96a9ad425b0eb85532ee6"
-    BASE_URL = (
-        f"https://comicvine.gamespot.com/api/search?api_key={API_KEY}"
-        f"&resources=issue&query="
-    )
-    QUERY_PARAMS = "&sort=name:desc&format=json"
+    BASE_URL = "https://comicvine.gamespot.com/api/search?api_key="
+    QUERY_PARAMS = "&resources=issue&query="
+    SORT_PARAMS = "&sort=name:desc&format=json"
     HEADERS = {"User-Agent": "Not Evil Browser"}
 
     def search(
@@ -45,15 +43,14 @@ class ComicVine(Metadata):
     ) -> Optional[List[MetaRecord]]:
         val = list()
         if self.active:
+            api_key = config.config_comicvine_api_key or ComicVine.API_KEY
             title_tokens = list(self.get_title_tokens(query, strip_joiners=False))
             if title_tokens:
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = "%20".join(tokens)
             try:
-                result = requests.get(
-                    f"{ComicVine.BASE_URL}{query}{ComicVine.QUERY_PARAMS}",
-                    headers=ComicVine.HEADERS,
-                )
+                url = f"{ComicVine.BASE_URL}{api_key}{ComicVine.QUERY_PARAMS}{query}{ComicVine.SORT_PARAMS}"
+                result = requests.get(url, headers=ComicVine.HEADERS)
                 result.raise_for_status()
             except Exception as e:
                 log.warning(e)
