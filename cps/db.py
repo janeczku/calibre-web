@@ -449,7 +449,16 @@ class Books(Base):
 
     @property
     def atom_timestamp(self):
-        return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
+        # OPDS atom:updated is defined as "the most recent instant in time
+        # when the entry was modified". Books.timestamp is the date added and
+        # never changes after import, so metadata and cover edits were
+        # invisible to OPDS sync clients. Use last_modified, which Calibre
+        # updates on every metadata or cover change; fall back to timestamp
+        # only if last_modified happens to be missing.
+        t = self.last_modified or self.timestamp
+        if t is None:
+            return ''
+        return t.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
 
 
 class CustomColumns(Base):
