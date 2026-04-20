@@ -22,6 +22,8 @@ from flask import render_template, request, flash, make_response
 from flask_limiter import RateLimitExceeded
 from flask_babel import gettext as _
 from werkzeug.exceptions import default_exceptions
+
+from .cw_login import current_user
 try:
     from werkzeug.exceptions import FailedDependency
 except ImportError:
@@ -62,6 +64,13 @@ def internal_error(error):
                                error_stack="",
                                instance=config.config_calibre_web_title
                                ), 500
+    log.error("500 Internal Server Error: %s", traceback.format_exc())
+    error_stack = ""
+    try:
+        if current_user.is_authenticated and current_user.role_admin():
+            error_stack = traceback.format_exc().split("\n")
+    except Exception:
+        pass
     return render_template('http_error.html',
                            error_code="500 Internal Server Error",
                            error_name='The server encountered an internal error and was unable to complete your '
@@ -69,7 +78,7 @@ def internal_error(error):
                            issue=True,
                            goto_admin=False,
                            unconfigured=False,
-                           error_stack=traceback.format_exc().split("\n"),
+                           error_stack=error_stack,
                            instance=config.config_calibre_web_title
                            ), 500
 
