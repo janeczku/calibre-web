@@ -257,6 +257,8 @@ class User(UserBase, Base):
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     view_settings = Column(JSON, default={})
     kobo_only_shelves_sync = Column(Integer, default=0)
+    gdrive_send_token = Column(JSON, default={})
+    gdrive_send_folder = Column(String(256), default="Calibre-Web")
 
 
 if oauth_support:
@@ -292,6 +294,8 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.id = None
         self.role = None
         self.name = None
+        self.gdrive_send_token = {}
+        self.gdrive_send_folder = None
         self.loadSettings()
 
     def loadSettings(self):
@@ -601,6 +605,18 @@ def migrate_user_session_table(engine, _session):
             trans.commit()
 
 
+def migrate_gdrive_send_columns(engine, _session):
+    try:
+        _session.query(exists().where(User.gdrive_send_token)).scalar()
+        _session.commit()
+    except exc.OperationalError:
+        with engine.connect() as conn:
+            trans = conn.begin()
+            conn.execute(text("ALTER TABLE user ADD column 'gdrive_send_token' JSON DEFAULT '{}'"))
+            conn.execute(text("ALTER TABLE user ADD column 'gdrive_send_folder' String DEFAULT 'Calibre-Web'"))
+            trans.commit()
+
+
 # Migrate database to current version, has to be updated after every database change. Currently, migration from
 # maybe 4/5 versions back to current should work.
 # Migration is done by checking if relevant columns are existing, and then adding rows with SQL commands
@@ -609,6 +625,7 @@ def migrate_Database(_session):
     add_missing_tables(engine, _session)
     migrate_registration_table(engine, _session)
     migrate_user_session_table(engine, _session)
+    migrate_gdrive_send_columns(engine, _session)
 
 
 def clean_database(_session):

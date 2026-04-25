@@ -175,6 +175,9 @@ class _Settings(_Base):
     config_limiter_options = Column(String, default="")
     config_check_extensions = Column(Boolean, default=True)
 
+    config_gdrive_send_client_id = Column(String, default='')
+    config_gdrive_send_client_secret_e = Column(String)
+
     def __repr__(self):
         return self.__class__.__name__
 

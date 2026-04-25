@@ -28,6 +28,25 @@
       <label for="kindle_mail">{{_('Send to eReader Email Address. Use comma to separate emails for multiple eReaders')}}</label>
       <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
+    {% if profile and not content.role_anonymous() and config.config_gdrive_send_client_id %}
+    <div class="form-group">
+      <label>{{ _('Google Drive') }}</label>
+      {% if content.gdrive_send_token and content.gdrive_send_token.get('refresh_token') %}
+        <div>
+          <span class="label label-success">{{ _('Connected') }}</span>
+          <a class="btn btn-sm btn-danger" id="gdrive_disconnect" href="{{ url_for('web.gdrive_send_disconnect') }}">{{ _('Disconnect Google Drive') }}</a>
+        </div>
+      {% else %}
+        <div>
+          <a href="{{ url_for('web.gdrive_send_connect') }}" class="btn btn-sm btn-primary">{{ _('Connect Google Drive') }}</a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="gdrive_send_folder">{{ _('Google Drive Folder Name') }}</label>
+      <input type="text" class="form-control" name="gdrive_send_folder" id="gdrive_send_folder" value="{{ content.gdrive_send_folder if content.gdrive_send_folder else 'Calibre-Web' }}">
+    </div>
+    {% endif %}
     {% if not content.role_anonymous() %}
     <div class="form-group">
     <label for="locale">{{_('Language')}}</label>

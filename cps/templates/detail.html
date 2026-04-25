@@ -76,6 +76,33 @@
                                 </div>
                             {% endif %}
                         {% endif %}
+                        {% if entry.gdrive_share_list %}
+                            {% if not current_user.kindle_mail or not entry.email_share_list %}
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            {% endif %}
+                            {% if entry.gdrive_share_list.__len__() == 1 %}
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-primary sendbtn-form" data-href="{{url_for('web.send_to_gdrive_route', book_id=entry.id, book_format=entry.gdrive_share_list[0]['format'], convert=entry.gdrive_share_list[0]['convert'])}}">
+                                        <span class="glyphicon glyphicon-cloud-upload"></span> {{entry.gdrive_share_list[0]['text']}}
+                                    </button>
+                                </div>
+                            {% else %}
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-cloud-upload"></span>{{ _('Send to Google Drive') }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="send-to-gdrive">
+                                        {% for format in entry.gdrive_share_list %}
+                                            <li>
+                                                <a class="sendbtn-form" data-href="{{url_for('web.send_to_gdrive_route', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                     {% if entry.reader_list and current_user.role_viewer() %}
                         <div class="btn-group" role="group">

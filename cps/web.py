@@ -46,7 +46,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
-    edit_book_read_status, valid_password
+    edit_book_read_status, valid_password, check_send_to_gdrive, send_to_gdrive
 from .pagination import Pagination
 from .redirect import get_redirect_location
 from .cw_babel import get_available_locale
@@ -1276,6 +1276,27 @@ def send_to_ereader(book_id, book_format, convert):
     return make_response(jsonify(response))
 
 
+@web.route('/send_gdrive/<int:book_id>/<book_format>/<int:convert>', methods=["POST"])
+@login_required_if_no_ano
+@download_required
+def send_to_gdrive_route(book_id, book_format, convert):
+    token = current_user.gdrive_send_token
+    if not token or not token.get('refresh_token'):
+        response = [{'type': "danger",
+                     'message': _("Please connect your Google Drive account in your profile first.")}]
+        return make_response(jsonify(response))
+    folder = current_user.gdrive_send_folder or "Calibre-Web"
+    result = send_to_gdrive(book_id, book_format, token, folder, current_user.name, convert)
+    if result is None:
+        ub.update_download(book_id, int(current_user.id))
+        response = [{'type': "success",
+                     'message': _("Success! Book queued for upload to Google Drive")}]
+    else:
+        response = [{'type': "danger",
+                     'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
+    return make_response(jsonify(response))
+
+
 # ################################### Login Logout ##################################################################
 
 @web.route('/register', methods=['POST'])
@@ -1490,6 +1511,9 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
         if old_state == 0 and current_user.kobo_only_shelves_sync == 1:
             kobo_sync_status.update_on_sync_shelfs(current_user.id)
 
+        if to_save.get("gdrive_send_folder", current_user.gdrive_send_folder) != current_user.gdrive_send_folder:
+            current_user.gdrive_send_folder = to_save.get("gdrive_send_folder", "Calibre-Web") or "Calibre-Web"
+
     except Exception as ex:
         flash(str(ex), category="error")
         return render_title_template("user_edit.html",
@@ -1552,6 +1576,105 @@ def profile():
                                  page="me",
                                  registered_oauth=local_oauth_check,
                                  oauth_status=oauth_status)
+
+
+# ###################################Google Drive Send OAuth #############################################################
+
+def _gdrive_send_client_config():
+    return {"web": {
+        "client_id": config.config_gdrive_send_client_id,
+        "client_secret": config.config_gdrive_send_client_secret_e,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+    }}
+
+
+@web.route('/gdrive_send/connect')
+@user_login_required
+def gdrive_send_connect():
+    """Start OAuth2 flow for connecting user's personal Google Drive."""
+    try:
+        from google_auth_oauthlib.flow import Flow
+    except ImportError:
+        flash(_("Google OAuth library not installed. Please install google-auth-oauthlib."), category="error")
+        return redirect(url_for('web.profile'))
+
+    if not config.config_gdrive_send_client_id or not config.config_gdrive_send_client_secret_e:
+        flash(_("Google Drive Send is not configured. Please ask your administrator to set it up."), category="error")
+        return redirect(url_for('web.profile'))
+
+    redirect_uri = url_for('web.gdrive_send_callback', _external=True)
+    flow = Flow.from_client_config(
+        _gdrive_send_client_config(),
+        scopes=['https://www.googleapis.com/auth/drive.file'],
+        redirect_uri=redirect_uri
+    )
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true',
+        prompt='consent'
+    )
+    flask_session['gdrive_send_state'] = state
+    flask_session['gdrive_send_code_verifier'] = flow.code_verifier
+    return redirect(authorization_url)
+
+
+@web.route('/gdrive_send/callback')
+@user_login_required
+def gdrive_send_callback():
+    """Handle OAuth2 callback from Google."""
+    try:
+        from google_auth_oauthlib.flow import Flow
+    except ImportError:
+        flash(_("Google OAuth library not installed."), category="error")
+        return redirect(url_for('web.profile'))
+
+    redirect_uri = url_for('web.gdrive_send_callback', _external=True)
+    flow = Flow.from_client_config(
+        _gdrive_send_client_config(),
+        scopes=['https://www.googleapis.com/auth/drive.file'],
+        redirect_uri=redirect_uri,
+        state=flask_session.get('gdrive_send_state')
+    )
+    flow.fetch_token(authorization_response=request.url,
+                     code_verifier=flask_session.get('gdrive_send_code_verifier'))
+    creds = flow.credentials
+
+    token_data = {
+        'token': creds.token,
+        'refresh_token': creds.refresh_token,
+        'token_uri': creds.token_uri,
+        'client_id': creds.client_id,
+        'client_secret': creds.client_secret,
+        'scopes': list(creds.scopes) if creds.scopes else [],
+        'expiry': creds.expiry.isoformat() if creds.expiry else None,
+    }
+
+    user = ub.session.query(ub.User).filter(ub.User.id == current_user.id).first()
+    user.gdrive_send_token = token_data
+    try:
+        flag_modified(user, "gdrive_send_token")
+    except AttributeError:
+        pass
+    ub.session_commit("Google Drive connected for user {}".format(current_user.name))
+
+    flash(_("Google Drive connected successfully!"), category="success")
+    return redirect(url_for('web.profile'))
+
+
+@web.route('/gdrive_send/disconnect')
+@user_login_required
+def gdrive_send_disconnect():
+    """Disconnect user's Google Drive."""
+    user = ub.session.query(ub.User).filter(ub.User.id == current_user.id).first()
+    user.gdrive_send_token = {}
+    try:
+        flag_modified(user, "gdrive_send_token")
+    except AttributeError:
+        pass
+    ub.session_commit("Google Drive disconnected for user {}".format(current_user.name))
+    flash(_("Google Drive disconnected."), category="success")
+    return redirect(url_for('web.profile'))
 
 
 # ###################################Show single book ##################################################################
@@ -1640,6 +1763,13 @@ def show_book(book_id):
 
         entry.email_share_list = check_send_to_ereader(entry)
         entry.reader_list = check_read_formats(entry)
+
+        entry.gdrive_share_list = []
+        if (current_user.is_authenticated and
+                hasattr(current_user, 'gdrive_send_token') and
+                current_user.gdrive_send_token and
+                current_user.gdrive_send_token.get('refresh_token')):
+            entry.gdrive_share_list = check_send_to_gdrive(entry)
 
         entry.reader_list_sizes = dict()
         for data in entry.data:

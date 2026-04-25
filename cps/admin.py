@@ -1359,6 +1359,38 @@ def update_mailsettings():
     return edit_mailsettings()
 
 
+@admi.route("/admin/gdrivesend", methods=["GET"])
+@user_login_required
+@admin_required
+def edit_gdrive_send_settings():
+    content = {
+        'config_gdrive_send_client_id': config.config_gdrive_send_client_id,
+        'config_gdrive_send_client_secret_e': config.config_gdrive_send_client_secret_e,
+    }
+    redirect_uri = url_for('web.gdrive_send_callback', _external=True)
+    return render_title_template("gdrive_send_edit.html", content=content,
+                                 redirect_uri=redirect_uri,
+                                 title=_("Edit Google Drive Send Settings"), page="gdrivesendset")
+
+
+@admi.route("/admin/gdrivesend", methods=["POST"])
+@user_login_required
+@admin_required
+def update_gdrive_send_settings():
+    to_save = request.form.to_dict()
+    config.config_gdrive_send_client_id = to_save.get('config_gdrive_send_client_id', '').strip()
+    if to_save.get('config_gdrive_send_client_secret_e', ''):
+        config.config_gdrive_send_client_secret_e = to_save.get('config_gdrive_send_client_secret_e', '').strip()
+    try:
+        config.save()
+        flash(_("Google Drive Send Settings updated"), category="success")
+    except (OperationalError, InvalidRequestError) as e:
+        ub.session.rollback()
+        log.error_or_exception("Settings Database error: {}".format(e))
+        flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+    return edit_gdrive_send_settings()
+
+
 @admi.route("/admin/scheduledtasks")
 @user_login_required
 @admin_required
