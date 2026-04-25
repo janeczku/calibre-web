@@ -30,7 +30,7 @@ import requests
 import unidecode
 from uuid import uuid4
 
-from flask import send_from_directory, make_response, abort, url_for, Response, request
+from flask import send_from_directory, make_response, abort, url_for, Response, request, after_this_request
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as N_
 from flask_babel import get_locale
@@ -956,6 +956,17 @@ def do_download_file(book, book_format, client, data, headers):
         else:
             download_name = book_name
 
+    # Clean up staged copies in /tmp/calibre_web after the response is sent
+    # (kepubify / calibre-export branches) so the temp dir does not grow unbounded.
+    if filename == get_temp_dir():
+        _tmp_path = os.path.join(filename, download_name + "." + book_format)
+        @after_this_request
+        def _cleanup_staged_download(resp):
+            try:
+                os.remove(_tmp_path)
+            except OSError as ex:
+                log.warning('Failed to remove staged download %s: %s', _tmp_path, ex)
+            return resp
     response = make_response(send_from_directory(filename, download_name + "." + book_format))
     # ToDo Check headers parameter
     for element in headers:
