@@ -2460,7 +2460,7 @@ msgstr "Unbekannte Anfragen an kobo.com weiterleiten"
 
 #: cps/templates/config_edit.html:149
 msgid "Server External Port (for port forwarded API calls)"
-msgstr "Externer Server Port (für Portweiterleitung von API-Aufrufen)"
+msgstr "Externer Server Port (für Portweiterleitung von Kobo-API-Aufrufen)"
 
 #: cps/templates/config_edit.html:157
 msgid "Use Goodreads"
