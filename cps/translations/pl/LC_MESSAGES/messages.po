@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2021-06-12 08:52)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-25 13:09+0200\n"
+"POT-Creation-Date: 2026-04-25 13:25+0200\n"
 "PO-Revision-Date: 2025-12-08 12:51+0100\n"
 "Last-Translator: Daniel Szepietowski <daniel@szepi.dev>\n"
 "Language: pl\n"
@@ -871,45 +871,45 @@ msgstr "Nieprawidłowa zawartość pliku z okładką"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg"
 
-#: cps/helper.py:975 cps/helper.py:1138
+#: cps/helper.py:986 cps/helper.py:1149
 msgid "Cover"
 msgstr "Okładka"
 
-#: cps/helper.py:992
+#: cps/helper.py:1003
 msgid "UnRar binary file not found"
 msgstr "Plik wykonywalny programu unrar nie znaleziony"
 
-#: cps/helper.py:1003
+#: cps/helper.py:1014
 msgid "Error executing UnRar"
 msgstr "Błąd podczas uruchamiania UnRar"
 
-#: cps/helper.py:1011
+#: cps/helper.py:1022
 msgid "Could not find the specified directory"
 msgstr "Nie udało się nie udało się znaleźć wskazanego folderu"
 
-#: cps/helper.py:1014
+#: cps/helper.py:1025
 msgid "Please specify a directory, not a file"
 msgstr "Proszę wskaż folder a nie plik."
 
-#: cps/helper.py:1028
+#: cps/helper.py:1039
 msgid "Calibre binaries not viable"
 msgstr "Pliki binarne Calibre są nieprawidłowe"
 
-#: cps/helper.py:1037
+#: cps/helper.py:1048
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "Brakuje plików binarnych calibre: %(missing)s"
 
-#: cps/helper.py:1039
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Brakuje uprawnień do wykonywania: %(missing)s"
 
-#: cps/helper.py:1044
+#: cps/helper.py:1055
 msgid "Error executing Calibre"
 msgstr "Błąd podczas uruchamiania Calibre"
 
-#: cps/helper.py:1140 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Zaplanuj backup metadanych dla wszystkich książek"
 

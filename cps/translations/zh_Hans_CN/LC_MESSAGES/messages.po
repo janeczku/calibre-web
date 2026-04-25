@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-25 13:09+0200\n"
+"POT-Creation-Date: 2026-04-25 13:25+0200\n"
 "PO-Revision-Date: 2025-12-06 13:53+0800\n"
 "Last-Translator: qx100\n"
 "Language: zh_CN\n"
@@ -864,45 +864,45 @@ msgstr "封面文件内容无效"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "仅将 jpg、jpeg 文件作为封面文件"
 
-#: cps/helper.py:975 cps/helper.py:1138
+#: cps/helper.py:986 cps/helper.py:1149
 msgid "Cover"
 msgstr "封面"
 
-#: cps/helper.py:992
+#: cps/helper.py:1003
 msgid "UnRar binary file not found"
 msgstr "找不到 UnRar 执行文件"
 
-#: cps/helper.py:1003
+#: cps/helper.py:1014
 msgid "Error executing UnRar"
 msgstr "执行 UnRar 时出错"
 
-#: cps/helper.py:1011
+#: cps/helper.py:1022
 msgid "Could not find the specified directory"
 msgstr "无法找到指定目录"
 
-#: cps/helper.py:1014
+#: cps/helper.py:1025
 msgid "Please specify a directory, not a file"
 msgstr "请指定目录，而不是文件"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1039
 msgid "Calibre binaries not viable"
 msgstr "Calibre 程序无法运行"
 
-#: cps/helper.py:1037
+#: cps/helper.py:1048
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "缺失的 calibre 程序：%(missing)s"
 
-#: cps/helper.py:1039
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "缺少执行权限: %(missing)s"
 
-#: cps/helper.py:1044
+#: cps/helper.py:1055
 msgid "Error executing Calibre"
 msgstr "执行 Calibre 时出错"
 
-#: cps/helper.py:1140 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "将所有书籍加入元数据备份队列"
 

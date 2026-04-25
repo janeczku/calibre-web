@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-25 13:09+0200\n"
+"POT-Creation-Date: 2026-04-25 13:25+0200\n"
 "PO-Revision-Date: 2025-09-10 03:46+0000\n"
 "Last-Translator: finrodchen <me@finrod.xyz>\n"
 "Language: zh_TW\n"
@@ -864,45 +864,45 @@ msgstr "無效的封面檔案"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "僅將jpg、jpeg文件作為封面文件"
 
-#: cps/helper.py:975 cps/helper.py:1138
+#: cps/helper.py:986 cps/helper.py:1149
 msgid "Cover"
 msgstr ""
 
-#: cps/helper.py:992
+#: cps/helper.py:1003
 msgid "UnRar binary file not found"
 msgstr "找不到UnRar執行文件"
 
-#: cps/helper.py:1003
+#: cps/helper.py:1014
 msgid "Error executing UnRar"
 msgstr ""
 
-#: cps/helper.py:1011
+#: cps/helper.py:1022
 msgid "Could not find the specified directory"
 msgstr "找不到指定的目錄"
 
-#: cps/helper.py:1014
+#: cps/helper.py:1025
 msgid "Please specify a directory, not a file"
 msgstr "請指定資料夾目錄，而非檔案"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1039
 msgid "Calibre binaries not viable"
 msgstr ""
 
-#: cps/helper.py:1037
+#: cps/helper.py:1048
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "缺少 Calibre 執行檔：%(missing)s"
 
-#: cps/helper.py:1039
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1044
+#: cps/helper.py:1055
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1140 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "將所有書籍排入元數據備份佇列"
 

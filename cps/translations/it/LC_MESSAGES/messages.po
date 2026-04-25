@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-25 13:09+0200\n"
+"POT-Creation-Date: 2026-04-25 13:25+0200\n"
 "PO-Revision-Date: 2026-03-05 06:42+0100\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
@@ -864,45 +864,45 @@ msgstr "Contenuto del file di copertina non valido"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solo i file jpg/jpeg sono supportati come file di copertina"
 
-#: cps/helper.py:975 cps/helper.py:1138
+#: cps/helper.py:986 cps/helper.py:1149
 msgid "Cover"
 msgstr "Copertina"
 
-#: cps/helper.py:992
+#: cps/helper.py:1003
 msgid "UnRar binary file not found"
 msgstr "File binario UnRar non trovato"
 
-#: cps/helper.py:1003
+#: cps/helper.py:1014
 msgid "Error executing UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:1011
+#: cps/helper.py:1022
 msgid "Could not find the specified directory"
 msgstr "Impossibile trovare la cartella specificata"
 
-#: cps/helper.py:1014
+#: cps/helper.py:1025
 msgid "Please specify a directory, not a file"
 msgstr "Specifica una cartella, non un file"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1039
 msgid "Calibre binaries not viable"
 msgstr "Eseguibili di Calibre non validi"
 
-#: cps/helper.py:1037
+#: cps/helper.py:1048
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "File eseguibili di Calibre mancanti: %(missing)s"
 
-#: cps/helper.py:1039
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Permessi di esecuzione mancanti: %(missing)s"
 
-#: cps/helper.py:1044
+#: cps/helper.py:1055
 msgid "Error executing Calibre"
 msgstr "Errore durante l'esecuzione di Calibre"
 
-#: cps/helper.py:1140 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "Metti in coda tutti i libri per il backup dei metadati"
 

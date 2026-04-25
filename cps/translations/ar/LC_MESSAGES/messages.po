@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2026-04-25 13:09+0200\n"
+"POT-Creation-Date: 2026-04-25 13:25+0200\n"
 "PO-Revision-Date: 2025-06-07 14:44+0300\n"
 "Last-Translator: UsamaFoad <usamafoad@gmail.com>\n"
 "Language: ar\n"
@@ -864,45 +864,45 @@ msgstr "محتوى ملف الغلاف غير صالح"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "ملفات jpg/jpeg فقط مدعومة كملفات غلاف"
 
-#: cps/helper.py:975 cps/helper.py:1138
+#: cps/helper.py:986 cps/helper.py:1149
 msgid "Cover"
 msgstr "الغلاف"
 
-#: cps/helper.py:992
+#: cps/helper.py:1003
 msgid "UnRar binary file not found"
 msgstr "ملف UnRar الثنائي غير موجود"
 
-#: cps/helper.py:1003
+#: cps/helper.py:1014
 msgid "Error executing UnRar"
 msgstr "خطأ في تنفيذ UnRar"
 
-#: cps/helper.py:1011
+#: cps/helper.py:1022
 msgid "Could not find the specified directory"
 msgstr "تعذر العثور على الدليل المحدد"
 
-#: cps/helper.py:1014
+#: cps/helper.py:1025
 msgid "Please specify a directory, not a file"
 msgstr "الرجاء تحديد دليل، وليس ملف"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1039
 msgid "Calibre binaries not viable"
 msgstr "ملفات Calibre الثنائية غير قابلة للاستخدام"
 
-#: cps/helper.py:1037
+#: cps/helper.py:1048
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "ملفات Calibre الثنائية مفقودة: %(missing)s"
 
-#: cps/helper.py:1039
+#: cps/helper.py:1050
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "أذونات التنفيذ مفقودة: %(missing)s"
 
-#: cps/helper.py:1044
+#: cps/helper.py:1055
 msgid "Error executing Calibre"
 msgstr "خطأ في تنفيذ Calibre"
 
-#: cps/helper.py:1140 cps/templates/admin.html:216
+#: cps/helper.py:1151 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr "وضع جميع الكتب في قائمة الانتظار لنسخ البيانات الوصفية احتياطيًا"
 
