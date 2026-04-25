@@ -47,7 +47,7 @@ current_milli_time = lambda: int(round(time() * 1000))
 
 
 class TaskConvert(CalibreTask):
-    def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None):
+    def __init__(self, file_path, book_id, task_message, settings, ereader_mail, user=None, gdrive_settings=None):
         super(TaskConvert, self).__init__(task_message)
         self.worker_thread = None
         self.file_path = file_path
@@ -56,6 +56,7 @@ class TaskConvert(CalibreTask):
         self.settings = settings
         self.ereader_mail = ereader_mail
         self.user = user
+        self.gdrive_settings = gdrive_settings
 
         self.results = dict()
 
@@ -122,6 +123,19 @@ class TaskConvert(CalibreTask):
                                                                id=self.book_id,
                                                                internal=True)
                                           )
+                except Exception as ex:
+                    return self._handleError(str(ex))
+            if self.gdrive_settings:
+                try:
+                    from cps.tasks.gdrive_send import TaskGdriveSend
+                    worker_thread.add(self.user, TaskGdriveSend(
+                        self.results["path"],
+                        filename,
+                        self.title,
+                        self.gdrive_settings["token"],
+                        self.gdrive_settings["folder"],
+                        self.book_id
+                    ))
                 except Exception as ex:
                     return self._handleError(str(ex))
 
