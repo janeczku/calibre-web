@@ -374,6 +374,8 @@ def _get_user():
     if has_request_context():
         if "flask_httpauth_user" in g:
             if g.flask_httpauth_user is not None:
+                if not g.flask_httpauth_user.is_active:
+                    return None
                 return g.flask_httpauth_user
         if "_login_user" not in g:
             current_app.login_manager._load_user()
