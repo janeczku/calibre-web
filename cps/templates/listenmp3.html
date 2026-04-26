@@ -134,7 +134,7 @@
                 {% elif c.datatype == 'datetime' %}
                   {{ column.value|formatdate }}
                 {% elif c.datatype == 'comments' %}
-                  {{column.value|safe}}
+                  {{column.value|clean_string|safe}}
                 {% elif c.datatype == 'series' %}
                   {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                 {% elif c.datatype == 'text' %}
