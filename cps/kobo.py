@@ -904,12 +904,23 @@ def get_current_bookmark_response(current_bookmark):
         resp["ProgressPercent"] = _clean_progress(current_bookmark.progress_percent)
     if current_bookmark.content_source_progress_percent is not None:
         resp["ContentSourceProgressPercent"] = _clean_progress(current_bookmark.content_source_progress_percent)
-    if current_bookmark.location_value:
-        resp["Location"] = {
-            "Value": current_bookmark.location_value,
-            "Type": current_bookmark.location_type,
-            "Source": current_bookmark.location_source,
-        }
+
+    loc_value = current_bookmark.location_value
+    loc_type = current_bookmark.location_type
+    loc_source = current_bookmark.location_source
+
+    # Browser-stored values (CFI strings or bare "#kobo.N.M" fragments) are not
+    # valid Kobo location URIs; send an empty Value so the Kobo falls back to
+    # ContentSourceProgressPercent.  Kobo-device values are sent back verbatim.
+    is_browser_value = (
+        loc_type == "CFI"
+        or (loc_type == "KoboSpan" and loc_value and loc_value.startswith("#"))
+    )
+    if is_browser_value and loc_source:
+        resp["Location"] = {"Value": "", "Type": "KoboSpan", "Source": loc_source}
+    elif loc_value:
+        resp["Location"] = {"Value": loc_value, "Type": loc_type, "Source": loc_source}
+
     return resp
 
 

@@ -1600,6 +1600,11 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     border-radius: 3px
 }
 
+.badge.progress-badge {
+    background-color: rgba(0, 120, 212, .75);
+    margin-left: 2px
+}
+
 #bookDetailsModal, .pagination, body > .container-fluid {
     min-width: 1px;
     min-height: 1px

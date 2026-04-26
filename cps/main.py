@@ -46,11 +46,12 @@ def main():
     try:
         from .kobo import kobo, get_kobo_activated
         from .kobo_auth import kobo_auth
+        from .reading_progress import reading_progress
         from flask_limiter.util import get_remote_address
         kobo_available = get_kobo_activated()
     except (ImportError, AttributeError):  # Catch also error for not installed flask-WTF (missing csrf decorator)
         kobo_available = False
-        kobo = kobo_auth = get_remote_address = None
+        kobo = kobo_auth = reading_progress = get_remote_address = None
 
     try:
         from .oauth_bb import oauth
@@ -80,6 +81,7 @@ def main():
         limiter.limit("3/minute", key_func=get_remote_address)(kobo)
         app.register_blueprint(kobo)
         app.register_blueprint(kobo_auth)
+        app.register_blueprint(reading_progress)
     if oauth_available:
         app.register_blueprint(oauth)
     success = web_server.start()

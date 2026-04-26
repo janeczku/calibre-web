@@ -601,6 +601,27 @@ def migrate_user_session_table(engine, _session):
             trans.commit()
 
 
+def migrate_kobo_bookmark_table(engine, _session):
+    try:
+        _session.query(exists().where(KoboBookmark.content_source_progress_percent)).scalar()
+        _session.commit()
+    except exc.OperationalError:  # Table exists but is missing the newer columns
+        with engine.connect() as conn:
+            trans = conn.begin()
+            for col_def in (
+                "ALTER TABLE kobo_bookmark ADD COLUMN 'location_source' String",
+                "ALTER TABLE kobo_bookmark ADD COLUMN 'location_type' String",
+                "ALTER TABLE kobo_bookmark ADD COLUMN 'location_value' String",
+                "ALTER TABLE kobo_bookmark ADD COLUMN 'progress_percent' Float",
+                "ALTER TABLE kobo_bookmark ADD COLUMN 'content_source_progress_percent' Float",
+            ):
+                try:
+                    conn.execute(text(col_def))
+                except exc.OperationalError:
+                    pass  # Column already exists; safe to ignore
+            trans.commit()
+
+
 # Migrate database to current version, has to be updated after every database change. Currently, migration from
 # maybe 4/5 versions back to current should work.
 # Migration is done by checking if relevant columns are existing, and then adding rows with SQL commands
@@ -609,6 +630,7 @@ def migrate_Database(_session):
     add_missing_tables(engine, _session)
     migrate_registration_table(engine, _session)
     migrate_user_session_table(engine, _session)
+    migrate_kobo_bookmark_table(engine, _session)
 
 
 def clean_database(_session):

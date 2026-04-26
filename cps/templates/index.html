@@ -95,6 +95,7 @@
             <span class="img" title="{{ entry.Books.title }}">
               {{ image.book_cover(entry.Books) }}
               {% if entry[2] == True %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+              {% if progress_map is defined and entry.Books.id in progress_map %}<span class="badge progress-badge">{{ progress_map[entry.Books.id]|int }}%</span>{% endif %}
             </span>
           </a>
       </div>
