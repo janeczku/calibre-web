@@ -149,6 +149,9 @@ class _Settings(_Base):
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
     config_unicode_filename = Column(Boolean, default=False)
     config_embed_metadata = Column(Boolean, default=True)
+    config_fulltext_search = Column(Boolean, default=False)
+    config_merge_search = Column(Boolean, default=False)
+    config_hide_archived_search = Column(Boolean, default=True)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
