@@ -1115,7 +1115,7 @@ class CalibreDB:
                     .group_by(text('books_languages_link.lang_code')).all()
             tags = list()
             for lang in languages:
-                tag = Category(isoLanguages.get_language_name(get_locale(), None, lang[0].lang_code), lang[0].lang_code)
+                tag = Category(isoLanguages.get_language_name(get_locale(), lang[0].lang_code), lang[0].lang_code)
                 tags.append([tag, lang[1]])
             # Append all books without language to list
             if not return_all_languages:
