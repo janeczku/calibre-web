@@ -147,7 +147,10 @@
       </div>
       <div class="form-group" style="margin-left:10px;">
         <label for="config_external_port">{{_('Server External Port (for port forwarded API calls)')}}</label>
-        <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" autocomplete="off" required>
+        <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" placeholder="8083" autocomplete="off">
+        {% if is_proxied %}
+        <span class="help-block">A reverse proxy was detected. Leave blank unless you need to override the port for direct access.</span>
+        {% endif %}
       </div>
     </div>
     {% endif %}
