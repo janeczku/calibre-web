@@ -1,6 +1,51 @@
 {% import 'image.html' as image %}
 {% extends "layout.html" %}
 {% block body %}
+{% if continue_reading and continue_reading|length > 0 %}
+<div class="discover continue-reading">
+  <h2 class="continue-reading">{{_('Continue Reading')}}</h2>
+  <div class="row display-flex">
+   {% for item in continue_reading %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book session" id="books_continue">
+      <div class="cover">
+          <a href="{{ url_for('web.read_book', book_id=item.book.id, book_format=item.format) }}">
+              <span class="img" title="{{ item.book.title }}">
+                {{ image.book_cover(item.book) }}
+                <span class="badge progress-badge" style="background:#4CAF50;bottom:5px;top:auto;">{{ item.progress_percent }}%</span>
+              </span>
+          </a>
+      </div>
+      <div class="meta">
+        <a href="{{ url_for('web.read_book', book_id=item.book.id, book_format=item.format) }}">
+          <p title="{{item.book.title}}" class="title">{{item.book.title|shortentitle}}</p>
+        </a>
+        <p class="author">
+          {% for author in item.book.authors %}
+            {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.books_list', data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            {% endif %}
+          {% endfor %}
+        </p>
+        <p class="reading-progress" style="color:#4CAF50;font-size:12px;">
+          <span class="glyphicon glyphicon-book"></span> {{ item.progress_percent }}% · {{ item.format|upper }}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 {% if current_user.show_detail_random() and page != "discover" %}
 <div class="discover random-books">
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
