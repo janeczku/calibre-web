@@ -1008,25 +1008,30 @@ def publisher_list():
 @login_required_if_no_ano
 def series_list():
     if current_user.check_visibility(constants.SIDEBAR_SERIES):
-        if current_user.get_view_property('series', 'dir') == 'desc':
-            order = db.Series.sort.desc()
+        series_dir = current_user.get_view_property('series', 'dir')
+        if series_dir == 'new':
+            order = [func.max(db.Books.timestamp).desc(), db.Series.sort]
+            order_no = 2
+        elif series_dir == 'desc':
+            order = [db.Series.sort.desc()]
             order_no = 0
         else:
-            order = db.Series.sort.asc()
+            order = [db.Series.sort.asc()]
             order_no = 1
         char_list = query_char_list(db.Series.sort, db.books_series_link)
         if current_user.get_view_property('series', 'series_view') == 'list':
             entries = calibre_db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
-                .group_by(text('books_series_link.series')).order_by(order).all()
-            no_series_count = (calibre_db.session.query(db.Books)
-                            .outerjoin(db.books_series_link).outerjoin(db.Series)
-                            .filter(db.Series.name == None)
-                            .filter(calibre_db.common_filters())
-                            .count())
-            if no_series_count:
-                entries.append([db.Category(_("None"), "-1"), no_series_count])
-            entries = sorted(entries, key=lambda x: (x[0].sort or x[0].name).lower(), reverse=not order_no)
+                .group_by(text('books_series_link.series')).order_by(*order).all()
+            if series_dir != 'new':
+                no_series_count = (calibre_db.session.query(db.Books)
+                                .outerjoin(db.books_series_link).outerjoin(db.Series)
+                                .filter(db.Series.name == None)
+                                .filter(calibre_db.common_filters())
+                                .count())
+                if no_series_count:
+                    entries.append([db.Category(_("None"), "-1"), no_series_count])
+                entries = sorted(entries, key=lambda x: (x[0].sort or x[0].name).lower(), reverse=not order_no)
             return render_title_template('list.html',
                                          entries=entries,
                                          folder='web.books_list',
@@ -1036,11 +1041,12 @@ def series_list():
                                          data="series", order=order_no)
         else:
             entries = (calibre_db.session.query(db.Books, func.count('books_series_link').label('count'),
-                                                func.max(db.Books.series_index), db.Books.id)
+                                                func.max(db.Books.series_index), db.Books.id,
+                                                func.max(db.Books.timestamp).label('newest'))
                        .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters())
                        .group_by(text('books_series_link.series'))
                        .having(or_(func.max(db.Books.series_index), db.Books.series_index==""))
-                       .order_by(order)
+                       .order_by(*order)
                        .all())
             return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_("Series"), page="serieslist", data="series", bodyClass="grid-view",

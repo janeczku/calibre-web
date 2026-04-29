@@ -69,7 +69,9 @@ $("#desc").click(function() {
     if (direction === 0) {
         return;
     }
+    var wasNew = direction === 2;
     $("#asc").removeClass("active");
+    $("#new").removeClass("active");
     $("#desc").addClass("active");
 
     var page = $(this).data("id");
@@ -79,7 +81,11 @@ $("#desc").click(function() {
         dataType: "json",
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
+        complete: function() {
+            if (wasNew) { window.location.reload(); }
+        }
     });
+    if (wasNew) { direction = 0; return; }
     var index = 0;
     var list = $("#list");
     var second = $("#second");
@@ -119,7 +125,9 @@ $("#asc").click(function() {
     if (direction === 1) {
         return;
     }
+    var wasNew = direction === 2;
     $("#desc").removeClass("active");
+    $("#new").removeClass("active");
     $("#asc").addClass("active");
 
     var page = $(this).data("id");
@@ -129,7 +137,11 @@ $("#asc").click(function() {
         dataType: "json",
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
+        complete: function() {
+            if (wasNew) { window.location.reload(); }
+        }
     });
+    if (wasNew) { direction = 1; return; }
     var index = 0;
     var list = $("#list");
     var second = $("#second");
@@ -162,6 +174,28 @@ $("#asc").click(function() {
         list.append(reversed.slice(0, elementLength));
     }
     direction = 1;
+});
+
+$("#new").click(function() {
+    if (direction === 2) {
+        return;
+    }
+    $("#asc").removeClass("active");
+    $("#desc").removeClass("active");
+    $("#new").addClass("active");
+
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: getPath() + "/ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"new\"}}",
+        complete: function() {
+            window.location.reload();
+        }
+    });
+    direction = 2;
 });
 
 $("#all").click(function() {
