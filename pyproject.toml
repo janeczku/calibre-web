@@ -17,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
 keywords = [
@@ -118,12 +119,14 @@ kobo = [
 ]
 
 [project.scripts]
-cps = "calibreweb:main"
+cps = "cps.main:main"
 
 [tool.setuptools]
 include-package-data = true
 license-files = ["LICENSE"]
 
-[tool.setuptools.dynamic]
-version = {attr = "calibreweb.cps.constants.STABLE_VERSION"}
+[tool.setuptools.packages.find]
+include = ["cps*"]
 
+[tool.setuptools.dynamic]
+version = {attr = "cps.constants.STABLE_VERSION"}
