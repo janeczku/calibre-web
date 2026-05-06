@@ -41,9 +41,9 @@ class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
     front-end server to add these headers, to let you quietly bind
     this to a URL other than / and to an HTTP scheme that is
-    different than what is used locally.
+    different from what is used locally.
 
-    Code courtesy of: http://flask.pocoo.org/snippets/35/
+    Code courtesy of: https://flask.pocoo.org/snippets/35/
 
     In nginx:
     location /myprefix {
@@ -61,11 +61,13 @@ class ReverseProxied(object):
 
     def __call__(self, environ, start_response):
         self.proxied = False
+        self.script_name = "/"
         script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
         if script_name:
             self.proxied = True
             environ['SCRIPT_NAME'] = script_name
             path_info = environ.get('PATH_INFO', '')
+            self.script_name = script_name
             if path_info and path_info.startswith(script_name):
                 environ['PATH_INFO'] = path_info[len(script_name):]
 

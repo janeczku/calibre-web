@@ -81,56 +81,6 @@ if ($("body.book").length > 0) {
     $(".rating").insertBefore(".hr");
     $("#remove-from-shelves").insertAfter(".hr");
     $(description).appendTo(".bookinfo")
-    /* if book description is not in html format, Remove extra line breaks
-    Remove blank lines/unnecessary spaces, split by line break to array
-    Push array into .description div. If there is still a wall of text,
-    find sentences and split wall into groups of three sentence paragraphs.
-    If the book format is in html format, Keep html, but strip away inline
-    styles and empty elements */
-
-    // If text is sitting in div as text node
-    if ($(".comments:has(p)").length === 0) {
-        newdesc = description.text()
-            .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "").split(/\n/);
-        $(".comments").empty();
-        $.each(newdesc, function (i, val) {
-            $("div.comments").append("<p>" + newdesc[i] + "</p>");
-        });
-        $(".comments").fadeIn(100);
-    }    //If still a wall of text create 3 sentence paragraphs.
-    if ($(".comments p").length === 1) {
-        if (description.context != undefined) {
-            newdesc = description.text()
-                .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm, "").split(/\n/);
-        } else {
-            newdesc = description.text();
-        }
-        doc = nlp(newdesc.toString());
-        sentences = doc.map((m) => m.out("text"));
-        sentences[0] = sentences[0].replace(",", "");
-        $(".comments p").remove();
-        let size = 3;
-        let sentenceChunks = [];
-        for (var i = 0; i < sentences.length; i += size) {
-            sentenceChunks.push(sentences.slice(i, i + size));
-        }
-        let output = '';
-        $.each(sentenceChunks, function (i, val) {
-            let preOutput = '';
-            $.each(val, function (i, val) {
-                preOutput += val;
-            });
-            output += "<p>" + preOutput + "</p>";
-        });
-        $("div.comments").append(output);
-    } else {
-        $.each(description, function (i, val) {
-//      $( description[i].outerHTML ).appendTo( ".comments" );
-            $("div.comments :empty").remove();
-            $("div.comments ").attr("style", "");
-        });
-        $("div.comments").fadeIn(100);
-    }
 
     // Sexy blurred backgrounds
     cover = $(".cover img").attr("src");
@@ -175,6 +125,7 @@ if ($("body.book").length > 0) {
     $("#sendbtn").parent().addClass("sendBtn");
     $("[id*=btnGroupDrop]").parent().addClass("downloadBtn");
     $("read-in-browser").parent().addClass("readBtn");
+    $("listen-in-browser").parent().addClass("listenBtn");
     $(".downloadBtn button:first").addClass("download-text");
 
     // Move all options in book details page to the same group
@@ -188,21 +139,33 @@ if ($("body.book").length > 0) {
         .prependTo('[aria-label^="Download, send"]');
     $("#have_read_cb")
         .after('<label class="block-label readLbl" for="#have_read_cb"></label>');
+    $("#have_read_form").next("p").remove();
+    $("#have_read_form").next("p").remove();
     $("#archived_cb")
         .after('<label class="block-label readLbl" for="#archived_cb"></label>');
     $("#shelf-actions").prependTo('[aria-label^="Download, send"]');
 
+    $(".more-stuff .col-sm-12 #back").hide()
+/*        .html("&laquo; Previous")
+        .addClass("page-link")
+        .removeClass("btn btn-default")
+        .prependTo('[aria-label^="Download, send"]');*/
 
     // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
     $('ul[aria-labelledby="read-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
+    $('ul[aria-labelledby="listen-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
     $('ul[aria-labelledby="send-to-kereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
     $(".leramslist").insertBefore(".blur-wrapper");
     $('ul[aria-labelledby="btnGroupDrop1"]').insertBefore(".blur-wrapper").addClass("leramslist");
     $("#add-to-shelves").insertBefore(".blur-wrapper");
-
+    $("#back")
     $("#read-in-browser").click(function () {
         $(".readinbrowser-drop").toggle();
     });
+    $("#listen-in-browser").click(function () {
+        $(".readinbrowser-drop").toggle();
+    });
+
 
     $(".downloadBtn").click(function () {
         $(".leramslist").toggle();
@@ -676,6 +639,7 @@ if ($("body.epub").length === 0) {
 }
 
 $("#read-in-browser a").attr("target", "");
+$("#listen-in-browser a").attr("target", "");
 
 if ($(".edit-shelf-btn").length > 1) {
     $(".edit-shelf-btn:first").remove();

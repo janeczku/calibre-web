@@ -155,7 +155,7 @@ class Douban(Metadata):
             r.raise_for_status()
         except Exception as e:
             log.warning(e)
-            return None
+            return []
 
         match = MetaRecord(
             id=id,
@@ -217,7 +217,8 @@ class Douban(Metadata):
 
         return match
 
-    def _clean_date(self, date: str) -> str:
+    @staticmethod
+    def _clean_date(date: str) -> str:
         """
         Clean up the date string to be in the format YYYY-MM-DD
 

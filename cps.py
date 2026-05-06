@@ -27,8 +27,41 @@ sys.path.insert(0, path)
 
 from cps.main import main
 
+
+def hide_console_windows():
+    import ctypes
+
+    kernel32 = ctypes.WinDLL('kernel32')
+    user32 = ctypes.WinDLL('user32')
+
+    SW_HIDE = 0
+
+    hWnd = kernel32.GetConsoleWindow()
+    if hWnd:
+        user32.ShowWindow(hWnd, SW_HIDE)
+
+
 if __name__ == '__main__':
-    main()
+    # Only hide the console window on Windows when there is no interactive
+    # console attached. This preserves the ability to use Ctrl+C from a
+    # terminal (stdin is a tty) to stop the server.
+    if os.name == "nt" and not sys.stdin.isatty():
+        hide_console_windows()
+
+    try:
+        main()
+    except KeyboardInterrupt:
+        # Allow stopping the server with Ctrl+C from an interactive console, after reboot of calibre-web
+        # (initally the SIGINT signal CTRL+C is catched in server.py via the signal callback).
+        try:
+            # Try to perform a graceful stop if web_server is available.
+            # Import here to avoid import-time side-effects when not needed.
+            from cps import web_server
+            web_server.stop()
+        except Exception:
+            pass
+        print('\nCalibre-Web: received interrupt, shutting down')
+        sys.exit(0)
 
 
 

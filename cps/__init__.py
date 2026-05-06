@@ -26,17 +26,16 @@ import os
 import mimetypes
 
 from flask import Flask
+from flask.sessions import SecureCookieSessionInterface
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
 
 from . import logger
 from .cli import CliParameter
-from .constants import CONFIG_DIR
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 from .dep_check import dependency_check
 from .updater import Updater
-from .babel import babel, get_locale
 from . import config_sql
 from . import cache_buster
 from . import ub, db
@@ -56,24 +55,31 @@ except ImportError:
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
+mimetypes.add_type('application/epub+zip', '.kepub')
 mimetypes.add_type('application/fb2+zip', '.fb2')
 mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
-mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
-mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
-mimetypes.add_type('application/x-mobi8-ebook', '.azw3')
+mimetypes.add_type('application/octet-stream', '.prc')
+mimetypes.add_type('application/x-mobipocket-ebook', '.azw')
+mimetypes.add_type('application/x-mobipocket-ebook', '.azw3')
 mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
-mimetypes.add_type('application/x-cbt', '.cbt')
-mimetypes.add_type('application/x-cb7', '.cb7')
-mimetypes.add_type('image/vnd.djv', '.djv')
+mimetypes.add_type('application/x-tar', '.cbt')
+mimetypes.add_type('application/x-7z-compressed', '.cb7')
+mimetypes.add_type('image/vnd.djvu', '.djv')
+mimetypes.add_type('image/vnd.djvu', '.djvu')
 mimetypes.add_type('application/mpeg', '.mpeg')
-mimetypes.add_type('application/mpeg', '.mp3')
-mimetypes.add_type('application/mp4', '.m4a')
-mimetypes.add_type('application/mp4', '.m4b')
-mimetypes.add_type('application/ogg', '.ogg')
+mimetypes.add_type('audio/mpeg', '.mp3')
+mimetypes.add_type('audio/x-m4a', '.m4a')
+mimetypes.add_type('audio/x-m4a', '.m4b')
+mimetypes.add_type('audio/x-hx-aac-adts', '.aac')
+mimetypes.add_type('audio/vnd.dolby.dd-raw', '.ac3')
+mimetypes.add_type('video/x-ms-asf', '.asf')
+mimetypes.add_type('audio/ogg', '.ogg')
 mimetypes.add_type('application/ogg', '.oga')
 mimetypes.add_type('text/css', '.css')
-mimetypes.add_type('text/javascript; charset=UTF-8', '.js')
+mimetypes.add_type('application/x-ms-reader', '.lit')
+mimetypes.add_type('text/javascript', '.js')
+mimetypes.add_type('text/rtf', '.rtf')
 
 log = logger.create()
 
@@ -81,8 +87,10 @@ app = Flask(__name__)
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE='Lax',
-    REMEMBER_COOKIE_SAMESITE='Lax',  # will be available in flask-login 0.5.1 earliest
-    WTF_CSRF_SSL_STRICT=False
+    REMEMBER_COOKIE_SAMESITE='Strict',
+    WTF_CSRF_SSL_STRICT=False,
+    SESSION_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "session",
+    REMEMBER_COOKIE_NAME=os.environ.get('COOKIE_PREFIX', "") + "remember_token"
 )
 
 lm = MyLoginManager()
@@ -96,18 +104,26 @@ if wtf_present:
 else:
     csrf = None
 
-calibre_db = db.CalibreDB()
+calibre_db = db.CalibreDB(app)
 
 web_server = WebServer()
 
 updater_thread = Updater()
 
 if limiter_present:
-    limiter = Limiter(key_func=True, headers_enabled=True, auto_check=False, swallow_errors=False)
+    limiter = Limiter(key_func=True, headers_enabled=True, in_memory_fallback_enabled=True, default_limits=[],
+                      swallow_errors=True)
 else:
     limiter = None
 
+class ScriptNameSessionInterface(SecureCookieSessionInterface):
+    def get_cookie_path(self, app):
+        # Called once per response, after request context exists
+        return app.wsgi_app.script_name.rstrip("/") or "/"
+
+
 def create_app():
+    app.session_interface = ScriptNameSessionInterface()
     if csrf:
         csrf.init_app(app)
 
@@ -139,9 +155,7 @@ def create_app():
     lm.anonymous_user = ub.Anonymous
     lm.session_protection = 'strong' if config.config_session == 1 else "basic"
 
-    db.CalibreDB.update_config(config)
-    db.CalibreDB.setup_db(config.config_calibre_dir, cli_param.settings_path)
-    calibre_db.init_db()
+    db.CalibreDB.update_config(config, config.config_calibre_dir, cli_param.settings_path)
 
     updater_thread.init_updater(config, web_server)
     # Perform dry run of updater and exit afterward
@@ -174,6 +188,7 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
+    from .cw_babel import babel, get_locale
     if hasattr(babel, "localeselector"):
         babel.init_app(app)
         babel.localeselector(get_locale)
@@ -186,7 +201,6 @@ def create_app():
         services.ldap.init_app(app, config)
     if services.goodreads_support:
         services.goodreads_support.connect(config.config_goodreads_api_key,
-                                           config.config_goodreads_api_secret_e,
                                            config.config_use_goodreads)
     config.store_calibre_uuid(calibre_db, db.Library_Id)
     # Configure rate limiter

@@ -25,7 +25,7 @@
         </div>
     {% endif %}
     <div class="form-group">
-      <label for="kindle_mail">{{_('Send to eReader Email')}}</label>
+      <label for="kindle_mail">{{_('Send to eReader Email Address. Use comma to separate emails for multiple eReaders')}}</label>
       <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
     {% if not content.role_anonymous() %}

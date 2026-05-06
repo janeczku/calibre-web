@@ -22,6 +22,7 @@ import tornado
 from tornado import escape
 from tornado import httputil
 from tornado.ioloop import IOLoop
+from tornado.log import access_log
 
 from typing import List, Tuple, Optional, Callable, Any, Dict, Text
 from types import TracebackType
@@ -96,5 +97,26 @@ class MyWSGIContainer(WSGIContainer):
         except TypeError as e:
             environ = WSGIContainer.environ(request)
         environ['RAW_URI'] = request.path
+        self.env = environ
         return environ
 
+    def _log(self, status_code: int, request: httputil.HTTPServerRequest) -> None:
+        if status_code < 400:
+            log_method = access_log.info
+        elif status_code < 500:
+            log_method = access_log.warning
+        else:
+            log_method = access_log.error
+        request_time = 1000.0 * request.request_time()
+        assert request.method is not None
+        assert request.uri is not None
+        ip = self.env.get("HTTP_FORWARD_FOR", None) or request.remote_ip
+        summary = (
+            request.method  # type: ignore[operator]
+            + " "
+            + request.uri
+            + " ("
+            + ip
+            + ")"
+        )
+        log_method("%d %s %.2fms", status_code, summary, request_time)

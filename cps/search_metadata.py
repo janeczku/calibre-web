@@ -23,17 +23,16 @@ import json
 import os
 import sys
 
-from flask import Blueprint, Response, request, url_for
-from flask_login import current_user
-from flask_login import login_required
+from flask import Blueprint, request, url_for, make_response, jsonify
+from .cw_login import current_user
 from flask_babel import get_locale
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm.attributes import flag_modified
 
 from cps.services.Metadata import Metadata
 from . import constants, logger, ub, web_server
+from .usermanagement import user_login_required
 
-# current_milli_time = lambda: int(round(time() * 1000))
 
 meta = Blueprint("metadata", __name__)
 
@@ -81,7 +80,7 @@ cl = list_classes(new_list)
 
 
 @meta.route("/metadata/provider")
-@login_required
+@user_login_required
 def metadata_provider():
     active = current_user.view_settings.get("metadata", {})
     provider = list()
@@ -90,12 +89,12 @@ def metadata_provider():
         provider.append(
             {"name": c.__name__, "active": ac, "initial": ac, "id": c.__id__}
         )
-    return Response(json.dumps(provider), mimetype="application/json")
+    return make_response(jsonify(provider))
 
 
 @meta.route("/metadata/provider", methods=["POST"])
 @meta.route("/metadata/provider/<prov_name>", methods=["POST"])
-@login_required
+@user_login_required
 def metadata_change_active_provider(prov_name):
     new_state = request.get_json()
     active = current_user.view_settings.get("metadata", {})
@@ -115,14 +114,12 @@ def metadata_change_active_provider(prov_name):
         provider = next((c for c in cl if c.__id__ == prov_name), None)
         if provider is not None:
             data = provider.search(new_state.get("query", ""))
-        return Response(
-            json.dumps([asdict(x) for x in data]), mimetype="application/json"
-        )
+        return make_response(jsonify([asdict(x) for x in data]))
     return ""
 
 
 @meta.route("/metadata/search", methods=["POST"])
-@login_required
+@user_login_required
 def metadata_search():
     query = request.form.to_dict().get("query")
     data = list()
@@ -130,7 +127,7 @@ def metadata_search():
     locale = get_locale()
     if query:
         static_cover = url_for("static", filename="generic_cover.jpg")
-        # start = current_milli_time()
+        # ret = cl[0].search(query, static_cover, locale)
         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
             meta = {
                 executor.submit(c.search, query, static_cover, locale): c
@@ -138,6 +135,5 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend([asdict(x) for x in future.result() if x])
-    # log.info({'Time elapsed {}'.format(current_milli_time()-start)})
-    return Response(json.dumps(data), mimetype="application/json")
+                data.extend([asdict(x) for x in (future.result() or []) if x])
+    return  make_response(jsonify(data))

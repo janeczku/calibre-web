@@ -19,12 +19,11 @@
 from flask import render_template, g, abort, request
 from flask_babel import gettext as _
 from werkzeug.local import LocalProxy
-from flask_login import current_user
+from .cw_login import current_user
 from sqlalchemy.sql.expression import or_
 
 from . import config, constants, logger, ub
 from .ub import User
-
 
 
 log = logger.create()
@@ -48,7 +47,7 @@ def get_sidebar_config(kwargs=None):
     if current_user.role_admin():
         sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.download_list',
                         "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not current_user.is_anonymous),
-                        "page": "download", "show_text": _('Show Downloaded Books'),
+                        "page": "download", "show_text": _('Show Downloaded Books'), "no_param":True,
                         "config_show": content})
     else:
         sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.books_list',
@@ -70,37 +69,37 @@ def get_sidebar_config(kwargs=None):
                     "visibility": constants.SIDEBAR_RANDOM, 'public': True, "page": "discover",
                     "show_text": _('Show Random Books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-inbox", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
-                    "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category",
+                    "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category", "no_param":True,
                     "show_text": _('Show Category Section'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
-                    "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series",
+                    "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series", "no_param":True,
                     "show_text": _('Show Series Section'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
-                    "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author",
+                    "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author", "no_param":True,
                     "show_text": _('Show Author Section'), "config_show": True})
     sidebar.append(
         {"glyph": "glyphicon-text-size", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
-         "visibility": constants.SIDEBAR_PUBLISHER, 'public': True, "page": "publisher",
+         "visibility": constants.SIDEBAR_PUBLISHER, 'public': True, "page": "publisher", "no_param":True,
          "show_text": _('Show Publisher Section'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
                     "visibility": constants.SIDEBAR_LANGUAGE, 'public': (current_user.filter_language() == 'all'),
-                    "page": "language",
+                    "page": "language", "no_param":True,
                     "show_text": _('Show Language Section'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-star-empty", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
-                    "visibility": constants.SIDEBAR_RATING, 'public': True,
+                    "visibility": constants.SIDEBAR_RATING, 'public': True, "no_param":True,
                     "page": "rating", "show_text": _('Show Ratings Section'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
-                    "visibility": constants.SIDEBAR_FORMAT, 'public': True,
+                    "visibility": constants.SIDEBAR_FORMAT, 'public': True, "no_param":True,
                     "page": "format", "show_text": _('Show File Formats Section'), "config_show": True})
     sidebar.append(
-        {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
+        {"glyph": "glyphicon-folder-open", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not current_user.is_anonymous), "page": "archived",
          "show_text": _('Show Archived Books'), "config_show": content})
     if not simple:
         sidebar.append(
             {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
-             "visibility": constants.SIDEBAR_LIST, 'public': (not current_user.is_anonymous), "page": "list",
-             "show_text": _('Show Books List'), "config_show": content})
+             "visibility": constants.SIDEBAR_LIST, 'public': (not current_user.is_anonymous),
+             "show_text": _('Show Books List'), "config_show": content, "no_param":True})
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
 
@@ -112,7 +111,7 @@ def render_title_template(*args, **kwargs):
     sidebar, simple = get_sidebar_config(kwargs)
     try:
         return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, simple=simple,
-                               accept=constants.EXTENSIONS_UPLOAD,
+                               accept=config.config_upload_formats.split(','),
                                *args, **kwargs)
     except PermissionError:
         log.error("No permission to access {} file.".format(args[0]))

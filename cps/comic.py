@@ -65,7 +65,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
     cover_data = extension = None
     if original_file_extension.upper() == '.CBZ':
         cf = zipfile.ZipFile(tmp_file_name)
-        for name in cf.namelist():
+        for name in sorted(cf.namelist()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
@@ -74,7 +74,7 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
                     break
     elif original_file_extension.upper() == '.CBT':
         cf = tarfile.TarFile(tmp_file_name)
-        for name in cf.getnames():
+        for name in sorted(cf.getnames()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
@@ -85,37 +85,37 @@ def _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_exec
         try:
             rarfile.UNRAR_TOOL = rar_executable
             cf = rarfile.RarFile(tmp_file_name)
-            for name in cf.namelist():
+            for name in sorted(cf.namelist()):
                 ext = os.path.splitext(name)
                 if len(ext) > 1:
                     extension = ext[1].lower()
                     if extension in cover.COVER_EXTENSIONS:
-                        cover_data = cf.read([name])
+                        cover_data = cf.read(name)
                         break
         except Exception as ex:
             log.error('Rarfile failed with error: {}'.format(ex))
     elif original_file_extension.upper() == '.CB7' and use_7zip:
         cf = py7zr.SevenZipFile(tmp_file_name)
-        for name in cf.getnames():
+        for name in sorted(cf.getnames()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
                 extension = ext[1].lower()
                 if extension in cover.COVER_EXTENSIONS:
                     try:
-                        cover_data = cf.read(name)[name].read()
+                        cover_data = cf.read([name])[name].read()
                     except (py7zr.Bad7zFile, OSError) as ex:
                         log.error('7Zip file failed with error: {}'.format(ex))
                     break
     return cover_data, extension
 
 
-def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
+def _extract_cover(tmp_file_path, original_file_extension, rar_executable):
     cover_data = extension = None
     if use_comic_meta:
         try:
-            archive = ComicArchive(tmp_file_name, rar_exe_path=rar_executable)
+            archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
         except TypeError:
-            archive = ComicArchive(tmp_file_name)
+            archive = ComicArchive(tmp_file_path)
         name_list = archive.getPageNameList if hasattr(archive, "getPageNameList") else archive.get_page_name_list
         for index, name in enumerate(name_list()):
             ext = os.path.splitext(name)
@@ -126,11 +126,11 @@ def _extract_cover(tmp_file_name, original_file_extension, rar_executable):
                     cover_data = get_page(index)
                     break
     else:
-        cover_data, extension = _extract_cover_from_archive(original_file_extension, tmp_file_name, rar_executable)
-    return cover.cover_processing(tmp_file_name, cover_data, extension)
+        cover_data, extension = _extract_cover_from_archive(original_file_extension, tmp_file_path, rar_executable)
+    return cover.cover_processing(tmp_file_path, cover_data, extension)
 
 
-def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable):
+def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rar_executable, no_cover_processing):
     if use_comic_meta:
         try:
             archive = ComicArchive(tmp_file_path, rar_exe_path=rar_executable)
@@ -155,14 +155,17 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
 
             lang = loaded_metadata.language or ""
             loaded_metadata.language = isoLanguages.get_lang3(lang)
-
+            if not no_cover_processing:
+                cover_file = _extract_cover(tmp_file_path, original_file_extension, rar_executable)
+            else:
+                cover_file = None
             return BookMeta(
                 file_path=tmp_file_path,
                 extension=original_file_extension,
                 title=loaded_metadata.title or original_file_name,
                 author=" & ".join([credit["person"]
                                    for credit in loaded_metadata.credits if credit["role"] == "Writer"]) or 'Unknown',
-                cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
+                cover=cover_file,
                 description=loaded_metadata.comments or "",
                 tags="",
                 series=loaded_metadata.series or "",
@@ -171,13 +174,17 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
                 publisher="",
                 pubdate="",
                 identifiers=[])
+    if not no_cover_processing:
+        cover_file = _extract_cover(tmp_file_path, original_file_extension, rar_executable)
+    else:
+        cover_file = None
 
     return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
         author='Unknown',
-        cover=_extract_cover(tmp_file_path, original_file_extension, rar_executable),
+        cover=cover_file,
         description="",
         tags="",
         series="",

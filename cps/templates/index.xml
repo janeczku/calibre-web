@@ -22,6 +22,7 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books sorted alphabetically')}}</content>
   </entry>
+  {% if current_user.check_visibility(g.constants.SIDEBAR_HOT) %}
   <entry>
     <title>{{_('Hot Books')}}</title>
     <link href="{{url_for('opds.feed_hot')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -29,6 +30,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Popular publications from this catalog based on Downloads.')}}</content>
   </entry>
+  {%endif %}  
+  {% if current_user.check_visibility(g.constants.SIDEBAR_BEST_RATED) %}
   <entry>
     <title>{{_('Top Rated Books')}}</title>
     <link href="{{url_for('opds.feed_best_rated')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -36,6 +39,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Popular publications from this catalog based on Rating.')}}</content>
   </entry>
+  {%endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_RECENT) %}
   <entry>
     <title>{{_('Recently added Books')}}</title>
     <link href="{{url_for('opds.feed_new')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -43,6 +48,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('The latest Books')}}</content>
   </entry>
+  {%endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_RANDOM) %}
   <entry>
     <title>{{_('Random Books')}}</title>
     <link href="{{url_for('opds.feed_discover')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -50,7 +57,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Show Random Books')}}</content>
   </entry>
-  {% if not current_user.is_anonymous %}
+  {%endif %}  
+  {% if current_user.check_visibility(g.constants.SIDEBAR_READ_AND_UNREAD) and not current_user.is_anonymous %}
   <entry>
     <title>{{_('Read Books')}}</title>
     <link href="{{url_for('opds.feed_read_books')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -66,6 +74,7 @@
     <content type="text">{{_('Unread Books')}}</content>
   </entry>
   {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_AUTHOR) %}
   <entry>
     <title>{{_('Authors')}}</title>
     <link href="{{url_for('opds.feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -73,13 +82,17 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by Author')}}</content>
   </entry>
-  <entry>
+  {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_PUBLISHER) %}
+   <entry>
     <title>{{_('Publishers')}}</title>
     <link href="{{url_for('opds.feed_publisherindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('opds.feed_publisherindex')}}</id>
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by publisher')}}</content>
   </entry>
+  {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_CATEGORY) %}
   <entry>
     <title>{{_('Categories')}}</title>
     <link href="{{url_for('opds.feed_categoryindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -87,6 +100,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by category')}}</content>
   </entry>
+  {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_SERIES) %}
   <entry>
     <title>{{_('Series')}}</title>
     <link href="{{url_for('opds.feed_seriesindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -94,6 +109,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by series')}}</content>
   </entry>
+  {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_LANGUAGE) %}
   <entry>
     <title>{{_('Languages')}}</title>
     <link href="{{url_for('opds.feed_languagesindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -101,6 +118,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by Languages')}}</content>
   </entry>
+  {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_RATING) %}
   <entry>
     <title>{{_('Ratings')}}</title>
     <link href="{{url_for('opds.feed_ratingindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -108,7 +127,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by Rating')}}</content>
   </entry>
-
+  {% endif %}
+  {% if current_user.check_visibility(g.constants.SIDEBAR_FORMAT) %}
   <entry>
     <title>{{_('File formats')}}</title>
     <link href="{{url_for('opds.feed_formatindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -116,6 +136,8 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by file formats')}}</content>
   </entry>
+ {% endif %}
+ {% if current_user.is_authenticated or g.allow_anonymous %}  
   <entry>
     <title>{{_('Shelves')}}</title>
     <link  href="{{url_for('opds.feed_shelfindex')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -123,4 +145,5 @@
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books organized in shelves')}}</content>
   </entry>
+  {% endif %}
 </feed>

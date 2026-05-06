@@ -25,6 +25,7 @@ from . import config, logger
 from .helper import split_authors
 from .epub_helper import get_content_opf, default_ns
 from .constants import BookMeta
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -45,6 +46,7 @@ def _extract_cover(zip_file, cover_file, cover_path, tmp_file_name):
         cf = zip_file.read(zip_cover_path)
     return cover.cover_processing(tmp_file_name, cf, extension)
 
+
 def get_epub_layout(book, book_data):
     file_path = os.path.normpath(os.path.join(config.get_book_path(),
                                               book.path, book_data.name + "." + book_data.format.lower()))
@@ -54,7 +56,7 @@ def get_epub_layout(book, book_data):
         p = tree.xpath('/pkg:package/pkg:metadata', namespaces=default_ns)[0]
 
         layout = p.xpath('pkg:meta[@property="rendition:layout"]/text()', namespaces=default_ns)
-    except (etree.XMLSyntaxError, KeyError, IndexError) as e:
+    except (etree.XMLSyntaxError, KeyError, IndexError, OSError, UnicodeDecodeError) as e:
         log.error("Could not parse epub metadata of book {} during kobo sync: {}".format(book.id, e))
         layout = []
 
@@ -64,7 +66,7 @@ def get_epub_layout(book, book_data):
         return layout[0]
 
 
-def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
+def get_epub_info(tmp_file_path, original_file_name, original_file_extension, no_cover_processing):
     ns = {
         'n': 'urn:oasis:names:tc:opendocument:xmlns:container',
         'pkg': 'http://www.idpf.org/2007/opf',
@@ -89,7 +91,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             elif s == 'date':
                 epub_metadata[s] = tmp[0][:10]
             else:
-                epub_metadata[s] = tmp[0].strip()
+                epub_metadata[s] = strip_whitespaces(tmp[0])
         else:
             epub_metadata[s] = 'Unknown'
 
@@ -115,7 +117,10 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     epub_metadata = parse_epub_series(ns, tree, epub_metadata)
 
     epub_zip = zipfile.ZipFile(tmp_file_path)
-    cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
+    if not no_cover_processing:
+        cover_file = parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path)
+    else:
+        cover_file = None
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
@@ -170,7 +175,7 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
     for cs in cover_section:
         if cs.endswith('.xhtml') or cs.endswith('.html'):
             markup = epub_zip.read(os.path.join(cover_path, cs))
-            markup_tree = etree.fromstring(markup)
+            markup_tree = etree.fromstring(markup, parser=etree.XMLParser(resolve_entities=False, no_network=True))
             # no matter xhtml or html with no namespace
             img_src = markup_tree.xpath("//*[local-name() = 'img']/@src")
             # Alternative image source

@@ -32,7 +32,7 @@ class OAuthBackend(SQLAlchemyBackend):
     Stores and retrieves OAuth tokens using a relational database through
     the `SQLAlchemy`_ ORM.
 
-    .. _SQLAlchemy: https://www.sqlalchemy.org/
+    _SQLAlchemy: https://www.sqlalchemy.org/
     """
     def __init__(self, model, session, provider_id,
                  user=None, user_id=None, user_required=None, anon_user=None,

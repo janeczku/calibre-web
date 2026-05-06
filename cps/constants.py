@@ -19,9 +19,6 @@
 import sys
 import os
 from collections import namedtuple
-from sqlalchemy import __version__ as sql_version
-
-sqlalchemy_version2 = ([int(x) for x in sql_version.split('.')] >= [2, 0, 0])
 
 # APP_MODE - production, development, or test
 APP_MODE             = os.environ.get('APP_MODE', 'production')
@@ -40,9 +37,12 @@ STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
 
-# Cache dir - use CACHE_DIR environment variable, otherwise use the default directory: cps/cache
+# Cache dir - use CACHE_DIRECTORY environment variable, otherwise CACHE_DIR (for backwards compatibility),
+# otherwise use the default directory: cps/cache
 DEFAULT_CACHE_DIR   = os.path.join(BASE_DIR, 'cps', 'cache')
-CACHE_DIR           = os.environ.get('CACHE_DIR', DEFAULT_CACHE_DIR)
+CACHE_DIRECTORY = os.environ.get(
+    'CACHE_DIRECTORY', os.environ.get('CACHE_DIR', DEFAULT_CACHE_DIR)
+)
 
 if HOME_CONFIG:
     home_dir = os.path.join(os.path.expanduser("~"), ".calibre-web")
@@ -159,11 +159,12 @@ EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr'
 _extension = ""
 if sys.platform == "win32":
     _extension = ".exe"
-SUPPORTED_CALIBRE_BINARIES = {binary:binary + _extension for binary in ["ebook-convert", "calibredb"]}
+SUPPORTED_CALIBRE_BINARIES = {binary: binary + _extension for binary in ["ebook-convert", "calibredb"]}
 
 
 def has_flag(value, bit_flag):
     return bit_flag == (bit_flag & (value or 0))
+
 
 def selected_roles(dictionary):
     return sum(v for k, v in ALL_ROLES.items() if k in dictionary)
@@ -174,7 +175,7 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
                                   'series_id, languages, publisher, pubdate, identifiers')
 
 # python build process likes to have x.y.zbw -> b for beta and w a counting number
-STABLE_VERSION = {'version': '0.6.22b'}
+STABLE_VERSION =  '0.6.27b'
 
 NIGHTLY_VERSION = dict()
 NIGHTLY_VERSION[0] = '$Format:%H$'
@@ -192,7 +193,7 @@ THUMBNAIL_TYPE_AUTHOR    = 3
 COVER_THUMBNAIL_ORIGINAL = 0
 COVER_THUMBNAIL_SMALL    = 1
 COVER_THUMBNAIL_MEDIUM   = 2
-COVER_THUMBNAIL_LARGE    = 3
+COVER_THUMBNAIL_LARGE    = 4
 
 # clean-up the module namespace
 del sys, os, namedtuple

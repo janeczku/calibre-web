@@ -20,7 +20,7 @@
                   {{entry['Books']['title']}}
                   {% if entry['Books']['series']|length > 0 %}
                     <br>
-                    {{entry['Books']['series_index']}} - {{entry['Books']['series'][0].name}}
+                    {{entry['Books']['series_index']|formatfloat(2)}} - {{entry['Books']['series'][0].name}}
                   {% endif %}
                   <br>
                   {% for author in entry['Books']['author'] %}

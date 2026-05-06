@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     {% if g.google_site_verification|length > 0 %}
       <meta name="google-site-verification" content="{{g.google_site_verification}}">
     {% endif %}    
@@ -48,7 +48,11 @@
     <div class="row">
       <div class="col errorlink">
       {% if not unconfigured %}
-        <a href="{{url_for('web.index')}}" title="{{ _('Return to Home') }}">{{_('Return to Home')}}</a>
+        {% if goto_admin %}
+           <a href="{{url_for('admin.db_configuration')}}" title="{{ _('Return to Database config') }}">{{_('Return to Database config')}}</a>
+        {%  else %}
+           <a href="{{url_for('web.index')}}" title="{{ _('Return to Home') }}">{{_('Return to Home')}}</a>
+        {% endif %}
       {% else %}
         <a href="{{url_for('web.logout')}}" title="{{ _('Logout User') }}">{{ _('Logout User') }}</a>
       {% endif %}

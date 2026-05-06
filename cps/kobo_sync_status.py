@@ -17,11 +17,12 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from flask_login import current_user
+from .cw_login import current_user
 from . import ub
-import datetime
+from datetime import datetime, timezone
 from sqlalchemy.sql.expression import or_, and_, true
-from sqlalchemy import exc
+# from sqlalchemy import exc
+
 
 # Add the current book id to kobo_synced_books table for current user, if entry is already present,
 # do nothing (safety precaution)
@@ -50,15 +51,16 @@ def remove_synced_book(book_id, all=False, session=None):
         ub.session_commit(_session=session)
 
 
-
+# If state == none, it will toggle the archive state of the passed book_id. 
+# state = true archives it, state = false unarchives it
 def change_archived_books(book_id, state=None, message=None):
     archived_book = ub.session.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
                                                                   ub.ArchivedBook.book_id == book_id)).first()
-    if not archived_book:
+    if not archived_book: # and (state == True or state == None):
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
 
-    archived_book.is_archived = state if state else not archived_book.is_archived
-    archived_book.last_modified = datetime.datetime.utcnow()        # toDo. Check utc timestamp
+    archived_book.is_archived = state if state != None else not archived_book.is_archived
+    archived_book.last_modified = datetime.now(timezone.utc)        # toDo. Check utc timestamp
 
     ub.session.merge(archived_book)
     ub.session_commit(message)
@@ -71,7 +73,7 @@ def update_on_sync_shelfs(user_id):
     books_to_archive = (ub.session.query(ub.KoboSyncedBooks)
                         .join(ub.BookShelf, ub.KoboSyncedBooks.book_id == ub.BookShelf.book_id, isouter=True)
                         .join(ub.Shelf, ub.Shelf.user_id == user_id, isouter=True)
-                        .filter(or_(ub.Shelf.kobo_sync == 0, ub.Shelf.kobo_sync == None))
+                        .filter(or_(ub.Shelf.kobo_sync == 0, ub.Shelf.kobo_sync==None))
                         .filter(ub.KoboSyncedBooks.user_id == user_id).all())
     for b in books_to_archive:
         change_archived_books(b.book_id, True)

@@ -25,12 +25,13 @@ from datetime import datetime
 from functools import wraps
 
 from flask import Blueprint, request, make_response, abort, url_for, flash, redirect
-from flask_login import login_required, current_user, login_user
+from .cw_login import login_user, current_user
 from flask_babel import gettext as _
 from sqlalchemy.sql.expression import true
 
 from . import config, logger, ub
 from .render_template import render_title_template
+from .usermanagement import user_login_required
 
 
 remotelogin = Blueprint('remotelogin', __name__)
@@ -65,7 +66,7 @@ def remote_login():
 
 @remotelogin.route('/verify/<token>')
 @remote_login_required
-@login_required
+@user_login_required
 def verify_token(token):
     auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
 

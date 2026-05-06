@@ -21,7 +21,6 @@ import os
 import errno
 import signal
 import socket
-import asyncio
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -97,7 +96,8 @@ class WebServer(object):
                 log.warning('Cert path: %s', certfile_path)
                 log.warning('Key path:  %s', keyfile_path)
 
-    def _make_gevent_socket_activated(self):
+    @staticmethod
+    def _make_gevent_socket_activated():
         # Reuse an already open socket on fd=SD_LISTEN_FDS_START
         SD_LISTEN_FDS_START = 3
         return GeventSocket(fileno=SD_LISTEN_FDS_START)
@@ -139,8 +139,8 @@ class WebServer(object):
             return ((self.listen_address, self.listen_port),
                     _readable_listen_address(self.listen_address, self.listen_port))
 
+        address = ('::', self.listen_port)
         try:
-            address = ('::', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
         except socket.error as ex:
             log.error('%s', ex)
@@ -216,6 +216,12 @@ class WebServer(object):
         try:
             sock, output = self._make_gevent_listener()
             log.info('Starting Gevent server on %s', output)
+            # Also print to stdout so interactive terminals show a clear success message
+            try:
+                print(f"Calibre-Web: server started on {output}")
+            except Exception:
+                print(f"Calibre-Web: error {output}")
+                pass
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, handler_class=MyWSGIHandler,
                                          error_log=log,
                                          spawn=Pool(), **ssl_args)
@@ -266,6 +272,12 @@ class WebServer(object):
                 output = _readable_listen_address(self.listen_address, self.listen_port)
                 http_server.listen(self.listen_port, self.listen_address)
             log.info('Starting Tornado server on %s', output)
+            # Also print to stdout so interactive terminals show a clear success message
+            try:
+                print(f"Calibre-Web: server started on {output}")
+            except Exception:
+                print(f"Calibre-Web: error {output}")
+                pass
 
             self.wsgiserver = IOLoop.current()
             self.wsgiserver.start()
@@ -301,7 +313,6 @@ class WebServer(object):
         log.info("Performing restart of Calibre-Web")
         args = self._get_args_for_reloading()
         os.execv(args[0].lstrip('"').rstrip('"'), args)
-        return True
 
     @staticmethod
     def shutdown_scheduler():

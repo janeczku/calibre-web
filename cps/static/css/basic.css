@@ -1,0 +1,108 @@
+body {
+  margin: 0;
+}
+
+nav {
+  height: 75px;
+  padding: 5px 20px;
+  width: 100%;
+  display: table;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+}
+
+nav > * {
+  display: inline-block;
+  display: table-cell;
+  vertical-align: middle;
+  float: none;
+  text-align: center;
+  width: auto;
+}
+
+nav > *:first-child {
+  text-align: left;
+  width: 1%;
+}
+
+.theme{
+    text-align: center;
+    margin: 10px;
+}
+nav > *:last-child {
+  text-align: right;
+  width: 1%;
+}
+
+nav > a {
+  color: black;
+  margin: 0 20px;
+}
+
+.search {
+  margin: auto auto;
+}
+
+form > input {
+  width: 18ch;
+  padding-left: 4px;
+}
+
+form > * {
+  height: 50px;
+  background-color: white;
+  border-radius: 0;
+  border: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  vertical-align: top;
+}
+
+form > span {
+  margin-left: -5px;
+}
+
+button {
+  border: none;
+  padding: 0 10px;
+  margin: 0;
+  width: 160px;
+  height: 100%;
+  background-color: white;
+}
+
+.body {
+  padding: 5px 20px;
+}
+
+a {
+  color: black;
+}
+
+img {
+  width: 150px;
+  height: 250px;
+  object-fit: cover;
+}
+
+.listing {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 20px;
+}
+
+.pagination {
+  padding: 10px 0;
+  height: 20px;
+  font-weight: 700;
+}
+
+.pagination > div {
+  float: left;
+}
+
+.pagination > div:last-child {
+  float: right;
+}

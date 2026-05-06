@@ -21,7 +21,10 @@ import json
 import shutil
 import chardet
 import ssl
+import sqlite3
+import mimetypes
 
+from werkzeug.datastructures import Headers
 from flask import Response, stream_with_context
 from sqlalchemy import create_engine
 from sqlalchemy import Column, UniqueConstraint
@@ -63,7 +66,7 @@ except ImportError as err:
         importError = err
         gdrive_support = False
 
-from . import logger, cli_param, config
+from . import logger, cli_param, config, db
 from .constants import CONFIG_DIR as _CONFIG_DIR
 
 
@@ -207,6 +210,7 @@ def getDrive(drive=None, gauth=None):
             log.error("Google Drive error: {}".format(e))
     return drive
 
+
 def listRootFolders():
     try:
         drive = getDrive(Gdrive.Instance().drive)
@@ -224,7 +228,7 @@ def getEbooksFolder(drive):
 
 def getFolderInFolder(parentId, folderName, drive):
     # drive = getDrive(drive)
-    query=""
+    query = ""
     if folderName:
         query = "title = '%s' and " % folderName.replace("'", r"\'")
     folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder'" \
@@ -234,6 +238,7 @@ def getFolderInFolder(parentId, folderName, drive):
         return None
     else:
         return fileList[0]
+
 
 # Search for id of root folder in gdrive database, if not found request from gdrive and store in internal database
 def getEbooksFolderId(drive=None):
@@ -256,17 +261,20 @@ def getEbooksFolderId(drive=None):
         return gDriveId.gdrive_id
 
 
-def getFile(pathId, fileName, drive):
-    metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", r"\'"))
+def getFile(pathId, fileName, drive, nocase):
+    metaDataFile = "'%s' in parents and trashed = false and title contains '%s'" % (pathId, fileName.replace("'", r"\'"))
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
     if fileList.__len__() == 0:
         return None
-    else:
-        return fileList[0]
+    if nocase:
+        return fileList[0] if db.lcase(fileList[0]['title']) == db.lcase(fileName) else None
+    for f in fileList:
+        if f['title'] == fileName:
+            return f
+    return None
 
 
 def getFolderId(path, drive):
-    # drive = getDrive(drive)
     currentFolderId = None
     try:
         currentFolderId = getEbooksFolderId(drive)
@@ -300,7 +308,7 @@ def getFolderId(path, drive):
                 session.commit()
         else:
             currentFolderId = storedPathName.gdrive_id
-    except (OperationalError, IntegrityError, StaleDataError) as ex:
+    except (OperationalError, IntegrityError, StaleDataError, sqlite3.IntegrityError) as ex:
         log.error_or_exception('Database error: {}'.format(ex))
         session.rollback()
     except ApiRequestError as ex:
@@ -311,7 +319,7 @@ def getFolderId(path, drive):
     return currentFolderId
 
 
-def getFileFromEbooksFolder(path, fileName):
+def getFileFromEbooksFolder(path, fileName, nocase=False):
     drive = getDrive(Gdrive.Instance().drive)
     if path:
         # sqlCheckPath=path if path[-1] =='/' else path + '/'
@@ -319,7 +327,7 @@ def getFileFromEbooksFolder(path, fileName):
     else:
         folderId = getEbooksFolderId(drive)
     if folderId:
-        return getFile(folderId, fileName, drive)
+        return getFile(folderId, fileName, drive, nocase)
     else:
         return None
 
@@ -335,33 +343,37 @@ def downloadFile(path, filename, output):
     f.GetContentFile(output)
 
 
-def moveGdriveFolderRemote(origin_file, target_folder):
+def moveGdriveFolderRemote(origin_file, target_folder, single_book=False):
     drive = getDrive(Gdrive.Instance().drive)
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
     children = drive.auth.service.children().list(folderId=previous_parents).execute()
-    gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
-    if not gFileTargetDir:
-        gFileTargetDir = drive.CreateFile(
-            {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
-             "mimeType": "application/vnd.google-apps.folder"})
-        gFileTargetDir.Upload()
-        # Move the file to the new folder
-        drive.auth.service.files().update(fileId=origin_file['id'],
-                                          addParents=gFileTargetDir['id'],
-                                          removeParents=previous_parents,
-                                          fields='id, parents').execute()
-
-    elif gFileTargetDir['title'] != target_folder:
+    if single_book:
+        gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
+        if gFileTargetDir:
+            # Move the file to the new folder
+            drive.auth.service.files().update(fileId=origin_file['id'],
+                                              addParents=gFileTargetDir['id'],
+                                              removeParents=previous_parents,
+                                              fields='id, parents').execute()
+        else:
+            gFileTargetDir = drive.CreateFile(
+                {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
+                 "mimeType": "application/vnd.google-apps.folder"})
+            gFileTargetDir.Upload()
+            # Move the file to the new folder
+            drive.auth.service.files().update(fileId=origin_file['id'],
+                                              addParents=gFileTargetDir['id'],
+                                              removeParents=previous_parents,
+                                              fields='id, parents').execute()
+    elif origin_file['title'] != target_folder:
+        #gFileTargetDir = getFileFromEbooksFolder(None, target_folder, nocase=True)
+        #if gFileTargetDir:
+        deleteDatabasePath(origin_file['title'])
         # Folder is not existing, create, and move folder
         drive.auth.service.files().patch(fileId=origin_file['id'],
                                          body={'title': target_folder},
                                          fields='title').execute()
-    else:
-        # Move the file to the new folder
-        drive.auth.service.files().update(fileId=origin_file['id'],
-                                          addParents=gFileTargetDir['id'],
-                                          removeParents=previous_parents,
-                                          fields='id, parents').execute()
+
     # if previous_parents has no children anymore, delete original fileparent
     if len(children['items']) == 1:
         deleteDatabaseEntry(previous_parents)
@@ -369,20 +381,20 @@ def moveGdriveFolderRemote(origin_file, target_folder):
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
-        ignoreFiles=None,
-        parent=None, prevDir=''):
+                ignoreFiles=None,
+                parent=None, prevDir=''):
     ignoreFiles = ignoreFiles or []
     drive = getDrive(drive)
     isInitial = not bool(parent)
     if not parent:
         parent = getEbooksFolder(drive)
-    if os.path.isdir(os.path.join(prevDir,uploadFile)):
+    if os.path.isdir(os.path.join(prevDir, uploadFile)):
         existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
                                               (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
             parent = drive.CreateFile({'title': os.path.basename(uploadFile),
                                        'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
-                "mimeType": "application/vnd.google-apps.folder"})
+                                       "mimeType": "application/vnd.google-apps.folder"})
             parent.Upload()
         else:
             if (not isInitial or createRoot) and len(existingFolder) > 0:
@@ -398,7 +410,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
                 driveFile = existingFiles[0]
             else:
                 driveFile = drive.CreateFile({'title': os.path.basename(uploadFile).replace("'", r"\'"),
-                                              'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
+                                              'parents': [{"kind": "drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir, uploadFile))
             driveFile.Upload()
 
@@ -410,7 +422,7 @@ def uploadFileToEbooksFolder(destFile, f, string=False):
     for i, x in enumerate(splitDir):
         if i == len(splitDir)-1:
             existing_Files = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                 (x.replace("'", r"\'"), parent['id'])}).GetList()
+                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existing_Files) > 0:
                 driveFile = existing_Files[0]
             else:
@@ -423,17 +435,17 @@ def uploadFileToEbooksFolder(destFile, f, string=False):
             driveFile.Upload()
         else:
             existing_Folder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
+                                                   (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existing_Folder) == 0:
                 parent = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
-                    "mimeType": "application/vnd.google-apps.folder"})
+                                           "mimeType": "application/vnd.google-apps.folder"})
                 parent.Upload()
             else:
                 parent = existing_Folder[0]
 
 
 def watchChange(drive, channel_id, channel_type, channel_address,
-              channel_token=None, expiration=None):
+                channel_token=None, expiration=None):
     # Watch for all changes to a user's Drive.
     # Args:
     # service: Drive API service instance.
@@ -504,7 +516,7 @@ def stopChannel(drive, channel_id, resource_id):
     return drive.auth.service.channels().stop(body=body).execute()
 
 
-def getChangeById (drive, change_id):
+def getChangeById(drive, change_id):
     # Print a single Change resource information.
     #
     # Args:
@@ -538,8 +550,9 @@ def updateGdriveCalibreFromLocal():
         if os.path.isdir(os.path.join(config.config_calibre_dir, x)):
             shutil.rmtree(os.path.join(config.config_calibre_dir, x))
 
+
 # update gdrive.db on edit of books title
-def updateDatabaseOnEdit(ID,newPath):
+def updateDatabaseOnEdit(ID, newPath):
     sqlCheckPath = newPath if newPath[-1] == '/' else newPath + '/'
     storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
     if storedPathName:
@@ -554,6 +567,14 @@ def updateDatabaseOnEdit(ID,newPath):
 # Deletes the hashes in database of deleted book
 def deleteDatabaseEntry(ID):
     session.query(GdriveId).filter(GdriveId.gdrive_id == ID).delete()
+    try:
+        session.commit()
+    except OperationalError as ex:
+        log.error_or_exception('Database error: {}'.format(ex))
+        session.rollback()
+
+def deleteDatabasePath(Pathname):
+    session.query(GdriveId).filter(GdriveId.path.contains(Pathname)).delete()
     try:
         session.commit()
     except OperationalError as ex:
@@ -578,12 +599,16 @@ def get_cover_via_gdrive(cover_path):
             session.add(permissionAdded)
             try:
                 session.commit()
-            except OperationalError as ex:
+            except (OperationalError, IntegrityError) as ex:
                 log.error_or_exception('Database error: {}'.format(ex))
                 session.rollback()
-        return df.metadata.get('webContentLink')
+        headers = Headers()
+        headers["Content-Type"] = 'image/jpeg'
+        resp, content = df.auth.Get_Http_Object().request(df.metadata.get('downloadUrl'), headers=headers)
+        return content
     else:
         return None
+
 
 # Gets cover file from gdrive
 def get_metadata_backup_via_gdrive(metadata_path):
@@ -608,6 +633,7 @@ def get_metadata_backup_via_gdrive(metadata_path):
     else:
         return None
 
+
 # Creates chunks for downloading big files
 def partial(total_byte_len, part_size_limit):
     s = []
@@ -615,6 +641,7 @@ def partial(total_byte_len, part_size_limit):
         last = min(total_byte_len - 1, p + part_size_limit - 1)
         s.append([p, last])
     return s
+
 
 # downloads files in chunks from gdrive
 def do_gdrive_download(df, headers, convert_encoding=False):
@@ -654,6 +681,7 @@ get_refresh_token: True
 oauth_scope:
   - https://www.googleapis.com/auth/drive
 """
+
 
 def update_settings(client_id, client_secret, redirect_uri):
     if redirect_uri.endswith('/'):

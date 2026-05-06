@@ -42,7 +42,7 @@
           <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.Books.series[0].id )}}">
             {{entry.Books.series[0].name}}
           </a>
-          ({{entry.Books.series_index|formatseriesindex}})
+          ({{entry.Books.series_index|formatfloat(2)}})
         </p>
         {% endif %}
         {% if entry.Books.ratings.__len__() > 0 %}
@@ -119,11 +119,9 @@
               <a class="author-name" href="{{url_for('web.books_list', data='author', book_id=author.id, sort_param='stored') }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
-          {% for format in entry.Books.data %}
-            {% if format.format|lower in g.constants.EXTENSIONS_AUDIO %}
+          {% if entry.Books.data|music %}
             <span class="glyphicon glyphicon-music"></span>
-            {% endif %}
-          {%endfor%}
+          {% endif %}
         </p>
         {% if entry.Books.series.__len__() > 0 %}
         <p class="series">
@@ -134,7 +132,7 @@
         {% else %}
             <span>{{entry.Books.series[0].name}}</span>
         {% endif %}
-          ({{entry.Books.series_index|formatseriesindex}})
+          ({{entry.Books.series_index|formatfloat(2)}})
         </p>
         {% endif %}
         {% if entry.Books.ratings.__len__() > 0 %}

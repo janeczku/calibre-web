@@ -42,6 +42,7 @@ class BackgroundScheduler:
         if cls._instance is None:
             cls._instance = super(BackgroundScheduler, cls).__new__(cls)
             cls.log = logger.create()
+            logger.logging.getLogger('tzlocal').setLevel(logger.logging.WARNING)
             cls.scheduler = BScheduler()
             cls.scheduler.start()
 

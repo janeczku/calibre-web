@@ -53,7 +53,7 @@
     data-visible="{{element.get(array_field)}}"
     data-column="{{value.get(array_field)}}"
     data-formatter="checkboxFormatter">
-    <div  class="form-check">
+    <div class="form-check">
     <div>
         <input type="radio" class="check_head" data-set="false" data-val="{{value.get(array_field)}}" name="options_{{array_field}}" id="false_{{array_field}}" data-name="{{parameter}}" disabled>{{_('Deny')}}
     </div>
@@ -121,7 +121,7 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="col-xs-12 col-sm-12">
         <div class="row">
-          <div class="btn btn-default disabled" id="user_delete_selection" aria-disabled="true">{{_('Remove Selections')}}</div>
+          <div class="btn btn-default disabled mass_selection" id="user_delete_selection" aria-disabled="true">{{_('Clear selections')}}</div>
         </div>
     </div>
     <table id="user-table" class="table table-no-bordered table-striped"

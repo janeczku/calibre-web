@@ -23,7 +23,7 @@ from datetime import datetime
 
 import requests
 
-from cps import logger
+from cps import logger, config
 from cps.isoLanguages import get_lang3, get_language_name
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
@@ -31,13 +31,14 @@ log = logger.create()
 
 
 class Google(Metadata):
-    __name__ = "Google"
+    __name__ = "Google Books"
     __id__ = "google"
     DESCRIPTION = "Google Books"
     META_URL = "https://books.google.com/"
     BOOK_URL = "https://books.google.com/books?id="
     SEARCH_URL = "https://www.googleapis.com/books/v1/volumes?q="
     ISBN_TYPE = "ISBN_13"
+    API_KEY = "&key=" + config.config_googlebooks_api_key 
 
     def search(
         self, query: str, generic_cover: str = "", locale: str = "en"
@@ -50,11 +51,11 @@ class Google(Metadata):
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = "+".join(tokens)
             try:
-                results = requests.get(Google.SEARCH_URL + query)
+                results = requests.get(Google.SEARCH_URL + query + Google.API_KEY)
                 results.raise_for_status()
             except Exception as e:
                 log.warning(e)
-                return None
+                return []
             for result in results.json().get("items", []):
                 val.append(
                     self._parse_search_result(

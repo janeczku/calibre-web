@@ -29,7 +29,7 @@
 
 from urllib.parse import urlparse, urljoin
 
-from flask import request, url_for, redirect, current_app
+from flask import request, url_for, current_app
 
 
 def is_safe_url(target):

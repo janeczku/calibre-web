@@ -20,15 +20,17 @@
 import os
 import re
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
+# from weakref import WeakSet
+from uuid import uuid4
 
 from sqlite3 import OperationalError as sqliteOperationalError
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
-from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from sqlalchemy.orm import relationship, sessionmaker, scoped_session, selectinload
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.exc import OperationalError
@@ -40,16 +42,14 @@ except ImportError:
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
-from flask_login import current_user
+from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale
-from flask import flash
+from flask import flash, g, Flask
 
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
-
-from weakref import WeakSet
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
@@ -102,8 +102,19 @@ class Identifiers(Base):
     type = Column(String(collation='NOCASE'), nullable=False, default="isbn")
     val = Column(String(collation='NOCASE'), nullable=False)
     book = Column(Integer, ForeignKey('books.id'), nullable=False)
+    amazon = {
+        "jp": "co.jp",
+        "uk": "co.uk",
+        "us": "com",
+        "au": "com.au",
+        "be": "com.be",
+        "br": "com.br",
+        "tr": "com.tr",
+        "mx": "com.mx",
+    }
 
     def __init__(self, val, id_type, book):
+        super().__init__()
         self.val = val
         self.type = id_type
         self.book = book
@@ -113,7 +124,11 @@ class Identifiers(Base):
         if format_type == 'amazon':
             return "Amazon"
         elif format_type.startswith("amazon_"):
-            return "Amazon.{0}".format(format_type[7:])
+            label_amazon = "Amazon.{0}"
+            country_code = format_type[7:].lower()
+            if country_code not in self.amazon:
+                return label_amazon.format(country_code)
+            return label_amazon.format(self.amazon[country_code])
         elif format_type == "isbn":
             return "ISBN"
         elif format_type == "doi":
@@ -128,12 +143,20 @@ class Identifiers(Base):
             return "Google Books"
         elif format_type == "kobo":
             return "Kobo"
+        elif format_type == "barnesnoble":
+            return "Barnes & Noble"
         elif format_type == "litres":
             return "ЛитРес"
         elif format_type == "issn":
             return "ISSN"
         elif format_type == "isfdb":
             return "ISFDB"
+        elif format_type == "storygraph":
+            return "StoryGraph"
+        elif format_type == "ebooks":
+            return "eBooks.com"
+        elif format_type == "smashwords":
+            return "Smashwords"
         if format_type == "lubimyczytac":
             return "Lubimyczytac"
         if format_type == "databazeknih":
@@ -146,7 +169,11 @@ class Identifiers(Base):
         if format_type == "amazon" or format_type == "asin":
             return "https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            return "https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
+            link_amazon = "https://amazon.{0}/dp/{1}"
+            country_code = format_type[7:].lower()
+            if country_code not in self.amazon:
+                return link_amazon.format(country_code, self.val)
+            return link_amazon.format(self.amazon[country_code], self.val)
         elif format_type == "isbn":
             return "https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
@@ -161,6 +188,8 @@ class Identifiers(Base):
             return "https://books.google.com/books?id={0}".format(self.val)
         elif format_type == "kobo":
             return "https://www.kobo.com/ebook/{0}".format(self.val)
+        elif format_type == "barnesnoble":
+            return "https://www.barnesandnoble.com/w/{0}".format(self.val)
         elif format_type == "lubimyczytac":
             return "https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
         elif format_type == "litres":
@@ -168,13 +197,19 @@ class Identifiers(Base):
         elif format_type == "issn":
             return "https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "isfdb":
-            return "http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
+            return "https://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "databazeknih":
             return "https://www.databazeknih.cz/knihy/{0}".format(self.val)
+        elif format_type == "storygraph":
+            return "https://app.thestorygraph.com/books/{0}".format(self.val)
+        elif format_type == "ebooks":
+            return "https://www.ebooks.com/en-us/book/{0}".format(self.val)
+        elif format_type == "smashwords":
+            return "https://www.smashwords.com/books/view/{0}".format(self.val)
         elif self.val.lower().startswith("javascript:"):
             return quote(self.val)
         elif self.val.lower().startswith("data:"):
-            link , __, __ = str.partition(self.val, ",")
+            link, __, __ = str.partition(self.val, ",")
             return link
         else:
             return "{0}".format(self.val)
@@ -188,6 +223,7 @@ class Comments(Base):
     text = Column(String(collation='NOCASE'), nullable=False)
 
     def __init__(self, comment, book):
+        super().__init__()
         self.text = comment
         self.book = book
 
@@ -205,6 +241,7 @@ class Tags(Base):
     name = Column(String(collation='NOCASE'), unique=True, nullable=False)
 
     def __init__(self, name):
+        super().__init__()
         self.name = name
 
     def get(self):
@@ -226,6 +263,7 @@ class Authors(Base):
     link = Column(String, nullable=False, default="")
 
     def __init__(self, name, sort, link=""):
+        super().__init__()
         self.name = name
         self.sort = sort
         self.link = link
@@ -248,6 +286,7 @@ class Series(Base):
     sort = Column(String(collation='NOCASE'))
 
     def __init__(self, name, sort):
+        super().__init__()
         self.name = name
         self.sort = sort
 
@@ -268,6 +307,7 @@ class Ratings(Base):
     rating = Column(Integer, CheckConstraint('rating>-1 AND rating<11'), unique=True)
 
     def __init__(self, rating):
+        super().__init__()
         self.rating = rating
 
     def get(self):
@@ -287,6 +327,7 @@ class Languages(Base):
     lang_code = Column(String(collation='NOCASE'), nullable=False, unique=True)
 
     def __init__(self, lang_code):
+        super().__init__()
         self.lang_code = lang_code
 
     def get(self):
@@ -310,6 +351,7 @@ class Publishers(Base):
     sort = Column(String(collation='NOCASE'))
 
     def __init__(self, name, sort):
+        super().__init__()
         self.name = name
         self.sort = sort
 
@@ -334,6 +376,7 @@ class Data(Base):
     name = Column(String, nullable=False)
 
     def __init__(self, book, book_format, uncompressed_size, name):
+        super().__init__()
         self.book = book
         self.format = book_format
         self.uncompressed_size = uncompressed_size
@@ -353,6 +396,7 @@ class Metadata_Dirtied(Base):
     book = Column(Integer, ForeignKey('books.id'), nullable=False, unique=True)
 
     def __init__(self, book):
+        super().__init__()
         self.book = book
 
 
@@ -365,15 +409,15 @@ class Books(Base):
     title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')
     sort = Column(String(collation='NOCASE'))
     author_sort = Column(String(collation='NOCASE'))
-    timestamp = Column(TIMESTAMP, default=datetime.utcnow)
+    timestamp = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     pubdate = Column(TIMESTAMP, default=DEFAULT_PUBDATE)
     series_index = Column(String, nullable=False, default="1.0")
-    last_modified = Column(TIMESTAMP, default=datetime.utcnow)
+    last_modified = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     path = Column(String, default="", nullable=False)
     has_cover = Column(Integer, default=0)
     uuid = Column(String)
-    isbn = Column(String(collation='NOCASE'), default="")
-    flags = Column(Integer, nullable=False, default=1)
+    # isbn = Column(String(collation='NOCASE'), default="")
+    # flags = Column(Integer, nullable=False, default=1)
 
     authors = relationship(Authors, secondary=books_authors_link, backref='books')
     tags = relationship(Tags, secondary=books_tags_link, backref='books', order_by="Tags.name")
@@ -387,6 +431,7 @@ class Books(Base):
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
                  authors, tags, languages=None):
+        super().__init__()
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -395,16 +440,23 @@ class Books(Base):
         self.series_index = series_index
         self.last_modified = last_modified
         self.path = path
-        self.has_cover = (has_cover != None)
+        self.has_cover = (has_cover is not None)
 
     def __repr__(self):
         return "<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
-                                                                 self.timestamp, self.pubdate, self.series_index,
-                                                                 self.last_modified, self.path, self.has_cover)
+                                                                self.timestamp, self.pubdate, self.series_index,
+                                                                self.last_modified, self.path, self.has_cover)
 
     @property
     def atom_timestamp(self):
-        return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
+        # OPDS atom:updated is defined as "the most recent instant in time
+        # when the entry was modified". Books.timestamp is the date added and
+        # never changes after import, so metadata and cover edits were
+        # invisible to OPDS sync clients. Use last_modified, which Calibre
+        # updates on every metadata or cover change; fall back to timestamp
+        # only if last_modified happens to be missing.
+        t = self.last_modified or self.timestamp
+        return t.strftime('%Y-%m-%dT%H:%M:%S+00:00') if t else ''
 
 
 class CustomColumns(Base):
@@ -444,11 +496,13 @@ class CustomColumns(Base):
         content['is_editable'] = self.editable
         content['rec_index'] = sequence + 22     # toDo why ??
         if isinstance(value, datetime):
-            content['#value#'] = {"__class__": "datetime.datetime", "__value__": value.strftime("%Y-%m-%dT%H:%M:%S+00:00")}
+            content['#value#'] = {"__class__": "datetime.datetime",
+                                  "__value__": value.strftime("%Y-%m-%dT%H:%M:%S+00:00")}
         else:
             content['#value#'] = value
         content['#extra#'] = extra
-        content['is_multiple2'] = {} if not self.is_multiple else {"cache_to_list": "|", "ui_to_list": ",", "list_to_ui": ", "}
+        content['is_multiple2'] = {} if not self.is_multiple else {"cache_to_list": "|", "ui_to_list": ",",
+                                                                   "list_to_ui": ", "}
         return json.dumps(content, ensure_ascii=False)
 
 
@@ -493,35 +547,25 @@ class AlchemyEncoder(json.JSONEncoder):
 
 
 class CalibreDB:
-    _init = False
-    engine = None
     config = None
-    session_factory = None
-    # This is a WeakSet so that references here don't keep other CalibreDB
-    # instances alive once they reach the end of their respective scopes
-    instances = WeakSet()
+    config_calibre_dir = None
+    app_db_path = None
 
-    def __init__(self, expire_on_commit=True, init=False):
+    def __init__(self, _app: Flask=None):  # , expire_on_commit=True, init=False):
         """ Initialize a new CalibreDB session
         """
-        self.session = None
-        if init:
-            self.init_db(expire_on_commit)
+        self.Session = None
+        #if init:
+        #    self.init_db(expire_on_commit)
+        if _app is not None and not _app._got_first_request:
+            self.init_app(_app)
 
-
-    def init_db(self, expire_on_commit=True):
-        if self._init:
-            self.init_session(expire_on_commit)
-
-        self.instances.add(self)
-
-    def init_session(self, expire_on_commit=True):
-        self.session = self.session_factory()
-        self.session.expire_on_commit = expire_on_commit
-        self.update_title_sort(self.config)
+    def init_app(self, _app):
+        _app.teardown_appcontext(self.teardown)
 
     @classmethod
     def setup_db_cc_classes(cls, cc):
+        global cc_classes
         cc_ids = []
         books_custom_column_links = {}
         for row in cc:
@@ -589,8 +633,6 @@ class CalibreDB:
                                      secondary=books_custom_column_links[cc_id[0]],
                                      backref='books'))
 
-        return cc_classes
-
     @classmethod
     def check_valid_db(cls, config_calibre_dir, app_db_path, config_calibre_uuid):
         if not config_calibre_dir:
@@ -605,12 +647,11 @@ class CalibreDB:
                                          connect_args={'check_same_thread': False},
                                          poolclass=StaticPool)
             with check_engine.begin() as connection:
-                connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
-                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
+                connection.execute(text("attach database '{}' as calibre;".format(dbpath.replace("'", "''"))))
+                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path.replace("'", "''"))))
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
                 database_uuid = local_session().query(Library_Id).one_or_none()
-                # local_session.dispose()
 
             check_engine.connect()
             db_change = config_calibre_uuid != database_uuid.uuid
@@ -618,13 +659,30 @@ class CalibreDB:
             return False, False
         return True, db_change
 
+    def teardown(self, exception):
+        ctx = g.get("lib_sql")
+        if ctx:
+            ctx.close()
+
+    @property
+    def session(self):
+        # connect or get active connection
+        if not g.get("lib_sql"):
+            g.lib_sql = self.connect()
+        return g.lib_sql
+
     @classmethod
-    def update_config(cls, config):
+    def update_config(cls, config, config_calibre_dir, app_db_path):
         cls.config = config
+        cls.config_calibre_dir = config_calibre_dir
+        cls.app_db_path = app_db_path
+
+
+    def connect(self):
+        return self.setup_db(self.config_calibre_dir, self.app_db_path)
 
     @classmethod
     def setup_db(cls, config_calibre_dir, app_db_path):
-        cls.dispose()
 
         if not config_calibre_dir:
             cls.config.invalidate()
@@ -636,16 +694,17 @@ class CalibreDB:
             return None
 
         try:
-            cls.engine = create_engine('sqlite://',
+            engine = create_engine('sqlite://',
                                        echo=False,
                                        isolation_level="SERIALIZABLE",
                                        connect_args={'check_same_thread': False},
                                        poolclass=StaticPool)
-            with cls.engine.begin() as connection:
-                connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
-                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
+            with engine.begin() as connection:
+                connection.execute(text('PRAGMA cache_size = 10000;'))
+                connection.execute(text("attach database '{}' as calibre;".format(dbpath.replace("'", "''"))))
+                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path.replace("'", "''"))))
 
-            conn = cls.engine.connect()
+            conn = engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as ex:
             cls.config.invalidate(ex)
@@ -661,13 +720,10 @@ class CalibreDB:
                 log.error_or_exception(e)
                 return None
 
-        cls.session_factory = scoped_session(sessionmaker(autocommit=False,
-                                                          autoflush=True,
-                                                          bind=cls.engine, future=True))
-        for inst in cls.instances:
-            inst.init_session()
+        return scoped_session(sessionmaker(autocommit=False,
+                                           autoflush=False,
+                                           bind=engine, future=True))
 
-        cls._init = True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
@@ -718,8 +774,8 @@ class CalibreDB:
     def common_filters(self, allow_show_archived=False, return_all_languages=False):
         if not allow_show_archived:
             archived_books = (ub.session.query(ub.ArchivedBook)
-                              .filter(ub.ArchivedBook.user_id == int(current_user.id))
-                              .filter(ub.ArchivedBook.is_archived == True)
+                              .filter(ub.ArchivedBook.user_id==int(current_user.id))
+                              .filter(ub.ArchivedBook.is_archived==True)
                               .all())
             archived_book_ids = [archived_book.book_id for archived_book in archived_books]
             archived_filter = Books.id.notin_(archived_book_ids)
@@ -839,8 +895,7 @@ class CalibreDB:
         entries = list()
         pagination = list()
         try:
-            pagination = Pagination(page, pagesize,
-                                    len(query.all()))
+            pagination = Pagination(page, pagesize, query.count())
             entries = query.order_by(*order).offset(off).limit(pagesize).all()
         except Exception as ex:
             log.error_or_exception(ex)
@@ -853,27 +908,36 @@ class CalibreDB:
         for entry in entries:
             if combined:
                 sort_authors = entry.Books.author_sort.split('&')
-                ids = [a.id for a in entry.Books.authors]
-
+                authors_list = entry.Books.authors
             else:
                 sort_authors = entry.author_sort.split('&')
-                ids = [a.id for a in entry.authors]
-            authors_ordered = list()
-            # error = False
+                authors_list = entry.authors
+
+            # Create dictionary for O(1) lookup instead of nested loops
+            authors_by_sort = {}
+            authors_by_id = {}
+            for author in authors_list:
+                authors_by_sort[author.sort] = author
+                authors_by_id[author.id] = author
+
+            authors_ordered = []
+            ids_remaining = set(authors_by_id.keys())
+
+            # Order authors based on sort field using dictionary lookup
             for auth in sort_authors:
-                results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
-                # ToDo: How to handle not found author name
-                if not len(results):
-                    log.error("Author {} not found to display name in right order".format(auth.strip()))
-                    # error = True
-                    break
-                for r in results:
-                    if r.id in ids:
-                        authors_ordered.append(r)
-                        ids.remove(r.id)
-            for author_id in ids:
-                result = self.session.query(Authors).filter(Authors.id == author_id).first()
-                authors_ordered.append(result)
+                auth = strip_whitespaces(auth)
+                if auth in authors_by_sort:
+                    author = authors_by_sort[auth]
+                    authors_ordered.append(author)
+                    ids_remaining.discard(author.id)
+                else:
+                    # This can happen if author_sort has stale data or formatting issues
+                    book_id = entry.id if isinstance(entry, Books) else (entry.Books.id if combined else entry.id)
+                    log.warning("Author '{}' of book {} not found in author list, skipping in sort order".format(auth, book_id))
+
+            # Add any remaining authors not in sort order
+            for author_id in ids_remaining:
+                authors_ordered.append(authors_by_id[author_id])
 
             if list_return:
                 if combined:
@@ -886,15 +950,14 @@ class CalibreDB:
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
-        self.session.connection().connection.connection.create_function("lower", 1, lcase)
+        self.create_functions()
         entries = self.session.query(database).filter(tag_filter). \
             filter(func.lower(database.name).ilike("%" + query + "%")).all()
-        # json_dumps = json.dumps([dict(name=escape(r.name.replace(*replace))) for r in entries])
         json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
         return json_dumps
 
     def check_exists_book(self, authr, title):
-        self.session.connection().connection.connection.create_function("lower", 1, lcase)
+        self.create_functions()
         q = list()
         author_terms = re.split(r'\s*&\s*', authr)
         for author_term in author_terms:
@@ -904,35 +967,93 @@ class CalibreDB:
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     def search_query(self, term, config, *join):
-        term.strip().lower()
-        self.session.connection().connection.connection.create_function("lower", 1, lcase)
-        q = list()
-        author_terms = re.split("[, ]+", term)
-        for author_term in author_terms:
-            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + author_term + "%")))
-        query = self.generate_linked_query(config.config_read_column, Books)
-        if len(join) == 6:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
-        if len(join) == 3:
-            query = query.outerjoin(join[0], join[1]).outerjoin(join[2])
-        elif len(join) == 2:
-            query = query.outerjoin(join[0], join[1])
-        elif len(join) == 1:
-            query = query.outerjoin(join[0])
+        term = strip_whitespaces(term).lower()
+        self.create_functions()
 
+        # Try FTS5 search first for better performance
+        fts_ids = None
+        # Check if FTS5 table exists before attempting search
+        if not hasattr(self, '_fts_available'):
+            try:
+                result = self.session.execute(
+                    text("SELECT name FROM sqlite_master WHERE type='table' AND name='books_fts'")
+                ).fetchone()
+                self._fts_available = result is not None
+            except Exception:
+                self._fts_available = False
+
+        if self._fts_available:
+            try:
+                # Escape FTS5 special characters to prevent query errors
+                term_fts = term.replace('"', '""')
+                # Wrap in quotes for phrase matching and better accuracy
+                fts_results = self.session.execute(
+                    text("SELECT DISTINCT rowid FROM books_fts WHERE books_fts MATCH :term"),
+                    {"term": f'"{term_fts}"'}
+                ).fetchall()
+                if fts_results:
+                    fts_ids = [r[0] for r in fts_results]
+            except Exception as ex:
+                # FTS5 query failed, fall back to traditional search
+                log.debug("FTS5 search failed for term '{}', using fallback: {}".format(term, ex))
+
+        # Build base query with optimized joins
+        base_query = self.generate_linked_query(config.config_read_column, Books)
+        base_query = base_query.filter(self.common_filters(True))
+
+        # Apply eager loading for authors to avoid N+1 queries
+        base_query = base_query.options(selectinload(Books.authors))
+
+        if len(join) == 6:
+            base_query = base_query.outerjoin(join[0], join[1]).outerjoin(join[2]).outerjoin(join[3], join[4]).outerjoin(join[5])
+        if len(join) == 3:
+            base_query = base_query.outerjoin(join[0], join[1]).outerjoin(join[2])
+        elif len(join) == 2:
+            base_query = base_query.outerjoin(join[0], join[1])
+        elif len(join) == 1:
+            base_query = base_query.outerjoin(join[0])
+
+        # If FTS5 found results, use those IDs
+        if fts_ids:
+            return base_query.filter(Books.id.in_(fts_ids))
+
+        # Fallback to traditional search with optimized subqueries
+        author_terms = re.split("[, ]+", term)
+
+        # Use subquery for authors to avoid expensive .any() with OR
+        author_subquery = self.session.query(books_authors_link.c.book).join(
+            Authors, books_authors_link.c.author == Authors.id
+        )
+        author_filters = []
+        for author_term in author_terms:
+            author_filters.append(func.lower(Authors.name).ilike("%" + author_term + "%"))
+        if author_filters:
+            author_subquery = author_subquery.filter(and_(*author_filters))
+
+        # Build optimized filter expressions
         cc = self.get_cc_columns(config, filter_config_custom_read=True)
-        filter_expression = [Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
-                             Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
-                             Books.authors.any(and_(*q)),
-                             Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
-                             func.lower(Books.title).ilike("%" + term + "%")]
+        filter_expression = [
+            Books.id.in_(self.session.query(books_tags_link.c.book).join(
+                Tags, books_tags_link.c.tag == Tags.id
+            ).filter(func.lower(Tags.name).ilike("%" + term + "%"))),
+            Books.id.in_(self.session.query(books_series_link.c.book).join(
+                Series, books_series_link.c.series == Series.id
+            ).filter(func.lower(Series.name).ilike("%" + term + "%"))),
+            Books.id.in_(author_subquery),
+            Books.id.in_(self.session.query(books_publishers_link.c.book).join(
+                Publishers, books_publishers_link.c.publisher == Publishers.id
+            ).filter(func.lower(Publishers.name).ilike("%" + term + "%"))),
+            func.lower(Books.title).ilike("%" + term + "%")
+        ]
+
         for c in cc:
             if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
                         func.lower(cc_classes[c.id].value).ilike("%" + term + "%")))
-        return query.filter(self.common_filters(True)).filter(or_(*filter_expression))
+
+        return base_query.filter(or_(*filter_expression))
 
     def get_cc_columns(self, config, filter_config_custom_read=False):
         tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
@@ -954,18 +1075,32 @@ class CalibreDB:
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
         pagination = None
-        result = self.search_query(term, config, *join).order_by(*order).all()
-        result_count = len(result)
-        if offset != None and limit != None:
+
+        if offset is not None and limit is not None:
             offset = int(offset)
-            limit_all = offset + int(limit)
-            pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
+            limit_int = int(limit)
+
+            # Use LIMIT+1 pattern to estimate total count without expensive count()
+            query = self.search_query(term, config, *join).order_by(*order)
+            result = query.limit(offset + limit_int + 1).all()
+
+            # Check if there are more results
+            has_more = len(result) > (offset + limit_int)
+            if has_more:
+                result_count = offset + limit_int + 1  # Estimate: at least this many
+            else:
+                result_count = len(result)
+
+            # Extract the page of results
+            result = result[offset:offset + limit_int]
+            pagination = Pagination((offset / limit_int + 1), limit_int, result_count)
         else:
-            offset = 0
-            limit_all = result_count
+            # No pagination, fetch all results
+            result = self.search_query(term, config, *join).order_by(*order).all()
+            result_count = len(result)
 
         ub.store_combo_ids(result)
-        entries = self.order_authors(result[offset:limit_all], list_return=True, combined=True)
+        entries = self.order_authors(result, list_return=True, combined=True)
 
         return entries, result_count, pagination
 
@@ -986,11 +1121,11 @@ class CalibreDB:
             if not return_all_languages:
                 no_lang_count = (self.session.query(Books)
                                  .outerjoin(books_languages_link).outerjoin(Languages)
-                                 .filter(Languages.lang_code == None)
+                                 .filter(Languages.lang_code==None)
                                  .filter(self.common_filters())
                                  .count())
                 if no_lang_count:
-                    tags.append([Category(_("None"), "none"), no_lang_count])
+                    tags.append([Category(_("None"), None, "none"), no_lang_count])
             return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
         else:
             if not languages:
@@ -1003,7 +1138,7 @@ class CalibreDB:
                 lang.name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
             return sorted(languages, key=lambda x: x.name, reverse=reverse_order)
 
-    def update_title_sort(self, config, conn=None):
+    def create_functions(self, config=None):
         # user defined sort function for calibre databases (Series, etc.)
         def _title_sort(title):
             # calibre sort stuff
@@ -1012,56 +1147,27 @@ class CalibreDB:
             if match:
                 prep = match.group(1)
                 title = title[len(prep):] + ', ' + prep
-            return title.strip()
+            return strip_whitespaces(title)
 
         try:
-            # sqlalchemy <1.4.24
-            conn = conn or self.session.connection().connection.driver_connection
+            # sqlalchemy <1.4.24 and sqlalchemy 2.0
+            conn = self.session.connection().connection.driver_connection
         except AttributeError:
-            # sqlalchemy >1.4.24 and sqlalchemy 2.0
-            conn = conn or self.session.connection().connection.connection
+            # sqlalchemy >1.4.24
+            conn = self.session.connection().connection.connection
         try:
-            conn.create_function("title_sort", 1, _title_sort)
+            if config:
+                conn.create_function("title_sort", 1, _title_sort)
+            conn.create_function('uuid4', 0, lambda: str(uuid4()))
+            conn.create_function("lower", 1, lcase)
         except sqliteOperationalError:
             pass
 
-    @classmethod
-    def dispose(cls):
-        # global session
-
-        for inst in cls.instances:
-            old_session = inst.session
-            inst.session = None
-            if old_session:
-                try:
-                    old_session.close()
-                except Exception:
-                    pass
-                if old_session.bind:
-                    try:
-                        old_session.bind.dispose()
-                    except Exception:
-                        pass
-
-        for attr in list(Books.__dict__.keys()):
-            if attr.startswith("custom_column_"):
-                setattr(Books, attr, None)
-
-        for db_class in cc_classes.values():
-            Base.metadata.remove(db_class.__table__)
-        cc_classes.clear()
-
-        for table in reversed(Base.metadata.sorted_tables):
-            name = table.key
-            if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
-                if table is not None:
-                    Base.metadata.remove(table)
-
     def reconnect_db(self, config, app_db_path):
-        self.dispose()
-        self.engine.dispose()
+        # self.dispose()
+        # self.engine.dispose()
         self.setup_db(config.config_calibre_dir, app_db_path)
-        self.update_config(config)
+        self.update_config(config, config.config_calibre_dir, app_db_path)
 
 
 def lcase(s):
@@ -1073,20 +1179,25 @@ def lcase(s):
         return s.lower()
 
 
+def title_sort(title, config):
+    # calibre sort stuff
+    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
+    match = title_pat.search(title)
+    if match:
+        prep = match.group(1)
+        title = title[len(prep):] + ', ' + prep
+    return strip_whitespaces(title)
+
 class Category:
     name = None
+    sort = None
     id = None
     count = None
     rating = None
 
     def __init__(self, name, cat_id, rating=None):
         self.name = name
+        self.sort = name
         self.id = cat_id
         self.rating = rating
         self.count = 1
-
-'''class Count:
-    count = None
-
-    def __init__(self, count):
-        self.count = count'''

@@ -21,17 +21,17 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 
 from flask import Blueprint, flash, redirect, request, url_for, abort
 from flask_babel import gettext as _
-from flask_login import current_user, login_required
+from .cw_login import current_user
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import func, true
 
 from . import calibre_db, config, db, logger, ub
 from .render_template import render_title_template
-from .usermanagement import login_required_if_no_ano
+from .usermanagement import login_required_if_no_ano, user_login_required
 
 log = logger.create()
 
@@ -39,7 +39,7 @@ shelf = Blueprint('shelf', __name__)
 
 
 @shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def add_to_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -80,7 +80,7 @@ def add_to_shelf(shelf_id, book_id):
         return "%s is a invalid Book Id. Could not be added to Shelf" % book_id, 400
 
     shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
-    shelf.last_modified = datetime.utcnow()
+    shelf.last_modified = datetime.now(timezone.utc)
     try:
         ub.session.merge(shelf)
         ub.session.commit()
@@ -102,8 +102,54 @@ def add_to_shelf(shelf_id, book_id):
     return "", 204
 
 
+@shelf.route("/shelf/massremove/<int:shelf_id>", methods=["POST"])
+@user_login_required
+def search_from_shelf(shelf_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        log.error("Invalid shelf specified: {}".format(shelf_id))
+        flash(_("Invalid shelf specified"), category="error")
+        return redirect(url_for('web.index'))
+
+    if not check_shelf_edit_permissions(shelf):
+        log.warning("You are not allowed to remove a book from the shelf".format(shelf.name))
+        flash(_("You are not allowed to remove a book from the shelf"), category="error")
+        return redirect(url_for('web.index'))
+
+    if current_user.id in ub.searched_ids and ub.searched_ids[current_user.id]:
+        books_from_shelf = list()
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
+        if books_in_shelf:
+            book_ids = [book_id.book_id for book_id in books_in_shelf]
+            for searchid in ub.searched_ids[current_user.id]:
+                if searchid in book_ids:
+                    books_from_shelf.append(searchid)
+        else:
+            log.error("No Books are part of {}".format(shelf.name))
+            flash(_("No Books are part of the shelf: %(name)s", name=shelf.name), category="error")
+            return redirect(url_for('web.index'))
+
+        # maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()[0] or 0
+
+        for book in books_from_shelf:
+            ub.session.delete(ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).filter(
+                ub.BookShelf.book_id == book).first())
+        shelf.last_modified = datetime.now(timezone.utc)
+        try:
+            ub.session.commit()
+            flash(_("Books have been removed from shelf: %(sname)s", sname=shelf.name), category="success")
+        except (OperationalError, InvalidRequestError) as e:
+            ub.session.rollback()
+            log.error_or_exception("Settings Database error: {}".format(e))
+            flash(_("Oops! Database Error: %(error)s.", error=e.orig), category="error")
+    else:
+        log.error("Could not remove books from shelf: {}".format(shelf.name))
+        flash(_("Could not remove books from shelf: %(sname)s", sname=shelf.name), category="error")
+    return redirect(url_for('web.index'))
+
+
 @shelf.route("/shelf/massadd/<int:shelf_id>", methods=["POST"])
-@login_required
+@user_login_required
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
@@ -120,9 +166,7 @@ def search_to_shelf(shelf_id):
         books_for_shelf = list()
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
         if books_in_shelf:
-            book_ids = list()
-            for book_id in books_in_shelf:
-                book_ids.append(book_id.book_id)
+            book_ids = [book_id.book_id for book_id in books_in_shelf]
             for searchid in ub.searched_ids[current_user.id]:
                 if searchid not in book_ids:
                     books_for_shelf.append(searchid)
@@ -139,7 +183,7 @@ def search_to_shelf(shelf_id):
         for book in books_for_shelf:
             maxOrder += 1
             shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
-        shelf.last_modified = datetime.utcnow()
+        shelf.last_modified = datetime.now(timezone.utc)
         try:
             ub.session.merge(shelf)
             ub.session.commit()
@@ -155,7 +199,7 @@ def search_to_shelf(shelf_id):
 
 
 @shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>", methods=["POST"])
-@login_required
+@user_login_required
 def remove_from_shelf(shelf_id, book_id):
     xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -185,7 +229,7 @@ def remove_from_shelf(shelf_id, book_id):
 
         try:
             ub.session.delete(book_shelf)
-            shelf.last_modified = datetime.utcnow()
+            shelf.last_modified = datetime.now(timezone.utc)
             ub.session.commit()
         except (OperationalError, InvalidRequestError) as e:
             ub.session.rollback()
@@ -212,14 +256,14 @@ def remove_from_shelf(shelf_id, book_id):
 
 
 @shelf.route("/shelf/create", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def create_shelf():
     shelf = ub.Shelf()
     return create_edit_shelf(shelf, page_title=_("Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not check_shelf_edit_permissions(shelf):
@@ -229,7 +273,7 @@ def edit_shelf(shelf_id):
 
 
 @shelf.route("/shelf/delete/<int:shelf_id>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     try:
@@ -250,7 +294,7 @@ def show_simpleshelf(shelf_id):
     return render_show_shelf(2, shelf_id, 1, None)
 
 
-@shelf.route("/shelf/<int:shelf_id>", defaults={"sort_param": "order", 'page': 1})
+@shelf.route("/shelf/<int:shelf_id>", defaults={"sort_param": "stored", 'page': 1})
 @shelf.route("/shelf/<int:shelf_id>/<sort_param>", defaults={'page': 1})
 @shelf.route("/shelf/<int:shelf_id>/<sort_param>/<int:page>")
 @login_required_if_no_ano
@@ -259,11 +303,14 @@ def show_shelf(shelf_id, sort_param, page):
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
-@login_required
+@user_login_required
 def order_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf and check_shelf_view_permissions(shelf):
         if request.method == "POST":
+            if not check_shelf_edit_permissions(shelf):
+                flash(_("Sorry you are not allowed to edit this shelf"), category="error")
+                return redirect(url_for('web.index'))
             to_save = request.form.to_dict()
             books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
                 ub.BookShelf.order.asc()).all()
@@ -271,7 +318,7 @@ def order_shelf(shelf_id):
             for book in books_in_shelf:
                 setattr(book, 'order', to_save[str(book.book_id)])
                 counter += 1
-                # if order different from before -> shelf.last_modified = datetime.utcnow()
+                # if order different from before -> shelf.last_modified = datetime.now(timezone.utc)
             try:
                 ub.session.commit()
             except (OperationalError, InvalidRequestError) as e:
@@ -418,29 +465,37 @@ def change_shelf_order(shelf_id, order):
 
 def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-
+    status = current_user.get_view_property("shelf", 'man')
     # check user is allowed to access shelf
     if shelf and check_shelf_view_permissions(shelf):
         if shelf_type == 1:
-            # order = [ub.BookShelf.order.asc()]
-            if sort_param == 'pubnew':
-                change_shelf_order(shelf_id, [db.Books.pubdate.desc()])
-            if sort_param == 'pubold':
-                change_shelf_order(shelf_id, [db.Books.pubdate])
-            if sort_param == 'abc':
-                change_shelf_order(shelf_id, [db.Books.sort])
-            if sort_param == 'zyx':
-                change_shelf_order(shelf_id, [db.Books.sort.desc()])
-            if sort_param == 'new':
-                change_shelf_order(shelf_id, [db.Books.timestamp.desc()])
-            if sort_param == 'old':
-                change_shelf_order(shelf_id, [db.Books.timestamp])
-            if sort_param == 'authaz':
-                change_shelf_order(shelf_id, [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index])
-            if sort_param == 'authza':
-                change_shelf_order(shelf_id, [db.Books.author_sort.desc(),
-                                              db.Series.name.desc(),
-                                              db.Books.series_index.desc()])
+            if status != 'on':
+                if sort_param == 'stored':
+                    sort_param = current_user.get_view_property("shelf", 'stored')
+                else:
+                    current_user.set_view_property("shelf", 'stored', sort_param)
+                if sort_param == 'pubnew':
+                    change_shelf_order(shelf_id, [db.Books.pubdate.desc()])
+                if sort_param == 'pubold':
+                    change_shelf_order(shelf_id, [db.Books.pubdate])
+                if sort_param == 'shelfnew':
+                    change_shelf_order(shelf_id, [ub.BookShelf.date_added.desc()])
+                if sort_param == 'shelfold':
+                    change_shelf_order(shelf_id, [ub.BookShelf.date_added])
+                if sort_param == 'abc':
+                    change_shelf_order(shelf_id, [db.Books.sort])
+                if sort_param == 'zyx':
+                    change_shelf_order(shelf_id, [db.Books.sort.desc()])
+                if sort_param == 'new':
+                    change_shelf_order(shelf_id, [db.Books.timestamp.desc()])
+                if sort_param == 'old':
+                    change_shelf_order(shelf_id, [db.Books.timestamp])
+                if sort_param == 'authaz':
+                    change_shelf_order(shelf_id, [db.Books.author_sort.asc(), db.Series.name, db.Books.series_index])
+                if sort_param == 'authza':
+                    change_shelf_order(shelf_id, [db.Books.author_sort.desc(),
+                                                  db.Series.name.desc(),
+                                                  db.Books.series_index.desc()])
             page = "shelf.html"
             pagesize = 0
         else:
@@ -453,7 +508,7 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                                                            [ub.BookShelf.order.asc()],
                                                            True, config.config_read_column,
                                                            ub.BookShelf, ub.BookShelf.book_id == db.Books.id)
-        # delete chelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
+        # delete shelf entries where book is not existent anymore, can happen if book is deleted outside calibre-web
         wrong_entries = calibre_db.session.query(ub.BookShelf) \
             .join(db.Books, ub.BookShelf.book_id == db.Books.id, isouter=True) \
             .filter(db.Books.id == None).all()
@@ -472,7 +527,9 @@ def render_show_shelf(shelf_type, shelf_id, page_no, sort_param):
                                      pagination=pagination,
                                      title=_("Shelf: '%(name)s'", name=shelf.name),
                                      shelf=shelf,
-                                     page="shelf")
+                                     page="shelf",
+                                     status=status,
+                                     order=sort_param)
     else:
         flash(_("Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))

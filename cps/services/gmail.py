@@ -36,6 +36,7 @@ SCOPES = ['openid', 'https://www.googleapis.com/auth/gmail.send', 'https://www.g
 def setup_gmail(token):
     # If there are no (valid) credentials available, let the user log in.
     creds = None
+    user_info = None
     if "token" in token:
         creds = Credentials(
             token=token['token'],
@@ -91,7 +92,7 @@ def send_messsage(token, msg):
     if creds and creds.expired and creds.refresh_token:
         creds.refresh(Request())
     service = build('gmail', 'v1', credentials=creds)
-    message_as_bytes = msg.as_bytes()  # the message should converted from string to bytes.
+    message_as_bytes = msg.as_bytes()  # the message should be converted from string to bytes.
     message_as_base64 = base64.urlsafe_b64encode(message_as_bytes)  # encode in base64 (printable letters coding)
     raw = message_as_base64.decode()  # convert to something  JSON serializable
     body = {'raw': raw}

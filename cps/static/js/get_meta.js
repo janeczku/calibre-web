@@ -38,12 +38,12 @@ $(function () {
     }
 
     function populateForm (book) {
-        tinymce.get("description").setContent(book.description);
+        tinymce.get("comments").setContent(book.description);
         var uniqueTags = getUniqueValues('tags', book)
         var uniqueLanguages = getUniqueValues('languages', book)
         var ampSeparatedAuthors = (book.authors || []).join(" & ");
-        $("#bookAuthor").val(ampSeparatedAuthors);
-        $("#book_title").val(book.title);
+        $("#authors").val(ampSeparatedAuthors);
+        $("#title").val(book.title);
         $("#tags").val(uniqueTags.join(", "));
         $("#languages").val(uniqueLanguages.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
@@ -103,11 +103,11 @@ $(function () {
                         });
                     }
                     else {
-                        $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "!</p>" + $("#meta-info")[0].innerHTML)
+                        $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>" + $("#meta-info")[0].innerHTML)
                     }
                 },
                 error: function error() {
-                    $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
+                    $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "</p>" + $("#meta-info")[0].innerHTML);
                 },
             });
         }
@@ -172,7 +172,7 @@ $(function () {
 
     $("#get_meta").click(function () {
         populate_provider();
-        var bookTitle = $("#book_title").val();
+        var bookTitle = $("#title").val();
         $("#keyword").val(bookTitle);
         keyword = bookTitle;
         doSearch(bookTitle);

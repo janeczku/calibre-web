@@ -7,7 +7,7 @@
   <title>{{ entry.title }}</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   {% if g.google_site_verification|length > 0 %}
     <meta name="google-site-verification" content="{{g.google_site_verification}}">
   {% endif %}  
@@ -59,7 +59,7 @@
         </div>
       {% endif %}
       {% if entry.series|length > 0 %}
-          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index | formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
+          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index|formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
 
       {% endif %}
 
@@ -175,7 +175,7 @@
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
         <div class="comments">
             <h3 id="decription">{{_('Description:')}}</h3>
-            {{entry.comments[0].text|safe}}
+            {{entry.comments[0].text|clean_string|safe}}
         </div>
       {% endif %}
 

@@ -24,7 +24,7 @@ $(document).ready(function() {
           },
 
         }, function () {
-        if ($('#password').data("verify")) {
+        if ($('#password').data("verify") === "True") {
             // Initialized and ready to go
             var options = {};
             options.common = {

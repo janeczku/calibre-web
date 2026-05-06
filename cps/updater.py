@@ -52,6 +52,8 @@ class Updater(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
+        self.web_server = None
+        self.config = None
         self.paused = False
         self.can_run = threading.Event()
         self.pause()
@@ -327,7 +329,7 @@ class Updater(threading.Thread):
     @classmethod
     def _stable_version_info(cls):
         log.debug("Stable version: {}".format(constants.STABLE_VERSION))
-        return constants.STABLE_VERSION  # Current Version
+        return {'version': constants.STABLE_VERSION }
 
     @classmethod
     def dry_run(cls):

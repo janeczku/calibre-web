@@ -15,24 +15,17 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
+import sys
 
 from .iso_language_names import LANGUAGE_NAMES as _LANGUAGE_NAMES
 from . import logger
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 
 
 try:
-    from iso639 import languages, __version__
-    get = languages.get
-except ImportError:
     from pycountry import languages as pyc_languages
-    try:
-        import pkg_resources
-        __version__ = pkg_resources.get_distribution('pycountry').version + ' (PyCountry)'
-        del pkg_resources
-    except (ImportError, Exception):
-        __version__ = "? (PyCountry)"
 
     def _copy_fields(l):
         l.part1 = getattr(l, 'alpha_2', None)
@@ -46,35 +39,48 @@ except ImportError:
             return _copy_fields(pyc_languages.get(alpha_2=part1))
         if name is not None:
             return _copy_fields(pyc_languages.get(name=name))
+except ImportError as ex:
+    if sys.version_info >= (3, 12):
+        print("Python 3.12 isn't compatible with iso-639. Please install pycountry.")
+    from iso639 import languages
+    get = languages.get
 
 
 def get_language_names(locale):
-    return _LANGUAGE_NAMES.get(str(locale))
+    names = _LANGUAGE_NAMES.get(str(locale))
+    if names is None:
+        names = _LANGUAGE_NAMES.get(locale.language)
+    return names
 
 
 def get_language_name(locale, lang_code):
-    try:
-        return get_language_names(locale)[lang_code]
-    except KeyError:
-        log.error('Missing translation for language name: {}'.format(lang_code))
-        return "Unknown"
+    UNKNOWN_TRANSLATION = "Unknown"
+    names = get_language_names(locale)
+    if names is None:
+        log.error(f"Missing language names for locale: {str(locale)}/{locale.language}")
+        return UNKNOWN_TRANSLATION
+
+    name = names.get(lang_code, UNKNOWN_TRANSLATION)
+    if name == UNKNOWN_TRANSLATION:
+        log.error("Missing translation for language name: {}".format(lang_code))
+
+    return name
 
 
-def get_language_codes(locale, language_names, remainder=None):
-    language_names = set(x.strip().lower() for x in language_names if x)
+def get_language_code_from_name(locale, language_names, remainder=None):
+    language_names = set(strip_whitespaces(x).lower() for x in language_names if x)
     lang = list()
-    for k, v in get_language_names(locale).items():
-        v = v.lower()
-        if v in language_names:
-            lang.append(k)
-            language_names.remove(v)
+    for key, val in get_language_names(locale).items():
+        val = val.lower()
+        if val in language_names:
+            lang.append(key)
+            language_names.remove(val)
     if remainder is not None and language_names:
         remainder.extend(language_names)
     return lang
 
 
-
-def get_valid_language_codes(locale, language_names, remainder=None):
+def get_valid_language_codes_from_code(locale, language_names, remainder=None):
     lang = list()
     if "" in language_names:
         language_names.remove("")
@@ -95,6 +101,6 @@ def get_lang3(lang):
             ret_value = lang
         else:
             ret_value = ""
-    except KeyError:
+    except (KeyError, AttributeError):
         ret_value = lang
     return ret_value

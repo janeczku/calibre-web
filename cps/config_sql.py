@@ -35,7 +35,7 @@ except ImportError:
 
 from . import constants, logger
 from .subproc_wrapper import process_wait
-
+from .string_helper import strip_whitespaces
 
 log = logger.create()
 _Base = declarative_base()
@@ -48,6 +48,7 @@ class _Flask_Settings(_Base):
     flask_session_key = Column(BLOB, default=b"")
 
     def __init__(self, key):
+        super().__init__()
         self.flask_session_key = key
 
 
@@ -82,7 +83,9 @@ class _Settings(_Base):
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
-    config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines|Le|La|Les|L\'|Un|Une)\s+')    
+    config_title_regex = Column(String,
+                                default=r"^(A|The|An|Der|Die|Das|Den|Ein|Eine"
+                                        r"|Einen|Dem|Des|Einem|Eines|Le|La|Les|L'|Un|Une)(\s+|(?<='))")
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
@@ -114,8 +117,7 @@ class _Settings(_Base):
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
-    config_goodreads_api_secret_e = Column(String)
-    config_goodreads_api_secret = Column(String)
+    config_googlebooks_api_key = Column(String, default='')
     config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
 
@@ -172,6 +174,7 @@ class _Settings(_Base):
     config_ratelimiter = Column(Boolean, default=True)
     config_limiter_uri = Column(String, default="")
     config_limiter_options = Column(String, default="")
+    config_check_extensions = Column(Boolean, default=True)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -194,16 +197,16 @@ class ConfigSQL(object):
 
         change = False
 
-        if self.config_binariesdir == None: # pylint: disable=access-member-before-definition
+        if self.config_binariesdir is None:
             change = True
             self.config_binariesdir = autodetect_calibre_binaries()
             self.config_converterpath = autodetect_converter_binary(self.config_binariesdir)
 
-        if self.config_kepubifypath == None:  # pylint: disable=access-member-before-definition
+        if self.config_kepubifypath is None:
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
 
-        if self.config_rarfile_location == None:  # pylint: disable=access-member-before-definition
+        if self.config_rarfile_location is None:
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
         if change:
@@ -267,19 +270,19 @@ class ConfigSQL(object):
 
     def list_denied_tags(self):
         mct = self.config_denied_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_tags(self):
         mct = self.config_allowed_tags or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_denied_column_values(self):
         mct = self.config_denied_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def list_allowed_column_values(self):
         mct = self.config_allowed_column_value or ""
-        return [t.strip() for t in mct.split(",")]
+        return [strip_whitespaces(t) for t in mct.split(",")]
 
     def get_log_level(self):
         return logger.get_level_name(self.config_log_level)
@@ -324,7 +327,9 @@ class ConfigSQL(object):
     def to_dict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("_e") and not k == "cli":
+            if k[0] != '_' and not k.endswith("_e") and not k == "cli" \
+                    and 'api' not in k.lower() and 'token' not in k.lower() \
+                    and 'secret' not in k.lower():
                 storage[k] = v
         return storage
 
@@ -351,7 +356,7 @@ class ConfigSQL(object):
             db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
             have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip().lower() for x in self.config_upload_formats.split(',')]
+        
         from . import cli_param
         if os.environ.get('FLASK_DEBUG'):
             logfile = logger.setup(logger.LOG_TO_STDOUT, logger.logging.DEBUG)
@@ -401,14 +406,16 @@ class ConfigSQL(object):
         self.save()
 
     def get_book_path(self):
-        return self.config_calibre_split_dir if self.config_calibre_split_dir else self.config_calibre_dir
+        return self.config_calibre_split_dir if self.config_calibre_split else self.config_calibre_dir
 
     def store_calibre_uuid(self, calibre_db, Library_table):
+        from . import app
         try:
-            calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
-            if self.config_calibre_uuid != calibre_uuid.uuid:
-                self.config_calibre_uuid = calibre_uuid.uuid
-                self.save()
+            with app.app_context():
+                calibre_uuid = calibre_db.session.query(Library_table).one_or_none()
+                if self.config_calibre_uuid != calibre_uuid.uuid:
+                    self.config_calibre_uuid = calibre_uuid.uuid
+                    self.save()
         except AttributeError:
             pass
 
@@ -423,23 +430,16 @@ def _encrypt_fields(session, secret_key):
     except OperationalError:
         with session.bind.connect() as conn:
             conn.execute(text("ALTER TABLE settings ADD column 'mail_password_e' String"))
-            conn.execute(text("ALTER TABLE settings ADD column 'config_goodreads_api_secret_e' String"))
             conn.execute(text("ALTER TABLE settings ADD column 'config_ldap_serv_password_e' String"))
         session.commit()
         crypter = Fernet(secret_key)
-        settings = session.query(_Settings.mail_password, _Settings.config_goodreads_api_secret,
-                                 _Settings.config_ldap_serv_password).first()
+        settings = session.query(_Settings.mail_password, _Settings.config_ldap_serv_password).first()
         if settings.mail_password:
             session.query(_Settings).update(
                 {_Settings.mail_password_e: crypter.encrypt(settings.mail_password.encode())})
-        if settings.config_goodreads_api_secret:
-            session.query(_Settings).update(
-                {_Settings.config_goodreads_api_secret_e:
-                     crypter.encrypt(settings.config_goodreads_api_secret.encode())})
         if settings.config_ldap_serv_password:
             session.query(_Settings).update(
-                {_Settings.config_ldap_serv_password_e:
-                     crypter.encrypt(settings.config_ldap_serv_password.encode())})
+                {_Settings.config_ldap_serv_password_e: crypter.encrypt(settings.config_ldap_serv_password.encode())})
         session.commit()
 
 
@@ -489,12 +489,17 @@ def autodetect_calibre_binaries():
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
                         "C:\\program files\\calibre2\\"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/"]
     else:
         calibre_path = ["/opt/calibre/"]
     for element in calibre_path:
-        supported_binary_paths = [os.path.join(element, binary) for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
-        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK) for binary_path in supported_binary_paths):
-            values = [process_wait([binary_path, "--version"], pattern='\(calibre (.*)\)') for binary_path in supported_binary_paths]
+        supported_binary_paths = [os.path.join(element, binary)
+                                  for binary in constants.SUPPORTED_CALIBRE_BINARIES.values()]
+        if all(os.path.isfile(binary_path) and os.access(binary_path, os.X_OK)
+               for binary_path in supported_binary_paths):
+            values = [process_wait([binary_path, "--version"],
+                                   pattern=r'\(calibre (.*)\)') for binary_path in supported_binary_paths]
             if all(values):
                 version = values[0].group(1)
                 log.debug("calibre version %s", version)
@@ -516,6 +521,8 @@ def autodetect_unrar_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/unrar"]
     else:
         calibre_path = ["/usr/bin/unrar"]
     for element in calibre_path:
@@ -528,6 +535,8 @@ def autodetect_kepubify_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
+    elif sys.platform.startswith("freebsd"):
+        calibre_path = ["/usr/local/bin/kepubify"]
     else:
         calibre_path = ["/opt/kepubify/kepubify-linux-64bit", "/opt/kepubify/kepubify-linux-32bit"]
     for element in calibre_path:
@@ -552,7 +561,7 @@ def load_configuration(session, secret_key):
 
 def get_flask_session_key(_session):
     flask_settings = _session.query(_Flask_Settings).one_or_none()
-    if flask_settings == None:
+    if flask_settings is None:
         flask_settings = _Flask_Settings(os.urandom(32))
         _session.add(flask_settings)
         _session.commit()
@@ -563,6 +572,7 @@ def get_encryption_key(key_path):
     key_file = os.path.join(key_path, ".key")
     generate = True
     error = ""
+    key = None
     if os.path.exists(key_file) and os.path.getsize(key_file) > 32:
         with open(key_file, "rb") as f:
             key = f.read()
@@ -576,6 +586,7 @@ def get_encryption_key(key_path):
         try:
             with open(key_file, "wb") as f:
                 f.write(key)
+            os.chmod(key_file, 0o600)
         except PermissionError as e:
             error = e
     return key, error

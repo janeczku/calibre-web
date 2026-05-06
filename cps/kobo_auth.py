@@ -22,7 +22,7 @@
 This module also includes research notes into the auth protocol used by Kobo devices.
 
 Log-in:
-When first booting a Kobo device the user must sign into a Kobo (or affiliate) account.
+When first booting a Kobo device the user must log in to a Kobo (or affiliate) account.
 Upon successful sign-in, the user is redirected to
     https://auth.kobobooks.com/CrossDomainSignIn?id=<some id>
 which serves the following response:
@@ -41,7 +41,7 @@ issue for a few years now https://www.mobileread.com/forums/showpost.php?p=34768
 will still grant access given the userkey.)
 
 Official Kobo Store Api authorization:
-* For most of the endpoints we care about (sync, metadata, tags, etc), the userKey is
+* For most of the endpoints we care about (sync, metadata, tags, etc.), the userKey is
 passed in the x-kobo-userkey header, and is sufficient to authorize the API call.
 * Some endpoints (e.g: AnnotationService) instead make use of Bearer tokens pass through
 an authorization header. To get a BearerToken, the device makes a POST request to the
@@ -65,12 +65,13 @@ from os import urandom
 from functools import wraps
 
 from flask import g, Blueprint, abort, request
-from flask_login import login_user, current_user, login_required
+from .cw_login import login_user, current_user
 from flask_babel import gettext as _
-from flask_limiter import RateLimitExceeded
 
 from . import logger, config, calibre_db, db, helper, ub, lm, limiter
 from .render_template import render_title_template
+from .usermanagement import user_login_required
+
 
 log = logger.create()
 
@@ -78,8 +79,10 @@ kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 
 
 @kobo_auth.route("/generate_auth_token/<int:user_id>")
-@login_required
+@user_login_required
 def generate_auth_token(user_id):
+    if current_user.id != user_id and not current_user.role_admin():
+        abort(403)
     warning = False
     host_list = request.host.rsplit(':')
     if len(host_list) == 1:
@@ -115,13 +118,15 @@ def generate_auth_token(user_id):
         "generate_kobo_auth_url.html",
         title=_("Kobo Setup"),
         auth_token=auth_token.auth_token,
-        warning = warning
+        warning=warning
     )
 
 
 @kobo_auth.route("/deleteauthtoken/<int:user_id>", methods=["POST"])
-@login_required
+@user_login_required
 def delete_auth_token(user_id):
+    if current_user.id != user_id and not current_user.role_admin():
+        abort(403)
     # Invalidate any previously generated Kobo Auth token for this user
     ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == user_id)\
         .filter(ub.RemoteAuthToken.token_type==1).delete()
@@ -152,13 +157,6 @@ def requires_kobo_auth(f):
     def inner(*args, **kwargs):
         auth_token = get_auth_token()
         if auth_token is not None:
-            try:
-                limiter.check()
-            except RateLimitExceeded:
-                return abort(429)
-            except (ConnectionError, Exception) as e:
-                log.error("Connection error to limiter backend: %s", e)
-                return abort(429)
             user = (
                 ub.session.query(ub.User)
                 .join(ub.RemoteAuthToken)
@@ -167,7 +165,7 @@ def requires_kobo_auth(f):
             )
             if user is not None:
                 login_user(user)
-                [limiter.limiter.storage.clear(k.key) for k in limiter.current_limits]
+                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
                 return f(*args, **kwargs)
         log.debug("Received Kobo request without a recognizable auth token.")
         return abort(401)
