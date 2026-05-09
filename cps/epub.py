@@ -175,7 +175,7 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
     for cs in cover_section:
         if cs.endswith('.xhtml') or cs.endswith('.html'):
             markup = epub_zip.read(os.path.join(cover_path, cs))
-            markup_tree = etree.fromstring(markup)
+            markup_tree = etree.fromstring(markup, parser=etree.XMLParser(resolve_entities=False, no_network=True))
             # no matter xhtml or html with no namespace
             img_src = markup_tree.xpath("//*[local-name() = 'img']/@src")
             # Alternative image source

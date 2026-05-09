@@ -155,7 +155,7 @@ class Douban(Metadata):
             r.raise_for_status()
         except Exception as e:
             log.warning(e)
-            return None
+            return []
 
         match = MetaRecord(
             id=id,

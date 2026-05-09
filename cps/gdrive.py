@@ -140,7 +140,7 @@ try:
             if response:
                 dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
                 if not response['deleted'] and response['file']['title'] == 'metadata.db' \
-                  and response['file']['md5Checksum'] != hashlib.md5(dbpath):  # nosec
+                  and response['file']['md5Checksum'] != hashlib.md5(dbpath).hexdigest():  # nosec
                     tmp_dir = get_temp_dir()
 
                     log.info('Database file updated')

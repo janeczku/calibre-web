@@ -92,7 +92,7 @@ class my_GoodreadsRequest(GoodreadsRequest):
         if resp.status_code != 200:
             raise GoodreadsRequestException(resp.reason, self.path)
         if self.req_format == 'xml':
-            root = etree.fromstring(resp.content)
+            root = etree.fromstring(resp.content, parser=etree.XMLParser(resolve_entities=False, no_network=True))
             data_dict = etree_to_dict(root)
 
             return data_dict['GoodreadsResponse']

@@ -449,7 +449,14 @@ class Books(Base):
 
     @property
     def atom_timestamp(self):
-        return self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or ''
+        # OPDS atom:updated is defined as "the most recent instant in time
+        # when the entry was modified". Books.timestamp is the date added and
+        # never changes after import, so metadata and cover edits were
+        # invisible to OPDS sync clients. Use last_modified, which Calibre
+        # updates on every metadata or cover change; fall back to timestamp
+        # only if last_modified happens to be missing.
+        t = self.last_modified or self.timestamp
+        return t.strftime('%Y-%m-%dT%H:%M:%S+00:00') if t else ''
 
 
 class CustomColumns(Base):
@@ -640,8 +647,8 @@ class CalibreDB:
                                          connect_args={'check_same_thread': False},
                                          poolclass=StaticPool)
             with check_engine.begin() as connection:
-                connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
-                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
+                connection.execute(text("attach database '{}' as calibre;".format(dbpath.replace("'", "''"))))
+                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path.replace("'", "''"))))
                 local_session = scoped_session(sessionmaker())
                 local_session.configure(bind=connection)
                 database_uuid = local_session().query(Library_Id).one_or_none()
@@ -694,8 +701,8 @@ class CalibreDB:
                                        poolclass=StaticPool)
             with engine.begin() as connection:
                 connection.execute(text('PRAGMA cache_size = 10000;'))
-                connection.execute(text("attach database '{}' as calibre;".format(dbpath)))
-                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path)))
+                connection.execute(text("attach database '{}' as calibre;".format(dbpath.replace("'", "''"))))
+                connection.execute(text("attach database '{}' as app_settings;".format(app_db_path.replace("'", "''"))))
 
             conn = engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
@@ -1108,7 +1115,7 @@ class CalibreDB:
                     .group_by(text('books_languages_link.lang_code')).all()
             tags = list()
             for lang in languages:
-                tag = Category(isoLanguages.get_language_name(get_locale(), None, lang[0].lang_code), lang[0].lang_code)
+                tag = Category(isoLanguages.get_language_name(get_locale(), lang[0].lang_code), lang[0].lang_code)
                 tags.append([tag, lang[1]])
             # Append all books without language to list
             if not return_all_languages:

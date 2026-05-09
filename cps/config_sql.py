@@ -326,7 +326,9 @@ class ConfigSQL(object):
     def to_dict(self):
         storage = {}
         for k, v in self.__dict__.items():
-            if k[0] != '_' and not k.endswith("_e") and not k == "cli" and 'api' not in k.lower():
+            if k[0] != '_' and not k.endswith("_e") and not k == "cli" \
+                    and 'api' not in k.lower() and 'token' not in k.lower() \
+                    and 'secret' not in k.lower():
                 storage[k] = v
         return storage
 
@@ -583,6 +585,7 @@ def get_encryption_key(key_path):
         try:
             with open(key_file, "wb") as f:
                 f.write(key)
+            os.chmod(key_file, 0o600)
         except PermissionError as e:
             error = e
     return key, error
