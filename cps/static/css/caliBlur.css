@@ -260,6 +260,18 @@ body.blur .row-fluid .col-sm-10 {
     pointer-events: none
 }
 
+.series-section {
+    margin-bottom: 10px;
+}
+
+.series-section p {
+    margin-bottom: 5px;
+}
+
+.series-section p:last-child {
+    margin-bottom: 0;
+}
+
 #scnd-nav > li.active a, .authorlist #nav_author a, .catlist #nav_cat a, .langlist #nav_lang a, .serieslist #nav_serie a {
     color: var(--color-primary)
 }
