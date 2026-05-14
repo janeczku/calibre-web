@@ -103,9 +103,10 @@ def setup_series2_classes(cc_id):
     }
     series2_link_class = type(str(link_table_name), (Base,), dicttable)
 
-    # Attach series2 relationship to Books
-    if not hasattr(Books, 'series2'):
-        setattr(Books, 'series2', relationship(series2_link_class))
+    # Attach series2 relationship to Books, overriding the [] placeholder
+    setattr(Books, 'series2', relationship(series2_link_class))
+    log.debug("setup_series2_classes: cc_id=%s, cc_class=%s, link_class=%s",
+              cc_id, series2_cc_class, series2_link_class)
 
 books_authors_link = Table('books_authors_link', Base.metadata,
                            Column('book', Integer, ForeignKey('books.id'), primary_key=True),
