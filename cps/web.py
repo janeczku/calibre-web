@@ -1074,7 +1074,7 @@ def series_list():
 def series2_list():
     if not config.config_series2_column or db.series2_link_class is None or db.series2_cc_class is None:
         abort(404)
-    if current_user.check_visibility(constants.SIDEBAR_SERIES2):
+    if current_user.check_visibility(constants.SIDEBAR_SERIES):
         if current_user.get_view_property('series2', 'dir') == 'desc':
             order = db.series2_cc_class.value.desc()
             order_no = 0
