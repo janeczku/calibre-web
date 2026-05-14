@@ -282,10 +282,13 @@ def view_configuration():
         .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all()
     restrict_columns = calibre_db.session.query(db.CustomColumns) \
         .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
+    series2_columns = calibre_db.session.query(db.CustomColumns) \
+        .filter(and_(db.CustomColumns.datatype == 'series', db.CustomColumns.mark_for_delete == 0)).all()
     languages = calibre_db.speaking_language()
     translations = get_available_locale()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
+                                 series2Columns=series2_columns,
                                  languages=languages,
                                  translations=translations,
                                  title=_("UI Configuration"), page="uiconfig")
@@ -579,6 +582,13 @@ def update_view_configuration():
         log.debug("Invalid Read column")
         return view_configuration()
     _config_int(to_save, "config_read_column")
+
+    if not check_valid_series2_column(to_save.get("config_series2_column", "0")):
+        flash(_("Invalid Second Series Column"), category="error")
+        log.debug("Invalid Series2 column")
+        return view_configuration()
+    _config_int(to_save, "config_series2_column")
+    _config_string(to_save, "config_series2_label")
 
     if not check_valid_restricted_column(to_save.get("config_restricted_column", "0")):
         flash(_("Invalid Restricted Column"), category="error")
@@ -958,6 +968,14 @@ def check_valid_read_column(column):
     if column != "0":
         if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
           .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all():
+            return False
+    return True
+
+
+def check_valid_series2_column(column):
+    if column != "0":
+        if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
+          .filter(and_(db.CustomColumns.datatype == 'series', db.CustomColumns.mark_for_delete == 0)).all():
             return False
     return True
 

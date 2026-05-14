@@ -56,7 +56,56 @@ log = logger.create()
 cc_exceptions = ['composite', 'series']
 cc_classes = {}
 
+# Set by setup_series2_classes(); used by web routes and templates
+series2_cc_class = None
+series2_link_class = None
+
 Base = declarative_base()
+
+
+def setup_series2_classes(cc_id):
+    """Create ORM classes for the configured series2 custom column and attach
+    a Books.series2 relationship, mirroring setup_db_cc_classes for series type."""
+    global series2_cc_class, series2_link_class
+
+    if not cc_id:
+        return
+
+    cc_table_name = 'custom_column_' + str(cc_id)
+    link_table_name = 'books_custom_column_' + str(cc_id) + '_link'
+
+    # Build the value table class (custom_column_<id>)
+    if cc_table_name in Base.metadata.tables:
+        existing = cc_classes.get(cc_id)
+        if existing is None:
+            return
+        series2_cc_class = existing
+    else:
+        ccdict = {'__tablename__': cc_table_name,
+                  'id': Column(Integer, primary_key=True),
+                  'value': Column(String)}
+        series2_cc_class = type(str(cc_table_name), (Base,), ccdict)
+        cc_classes[cc_id] = series2_cc_class
+
+    # Build the link table class (books_custom_column_<id>_link)
+    if link_table_name in Base.metadata.tables:
+        return
+    dicttable = {
+        '__tablename__': link_table_name,
+        'id': Column(Integer, primary_key=True),
+        'book': Column(Integer, ForeignKey('books.id'), primary_key=True),
+        'map_value': Column('value', Integer,
+                            ForeignKey(cc_table_name + '.id'),
+                            primary_key=True),
+        'extra': Column(Float),
+        'asoc': relationship(cc_table_name, uselist=False),
+        'value': association_proxy('asoc', 'value'),
+    }
+    series2_link_class = type(str(link_table_name), (Base,), dicttable)
+
+    # Attach series2 relationship to Books
+    if not hasattr(Books, 'series2'):
+        setattr(Books, 'series2', relationship(series2_link_class))
 
 books_authors_link = Table('books_authors_link', Base.metadata,
                            Column('book', Integer, ForeignKey('books.id'), primary_key=True),
@@ -424,6 +473,7 @@ class Books(Base):
     comments = relationship(Comments, backref='books')
     data = relationship(Data, backref='books')
     series = relationship(Series, secondary=books_series_link, backref='books')
+    series2 = []  # replaced by setup_series2_classes() when config_series2_column is set
     ratings = relationship(Ratings, secondary=books_ratings_link, backref='books')
     languages = relationship(Languages, secondary=books_languages_link, backref='books')
     publishers = relationship(Publishers, secondary=books_publishers_link, backref='books')
@@ -632,6 +682,11 @@ class CalibreDB:
                         relationship(cc_classes[cc_id[0]],
                                      secondary=books_custom_column_links[cc_id[0]],
                                      backref='books'))
+
+        # Set up series2 custom column if configured
+        series2_col_id = getattr(cls.config, 'config_series2_column', 0)
+        if series2_col_id:
+            setup_series2_classes(series2_col_id)
 
     @classmethod
     def check_valid_db(cls, config_calibre_dir, app_db_path, config_calibre_uuid):

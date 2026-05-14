@@ -57,6 +57,16 @@
               </select>
         </div>
         <div class="form-group">
+          <label for="config_series2_column">{{_('Second Series Column')}}</label>
+              <select name="config_series2_column" id="config_series2_column" class="form-control" onchange="updateSeries2Label(this)">
+                <option value="0" data-name="" {% if conf.config_series2_column == 0 %}selected{% endif %}></option>
+                {% for series2Column in series2Columns %}
+                <option value="{{ series2Column.id }}" data-name="{{ series2Column.name }}" {% if series2Column.id == conf.config_series2_column %}selected{% endif %}>{{ series2Column.name }}</option>
+                {% endfor %}
+              </select>
+              <input type="hidden" name="config_series2_label" id="config_series2_label" value="">
+        </div>
+        <div class="form-group">
           <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
               <select name="config_restricted_column" id="config_restricted_column" class="form-control">
                 <option value="0" {% if conf.config_restricted_column == 0 %}selected{% endif %}>{{ _('None') }}</option>
@@ -181,6 +191,15 @@
 {{ restrict_modal() }}
 {% endblock %}
 {% block js %}
+<script>
+function updateSeries2Label(sel) {
+  document.getElementById('config_series2_label').value = sel.options[sel.selectedIndex].getAttribute('data-name') || '';
+}
+(function() {
+  var sel = document.getElementById('config_series2_column');
+  if (sel) { updateSeries2Label(sel); }
+})();
+</script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>

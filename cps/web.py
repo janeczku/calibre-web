@@ -392,6 +392,8 @@ def render_books_list(data, sort_param, book_id, page):
         return render_publisher_books(page, book_id, order)
     elif data == "series":
         return render_series_books(page, book_id, order)
+    elif data == "series2":
+        return render_series2_books(page, book_id, order)
     elif data == "ratings":
         return render_ratings_books(page, book_id, order)
     elif data == "formats":
@@ -584,6 +586,24 @@ def render_publisher_books(page, book_id, order):
                                  title=_("Publisher: %(name)s", name=publisher),
                                  page="publisher",
                                  order=order[1])
+
+
+def render_series2_books(page, book_id, order):
+    if db.series2_link_class is None or db.series2_cc_class is None:
+        abort(404)
+    series2_entry = calibre_db.session.query(db.series2_cc_class).filter(
+        db.series2_cc_class.id == book_id).first()
+    if series2_entry:
+        entries, random, pagination = calibre_db.fill_indexpage(
+            page, 0, db.Books,
+            db.Books.series2.any(db.series2_link_class.map_value == book_id),
+            [order[0][0]], True, config.config_read_column)
+        label = config.config_series2_label or 'World'
+        title = label + ": " + series2_entry.value
+    else:
+        abort(404)
+    return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                 id=book_id, title=title, page="series2", order=order[1])
 
 
 def render_series_books(page, book_id, order):
@@ -814,8 +834,8 @@ def books_list(data, sort_param, book_id, page):
     return render_books_list(data, sort_param, book_id, page)
 
 # Limit number of routes to avoid redirects
-data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", "ratings", "formats",
-       "category", "language", "archived", "search", "advsearch", "newest"]
+data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", "series2",
+       "ratings", "formats", "category", "language", "archived", "search", "advsearch", "newest"]
 for d in data:
     web.add_url_rule('/{}/<sort_param>'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
     web.add_url_rule('/{}/<sort_param>/'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
@@ -1045,6 +1065,39 @@ def series_list():
             return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=char_list,
                                          title=_("Series"), page="serieslist", data="series", bodyClass="grid-view",
                                          order=order_no)
+    else:
+        abort(404)
+
+
+@web.route("/series2")
+@login_required_if_no_ano
+def series2_list():
+    if not config.config_series2_column or db.series2_link_class is None or db.series2_cc_class is None:
+        abort(404)
+    if current_user.check_visibility(constants.SIDEBAR_SERIES2):
+        if current_user.get_view_property('series2', 'dir') == 'desc':
+            order = db.series2_cc_class.value.desc()
+            order_no = 0
+        else:
+            order = db.series2_cc_class.value.asc()
+            order_no = 1
+        entries_raw = (calibre_db.session.query(db.series2_cc_class,
+                                                func.count(db.series2_link_class.book).label('count'))
+                       .join(db.series2_link_class, db.series2_link_class.map_value == db.series2_cc_class.id)
+                       .join(db.Books, db.Books.id == db.series2_link_class.book)
+                       .filter(calibre_db.common_filters())
+                       .group_by(db.series2_link_class.map_value)
+                       .order_by(order)
+                       .all())
+        entries = [[db.Category(row[0].value, row[0].id), row[1]] for row in entries_raw]
+        label = config.config_series2_label or 'World'
+        return render_title_template('list.html',
+                                     entries=entries,
+                                     folder='web.books_list',
+                                     charlist=[],
+                                     title=label,
+                                     page="series2list",
+                                     data="series2", order=order_no)
     else:
         abort(404)
 

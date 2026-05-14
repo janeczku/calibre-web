@@ -55,8 +55,9 @@ def simple_search():
 @login_required_if_no_ano
 def advanced_search():
     values = dict(request.form)
-    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_shelf', 'exclude_shelf',
-              'include_language', 'exclude_language', 'include_extension', 'exclude_extension']
+    params = ['include_tag', 'exclude_tag', 'include_serie', 'exclude_serie', 'include_serie2', 'exclude_serie2',
+              'include_shelf', 'exclude_shelf', 'include_language', 'exclude_language',
+              'include_extension', 'exclude_extension']
     for param in params:
         values[param] = list(request.form.getlist(param))
     flask_session['query'] = json.dumps(values)
@@ -178,6 +179,16 @@ def adv_search_serie(q, include_series_inputs, exclude_series_inputs):
     return q
 
 
+def adv_search_serie2(q, include_inputs, exclude_inputs):
+    if db.series2_link_class is None:
+        return q
+    for serie2 in include_inputs:
+        q = q.filter(db.Books.series2.any(db.series2_link_class.map_value == serie2))
+    for serie2 in exclude_inputs:
+        q = q.filter(not_(db.Books.series2.any(db.series2_link_class.map_value == serie2)))
+    return q
+
+
 def adv_search_shelf(q, include_shelf_inputs, exclude_shelf_inputs):
     if len(include_shelf_inputs):
         in_shelf = (
@@ -265,7 +276,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
 
     # parse multi selects to a complete dict
     tags = dict()
-    elements = ['tag', 'serie', 'shelf', 'language', 'extension']
+    elements = ['tag', 'serie', 'serie2', 'shelf', 'language', 'extension']
     for element in elements:
         tags['include_' + element] = term.get('include_' + element)
         tags['exclude_' + element] = term.get('exclude_' + element)
@@ -347,6 +358,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
             q = q.filter(db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         q = adv_search_tag(q, tags['include_tag'], tags['exclude_tag'])
         q = adv_search_serie(q, tags['include_serie'], tags['exclude_serie'])
+        q = adv_search_serie2(q, tags['include_serie2'], tags['exclude_serie2'])
         q = adv_search_shelf(q, tags['include_shelf'], tags['exclude_shelf'])
         q = adv_search_extension(q, tags['include_extension'], tags['exclude_extension'])
         q = adv_search_language(q, tags['include_language'], tags['exclude_language'])
@@ -412,8 +424,18 @@ def render_prepare_search_form(cc):
         languages = calibre_db.speaking_language()
     else:
         languages = None
+    series2 = []
+    if config.config_series2_column and db.series2_cc_class is not None and db.series2_link_class is not None:
+        series2 = (calibre_db.session.query(db.series2_cc_class)
+                   .join(db.series2_link_class, db.series2_link_class.map_value == db.series2_cc_class.id)
+                   .join(db.Books, db.Books.id == db.series2_link_class.book)
+                   .filter(calibre_db.common_filters())
+                   .group_by(db.series2_link_class.map_value)
+                   .order_by(db.series2_cc_class.value)
+                   .all())
     return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
-                                 series=series,shelves=shelves, title=_("Advanced Search"), cc=cc, page="advsearch")
+                                 series=series, series2=series2,
+                                 shelves=shelves, title=_("Advanced Search"), cc=cc, page="advsearch")
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
