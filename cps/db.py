@@ -1056,17 +1056,22 @@ class CalibreDB:
 
         return base_query.filter(or_(*filter_expression))
 
-    def get_cc_columns(self, config, filter_config_custom_read=False):
+    def get_cc_columns(self, config, filter_config_custom_read=False, filter_hidden=True):
         tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
         cc = []
         r = None
         if config.config_columns_to_ignore:
             r = re.compile(config.config_columns_to_ignore)
+        hidden_ids = set()
+        if filter_hidden and config.config_cc_hidden_columns:
+            hidden_ids = set(int(x) for x in config.config_cc_hidden_columns.split(',') if x.strip())
 
         for col in tmp_cc:
             if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
                 continue
             if r and r.match(col.name):
+                continue
+            if col.id in hidden_ids:
                 continue
             cc.append(col)
 

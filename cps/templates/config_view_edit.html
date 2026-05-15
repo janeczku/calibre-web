@@ -87,6 +87,7 @@
         <p class="help-block">{{_('Drag to set the display order of custom columns in book details.')}}</p>
         <input type="hidden" name="config_cc_display_order" id="config_cc_display_order" value="">
         {% set link_col_ids = (conf.config_cc_link_columns or '').split(',') %}
+        {% set hide_col_ids = (conf.config_cc_hidden_columns or '').split(',') %}
         <ul id="cc-order-list" class="list-group">
           {% for col in allColumns %}
           {% if col.id != conf.config_subtitle_column %}
@@ -96,6 +97,10 @@
             <label class="cc-link-label">
               <input type="checkbox" name="cc_link_{{ col.id }}" {% if col.id|string in link_col_ids %}checked{% endif %}>
               {{_('Link')}}
+            </label>
+            <label class="cc-link-label">
+              <input type="checkbox" name="cc_hide_{{ col.id }}" {% if col.id|string in hide_col_ids %}checked{% endif %}>
+              {{_('Hide')}}
             </label>
           </li>
           {% endif %}

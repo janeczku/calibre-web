@@ -611,6 +611,7 @@ def update_view_configuration():
 
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
     config.config_cc_link_columns = ','.join(k[8:] for k in to_save if k.startswith('cc_link_'))
+    config.config_cc_hidden_columns = ','.join(k[8:] for k in to_save if k.startswith('cc_hide_'))
     if "Show_detail_random" in to_save:
         config.config_default_show |= constants.DETAIL_RANDOM
 
