@@ -46,6 +46,7 @@ from sqlalchemy.sql.expression import func, or_, text
 from . import constants, logger, helper, services, cli_param
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
+from .web import _s2_key
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .embed_helper import get_calibre_binarypath
@@ -171,7 +172,7 @@ def before_request():
     g.config_authors_max = config.config_authors_max
     g.config_show_series2_on_book_list = config.config_show_series2_on_book_list
     g.config_series2_label = config.config_series2_label
-    g.series2_key = (config.config_series2_slug or config.config_series2_label or '').strip() or 'series2'
+    g.series2_key = _s2_key
     if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
                                  'admin.simulatedbchange',
