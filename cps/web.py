@@ -60,7 +60,8 @@ from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
 
 # Computed once at startup (after create_app loads config). Used for dynamic series2 URL routing.
-_s2_key = (config.config_series2_slug or '').strip() or 'series2'
+# Falls back to label (column name) if slug not yet saved, then to 'series2'.
+_s2_key = (config.config_series2_slug or config.config_series2_label or '').strip() or 'series2'
 
 
 feature_support = {
@@ -837,8 +838,9 @@ def books_list(data, sort_param, book_id, page):
     return render_books_list(data, sort_param, book_id, page)
 
 # Limit number of routes to avoid redirects
-data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", _s2_key,
-       "ratings", "formats", "category", "language", "archived", "search", "advsearch", "newest"]
+_s2_data_keys = [_s2_key] if _s2_key == 'series2' else [_s2_key, 'series2']
+data = ["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series"] + _s2_data_keys + [
+        "ratings", "formats", "category", "language", "archived", "search", "advsearch", "newest"]
 for d in data:
     web.add_url_rule('/{}/<sort_param>'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
     web.add_url_rule('/{}/<sort_param>/'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
@@ -1101,7 +1103,7 @@ def series2_list():
                                          charlist=[],
                                          title=label,
                                          page="series2list",
-                                         data="series2", order=order_no)
+                                         data=_s2_key, order=order_no)
         else:
             entries = (calibre_db.session.query(
                 db.Books,
@@ -1122,9 +1124,13 @@ def series2_list():
                                          charlist=[],
                                          title=label,
                                          page="series2list",
-                                         data="series2", bodyClass="grid-view", order=order_no)
+                                         data=_s2_key, bodyClass="grid-view", order=order_no)
     else:
         abort(404)
+
+
+if _s2_key != 'series2':
+    web.add_url_rule('/series2', view_func=series2_list)
 
 
 @web.route("/ratings")

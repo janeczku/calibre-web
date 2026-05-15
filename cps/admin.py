@@ -171,7 +171,7 @@ def before_request():
     g.config_authors_max = config.config_authors_max
     g.config_show_series2_on_book_list = config.config_show_series2_on_book_list
     g.config_series2_label = config.config_series2_label
-    g.series2_key = (config.config_series2_slug or '').strip() or 'series2'
+    g.series2_key = (config.config_series2_slug or config.config_series2_label or '').strip() or 'series2'
     if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
                                  'admin.simulatedbchange',

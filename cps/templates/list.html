@@ -20,7 +20,7 @@
 
       {% if data == "series" %}
       <button class="update-view btn btn-primary" data-page="series" data-target="series_view" id="grid-button" data-view="grid">{{_('Grid')}}</button>
-      {% elif data == "series2" %}
+      {% elif data == g.series2_key %}
       <button class="update-view btn btn-primary" data-page="series2" data-target="series2_view" id="grid-button" data-view="grid">{{_('Grid')}}</button>
       {% endif %}
     </div>
