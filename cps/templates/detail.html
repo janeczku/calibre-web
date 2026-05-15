@@ -160,7 +160,7 @@
                 <p class="series-entry">{{_('Series')}}: <a href="{{ url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id) }}">{{ entry.series[0].name }}</a>, {{_('Book')}} {{ entry.series_index|formatfloat(2) }}</p>
                 {% endif %}
                 {% if entry.series2|length > 0 %}
-                <p class="series2-entry">{{ series2_label }}: <a href="{{ url_for('web.books_list', data='series2', sort_param='stored', book_id=entry.series2[0].map_value) }}">{{ entry.series2[0].value }}</a>, {{_('Book')}} {{ entry.series2[0].extra|formatfloat(2) }}</p>
+                <p class="series2-entry">{{ series2_label }}: <a href="{{ url_for('web.books_list', data=g.series2_key, sort_param='stored', book_id=entry.series2[0].map_value) }}">{{ entry.series2[0].value }}</a>, {{_('Book')}} {{ entry.series2[0].extra|formatfloat(2) }}</p>
                 {% endif %}
             </div>
             {% endif %}

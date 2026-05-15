@@ -856,6 +856,8 @@ $(function() {
 
     $(".update-view").click(function(e) {
         var view = $(this).data("view");
+        var page = $(this).data("page") || "series";
+        var target = $(this).data("target") || "series_view";
         e.preventDefault();
         e.stopPropagation();
         $.ajax({
@@ -863,7 +865,7 @@ $(function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: getPath() + "/ajax/view",
-            data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
+            data: "{\"" + page + "\": {\"" + target + "\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();
             }
