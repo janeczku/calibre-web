@@ -1070,6 +1070,16 @@ class CalibreDB:
                 continue
             cc.append(col)
 
+        if config.config_cc_display_order:
+            try:
+                order_ids = [int(x) for x in config.config_cc_display_order.split(',') if x.strip()]
+                id_to_col = {col.id: col for col in cc}
+                ordered = [id_to_col[i] for i in order_ids if i in id_to_col]
+                remaining = [col for col in cc if col.id not in set(order_ids)]
+                cc = ordered + remaining
+            except (ValueError, AttributeError):
+                pass
+
         return cc
 
     # read search results from calibre-database and return it (function is used for feed and simple search

@@ -3,6 +3,16 @@
   overflow-y: auto;
 }
 
+.cc-order-item {
+  cursor: grab;
+  user-select: none;
+}
+
+.cc-drag-handle {
+  margin-right: 8px;
+  color: #aaa;
+}
+
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
   font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
