@@ -63,6 +63,12 @@ def advanced_search():
     return redirect(url_for('web.books_list', data="advsearch", sort_param='stored', query=""))
 
 
+@search.route("/ccsearch", methods=['GET'])
+@login_required_if_no_ano
+def cc_search():
+    return render_adv_search_results(request.args.to_dict())
+
+
 @search.route("/advsearch", methods=['GET'])
 @login_required_if_no_ano
 def advanced_search_form():

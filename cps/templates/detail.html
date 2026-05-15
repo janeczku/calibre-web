@@ -236,9 +236,9 @@
                                         {% elif c.datatype == 'series' %}
                                             {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                                         {% elif c.datatype == 'text' %}
-                                            {% if c.id in cc_link_cols %}<a href="{{ url_for('search.advanced_search') }}?custom_column_{{ c.id }}={{ column.value.strip() }}">{{ column.value.strip() }}</a>{% else %}{{ column.value.strip() }}{% endif %}{% if not loop.last %}, {% endif %}
+                                            {% if c.id in cc_link_cols %}<a href="{{ url_for('search.cc_search') }}?custom_column_{{ c.id }}={{ column.value.strip() }}">{{ column.value.strip() }}</a>{% else %}{{ column.value.strip() }}{% endif %}{% if not loop.last %}, {% endif %}
                                             {% elif c.datatype == 'enumeration' %}
-                                                {% if c.id in cc_link_cols %}<a href="{{ url_for('search.advanced_search') }}?custom_column_{{ c.id }}={{ column.value }}">{{ column.value }}</a>{% else %}{{ column.value }}{% endif %}
+                                                {% if c.id in cc_link_cols %}<a href="{{ url_for('search.cc_search') }}?custom_column_{{ c.id }}={{ column.value }}">{{ column.value }}</a>{% else %}{{ column.value }}{% endif %}
                                         {% else %}
                                             {{ column.value }}
                                         {% endif %}
