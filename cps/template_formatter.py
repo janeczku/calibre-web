@@ -34,6 +34,64 @@ def _parse_args(text):
     return [re.sub(r'\\,', ',', a) for a in tokens]
 
 
+def _split_gpm_args(args_str):
+    """Split comma-separated GPM args respecting nested parens and quotes."""
+    args, depth, in_quote, current = [], 0, None, []
+    for ch in args_str:
+        if in_quote:
+            current.append(ch)
+            if ch == in_quote:
+                in_quote = None
+        elif ch in ("'", '"'):
+            in_quote = ch
+            current.append(ch)
+        elif ch == '(':
+            depth += 1
+            current.append(ch)
+        elif ch == ')':
+            depth -= 1
+            current.append(ch)
+        elif ch == ',' and depth == 0:
+            args.append(''.join(current).strip())
+            current = []
+        else:
+            current.append(ch)
+    if current:
+        args.append(''.join(current).strip())
+    return [a for a in args if a]
+
+
+def _eval_gpm_expr(expr, fields):
+    """Recursively evaluate a calibre General Program Mode expression."""
+    expr = expr.strip()
+    if not expr:
+        return ''
+    # String literal
+    if len(expr) >= 2 and expr[0] in ("'", '"') and expr[-1] == expr[0]:
+        return expr[1:-1]
+    # Function call: name(args...)
+    p = expr.find('(')
+    if p > 0 and expr.endswith(')'):
+        fname = expr[:p].strip()
+        evaled = [_eval_gpm_expr(a, fields) for a in _split_gpm_args(expr[p + 1:-1])]
+        if fname == 'field':
+            return fields.get(evaled[0], '') if evaled else ''
+        entry = _REGISTRY.get(fname)
+        if entry:
+            _, fn = entry
+            val = evaled[0] if evaled else ''
+            try:
+                result = fn(val, *evaled[1:])
+                return result if isinstance(result, str) else (str(result) if result is not None else '')
+            except Exception as ex:
+                log.warning("GPM function %r failed (args=%r): %s", fname, evaled, ex)
+                return ''
+        log.warning("GPM references unknown function %r", fname)
+        return ''
+    # Bare word — field name
+    return fields.get(expr, '')
+
+
 # ---------------------------------------------------------------------------
 # Function implementations — signatures: fn(val, *extra_args) -> str
 # ---------------------------------------------------------------------------
@@ -495,6 +553,10 @@ class CalibreTemplateFormatter(string.Formatter):
     def format_field(self, val, fmt):
         if not fmt:
             return val or ''
+
+        # GPM mode: calibre wraps the expression in single quotes
+        if len(fmt) >= 2 and fmt[0] == "'" and fmt[-1] == "'":
+            return _eval_gpm_expr(fmt[1:-1], self._fields)
 
         # Handle |prefix|fmt|suffix| conditional wrapper
         m = _format_string_re.match(fmt)
