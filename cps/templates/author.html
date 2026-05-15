@@ -74,6 +74,14 @@
           ({{entry.Books.series_index|formatfloat(2)}})
         </p>
         {% endif %}
+        {% if g.config_show_series2_on_book_list and entry.Books.series2.__len__() > 0 %}
+        <p class="series">
+          <a href="{{url_for('web.books_list', data='series2', sort_param='stored', book_id=entry.Books.series2[0].map_value )}}">
+            {{entry.Books.series2[0].value}}
+          </a>
+          ({{entry.Books.series2[0].extra|formatfloat(2)}})
+        </p>
+        {% endif %}
         {% if entry.Books.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.Books.ratings[0].rating/2)|int(2)) %}

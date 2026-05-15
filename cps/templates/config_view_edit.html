@@ -65,6 +65,12 @@
                 {% endfor %}
               </select>
               <input type="hidden" name="config_series2_label" id="config_series2_label" value="">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="config_show_series2_on_book_list" id="config_show_series2_on_book_list" {% if conf.config_show_series2_on_book_list %}checked{% endif %}>
+                  {{_('Show Second Series on book list pages')}}
+                </label>
+              </div>
         </div>
         <div class="form-group">
           <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
