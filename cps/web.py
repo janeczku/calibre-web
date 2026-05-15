@@ -1631,6 +1631,8 @@ def show_book(book_id):
             entry.languages[lang_index].language_name = isoLanguages.get_language_name(get_locale(), entry.languages[
                 lang_index].lang_code)
         cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+        log.debug("show_book %d: cc columns=%r", book_id,
+                  [(c.id, c.label, c.datatype) for c in cc])
         cc_link_cols = set(int(x) for x in (config.config_cc_link_columns or '').split(',') if x.strip())
         composite_vals = {}
         for col in cc:

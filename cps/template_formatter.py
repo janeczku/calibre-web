@@ -547,4 +547,13 @@ class CalibreTemplateFormatter(string.Formatter):
 
 
 def evaluate_composite_template(template, book, cc_columns, column_name=None):
-    return CalibreTemplateFormatter(book, cc_columns).safe_format(template, column_name=column_name)
+    fmt = CalibreTemplateFormatter(book, cc_columns)
+    result = fmt.safe_format(template, column_name=column_name)
+    log.debug(
+        "Composite column %r: template=%r identifiers=%r result=%r",
+        column_name,
+        template,
+        fmt._fields.get('identifiers', ''),
+        result,
+    )
+    return result
