@@ -86,12 +86,19 @@
       <div class="panel-body">
         <p class="help-block">{{_('Drag to set the display order of custom columns in book details.')}}</p>
         <input type="hidden" name="config_cc_display_order" id="config_cc_display_order" value="">
+        {% set link_col_ids = (conf.config_cc_link_columns or '').split(',') %}
         <ul id="cc-order-list" class="list-group">
           {% for col in allColumns %}
+          {% if col.id != conf.config_subtitle_column %}
           <li class="list-group-item cc-order-item" data-id="{{ col.id }}">
             <span class="glyphicon glyphicon-move cc-drag-handle"></span>
             {{ col.name }}
+            <label class="cc-link-label">
+              <input type="checkbox" name="cc_link_{{ col.id }}" {% if col.id|string in link_col_ids %}checked{% endif %}>
+              {{_('Link')}}
+            </label>
           </li>
+          {% endif %}
           {% endfor %}
         </ul>
       </div>
@@ -221,6 +228,8 @@
   updateOrder();
   Sortable.create(list, {
     animation: 150,
+    filter: 'input, label',
+    preventOnFilter: false,
     onEnd: updateOrder
   });
 })();

@@ -236,7 +236,9 @@
                                         {% elif c.datatype == 'series' %}
                                             {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                                         {% elif c.datatype == 'text' %}
-                                            {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                                            {% if c.id in cc_link_cols %}<a href="{{ url_for('web.books_list', data='search', sort_param='stored', query=column.value.strip()) }}">{{ column.value.strip() }}</a>{% else %}{{ column.value.strip() }}{% endif %}{% if not loop.last %}, {% endif %}
+                                            {% elif c.datatype == 'enumeration' %}
+                                                {% if c.id in cc_link_cols %}<a href="{{ url_for('web.books_list', data='search', sort_param='stored', query=column.value) }}">{{ column.value }}</a>{% else %}{{ column.value }}{% endif %}
                                         {% else %}
                                             {{ column.value }}
                                         {% endif %}

@@ -8,9 +8,22 @@
   user-select: none;
 }
 
+.cc-order-item::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
 .cc-drag-handle {
   margin-right: 8px;
   color: #aaa;
+}
+
+.cc-link-label {
+  float: right;
+  font-weight: normal;
+  margin-bottom: 0;
+  cursor: pointer;
 }
 
 .tooltip.bottom .tooltip-inner {
