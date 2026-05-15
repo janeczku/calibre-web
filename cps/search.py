@@ -82,7 +82,7 @@ def cc_search():
     }
     if cc_id:
         term['custom_column_' + cc_id] = cc_val
-    return render_adv_search_results(term)
+    return render_adv_search_results(term, order=([db.Books.timestamp.desc()], 'new'))
 
 
 @search.route("/advsearch", methods=['GET'])
