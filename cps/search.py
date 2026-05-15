@@ -63,10 +63,26 @@ def advanced_search():
     return redirect(url_for('web.books_list', data="advsearch", sort_param='stored', query=""))
 
 
-@search.route("/ccsearch", methods=['GET'])
+@search.route("/cc", methods=['GET'])
 @login_required_if_no_ano
 def cc_search():
-    return render_adv_search_results(request.args.to_dict())
+    cc_id = request.args.get('column', '')
+    cc_val = request.args.get('value', '')
+    term = {
+        'authors': '', 'title': '', 'publisher': '',
+        'publishstart': '', 'publishend': '',
+        'ratinghigh': '', 'ratinglow': '',
+        'comments': '', 'read_status': 'Any',
+        'include_tag': [], 'exclude_tag': [],
+        'include_serie': [], 'exclude_serie': [],
+        'include_serie2': [], 'exclude_serie2': [],
+        'include_shelf': [], 'exclude_shelf': [],
+        'include_language': [], 'exclude_language': [],
+        'include_extension': [], 'exclude_extension': [],
+    }
+    if cc_id:
+        term['custom_column_' + cc_id] = cc_val
+    return render_adv_search_results(term)
 
 
 @search.route("/advsearch", methods=['GET'])
