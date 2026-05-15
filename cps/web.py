@@ -1634,6 +1634,9 @@ def show_book(book_id):
         log.debug("show_book %d: cc columns=%r", book_id,
                   [(c.id, c.label, c.datatype) for c in cc])
         cc_link_cols = set(int(x) for x in (config.config_cc_link_columns or '').split(',') if x.strip())
+        # Pass all columns (including hidden) to composite evaluation so that
+        # templates referencing hidden columns still resolve correctly.
+        all_cc_for_composite = calibre_db.get_cc_columns(config, filter_config_custom_read=True, filter_hidden=False)
         composite_vals = {}
         for col in cc:
             if col.datatype == 'composite':
@@ -1642,7 +1645,7 @@ def show_book(book_id):
                     template = display.get('composite_template', '')
                     contains_html = display.get('contains_html', False)
                     composite_vals[col.id] = {
-                        'value': evaluate_composite_template(template, entry, cc, column_name=col.name),
+                        'value': evaluate_composite_template(template, entry, all_cc_for_composite, column_name=col.name),
                         'contains_html': contains_html,
                     }
                 except Exception as ex:
