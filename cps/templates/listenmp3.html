@@ -115,6 +115,7 @@
 
 
         {% for c in cc %}
+        {% if c.datatype != 'composite' %}
         <div class="real_custom_columns">
           {% if entry['custom_column_' ~ c.id]|length > 0 %}
             {{ c.name }}:
@@ -147,6 +148,7 @@
             {% endfor %}
           {% endif %}
         </div>
+        {% endif %}
         {% endfor %}
       {% endif %}
       {% if not current_user.is_anonymous %}

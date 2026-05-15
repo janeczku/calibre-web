@@ -213,7 +213,19 @@
 
 
                 {% for c in cc %}
-                    {% if entry['custom_column_' ~ c.id]|length > 0 %}
+                    {% if c.datatype == 'composite' %}
+                            {% set cval = composite_vals.get(c.id) %}
+                            {% if cval and cval.value %}
+                                <div class="real_custom_columns">
+                                    {{ c.name }}:
+                                    {% if cval.contains_html %}
+                                        {{ cval.value|safe }}
+                                    {% else %}
+                                        {{ cval.value }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% elif entry['custom_column_' ~ c.id]|length > 0 %}
                         <div class="real_custom_columns">
                             {{ c.name }}:
                             {% for column in entry['custom_column_' ~ c.id] %}

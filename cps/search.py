@@ -95,6 +95,8 @@ def advanced_search_form():
 
 def adv_search_custom_columns(cc, term, q):
     for c in cc:
+        if c.datatype == "composite":
+            continue
         if c.datatype == "datetime":
             custom_start = term.get('custom_column_' + str(c.id) + '_start')
             custom_end = term.get('custom_column_' + str(c.id) + '_end')

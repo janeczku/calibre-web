@@ -1048,7 +1048,7 @@ class CalibreDB:
         ]
 
         for c in cc:
-            if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
+            if c.datatype not in ["datetime", "rating", "bool", "int", "float", "composite"]:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
@@ -1057,7 +1057,7 @@ class CalibreDB:
         return base_query.filter(or_(*filter_expression))
 
     def get_cc_columns(self, config, filter_config_custom_read=False, filter_hidden=True):
-        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
+        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype != 'series').all()
         cc = []
         r = None
         if config.config_columns_to_ignore:

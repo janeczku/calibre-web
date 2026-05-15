@@ -283,7 +283,7 @@ def view_configuration():
     restrict_columns = calibre_db.session.query(db.CustomColumns) \
         .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
     all_cc_columns = calibre_db.session.query(db.CustomColumns) \
-        .filter(and_(db.CustomColumns.datatype.notin_(db.cc_exceptions), db.CustomColumns.mark_for_delete == 0)).all()
+        .filter(and_(db.CustomColumns.datatype != 'series', db.CustomColumns.mark_for_delete == 0)).all()
     if config.config_cc_display_order:
         try:
             order_ids = [int(x) for x in config.config_cc_display_order.split(',') if x.strip()]

@@ -19,6 +19,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import re
 import json
 import mimetypes
 import chardet  # dependency of requests
@@ -1615,6 +1616,23 @@ def read_book(book_id, book_format):
         return redirect(url_for("web.index"))
 
 
+def _evaluate_composite_template(template, book, cc_columns):
+    """Substitute {#label} references in a composite column template with actual column values."""
+    label_to_value = {}
+    for col in cc_columns:
+        if col.datatype == 'composite':
+            continue
+        attr = getattr(book, 'custom_column_' + str(col.id), None)
+        if isinstance(attr, list):
+            val = str(attr[0].value) if attr and attr[0].value is not None else ''
+        elif attr is not None:
+            val = str(attr.value) if attr.value is not None else ''
+        else:
+            val = ''
+        label_to_value[col.label] = val
+    return re.sub(r'\{#(\w+)\}', lambda m: label_to_value.get(m.group(1), ''), template)
+
+
 @web.route("/book/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
@@ -1630,6 +1648,19 @@ def show_book(book_id):
                 lang_index].lang_code)
         cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
         cc_link_cols = set(int(x) for x in (config.config_cc_link_columns or '').split(',') if x.strip())
+        composite_vals = {}
+        for col in cc:
+            if col.datatype == 'composite':
+                try:
+                    display = col.get_display_dict()
+                    template = display.get('composite_template', '')
+                    contains_html = display.get('contains_html', False)
+                    composite_vals[col.id] = {
+                        'value': _evaluate_composite_template(template, entry, cc),
+                        'contains_html': contains_html,
+                    }
+                except Exception as ex:
+                    log.debug("Failed to evaluate composite column %r (id=%s): %s", col.name, col.id, ex)
         book_in_shelves = []
         shelves = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for sh in shelves:
@@ -1656,6 +1687,7 @@ def show_book(book_id):
                                      entry=entry,
                                      cc=cc,
                                      cc_link_cols=cc_link_cols,
+                                     composite_vals=composite_vals,
                                      is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
                                      title=entry.title,
                                      books_shelfs=book_in_shelves,
