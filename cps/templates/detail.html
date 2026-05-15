@@ -239,8 +239,8 @@
                                             <span class="glyphicon glyphicon-remove"></span>
                                         {% endif %}
                                     {% else %}
-                                        {% if c.datatype == 'float' %}
-                                            {{ column.value|formatfloat(2) }}
+                                        {% if c.datatype == 'float' or c.datatype == 'int' %}
+                                            {{ column.value|format_cc_number(c.display) }}
                                         {% elif c.datatype == 'datetime' %}
                                             {{ column.value|formatdate }}
                                         {% elif c.datatype == 'comments' %}
