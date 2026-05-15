@@ -404,7 +404,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                  entries=entries,
                                  result_count=result_count,
                                  title=_("Advanced Search"), page="advsearch",
-                                 order=order[1])
+                                 order=order[1] if order else None)
 
 
 def render_prepare_search_form(cc):
