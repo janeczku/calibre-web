@@ -59,6 +59,7 @@ from .services.worker import WorkerThread
 from .tasks_status import render_task_status
 from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
+from .template_formatter import evaluate_composite_template
 
 
 feature_support = {
@@ -1616,23 +1617,6 @@ def read_book(book_id, book_format):
         return redirect(url_for("web.index"))
 
 
-def _evaluate_composite_template(template, book, cc_columns):
-    """Substitute {#label} references in a composite column template with actual column values."""
-    label_to_value = {}
-    for col in cc_columns:
-        if col.datatype == 'composite':
-            continue
-        attr = getattr(book, 'custom_column_' + str(col.id), None)
-        if isinstance(attr, list):
-            val = str(attr[0].value) if attr and attr[0].value is not None else ''
-        elif attr is not None:
-            val = str(attr.value) if attr.value is not None else ''
-        else:
-            val = ''
-        label_to_value[col.label] = val
-    return re.sub(r'\{#(\w+)\}', lambda m: label_to_value.get(m.group(1), ''), template)
-
-
 @web.route("/book/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
@@ -1656,7 +1640,7 @@ def show_book(book_id):
                     template = display.get('composite_template', '')
                     contains_html = display.get('contains_html', False)
                     composite_vals[col.id] = {
-                        'value': _evaluate_composite_template(template, entry, cc),
+                        'value': evaluate_composite_template(template, entry, cc),
                         'contains_html': contains_html,
                     }
                 except Exception as ex:
