@@ -2,6 +2,7 @@
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
 <div class="discover">
@@ -70,6 +71,18 @@
                   <input type="checkbox" name="config_show_series2_on_book_list" id="config_show_series2_on_book_list" {% if conf.config_show_series2_on_book_list %}checked{% endif %}>
                   {{_('Show Second Series on book list pages')}}
                 </label>
+              </div>
+              {% set series2_icon = conf.config_series2_icon or 'glyphicon-bookmark' %}
+              <div id="series2_icon_group" {% if not conf.config_series2_column %}hidden{% endif %}>
+                <label for="config_series2_icon">{{_('Sidebar Icon')}}</label>
+                <select name="config_series2_icon" id="config_series2_icon"
+                        class="selectpicker" data-live-search="true" data-width="100%">
+                  {% for icon_value, icon_label in series2Icons %}
+                  <option value="{{ icon_value }}"
+                          data-content="<span class='glyphicon {{ icon_value }}'></span> {{ icon_label }}"
+                          {% if icon_value == series2_icon %}selected{% endif %}>{{ icon_label }}</option>
+                  {% endfor %}
+                </select>
               </div>
         </div>
         <div class="form-group">
@@ -197,9 +210,14 @@
 {{ restrict_modal() }}
 {% endblock %}
 {% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js') }}"></script>
 <script>
 function updateSeries2Label(sel) {
   document.getElementById('config_series2_label').value = sel.options[sel.selectedIndex].getAttribute('data-name') || '';
+  var group = document.getElementById('series2_icon_group');
+  if (group) {
+    group.hidden = (sel.value === '0' || sel.value === '');
+  }
 }
 (function() {
   var sel = document.getElementById('config_series2_column');

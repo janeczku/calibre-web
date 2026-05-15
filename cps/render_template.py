@@ -76,7 +76,8 @@ def get_sidebar_config(kwargs=None):
                     "show_text": _('Show Series Section'), "config_show": True})
     if config.config_series2_column:
         series2_label = config.config_series2_label or 'World'
-        sidebar.append({"glyph": "glyphicon-bookmark", "text": series2_label, "link": 'web.series2_list',
+        series2_icon = config.config_series2_icon or 'glyphicon-bookmark'
+        sidebar.append({"glyph": series2_icon, "text": series2_label, "link": 'web.series2_list',
                         "id": "serie2", "visibility": constants.SIDEBAR_SERIES, 'public': True,
                         "page": "series2", "no_param": True,
                         "show_text": _('Show %(label)s Section', label=series2_label), "config_show": True})

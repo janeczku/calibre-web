@@ -435,6 +435,7 @@ def render_prepare_search_form(cc):
                    .all())
     return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
                                  series=series, series2=series2,
+                                 series2_label=config.config_series2_label or _("Series"),
                                  shelves=shelves, title=_("Advanced Search"), cc=cc, page="advsearch")
 
 
