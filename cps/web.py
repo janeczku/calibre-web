@@ -1640,11 +1640,11 @@ def show_book(book_id):
                     template = display.get('composite_template', '')
                     contains_html = display.get('contains_html', False)
                     composite_vals[col.id] = {
-                        'value': evaluate_composite_template(template, entry, cc),
+                        'value': evaluate_composite_template(template, entry, cc, column_name=col.name),
                         'contains_html': contains_html,
                     }
                 except Exception as ex:
-                    log.debug("Failed to evaluate composite column %r (id=%s): %s", col.name, col.id, ex)
+                    log.warning("Failed to set up composite column %r (id=%s): %s", col.name, col.id, ex)
         book_in_shelves = []
         shelves = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for sh in shelves:

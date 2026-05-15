@@ -11,6 +11,10 @@ import string
 from functools import lru_cache
 from math import ceil, floor, modf, trunc
 
+from . import logger
+
+log = logger.create()
+
 
 # ---------------------------------------------------------------------------
 # Argument scanner — ported from calibre's args_scanner()
@@ -520,8 +524,11 @@ class CalibreTemplateFormatter(string.Formatter):
                     val = fn(val, *extra_args)
                     if not isinstance(val, str):
                         val = str(val) if val is not None else ''
-                except Exception:
+                except Exception as ex:
+                    log.warning("Template function %r failed (args=%r): %s", fname, extra_args, ex)
                     val = ''
+            elif fname:
+                log.warning("Template references unknown function %r", fname)
 
         if not val:
             return ''
@@ -529,13 +536,15 @@ class CalibreTemplateFormatter(string.Formatter):
             return prefix + val + suffix
         return val
 
-    def safe_format(self, template):
+    def safe_format(self, template, column_name=None):
         try:
             ans = self.vformat(template, [], self._fields)
             return _compress_spaces.sub(' ', ans).strip()
-        except Exception:
+        except Exception as ex:
+            ctx = ' (column %r)' % column_name if column_name else ''
+            log.warning("Composite template evaluation failed%s for template %r: %s", ctx, template, ex)
             return ''
 
 
-def evaluate_composite_template(template, book, cc_columns):
-    return CalibreTemplateFormatter(book, cc_columns).safe_format(template)
+def evaluate_composite_template(template, book, cc_columns, column_name=None):
+    return CalibreTemplateFormatter(book, cc_columns).safe_format(template, column_name=column_name)
