@@ -57,6 +57,15 @@
               </select>
         </div>
         <div class="form-group">
+          <label for="config_subtitle_column">{{_('Display subtitle from column')}}</label>
+              <select name="config_subtitle_column" id="config_subtitle_column" class="form-control">
+                <option value="0" {% if conf.config_subtitle_column == 0 %}selected{% endif %}></option>
+                {%  for subtitleColumn in subtitleColumns %}
+                <option value="{{ subtitleColumn.id }}" {% if subtitleColumn.id == conf.config_subtitle_column %}selected{% endif %}>{{ subtitleColumn.name }}</option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="form-group">
           <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
               <select name="config_restricted_column" id="config_restricted_column" class="form-control">
                 <option value="0" {% if conf.config_restricted_column == 0 %}selected{% endif %}>{{ _('None') }}</option>

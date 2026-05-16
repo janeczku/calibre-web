@@ -537,7 +537,7 @@ class RemoteAuthToken(Base):
 
     def __init__(self):
         super().__init__()
-        self.auth_token = (hexlify(os.urandom(4))).decode('utf-8')
+        self.auth_token = (hexlify(os.urandom(16))).decode('utf-8')
         self.expiration = datetime.now() + timedelta(minutes=10)  # 10 min from now
 
     def __repr__(self):
