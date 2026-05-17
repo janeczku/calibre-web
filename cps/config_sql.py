@@ -122,6 +122,7 @@ class _Settings(_Base):
     config_login_type = Column(Integer, default=0)
 
     config_kobo_proxy = Column(Boolean, default=False)
+    config_kobo_read_column_sync_user = Column(Integer, default=1)
 
     config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
