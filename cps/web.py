@@ -711,7 +711,7 @@ def render_language_books(page, name, order):
             lang_name = _("None")
     except KeyError:
         abort(404)
-    if name == "none":
+    if name.lower() == "none":
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Languages.lang_code == None,

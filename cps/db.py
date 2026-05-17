@@ -1126,7 +1126,7 @@ class CalibreDB:
                                  .filter(self.common_filters())
                                  .count())
                 if no_lang_count:
-                    tags.append([Category(_("None"), None, "none"), no_lang_count])
+                    tags.append([Category(_("None"), "None", "none"), no_lang_count])
             return sorted(tags, key=lambda x: x[0].name.lower(), reverse=reverse_order)
         else:
             if not languages:

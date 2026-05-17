@@ -8,6 +8,7 @@ description = "Web app for browsing, reading and downloading eBooks stored in a 
 authors = [{name = "@OzzieIsaacs", email = "Ozzie.Fernandez.Isaacs@googlemail.com"}]
 maintainers = [{name = "@OzzieIsaacs"}]
 license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python :: 3",
@@ -41,7 +42,7 @@ dependencies = [
     "tornado>=6.4.2,<6.6",
     "Wand>=0.4.4,<0.8.0",
     "unidecode>=0.04.19,<1.5.0",
-    "lxml>=4.9.1,<6.1.0",
+    "lxml>=4.9.1,<6.2.0",
     "flask-wtf>=0.14.2,<1.3.0",
     "chardet>=3.0.0,<5.3.0",
     "netifaces-plus>=0.12.0,<0.13.0",
@@ -119,14 +120,10 @@ kobo = [
 ]
 
 [project.scripts]
-cps = "cps.main:main"
+cps = "calibreweb.__main__:main"
 
 [tool.setuptools]
 include-package-data = true
-license-files = ["LICENSE"]
-
-[tool.setuptools.packages.find]
-include = ["cps*"]
 
 [tool.setuptools.dynamic]
-version = {attr = "cps.constants.STABLE_VERSION"}
+version = {attr = "calibreweb.cps.constants.STABLE_VERSION"}
