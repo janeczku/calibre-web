@@ -4,26 +4,29 @@
 }
 
 .cc-order-item {
+  display: flex;
+  align-items: center;
   cursor: grab;
   user-select: none;
 }
 
-.cc-order-item::after {
-  content: '';
-  display: table;
-  clear: both;
+.cc-drag-handle {
+  margin-right: 10px;
+  color: #aaa;
+  flex-shrink: 0;
 }
 
-.cc-drag-handle {
-  margin-right: 8px;
-  color: #aaa;
+.cc-col-name {
+  flex: 1;
 }
 
 .cc-link-label {
-  float: right;
   font-weight: normal;
   margin-bottom: 0;
+  margin-left: 16px;
   cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .tooltip.bottom .tooltip-inner {
