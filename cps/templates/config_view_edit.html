@@ -90,7 +90,6 @@
         {% set hide_col_ids = (conf.config_cc_hidden_columns or '').split(',') %}
         <ul id="cc-order-list" class="list-group">
           {% for col in allColumns %}
-          {% if col.id != conf.config_subtitle_column %}
           <li class="list-group-item cc-order-item" data-id="{{ col.id }}">
             <span class="glyphicon glyphicon-move cc-drag-handle"></span>
             <span class="cc-col-name">{{ col.name }}</span>
@@ -103,7 +102,6 @@
               {{_('Link')}}
             </label>
           </li>
-          {% endif %}
           {% endfor %}
         </ul>
       </div>
