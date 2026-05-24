@@ -19,6 +19,7 @@
 import os
 import re
 import glob
+from datetime import datetime, timezone
 from shutil import copyfile, copyfileobj
 from markupsafe import escape
 from time import time
@@ -192,6 +193,9 @@ class TaskConvert(CalibreTask):
                             local_db.session.merge(new_format)
                             local_db.session.commit()
                             if self.settings['new_book_format'].upper() in ['KEPUB', 'EPUB', 'EPUB3']:
+                                # Update book's last_modified so it appears in next Kobo sync
+                                cur_book.last_modified = datetime.now(timezone.utc)
+                                local_db.session.commit()
                                 ub_session = init_db_thread()
                                 remove_synced_book(book_id, True, ub_session)
                                 ub_session.close()

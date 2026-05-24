@@ -29,7 +29,7 @@ from .cw_login import current_user
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import func, true
 
-from . import calibre_db, config, db, logger, ub
+from . import calibre_db, config, db, logger, ub, helper
 from .render_template import render_title_template
 from .usermanagement import login_required_if_no_ano, user_login_required
 
@@ -84,6 +84,20 @@ def add_to_shelf(shelf_id, book_id):
     try:
         ub.session.merge(shelf)
         ub.session.commit()
+
+        if shelf.kobo_sync and config.config_kepubifypath:
+            log.info(f'Shelf "{shelf.name}" is a Kobo-synced shelf. Checking book {book_id} for KEPUB conversion.')
+            book_to_check = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+            if book_to_check:
+                # Check the available formats for the book
+                formats = [data.format for data in book_to_check.data]
+                if 'KEPUB' not in formats and 'EPUB' in formats:
+                    try:
+                        helper.convert_book_format(book_to_check.id, config.get_book_path(), 'EPUB', 'KEPUB', current_user.name)
+                        log.info(f'Successfully triggered KEPUB conversion for book {book_id}.')
+                    except Exception as e:
+                        log.error(f'An error occurred during on-demand KEPUB conversion: {e}')
+
     except (OperationalError, InvalidRequestError) as e:
         ub.session.rollback()
         log.error_or_exception("Settings Database error: {}".format(e))
