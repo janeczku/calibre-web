@@ -1841,6 +1841,9 @@ def _configuration_update_helper():
 
         # Google Books API configuration
         reboot_required |=_config_string(to_save, "config_googlebooks_api_key")
+
+        # ComicVine API configuration
+        reboot_required |=_config_string(to_save, "config_comicvine_api_key")
         
         _config_int(to_save, "config_updatechannel")
 
