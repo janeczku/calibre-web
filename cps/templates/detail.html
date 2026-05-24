@@ -55,7 +55,7 @@
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             {% if entry.email_share_list.__len__() == 1 %}
                                 <div class="btn-group" role="group">
-                                    <button id="sendbtn" class="btn btn-primary sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}">
+                                    <button id="sendbtn" class="btn btn-primary sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'], ereader_email=entry.email_share_list[0]['ereader_email'])}}">
                                         <span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}
                                     </button>
                                 </div>
@@ -69,7 +69,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
                                         {% for format in entry.email_share_list %}
                                             <li>
-                                                <a class="sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</a>
+                                                <a class="sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'], ereader_email=format['ereader_email'])}}">{{ format['text'] }}</a>
                                             </li>
                                         {% endfor %}
                                     </ul>
