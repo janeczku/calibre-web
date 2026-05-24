@@ -1237,6 +1237,9 @@ def serve_book(book_id, book_format, anyname):
         # enable byte range read of pdf
         response = make_response(
             send_from_directory(os.path.join(config.get_book_path(), book.path), data.name + "." + book_format))
+        response.headers['Content-Disposition'] = 'inline'
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['Content-Security-Policy'] = "script-src 'none'; object-src 'none'"
         if not range_header:
             response.headers['Accept-Ranges'] = 'bytes'
         return response
