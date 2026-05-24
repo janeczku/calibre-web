@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2020 pwr
+#    Copyright (C) 2020-2025 pwr, akharlamov
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ class WorkerThread(threading.Thread):
 
         self.dequeued = list()
 
-        self.doLock = threading.Lock()
+        self.doLock = threading.RLock()
         self.queue = ImprovedQueue()
         self.num = 0
         self.start()
@@ -89,13 +89,9 @@ class WorkerThread(threading.Thread):
         ins.num += 1
         username = user if user is not None else 'System'
         log.debug("Add Task for user: {} - {}".format(username, task))
-        ins.queue.put(QueuedTask(
-            num=ins.num,
-            user=username,
-            added=datetime.now(),
-            task=task,
-            hidden=hidden
-        ))
+        queued_task = QueuedTask(num=ins.num, user=username, added=datetime.now(), task=task, hidden=hidden)
+        ins.queue.put(queued_task)
+        return queued_task
 
     @property
     def tasks(self):
@@ -159,6 +155,15 @@ class WorkerThread(threading.Thread):
         for __, __, __, task, __ in ins.tasks:
             if str(task.id) == str(task_id) and task.is_cancellable:
                 task.stat = STAT_CANCELLED if task.stat == STAT_WAITING else STAT_ENDED
+
+    def get_task(self, task_id):
+        ins = self.get_instance()
+        with self.doLock:
+            for __, __, __, task, __ in ins.tasks:
+                if str(task.id) == str(task_id):
+                    return task
+            return None
+
 
 
 class CalibreTask:

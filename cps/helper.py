@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2012-2019 cervinko, idalin, SiphonSquirrel, ouzklcn, akushsky,
-#                            OzzieIsaacs, bodybybuddha, jkrehm, matthazinski, janeczku
+#    Copyright (C) 2012-2025 cervinko, idalin, SiphonSquirrel, ouzklcn, akushsky,
+#                            OzzieIsaacs, bodybybuddha, jkrehm, matthazinski, janeczku,
+#                            akharlamov
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -200,11 +201,13 @@ def check_send_to_ereader(entry):
 # list with supported formats
 def check_read_formats(entry):
     extensions_reader = {'TXT', 'PDF', 'EPUB', 'KEPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'}
+    if config.config_converterpath:
+        extensions_reader = {'FB2', 'FBZ', 'MOBI', 'PRC', *extensions_reader}
+
     book_formats = list()
-    if len(entry.data):
-        for ele in iter(entry.data):
-            if ele.format.upper() in extensions_reader:
-                book_formats.append(ele.format.lower())
+    for ele in iter(entry.data):
+        if ele.format.upper() in extensions_reader:
+            book_formats.append(ele.format.lower())
     return book_formats
 
 
