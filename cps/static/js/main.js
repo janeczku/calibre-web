@@ -390,7 +390,7 @@ $(function() {
         layoutMode : "fitRows"
     });
 
-    if ($(".load-more").length && $(".next").length) {
+    if ($(".load-more").length && $(".next").length && $("body").data("infinite-scroll") == 1) {
         var $loadMore = $(".load-more .row").infiniteScroll({
             debug: false,
             // selector for the paged navigation (it will be hidden)

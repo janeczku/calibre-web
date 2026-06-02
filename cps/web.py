@@ -1477,6 +1477,7 @@ def change_profile(kobo_support, local_oauth_check, oauth_status, translations, 
                 # Query username, if not existing, change
                 current_user.name = check_username(to_save.get("name"))
         current_user.random_books = 1 if to_save.get("show_random") == "on" else 0
+        current_user.infinite_scroll = 1 if to_save.get("infinite_scroll") == "on" else 0
         current_user.default_language = to_save.get("default_language", "all")
         current_user.locale = to_save.get("locale", "en")
         old_state = current_user.kobo_only_shelves_sync
