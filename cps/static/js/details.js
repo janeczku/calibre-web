@@ -52,6 +52,25 @@ $(".sendbtn-form").click(function() {
     })
 });
 
+$(".anythingllm-send").click(function() {
+    var $btn = $(this);
+    var origHtml = $btn.html();
+    $btn.html('<span class="glyphicon glyphicon-refresh glyphicon-spin"></span> Sending…').prop('disabled', true);
+    $.ajax({
+        method: 'post',
+        url: $btn.data('href'),
+        data: {csrf_token: $("input[name='csrf_token']").val()},
+        success: function (data) {
+            $btn.html(origHtml).prop('disabled', false);
+            handleResponse(data);
+        },
+        error: function () {
+            $btn.html(origHtml).prop('disabled', false);
+            handleResponse([{type: 'danger', message: 'AnythingLLM request failed, please try again.'}]);
+        }
+    });
+});
+
 $(function() {
     $("#have_read_form").ajaxForm();
 });

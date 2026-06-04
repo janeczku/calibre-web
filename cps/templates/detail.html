@@ -83,6 +83,20 @@
                                 </div>
                             {% endif %}
                         {% endif %}
+                        {% if config.config_anythingllm_url %}
+                            {% set llm_format = 'EPUB' if 'EPUB' in entry.data|map(attribute='format')|list else ('PDF' if 'PDF' in entry.data|map(attribute='format')|list else '') %}
+                            {% if llm_format %}
+                                {% if not (current_user.kindle_mail and entry.email_share_list) %}
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                {% endif %}
+                                <div class="btn-group" role="group">
+                                    <button class="btn btn-default anythingllm-send"
+                                            data-href="{{ url_for('web.send_to_anythingllm', book_id=entry.id, book_format=llm_format) }}">
+                                        <span class="glyphicon glyphicon-education"></span> {{ _('Send to AnythingLLM') }}
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                     {% if entry.reader_list and current_user.role_viewer() %}
                         <div class="btn-group" role="group">

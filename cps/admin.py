@@ -1839,6 +1839,10 @@ def _configuration_update_helper():
             services.goodreads_support.connect(config.config_goodreads_api_key,
                                                config.config_use_goodreads)
 
+        # AnythingLLM configuration
+        _config_string(to_save, "config_anythingllm_url")
+        _config_string(to_save, "config_anythingllm_api_key")
+
         # Google Books API configuration
         reboot_required |=_config_string(to_save, "config_googlebooks_api_key")
         

@@ -1282,6 +1282,110 @@ def send_to_ereader(book_id, book_format, convert):
     return make_response(jsonify(response))
 
 
+@web.route('/send-to-anythingllm/<int:book_id>/<book_format>', methods=["POST"])
+@login_required_if_no_ano
+@download_required
+def send_to_anythingllm(book_id, book_format):
+    """Upload an epub/pdf to AnythingLLM and embed it into a per-book workspace."""
+    import re
+    import urllib.request as _urlreq
+
+    anythingllm_url = (config.config_anythingllm_url or '').rstrip('/')
+    anythingllm_key = config.config_anythingllm_api_key or ''
+    if not anythingllm_url or not anythingllm_key:
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("AnythingLLM integration is not configured.")}]))
+
+    def _api(method, path, data=None, content_type='application/json'):
+        req = _urlreq.Request(
+            anythingllm_url + path,
+            data=data,
+            headers={'Authorization': 'Bearer ' + anythingllm_key, 'Content-Type': content_type},
+            method=method,
+        )
+        with _urlreq.urlopen(req, timeout=120) as resp:
+            return json.loads(resp.read().decode('utf-8'))
+
+    book = calibre_db.get_book(book_id)
+    if not book:
+        return make_response(jsonify([{'type': "danger", 'message': _("Book not found.")}]))
+
+    file_entry = next((e for e in book.data if e.format.upper() == book_format.upper()), None)
+    if not file_entry:
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("Format %(fmt)s not found for this book.", fmt=book_format)}]))
+
+    file_path = os.path.join(config.get_book_path(), book.path,
+                             file_entry.name + '.' + book_format.lower())
+    if not os.path.isfile(file_path):
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("File not found on disk.")}]))
+
+    # Workspace name: "calibre-{sanitized title}"
+    safe_title = re.sub(r'[^\w一-鿿぀-ヿ]', '-', book.title, flags=re.UNICODE)
+    safe_title = re.sub(r'-{2,}', '-', safe_title).strip('-')[:60]
+    workspace_name = "calibre-" + safe_title
+
+    try:
+        all_workspaces = _api('GET', '/api/v1/workspaces').get('workspaces', [])
+        existing = next((w for w in all_workspaces if w['name'] == workspace_name), None)
+        workspace_slug = existing['slug'] if existing else \
+            _api('POST', '/api/v1/workspace/new',
+                 data=json.dumps({"name": workspace_name}).encode())['workspace']['slug']
+    except Exception as e:
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("Failed to get/create workspace: %(err)s", err=str(e))}]))
+
+    try:
+        mime_type = mimetypes.guess_type(file_path)[0] or 'application/octet-stream'
+        boundary = b'----CalibreWebBoundary'
+        with open(file_path, 'rb') as f:
+            file_data = f.read()
+        body = (b'--' + boundary + b'\r\n'
+                b'Content-Disposition: form-data; name="file"; filename="'
+                + os.path.basename(file_path).encode() + b'"\r\n'
+                b'Content-Type: ' + mime_type.encode() + b'\r\n\r\n'
+                + file_data + b'\r\n'
+                b'--' + boundary + b'--\r\n')
+        upload_req = _urlreq.Request(
+            anythingllm_url + "/api/v1/document/upload",
+            data=body,
+            headers={'Authorization': 'Bearer ' + anythingllm_key,
+                     'Content-Type': 'multipart/form-data; boundary=' + boundary.decode()},
+            method='POST',
+        )
+        with _urlreq.urlopen(upload_req, timeout=120) as resp:
+            upload_result = json.loads(resp.read().decode('utf-8'))
+    except Exception as e:
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("AnythingLLM upload failed: %(err)s", err=str(e))}]))
+
+    if not upload_result.get('success') or not upload_result.get('documents'):
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("AnythingLLM upload error: %(err)s",
+                                                    err=upload_result.get('error', 'unknown'))}]))
+
+    doc_location = upload_result['documents'][0]['location']
+
+    try:
+        embed_req = _urlreq.Request(
+            anythingllm_url + "/api/v1/workspace/" + workspace_slug + "/update-embeddings",
+            data=json.dumps({"adds": [doc_location], "deletes": []}).encode(),
+            headers={'Authorization': 'Bearer ' + anythingllm_key,
+                     'Content-Type': 'application/json'},
+            method='POST',
+        )
+        with _urlreq.urlopen(embed_req, timeout=300) as resp:
+            json.loads(resp.read().decode('utf-8'))
+    except Exception as e:
+        return make_response(jsonify([{'type': "danger",
+                                       'message': _("Uploaded but embedding failed: %(err)s", err=str(e))}]))
+
+    return make_response(jsonify([{'type': "success",
+                                   'message': _("\"%(title)s\" sent to AnythingLLM workspace: %(ws)s",
+                                                title=book.title, ws=workspace_name)}]))
+
+
 # ################################### Login Logout ##################################################################
 
 @web.route('/register', methods=['POST'])

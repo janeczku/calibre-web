@@ -164,6 +164,26 @@
     </div>
     {% endif %}
     <div class="form-group">
+      <input type="checkbox" id="config_anythingllm_enabled" name="config_anythingllm_enabled"
+             data-control="anythingllm-settings" {% if config.config_anythingllm_url %}checked{% endif %}>
+      <label for="config_anythingllm_enabled">{{_('Enable AnythingLLM Integration')}}</label>
+    </div>
+    <div data-related="anythingllm-settings">
+      <div class="form-group">
+        <label for="config_anythingllm_url">{{_('AnythingLLM Server URL')}}</label>
+        <input type="text" class="form-control" id="config_anythingllm_url" name="config_anythingllm_url"
+               placeholder="http://localhost:3001"
+               value="{% if config.config_anythingllm_url %}{{ config.config_anythingllm_url }}{% endif %}"
+               autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_anythingllm_api_key">{{_('AnythingLLM API Key')}}</label>
+        <input type="text" class="form-control" id="config_anythingllm_api_key" name="config_anythingllm_api_key"
+               value="{% if config.config_anythingllm_api_key %}{{ config.config_anythingllm_api_key }}{% endif %}"
+               autocomplete="off">
+      </div>
+    </div>
+    <div class="form-group">
       <label for="config_googlebooks_api_key">{{_('Google Books API Key')}}</label>
       <input type="text" class="form-control" id="config_googlebooks_api_key" name="config_googlebooks_api_key" value="{% if config.config_googlebooks_api_key != '' %}{{ config.config_googlebooks_api_key }}{% endif %}" autocomplete="off">
     </div>
