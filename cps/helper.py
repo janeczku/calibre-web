@@ -652,18 +652,30 @@ def check_username(username):
     return username
 
 
+_EMAIL_RE = re.compile(
+    r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$"
+)
+_NAME_EMAIL_RE = re.compile(r'^(.+?)\s*<\s*(.+?)\s*>\s*$')
+
+
+def extract_email(entry):
+    """Return the bare email address from a 'Name <email>' or plain 'email' entry."""
+    m = _NAME_EMAIL_RE.match(entry.strip())
+    return m.group(2).strip() if m else entry.strip()
+
+
 def valid_email(emails):
     valid_emails = []
-    for email in emails.split(','):
-        email = strip_whitespaces(email)
-        # if email is not deleted
-        if email:
-            # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
-            if not re.search(r"^[\w.!#$%&'*+\\/=?^_`{|}~-]+@[\w](?:[\w-]{0,61}[\w])?(?:\.[\w](?:[\w-]{0,61}[\w])?)*$",
-                             email):
-                log.error("Invalid Email address format for {}".format(email))
-                raise Exception(_("Invalid Email address format"))
-            valid_emails.append(email)
+    for entry in emails.split(','):
+        entry = strip_whitespaces(entry)
+        if not entry:
+            continue
+        addr = extract_email(entry)
+        # Regex according to https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+        if not _EMAIL_RE.search(addr):
+            log.error("Invalid Email address format for {}".format(addr))
+            raise Exception(_("Invalid Email address format"))
+        valid_emails.append(entry)
     return ",".join(valid_emails)
 
 

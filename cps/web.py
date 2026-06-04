@@ -46,7 +46,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
-    edit_book_read_status, valid_password
+    edit_book_read_status, valid_password, extract_email
 from .pagination import Pagination
 from .redirect import get_redirect_location
 from .cw_babel import get_available_locale
@@ -1264,7 +1264,8 @@ def send_to_ereader(book_id, book_format, convert):
         return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
     elif current_user.kindle_mail:
         selected_email = request.form.get('email', '').strip()
-        allowed_emails = [e.strip() for e in current_user.kindle_mail.split(',') if e.strip()]
+        all_entries = [e.strip() for e in current_user.kindle_mail.split(',') if e.strip()]
+        allowed_emails = [extract_email(e) for e in all_entries]
         if selected_email and selected_email in allowed_emails:
             ereader_mail = selected_email
         else:

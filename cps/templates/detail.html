@@ -55,11 +55,19 @@
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             {% set kindle_emails = current_user.kindle_mail.split(',') | map('trim') | list %}
                             {% if entry.email_share_list.__len__() == 1 and kindle_emails | length == 1 %}
+                                {% set ns = namespace() %}
+                                {% if '<' in kindle_emails[0] and '>' in kindle_emails[0] %}
+                                    {% set ns.label = kindle_emails[0].split('<')[0] | trim %}
+                                    {% set ns.addr  = kindle_emails[0].split('<')[1].split('>')[0] | trim %}
+                                {% else %}
+                                    {% set ns.label = kindle_emails[0] %}
+                                    {% set ns.addr  = kindle_emails[0] %}
+                                {% endif %}
                                 <div class="btn-group" role="group">
                                     <button id="sendbtn" class="btn btn-primary sendbtn-form"
                                             data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}"
-                                            data-email="{{ kindle_emails[0] }}">
-                                        <span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}
+                                            data-email="{{ ns.addr }}">
+                                        <span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}} → {{ ns.label }}
                                     </button>
                                 </div>
                             {% else %}
@@ -71,11 +79,19 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
                                         {% for format in entry.email_share_list %}
-                                            {% for email in kindle_emails %}
+                                            {% for raw_entry in kindle_emails %}
+                                                {% set ns = namespace() %}
+                                                {% if '<' in raw_entry and '>' in raw_entry %}
+                                                    {% set ns.label = raw_entry.split('<')[0] | trim %}
+                                                    {% set ns.addr  = raw_entry.split('<')[1].split('>')[0] | trim %}
+                                                {% else %}
+                                                    {% set ns.label = raw_entry %}
+                                                    {% set ns.addr  = raw_entry %}
+                                                {% endif %}
                                                 <li>
                                                     <a class="sendbtn-form"
                                                        data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}"
-                                                       data-email="{{ email }}">{{ format['text'] }} → {{ email }}</a>
+                                                       data-email="{{ ns.addr }}">{{ format['text'] }} → {{ ns.label }}</a>
                                                 </li>
                                             {% endfor %}
                                         {% endfor %}

@@ -25,8 +25,10 @@
         </div>
     {% endif %}
     <div class="form-group">
-      <label for="kindle_mail">{{_('Send to eReader Email Address. Use comma to separate emails for multiple eReaders')}}</label>
-      <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
+      <label for="kindle_mail">{{_('Send to eReader Email Address. Use comma to separate entries. Optionally add a label: My Kindle &lt;user@kindle.com&gt;')}}</label>
+      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail"
+             placeholder="My Kindle &lt;user@kindle.com&gt;, another@kindle.com"
+             value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
     {% if not content.role_anonymous() %}
     <div class="form-group">
