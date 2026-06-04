@@ -53,9 +53,12 @@
                         {% endif %}
                         {% if current_user.kindle_mail and entry.email_share_list %}
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            {% if entry.email_share_list.__len__() == 1 %}
+                            {% set kindle_emails = current_user.kindle_mail.split(',') | map('trim') | list %}
+                            {% if entry.email_share_list.__len__() == 1 and kindle_emails | length == 1 %}
                                 <div class="btn-group" role="group">
-                                    <button id="sendbtn" class="btn btn-primary sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}">
+                                    <button id="sendbtn" class="btn btn-primary sendbtn-form"
+                                            data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=entry.email_share_list[0]['format'], convert=entry.email_share_list[0]['convert'])}}"
+                                            data-email="{{ kindle_emails[0] }}">
                                         <span class="glyphicon glyphicon-send"></span> {{entry.email_share_list[0]['text']}}
                                     </button>
                                 </div>
@@ -68,9 +71,13 @@
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
                                         {% for format in entry.email_share_list %}
-                                            <li>
-                                                <a class="sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</a>
-                                            </li>
+                                            {% for email in kindle_emails %}
+                                                <li>
+                                                    <a class="sendbtn-form"
+                                                       data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}"
+                                                       data-email="{{ email }}">{{ format['text'] }} → {{ email }}</a>
+                                                </li>
+                                            {% endfor %}
                                         {% endfor %}
                                     </ul>
                                 </div>

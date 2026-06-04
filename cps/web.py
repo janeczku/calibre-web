@@ -1263,12 +1263,18 @@ def send_to_ereader(book_id, book_format, convert):
     if not config.get_mail_server_configured():
         return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
     elif current_user.kindle_mail:
-        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.get_book_path(),
+        selected_email = request.form.get('email', '').strip()
+        allowed_emails = [e.strip() for e in current_user.kindle_mail.split(',') if e.strip()]
+        if selected_email and selected_email in allowed_emails:
+            ereader_mail = selected_email
+        else:
+            ereader_mail = allowed_emails[0] if allowed_emails else current_user.kindle_mail
+        result = send_mail(book_id, book_format, convert, ereader_mail, config.get_book_path(),
                            current_user.name)
         if result is None:
             ub.update_download(book_id, int(current_user.id))
             response = [{'type': "success", 'message': _("Success! Book queued for sending to %(eReadermail)s",
-                                                       eReadermail=current_user.kindle_mail)}]
+                                                       eReadermail=ereader_mail)}]
         else:
             response = [{'type': "danger", 'message': _("Oops! There was an error sending book: %(res)s", res=result)}]
     else:

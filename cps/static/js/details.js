@@ -37,10 +37,15 @@ function handleResponse (data) {
     }
 }
 $(".sendbtn-form").click(function() {
+    var email = $(this).data('email');
+    var postData = {csrf_token: $("input[name='csrf_token']").val()};
+    if (email) {
+        postData.email = email;
+    }
     $.ajax({
         method: 'post',
         url: $(this).data('href'),
-        data: {csrf_token: $("input[name='csrf_token']").val()},
+        data: postData,
         success: function (data) {
             handleResponse(data)
         }
