@@ -3749,3 +3749,33 @@ msgstr ""
 msgid "Show Read/Unread Section"
 msgstr ""
 
+#: cps/helper.py:133
+#, python-format
+msgid "Hi %(name)s!"
+msgstr ""
+
+#: cps/helper.py:135
+msgid "Your account at Calibre-Web has been created."
+msgstr ""
+
+#: cps/helper.py:136
+msgid "Please log in using the following information:"
+msgstr ""
+
+#: cps/helper.py:137
+#, python-format
+msgid "Username: %(name)s"
+msgstr ""
+
+#: cps/helper.py:138
+#, python-format
+msgid "Password: %(password)s"
+msgstr ""
+
+#: cps/helper.py:139
+msgid "Don't forget to change your password after your first login."
+msgstr ""
+
+#: cps/helper.py:140
+msgid "Regards,"
+msgstr ""

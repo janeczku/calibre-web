@@ -3746,3 +3746,33 @@ msgstr "Synchroniser les étagères sélectionnées avec Kobo"
 msgid "Show Read/Unread Section"
 msgstr "Afficher la section Lu/Non lu"
 
+#: cps/helper.py:133
+#, python-format
+msgid "Hi %(name)s!"
+msgstr "Bonjour %(name)s !"
+
+#: cps/helper.py:135
+msgid "Your account at Calibre-Web has been created."
+msgstr "Votre compte Calibre-Web a été créé."
+
+#: cps/helper.py:136
+msgid "Please log in using the following information:"
+msgstr "Veuillez vous connecter avec les informations suivantes :"
+
+#: cps/helper.py:137
+#, python-format
+msgid "Username: %(name)s"
+msgstr "Nom d'utilisateur : %(name)s"
+
+#: cps/helper.py:138
+#, python-format
+msgid "Password: %(password)s"
+msgstr "Mot de passe : %(password)s"
+
+#: cps/helper.py:139
+msgid "Don't forget to change your password after your first login."
+msgstr "N'oubliez pas de changer votre mot de passe après votre première connexion."
+
+#: cps/helper.py:140
+msgid "Regards,"
+msgstr "Cordialement,"
