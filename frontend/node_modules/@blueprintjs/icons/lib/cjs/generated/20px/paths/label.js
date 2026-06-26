@@ -1,0 +1,4 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = ["M3 12h14v-1H3zm11-9H1c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V9zm4 12H2V5h11v3H3v1h10v1h5zm-4-6V5l4 4z"];
+//# sourceMappingURL=label.js.map

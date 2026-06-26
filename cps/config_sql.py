@@ -78,7 +78,7 @@ class _Settings(_Base):
     config_certfile = Column(String)
     config_keyfile = Column(String)
     config_trustedhosts = Column(String, default='')
-    config_calibre_web_title = Column(String, default='Calibre-Web')
+    config_calibre_web_title = Column(String, default='Qalibre')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
@@ -349,6 +349,28 @@ class ConfigSQL(object):
                         setattr(self, k, "")
                 else:
                     setattr(self, k, v)
+
+        # Auto-configure calibre directory inside production/Docker environment
+        prefer_dir = '/library'
+        if os.path.exists(os.path.join(prefer_dir, 'metadata.db')) and self.config_calibre_dir != prefer_dir:
+            self.config_calibre_dir = prefer_dir
+            s.config_calibre_dir = prefer_dir
+            self._session.merge(s)
+            try:
+                self._session.commit()
+            except Exception:
+                self._session.rollback()
+        elif not self.config_calibre_dir or not os.path.exists(os.path.join(self.config_calibre_dir, 'metadata.db')):
+            default_dir = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir, 'library'))
+            if os.path.exists(os.path.join(default_dir, 'metadata.db')):
+                self.config_calibre_dir = default_dir
+                s.config_calibre_dir = default_dir
+                self._session.merge(s)
+                try:
+                    self._session.commit()
+                except Exception:
+                    self._session.rollback()
+
 
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:

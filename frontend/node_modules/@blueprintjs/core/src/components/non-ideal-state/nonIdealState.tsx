@@ -1,0 +1,122 @@
+/*
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import classNames from "classnames";
+
+import { type IconName, IconSize } from "@blueprintjs/icons";
+
+import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
+import { ensureElement } from "../../common/utils";
+import { H4 } from "../html/html";
+import { Icon } from "../icon/icon";
+
+export enum NonIdealStateIconSize {
+    STANDARD = IconSize.STANDARD * 3,
+    SMALL = IconSize.STANDARD * 2,
+    EXTRA_SMALL = IconSize.LARGE,
+}
+
+export interface NonIdealStateProps extends Props {
+    /** An action to resolve the non-ideal state which appears after `description`. */
+    action?: React.JSX.Element;
+
+    /**
+     * Advanced usage: React `children` will appear last (after `action`).
+     * Avoid passing raw strings as they will not receive margins and disrupt the layout flow.
+     */
+    children?: React.ReactNode;
+
+    /**
+     * A longer description of the non-ideal state.
+     * A string or number value will be wrapped in a `<div>` to preserve margins.
+     */
+    description?: React.ReactNode;
+
+    /** The name of a Blueprint icon or a JSX element (such as `<Spinner/>`) to render above the title. */
+    icon?: IconName | MaybeElement;
+
+    /**
+     * How large the icon visual should be.
+     *
+     * @default NonIdealStateIconSize.STANDARD
+     */
+    iconSize?: NonIdealStateIconSize;
+
+    /**
+     * Whether the icon should use a muted style.
+     *
+     * @default true
+     */
+    iconMuted?: boolean;
+
+    /**
+     * Component layout, either vertical or horizontal.
+     *
+     * @default "vertical"
+     */
+    layout?: "vertical" | "horizontal";
+
+    /** The title of the non-ideal state. */
+    title?: React.ReactNode;
+}
+
+/**
+ * Non-ideal state component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/non-ideal-state
+ */
+export const NonIdealState: React.FC<NonIdealStateProps> = props => {
+    const {
+        action,
+        children,
+        className,
+        description,
+        icon,
+        iconMuted = true,
+        iconSize = NonIdealStateIconSize.STANDARD,
+        layout = "vertical",
+        title,
+    } = props;
+
+    return (
+        <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
+            {icon == null ? undefined : (
+                <div
+                    className={Classes.NON_IDEAL_STATE_VISUAL}
+                    style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
+                >
+                    <Icon
+                        className={classNames({ [Classes.ICON_MUTED]: iconMuted })}
+                        icon={icon}
+                        size={iconSize}
+                        aria-hidden={true}
+                        tabIndex={-1}
+                    />
+                </div>
+            )}
+            {title == null && description == null ? undefined : (
+                <div className={Classes.NON_IDEAL_STATE_TEXT}>
+                    {title && <H4>{title}</H4>}
+                    {description && ensureElement(description, "div")}
+                </div>
+            )}
+            {action}
+            {children}
+        </div>
+    );
+};
+
+NonIdealState.displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;

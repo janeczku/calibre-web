@@ -1,0 +1,4 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = ["M13 14h-1l1 2H3l1-2H3c-1.1 0-2-.9-2-2V2C1 .9 4.13 0 8 0s7 .9 7 2v10c0 1.1-.9 2-2 2m-2-2h2v-2h-2zM9 7h4V3H9zm-6 5h2v-2H3zm0-5h4V3H3z"];
+//# sourceMappingURL=train.js.map

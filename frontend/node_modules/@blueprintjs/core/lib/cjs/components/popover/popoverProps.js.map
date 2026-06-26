@@ -1,0 +1,1 @@
+{"version":3,"file":"popoverProps.js","sourceRoot":"","sources":["../../../../src/components/popover/popoverProps.ts"],"names":[],"mappings":";AAAA;;GAEG;;;AAQU,QAAA,sBAAsB,GAAG;IAClC,KAAK,EAAE,OAAgB;IACvB,iBAAiB,EAAE,cAAuB;IAC1C,KAAK,EAAE,OAAgB;IACvB,iBAAiB,EAAE,cAAuB;CAC7C,CAAC;AAGW,QAAA,gBAAgB,GAAG;IAC5B,OAAO,EAAE,SAAS;IAClB,KAAK,EAAE,OAAO;CACR,CAAC"}

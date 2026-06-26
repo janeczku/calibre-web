@@ -18,7 +18,7 @@
 
 import traceback
 
-from flask import render_template, request, flash, make_response
+from flask import render_template, request, flash, make_response, jsonify
 from flask_limiter import RateLimitExceeded
 from flask_babel import gettext as _
 from werkzeug.exceptions import default_exceptions
@@ -40,47 +40,52 @@ log = logger.create()
 # custom error page
 
 def error_http(error):
+    if request.path.startswith('/api/') or request.path.startswith('/ajax/'):
+        return jsonify({"error": error.name}), error.code
+
     headers = {'WWW-Authenticate': 'Basic realm="calibre-web"'} if error.code == 401 else {}
-    return render_template('http_error.html',
-                           error_code="Error {0}".format(error.code),
-                           error_name=error.name,
-                           issue=False,
-                           goto_admin=False,
-                           unconfigured=not config.db_configured,
-                           instance=config.config_calibre_web_title
-                           ), error.code, headers
+    html = f"""<!DOCTYPE html>
+<html>
+<head><title>Error {error.code}</title></head>
+<body style="font-family: sans-serif; padding: 2rem; background: #f5f8fa; color: #2f3a47;">
+  <h2>Error {error.code}: {error.name}</h2>
+  <p>{error.description if hasattr(error, 'description') else ''}</p>
+  <a href="/spa">Go to Qalibre Home</a>
+</body>
+</html>"""
+    return make_response(html, error.code, headers)
 
 
 def internal_error(error):
+    log.error("500 Internal Server Error: %s", traceback.format_exc())
+    if request.path.startswith('/api/') or request.path.startswith('/ajax/'):
+        return jsonify({"error": "Internal Server Error"}), 500
+
     if (isinstance(error.original_exception, AttributeError) and
         error.original_exception.args[0] == "'NoneType' object has no attribute 'query'"
-        and error.original_exception.name == "query"):
-        return render_template('http_error.html',
-                               error_code="Database Error",
-                               error_name='The library used is invalid or has permission errors',
-                               issue=False,
-                               goto_admin=True,
-                               unconfigured=False,
-                               error_stack="",
-                               instance=config.config_calibre_web_title
-                               ), 500
-    log.error("500 Internal Server Error: %s", traceback.format_exc())
-    error_stack = ""
+        and getattr(error.original_exception, "name", None) == "query"):
+        error_name = 'The library used is invalid or has permission errors'
+    else:
+        error_name = 'The server encountered an internal error and was unable to complete your request.'
+
+    error_stack_str = ""
     try:
         if current_user.is_authenticated and current_user.role_admin():
-            error_stack = traceback.format_exc().split("\n")
+            error_stack_str = f"<pre style='background:#f0f2f5; padding:1rem; overflow:auto;'>{traceback.format_exc()}</pre>"
     except Exception:
         pass
-    return render_template('http_error.html',
-                           error_code="500 Internal Server Error",
-                           error_name='The server encountered an internal error and was unable to complete your '
-                                      'request. There is an error in the application.',
-                           issue=True,
-                           goto_admin=False,
-                           unconfigured=False,
-                           error_stack=error_stack,
-                           instance=config.config_calibre_web_title
-                           ), 500
+
+    html = f"""<!DOCTYPE html>
+<html>
+<head><title>Internal Server Error</title></head>
+<body style="font-family: sans-serif; padding: 2rem; background: #f5f8fa; color: #2f3a47;">
+  <h2>500 Internal Server Error</h2>
+  <p>{error_name}</p>
+  {error_stack_str}
+  <a href="/spa">Go to Qalibre Home</a>
+</body>
+</html>"""
+    return make_response(html, 500)
 
 
 def init_errorhandler():

@@ -20,7 +20,7 @@ import sys
 
 from . import create_app, limiter
 from .jinjia import jinjia
-from flask import request
+from flask import request, redirect, url_for
 
 
 def request_username():
@@ -43,6 +43,8 @@ def main():
     from .tasks_status import tasks
     from .error_handler import init_errorhandler
     from .remotelogin import remotelogin
+    from .api_v1 import api_v1
+    from .spa import spa
     try:
         from .kobo import kobo, get_kobo_activated
         from .kobo_auth import kobo_auth
@@ -76,11 +78,53 @@ def main():
     app.register_blueprint(meta)
     app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
+    app.register_blueprint(api_v1)
+    app.register_blueprint(spa)
     if kobo_available:
         limiter.limit("3/minute", key_func=get_remote_address)(kobo)
         app.register_blueprint(kobo)
         app.register_blueprint(kobo_auth)
     if oauth_available:
         app.register_blueprint(oauth)
+
+    @app.before_request
+    def redirect_to_spa():
+        if request.method != 'GET':
+            return
+            
+        path = request.path
+        
+        # Keep API, static, media, and download endpoints untouched
+        if (path.startswith('/api/') or 
+            path.startswith('/ajax/') or 
+            path.startswith('/opds/') or 
+            path.startswith('/kobo/') or 
+            path.startswith('/static/') or 
+            path.startswith('/spa') or
+            path.startswith('/cover/') or
+            path.startswith('/series_cover/') or
+            path.startswith('/download/') or
+            path.startswith('/read/') or
+            path in ('/favicon.ico', '/robots.txt', '/apple-touch-icon.png')):
+            return
+
+        # Explicit redirects
+        if path == '/login':
+            return redirect('/spa/login')
+        elif path == '/register':
+            return redirect('/spa/register')
+        elif path.startswith('/admin/config') or path.startswith('/admin/dbconfig'):
+            return redirect('/spa/config')
+        elif path.startswith('/admin'):
+            return redirect('/spa/admin')
+        elif path.startswith('/edit/'):
+            parts = path.split('/')
+            if len(parts) >= 3 and parts[2].isdigit():
+                return redirect(f'/spa/edit/{parts[2]}')
+            return redirect('/spa')
+        
+        return redirect('/spa')
+
     success = web_server.start()
     sys.exit(0 if success else 1)
+

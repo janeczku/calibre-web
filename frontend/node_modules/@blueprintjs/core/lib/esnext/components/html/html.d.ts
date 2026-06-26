@@ -1,0 +1,12 @@
+export declare const H1: import("react").FC<import("react").AllHTMLAttributes<HTMLHeadingElement> & import("react").RefAttributes<HTMLHeadingElement>>;
+export declare const H2: import("react").FC<import("react").AllHTMLAttributes<HTMLHeadingElement> & import("react").RefAttributes<HTMLHeadingElement>>;
+export declare const H3: import("react").FC<import("react").AllHTMLAttributes<HTMLHeadingElement> & import("react").RefAttributes<HTMLHeadingElement>>;
+export declare const H4: import("react").FC<import("react").AllHTMLAttributes<HTMLHeadingElement> & import("react").RefAttributes<HTMLHeadingElement>>;
+export declare const H5: import("react").FC<import("react").AllHTMLAttributes<HTMLHeadingElement> & import("react").RefAttributes<HTMLHeadingElement>>;
+export declare const H6: import("react").FC<import("react").AllHTMLAttributes<HTMLHeadingElement> & import("react").RefAttributes<HTMLHeadingElement>>;
+export declare const Blockquote: import("react").FC<import("react").AllHTMLAttributes<HTMLElement> & import("react").RefAttributes<HTMLElement>>;
+export declare const Code: import("react").FC<import("react").AllHTMLAttributes<HTMLElement> & import("react").RefAttributes<HTMLElement>>;
+export declare const Pre: import("react").FC<import("react").AllHTMLAttributes<HTMLElement> & import("react").RefAttributes<HTMLElement>>;
+export declare const Label: import("react").FC<import("react").AllHTMLAttributes<HTMLLabelElement> & import("react").RefAttributes<HTMLLabelElement>>;
+export declare const OL: import("react").FC<import("react").AllHTMLAttributes<HTMLOListElement> & import("react").RefAttributes<HTMLOListElement>>;
+export declare const UL: import("react").FC<import("react").AllHTMLAttributes<HTMLUListElement> & import("react").RefAttributes<HTMLUListElement>>;

@@ -805,8 +805,7 @@ def render_archived_books(page, sort_param):
 @web.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
-    sort_param = (request.args.get('sort') or 'stored').lower()
-    return render_books_list("newest", sort_param, 1, page)
+    return redirect(url_for('spa.serve_spa'))
 
 
 @login_required_if_no_ano

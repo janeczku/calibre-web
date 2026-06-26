@@ -1,0 +1,38 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+/*
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import classNames from "classnames";
+import { Classes } from "../../common";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { clamp } from "../../common/utils";
+/**
+ * Progress bar component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/progress-bar
+ */
+export const ProgressBar = props => {
+    const { animate = true, className, intent, stripes = true, value, ...htmlProps } = props;
+    const classes = classNames(Classes.PROGRESS_BAR, Classes.intentClass(intent), {
+        [Classes.PROGRESS_NO_ANIMATION]: !animate,
+        [Classes.PROGRESS_NO_STRIPES]: !stripes,
+    }, className);
+    const percent = value == null ? undefined : 100 * clamp(value, 0, 1);
+    // don't set width if value is null (rely on default CSS value)
+    const width = percent == null ? undefined : percent + "%";
+    return (_jsx("div", { ...htmlProps, "aria-valuemax": 100, "aria-valuemin": 0, "aria-valuenow": percent == null ? undefined : Math.round(percent), className: classes, role: "progressbar", children: _jsx("div", { className: Classes.PROGRESS_METER, style: { width } }) }));
+};
+ProgressBar.displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
+//# sourceMappingURL=progressBar.js.map

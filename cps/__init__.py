@@ -143,10 +143,10 @@ def create_app():
 
     if sys.version_info < (3, 0):
         log.info(
-            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
+            '*** Python2 is EOL since end of 2019, this version of Qalibre is no longer supporting Python2, '
             'please update your installation to Python3 ***')
         print(
-            '*** Python2 is EOL since end of 2019, this version of Calibre-Web is no longer supporting Python2, '
+            '*** Python2 is EOL since end of 2019, this version of Qalibre is no longer supporting Python2, '
             'please update your installation to Python3 ***')
         web_server.stop(True)
         sys.exit(5)
@@ -166,7 +166,7 @@ def create_app():
     requirements = dependency_check()
     for res in requirements:
         if res['found'] == "not installed":
-            message = ('Cannot import {name} module, it is needed to run calibre-web, '
+            message = ('Cannot import {name} module, it is needed to run qalibre, '
                        'please install it using "pip install {name}"').format(name=res["name"])
             log.info(message)
             print("*** " + message + " ***")

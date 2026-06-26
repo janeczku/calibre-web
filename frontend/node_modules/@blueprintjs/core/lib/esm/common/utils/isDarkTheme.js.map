@@ -1,0 +1,1 @@
+{"version":3,"file":"isDarkTheme.js","sourceRoot":"","sources":["../../../../src/common/utils/isDarkTheme.ts"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;GAcG;AAEH,OAAO,KAAK,OAAO,MAAM,YAAY,CAAC;AAEtC,MAAM,UAAU,WAAW,CAAC,OAA0C;IAClE,OAAO,OAAO,IAAI,IAAI,IAAI,OAAO,YAAY,OAAO,IAAI,OAAO,CAAC,OAAO,CAAC,IAAI,OAAO,CAAC,IAAI,EAAE,CAAC,IAAI,IAAI,CAAC;AACxG,CAAC"}

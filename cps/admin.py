@@ -119,7 +119,11 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    if ('/static/' not in request.path and not config.db_configured and
+    if ('/static/' not in request.path and
+        '/api/' not in request.path and
+        '/ajax/' not in request.path and
+        '/spa' not in request.path and
+        not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
                                  'admin.simulatedbchange',
                                  'admin.db_configuration',
