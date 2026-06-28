@@ -120,7 +120,7 @@ kobo = [
 ]
 
 [project.scripts]
-cps = "cps.main:main"
+cps = "cps.cps:main"
 
 [tool.setuptools]
 include-package-data = true
