@@ -128,7 +128,7 @@
       </table>
       <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
     </div>
-    {% if current_user.role_upload() and g.allow_upload %}
+    {% if (current_user.role_upload() or current_user.role_edit()) and g.allow_upload %}
     <div class="form-group">
       <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">

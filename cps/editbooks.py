@@ -668,9 +668,6 @@ def do_edit_book(book_id, upload_formats=None):
             gdriveutils.updateGdriveCalibreFromLocal()
 
         if to_save.get("cover_url",):
-            if not current_user.role_upload():
-                edit_error = True
-                flash(_("User has no rights to upload cover"), category="error")
             if to_save["cover_url"].endswith('/static/generic_cover.jpg'):
                 book.has_cover = 0
             else:
