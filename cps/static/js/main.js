@@ -414,7 +414,7 @@ $(function() {
         $(".col-sm-10").bind("scroll", function () {
             if (
                 $(this).scrollTop() + $(this).innerHeight() >=
-                $(this)[0].scrollHeight
+                $(this)[0].scrollHeight - 5
             ) {
                 $loadMore.infiniteScroll("loadNextPage");
                 window.history.replaceState({}, null, $loadMore.infiniteScroll("getAbsolutePath"));
