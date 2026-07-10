@@ -809,7 +809,13 @@ def prepare_authors(authr, calibre_path, gdrive=False):
 
     for in_aut in input_authors:
         renamed_author = calibre_db.session.query(db.Authors).filter(func.lower(db.Authors.name).ilike(in_aut)).first()
-        if renamed_author and in_aut != renamed_author.name:
+        # The custom lower() SQL function transliterates via unidecode (see cps.db.lcase), so the
+        # case-insensitive lookup above also matches accent- or homophone-twins with a genuinely
+        # different name (e.g. "José Luis Corral"/"Jose Luis Corral", "姚尧"/"妖妖"). Only treat the
+        # match as a case-rename when the names are equal ignoring case; otherwise the rename below
+        # would overwrite a distinct author and hit the authors.name UNIQUE constraint (#3403, #3170).
+        if renamed_author and in_aut != renamed_author.name \
+                and in_aut.casefold() == renamed_author.name.casefold():
             old_author_name = renamed_author.name
             # rename author in Database
             create_objects_for_addition(renamed_author, in_aut,"author")
