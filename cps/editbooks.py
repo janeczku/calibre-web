@@ -1212,8 +1212,17 @@ def edit_book_tags(tags, book):
     if tags is not None:
         input_tags = tags.split(',')
         input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
-        # Remove duplicates
         input_tags = helper.uniq(input_tags)
+        # Tag names are unique with NOCASE collation in the database. Remove
+        # case-insensitive duplicates before creating book-tag associations.
+        unique_tags = []
+        seen_tags = set()
+        for tag in input_tags:
+            normalized_tag = tag.casefold()
+            if normalized_tag not in seen_tags:
+                seen_tags.add(normalized_tag)
+                unique_tags.append(tag)
+        input_tags = unique_tags
         return modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
     return False
 
