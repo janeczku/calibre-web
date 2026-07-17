@@ -39,6 +39,7 @@ def main():
     from .about import about
     from .search import search
     from .search_metadata import meta
+    from .pwa import pwa
     from .shelf import shelf
     from .tasks_status import tasks
     from .error_handler import init_errorhandler
@@ -66,6 +67,7 @@ def main():
     app.register_blueprint(tasks)
     app.register_blueprint(web)
     app.register_blueprint(basic)
+    app.register_blueprint(pwa)
     limiter.limit("3/minute", key_func=request_username)(opds)
     app.register_blueprint(opds)
     app.register_blueprint(jinjia)

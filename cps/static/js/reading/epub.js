@@ -159,17 +159,46 @@ var reader;
                 );
         }
 
+        saveBookmark(location || "");
+    }
+
+    var pendingBookmarkKey = "calibre.reader.pendingBookmark." + calibre.bookmarkUrl;
+
+    function saveBookmark(location) {
         var csrftoken = $("input[name='csrf_token']").val();
 
-        // Save to database
+        // Save to database; when offline (or the session expired in a cached
+        // page) keep the bookmark locally and sync it on the next occasion
         $.ajax(calibre.bookmarkUrl, {
             method: "post",
-            data: { bookmark: location || "" },
+            data: { bookmark: location },
             headers: { "X-CSRFToken": csrftoken },
-        }).fail(function (xhr, status, error) {
-            alert(error);
+        }).done(function () {
+            try {
+                localStorage.removeItem(pendingBookmarkKey);
+            } catch (e) {}
+        }).fail(function () {
+            try {
+                localStorage.setItem(pendingBookmarkKey, location);
+            } catch (e) {}
         });
     }
+
+    function syncPendingBookmark() {
+        if (!navigator.onLine || !calibre.useBookmarks) {
+            return;
+        }
+        var pending = null;
+        try {
+            pending = localStorage.getItem(pendingBookmarkKey);
+        } catch (e) {}
+        if (pending !== null) {
+            saveBookmark(pending);
+        }
+    }
+
+    window.addEventListener("online", syncPendingBookmark);
+    syncPendingBookmark();
 
     // Default settings load
     const theme = localStorage.getItem("calibre.reader.theme") ?? "lightTheme";

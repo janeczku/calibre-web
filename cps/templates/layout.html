@@ -11,6 +11,8 @@
     {% if g.google_site_verification|length > 0 %}
       <meta name="google-site-verification" content="{{g.google_site_verification}}">
     {% endif %}
+    <meta name="theme-color" content="#f8f8f8">
+    <link rel="manifest" href="{{ url_for('pwa.manifest') }}">
     <!-- Bootstrap -->
     <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -150,6 +152,7 @@
                     <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><span class="glyphicon {{element['glyph']}}"></span> {{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
+              <li id="nav_offline" {% if page == 'offline' %}class="active"{% endif %}><a href="{{url_for('pwa.offline_library')}}"><span class="glyphicon glyphicon-download-alt"></span> {{_('Offline Books')}}</a></li>
               {% if current_user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
@@ -217,6 +220,12 @@
     <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/offline.js') }}"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("{{ url_for('pwa.service_worker') }}");
+      }
+    </script>
     {% if g.current_theme == 1 %}
       <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>

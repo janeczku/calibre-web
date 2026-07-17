@@ -11,6 +11,8 @@
     {% if g.google_site_verification|length > 0 %}
     <meta name="google-site-verification" content="{{g.google_site_verification}}">
     {% endif %}
+    <meta name="theme-color" content="#f8f8f8">
+    <link rel="manifest" href="{{ url_for('pwa.manifest') }}">
     <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
@@ -491,5 +493,10 @@
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
+      <script>
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.register("{{ url_for('pwa.service_worker') }}");
+        }
+      </script>
     </body>
 </html>

@@ -100,6 +100,28 @@
                                     - {{ entry.reader_list[0] }}</a>
                             {% endif %}
                         </div>
+                        {% for format in entry.reader_list %}
+                            {% if format in ['epub', 'kepub'] %}
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary offline-download-btn"
+                                            data-book-id="{{ entry.id }}"
+                                            data-book-format="{{ format }}"
+                                            data-book-title="{{ entry.title }}"
+                                            data-book-authors="{% for author in entry.ordered_authors %}{{ author.name.replace('|',',') }}{% if not loop.last %} & {% endif %}{% endfor %}"
+                                            data-read-url="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}"
+                                            data-book-url="{{ url_for('web.serve_book', book_id=entry.id, book_format=format, anyname='file.epub') }}"
+                                            data-cover-url="{{ url_for('web.get_cover', book_id=entry.id, resolution='md') }}"
+                                            data-label-download="{{ _('Make Available Offline') }}"
+                                            data-label-downloading="{{ _('Downloading...') }}"
+                                            data-label-downloaded="{{ _('Available Offline') }}"
+                                            data-label-failed="{{ _('Download Failed, Retry') }}">
+                                        <span class="glyphicon glyphicon-save"></span>
+                                        <span class="offline-btn-label">{{ _('Make Available Offline') }}</span>
+                                        - {{ format }}
+                                    </button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                     {% if entry.audio_entries|length > 0 and current_user.role_viewer() %}
                         <div class="btn-group" role="group">

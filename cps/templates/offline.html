@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ instance }} | {{ _('Offline Books') }}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#f8f8f8">
+  <link rel="manifest" href="{{ url_for('pwa.manifest') }}">
+  <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+</head>
+<body class="offline">
+  <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="{{ url_for('web.index') }}">{{ instance }}</a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('web.index') }}"><span class="glyphicon glyphicon-book"></span> {{ _('Library') }}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>{{ _('Offline Books') }}</h2>
+        <div id="offline-status" class="alert alert-warning" style="display: none">
+          {{ _("You are offline. Only the books below are available until you're back online.") }}
+        </div>
+        <div id="offline-unsupported" class="alert alert-danger" style="display: none">
+          {{ _('Offline reading is not available: this browser does not support it, or the page is not served over a secure (HTTPS) connection.') }}
+        </div>
+        <p id="offline-storage" class="text-muted"></p>
+        <div id="offline-empty" style="display: none">
+          <p>{{ _('No books have been made available offline yet.') }}</p>
+          <p>{{ _("Open a book's detail page and use \"Make Available Offline\" to store it in this browser for offline reading.") }}</p>
+        </div>
+        <div class="row display-flex" id="offline-books"></div>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/offline.js') }}"></script>
+  <script>
+    window.offlineLibrary = {
+      strings: {
+        read: {{ _('Read')|tojson }},
+        remove: {{ _('Remove')|tojson }},
+        storage: {{ _('Offline books are using %(size)s of storage.', size='%s')|tojson }}
+      },
+      genericCover: {{ url_for('static', filename='generic_cover.jpg')|tojson }},
+      swUrl: {{ url_for('pwa.service_worker')|tojson }}
+    };
+
+    (function () {
+      "use strict";
+
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register(window.offlineLibrary.swUrl);
+      }
+
+      function humanSize(bytes) {
+        var units = ["B", "KB", "MB", "GB"];
+        var index = 0;
+        while (bytes >= 1024 && index < units.length - 1) {
+          bytes /= 1024;
+          index++;
+        }
+        return (index === 0 ? bytes : bytes.toFixed(1)) + " " + units[index];
+      }
+
+      function updateOnlineStatus() {
+        document.getElementById("offline-status").style.display =
+          navigator.onLine ? "none" : "";
+      }
+
+      function render() {
+        var container = document.getElementById("offline-books");
+        var strings = window.offlineLibrary.strings;
+        container.innerHTML = "";
+
+        if (!CWOffline.supported()) {
+          document.getElementById("offline-unsupported").style.display = "";
+          return;
+        }
+
+        var books = CWOffline.list();
+        document.getElementById("offline-empty").style.display = books.length ? "none" : "";
+
+        var totalSize = 0;
+        books.forEach(function (book) {
+          totalSize += book.size || 0;
+
+          var col = document.createElement("div");
+          col.className = "col-sm-4 col-md-3 col-lg-2";
+
+          var panel = document.createElement("div");
+          panel.className = "panel panel-default";
+          col.appendChild(panel);
+
+          var body = document.createElement("div");
+          body.className = "panel-body text-center";
+          panel.appendChild(body);
+
+          var readLink = document.createElement("a");
+          readLink.href = book.readUrl;
+          body.appendChild(readLink);
+
+          var cover = document.createElement("img");
+          cover.src = book.coverUrl || window.offlineLibrary.genericCover;
+          cover.alt = "";
+          cover.style.maxWidth = "100%";
+          cover.style.maxHeight = "225px";
+          cover.onerror = function () {
+            cover.onerror = null;
+            cover.src = window.offlineLibrary.genericCover;
+          };
+          readLink.appendChild(cover);
+
+          var title = document.createElement("p");
+          title.className = "title";
+          title.textContent = book.title;
+          title.title = book.title;
+          body.appendChild(title);
+
+          var author = document.createElement("p");
+          author.className = "author text-muted";
+          author.textContent = book.authors || "";
+          body.appendChild(author);
+
+          var info = document.createElement("p");
+          info.className = "text-muted small";
+          info.textContent = (book.format || "").toUpperCase() +
+            (book.size ? " · " + humanSize(book.size) : "");
+          body.appendChild(info);
+
+          var buttons = document.createElement("div");
+          buttons.className = "btn-group btn-group-sm";
+          body.appendChild(buttons);
+
+          var read = document.createElement("a");
+          read.className = "btn btn-primary";
+          read.href = book.readUrl;
+          read.textContent = strings.read;
+          buttons.appendChild(read);
+
+          var del = document.createElement("button");
+          del.type = "button";
+          del.className = "btn btn-default";
+          del.textContent = strings.remove;
+          del.addEventListener("click", function () {
+            CWOffline.remove(book.id, book.format).then(render);
+          });
+          buttons.appendChild(del);
+
+          container.appendChild(col);
+        });
+
+        var storage = document.getElementById("offline-storage");
+        storage.textContent = books.length
+          ? strings.storage.replace("%s", humanSize(totalSize))
+          : "";
+      }
+
+      window.addEventListener("online", updateOnlineStatus);
+      window.addEventListener("offline", updateOnlineStatus);
+      updateOnlineStatus();
+      render();
+    })();
+  </script>
+</body>
+</html>

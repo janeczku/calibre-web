@@ -48,12 +48,33 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
 - Send eBooks to E-Readers with a single click
 - Sync Kobo devices with your Calibre library
 - In-browser eBook reading support for multiple formats
+- Installable Progressive Web App (PWA) with offline reading of downloaded EPUBs
 - Upload new books in various formats, including audio formats
 - Calibre Custom Columns support
 - Content hiding based on categories and Custom Column content per user
 - Self-update capability
 - "Magic Link" login for easy access on eReaders
 - LDAP, Google/GitHub OAuth, and proxy authentication support
+
+## App Mode & Offline Reading
+
+Calibre-Web is a Progressive Web App: when served over HTTPS (or on `localhost`),
+it can be installed to the home screen / app list from the browser menu and then
+launched like a native app.
+
+To read without a network connection:
+
+1. Open a book's detail page and click **Make Available Offline** (shown for
+   EPUB/KEPUB formats). The book, its reader and cover are stored in the browser.
+2. The **Offline Books** entry in the sidebar (also reachable at `/offline`) lists
+   everything stored in this browser and works entirely without a connection —
+   it is also the page the app falls back to when offline.
+3. Reading position, bookmarks and reader settings keep working offline; bookmarks
+   are synced back to the server the next time you are online.
+
+Notes: offline books are stored per browser (not per account), so remove them
+before handing a shared device to someone else. Storage is subject to the
+browser's quota; the offline page shows how much space downloaded books use.
 
 ## Installation
 
