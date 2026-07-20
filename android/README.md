@@ -7,7 +7,7 @@ download books to the device, and read them **offline** — with built-in
 
 ## Features
 
-- **Connect** to any Calibre-Web server using its OPDS catalog (HTTP Basic auth).
+- **Connect** to any Calibre-Web server using its OPDS catalog (HTTP Basic auth), including HTTPS servers that require mTLS client certificates.
 - **Browse & search** the library with cover thumbnails.
 - **Make available offline**: download EPUB and PDF files (plus covers) to the
   device with a progress indicator.
@@ -30,7 +30,7 @@ The app uses Calibre-Web's OPDS endpoints (no extra server changes required):
 | Cover          | `GET /opds/cover_240_240/<id>`            |
 | Download       | `GET /opds/download/<id>/<format>/`       |
 
-All requests are authenticated with HTTP Basic auth. Make sure **OPDS feeds are
+All requests are authenticated with HTTP Basic auth. For servers protected by mutual TLS, the app can also use an Android KeyChain client certificate for OPDS, cover, and download requests. Make sure **OPDS feeds are
 enabled** for your Calibre-Web user (they are by default).
 
 ## Building
@@ -50,6 +50,13 @@ echo "sdk.dir=/path/to/Android/sdk" > local.properties
 
 Or just open the `android/` folder in Android Studio and press Run.
 
+## GitHub release workflow
+
+This repository includes an **Android APK Release** workflow that builds the
+debug APK and attaches it to a GitHub Release. Run it from the GitHub Actions
+tab with a tag such as `android-v1.0.0`, or push an `android-v*` tag. The
+release asset is named `calibre-web-reader-debug.apk`.
+
 ## First run
 
 1. Launch the app → **Settings** tab.
@@ -60,6 +67,14 @@ Or just open the `android/` folder in Android Studio and press Run.
 
 > Cleartext HTTP is enabled so LAN servers over `http://` work out of the box.
 > For a server exposed to the internet, use HTTPS.
+
+### mTLS / client certificates
+
+If your Calibre-Web server requires mutual TLS:
+
+1. Install your client certificate and private key on Android (for example, a `.p12`/`.pfx` file via Android's certificate installer).
+2. Open the app → **Settings** → **Select client certificate** and choose the installed certificate.
+3. Save and connect as usual. The selected Android KeyChain alias is stored in app settings; the private key remains managed by Android KeyChain.
 
 ## Architecture
 

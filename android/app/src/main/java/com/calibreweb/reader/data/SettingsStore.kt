@@ -26,6 +26,11 @@ class SettingsStore(context: Context) {
         get() = prefs.getString(KEY_PASS, "").orEmpty()
         set(value) = prefs.edit().putString(KEY_PASS, value).apply()
 
+    /** Android KeyChain alias for the optional client certificate used by mTLS. */
+    var clientCertificateAlias: String
+        get() = prefs.getString(KEY_CLIENT_CERT_ALIAS, "").orEmpty()
+        set(value) = prefs.edit().putString(KEY_CLIENT_CERT_ALIAS, value).apply()
+
     val isConfigured: Boolean
         get() = serverUrl.isNotBlank()
 
@@ -40,6 +45,7 @@ class SettingsStore(context: Context) {
         private const val KEY_URL = "server_url"
         private const val KEY_USER = "username"
         private const val KEY_PASS = "password"
+        private const val KEY_CLIENT_CERT_ALIAS = "client_certificate_alias"
 
         fun normalizeUrl(raw: String): String {
             var url = raw.trim()

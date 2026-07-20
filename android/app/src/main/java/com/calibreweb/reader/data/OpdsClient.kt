@@ -11,14 +11,21 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import java.net.URLEncoder
+import java.security.KeyStore
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 /**
  * Talks to a Calibre-Web server over its OPDS (Atom XML) catalog, using HTTP
  * Basic authentication. Handles browsing, searching, cover URLs and streaming
  * downloads.
  */
-class OpdsClient(private val settings: SettingsStore) {
+class OpdsClient(
+    private val settings: SettingsStore,
+    private val keyManager: KeyChainKeyManager? = null,
+) {
 
     private val authInterceptor = Interceptor { chain ->
         val builder = chain.request().newBuilder().header("User-Agent", USER_AGENT)
@@ -30,10 +37,25 @@ class OpdsClient(private val settings: SettingsStore) {
 
     /** Shared client; also reused by Coil for authenticated cover loading. */
     val httpClient: OkHttpClient = OkHttpClient.Builder()
+        .applyMtlsIfConfigured()
         .addInterceptor(authInterceptor)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .build()
+
+    private fun OkHttpClient.Builder.applyMtlsIfConfigured(): OkHttpClient.Builder {
+        val manager = keyManager ?: return this
+        val trustManager = defaultTrustManager()
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(arrayOf(manager), arrayOf(trustManager), null)
+        return sslSocketFactory(sslContext.socketFactory, trustManager)
+    }
+
+    private fun defaultTrustManager(): X509TrustManager {
+        val factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+        factory.init(null as KeyStore?)
+        return factory.trustManagers.filterIsInstance<X509TrustManager>().single()
+    }
 
     fun absoluteUrl(pathOrUrl: String): String {
         if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) return pathOrUrl

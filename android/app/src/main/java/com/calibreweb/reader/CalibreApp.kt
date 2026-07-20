@@ -3,6 +3,7 @@ package com.calibreweb.reader
 import android.app.Application
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.calibreweb.reader.data.KeyChainKeyManager
 import com.calibreweb.reader.data.LibraryRepository
 import com.calibreweb.reader.data.OpdsClient
 import com.calibreweb.reader.data.SettingsStore
@@ -23,7 +24,7 @@ class CalibreApp : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
         settings = SettingsStore(this)
-        opdsClient = OpdsClient(settings)
+        opdsClient = OpdsClient(settings, KeyChainKeyManager(this) { settings.clientCertificateAlias })
         library = LibraryRepository(this, opdsClient)
     }
 
