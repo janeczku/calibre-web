@@ -1,5 +1,7 @@
 package com.calibreweb.reader.ui.screens
 
+import android.app.Activity
+import android.security.KeyChain
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -34,11 +38,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsScreen(onSaved: () -> Unit) {
     val app = rememberApp()
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     var url by remember { mutableStateOf(app.settings.serverUrl) }
     var user by remember { mutableStateOf(app.settings.username) }
     var pass by remember { mutableStateOf(app.settings.password) }
+    var clientCertificateAlias by remember { mutableStateOf(app.settings.clientCertificateAlias) }
     var status by remember { mutableStateOf<String?>(null) }
     var isError by remember { mutableStateOf(false) }
     var testing by remember { mutableStateOf(false) }
@@ -84,6 +90,55 @@ fun SettingsScreen(onSaved: () -> Unit) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
             )
+
+            Text(
+                "Optional mTLS: install a client certificate in Android settings, " +
+                    "then select it here. The chosen KeyChain certificate is used for all HTTPS OPDS, cover, and download requests.",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            OutlinedTextField(
+                value = clientCertificateAlias.ifBlank { "No client certificate selected" },
+                onValueChange = {},
+                label = { Text("mTLS client certificate") },
+                singleLine = true,
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            OutlinedButton(
+                onClick = {
+                    KeyChain.choosePrivateKeyAlias(
+                        context as Activity,
+                        { alias ->
+                            if (alias != null) {
+                                app.settings.clientCertificateAlias = alias
+                                clientCertificateAlias = alias
+                                status = "Selected client certificate: $alias"
+                                isError = false
+                            }
+                        },
+                        null,
+                        null,
+                        null,
+                        -1,
+                        clientCertificateAlias.ifBlank { null },
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(if (clientCertificateAlias.isBlank()) "Select client certificate" else "Change client certificate")
+            }
+            OutlinedButton(
+                onClick = {
+                    app.settings.clientCertificateAlias = ""
+                    clientCertificateAlias = ""
+                    status = "Client certificate cleared."
+                    isError = false
+                },
+                enabled = clientCertificateAlias.isNotBlank(),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("Clear client certificate")
+            }
 
             Button(
                 onClick = {
