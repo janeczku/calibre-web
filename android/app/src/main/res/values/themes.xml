@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base theme; Compose supplies the real Material 3 colors at runtime. -->
+    <style name="Theme.CalibreWebReader" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

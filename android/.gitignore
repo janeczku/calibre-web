@@ -1,0 +1,19 @@
+# Gradle / Android build outputs
+.gradle/
+build/
+/app/build/
+/local.properties
+/captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.DS_Store
+
+# Keystores (never commit signing material)
+*.jks
+*.keystore
