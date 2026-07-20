@@ -50,6 +50,13 @@ echo "sdk.dir=/path/to/Android/sdk" > local.properties
 
 Or just open the `android/` folder in Android Studio and press Run.
 
+## GitHub release workflow
+
+This repository includes an **Android APK Release** workflow that builds the
+debug APK and attaches it to a GitHub Release. Run it from the GitHub Actions
+tab with a tag such as `android-v1.0.0`, or push an `android-v*` tag. The
+release asset is named `calibre-web-reader-debug.apk`.
+
 ## First run
 
 1. Launch the app → **Settings** tab.
