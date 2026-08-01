@@ -1220,8 +1220,17 @@ def edit_book_tags(tags, book):
     if tags is not None:
         input_tags = tags.split(',')
         input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
-        # Remove duplicates
         input_tags = helper.uniq(input_tags)
+        # Tag names are unique with NOCASE collation in the database. Remove
+        # case-insensitive duplicates before creating book-tag associations.
+        unique_tags = []
+        seen_tags = set()
+        for tag in input_tags:
+            normalized_tag = tag.casefold()
+            if normalized_tag not in seen_tags:
+                seen_tags.add(normalized_tag)
+                unique_tags.append(tag)
+        input_tags = unique_tags
         return modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
     return False
 
@@ -1405,8 +1414,19 @@ def edit_cc_data(book_id, book, to_save, cc):
                             calibre_db.session.delete(del_cc)
                             changed = True
             else:
+                # Tag names are unique with NOCASE collation in the database. Remove
+                # case-insensitive duplicates before creating book-tag associations.
                 input_tags = to_save[cc_string].split(',')
                 input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
+                input_tags = helper.uniq(input_tags)
+                unique_tags = []
+                seen_tags = set()
+                for tag in input_tags:
+                    normalized_tag = tag.casefold()
+                    if normalized_tag not in seen_tags:
+                        seen_tags.add(normalized_tag)
+                        unique_tags.append(tag)
+                input_tags = unique_tags
                 changed |= modify_database_object(input_tags,
                                                   getattr(book, cc_string),
                                                   db.cc_classes[c.id],
