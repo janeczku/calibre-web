@@ -1438,7 +1438,7 @@ def login_post():
             else:
                 log.warning('Login failed for user "{}" IP-address: {}'.format(username, ip_address))
                 flash(_(u"Wrong Username or Password"), category="error")
-    return render_login(username, form.get("password", ""))
+    return render_login(username, form.get("password", "")), 401
 
 
 @web.route('/logout')
