@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2026-04-25 13:25+0200\n"
+"POT-Creation-Date: 2026-08-01 11:42+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -61,7 +61,7 @@ msgstr "Настройки сервера"
 msgid "UI Configuration"
 msgstr "Конфігурація інтерфейсу"
 
-#: cps/admin.py:315 cps/admin.py:1002 cps/db.py:808 cps/search.py:150
+#: cps/admin.py:315 cps/admin.py:1002 cps/db.py:809 cps/search.py:150
 #: cps/web.py:750
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
@@ -561,7 +561,7 @@ msgstr "не встановлено"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:1128 cps/templates/config_edit.html:207
+#: cps/db.py:1129 cps/templates/config_edit.html:207
 #: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
 #: cps/web.py:565 cps/web.py:599 cps/web.py:644 cps/web.py:684 cps/web.py:711
 #: cps/web.py:998 cps/web.py:1028 cps/web.py:1073 cps/web.py:1101
@@ -696,11 +696,11 @@ msgstr ""
 msgid "File format %(ext)s added to %(book)s"
 msgstr ""
 
-#: cps/error_handler.py:98
+#: cps/error_handler.py:107
 msgid "Please wait one minute to register next user"
 msgstr ""
 
-#: cps/error_handler.py:99 cps/templates/layout.html:69
+#: cps/error_handler.py:108 cps/templates/layout.html:69
 #: cps/templates/layout.html:104 cps/templates/login.html:27
 #: cps/templates/register.html:17 cps/web.py:1292 cps/web.py:1296
 #: cps/web.py:1302 cps/web.py:1326 cps/web.py:1330 cps/web.py:1343
@@ -708,7 +708,7 @@ msgstr ""
 msgid "Register"
 msgstr "Зареєструватись"
 
-#: cps/error_handler.py:103
+#: cps/error_handler.py:112
 msgid "Please wait one minute before next login"
 msgstr ""
 
@@ -720,203 +720,234 @@ msgstr ""
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Домен зворотнього зв'язку не підтверджено. Виконайте дії для підтвердження домену, будь-ласка"
 
-#: cps/helper.py:87
+#: cps/helper.py:88
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr ""
 
-#: cps/helper.py:93 cps/tasks/convert.py:91
+#: cps/helper.py:94 cps/tasks/convert.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:98
+#: cps/helper.py:99
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:104 cps/helper.py:233 cps/templates/detail.html:66
+#: cps/helper.py:105 cps/helper.py:236 cps/templates/detail.html:66
 #, fuzzy
 msgid "Send to eReader"
 msgstr "Відправити на Kindle"
 
-#: cps/helper.py:105 cps/helper.py:125 cps/helper.py:235
+#: cps/helper.py:106 cps/helper.py:126 cps/helper.py:238
 msgid "This Email has been sent via Calibre-Web."
 msgstr ""
 
-#: cps/helper.py:123
+#: cps/helper.py:124
 msgid "Calibre-Web Test Email"
 msgstr ""
 
-#: cps/helper.py:124
+#: cps/helper.py:125
 msgid "Test Email"
 msgstr ""
 
-#: cps/helper.py:141
+#: cps/helper.py:133
+#, python-format
+msgid "Hi %(name)s!"
+msgstr ""
+
+#: cps/helper.py:135
+msgid "Your account at Calibre-Web has been created."
+msgstr ""
+
+#: cps/helper.py:136
+msgid "Please log in using the following information:"
+msgstr ""
+
+#: cps/helper.py:137
+#, python-format
+msgid "Username: %(name)s"
+msgstr ""
+
+#: cps/helper.py:138
+#, python-format
+msgid "Password: %(password)s"
+msgstr ""
+
+#: cps/helper.py:139
+msgid "Don't forget to change your password after your first login."
+msgstr ""
+
+#: cps/helper.py:140
+msgid "Regards,"
+msgstr ""
+
+#: cps/helper.py:142
 msgid "Get Started with Calibre-Web"
 msgstr ""
 
-#: cps/helper.py:146
+#: cps/helper.py:149
 #, python-format
 msgid "Registration Email for user: %(name)s"
 msgstr ""
 
-#: cps/helper.py:157 cps/helper.py:163
+#: cps/helper.py:160 cps/helper.py:166
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to eReader"
 msgstr ""
 
-#: cps/helper.py:182 cps/helper.py:186 cps/helper.py:190
+#: cps/helper.py:185 cps/helper.py:189 cps/helper.py:193
 #, fuzzy, python-format
 msgid "Send %(format)s to eReader"
 msgstr "Надіслати %(format)s до E-Reader"
 
-#: cps/helper.py:230
+#: cps/helper.py:233
 #, fuzzy, python-format
 msgid "%(book)s send to eReader"
 msgstr "Відправити на Kindle"
 
-#: cps/helper.py:237
+#: cps/helper.py:240
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr ""
 
-#: cps/helper.py:350
+#: cps/helper.py:353
 #, python-brace-format
 msgid "Read status could not set: {}"
 msgstr ""
 
-#: cps/helper.py:373
+#: cps/helper.py:376
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
 msgstr ""
 
-#: cps/helper.py:379
+#: cps/helper.py:382
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr ""
 
-#: cps/helper.py:390
+#: cps/helper.py:393
 #, python-format
 msgid "Deleting book %(id)s from database only, book path in database not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:404
+#: cps/helper.py:407
 #, python-format
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:443
+#: cps/helper.py:446
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:513 cps/helper.py:522
+#: cps/helper.py:516 cps/helper.py:525
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:564
+#: cps/helper.py:567
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:583
+#: cps/helper.py:586
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:643
+#: cps/helper.py:646
 msgid "Found an existing account for this Email address"
 msgstr ""
 
-#: cps/helper.py:651
+#: cps/helper.py:654
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/helper.py:665
+#: cps/helper.py:668
 msgid "Invalid Email address format"
 msgstr ""
 
-#: cps/helper.py:687
+#: cps/helper.py:690
 msgid "Password doesn't comply with password validation rules"
 msgstr ""
 
-#: cps/helper.py:833
+#: cps/helper.py:836
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr ""
 
-#: cps/helper.py:843
+#: cps/helper.py:846
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:846
+#: cps/helper.py:849
 msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:849
+#: cps/helper.py:852
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr ""
 
-#: cps/helper.py:859
+#: cps/helper.py:862
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:875
+#: cps/helper.py:878
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:886
+#: cps/helper.py:889
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:898
+#: cps/helper.py:901
 msgid "Invalid cover file content"
 msgstr ""
 
-#: cps/helper.py:902
+#: cps/helper.py:905
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:986 cps/helper.py:1149
+#: cps/helper.py:989 cps/helper.py:1152
 #, fuzzy
 msgid "Cover"
 msgstr "Огляд"
 
-#: cps/helper.py:1003
+#: cps/helper.py:1006
 msgid "UnRar binary file not found"
 msgstr ""
 
-#: cps/helper.py:1014
+#: cps/helper.py:1017
 msgid "Error executing UnRar"
 msgstr ""
 
-#: cps/helper.py:1022
+#: cps/helper.py:1025
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1025
+#: cps/helper.py:1028
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1039
+#: cps/helper.py:1042
 msgid "Calibre binaries not viable"
 msgstr ""
 
-#: cps/helper.py:1048
+#: cps/helper.py:1051
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1050
+#: cps/helper.py:1053
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1055
+#: cps/helper.py:1058
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1151 cps/templates/admin.html:216
+#: cps/helper.py:1154 cps/templates/admin.html:216
 msgid "Queue all books for metadata backup"
 msgstr ""
 

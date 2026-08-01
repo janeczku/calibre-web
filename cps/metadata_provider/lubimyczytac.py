@@ -82,27 +82,27 @@ class LubimyCzytac(Metadata):
     BASE_URL = "https://lubimyczytac.pl"
 
     BOOK_SEARCH_RESULT_XPATH = (
-        "*//div[@class='listSearch']//div[@class='authorAllBooks__single']"
+        "*//div[@id='ksiazki']/div"
     )
-    SINGLE_BOOK_RESULT_XPATH = ".//div[contains(@class,'authorAllBooks__singleText')]"
-    TITLE_PATH = "/div/a[contains(@class,'authorAllBooks__singleTextTitle')]"
+    SINGLE_BOOK_RESULT_XPATH = "./div[@class='book-card__primary']"
+    TITLE_PATH = "//div[@class='book-card__info-box']/a[@class='book-card__title']"
     TITLE_TEXT_PATH = f"{TITLE_PATH}//text()"
     URL_PATH = f"{TITLE_PATH}/@href"
-    AUTHORS_PATH = "/div/a[contains(@href,'autor')]//text()"
+    AUTHORS_PATH = "//div[@class='book-card__info-box']/div[@class='book-card__author']/a//text()"
 
     SIBLINGS = "/following-sibling::dd"
 
     CONTAINER = "//section[@class='container book']"
-    PUBLISHER = f"{CONTAINER}//dt[contains(text(),'Wydawnictwo:')]{SIBLINGS}/a/text()"
-    LANGUAGES = f"{CONTAINER}//dt[contains(text(),'Język:')]{SIBLINGS}/text()"
+    PUBLISHER = f"{CONTAINER}//span[contains(text(),'Wydawnictwo:')]/a/text()"
     DESCRIPTION = f"{CONTAINER}//div[@class='collapse-content']"
-    SERIES = f"{CONTAINER}//span/a[contains(@href,'/cykl/')]/text()"
+    SERIES = f"{CONTAINER}//span[contains(text(),'Cykl:')]/a/text()"
     TRANSLATOR = f"{CONTAINER}//dt[contains(text(),'Tłumacz:')]{SIBLINGS}/a/text()"
 
     DETAILS = "//div[@id='book-details']"
-    PUBLISH_DATE = "//dt[contains(@title,'Data pierwszego wydania"
-    FIRST_PUBLISH_DATE = f"{DETAILS}{PUBLISH_DATE} oryginalnego')]{SIBLINGS}[1]/text()"
-    FIRST_PUBLISH_DATE_PL = f"{DETAILS}{PUBLISH_DATE} polskiego')]{SIBLINGS}[1]/text()"
+    LANGUAGES = f"{DETAILS}//dt[contains(text(),'Język:')]{SIBLINGS}[1]/text()"
+    PUBLISH_DATE = f"{DETAILS}//dt[contains(text(),'Data wydania:')]{SIBLINGS}[1]/text()"
+    FIRST_PUBLISH_DATE = f"{DETAILS}//dt[contains(text(),'Data 1. wydania:')]{SIBLINGS}[1]/text()"
+    FIRST_PUBLISH_DATE_PL = f"{DETAILS}//dt[contains(text(),'Data 1. wyd. pol.:')]{SIBLINGS}[1]/text()"
     TAGS = "//a[contains(@href,'/ksiazki/t/')]/text()"  # "//nav[@aria-label='breadcrumbs']//a[contains(@href,'/ksiazki/k/')]/span/text()"
 
 
@@ -222,7 +222,7 @@ class LubimyCzytacParser:
         match.description = self._parse_description()
         match.languages = self._parse_languages(locale=locale)
         match.publisher = self._parse_publisher()
-        match.publishedDate = self._parse_from_summary(attribute_name="datePublished")
+        match.publishedDate = self._parse_published_date()
         match.rating = self._parse_rating()
         match.series, match.series_index = self._parse_series()
         match.tags = self._parse_tags()
@@ -292,6 +292,9 @@ class LubimyCzytacParser:
                 if isinstance(w, str)
             ]
         return None
+
+    def _parse_published_date(self) -> str:
+        return self._parse_xpath_node(xpath=LubimyCzytac.PUBLISH_DATE, take_first=True)
 
     def _parse_from_summary(self, attribute_name: str) -> Optional[str]:
         value = None

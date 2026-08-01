@@ -1319,7 +1319,7 @@ def register_post():
             ub.session.commit()
             if feature_support['oauth']:
                 register_user_with_oauth(content)
-            send_registration_mail(strip_whitespaces(to_save.get("email", "")), nickname, password)
+            send_registration_mail(strip_whitespaces(to_save.get("email", "")), nickname, password, locale=content.locale)
         except Exception:
             ub.session.rollback()
             flash(_("Oops! An unknown error occurred. Please try again later."), category="error")
@@ -1438,7 +1438,7 @@ def login_post():
             else:
                 log.warning('Login failed for user "{}" IP-address: {}'.format(username, ip_address))
                 flash(_(u"Wrong Username or Password"), category="error")
-    return render_login(username, form.get("password", ""))
+    return render_login(username, form.get("password", "")), 401
 
 
 @web.route('/logout')

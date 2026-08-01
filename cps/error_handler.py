@@ -110,7 +110,7 @@ def handle_rate_limit(__):
         form = request.form.to_dict()
         username = strip_whitespaces(form.get('username', "")).lower().replace("\n", "").replace("\r", "")
         flash(_("Please wait one minute before next login"), category="error")
-        return render_login(username, form.get("password", ""))
+        return render_login(username, form.get("password", "")), 401
     elif "opds" in request.endpoint:
         return auth.auth_error_callback(429)
     else:
