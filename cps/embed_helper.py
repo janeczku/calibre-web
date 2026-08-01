@@ -38,7 +38,7 @@ def do_calibre_export(book_id, book_format):
         library_path = config.get_book_path()
         opf_command = [calibredb_binarypath, 'export', '--dont-write-opf', '--dont-save-cover',
                        '--with-library', library_path,
-                       '--to-dir', tmp_dir, '--formatcalibredbs', book_format, "--template", "{}".format(temp_file_name),
+                       '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
                        str(book_id)]
         p = process_open(opf_command, quotes, my_env)
         _, err = p.communicate()
