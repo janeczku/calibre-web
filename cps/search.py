@@ -63,6 +63,28 @@ def advanced_search():
     return redirect(url_for('web.books_list', data="advsearch", sort_param='stored', query=""))
 
 
+@search.route("/cc", methods=['GET'])
+@login_required_if_no_ano
+def cc_search():
+    cc_id = request.args.get('column', '')
+    cc_val = request.args.get('value', '')
+    term = {
+        'authors': '', 'title': '', 'publisher': '',
+        'publishstart': '', 'publishend': '',
+        'ratinghigh': '', 'ratinglow': '',
+        'comments': '', 'read_status': 'Any',
+        'include_tag': [], 'exclude_tag': [],
+        'include_serie': [], 'exclude_serie': [],
+        'include_serie2': [], 'exclude_serie2': [],
+        'include_shelf': [], 'exclude_shelf': [],
+        'include_language': [], 'exclude_language': [],
+        'include_extension': [], 'exclude_extension': [],
+    }
+    if cc_id:
+        term['custom_column_' + cc_id] = cc_val
+    return render_adv_search_results(term, order=([db.Books.timestamp.desc()], 'new'))
+
+
 @search.route("/advsearch", methods=['GET'])
 @login_required_if_no_ano
 def advanced_search_form():
@@ -73,6 +95,8 @@ def advanced_search_form():
 
 def adv_search_custom_columns(cc, term, q):
     for c in cc:
+        if c.datatype == "composite":
+            continue
         if c.datatype == "datetime":
             custom_start = term.get('custom_column_' + str(c.id) + '_start')
             custom_end = term.get('custom_column_' + str(c.id) + '_end')
@@ -382,7 +406,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                                  entries=entries,
                                  result_count=result_count,
                                  title=_("Advanced Search"), page="advsearch",
-                                 order=order[1])
+                                 order=order[1] if order else None)
 
 
 def render_prepare_search_form(cc):

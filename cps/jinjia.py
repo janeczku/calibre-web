@@ -24,6 +24,7 @@
 
 from markupsafe import escape
 import datetime
+import json
 import mimetypes
 from uuid import uuid4
 
@@ -120,6 +121,20 @@ def formatfloat(value, decimals=1):
     if formated_value.endswith('.' + "0" * decimals):
         formated_value = formated_value.rstrip('0').rstrip('.')
     return formated_value
+
+
+@jinjia.app_template_filter('format_cc_number')
+def format_cc_number(value, display):
+    try:
+        display_dict = json.loads(display) if display else {}
+        number_format = display_dict.get('number_format', '')
+        if number_format:
+            return number_format.format(value)
+        if isinstance(value, float):
+            return formatfloat(value, display_dict.get('decimals', 2))
+    except (ValueError, KeyError):
+        pass
+    return value
 
 
 @jinjia.app_template_filter('escapedlink')

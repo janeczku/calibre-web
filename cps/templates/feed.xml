@@ -76,7 +76,7 @@
 
     {% if cc|length > 0 %}
         {% for c in cc %}
-            {% if entry.Books['custom_column_' ~ c.id]|length > 0 %}
+            {% if c.datatype != 'composite' and entry.Books['custom_column_' ~ c.id]|length > 0 %}
                 {{ c.name }}:
                 {% for column in entry.Books['custom_column_' ~ c.id] %}
                     {% if c.datatype == 'rating' %}

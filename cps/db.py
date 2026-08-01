@@ -1048,7 +1048,7 @@ class CalibreDB:
         ]
 
         for c in cc:
-            if c.datatype not in ["datetime", "rating", "bool", "int", "float"]:
+            if c.datatype not in ["datetime", "rating", "bool", "int", "float", "composite"]:
                 filter_expression.append(
                     getattr(Books,
                             'custom_column_' + str(c.id)).any(
@@ -1056,19 +1056,34 @@ class CalibreDB:
 
         return base_query.filter(or_(*filter_expression))
 
-    def get_cc_columns(self, config, filter_config_custom_read=False):
-        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype.notin_(cc_exceptions)).all()
+    def get_cc_columns(self, config, filter_config_custom_read=False, filter_hidden=True):
+        tmp_cc = self.session.query(CustomColumns).filter(CustomColumns.datatype != 'series').all()
         cc = []
         r = None
         if config.config_columns_to_ignore:
             r = re.compile(config.config_columns_to_ignore)
+        hidden_ids = set()
+        if filter_hidden and config.config_cc_hidden_columns:
+            hidden_ids = set(int(x) for x in config.config_cc_hidden_columns.split(',') if x.strip())
 
         for col in tmp_cc:
             if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
                 continue
             if r and r.match(col.name):
                 continue
+            if col.id in hidden_ids:
+                continue
             cc.append(col)
+
+        if config.config_cc_display_order:
+            try:
+                order_ids = [int(x) for x in config.config_cc_display_order.split(',') if x.strip()]
+                id_to_col = {col.id: col for col in cc}
+                ordered = [id_to_col[i] for i in order_ids if i in id_to_col]
+                remaining = [col for col in cc if col.id not in set(order_ids)]
+                cc = ordered + remaining
+            except (ValueError, AttributeError):
+                pass
 
         return cc
 

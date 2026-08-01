@@ -3,6 +3,32 @@
   overflow-y: auto;
 }
 
+.cc-order-item {
+  display: flex;
+  align-items: center;
+  cursor: grab;
+  user-select: none;
+}
+
+.cc-drag-handle {
+  margin-right: 10px;
+  color: #aaa;
+  flex-shrink: 0;
+}
+
+.cc-col-name {
+  flex: 1;
+}
+
+.cc-link-label {
+  font-weight: normal;
+  margin-bottom: 0;
+  margin-left: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
   font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;

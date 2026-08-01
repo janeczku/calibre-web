@@ -282,10 +282,22 @@ def view_configuration():
         .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all()
     restrict_columns = calibre_db.session.query(db.CustomColumns) \
         .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
+    all_cc_columns = calibre_db.session.query(db.CustomColumns) \
+        .filter(and_(db.CustomColumns.datatype != 'series', db.CustomColumns.mark_for_delete == 0)).all()
+    if config.config_cc_display_order:
+        try:
+            order_ids = [int(x) for x in config.config_cc_display_order.split(',') if x.strip()]
+            id_map = {col.id: col for col in all_cc_columns}
+            ordered = [id_map[i] for i in order_ids if i in id_map]
+            remaining = [col for col in all_cc_columns if col.id not in set(order_ids)]
+            all_cc_columns = ordered + remaining
+        except (ValueError, AttributeError):
+            pass
     languages = calibre_db.speaking_language()
     translations = get_available_locale()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
+                                 allColumns=all_cc_columns,
                                  languages=languages,
                                  translations=translations,
                                  title=_("UI Configuration"), page="uiconfig")
@@ -571,6 +583,7 @@ def update_view_configuration():
 
     _config_string(to_save, "config_calibre_web_title")
     _config_string(to_save, "config_columns_to_ignore")
+    _config_string(to_save, "config_cc_display_order")
     if _config_string(to_save, "config_title_regex"):
         calibre_db.create_functions(config)
 
@@ -597,6 +610,8 @@ def update_view_configuration():
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
+    config.config_cc_link_columns = ','.join(k[8:] for k in to_save if k.startswith('cc_link_'))
+    config.config_cc_hidden_columns = ','.join(k[8:] for k in to_save if k.startswith('cc_hide_'))
     if "Show_detail_random" in to_save:
         config.config_default_show |= constants.DETAIL_RANDOM
 
