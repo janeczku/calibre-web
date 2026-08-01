@@ -166,6 +166,14 @@ $("#form-upload-format").uploadprogress({
     modalTitleFailed: $("#form-upload-format").data("failed")
 });
 
+$("#form-upload-url").uploadprogress({
+    redirect_url: getPath() + "/",
+    uploadedMsg: $("#form-upload-url").data("message"),
+    modalTitle: $("#form-upload-url").data("title"),
+    modalFooter: $("#form-upload-url").data("footer"),
+    modalTitleFailed: $("#form-upload-url").data("failed")
+});
+
 $(document).ready(function() {
     var inp = $('#query').first()
     if (inp.length) {
