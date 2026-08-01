@@ -97,8 +97,8 @@ class Amazon(Metadata):
                     try:
                         match.authors = [next(
                             filter(lambda i: i != " " and i != "\n" and not i.startswith("{"),
-                                   x.findAll(string=True))).strip()
-                                        for x in soup2.findAll("span", attrs={"class": "author"})]
+                                   x.find_all(string=True))).strip()
+                                        for x in soup2.find_all("span", attrs={"class": "author"})]
                     except (AttributeError, TypeError, StopIteration):
                         match.authors = ""
                     try:
@@ -131,8 +131,8 @@ class Amazon(Metadata):
                 log.warning(e)
                 return []
             soup = BS(results.text, 'html.parser')
-            links_list = [next(filter(lambda i: "digital-text" in i["href"], x.findAll("a")))["href"] for x in
-                          soup.findAll("div", attrs={"data-component-type": "s-search-result"})]
+            links_list = [next(filter(lambda i: "digital-text" in i["href"], x.find_all("a")))["href"] for x in
+                          soup.find_all("div", attrs={"data-component-type": "s-search-result"})]
             with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
                 fut = {executor.submit(inner, link, index) for index, link in enumerate(links_list[:3])}
                 val = list(map(lambda x : x.result(), concurrent.futures.as_completed(fut)))
