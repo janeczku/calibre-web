@@ -39,7 +39,7 @@ def get_sidebar_config(kwargs=None):
         content = 'conf' in kwargs
     sidebar = list()
     sidebar.append({"glyph": "glyphicon-book", "text": _('Books'), "link": 'web.index', "id": "new",
-                    "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
+                    "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root", "no_param": True,
                     "show_text": _('Show recent books'), "config_show":False})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
                     "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
@@ -74,6 +74,13 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
                     "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series", "no_param":True,
                     "show_text": _('Show Series Section'), "config_show": True})
+    if config.config_series2_column:
+        series2_label = config.config_series2_label or 'World'
+        series2_icon = config.config_series2_icon or 'glyphicon-bookmark'
+        sidebar.append({"glyph": series2_icon, "text": series2_label, "link": 'web.series2_list',
+                        "id": "serie2", "visibility": constants.SIDEBAR_SERIES, 'public': True,
+                        "page": "series2", "no_param": True,
+                        "show_text": _('Show %(label)s Section', label=series2_label), "config_show": True})
     sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
                     "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author", "no_param":True,
                     "show_text": _('Show Author Section'), "config_show": True})

@@ -48,6 +48,14 @@
           ({{entry.Books.series_index|formatfloat(2)}})
         </p>
         {% endif %}
+        {% if g.config_show_series2_on_book_list and entry.Books.series2.__len__() > 0 %}
+        <p class="series">
+          <a href="{{url_for('web.books_list', data=g.series2_key, sort_param='stored', book_id=entry.Books.series2[0].map_value )}}">
+            {{entry.Books.series2[0].value}}
+          </a>
+          ({{entry.Books.series2[0].extra|formatfloat(2)}})
+        </p>
+        {% endif %}
       </div>
 
 	  <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">

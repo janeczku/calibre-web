@@ -1,0 +1,39 @@
+{% import 'image.html' as image %}
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="{{page}}">{{_(title)}}</h1>
+
+    <div class="filterheader hidden-xs">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div id="asc" data-id="series2" data-order="{{ order }}" class="btn btn-primary{% if order == 1 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet"></span></div>
+      <div id="desc" data-id="series2" class="btn btn-primary{% if order == 0 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></div>
+        <div class="update-view btn btn-primary" data-page="series2" data-target="series2_view" id="list-button" data-view="list">{{_('List')}}</div>
+    </div>
+
+    {% if entries[0] %}
+        <div id="list" class="row display-flex">
+          {% for entry in entries %}
+              <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" data-name="{{entry.s2_name}}" data-id="{{entry.s2_name}}">
+                  <div class="cover">
+                      <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry.s2_id )}}">
+                          <span class="img" title="{{entry.s2_name}}">
+                              {{ image.book_cover(entry[0])}}
+                              <span class="badge">{{entry.count}}</span>
+                            </span>
+                      </a>
+                  </div>
+                  <div class="meta">
+                      <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry.s2_id )}}">
+                          <p title="{{entry.s2_name|shortentitle}}" class="title">{{entry.s2_name|shortentitle}}</p>
+                      </a>
+                  </div>
+              </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter_grid.js') }}"></script>
+{% endblock %}

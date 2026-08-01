@@ -2,6 +2,7 @@
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
 <div class="discover">
@@ -55,6 +56,35 @@
                 <option value="{{ readColumn.id }}" {% if readColumn.id == conf.config_read_column %}selected{% endif %}>{{ readColumn.name }}</option>
                 {% endfor %}
               </select>
+        </div>
+        <div class="form-group">
+          <label for="config_series2_column">{{_('Second Series Column')}}</label>
+              <select name="config_series2_column" id="config_series2_column" class="form-control" onchange="updateSeries2Label(this)">
+                <option value="0" data-name="" data-label="" {% if conf.config_series2_column == 0 %}selected{% endif %}></option>
+                {% for series2Column in series2Columns %}
+                <option value="{{ series2Column.id }}" data-name="{{ series2Column.name }}" data-label="{{ series2Column.label }}" {% if series2Column.id == conf.config_series2_column %}selected{% endif %}>{{ series2Column.name }}</option>
+                {% endfor %}
+              </select>
+              <input type="hidden" name="config_series2_label" id="config_series2_label" value="">
+              <input type="hidden" name="config_series2_slug" id="config_series2_slug" value="">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="config_show_series2_on_book_list" id="config_show_series2_on_book_list" {% if conf.config_show_series2_on_book_list %}checked{% endif %}>
+                  {{_('Show Second Series on book list pages')}}
+                </label>
+              </div>
+              {% set series2_icon = conf.config_series2_icon or 'glyphicon-bookmark' %}
+              <div id="series2_icon_group" {% if not conf.config_series2_column %}hidden{% endif %}>
+                <label for="config_series2_icon">{{_('Sidebar Icon')}}</label>
+                <select name="config_series2_icon" id="config_series2_icon"
+                        class="selectpicker" data-live-search="true" data-width="100%">
+                  {% for icon_value, icon_label in series2Icons %}
+                  <option value="{{ icon_value }}"
+                          data-content="<span class='glyphicon {{ icon_value }}'></span> {{ icon_label }}"
+                          {% if icon_value == series2_icon %}selected{% endif %}>{{ icon_label }}</option>
+                  {% endfor %}
+                </select>
+              </div>
         </div>
         <div class="form-group">
           <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
@@ -181,6 +211,22 @@
 {{ restrict_modal() }}
 {% endblock %}
 {% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js') }}"></script>
+<script>
+function updateSeries2Label(sel) {
+  var opt = sel.options[sel.selectedIndex];
+  document.getElementById('config_series2_label').value = opt.getAttribute('data-name') || '';
+  document.getElementById('config_series2_slug').value = opt.getAttribute('data-label') || '';
+  var group = document.getElementById('series2_icon_group');
+  if (group) {
+    group.hidden = (sel.value === '0' || sel.value === '');
+  }
+}
+(function() {
+  var sel = document.getElementById('config_series2_column');
+  if (sel) { updateSeries2Label(sel); }
+})();
+</script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>

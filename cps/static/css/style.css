@@ -485,3 +485,11 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2::-webkit-scrollbar {
 body > div.container-fluid  {
   padding-right: 0px;
 }
+
+.series-section {
+    margin-bottom: 10px;
+}
+
+.series-section p {
+    margin-bottom: 5px;
+}

@@ -46,6 +46,7 @@ from sqlalchemy.sql.expression import func, or_, text
 from . import constants, logger, helper, services, cli_param
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
+from .web import _s2_key
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
     valid_email, check_username
 from .embed_helper import get_calibre_binarypath
@@ -58,6 +59,56 @@ from . import debug_info
 from .string_helper import strip_whitespaces
 
 log = logger.create()
+
+_SERIES2_ICON_NAMES = [
+    'adjust', 'alert', 'align-center', 'align-justify', 'align-left', 'align-right',
+    'apple', 'arrow-down', 'arrow-left', 'arrow-right', 'arrow-up', 'asterisk',
+    'baby-formula', 'backward', 'ban-circle', 'barcode', 'bed', 'bell', 'bishop',
+    'bitcoin', 'blackboard', 'bold', 'book', 'bookmark', 'briefcase', 'btc',
+    'bullhorn', 'calendar', 'camera', 'cd', 'certificate', 'check', 'chevron-down',
+    'chevron-left', 'chevron-right', 'chevron-up', 'circle-arrow-down',
+    'circle-arrow-left', 'circle-arrow-right', 'circle-arrow-up', 'cloud',
+    'cloud-download', 'cloud-upload', 'cog', 'collapse-down', 'collapse-up',
+    'comment', 'compressed', 'console', 'copy', 'copyright-mark', 'credit-card',
+    'cutlery', 'dashboard', 'download', 'download-alt', 'duplicate', 'earphone',
+    'edit', 'education', 'eject', 'envelope', 'equalizer', 'erase', 'eur', 'euro',
+    'exclamation-sign', 'expand', 'export', 'eye-close', 'eye-open', 'facetime-video',
+    'fast-backward', 'fast-forward', 'file', 'film', 'filter', 'fire', 'flag',
+    'flash', 'floppy-disk', 'floppy-open', 'floppy-remove', 'floppy-save',
+    'floppy-saved', 'folder-close', 'folder-open', 'font', 'forward', 'fullscreen',
+    'gbp', 'gift', 'glass', 'globe', 'grain', 'hand-down', 'hand-left', 'hand-right',
+    'hand-up', 'hdd', 'hd-video', 'header', 'headphones', 'heart', 'heart-empty',
+    'home', 'hourglass', 'ice-lolly', 'ice-lolly-tasted', 'import', 'inbox',
+    'indent-left', 'indent-right', 'info-sign', 'italic', 'jpy', 'king', 'knight',
+    'lamp', 'leaf', 'level-up', 'link', 'list', 'list-alt', 'lock', 'log-in',
+    'log-out', 'magnet', 'map-marker', 'menu-down', 'menu-hamburger', 'menu-left',
+    'menu-right', 'menu-up', 'minus', 'minus-sign', 'modal-window', 'move', 'music',
+    'new-window', 'object-align-bottom', 'object-align-horizontal', 'object-align-left',
+    'object-align-right', 'object-align-top', 'object-align-vertical', 'off', 'oil',
+    'ok', 'ok-circle', 'ok-sign', 'open', 'open-file', 'option-horizontal',
+    'option-vertical', 'paperclip', 'paste', 'pause', 'pawn', 'pencil', 'phone',
+    'phone-alt', 'picture', 'piggy-bank', 'plane', 'play', 'play-circle', 'plus',
+    'plus-sign', 'print', 'pushpin', 'qrcode', 'queen', 'question-sign', 'random',
+    'record', 'refresh', 'registration-mark', 'remove', 'remove-circle', 'remove-sign',
+    'repeat', 'resize-full', 'resize-horizontal', 'resize-small', 'resize-vertical',
+    'retweet', 'road', 'rub', 'ruble', 'save', 'saved', 'save-file', 'scale',
+    'scissors', 'screenshot', 'sd-video', 'search', 'send', 'share', 'share-alt',
+    'shopping-cart', 'signal', 'sort', 'sort-by-alphabet', 'sort-by-alphabet-alt',
+    'sort-by-attributes', 'sort-by-attributes-alt', 'sort-by-order', 'sort-by-order-alt',
+    'sound-5-1', 'sound-6-1', 'sound-7-1', 'sound-dolby', 'sound-stereo', 'star',
+    'star-empty', 'stats', 'step-backward', 'step-forward', 'stop', 'subscript',
+    'subtitles', 'sunglasses', 'superscript', 'tag', 'tags', 'tasks', 'tent',
+    'text-background', 'text-color', 'text-height', 'text-size', 'text-width', 'th',
+    'th-large', 'th-list', 'thumbs-down', 'thumbs-up', 'time', 'tint', 'tower',
+    'transfer', 'trash', 'tree-conifer', 'tree-deciduous', 'triangle-bottom',
+    'triangle-left', 'triangle-right', 'triangle-top', 'unchecked', 'upload', 'usd',
+    'user', 'volume-down', 'volume-off', 'volume-up', 'warning-sign', 'wrench', 'xbt',
+    'yen', 'zoom-in', 'zoom-out',
+]
+SERIES2_ICON_OPTIONS = [
+    ('glyphicon-' + n, ' '.join(w.capitalize() for w in n.split('-')))
+    for n in _SERIES2_ICON_NAMES
+]
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -119,6 +170,9 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
+    g.config_show_series2_on_book_list = config.config_show_series2_on_book_list
+    g.config_series2_label = config.config_series2_label
+    g.series2_key = _s2_key
     if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
                                  'admin.simulatedbchange',
@@ -282,10 +336,14 @@ def view_configuration():
         .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all()
     restrict_columns = calibre_db.session.query(db.CustomColumns) \
         .filter(and_(db.CustomColumns.datatype == 'text', db.CustomColumns.mark_for_delete == 0)).all()
+    series2_columns = calibre_db.session.query(db.CustomColumns) \
+        .filter(and_(db.CustomColumns.datatype == 'series', db.CustomColumns.mark_for_delete == 0)).all()
     languages = calibre_db.speaking_language()
     translations = get_available_locale()
     return render_title_template("config_view_edit.html", conf=config, readColumns=read_column,
                                  restrictColumns=restrict_columns,
+                                 series2Columns=series2_columns,
+                                 series2Icons=SERIES2_ICON_OPTIONS,
                                  languages=languages,
                                  translations=translations,
                                  title=_("UI Configuration"), page="uiconfig")
@@ -579,6 +637,16 @@ def update_view_configuration():
         log.debug("Invalid Read column")
         return view_configuration()
     _config_int(to_save, "config_read_column")
+
+    if not check_valid_series2_column(to_save.get("config_series2_column", "0")):
+        flash(_("Invalid Second Series Column"), category="error")
+        log.debug("Invalid Series2 column")
+        return view_configuration()
+    _config_int(to_save, "config_series2_column")
+    _config_string(to_save, "config_series2_label")
+    _config_string(to_save, "config_series2_slug")
+    _config_string(to_save, "config_series2_icon")
+    _config_checkbox(to_save, "config_show_series2_on_book_list")
 
     if not check_valid_restricted_column(to_save.get("config_restricted_column", "0")):
         flash(_("Invalid Restricted Column"), category="error")
@@ -958,6 +1026,14 @@ def check_valid_read_column(column):
     if column != "0":
         if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
           .filter(and_(db.CustomColumns.datatype == 'bool', db.CustomColumns.mark_for_delete == 0)).all():
+            return False
+    return True
+
+
+def check_valid_series2_column(column):
+    if column != "0":
+        if not calibre_db.session.query(db.CustomColumns).filter(db.CustomColumns.id == column) \
+          .filter(and_(db.CustomColumns.datatype == 'series', db.CustomColumns.mark_for_delete == 0)).all():
             return False
     return True
 

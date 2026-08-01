@@ -83,6 +83,11 @@ class _Settings(_Base):
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
+    config_series2_column = Column(Integer, default=0)
+    config_series2_label = Column(String, default='')
+    config_series2_slug = Column(String, default='series2')
+    config_series2_icon = Column(String, default='glyphicon-bookmark')
+    config_show_series2_on_book_list = Column(Boolean, default=True)
     config_title_regex = Column(String,
                                 default=r"^(A|The|An|Der|Die|Das|Den|Ein|Eine"
                                         r"|Einen|Dem|Des|Einem|Eines|Le|La|Les|L'|Un|Une)(\s+|(?<='))")

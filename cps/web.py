@@ -59,6 +59,10 @@ from .tasks_status import render_task_status
 from .usermanagement import user_login_required
 from .string_helper import strip_whitespaces
 
+# Computed once at startup (after create_app loads config). Used for dynamic series2 URL routing.
+# Falls back to label (column name) if slug not yet saved, then to 'series2'.
+_s2_key = (config.config_series2_slug or config.config_series2_label or '').strip() or 'series2'
+
 
 feature_support = {
     'ldap': bool(services.ldap),
@@ -392,6 +396,8 @@ def render_books_list(data, sort_param, book_id, page):
         return render_publisher_books(page, book_id, order)
     elif data == "series":
         return render_series_books(page, book_id, order)
+    elif data in (_s2_key, "series2"):
+        return render_series2_books(page, book_id, order)
     elif data == "ratings":
         return render_ratings_books(page, book_id, order)
     elif data == "formats":
@@ -584,6 +590,24 @@ def render_publisher_books(page, book_id, order):
                                  title=_("Publisher: %(name)s", name=publisher),
                                  page="publisher",
                                  order=order[1])
+
+
+def render_series2_books(page, book_id, order):
+    if db.series2_link_class is None or db.series2_cc_class is None:
+        abort(404)
+    series2_entry = calibre_db.session.query(db.series2_cc_class).filter(
+        db.series2_cc_class.id == book_id).first()
+    if series2_entry:
+        entries, random, pagination = calibre_db.fill_indexpage(
+            page, 0, db.Books,
+            db.Books.series2.any(db.series2_link_class.map_value == book_id),
+            [order[0][0]], True, config.config_read_column)
+        label = config.config_series2_label or 'World'
+        title = label + ": " + series2_entry.value
+    else:
+        abort(404)
+    return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                 id=book_id, title=title, page="series2", order=order[1])
 
 
 def render_series_books(page, book_id, order):
@@ -814,8 +838,9 @@ def books_list(data, sort_param, book_id, page):
     return render_books_list(data, sort_param, book_id, page)
 
 # Limit number of routes to avoid redirects
-data =["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series", "ratings", "formats",
-       "category", "language", "archived", "search", "advsearch", "newest"]
+_s2_data_keys = [_s2_key] if _s2_key == 'series2' else [_s2_key, 'series2']
+data = ["rated", "discover", "unread", "read", "hot", "download", "author", "publisher", "series"] + _s2_data_keys + [
+        "ratings", "formats", "category", "language", "archived", "search", "advsearch", "newest"]
 for d in data:
     web.add_url_rule('/{}/<sort_param>'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
     web.add_url_rule('/{}/<sort_param>/'.format(d), view_func=books_list, defaults={'page': 1, 'book_id': 1, "data": d})
@@ -1047,6 +1072,65 @@ def series_list():
                                          order=order_no)
     else:
         abort(404)
+
+
+@web.route("/{}".format(_s2_key))
+@login_required_if_no_ano
+def series2_list():
+    if not config.config_series2_column or db.series2_link_class is None or db.series2_cc_class is None:
+        abort(404)
+    if current_user.check_visibility(constants.SIDEBAR_SERIES):
+        if current_user.get_view_property('series2', 'dir') == 'desc':
+            order = db.series2_cc_class.value.desc()
+            order_no = 0
+        else:
+            order = db.series2_cc_class.value.asc()
+            order_no = 1
+        label = config.config_series2_label or 'World'
+        if current_user.get_view_property('series2', 'series2_view') == 'list':
+            entries_raw = (calibre_db.session.query(db.series2_cc_class,
+                                                    func.count(db.series2_link_class.book).label('count'))
+                           .join(db.series2_link_class, db.series2_link_class.map_value == db.series2_cc_class.id)
+                           .join(db.Books, db.Books.id == db.series2_link_class.book)
+                           .filter(calibre_db.common_filters())
+                           .group_by(db.series2_link_class.map_value)
+                           .order_by(order)
+                           .all())
+            entries = [[db.Category(row[0].value, row[0].id), row[1]] for row in entries_raw]
+            return render_title_template('list.html',
+                                         entries=entries,
+                                         folder='web.books_list',
+                                         charlist=[],
+                                         title=label,
+                                         page="series2list",
+                                         data=_s2_key, order=order_no)
+        else:
+            entries = (calibre_db.session.query(
+                db.Books,
+                func.count(db.series2_link_class.book).label('count'),
+                func.max(db.series2_link_class.extra),
+                db.series2_cc_class.id.label('s2_id'),
+                db.series2_cc_class.value.label('s2_name')
+            )
+                .join(db.series2_link_class, db.series2_link_class.book == db.Books.id)
+                .join(db.series2_cc_class, db.series2_cc_class.id == db.series2_link_class.map_value)
+                .filter(calibre_db.common_filters())
+                .group_by(db.series2_link_class.map_value)
+                .order_by(order)
+                .all())
+            return render_title_template('grid2.html',
+                                         entries=entries,
+                                         folder='web.books_list',
+                                         charlist=[],
+                                         title=label,
+                                         page="series2list",
+                                         data=_s2_key, bodyClass="grid-view", order=order_no)
+    else:
+        abort(404)
+
+
+if _s2_key != 'series2':
+    web.add_url_rule('/series2', view_func=series2_list)
 
 
 @web.route("/ratings")
@@ -1651,6 +1735,8 @@ def show_book(book_id):
             if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 entry.audio_entries.append(media_format.format.lower())
 
+        log.debug("series2: link_class=%s, cc_class=%s, entry.series2=%r",
+                  db.series2_link_class, db.series2_cc_class, entry.series2)
         return render_title_template('detail.html',
                                      entry=entry,
                                      cc=cc,

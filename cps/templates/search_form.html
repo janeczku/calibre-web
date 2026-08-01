@@ -83,6 +83,26 @@
         </select>
       </div>
     </div>
+    {% if series2|length > 0 %}
+    <div class="row">
+      <div class="form-group col-sm-6">
+        <div><label for="include_serie2">{{series2_label}}</label></div>
+        <select class="selectpicker" name="include_serie2" id="include_serie2" data-live-search="true" data-style="btn-primary" data-dropup-auto="false" data-actions-box="true" multiple>
+          {% for serie in series2 %}
+          <option value="{{serie.id}}">{{serie.value}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group col-sm-6">
+        <div><label for="exclude_serie2">{{_('Exclude')}} {{series2_label}}</label></div>
+        <select class="selectpicker" name="exclude_serie2" id="exclude_serie2" data-live-search="true" data-style="btn-danger" data-dropup-auto="false" data-actions-box="true" multiple>
+          {% for serie in series2 %}
+          <option value="{{serie.id}}">{{serie.value}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    {% endif %}
      <div class="row">
       <div class="form-group col-sm-6">
         <div><label for="include_shelf">{{_('Shelves')}}</label></div>
