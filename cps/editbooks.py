@@ -43,6 +43,7 @@ from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
 from .render_template import render_title_template
+from .binary_helper import resolve_binary_path, SUPPORTED_UNRAR_BINARIES
 from .kobo_sync_status import change_archived_books
 from .redirect import get_redirect_location
 from .file_helper import validate_mime_type
@@ -962,7 +963,8 @@ def file_handling_on_upload(requested_file):
 
     # extract metadata from file
     try:
-        meta = uploader.upload(requested_file, config.config_rarfile_location)
+        meta = uploader.upload(requested_file,
+                               resolve_binary_path(config.config_rarfile_location, SUPPORTED_UNRAR_BINARIES))
     except (IOError, OSError):
         log.error("File %s could not saved to temp dir", requested_file.filename)
         flash(_("File %(filename)s could not saved to temp dir",
@@ -1483,7 +1485,7 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
             meta = uploader.process(
                 saved_filename,
                 *os.path.splitext(current_filename),
-                rar_executable=config.config_rarfile_location,
+                rar_executable=resolve_binary_path(config.config_rarfile_location, SUPPORTED_UNRAR_BINARIES),
                 no_cover=no_cover)
             merge_metadata(book, meta, to_save)
     #if to_save.get('languages'):

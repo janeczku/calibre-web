@@ -59,6 +59,7 @@ from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import (STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES,
                         SUPPORTED_CALIBRE_BINARIES)
+from .binary_helper import resolve_binary_path, SUPPORTED_UNRAR_BINARIES
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
 from .tasks.mail import TaskEmail
@@ -69,7 +70,6 @@ from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub
 from .embed_helper import do_calibre_export
 
 log = logger.create()
-
 try:
     from wand.image import Image
     from wand.exceptions import MissingDelegateError, BlobError
@@ -1002,12 +1002,12 @@ def check_unrar(unrar_location):
     if not unrar_location:
         return
 
-    if not os.path.exists(unrar_location):
-        return _('UnRar binary file not found')
+    unrar_binary = resolve_binary_path(unrar_location, SUPPORTED_UNRAR_BINARIES)
+    if not unrar_binary:
+        return _('Please specify a valid UnRar directory')
 
     try:
-        unrar_location = [unrar_location]
-        value = process_wait(unrar_location, pattern='UNRAR (.*) freeware')
+        value = process_wait([unrar_binary], pattern='UNRAR (.*) freeware')
         if value:
             version = value.group(1)
             log.debug("UnRar version %s", version)

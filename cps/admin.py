@@ -50,6 +50,7 @@ from .helper import check_valid_domain, send_test_mail, reset_password, generate
     valid_email, check_username
 from .embed_helper import get_calibre_binarypath
 from .gdriveutils import is_gdrive_ready, gdrive_support
+from .binary_helper import resolve_binary_path, SUPPORTED_KEPUBIFY_BINARIES, SUPPORTED_UNRAR_BINARIES
 from .render_template import render_title_template, get_sidebar_config
 from .services.worker import WorkerThread
 from .usermanagement import user_login_required
@@ -1811,6 +1812,12 @@ def _configuration_update_helper():
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_binariesdir")
         _config_string(to_save, "config_kepubifypath")
+        if "config_kepubifypath" in to_save:
+            kepubify_binary = resolve_binary_path(config.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES)
+            if not kepubify_binary:
+                return _configuration_result(_('Kepubify binary not found'))
+            config.config_kepubifypath = os.path.dirname(kepubify_binary)
+
         if "config_binariesdir" in to_save:
             calibre_status = helper.check_calibre(config.config_binariesdir)
             if calibre_status:
@@ -1878,6 +1885,10 @@ def _configuration_update_helper():
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")
         if "config_rarfile_location" in to_save:
+            unrar_binary = resolve_binary_path(config.config_rarfile_location, SUPPORTED_UNRAR_BINARIES)
+            if not unrar_binary:
+                return _configuration_result(_('Please specify a valid UnRar directory'))
+            config.config_rarfile_location = os.path.dirname(unrar_binary)
             unrar_status = helper.check_unrar(config.config_rarfile_location)
             if unrar_status:
                 return _configuration_result(unrar_status)
