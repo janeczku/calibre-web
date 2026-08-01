@@ -104,6 +104,10 @@
       <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
     </div>
     <div class="form-group">
+      <input type="checkbox" id="config_series_in_filename" name="config_series_in_filename" {% if config.config_series_in_filename %}checked{% endif %}>
+      <label for="config_series_in_filename">{{_('When downloading a file, add series information')}}</label>
+    </div>
+    <div class="form-group">
       <input type="checkbox" id="config_embed_metadata" name="config_embed_metadata" {% if config.config_embed_metadata %}checked{% endif %}>
       <label for="config_embed_metadata">{{_('Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)')}}</label>
     </div>
