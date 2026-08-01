@@ -1813,10 +1813,11 @@ def _configuration_update_helper():
         _config_string(to_save, "config_binariesdir")
         _config_string(to_save, "config_kepubifypath")
         if "config_kepubifypath" in to_save:
-            kepubify_binary = resolve_binary_path(config.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES)
-            if not kepubify_binary:
-                return _configuration_result(_('Kepubify binary not found'))
-            config.config_kepubifypath = os.path.dirname(kepubify_binary)
+            if config.config_kepubifypath:
+                kepubify_binary = resolve_binary_path(config.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES)
+                if not kepubify_binary:
+                    return _configuration_result(_('Kepubify binary not found'))
+                config.config_kepubifypath = os.path.dirname(kepubify_binary)
 
         if "config_binariesdir" in to_save:
             calibre_status = helper.check_calibre(config.config_binariesdir)

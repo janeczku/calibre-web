@@ -54,7 +54,7 @@ dependencies = [
     "python-magic-bin>=0.4.0,<0.5.0;sys_platform=='win32'",
     "flask-httpAuth>=4.4.0,<5.0.0",
     "cryptography>=39.0.0,<48.0.0",
-    "certifi>=2024.7.4,<2026.1.5",
+    "certifi>=2024.7.4,<2026.5.21",
 ]
 dynamic = ["version"]
 
@@ -73,7 +73,7 @@ content-type = "text/markdown"
 gdrive = [
     "google-api-python-client>=2.73.00,<2.200.0",
     "gevent>20.6.0,<25.9.2",
-    "greenlet>=0.4.17,<3.4.0",
+    "greenlet>=0.4.17,<3.6.0",
     "httplib2>=0.9.2,<0.32.0",
     "oauth2client>=4.0.0,<4.1.4",
     "uritemplate>=3.0.0,<4.3.0",
