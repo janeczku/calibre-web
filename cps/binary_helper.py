@@ -7,10 +7,10 @@ if sys.platform == "win32":
     SUPPORTED_UNRAR_BINARIES = ("unRAR.exe", "unrar.exe")
     SUPPORTED_KEPUBIFY_BINARIES = ("kepubify-windows-64Bit.exe",)
 elif sys.platform.startswith("freebsd"):
-    SUPPORTED_UNRAR_BINARIES = ("unrar",)
+    SUPPORTED_UNRAR_BINARIES = ("unrar", "unrar-free", "unrar-nonfree")
     SUPPORTED_KEPUBIFY_BINARIES = ("kepubify",)
 else:
-    SUPPORTED_UNRAR_BINARIES = ("unrar",)
+    SUPPORTED_UNRAR_BINARIES = ("unrar","unrar-free", "unrar-nonfree")
     SUPPORTED_KEPUBIFY_BINARIES = ("kepubify-linux-64bit", "kepubify-linux-32bit")
 
 
