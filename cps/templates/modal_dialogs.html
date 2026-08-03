@@ -75,22 +75,24 @@
           <span>{{_('Choose File Location')}}</span>
       </div>
         <div class="modal-body">
-         <table id="file_table" class="table table-striped">
-            <thead>
-              <tr>
-                  <th>{{_('type')}}</th>
-                  <th>{{_('name')}}</th>
-                  <th>{{_('size')}}</th>
-              </tr>
-            </thead>
-            <tbody id="tbody">
-              <tr class="tr-clickable hidden" id="parent" data-type="dir" data-path="..">
-                <td><span class="glyphicon glyphicon-folder-close"></span></td>
-                <td title="{{_('Parent Directory')}}"><span class="parentdir">..</span></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+          <div id="file_table_wrapper">
+            <table id="file_table" class="table table-striped">
+              <thead>
+                <tr>
+                    <th>{{_('type')}}</th>
+                    <th>{{_('name')}}</th>
+                    <th>{{_('size')}}</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+                <tr class="tr-clickable hidden" id="parent" data-type="dir" data-path="..">
+                  <td><span class="glyphicon glyphicon-folder-close"></span></td>
+                  <td title="{{_('Parent Directory')}}"><span class="parentdir">..</span></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       <div class="modal-footer">
         <div class="text-left" id="element_selected"></div>

@@ -214,21 +214,21 @@
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="library_path" data-toggle="modal" data-link="config_ldap_cacert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="config_ldap_cacert_path_b" data-toggle="modal" data-link="config_ldap_cacert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
           <label for="config_ldap_cert_path">{{_('LDAP Certificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="library_path" data-toggle="modal" data-link="config_ldap_cert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="config_ldap_cert_path_b" data-toggle="modal" data-link="config_ldap_cert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
           <label for="config_ldap_key_path">{{_('LDAP Keyfile Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="library_path" data-toggle="modal" data-link="config_ldap_key_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="config_ldap_key_path_b" data-toggle="modal" data-link="config_ldap_key_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
         </div>
