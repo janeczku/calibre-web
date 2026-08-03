@@ -176,6 +176,24 @@
         <label for="config_reverse_proxy_login_header_name">{{_('Reverse Proxy Header Name')}}</label>
         <input type="text" class="form-control" id="config_reverse_proxy_login_header_name" name="config_reverse_proxy_login_header_name" value="{% if config.config_reverse_proxy_login_header_name != None %}{{ config.config_reverse_proxy_login_header_name }}{% endif %}" autocomplete="off">
       </div>
+      <div class="form-group">
+        <label for="config_reverse_proxy_trusted_ips">{{_('Reverse Proxy Trusted IPs/CIDRs (Comma Separated)')}}</label>
+        <input type="text" class="form-control" id="config_reverse_proxy_trusted_ips" name="config_reverse_proxy_trusted_ips" value="{% if config.config_reverse_proxy_trusted_ips != None %}{{ config.config_reverse_proxy_trusted_ips }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <input type="checkbox" id="config_reverse_proxy_use_shared_secret" name="config_reverse_proxy_use_shared_secret" data-control="reverse-proxy-shared-secret-settings" {% if config.config_reverse_proxy_use_shared_secret %}checked{% endif %}>
+        <label for="config_reverse_proxy_use_shared_secret">{{_('Enable Reverse Proxy Shared Secret Header')}}</label>
+      </div>
+      <div data-related="reverse-proxy-shared-secret-settings">
+        <div class="form-group">
+          <label for="config_reverse_proxy_login_secret_header_name">{{_('Reverse Proxy Shared Secret Header Name')}}</label>
+          <input type="text" class="form-control" id="config_reverse_proxy_login_secret_header_name" name="config_reverse_proxy_login_secret_header_name" value="{% if config.config_reverse_proxy_login_secret_header_name != None %}{{ config.config_reverse_proxy_login_secret_header_name }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_reverse_proxy_login_header_secret_e">{{_('Reverse Proxy Shared Secret')}}</label>
+          <input type="password" class="form-control" id="config_reverse_proxy_login_header_secret_e" name="config_reverse_proxy_login_header_secret_e" value="" autocomplete="off">
+        </div>
+      </div>
     </div>
     {% if not config.config_is_initial %}
     {% if feature_support['ldap'] or feature_support['oauth'] %}

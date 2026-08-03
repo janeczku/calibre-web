@@ -154,6 +154,10 @@ class _Settings(_Base):
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     config_reverse_proxy_login_header_name = Column(String)
+    config_reverse_proxy_use_shared_secret = Column(Boolean, default=False)
+    config_reverse_proxy_login_secret_header_name = Column(String, default="")
+    config_reverse_proxy_login_header_secret_e = Column(String, default="")
+    config_reverse_proxy_trusted_ips = Column(String, default='127.0.0.1,::1')
     config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
 
     schedule_start_time = Column(Integer, default=4)

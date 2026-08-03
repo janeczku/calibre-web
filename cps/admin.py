@@ -23,6 +23,7 @@
 import os
 import re
 import json
+import ipaddress
 import operator
 import time
 import sys
@@ -52,6 +53,7 @@ from .embed_helper import get_calibre_binarypath
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .binary_helper import resolve_binary_path, SUPPORTED_KEPUBIFY_BINARIES, SUPPORTED_UNRAR_BINARIES
 from .render_template import render_title_template, get_sidebar_config
+from .reverse_proxy_auth import is_valid_header_name
 from .services.worker import WorkerThread
 from .usermanagement import user_login_required
 from .cw_babel import get_available_translations, get_available_locale, get_user_locale_language
@@ -1122,6 +1124,31 @@ def _config_string(to_save, x):
     return config.set_from_dictionary(to_save, x, lambda y: strip_whitespaces(y) if y else y)
 
 
+def _validate_reverse_proxy_trusted_ips(value):
+    normalized_values = []
+    for entry in value.split(","):
+        entry = strip_whitespaces(entry)
+        if not entry:
+            continue
+        try:
+            network = ipaddress.ip_network(entry, strict=False)
+        except ValueError:
+            return None, _configuration_result(
+                _('Invalid reverse proxy trusted IP/CIDR entry: %(entry)s', entry=entry)
+            )
+        if "/" in entry:
+            normalized_values.append(str(network))
+        else:
+            normalized_values.append(str(network.network_address))
+    return ",".join(normalized_values), None
+
+
+def _validate_reverse_proxy_header_name(value, label):
+    if value and not is_valid_header_name(value):
+        return _configuration_result(_('Invalid %(label)s: %(value)s', label=label, value=value))
+    return None
+
+
 def _configuration_gdrive_helper(to_save):
     gdrive_error = None
     if to_save.get("config_use_google_drive"):
@@ -1854,7 +1881,46 @@ def _configuration_update_helper():
 
         # Reverse proxy login configuration
         _config_checkbox(to_save, "config_allow_reverse_proxy_header_login")
+        _config_checkbox(to_save, "config_reverse_proxy_use_shared_secret")
         _config_string(to_save, "config_reverse_proxy_login_header_name")
+        _config_string(to_save, "config_reverse_proxy_login_secret_header_name")
+        trusted_proxy_ips, error = _validate_reverse_proxy_trusted_ips(
+            to_save.get("config_reverse_proxy_trusted_ips", "")
+        )
+        if error:
+            return error
+        error = _validate_reverse_proxy_header_name(
+            config.config_reverse_proxy_login_header_name,
+            _('reverse proxy login header name')
+        )
+        if error:
+            return error
+        if to_save.get("config_reverse_proxy_login_header_secret_e", ""):
+            _config_string(to_save, "config_reverse_proxy_login_header_secret_e")
+
+        if config.config_reverse_proxy_use_shared_secret:
+            error = _validate_reverse_proxy_header_name(
+                config.config_reverse_proxy_login_secret_header_name,
+                _('reverse proxy shared secret header name')
+            )
+            if error:
+                return error
+
+            configured_secret = bool(config.config_reverse_proxy_login_header_secret_e)
+            configured_secret_header = bool(config.config_reverse_proxy_login_secret_header_name)
+            if configured_secret ^ configured_secret_header:
+                return _configuration_result(
+                    _('Please configure both reverse proxy shared secret header name and secret')
+                )
+            if not configured_secret:
+                return _configuration_result(
+                    _('Please configure reverse proxy shared secret header name and secret or disable the feature')
+                )
+
+        to_save["config_reverse_proxy_trusted_ips"] = trusted_proxy_ips
+        if config.config_allow_reverse_proxy_header_login and not trusted_proxy_ips:
+            return _configuration_result(_('Please configure at least one trusted reverse proxy IP or CIDR'))
+        _config_string(to_save, "config_reverse_proxy_trusted_ips")
 
         # OAuth configuration
         if config.config_login_type == constants.LOGIN_OAUTH:
