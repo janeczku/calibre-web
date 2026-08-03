@@ -64,7 +64,7 @@ class Amazon(Metadata):
                     log.warning(ex)
                     return []
                 long_soup = BS(r.text, "lxml")  #~4sec :/
-                soup2 = long_soup.find("div", attrs={"cel_widget_id": "dpx-ppd_csm_instrumentation_wrapper"})
+                soup2 = long_soup.find("div", attrs={"id": "dp-container"})
                 if soup2 is None:
                     return []
                 try:

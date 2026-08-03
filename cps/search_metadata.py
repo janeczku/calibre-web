@@ -168,4 +168,4 @@ def metadata_search():
             }
             for future in concurrent.futures.as_completed(meta):
                 data.extend(_serialize_metadata_records(future.result()))
-    return  make_response(jsonify(data))
+    return make_response(jsonify(data))
