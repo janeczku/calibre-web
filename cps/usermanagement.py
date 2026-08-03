@@ -147,7 +147,6 @@ def load_user_from_reverse_proxy_header(req):
                 return None
             user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == rp_header_username.lower()).first()
             if user:
-                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
                 return user
     return None
 
