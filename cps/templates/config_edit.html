@@ -176,6 +176,14 @@
         <label for="config_reverse_proxy_login_header_name">{{_('Reverse Proxy Header Name')}}</label>
         <input type="text" class="form-control" id="config_reverse_proxy_login_header_name" name="config_reverse_proxy_login_header_name" value="{% if config.config_reverse_proxy_login_header_name != None %}{{ config.config_reverse_proxy_login_header_name }}{% endif %}" autocomplete="off">
       </div>
+      <div class="form-group">
+        <input type="checkbox" id="config_reverse_proxy_create_users" name="config_reverse_proxy_create_users" {% if config.config_reverse_proxy_create_users %}checked{% endif %}>
+        <label for="config_reverse_proxy_create_users">{{_('Create Reverse Proxy Users')}}</label>
+      </div>
+      <div class="form-group">
+        <label for="config_reverse_proxy_email_header_name">{{_('Reverse Proxy Email Header Name')}}</label>
+        <input type="text" class="form-control" id="config_reverse_proxy_email_header_name" name="config_reverse_proxy_email_header_name" value="{% if config.config_reverse_proxy_email_header_name != None %}{{ config.config_reverse_proxy_email_header_name }}{% endif %}" autocomplete="off">
+      </div>
     </div>
     {% if not config.config_is_initial %}
     {% if feature_support['ldap'] or feature_support['oauth'] %}
