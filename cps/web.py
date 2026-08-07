@@ -1262,6 +1262,8 @@ def download_link(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def send_to_ereader(book_id, book_format, convert):
+    if book_format.lower() not in constants.EXTENSIONS_UPLOAD:
+        return make_response(jsonify(type="danger", message=_("Book format not supported")))
     if not config.get_mail_server_configured():
         return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
     elif current_user.kindle_mail:
