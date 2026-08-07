@@ -959,7 +959,7 @@ def do_download_file(book, book_format, client, data, headers):
         else:
             download_name = book_name
 
-    # Clean up staged copies in /tmp/calibre_web after the response is sent
+    # Clean up staged copies in the instance temp directory after the response is sent
     # (kepubify / calibre-export branches) so the temp dir does not grow unbounded.
     if filename == get_temp_dir():
         _tmp_path = os.path.join(filename, download_name + "." + book_format)
