@@ -201,12 +201,12 @@ class ConfigSQL(object):
 
         change = False
 
-        if self.config_binariesdir is None:
+        if not self.config_binariesdir:
             change = True
             self.config_binariesdir = autodetect_calibre_binaries()
             self.config_converterpath = autodetect_converter_binary(self.config_binariesdir)
 
-        if self.config_kepubifypath is None:
+        if not self.config_kepubifypath:
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
         elif self.config_kepubifypath and os.path.isfile(self.config_kepubifypath):
@@ -214,7 +214,7 @@ class ConfigSQL(object):
                 change = True
                 self.config_kepubifypath = os.path.dirname(self.config_kepubifypath)
 
-        if self.config_rarfile_location is None:
+        if not self.config_rarfile_location:
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
         elif self.config_rarfile_location and os.path.isfile(self.config_rarfile_location):
@@ -496,7 +496,11 @@ def _migrate_table(session, orm_class, secret_key=None):
 
 
 def autodetect_calibre_binaries():
-    if sys.platform == "win32":
+    override = os.environ.get("CALIBRE_BINARIES")
+    log.debug("CALIBRE_BINARIES %s", override)
+    if override:
+        calibre_path = [override]
+    elif sys.platform == "win32":
         calibre_path = ["C:\\program files\\calibre\\",
                         "C:\\program files(x86)\\calibre\\",
                         "C:\\program files(x86)\\calibre2\\",
@@ -520,7 +524,11 @@ def autodetect_calibre_binaries():
 
 
 def autodetect_converter_binary(calibre_path):
-    if sys.platform == "win32":
+    override = os.environ.get("CALIBRE_CONVERTER")
+    log.debug("CALIBRE_CONVERTER %s", override)
+    if override:
+        return override
+    elif sys.platform == "win32":
         converter_path = os.path.join(calibre_path, "ebook-convert.exe")
     else:
         converter_path = os.path.join(calibre_path, "ebook-convert")
@@ -530,7 +538,11 @@ def autodetect_converter_binary(calibre_path):
 
 
 def autodetect_unrar_binary():
-    if sys.platform == "win32":
+    override = os.environ.get("CALIBRE_UNRAR")
+    log.debug("CALIBRE_UNRAR %s", override)
+    if override:
+        calibre_path = [override]
+    elif sys.platform == "win32":
         calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
                         "C:\\program files(x86)\\WinRar\\unRAR.exe"]
     elif sys.platform.startswith("freebsd"):
@@ -544,7 +556,11 @@ def autodetect_unrar_binary():
 
 
 def autodetect_kepubify_binary():
-    if sys.platform == "win32":
+    override = os.environ.get("CALIBRE_KEPUBIFY")
+    log.debug("CALIBRE_KEPUBIFY %s", override)
+    if override:
+        calibre_path = [override]
+    elif sys.platform == "win32":
         calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
                         "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
     elif sys.platform.startswith("freebsd"):
