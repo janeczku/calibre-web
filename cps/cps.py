@@ -25,7 +25,7 @@ import sys
 path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, path)
 
-from cps.main import main
+from .main import main
 
 
 def hide_console_windows():
@@ -52,16 +52,13 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         # Allow stopping the server with Ctrl+C from an interactive console, after reboot of calibre-web
-        # (initally the SIGINT signal CTRL+C is catched in server.py via the signal callback).
+        # (initially the SIGINT signal CTRL+C is caught in server.py via the signal callback).
         try:
             # Try to perform a graceful stop if web_server is available.
-            # Import here to avoid import-time side-effects when not needed.
+            # Import here to avoid import-time side effects when not needed.
             from cps import web_server
             web_server.stop()
         except Exception:
             pass
         print('\nCalibre-Web: received interrupt, shutting down')
         sys.exit(0)
-
-
-
