@@ -21,7 +21,9 @@ var $list = $("#list").isotope({
     itemSelector: ".book",
     layoutMode: "fitRows",
     getSortData: {
-        title: ".title"
+        title: ".title",
+        name: "[data-name]",
+        newest: "[data-newest]"
     },
 });
 
@@ -31,6 +33,7 @@ $("#desc").click(function() {
         return;
     }
     $("#asc").removeClass("active");
+    $("#new").removeClass("active");
     $("#desc").addClass("active");
 
     var page = $(this).data("id");
@@ -41,10 +44,9 @@ $("#desc").click(function() {
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
-    // invert sorting order to make already inverted start order working
     $list.isotope({
         sortBy: "name",
-        sortAscending: !$list.data('isotope').options.sortAscending
+        sortAscending: false
     });
     direction = 0;
 });
@@ -54,6 +56,7 @@ $("#asc").click(function() {
         return;
     }
     $("#desc").removeClass("active");
+    $("#new").removeClass("active");
     $("#asc").addClass("active");
 
     var page = $(this).data("id");
@@ -66,9 +69,32 @@ $("#asc").click(function() {
     });
     $list.isotope({
         sortBy: "name",
-        sortAscending: !$list.data('isotope').options.sortAscending
+        sortAscending: true
     });
     direction = 1;
+});
+
+$("#new").click(function() {
+    if (direction === 2) {
+        return;
+    }
+    $("#asc").removeClass("active");
+    $("#desc").removeClass("active");
+    $("#new").addClass("active");
+
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: getPath() + "/ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"new\"}}",
+    });
+    $list.isotope({
+        sortBy: "newest",
+        sortAscending: false
+    });
+    direction = 2;
 });
 
 $("#all").click(function() {
