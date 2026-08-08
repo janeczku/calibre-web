@@ -15,10 +15,9 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
-    {% if g.current_theme == 1 %}
-       <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
-       <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
-    {% endif %}
+    {% for theme_css in g.theme['css_files'] %}
+      <link href="{{ url_for('static', filename=theme_css) }}" rel="stylesheet" media="screen">
+    {% endfor %}
     {% block header %}{% endblock %}
   </head>
   <body class="{{ page }} shelf-down">
