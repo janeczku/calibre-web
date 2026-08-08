@@ -25,6 +25,7 @@ from .tasks.clean import TaskClean
 from .tasks.thumbnail import TaskGenerateCoverThumbnails, TaskGenerateSeriesThumbnails, TaskClearCoverThumbnailCache
 from .services.worker import WorkerThread
 from .tasks.metadata_backup import TaskBackupMetadata
+from .tasks.shelfsync import TaskSyncShelves
 
 def get_scheduled_tasks(reconnect=True):
     tasks = list()
@@ -47,6 +48,10 @@ def get_scheduled_tasks(reconnect=True):
     # Generate all missing series thumbnails
     if config.schedule_generate_series_covers:
         tasks.append([lambda: TaskGenerateSeriesThumbnails(), 'generate book covers', False])
+
+    # Sync shelves to collections (one-way)
+    if config.schedule_sync_shelves:
+        tasks.append([lambda: TaskSyncShelves(), 'sync shelves', False])
 
     return tasks
 
