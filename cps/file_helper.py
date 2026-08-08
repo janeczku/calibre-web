@@ -24,7 +24,7 @@ import mimetypes
 import hashlib
 from io import BytesIO
 
-from . import logger, config
+from . import logger
 
 log = logger.create()
 
@@ -46,6 +46,7 @@ def get_mimetype(ext):
 
 def get_temp_dir():
     base_tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+    from . import config
     instance_value = "{}|{}".format(config.config_calibre_dir or "", config.config_port or "")
     instance_key = hashlib.md5(instance_value.encode('utf-8')).hexdigest()  # nosec
     tmp_dir = os.path.join(base_tmp_dir, "instance_{}".format(instance_key[:12]))

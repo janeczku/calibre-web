@@ -1262,7 +1262,13 @@ def download_link(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def send_to_ereader(book_id, book_format, convert):
-    if book_format.lower() not in constants.EXTENSIONS_UPLOAD:
+    book = calibre_db.get_book(book_id)
+    allowed_formats = check_send_to_ereader(book) if book else []
+    is_allowed = any(
+        option.get('format', '').lower() == book_format.lower() and int(option.get('convert', -1)) == convert
+        for option in allowed_formats
+    )
+    if not is_allowed:
         return make_response(jsonify(type="danger", message=_("Book format not supported")))
     if not config.get_mail_server_configured():
         return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))

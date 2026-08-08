@@ -189,7 +189,15 @@ def convert_bookformat(book_id):
         flash(_("Source format for conversion not supported"), category="error")
         return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
-    if book_format_to.lower() not in constants.EXTENSIONS_CONVERT_TO:
+    allowed_destination_formats = set(constants.EXTENSIONS_CONVERT_TO)
+    if config.config_kepubifypath:
+        allowed_destination_formats.add('kepub')
+
+    if book_format_to.lower() == 'kepub' and book_format_from.lower() != 'epub':
+        flash(_("Source format for conversion not supported"), category="error")
+        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
+
+    if book_format_to.lower() not in allowed_destination_formats:
         flash(_("Destination format for conversion not supported"), category="error")
         return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
