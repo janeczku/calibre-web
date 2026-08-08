@@ -18,7 +18,7 @@
 
 import traceback
 
-from flask import render_template, request, flash, make_response
+from flask import request, flash, make_response
 from flask_limiter import RateLimitExceeded
 from flask_babel import gettext as _
 from werkzeug.exceptions import default_exceptions
@@ -30,7 +30,7 @@ except ImportError:
     from werkzeug.exceptions import UnprocessableEntity as FailedDependency
 
 from . import config, app, logger, services
-from .render_template import render_title_template
+from .render_template import render_title_template, themed_render
 from .web import render_login
 from .usermanagement import auth
 from cps.string_helper import strip_whitespaces
@@ -41,29 +41,29 @@ log = logger.create()
 
 def error_http(error):
     headers = {'WWW-Authenticate': 'Basic realm="calibre-web"'} if error.code == 401 else {}
-    return render_template('http_error.html',
-                           error_code="Error {0}".format(error.code),
-                           error_name=error.name,
-                           issue=False,
-                           goto_admin=False,
-                           unconfigured=not config.db_configured,
-                           instance=config.config_calibre_web_title
-                           ), error.code, headers
+    return themed_render('http_error.html',
+                         error_code="Error {0}".format(error.code),
+                         error_name=error.name,
+                         issue=False,
+                         goto_admin=False,
+                         unconfigured=not config.db_configured,
+                         instance=config.config_calibre_web_title
+                         ), error.code, headers
 
 
 def internal_error(error):
     if (isinstance(error.original_exception, AttributeError) and
         error.original_exception.args[0] == "'NoneType' object has no attribute 'query'"
         and error.original_exception.name == "query"):
-        return render_template('http_error.html',
-                               error_code="Database Error",
-                               error_name='The library used is invalid or has permission errors',
-                               issue=False,
-                               goto_admin=True,
-                               unconfigured=False,
-                               error_stack="",
-                               instance=config.config_calibre_web_title
-                               ), 500
+        return themed_render('http_error.html',
+                             error_code="Database Error",
+                             error_name='The library used is invalid or has permission errors',
+                             issue=False,
+                             goto_admin=True,
+                             unconfigured=False,
+                             error_stack="",
+                             instance=config.config_calibre_web_title
+                             ), 500
     log.error("500 Internal Server Error: %s", traceback.format_exc())
     error_stack = ""
     try:
@@ -71,16 +71,16 @@ def internal_error(error):
             error_stack = traceback.format_exc().split("\n")
     except Exception:
         pass
-    return render_template('http_error.html',
-                           error_code="500 Internal Server Error",
-                           error_name='The server encountered an internal error and was unable to complete your '
-                                      'request. There is an error in the application.',
-                           issue=True,
-                           goto_admin=False,
-                           unconfigured=False,
-                           error_stack=error_stack,
-                           instance=config.config_calibre_web_title
-                           ), 500
+    return themed_render('http_error.html',
+                         error_code="500 Internal Server Error",
+                         error_name='The server encountered an internal error and was unable to complete your '
+                                    'request. There is an error in the application.',
+                         issue=True,
+                         goto_admin=False,
+                         unconfigured=False,
+                         error_stack=error_stack,
+                         instance=config.config_calibre_web_title
+                         ), 500
 
 
 def init_errorhandler():
@@ -115,5 +115,4 @@ def handle_rate_limit(__):
         return auth.auth_error_callback(429)
     else:
         return make_response('', 429)
-
 

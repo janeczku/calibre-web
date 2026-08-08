@@ -109,24 +109,6 @@
     }
 }
 
-@-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0
-    }
-    100% {
-        opacity: 1
-    }
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0
-    }
-    100% {
-        opacity: 1
-    }
-}
-
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0)
@@ -233,11 +215,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.c
     display: none
 }
 
-body.blur .row-fluid .col-sm-10 {
-    -webkit-animation: fadeIn 1s linear 1;
-    animation: fadeIn 1s linear 1
-}
-
 .col-sm-10 .book-meta > div.btn-toolbar:after {
     content: '';
     direction: ltr;
@@ -334,7 +311,6 @@ body.blur .row-fluid .col-sm-10 {
 }
 
 .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before {
-    content: "Reorder Shelf";
     width: calc(100vw - 240px);
     height: 60px;
     margin: 0;
@@ -1862,7 +1838,6 @@ body > div.container-fluid > div > div.col-sm-10 > p > a:hover {
 }
 
 body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
-    content: "About";
     width: calc(100vw - 240px);
     text-align: left
 }
@@ -1872,7 +1847,6 @@ body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
-    content: "Books";
     width: calc(100vw - 240px)
 }
 
@@ -2188,7 +2162,6 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
 }
 
 body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Authors";
     top: 115px;
     display: table;
 }
@@ -2227,14 +2200,12 @@ body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
 }
 
 body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Downloads";
     top: 115px;
     display: table;
 }
 
 
 body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Categories";
     top: 115px;
     display: table;
 }
@@ -2246,7 +2217,6 @@ body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before
 }
 
 body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Series";
     top: 115px;
     display: table;
 }
@@ -2258,7 +2228,6 @@ body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
 }
 
 body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "File formats";
     top: 115px;
     display: table;
 }
@@ -2270,7 +2239,6 @@ body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:be
 }
 
 body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "File formats";
     top: 115px;
     display: table;
 }
@@ -2282,7 +2250,6 @@ body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:be
 }
 
 body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Languages";
     top: 115px;
     display: table;
 }
@@ -2298,7 +2265,6 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 }
 
 body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
-    content: "My Profile"
 }
 
 .well {
@@ -2803,7 +2769,6 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-8 > form
 }
 
 body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before {
-    content: "Edit Metadata";
     width: calc(100vw - 350px);
     margin: 0;
     -webkit-margin-before: 0;
@@ -2816,7 +2781,6 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-xs-1
 }
 
 body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-8 > form > #test:before {
-    content: "Advanced Search";
     width: calc(100vw - 240px);
     margin: 0;
     -webkit-margin-before: 0;
@@ -3048,7 +3012,6 @@ body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-
 }
 
 .book-meta > .author > a:first-of-type:before {
-    content: "Author — ";
     color: hsla(0, 0%, 100%, .45);
     position: absolute;
     left: 15px;
@@ -4007,7 +3970,6 @@ body.author:not(.authorlist) .undefined-img:before {
 }
 
 .author > .container-fluid > .row-fluid > .col-sm-10 > h2:before {
-    content: "About Author";
     width: calc(100vw - 240px);
     height: 60px;
     margin: 0;
@@ -4464,7 +4426,6 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
     }
 
     body:not(.blur) #nav_new:after {
-        content: "Advanced Search";
         color: hsla(0, 0%, 100%, .7);
         font-size: 13px;
         line-height: 1.71428571;
@@ -4500,19 +4461,16 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
 }
 
 body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before {
-    content: "Admin Settings";
     position: fixed;
     left: 240px
 }
 
 body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
-    content: "User Settings";
     position: fixed;
     left: 240px
 }
 
 body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
-    content: "New User";
     position: fixed;
     left: 240px
 }
@@ -4937,7 +4895,6 @@ body.search > div.container-fluid > div > div.col-sm-10 > div.discover > h2 + p 
 }
 
 body.search > div.container-fluid > div > div.col-sm-10 > div.discover > h2 + p:before {
-    content: "Library";
     position: absolute;
     top: 25px;
     left: 60px;
@@ -4948,7 +4905,6 @@ body.search > div.container-fluid > div > div.col-sm-10 > div.discover > h2 + p:
 }
 
 body.search > div.container-fluid > div > div.col-sm-10 > div.discover > h2 + p:after {
-    content: "No Results";
     position: absolute;
     margin-left: -170px;
     margin-top: -40px;
@@ -6229,14 +6185,14 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         border-top: none
     }
 
-    #form-upload > .form-group:before {
-        content: "Upload Book";
+    #form-upload > .form-group > .form-upload-label {
         color: #fff;
         font-size: 13px !important;
         padding-left: 15px;
         height: 60px;
         line-height: 60px;
-        position: absolute
+        position: absolute;
+        display: block
     }
 
     #form-upload .form-group .btn {
@@ -6294,8 +6250,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         max-width: 265px
     }
 
-    #main-nav > li.top_tasks:before {
-        content: "MANAGE";
+    #main-nav > li.top_tasks > .top-tasks-label {
         color: hsla(0, 0%, 100%, .45);
         text-transform: uppercase;
         font-size: 12px;
@@ -6303,7 +6258,8 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         line-height: 60px;
         padding-left: 15px;
         position: absolute;
-        top: -60px
+        top: -60px;
+        display: block
     }
 
     #top_admin, #top_tasks, .navigation > ul > li > a {
@@ -6998,7 +6954,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     .book-meta > .author:before {
-        content: "Author — ";
         color: hsla(0, 0%, 100%, .45);
         position: relative;
         left: 0;
@@ -7643,7 +7598,6 @@ body.formatslist > div.container-fluid > div > div.col-sm-10:before {
 }
 
 body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Publishers";
     top: 115px;
     font-size: 24px;
     color: #eee;
@@ -7662,7 +7616,6 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:
 }
 
 body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "Ratings";
     top: 115px;
     font-size: 24px;
     color: #eee;
@@ -7687,7 +7640,6 @@ body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:be
 }
 
 body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    content: "File formats";
     top: 115px;
     font-size: 24px;
     color: #eee;

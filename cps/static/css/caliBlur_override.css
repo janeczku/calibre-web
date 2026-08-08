@@ -32,8 +32,31 @@ input.datepicker:focus + input {color: #555}
     margin-right: 0;
 }
 
+.caliblur-filterheader {
+  margin: 40px 0;
+  padding: 0 10px 0 40px;
+}
+
 @media only screen and (max-width: 767px) {
         .row-fluid > .col-sm-2 {
         visibility: hidden;
     }
+}
+
+.caliblur-login-panel .btn {
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+.advsearch-addtoshelf {
+  height: 40px;
+}
+
+.book-meta > .author > .author-prefix {
+  color: hsla(0, 0%, 100%, .45);
+}
+
+.form-upload-label,
+.top-tasks-label {
+  display: none;
 }

@@ -1,0 +1,460 @@
+{% extends theme("layout.html") %}
+{% block flash %}
+<div id="spinning_success" class="row-fluid text-center" style="display:none;">
+    <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
+</div>
+{% endblock %}
+{% block body %}
+<div class="discover">
+  <h2>{{title}}</h2>
+<form role="form" method="POST" autocomplete="off">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<div class="panel-group col-md-11 col-lg-8">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseone">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Server Configuration')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapseone" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="config_port">{{_('Server Port')}}</label>
+          <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if config.config_port != None %}{{ config.config_port }}{% endif %}" autocomplete="off" required>
+        </div>
+        <label for="config_certfile">{{_('SSL certfile location (leave it empty for non-SSL Servers)')}}</label>
+         <div class="form-group input-group">
+          <input type="text" class="form-control" id="config_certfile" name="config_certfile" value="{% if config.config_certfile != None %}{{ config.config_certfile }}{% endif %}" autocomplete="off">
+          <span class="input-group-btn">
+            <button type="button" data-toggle="modal" data-link="config_certfile" data-target="#fileModal" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+          </span>
+        </div>
+          <label for="config_keyfile" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
+         <div class="form-group input-group">
+          <input type="text" class="form-control" id="config_keyfile" name="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
+          <span class="input-group-btn">
+            <button type="button" id="keyfile_path" data-toggle="modal" data-link="config_keyfile" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="config_updatechannel">{{_('Update Channel')}}</label>
+            <select name="config_updatechannel" id="config_updatechannel" class="form-control">
+              <option value="0" {% if config.config_updatechannel == 0 %}selected{% endif %}>{{_('Stable')}}</option>
+              <option value="2" {% if config.config_updatechannel == 2 %}selected{% endif %}>{{_('Nightly')}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <label for="config_trustedhosts">{{_('Trusted Hosts (Comma Separated)')}}</label>
+          <input type="text" class="form-control" id="config_trustedhosts" name="config_trustedhosts" value="{% if config.trustedhosts != None %}{{ config.config_trustedhosts }}{% endif %}" autocomplete="off">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Logfile Configuration')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapsetwo" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="form-group">
+        <label for="config_log_level">{{_('Log Level')}}</label>
+            <select name="config_log_level" id="config_log_level" class="form-control">
+                    <option value="10" {% if config.config_log_level == 10 %}selected{% endif %}>DEBUG</option>
+                    <option value="20" {% if config.config_log_level == 20 or config.config_log_level == None %}selected{% endif %}>INFO</option>
+                    <option value="30" {% if config.config_log_level == 30 %}selected{% endif %}>WARNING</option>
+                    <option value="40" {% if config.config_log_level == 40 %}selected{% endif %}>ERROR</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <label for="config_logfile">{{_('Location and name of logfile (calibre-web.log for no entry)')}}</label>
+           <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{% if config.config_logfile != None %}{{ config.config_logfile }}{% endif %}" autocomplete="off">
+        </div>
+      <div class="form-group">
+          <input type="checkbox" id="config_access_log" name="config_access_log" {% if config.config_access_log %}checked{% endif %}>
+          <label for="config_access_log">{{_('Enable Access Log')}}</label>
+        </div>
+        <div class="form-group">
+          <label for="config_access_logfile">{{_('Location and name of access logfile (access.log for no entry)')}}</label>
+          <input type="text" class="form-control" name="config_access_logfile" id="config_access_logfile" value="{% if config.config_access_logfile != None %}{{ config.config_access_logfile }}{% endif %}" autocomplete="off">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefour">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Feature Configuration')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapsefour" class="panel-collapse collapse">
+      <div class="panel-body">
+    <div class="form-group">
+      <input type="checkbox" id="config_unicode_filename" name="config_unicode_filename" {% if config.config_unicode_filename %}checked{% endif %}>
+      <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="config_embed_metadata" name="config_embed_metadata" {% if config.config_embed_metadata %}checked{% endif %}>
+      <label for="config_embed_metadata">{{_('Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)')}}</label>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
+        <label for="config_uploading">{{_('Enable Uploads')}} {{_('(Please ensure that users also have upload permissions)')}}</label>
+    </div>
+    <div data-related="upload_settings">
+      <div class="form-group">
+        <label for="config_upload_formats">{{_('Allowed Upload Fileformats')}}</label>
+        <input type="text" class="form-control" name="config_upload_formats" id="config_upload_formats" value="{% if config.config_upload_formats != None %}{{ config.config_upload_formats }}{% endif %}" autocomplete="off">
+      </div>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="config_anonbrowse" name="config_anonbrowse" {% if config.config_anonbrowse %}checked{% endif %}>
+        <label for="config_anonbrowse">{{_('Enable Anonymous Browsing')}}</label>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="config_public_reg" data-control="register_settings" name="config_public_reg" {% if config.config_public_reg %}checked{% endif %}>
+        <label for="config_public_reg">{{_('Enable Public Registration')}}</label>
+    </div>
+    <div data-related="register_settings">
+      <div class="form-group intend-form">
+        <input type="checkbox" id="config_register_email" name="config_register_email" {% if config.config_register_email %}checked{% endif %}>
+        <label for="config_register_email">{{_('Use Email as Username')}}</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if config.config_remote_login %}checked{% endif %}>
+      <label for="config_remote_login">{{_('Enable Magic Link Remote Login')}}</label>
+    </div>
+    {% if feature_support['kobo'] %}
+    <div class="form-group">
+      <input type="checkbox" id="config_kobo_sync" name="config_kobo_sync" data-control="kobo-settings" {% if config.config_kobo_sync %}checked{% endif %}>
+      <label for="config_kobo_sync">{{_('Enable Kobo sync')}}</label>
+    </div>
+    <div data-related="kobo-settings">
+      <div class="form-group" style="margin-left:10px;">
+        <input type="checkbox" id="config_kobo_proxy" name="config_kobo_proxy"  {% if config.config_kobo_proxy %}checked{% endif %}>
+        <label for="config_kobo_proxy">{{_('Proxy unknown requests to Kobo Store')}}</label>
+      </div>
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_external_port">{{_('Server External Port (for port forwarded API calls)')}}</label>
+        <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" autocomplete="off" required>
+      </div>
+    </div>
+    {% endif %}
+    {% if feature_support['goodreads'] %}
+    <div class="form-group">
+      <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>
+      <label for="config_use_goodreads">{{_('Use Goodreads')}}</label>
+    </div>
+    <div data-related="goodreads-settings">
+      <div class="form-group">
+        <label for="config_goodreads_api_key">{{_('Goodreads API Key')}}</label>
+        <input type="text" class="form-control" id="config_goodreads_api_key" name="config_goodreads_api_key" value="{% if config.config_goodreads_api_key != None %}{{ config.config_goodreads_api_key }}{% endif %}" autocomplete="off">
+      </div>
+    </div>
+    {% endif %}
+    <div class="form-group">
+      <label for="config_googlebooks_api_key">{{_('Google Books API Key')}}</label>
+      <input type="text" class="form-control" id="config_googlebooks_api_key" name="config_googlebooks_api_key" value="{% if config.config_googlebooks_api_key != '' %}{{ config.config_googlebooks_api_key }}{% endif %}" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="config_allow_reverse_proxy_header_login" name="config_allow_reverse_proxy_header_login" data-control="reverse-proxy-login-settings" {% if config.config_allow_reverse_proxy_header_login %}checked{% endif %}>
+      <label for="config_allow_reverse_proxy_header_login">{{_('Allow Reverse Proxy Authentication')}}</label>
+    </div>
+    <div data-related="reverse-proxy-login-settings">
+      <div class="alert alert-danger">
+        <strong>{{_('Security Warning')}}</strong>
+        {{_('Only enable this when Calibre-Web is reachable exclusively through a trusted reverse proxy. Never expose Calibre-Web directly to untrusted networks while reverse proxy authentication is enabled.')}}
+      </div>
+      <div class="form-group">
+        <label for="config_reverse_proxy_login_header_name">{{_('Reverse Proxy Header Name')}}</label>
+        <input type="text" class="form-control" id="config_reverse_proxy_login_header_name" name="config_reverse_proxy_login_header_name" value="{% if config.config_reverse_proxy_login_header_name != None %}{{ config.config_reverse_proxy_login_header_name }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_reverse_proxy_trusted_ips">{{_('Reverse Proxy Trusted IPs/CIDRs (Comma Separated)')}}</label>
+        <input type="text" class="form-control" id="config_reverse_proxy_trusted_ips" name="config_reverse_proxy_trusted_ips" value="{% if config.config_reverse_proxy_trusted_ips != None %}{{ config.config_reverse_proxy_trusted_ips }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <input type="checkbox" id="config_reverse_proxy_use_shared_secret" name="config_reverse_proxy_use_shared_secret" data-control="reverse-proxy-shared-secret-settings" {% if config.config_reverse_proxy_use_shared_secret %}checked{% endif %}>
+        <label for="config_reverse_proxy_use_shared_secret">{{_('Enable Reverse Proxy Shared Secret Header')}}</label>
+      </div>
+      <div data-related="reverse-proxy-shared-secret-settings">
+        <div class="form-group">
+          <label for="config_reverse_proxy_login_secret_header_name">{{_('Reverse Proxy Shared Secret Header Name')}}</label>
+          <input type="text" class="form-control" id="config_reverse_proxy_login_secret_header_name" name="config_reverse_proxy_login_secret_header_name" value="{% if config.config_reverse_proxy_login_secret_header_name != None %}{{ config.config_reverse_proxy_login_secret_header_name }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_reverse_proxy_login_header_secret_e">{{_('Reverse Proxy Shared Secret')}}</label>
+          <input type="password" class="form-control" id="config_reverse_proxy_login_header_secret_e" name="config_reverse_proxy_login_header_secret_e" value="" autocomplete="off">
+        </div>
+      </div>
+    </div>
+    {% if not config.config_is_initial %}
+    {% if feature_support['ldap'] or feature_support['oauth'] %}
+      <div class="form-group">
+        <label for="config_login_type">{{_('Login type')}}</label>
+        <select name="config_login_type" id="config_login_type" class="form-control" data-control="login-settings">
+           <option value="0" {% if config.config_login_type == 0 %}selected{% endif %}>{{_('Use Standard Authentication')}}</option>
+           {% if feature_support['ldap'] %}
+           <option value="1" {% if config.config_login_type == 1 %}selected{% endif %}>{{_('Use LDAP Authentication')}}</option>
+           {% endif %}
+           {% if feature_support['oauth'] %}
+           <option value="2" {% if config.config_login_type == 2 %}selected{% endif %}>{{_('Use OAuth')}}</option>
+           {% endif %}
+        </select>
+      </div>
+    {% if feature_support['ldap'] %}
+      <div data-related="login-settings-1">
+        <div class="form-group">
+          <label for="config_ldap_provider_url">{{_('LDAP Server Host Name or IP Address')}}</label>
+          <input type="text" class="form-control" id="config_ldap_provider_url" name="config_ldap_provider_url" value="{% if config.config_ldap_provider_url != None %}{{ config.config_ldap_provider_url }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_ldap_port">{{_('LDAP Server Port')}}</label>
+          <input type="number" min="1" max="65535" class="form-control" id="config_ldap_port" name="config_ldap_port" value="{% if config.config_ldap_port != None %}{{ config.config_ldap_port }}{% endif %}" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="config_ldap_encryption">{{_('LDAP Encryption')}}</label>
+            <select name="config_ldap_encryption" id="config_ldap_encryption" class="form-control" data-controlall="ldap-cert-settings">
+                <option value="0" {% if config.config_ldap_encryption == 0 %}selected{% endif %}>{{ _('None') }}</option>
+                <option value="1" {% if config.config_ldap_encryption == 1 %}selected{% endif %}>{{ _('TLS') }}</option>
+                <option value="2" {% if config.config_ldap_encryption == 2 %}selected{% endif %}>{{ _('SSL') }}</option>
+            </select>
+        </div>
+        <div data-related="ldap-cert-settings">
+          <label for="config_ldap_cacert_path" >{{_('LDAP CACertificate Path (Only needed for Client Certificate Authentication)')}}</label>
+          <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="config_ldap_cacert_path_b" data-toggle="modal" data-link="config_ldap_cacert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+          <label for="config_ldap_cert_path">{{_('LDAP Certificate Path (Only needed for Client Certificate Authentication)')}}</label>
+          <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="config_ldap_cert_path_b" data-toggle="modal" data-link="config_ldap_cert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+          <label for="config_ldap_key_path">{{_('LDAP Keyfile Path (Only needed for Client Certificate Authentication)')}}</label>
+          <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="config_ldap_key_path_b" data-toggle="modal" data-link="config_ldap_key_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="config_ldap_authentication">{{_('LDAP Authentication')}}</label>
+            <select name="config_ldap_authentication" id="config_ldap_authentication" class="form-control" data-control="ldap-auth-password" data-controlall="ldap-auth-settings">
+                <option value="0" {% if config.config_ldap_authentication == 0 %}selected{% endif %}>{{ _('Anonymous') }}</option>
+                <option value="1" {% if config.config_ldap_authentication == 1 %}selected{% endif %}>{{ _('Unauthenticated') }}</option>
+                <option value="2" {% if config.config_ldap_authentication == 2 %}selected{% endif %}>{{ _('Simple') }}</option>
+            </select>
+        </div>
+        <div data-related="ldap-auth-settings">
+          <div class="form-group">
+            <label for="config_ldap_serv_username">{{_('LDAP Administrator Username')}}</label>
+            <input type="text" class="form-control" id="config_ldap_serv_username" name="config_ldap_serv_username" value="{% if config.config_ldap_serv_username != None %}{{ config.config_ldap_serv_username }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
+        <div data-related="ldap-auth-password-2">
+          <div class="form-group">
+            <label for="config_ldap_serv_password_e">{{_('LDAP Administrator Password')}}</label>
+            <input type="password" class="form-control" id="config_ldap_serv_password_e" name="config_ldap_serv_password_e" value="" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="config_ldap_dn">{{_('LDAP Distinguished Name (DN)')}}</label>
+          <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{% if config.config_ldap_dn != None %}{{ config.config_ldap_dn }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_ldap_user_object">{{_('LDAP User Object Filter')}}</label>
+          <input type="text" class="form-control" id="config_ldap_user_object" name="config_ldap_user_object" value="{% if config.config_ldap_user_object != None %}{{ config.config_ldap_user_object }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <input type="checkbox" id="config_ldap_openldap" name="config_ldap_openldap" {% if config.config_ldap_openldap %}checked{% endif %}>
+          <label for="config_ldap_openldap">{{_('LDAP Server is OpenLDAP?')}}</label>
+        </div>
+          <h4 class="text-center">{{_('Following Settings are Needed For User Import')}}</h4>
+          <div class="form-group">
+            <label for="config_ldap_group_object_filter">{{_('LDAP Group Object Filter')}}</label>
+            <input type="text" class="form-control" id="config_ldap_group_object_filter" name="config_ldap_group_object_filter" value="{% if config.config_ldap_group_object_filter != None %}{{ config.config_ldap_group_object_filter }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_ldap_group_name">{{_('LDAP Group Name')}}</label>
+            <input type="text" class="form-control" id="config_ldap_group_name" name="config_ldap_group_name" value="{% if config.config_ldap_group_name != None %}{{ config.config_ldap_group_name }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_ldap_group_members_field">{{_('LDAP Group Members Field')}}</label>
+            <input type="text" class="form-control" id="config_ldap_group_members_field" name="config_ldap_group_members_field" value="{% if config.config_ldap_group_members_field != None %}{{ config.config_ldap_group_members_field }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="ldap_import_user_filter">{{_('LDAP Member User Filter Detection')}}</label>
+              <select name="ldap_import_user_filter" id="ldap_import_user_filter" class="form-control" data-control="ldap_member_user_object">
+                  <option value="0" {% if config.config_ldap_member_user_object == "" %}selected{% endif %}>{{ _('Autodetect') }}</option>
+                  <option value="1" {% if config.config_ldap_member_user_object %}selected{% endif %}>{{ _('Custom Filter') }}</option>
+              </select>
+          </div>
+        <div data-related="ldap_member_user_object-1">
+          <div class="form-group">
+              <label for="config_ldap_member_user_object">{{_('LDAP Member User Filter')}}</label>
+              <input type="text" class="form-control" id="config_ldap_member_user_object" name="config_ldap_member_user_object" value="{% if config.config_ldap_member_user_object != None %}{{ config.config_ldap_member_user_object }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
+
+      </div>
+      {% endif %}
+      {% if feature_support['oauth'] %}
+        <div data-related="login-settings-2">
+          {% for prov in provider %}
+          <div class="form-group">
+            <a href="{{prov['obtain_link']}}" target="_blank">{{_('Obtain %(provider)s OAuth Credential', provider=prov['provider_name'])}}</a>
+          </div>
+          <div class="form-group">
+            <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
+          </div>
+        {% endfor %}
+        </div>
+      {% endif %}
+      {% endif %}
+    {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
+          <span class="glyphicon glyphicon-plus"></span>
+           {{_('External binaries')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapsefive" class="panel-collapse collapse">
+      <div class="panel-body">
+           <label for="config_binariesdir">{{_('Path to Calibre Binaries')}}</label>
+           <div class="form-group input-group">
+           <input type="text" class="form-control" id="config_binariesdir" name="config_binariesdir" value="{% if config.config_binariesdir != None %}{{ config.config_binariesdir }}{% endif %}" autocomplete="off">
+           <span class="input-group-btn">
+             <button type="button" data-toggle="modal" id="binaries_modal_path" data-link="config_binariesdir" data-folderonly="true" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+           </span>
+           </div>
+           <div class="form-group">
+              <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
+              <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
+           </div>
+        <label for="config_kepubifypath">{{_('Path to Kepubify E-Book Converter')}}</label>
+           <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_kepubifypath" name="config_kepubifypath" value="{% if config.config_kepubifypath != None %}{{ config.config_kepubifypath }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="kepubify_path" data-toggle="modal" data-link="config_kepubifypath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+        {% if feature_support['rar'] %}
+            <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+           <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_rarfile_location" name="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="unrar_path" data-toggle="modal" data-link="config_rarfile_location" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
+          <span class="glyphicon glyphicon-plus"></span>
+           {{_('Security Settings')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapsesix" class="panel-collapse collapse">
+      <div class="panel-body">
+            <div class="form-group">
+              <input type="checkbox" id="config_ratelimiter" name="config_ratelimiter" {% if config.config_ratelimiter %}checked{% endif %}>
+              <label for="config_ratelimiter">{{_('Limit failed login attempts')}}</label>
+            </div>
+            <div data-related="ratelimiter_settings">
+               <div class="form-group" style="margin-left:10px;">
+                  <label for="config_calibre">{{_('Configure Backend for Limiter')}}</label>
+                  <input type="text" class="form-control" id="config_limiter_uri" name="config_limiter_uri" value="{% if config.config_limiter_uri != None %}{{ config.config_limiter_uri }}{% endif %}" autocomplete="off">
+               </div>
+               <div class="form-group" style="margin-left:10px;">
+                  <label for="config_calibre">{{_('Options for Limiter Backend')}}</label>
+                  <input type="text" class="form-control" id="config_limiter_options" name="config_limiter_options" value="{% if config.config_limiter_options != None %}{{ config.config_limiter_options }}{% endif %}" autocomplete="off">
+               </div>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="config_check_extensions" name="config_check_extensions" {% if config.config_check_extensions %}checked{% endif %}>
+                <label for="config_check_extensions">{{_('Check if file extensions matches file content on upload')}}</label>
+            </div>
+            <div class="form-group">
+              <label for="config_session">{{_('Session protection')}}</label>
+                <select name="config_session" id="config_session" class="form-control">
+                  <option value="0" {% if config.config_session == 0 %}selected{% endif %}>{{_('Basic')}}</option>
+                  <option value="1" {% if config.config_session == 1 %}selected{% endif %}>{{_('Strong')}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" id="config_password_policy" data-control="password_settings" name="config_password_policy" {% if config.config_password_policy %}checked{% endif %}>
+                <label for="config_password_policy">{{_('User Password policy')}}</label>
+            </div>
+            <div data-related="password_settings">
+              <div class="form-group" style="margin-left:10px;">
+                <label for="config_password_min_length">{{_('Minimum password length')}}</label>
+                <input type="number" min="1" max="40" class="form-control" name="config_password_min_length" id="config_password_min_length" value="{% if config.config_password_min_length != None %}{{ config.config_password_min_length }}{% endif %}" autocomplete="off" required>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_number" name="config_password_number"  {% if config.config_password_number %}checked{% endif %}>
+                <label for="config_password_number">{{_('Enforce number')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_lower" name="config_password_lower"  {% if config.config_password_lower %}checked{% endif %}>
+                <label for="config_password_lower">{{_('Enforce lowercase characters')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_upper" name="config_password_upper"  {% if config.config_password_upper %}checked{% endif %}>
+                <label for="config_password_upper">{{_('Enforce uppercase characters')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_character" name="config_password_character"  {% if config.config_password_character %}checked{% endif %}>
+                <label for="config_password_character">{{_('Enforce characters (needed For Chinese/Japanese/Korean Characters)')}}</label>
+              </div>
+              <div class="form-group" style="margin-left:10px;">
+                <input type="checkbox" id="config_password_special" name="config_password_special"  {% if config.config_password_special %}checked{% endif %}>
+                <label for="config_password_special">{{_('Enforce special characters')}}</label>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="col-sm-12">
+    <button type="button" name="submit" id="config_submit" class="btn btn-default">{{_('Save')}}</button>
+    <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-default">{{_('Cancel')}}</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block modal %}
+{{ filechooser_modal() }}
+{% endblock %}
