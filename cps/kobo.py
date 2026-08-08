@@ -1245,7 +1245,7 @@ def NATIVE_KOBO_RESOURCES():
         "kobo_dropbox_link_account_enabled": "False",
         "kobo_google_tax": "False",
         "kobo_googledrive_link_account_enabled": "False",
-        "kobo_nativeborrow_enabled": "False",
+        "kobo_nativeborrow_enabled": "True" if config.config_kobo_nativeborrow else "False",
         "kobo_onedrive_link_account_enabled": "False",
         "kobo_onestorelibrary_enabled": "False",
         "kobo_privacyCentre_url": "https://www.kobo.com/privacy",
