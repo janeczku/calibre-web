@@ -21,6 +21,7 @@ import os
 import shutil
 import zipfile
 import mimetypes
+import hashlib
 from io import BytesIO
 
 from . import logger
@@ -44,14 +45,18 @@ def get_mimetype(ext):
 
 
 def get_temp_dir():
-    tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+    base_tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+    from . import config
+    instance_value = "{}|{}".format(config.config_calibre_dir or "", config.config_port or "")
+    instance_key = hashlib.md5(instance_value.encode('utf-8')).hexdigest()  # nosec
+    tmp_dir = os.path.join(base_tmp_dir, "instance_{}".format(instance_key[:12]))
     if not os.path.isdir(tmp_dir):
-        os.mkdir(tmp_dir)
+        os.makedirs(tmp_dir)
     return tmp_dir
 
 
 def del_temp_dir():
-    tmp_dir = os.path.join(gettempdir(), 'calibre_web')
+    tmp_dir = get_temp_dir()
     shutil.rmtree(tmp_dir)
 
 

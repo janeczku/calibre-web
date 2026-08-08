@@ -15,9 +15,23 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
-import re
+_SPECIAL_WHITESPACE_CHARS = {"\x00", "\u200b", "\u200c", "\u200d", "\ufeff"}
 
 
 def strip_whitespaces(text):
-    return re.sub(r"(^[\s\u200B-\u200D\ufeff]+)|([\s\u200B-\u200D\ufeff]+$)","", text)
+    if text is None:
+        return ""
+    if not isinstance(text, str):
+        return text
+
+    start = 0
+    end = len(text)
+
+    while start < end and (text[start].isspace() or text[start] in _SPECIAL_WHITESPACE_CHARS):
+        start += 1
+
+    while end > start and (text[end - 1].isspace() or text[end - 1] in _SPECIAL_WHITESPACE_CHARS):
+        end -= 1
+
+    return text[start:end]
 

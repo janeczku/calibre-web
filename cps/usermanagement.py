@@ -27,6 +27,7 @@ from werkzeug.datastructures import Authorization
 from werkzeug.security import check_password_hash
 
 from . import lm, ub, config, logger, limiter, constants, services
+from .reverse_proxy_auth import is_shared_secret_valid, is_trusted_proxy_source
 
 
 log = logger.create()
@@ -113,14 +114,39 @@ def user_login_required(func):
     return decorated_view
 
 
+def _is_request_from_trusted_reverse_proxy(req):
+    remote_addr = req.remote_addr
+    trusted_proxy_config = config.config_reverse_proxy_trusted_ips or ""
+    return is_trusted_proxy_source(remote_addr, trusted_proxy_config)
+
+
+def _has_valid_reverse_proxy_shared_secret(req):
+    if not config.config_reverse_proxy_use_shared_secret:
+        return True
+
+    secret_header_name = config.config_reverse_proxy_login_secret_header_name or ""
+    expected_secret = config.config_reverse_proxy_login_header_secret_e or ""
+    if not secret_header_name or not expected_secret:
+        log.warning("Reverse proxy shared secret is partially configured, rejecting reverse proxy login")
+        return False
+
+    return is_shared_secret_valid(req.headers.get(secret_header_name), expected_secret)
+
+
 def load_user_from_reverse_proxy_header(req):
     rp_header_name = config.config_reverse_proxy_login_header_name
     if rp_header_name:
         rp_header_username = req.headers.get(rp_header_name)
         if rp_header_username:
+            if not _is_request_from_trusted_reverse_proxy(req):
+                log.warning('Rejected reverse proxy authentication header from untrusted source IP-address: %s',
+                            req.remote_addr)
+                return None
+            if not _has_valid_reverse_proxy_shared_secret(req):
+                log.warning('Rejected reverse proxy authentication header due to missing or invalid shared secret')
+                return None
             user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == rp_header_username.lower()).first()
             if user:
-                [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
                 return user
     return None
 
@@ -138,4 +164,3 @@ def load_user(user_id, random, session_key):
         if not entry or entry.user_id != user.id:
             return None
     return user
-

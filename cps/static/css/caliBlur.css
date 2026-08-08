@@ -477,7 +477,7 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     color: #fff !important
 }
 
-#have_read_form span, div[aria-label="Download, send to Kindle, reading"] > .btn-group:first-child > p:first-child, div[aria-label="Download, send to Kindle, reading"] > .btn-group:first-child > p:last-child {
+#have_read_form span, div[aria-label^="Download, send"] > .btn-group:first-child > p:first-child, div[aria-label^="Download, send"] > .btn-group:first-child > p:last-child {
     display: none
 }
 
@@ -538,7 +538,7 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     color: #fff !important
 }
 
-#archived_form span, div[aria-label="Download, send to Kindle, reading"] > .btn-group:first-child > p:first-child, div[aria-label="Download, send to Kindle, reading"] > .btn-group:first-child > p:last-child {
+#archived_form span, div[aria-label^="Download, send"] > .btn-group:first-child > p:first-child, div[aria-label^="Download, send"] > .btn-group:first-child > p:last-child {
     display: none
 }
 
@@ -3160,14 +3160,14 @@ body.book .author {
     margin-left: 0
 }
 
-div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] {
+div.btn-group[role=group][aria-label^="Download, send"] {
     white-space: nowrap;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex
 }
 
-div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > div.btn-group[role=group] > p {
+div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=group] > p {
     display: none
 }
 
@@ -3314,7 +3314,7 @@ ul.dropdown-menu.offscreen {
     margin: 2px -160px 0
 }
 
-div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] .dropdown-menu.offscreen {
+div.btn-group[role=group][aria-label^="Download, send"] .dropdown-menu.offscreen {
     position: fixed;
     top: 120px;
     right: 5px
@@ -6927,7 +6927,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         width: 50px
     }
 
-    div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] {
+    div.btn-group[role=group][aria-label^="Download, send"] {
         display: block
     }
 
@@ -6935,7 +6935,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         display: none
     }
 
-    div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > .downloadBtn {
+    div.btn-group[role=group][aria-label^="Download, send"] > .downloadBtn {
         border-left: 0
     }
 

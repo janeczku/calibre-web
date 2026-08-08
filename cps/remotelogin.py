@@ -38,6 +38,27 @@ remotelogin = Blueprint('remotelogin', __name__)
 log = logger.create()
 
 
+def _load_remote_auth_token(token):
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    # Token not found
+    if auth_token is None:
+        flash(_("Token not found"), category="error")
+        log.error("Remote Login token not found")
+        return None
+
+    # Token expired
+    if datetime.now() > auth_token.expiration:
+        ub.session.delete(auth_token)
+        ub.session_commit()
+
+        flash(_("Token has expired"), category="error")
+        log.error("Remote Login token expired")
+        return None
+
+    return auth_token
+
+
 def remote_login_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
@@ -56,6 +77,8 @@ def remote_login_required(f):
 @remote_login_required
 def remote_login():
     auth_token = ub.RemoteAuthToken()
+    auth_token.request_ip = request.remote_addr
+    auth_token.request_user_agent = request.headers.get('User-Agent', "")
     ub.session.add(auth_token)
     ub.session_commit()
     verify_url = url_for('remotelogin.verify_token', token=auth_token.auth_token, _external=true)
@@ -64,35 +87,31 @@ def remote_login():
                                  verify_url=verify_url, page="remotelogin")
 
 
-@remotelogin.route('/verify/<token>')
+@remotelogin.route('/verify/<token>', methods=['GET', 'POST'])
 @remote_login_required
 @user_login_required
 def verify_token(token):
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
-
-    # Token not found
+    auth_token = _load_remote_auth_token(token)
     if auth_token is None:
-        flash(_("Token not found"), category="error")
-        log.error("Remote Login token not found")
         return redirect(url_for('web.index'))
 
-    # Token expired
-    elif datetime.now() > auth_token.expiration:
-        ub.session.delete(auth_token)
+    if request.method == 'POST':
+        if auth_token.verified:
+            flash(_("Token already approved"), category="error")
+            log.error("Remote Login token already approved")
+            return redirect(url_for('web.index'))
+
+        auth_token.user_id = current_user.id
+        auth_token.verified = True
         ub.session_commit()
 
-        flash(_("Token has expired"), category="error")
-        log.error("Remote Login token expired")
+        flash(_("Success! Please return to your device"), category="success")
+        log.debug("Remote Login token for userid %s verified", auth_token.user_id)
         return redirect(url_for('web.index'))
 
-    # Update token with user information
-    auth_token.user_id = current_user.id
-    auth_token.verified = True
-    ub.session_commit()
-
-    flash(_("Success! Please return to your device"), category="success")
-    log.debug("Remote Login token for userid %s verified", auth_token.user_id)
-    return redirect(url_for('web.index'))
+    return render_title_template('remote_login_verify.html', title=_("Login"), token=auth_token.auth_token,
+                                 request_ip=auth_token.request_ip,
+                                 request_user_agent=auth_token.request_user_agent, page="remotelogin")
 
 
 @remotelogin.route('/ajax/verify_token', methods=['POST'])

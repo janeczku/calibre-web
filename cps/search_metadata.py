@@ -22,6 +22,7 @@ import inspect
 import json
 import os
 import sys
+from urllib.parse import urlsplit
 
 from flask import Blueprint, request, url_for, make_response, jsonify
 from .cw_login import current_user
@@ -37,6 +38,37 @@ from .usermanagement import user_login_required
 meta = Blueprint("metadata", __name__)
 
 log = logger.create()
+
+
+def _safe_metadata_url(value):
+    if not isinstance(value, str):
+        return ""
+    value = value.strip()
+    if not value:
+        return ""
+    parsed = urlsplit(value)
+    if parsed.scheme in ("http", "https"):
+        return value
+    if not parsed.scheme and value.startswith("/"):
+        return value
+    return ""
+
+
+def _sanitize_metadata_record(record):
+    record["url"] = _safe_metadata_url(record.get("url"))
+    record["cover"] = _safe_metadata_url(record.get("cover"))
+    source = record.get("source")
+    if isinstance(source, dict):
+        source["link"] = _safe_metadata_url(source.get("link"))
+    return record
+
+
+def _serialize_metadata_records(records):
+    return [
+        _sanitize_metadata_record(asdict(record))
+        for record in (records or [])
+        if record
+    ]
 
 try:
     from dataclasses import asdict
@@ -114,7 +146,7 @@ def metadata_change_active_provider(prov_name):
         provider = next((c for c in cl if c.__id__ == prov_name), None)
         if provider is not None:
             data = provider.search(new_state.get("query", ""))
-        return make_response(jsonify([asdict(x) for x in data]))
+        return make_response(jsonify(_serialize_metadata_records(data)))
     return ""
 
 
@@ -135,5 +167,5 @@ def metadata_search():
                 if active.get(c.__id__, True)
             }
             for future in concurrent.futures.as_completed(meta):
-                data.extend([asdict(x) for x in (future.result() or []) if x])
-    return  make_response(jsonify(data))
+                data.extend(_serialize_metadata_records(future.result()))
+    return make_response(jsonify(data))

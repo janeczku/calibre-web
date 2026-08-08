@@ -35,6 +35,7 @@ from flask_babel import gettext as _
 from cps.kobo_sync_status import remove_synced_book
 from cps.ub import init_db_thread
 from cps.file_helper import get_temp_dir
+from cps.binary_helper import resolve_binary_path, SUPPORTED_KEPUBIFY_BINARIES
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils, helper
@@ -167,10 +168,12 @@ class TaskConvert(CalibreTask):
                          book_id,
                          format_new_ext)
 
-            if config.config_kepubifypath and format_old_ext == '.epub' and format_new_ext == '.kepub':
+            kepubify_binary = resolve_binary_path(config.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES)
+            if kepubify_binary and format_old_ext == '.epub' and format_new_ext == '.kepub':
                 check, error_message = self._convert_kepubify(file_path,
                                                               format_old_ext,
-                                                              format_new_ext)
+                                                              format_new_ext,
+                                                              kepubify_binary)
             else:
                 # check if calibre converter-executable is existing
                 if not os.path.exists(config.config_converterpath):
@@ -218,7 +221,7 @@ class TaskConvert(CalibreTask):
         self._handleError(error_message)
         return
 
-    def _convert_kepubify(self, file_path, format_old_ext, format_new_ext):
+    def _convert_kepubify(self, file_path, format_old_ext, format_new_ext, kepubify_binary):
         if config.config_embed_metadata and config.config_binariesdir:
             tmp_dir, temp_file_name = helper.do_calibre_export(self.book_id, format_old_ext[1:])
             filename = os.path.join(tmp_dir, temp_file_name + format_old_ext)
@@ -227,7 +230,7 @@ class TaskConvert(CalibreTask):
             filename = file_path + format_old_ext
             temp_file_path = os.path.dirname(file_path)
         quotes = [1, 3]
-        command = [config.config_kepubifypath, filename, '-o', temp_file_path, '-i']
+        command = [kepubify_binary, filename, '-o', temp_file_path, '-i']
         try:
             p = process_open(command, quotes)
         except OSError as e:

@@ -43,6 +43,7 @@ from . import config, ub, db, calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload
 from .render_template import render_title_template
+from .binary_helper import resolve_binary_path, SUPPORTED_UNRAR_BINARIES
 from .kobo_sync_status import change_archived_books
 from .redirect import get_redirect_location
 from .file_helper import validate_mime_type
@@ -182,6 +183,22 @@ def convert_bookformat(book_id):
 
     if (book_format_from is None) or (book_format_to is None):
         flash(_("Source or destination format for conversion missing"), category="error")
+        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
+
+    if book_format_from.lower() not in constants.EXTENSIONS_CONVERT_FROM:
+        flash(_("Source format for conversion not supported"), category="error")
+        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
+
+    allowed_destination_formats = set(constants.EXTENSIONS_CONVERT_TO)
+    if config.config_kepubifypath:
+        allowed_destination_formats.add('kepub')
+
+    if book_format_to.lower() == 'kepub' and book_format_from.lower() != 'epub':
+        flash(_("Source format for conversion not supported"), category="error")
+        return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
+
+    if book_format_to.lower() not in allowed_destination_formats:
+        flash(_("Destination format for conversion not supported"), category="error")
         return redirect(url_for('edit-book.show_edit_book', book_id=book_id))
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
@@ -809,7 +826,13 @@ def prepare_authors(authr, calibre_path, gdrive=False):
 
     for in_aut in input_authors:
         renamed_author = calibre_db.session.query(db.Authors).filter(func.lower(db.Authors.name).ilike(in_aut)).first()
-        if renamed_author and in_aut != renamed_author.name:
+        # The custom lower() SQL function transliterates via unidecode (see cps.db.lcase), so the
+        # case-insensitive lookup above also matches accent- or homophone-twins with a genuinely
+        # different name (e.g. "José Luis Corral"/"Jose Luis Corral", "姚尧"/"妖妖"). Only treat the
+        # match as a case-rename when the names are equal ignoring case; otherwise the rename below
+        # would overwrite a distinct author and hit the authors.name UNIQUE constraint (#3403, #3170).
+        if renamed_author and in_aut != renamed_author.name \
+                and in_aut.casefold() == renamed_author.name.casefold():
             old_author_name = renamed_author.name
             # rename author in Database
             create_objects_for_addition(renamed_author, in_aut,"author")
@@ -962,7 +985,8 @@ def file_handling_on_upload(requested_file):
 
     # extract metadata from file
     try:
-        meta = uploader.upload(requested_file, config.config_rarfile_location)
+        meta = uploader.upload(requested_file,
+                               resolve_binary_path(config.config_rarfile_location, SUPPORTED_UNRAR_BINARIES))
     except (IOError, OSError):
         log.error("File %s could not saved to temp dir", requested_file.filename)
         flash(_("File %(filename)s could not saved to temp dir",
@@ -1212,8 +1236,17 @@ def edit_book_tags(tags, book):
     if tags is not None:
         input_tags = tags.split(',')
         input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
-        # Remove duplicates
         input_tags = helper.uniq(input_tags)
+        # Tag names are unique with NOCASE collation in the database. Remove
+        # case-insensitive duplicates before creating book-tag associations.
+        unique_tags = []
+        seen_tags = set()
+        for tag in input_tags:
+            normalized_tag = tag.casefold()
+            if normalized_tag not in seen_tags:
+                seen_tags.add(normalized_tag)
+                unique_tags.append(tag)
+        input_tags = unique_tags
         return modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
     return False
 
@@ -1397,8 +1430,19 @@ def edit_cc_data(book_id, book, to_save, cc):
                             calibre_db.session.delete(del_cc)
                             changed = True
             else:
+                # Tag names are unique with NOCASE collation in the database. Remove
+                # case-insensitive duplicates before creating book-tag associations.
                 input_tags = to_save[cc_string].split(',')
                 input_tags = list(map(lambda it: strip_whitespaces(it), input_tags))
+                input_tags = helper.uniq(input_tags)
+                unique_tags = []
+                seen_tags = set()
+                for tag in input_tags:
+                    normalized_tag = tag.casefold()
+                    if normalized_tag not in seen_tags:
+                        seen_tags.add(normalized_tag)
+                        unique_tags.append(tag)
+                input_tags = unique_tags
                 changed |= modify_database_object(input_tags,
                                                   getattr(book, cc_string),
                                                   db.cc_classes[c.id],
@@ -1483,7 +1527,7 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
             meta = uploader.process(
                 saved_filename,
                 *os.path.splitext(current_filename),
-                rar_executable=config.config_rarfile_location,
+                rar_executable=resolve_binary_path(config.config_rarfile_location, SUPPORTED_UNRAR_BINARIES),
                 no_cover=no_cover)
             merge_metadata(book, meta, to_save)
     #if to_save.get('languages'):

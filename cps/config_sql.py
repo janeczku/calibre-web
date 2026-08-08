@@ -34,6 +34,7 @@ except ImportError:
     from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, logger
+from .binary_helper import resolve_binary_path, SUPPORTED_KEPUBIFY_BINARIES, SUPPORTED_UNRAR_BINARIES
 from .subproc_wrapper import process_wait
 from .string_helper import strip_whitespaces
 
@@ -153,6 +154,10 @@ class _Settings(_Base):
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     config_reverse_proxy_login_header_name = Column(String)
+    config_reverse_proxy_use_shared_secret = Column(Boolean, default=False)
+    config_reverse_proxy_login_secret_header_name = Column(String, default="")
+    config_reverse_proxy_login_header_secret_e = Column(String, default="")
+    config_reverse_proxy_trusted_ips = Column(String, default='127.0.0.1,::1')
     config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
 
     schedule_start_time = Column(Integer, default=4)
@@ -204,10 +209,18 @@ class ConfigSQL(object):
         if self.config_kepubifypath is None:
             change = True
             self.config_kepubifypath = autodetect_kepubify_binary()
+        elif self.config_kepubifypath and os.path.isfile(self.config_kepubifypath):
+            if resolve_binary_path(self.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES):
+                change = True
+                self.config_kepubifypath = os.path.dirname(self.config_kepubifypath)
 
         if self.config_rarfile_location is None:
             change = True
             self.config_rarfile_location = autodetect_unrar_binary()
+        elif self.config_rarfile_location and os.path.isfile(self.config_rarfile_location):
+            if resolve_binary_path(self.config_rarfile_location, SUPPORTED_UNRAR_BINARIES):
+                change = True
+                self.config_rarfile_location = os.path.dirname(self.config_rarfile_location)
         if change:
             self.save()
 
@@ -526,7 +539,7 @@ def autodetect_unrar_binary():
         calibre_path = ["/usr/bin/unrar"]
     for element in calibre_path:
         if os.path.isfile(element) and os.access(element, os.X_OK):
-            return element
+            return os.path.dirname(element)
     return ""
 
 
@@ -540,7 +553,7 @@ def autodetect_kepubify_binary():
         calibre_path = ["/opt/kepubify/kepubify-linux-64bit", "/opt/kepubify/kepubify-linux-32bit"]
     for element in calibre_path:
         if os.path.isfile(element) and os.access(element, os.X_OK):
-            return element
+            return os.path.dirname(element)
     return ""
 
 

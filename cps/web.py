@@ -47,6 +47,7 @@ from .helper import check_valid_domain, check_email, check_username, \
     get_book_cover, get_series_cover_thumbnail, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_ereader, check_read_formats, tags_filters, reset_password, valid_email, \
     edit_book_read_status, valid_password
+from .binary_helper import resolve_binary_path, SUPPORTED_UNRAR_BINARIES
 from .pagination import Pagination
 from .redirect import get_redirect_location
 from .cw_babel import get_available_locale
@@ -218,7 +219,8 @@ def get_comic_book(book_id, book_format, page):
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, bookformat.name) + "." + book_format
                 if book_format in ("cbr", "rar"):
                     if feature_support['rar'] == True:
-                        rarfile.UNRAR_TOOL = config.config_rarfile_location
+                        rarfile.UNRAR_TOOL = resolve_binary_path(config.config_rarfile_location,
+                                                                 SUPPORTED_UNRAR_BINARIES)
                         try:
                             rf = rarfile.RarFile(cbr_file)
                             names = sort(rf.namelist())
@@ -1247,9 +1249,9 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    if "kindle" in request.headers.get('User-Agent').lower():
+    if "kindle" in request.headers.get('User-Agent', "").lower():
         client = "kindle"
-    elif "Kobo" in request.headers.get('User-Agent').lower():
+    elif "Kobo" in request.headers.get('User-Agent', "").lower():
         client = "kobo"
     else:
         client = ""
@@ -1260,6 +1262,14 @@ def download_link(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def send_to_ereader(book_id, book_format, convert):
+    book = calibre_db.get_book(book_id)
+    allowed_formats = check_send_to_ereader(book) if book else []
+    is_allowed = any(
+        option.get('format', '').lower() == book_format.lower() and int(option.get('convert', -1)) == convert
+        for option in allowed_formats
+    )
+    if not is_allowed:
+        return make_response(jsonify(type="danger", message=_("Book format not supported")))
     if not config.get_mail_server_configured():
         return make_response(jsonify(type="danger", message=_("Please configure the SMTP mail settings first...")))
     elif current_user.kindle_mail:

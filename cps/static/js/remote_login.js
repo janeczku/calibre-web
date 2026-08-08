@@ -17,8 +17,9 @@
 
 (function () {
     // Poll the server to check if the user has authenticated
+    var csrf_token = $("input[name='csrf_token']").val();
     var t = setInterval(function () {
-        $.post(getPath() + "/ajax/verify_token", { token: $("#verify_url").data("token") })
+        $.post(getPath() + "/ajax/verify_token", { token: $("#verify_url").data("token"), csrf_token: csrf_token })
             .done(function(response) {
                 if (response.status === 'success') {
                 // Wait a tick so cookies are updated

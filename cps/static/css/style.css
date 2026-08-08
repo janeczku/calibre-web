@@ -422,6 +422,21 @@ input.pill:not(:checked) + label .glyphicon { display: none; }
   overflow-y: auto;
 }
 
+#fileModal .modal-content {
+  max-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+#fileModal .modal-body {
+  overflow: hidden;
+}
+
+#file_table_wrapper {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+}
+
 div.log {
   font-family: Courier New, serif;
   font-size: 12px;

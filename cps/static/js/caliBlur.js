@@ -154,7 +154,7 @@ if ($("body.book").length > 0) {
     // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
     $('ul[aria-labelledby="read-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
     $('ul[aria-labelledby="listen-in-browser"]').insertBefore(".blur-wrapper").addClass("readinbrowser-drop");
-    $('ul[aria-labelledby="send-to-kereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
+    $('ul[aria-labelledby="send-to-ereader"]').insertBefore(".blur-wrapper").addClass("sendtoereader-drop");
     $(".leramslist").insertBefore(".blur-wrapper");
     $('ul[aria-labelledby="btnGroupDrop1"]').insertBefore(".blur-wrapper").addClass("leramslist");
     $("#add-to-shelves").insertBefore(".blur-wrapper");

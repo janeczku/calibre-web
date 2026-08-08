@@ -154,6 +154,22 @@
             <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Header Name')}}</div>
             <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
         </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Trusted IPs/CIDRs')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_trusted_ips }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Shared Secret Header Name')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_secret_header_name }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Shared Secret Header')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_use_shared_secret) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Shared Secret Configured')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_reverse_proxy_login_header_secret_e) }}</div>
+        </div>
         {% endif %}
       </div>
       <a class="btn btn-default" id="db_config" href="{{url_for('admin.db_configuration')}}">{{_('Edit Calibre Database Configuration')}}</a>

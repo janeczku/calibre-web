@@ -36,6 +36,11 @@
 #
 # Inspired by http://flask.pocoo.org/snippets/35/
 
+from . import logger
+from .reverse_proxy_auth import is_trusted_proxy_source, to_wsgi_header_key
+
+log = logger.create()
+
 
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
@@ -60,6 +65,21 @@ class ReverseProxied(object):
         self.proxied = False
 
     def __call__(self, environ, start_response):
+        from . import config
+
+        rp_header_name = config.config_reverse_proxy_login_header_name or ""
+        rp_secret_header_name = config.config_reverse_proxy_login_secret_header_name or ""
+        header_names = [header for header in (rp_header_name, rp_secret_header_name) if header]
+        header_keys = [(header, to_wsgi_header_key(header)) for header in header_names]
+        trusted_proxy_config = config.config_reverse_proxy_trusted_ips or ""
+        if config.config_allow_reverse_proxy_header_login and any(key in environ for _, key in header_keys):
+            if not is_trusted_proxy_source(environ.get("REMOTE_ADDR"), trusted_proxy_config):
+                for header_name, header_key in header_keys:
+                    if header_key in environ:
+                        environ.pop(header_key, None)
+                        log.warning("Discarded reverse proxy auth header '%s' from untrusted source IP-address: %s",
+                                    header_name, environ.get("REMOTE_ADDR"))
+
         self.proxied = False
         self.script_name = "/"
         script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
