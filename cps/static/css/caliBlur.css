@@ -20,7 +20,6 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-box-direction: normal;
     white-space: nowrap
@@ -357,7 +356,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.c
 .home-btn > a, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
     text-transform: none;
     -moz-user-select: none;
-    -ms-user-select: none;
     -webkit-font-smoothing: antialiased
 }
 
@@ -612,7 +610,6 @@ div[aria-label="Edit/Delete book"] > .btn > span:hover {
     left: auto !important;
     top: auto !important;
     -webkit-transform: none !important;
-    -ms-transform: none !important;
     transform: none !important;
     min-width: 225px;
     display: block
@@ -680,7 +677,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     user-select: none;
     word-spacing: 0;
     -webkit-writing-mode: horizontal-tb;
-    -ms-writing-mode: lr-tb;
     writing-mode: horizontal-tb;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
@@ -719,10 +715,8 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     -webkit-writing-mode: horizontal-tb;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    speak: none;
     text-shadow: none;
     word-spacing: 0;
-    -ms-writing-mode: lr-tb;
     writing-mode: horizontal-tb
 }
 
@@ -744,7 +738,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     text-align: center;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     user-select: none;
     vertical-align: middle;
@@ -754,8 +747,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
 }
 
 .btn, input.pill + label {
-    -moz-user-select: none;
-    -ms-user-select: none
+    -moz-user-select: none
 }
 
 .home-btn > a:before {
@@ -992,7 +984,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     -moz-osx-font-smoothing: grayscale;
     line-height: 1;
     text-rendering: optimizeLegibility;
-    speak: none;
     font-size: 20px
 }
 
@@ -1731,7 +1722,6 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
     width: 100%;
     margin: 0;
     -webkit-box-pack: start;
-    -ms-flex-pack: start;
     justify-content: start;
     grid-gap: 10px 0;
     grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)) !important
@@ -1806,7 +1796,6 @@ body > div.container-fluid > div > div.col-sm-10 > p {
     margin: 0;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-box-direction: normal;
     -webkit-font-smoothing: antialiased;
@@ -2264,9 +2253,6 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
     }
 }
 
-body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
-}
-
 .well {
     max-height: 520px;
     height: auto;
@@ -2338,7 +2324,6 @@ body > div.row-fluid {
     width: 50%;
     margin: 0;
     -webkit-transform: translate(-50%);
-    -ms-transform: translate(-50%);
     transform: translate(-50%);
     opacity: 1 !important;
     right: 0;
@@ -2717,7 +2702,6 @@ input.pill + label:hover {
     color: hsla(0, 0%, 100%, .7);
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     white-space: nowrap;
     -webkit-box-direction: normal;
@@ -3126,7 +3110,6 @@ body.book .author {
 div.btn-group[role=group][aria-label^="Download, send"] {
     white-space: nowrap;
     display: -webkit-box;
-    display: -ms-flexbox;
     display: flex
 }
 
@@ -3197,10 +3180,8 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
     width: calc(100vw - 240px);
     height: 60px;
     display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
     justify-content: space-between
 }
 
@@ -3219,7 +3200,6 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
     white-space: nowrap;
     font-weight: 400;
     -webkit-box-ordinal-group: 0;
-    -ms-flex-order: -1;
     order: -1;
     overflow: hidden;
     -o-text-overflow: ellipsis;
@@ -3230,7 +3210,6 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
 .book-meta .btn-toolbar > .btn-group {
     margin: 0;
     -webkit-box-ordinal-group: 2;
-    -ms-flex-order: 1;
     order: 1
 }
 
@@ -3296,7 +3275,6 @@ div.btn-group[role=group][aria-label^="Download, send"] .dropdown-menu.offscreen
     -o-transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4);
     transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4), -webkit-transform .15s cubic-bezier(.6, .4, .2, 1.4);
     -webkit-transform-origin: center top;
-    -ms-transform-origin: center top;
     transform-origin: center top;
     border: 0;
     overflow-y: auto;
@@ -3480,7 +3458,6 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
     line-height: 60px !important;
     -webkit-text-size-adjust: 100% !important;
     -moz-text-size-adjust: 100% !important;
-    -ms-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
     white-space: nowrap !important;
     -webkit-box-direction: normal !important;
@@ -3515,7 +3492,6 @@ body.shelf-down .btn-group button#btnGroupDrop1 {
 
 .author > .container-fluid > .row-fluid > .col-sm-10 > h2:before, .plexBack > a {
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%
 }
 
@@ -3664,10 +3640,8 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     bottom: 0;
     left: 0;
     display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: horizontal;
-    -ms-flex-direction: row;
     flex-direction: row;
     overflow: hidden
 }
@@ -3684,7 +3658,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     filter: blur(125px) brightness(85%);
     -moz-filter: blur(125px);
     -o-filter: blur(125px);
-    -ms-filter: blur(125px);
     opacity: .4;
     -webkit-animation: fade 1s;
     animation: fade 1s;
@@ -3750,7 +3723,6 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     -webkit-text-size-adjust: 100%;
     text-transform: none;
     -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     vertical-align: middle;
     width: 100%;
@@ -3851,7 +3823,6 @@ body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.l
     border-left: 4px solid transparent;
     position: absolute;
     -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     vertical-align: middle;
     -webkit-transition: border .2s, -webkit-transform .4s;
@@ -3872,7 +3843,6 @@ body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.l
     border-left: 4px solid transparent;
     position: absolute;
     -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     vertical-align: middle;
     -webkit-transition: border .2s, -webkit-transform .4s;
@@ -4109,14 +4079,11 @@ body.shelf.modal-open > .container-fluid {
     font-weight: 400
 }
 
-#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Delete Shelf";
+#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-header > .modal-title {
     display: inline-block;
-    font-size: 20px
-}
-
-#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-header > span {
-    display: none
+    font-size: 20px;
+    margin: 0;
+    color: inherit
 }
 
 #DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body {
@@ -4126,12 +4093,6 @@ body.shelf.modal-open > .container-fluid {
     font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif;
     color: #eee;
     background: #282828
-}
-
-#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body > span:before {
-    content: "Are you sure you want to delete this shelf?";
-    display: inline-block;
-    padding-right: 5px
 }
 
 #DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body:after {
@@ -4270,14 +4231,12 @@ body.shelf.modal-open > .container-fluid {
     -o-transition: transform .3s ease-out;
     transition: transform .3s ease-out, -webkit-transform .3s ease-out;
     -webkit-transform: translate(0, -60px);
-    -ms-transform: translate(0, -60px);
     transform: translate(0, -60px);
     z-index: 99
 }
 
 #DeleteShelfDialog.modal.in:before {
     -webkit-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
     transform: translate(0, 0)
 }
 
@@ -4448,7 +4407,6 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     line-height: 60px;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-box-direction: normal;
     -webkit-font-smoothing: antialiased;
@@ -4713,7 +4671,6 @@ body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h
     line-height: 60px;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
     text-size-adjust: 100%;
     -webkit-box-direction: normal;
     -webkit-margin-before: 0;
@@ -4834,7 +4791,6 @@ body.read:not(.blur) a[href*=readbooks] {
 
 .tooltip {
     -webkit-transform: translate(0) scale(1);
-    -ms-transform: translate(0) scale(1);
     transform: translate(0) scale(1)
 }
 
@@ -4843,7 +4799,6 @@ body.read:not(.blur) a[href*=readbooks] {
     -o-transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4);
     transition: opacity .15s ease-out, transform .15s cubic-bezier(.6, .4, .2, 1.4), -webkit-transform .15s cubic-bezier(.6, .4, .2, 1.4);
     -webkit-transform: translate(0) scale(1);
-    -ms-transform: translate(0) scale(1);
     transform: translate(0) scale(1);
     pointer-events: none
 }
@@ -4874,7 +4829,6 @@ body.read:not(.blur) a[href*=readbooks] {
     border-bottom-color: #191a1c;
     left: 50%;
     -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     position: absolute;
     margin-top: -16px !important
@@ -5057,13 +5011,18 @@ body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.boot
     background-color: hsla(0, 0%, 100%, .02) !important
 }
 
-body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > tbody > tr.no-records-found > td:before {
-    content: "No Records Found";
+body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > tbody > tr.no-records-found > td {
+    position: relative
+}
+
+body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > tbody > tr.no-records-found > td > .no-records-message {
     position: absolute;
     top: 120px;
-    left: calc(50% - 66px);
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 14px;
-    color: hsla(0, 0%, 100%, .65)
+    color: hsla(0, 0%, 100%, .65);
+    white-space: nowrap
 }
 
 .epub-back, .epub-back:before {
@@ -5479,14 +5438,12 @@ body.admin.modal-open .navbar {
     -o-transition: transform .3s ease-out;
     transition: transform .3s ease-out, -webkit-transform .3s ease-out;
     -webkit-transform: translate(0, -60px);
-    -ms-transform: translate(0, -60px);
     transform: translate(0, -60px);
     z-index: 99
 }
 
 #RestartDialog.in:before, #ShutdownDialog.in:before, #StatusDialog.in:before, #deleteModal.in:before, #cancelTaskModal.in:before {
     -webkit-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
     transform: translate(0, 0)
 }
 
@@ -5553,37 +5510,14 @@ body.admin.modal-open .navbar {
     font-family: plex-icons-new, serif
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Restart Calibre-Web";
+#RestartDialog > .modal-dialog > .modal-content > .modal-header > .modal-title, #ShutdownDialog > .modal-dialog > .modal-content > .modal-header > .modal-title, #StatusDialog > .modal-dialog > .modal-content > .modal-header > .modal-title, #deleteModal > .modal-dialog > .modal-content > .modal-header > .modal-title, #cancelTaskModal > .modal-dialog > .modal-content > .modal-header > .modal-title {
     display: inline-block;
-    font-size: 20px
+    font-size: 20px;
+    margin: 0;
+    color: inherit
 }
 
-#ShutdownDialog > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Stop Calibre-Web";
-    display: inline-block;
-    font-size: 20px
-}
-
-#StatusDialog > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Update Calibre-Web";
-    display: inline-block;
-    font-size: 20px
-}
-
-#deleteModal > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Delete Book";
-    display: inline-block;
-    font-size: 20px
-}
-
-#cancelTaskModal > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Delete Book";
-    display: inline-block;
-    font-size: 20px
-}
-
-#StatusDialog > .modal-dialog > .modal-content > .modal-header > span, #deleteModal > .modal-dialog > .modal-content > .modal-header > span, #cancelTaskModal > .modal-dialog > .modal-content > .modal-header > span, #loader > center > img, .rating-mobile {
+#loader > center > img, .rating-mobile {
     display: none
 }
 
@@ -6309,7 +6243,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-rendering: optimizeLegibility;
-        speak: none;
         vertical-align: sub;
         font-weight: 400;
         font-style: normal
@@ -7001,7 +6934,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         border-left: 4px solid transparent;
         position: absolute;
         -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
         transform: translateY(-50%);
         vertical-align: middle;
         -webkit-transition: border .2s, -webkit-transform .4s;
@@ -7022,7 +6954,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         border-left: 4px solid transparent;
         position: absolute;
         -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
         transform: translateY(-50%);
         vertical-align: middle;
         -webkit-transition: border .2s, -webkit-transform .4s;
@@ -7762,7 +7693,6 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
 
 #DeleteDomain.in:before {
     -webkit-transform: translate(0, 0);
-    -ms-transform: translate(0, 0);
     transform: translate(0, 0)
 }
 
@@ -7783,7 +7713,6 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     -o-transition: transform .3s ease-out;
     transition: transform .3s ease-out, -webkit-transform .3s ease-out;
     -webkit-transform: translate(0, -60px);
-    -ms-transform: translate(0, -60px);
     transform: translate(0, -60px);
     z-index: 99
 }
@@ -7828,10 +7757,11 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     display: inline-block
 }
 
-#DeleteDomain > .modal-dialog > .modal-content > .modal-header:after {
-    content: "Remove Domain";
+#DeleteDomain > .modal-dialog > .modal-content > .modal-header > .modal-title {
     display: inline-block;
-    font-size: 20px
+    font-size: 20px;
+    margin: 0;
+    color: inherit
 }
 
 #DeleteDomain > .modal-dialog > .modal-content > .modal-body, #DeleteDomain > .modal-dialog > .modal-content > .modal-body > p {

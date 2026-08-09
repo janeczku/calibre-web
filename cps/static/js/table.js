@@ -23,9 +23,6 @@ var reload = false;
 
 $(function() {
     $('#tasktable').bootstrapTable({
-        formatNoMatches: function () {
-            return '';
-        },
         striped: true
     });
     if ($('#tasktable').length) {
@@ -509,9 +506,6 @@ $(function() {
         maintainMetaData: true,
         responseHandler: responseHandler,
         columns: column,
-        formatNoMatches: function () {
-            return "";
-        },
         // eslint-disable-next-line no-unused-vars
         onEditableSave: function (field, row, oldvalue, $el) {
             if ($.inArray(field, [ "title", "sort" ]) !== -1 && $('#autoupdate_titlesort').prop('checked')
@@ -635,9 +629,6 @@ $(function() {
     });
 
     $("#domain-allow-table").bootstrapTable({
-        formatNoMatches: function () {
-            return "";
-        },
         striped: false
     });
     $("#domain_deny_submit").click(function(event) {
@@ -655,9 +646,6 @@ $(function() {
         });
     });
     $("#domain-deny-table").bootstrapTable({
-        formatNoMatches: function () {
-            return "";
-        },
         striped: false
     });
 
@@ -755,9 +743,6 @@ $(function() {
         }
 
         $("#restrict-elements-table").bootstrapTable({
-            formatNoMatches: function () {
-                return "";
-            },
             url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
             rowStyle: function(row) {
                 if (row.id.charAt(0) === "a") {
@@ -878,9 +863,6 @@ $(function() {
         maintainMetaData: true,
         responseHandler: responseHandler,
         columns: user_column,
-        formatNoMatches: function () {
-            return "";
-        },
         onPostBody () {
             // Remove all checkboxes from Headers for showing the texts in the column selector
             $('.columns [data-field]').each(function(){

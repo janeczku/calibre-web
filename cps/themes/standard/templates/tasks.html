@@ -5,7 +5,7 @@
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks')}}</h2>
-    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('tasks.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ current_user.locale }}">
+    <table class="table table-no-bordered" id="tasktable" data-url="{{  url_for('tasks.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc" data-locale="{{ current_user.locale }}" data-no-records-text="{{ _('No Records Found') }}">
       <thead>
         <tr>
             {% if current_user.role_admin() %}
@@ -34,7 +34,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
-          <span>{{_('Are you really sure?')}}</span>
+          <h4 class="modal-title">{{_('Are you really sure?')}}</h4>
       </div>
         <div class="modal-body text-center">
           <p>
