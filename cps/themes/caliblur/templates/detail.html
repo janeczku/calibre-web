@@ -1,4 +1,4 @@
-{% extends is_xhr|yesno("fragment.html", "layout.html") %}
+{% extends is_xhr|yesno("fragment.html", theme("layout.html")) %}
 {% block header %}
     <meta property="og:type" content="book" />
     <meta property="og:title" content="{{ entry.title|truncate(35) }}" />
