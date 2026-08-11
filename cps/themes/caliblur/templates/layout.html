@@ -21,7 +21,7 @@
     <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
   </head>
-  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'mailset'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
+  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'mailset', 'usertable'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
@@ -34,15 +34,16 @@
           </button>
           <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
         </div>
-        <div class="home-btn"><a class="home-btn-tooltip" href="{{url_for("web.index", page=1)}}" data-toggle="tooltip" title="{{_('Home')}}" data-placement="bottom"></a></div>
+        <div class="home-btn"><a class="home-btn-tooltip" href="{{url_for('web.index', page=1)}}" data-toggle="tooltip" title="{{_('Home')}}" data-placement="bottom"></a></div>
         <div class="plexBack"><a class="back-btn-tooltip" href="{{url_for('web.index')}}" data-toggle="tooltip" title="{{_('Back')}}" data-placement="bottom"></a></div>
         {% if current_user.is_authenticated or g.allow_anonymous %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search.simple_search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
+              <span class="query-search-icon glyphicon glyphicon-search" aria-hidden="true"></span>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
               <span class="input-group-btn">
-                <button type="submit" id="query_submit" class="btn btn-default">{{_('Search')}}</button>
+                <button type="submit" id="query_submit" class="btn btn-default"><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></button>
               </span>
             </div>
           </form>
@@ -66,7 +67,7 @@
                     <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
                     {% endif %}
                     {% if not current_user.is_anonymous %}
-                    <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
+                    <li><a id="logout" href="{{url_for('web.logout', next=(request.path + '?' + request.query_string.decode('utf-8')).rstrip('?'))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
                     {% endif %}
                 </ul>
               </li>
@@ -120,10 +121,8 @@
     {% endfor %}
     {% block flash %}{% endblock %}
     <div id="loader" hidden="true">
-      <center>
         <h3>{{_('Uploading...')}}</h3>
         <span>{{_("Please do not refresh the page")}}</span>.
-      </center>
     </div>
     <div class="container-fluid">
       <div class="row-fluid">

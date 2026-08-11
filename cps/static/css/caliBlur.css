@@ -798,6 +798,7 @@ body:not(.read-frame) {
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > div {
+    position: relative;
     width: 360px
 }
 
@@ -1032,43 +1033,33 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     background: hsla(0, 0%, 100%, .25) !important
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button:before {
-    content: "\EA32";
-    font-family: plex-icons-new, serif;
-    color: #eee;
-    background: #555;
-    font-size: 10px;
-    width: 25px;
-    height: 19px;
-    border-radius: 4px;
-    padding: 2px 5px;
-    position: absolute
-}
-
 body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button {
-    background-color: transparent;
-    color: transparent;
+    background-color: #555;
+    color: #eee;
     border: none;
     height: 40px;
     border-radius: 0 4px 4px 0
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form:before {
-    content: "\EA4F";
-    display: block;
-    font-family: plex-icons, serif;
+body > div.navbar.navbar-default.navbar-static-top > div > form > div > .query-search-icon {
     position: absolute;
-    color: #eee;
-    font-weight: 400;
-    font-size: 14px;
-    top: 18px;
-    left: 122px
+    left: 16px;
+    top: 50%;
+    pointer-events: none;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > .query-search-icon {
+    color: #555;
+    z-index: 999;
 }
 
 #query {
     width: 360px !important;
-    padding-right: 50px;
-    padding-left: 46px
+    padding-right: 36px;
+    padding-left: 40px
 }
 
 #query:focus {
@@ -1076,30 +1067,32 @@ body > div.navbar.navbar-default.navbar-static-top > div > form:before {
     color: #555 !important
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > span.input-group-btn:before {
-    content: "\EA4F";
-    display: block;
-    font-family: plex-icons, serif;
-    position: absolute;
-    left: -298px;
-    top: 8px;
-    width: 40px;
-    height: 40px;
-    color: #555;
-    font-weight: 400;
-    font-size: 14px
-}
-
 body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn {
     position: absolute;
-    left: 320px;
-    height: 40px;
-    width: 40px;
-    border-radius: 4px
+    right: 5px;
+    left: auto;
+    top: 50%;
+    width: 25px;
+    height: 19px;
+    border-radius: 4px;
+    overflow: hidden;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button:hover {
-    color: #fff
+body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn > button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 0
+}
+
+body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn > button > .glyphicon {
+    top: 0
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form {
@@ -1110,19 +1103,22 @@ body > div.navbar.navbar-default.navbar-static-top > div > form {
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input::-webkit-input-placeholder {
-    color: transparent
+    color: hsla(0, 0%, 100%, .65);
+    opacity: 1
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input:-moz-placeholder {
-    color: transparent
+    color: hsla(0, 0%, 100%, .65);
+    opacity: 1
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input::-moz-placeholder {
-    color: transparent
+    color: hsla(0, 0%, 100%, .65);
+    opacity: 1
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input:-ms-input-placeholder {
-    color: transparent
+    color: hsla(0, 0%, 100%, .65)
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input {
@@ -5931,17 +5927,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 48px
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form:before {
-        top: 12px;
-        left: auto;
-        right: 15px;
-        color: hsla(0, 0%, 100%, .7)
-    }
-
-    body > div.navbar.navbar-default.navbar-static-top > div > form:hover:before {
-        color: #fff
-    }
-
     body > div.navbar.navbar-default.navbar-static-top > div > form > div {
         width: 40px;
         height: 48px
@@ -5963,6 +5948,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         position: absolute;
         top: 0;
         left: 0;
+        z-index: 2;
         width: 100vw
     }
 
@@ -5985,18 +5971,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding-left: 15px
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > span.input-group-btn:before {
-        content: "\EA33";
-        display: block;
-        font-family: plex-icons-new, serif;
-        position: fixed;
+    body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > .query-search-icon {
         left: 0;
-        top: 0;
         width: 50px;
         height: 48px;
-        color: #eee;
-        font-weight: 400;
-        font-size: 14px;
+        color: #222 !important;
         background: #555;
         line-height: 48px;
         text-align: center;
@@ -6009,27 +5988,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 
     #form-upload > .form-group:before, .profileDrop + span.hidden-sm {
         font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif
-    }
-
-    body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn {
-        background: #555;
-        position: absolute;
-        left: auto;
-        right: 0;
-        height: 48px;
-        width: 50px;
-        border-radius: 0
-    }
-
-    body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button {
-        height: 48px;
-        width: 50px;
-        border-radius: 0
-    }
-
-    body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button::before {
-        color: #555;
-        background: #eee
     }
 
     .navbar-collapse.collapse {
@@ -7347,7 +7305,6 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         text-align: center;
         min-width: 40px;
         pointer-events: none;
-        // color: #
     }
 
     .col-xs-12 > .row > .col-xs-10 {
