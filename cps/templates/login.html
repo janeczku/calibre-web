@@ -50,6 +50,9 @@
         </a>
       {% endif %}
     {% endif %}
+    {% if authentik_oidc_enabled %}
+      <a href="{{ url_for('oidc.login', next=next_url) }}" class="pull-right">{{_('Log in with Authentik')}}</a>
+    {% endif %}
   </form>
 </div>
   {% if error %}

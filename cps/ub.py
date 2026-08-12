@@ -240,6 +240,8 @@ class User(UserBase, Base):
     __table_args__ = {'sqlite_autoincrement': True}
 
     id = Column(Integer, primary_key=True)
+    oidc_issuer = Column(String(255), nullable=True)
+    oidc_subject = Column(String(255), nullable=True, unique=True)
     name = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
     role = Column(SmallInteger, default=constants.ROLE_USER)
@@ -609,6 +611,18 @@ def migrate_Database(_session):
     add_missing_tables(engine, _session)
     migrate_registration_table(engine, _session)
     migrate_user_session_table(engine, _session)
+    migrate_oidc_user_columns(engine)
+
+
+def migrate_oidc_user_columns(engine):
+    """Add OIDC identity columns to existing Magicbook installations."""
+    inspector = __import__('sqlalchemy').inspect(engine)
+    columns = {column['name'] for column in inspector.get_columns('user')}
+    with engine.begin() as conn:
+        if 'oidc_issuer' not in columns:
+            conn.execute(text("ALTER TABLE user ADD COLUMN oidc_issuer VARCHAR(255)"))
+        if 'oidc_subject' not in columns:
+            conn.execute(text("ALTER TABLE user ADD COLUMN oidc_subject VARCHAR(255)"))
 
 
 def clean_database(_session):

@@ -59,6 +59,16 @@
   align-items: center;
   padding: 0 12px;
 }
+
+.reading-vocabulary-unknown {
+  text-decoration: underline wavy #d98b00 1px;
+  text-decoration-skip-ink: none;
+  cursor: help;
+}
+
+.reading-vocabulary-unknown:hover {
+  background: rgba(217, 139, 0, 0.16);
+}
 .read-footer #pages-count {
   font-size: 12px;
 

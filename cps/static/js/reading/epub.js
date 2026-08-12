@@ -141,6 +141,84 @@ var reader;
             .then(save_locations);
     });
 
+    // Mark unfamiliar words in the currently visible EPUB document and show their history.
+    var vocabularyInFlight = false;
+    var vocabularySeen = {};
+    function visibleWords() {
+        var words = {};
+        reader.rendition.getContents().forEach(function (content) {
+            var doc = content.document;
+            if (!doc || !doc.body) return;
+            var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+            var node;
+            while ((node = walker.nextNode())) {
+                var sentence = (node.parentElement && node.parentElement.textContent || node.textContent || '').trim();
+                (node.textContent.match(/\b[A-Za-z][A-Za-z'’-]*\b/g) || []).forEach(function (raw) {
+                    var word = raw.toLowerCase().replace(/[’']/g, "'");
+                    if (word.length > 1 && !vocabularySeen[word]) words[word] = sentence.slice(0, 500);
+                });
+            }
+        });
+        return words;
+    }
+
+    function markVocabulary(words, records) {
+        var byWord = {};
+        (records || []).forEach(function (record) { byWord[record.word] = record; });
+        reader.rendition.getContents().forEach(function (content) {
+            var doc = content.document;
+            if (!doc || !doc.body) return;
+            var walker = doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
+            var textNodes = [], node;
+            while ((node = walker.nextNode())) textNodes.push(node);
+            textNodes.forEach(function (textNode) {
+                var fragment = doc.createDocumentFragment(), text = textNode.textContent, last = 0;
+                var regex = /\b[A-Za-z][A-Za-z'’-]*\b/g, match;
+                while ((match = regex.exec(text))) {
+                    var word = match[0].toLowerCase().replace(/[’']/g, "'");
+                    var record = byWord[word];
+                    if (!record || !record.unknown) continue;
+                    fragment.appendChild(doc.createTextNode(text.slice(last, match.index)));
+                    var span = doc.createElement('span');
+                    span.className = 'reading-vocabulary-unknown';
+                    span.textContent = match[0];
+                    span.title = (record.translation || '点击查看学习记录') +
+                        (record.lastBookName ? '\n上次：' + record.lastBookName + ' · ' + (record.lastChapter || '') : '');
+                    span.dataset.word = word;
+                    span.addEventListener('click', function () {
+                        alert(span.title);
+                    });
+                    fragment.appendChild(span); last = regex.lastIndex;
+                }
+                if (last > 0) {
+                    fragment.appendChild(doc.createTextNode(text.slice(last)));
+                    textNode.parentNode.replaceChild(fragment, textNode);
+                }
+            });
+        });
+    }
+
+    function inspectVocabulary() {
+        if (!calibre.readingVocabularyEnabled || vocabularyInFlight) return;
+        var words = visibleWords(), list = Object.keys(words);
+        if (!list.length) return;
+        vocabularyInFlight = true;
+        var location = reader.currentLocation && reader.currentLocation();
+        $.ajax({
+            url: calibre.readingVocabularyUrl, method: 'POST', contentType: 'application/json',
+            data: JSON.stringify({bookId: calibre.bookId, bookName: calibre.bookName,
+                chapter: document.getElementById('chapter-title').textContent,
+                page: document.getElementById('pages-count').textContent,
+                cfi: location && location.start && location.start.cfi || '',
+                words: list.map(function (word) { return {word: word, sentence: words[word]}; })})
+        }).done(function (response) {
+            var records = response.result || response.data || [];
+            list.forEach(function (word) { vocabularySeen[word] = true; });
+            markVocabulary(words, records);
+        }).always(function () { vocabularyInFlight = false; });
+    }
+    reader.rendition.on('relocated', function () { setTimeout(inspectVocabulary, 120); });
+
     /**
      * @param {string} action - Add or remove bookmark
      * @param {string|int} location - Location or zero

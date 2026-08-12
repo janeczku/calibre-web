@@ -187,6 +187,11 @@ def create_app():
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
+    from .oidc import init_oidc, oidc
+    app.config["AUTHENTIK_OIDC_ENABLED"] = init_oidc(app)
+    if app.config["AUTHENTIK_OIDC_ENABLED"]:
+        app.register_blueprint(oidc)
+
     web_server.init_app(app, config)
     from .cw_babel import babel, get_locale
     if hasattr(babel, "localeselector"):
@@ -223,5 +228,3 @@ def create_app():
     register_startup_tasks()
 
     return app
-
-

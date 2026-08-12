@@ -139,6 +139,8 @@ DEFAULT_MAIL_SERVER = "mail.example.org"
 
 DEFAULT_PASSWORD    = "admin123"  # nosec
 DEFAULT_PORT        = 8083
+MOON_WELL_READING_URL = os.environ.get('MOON_WELL_READING_URL', '')
+MOON_WELL_INTEGRATION_TOKEN = os.environ.get('MOON_WELL_INTEGRATION_TOKEN', '')
 env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
 try:
     DEFAULT_PORT = int(env_CALIBRE_PORT)

@@ -23,9 +23,10 @@ import json
 import mimetypes
 import chardet  # dependency of requests
 import copy
+import requests
 from importlib.metadata import metadata
 
-from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for
+from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for, current_app
 from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_babel import get_locale
@@ -203,6 +204,28 @@ def update_view():
         log.error("Could not save view_settings: %r %r: %e", request, to_save, ex)
         return "Invalid request", 400
     return "1", 200
+
+
+@web.route("/ajax/reading-vocabulary", methods=["POST"])
+@user_login_required
+def reading_vocabulary():
+    """Proxy the reader's word context to moon-well without exposing its token."""
+    if not constants.MOON_WELL_READING_URL or not constants.MOON_WELL_INTEGRATION_TOKEN:
+        return jsonify({"success": False, "message": "reading vocabulary is not configured"}), 503
+    payload = request.get_json(silent=True) or {}
+    payload["userKey"] = str(current_user.id)
+    try:
+        response = requests.post(
+            constants.MOON_WELL_READING_URL.rstrip("/") + "/reading-vocabulary/analyze",
+            json=payload,
+            headers={"X-Magicbook-Token": constants.MOON_WELL_INTEGRATION_TOKEN},
+            timeout=8,
+        )
+        return (response.text, response.status_code,
+                {"Content-Type": response.headers.get("Content-Type", "application/json")})
+    except requests.RequestException as error:
+        log.warning("moon-well reading vocabulary request failed: %s", error)
+        return jsonify({"success": False, "message": "reading vocabulary service unavailable"}), 503
 
 
 '''
@@ -1364,6 +1387,7 @@ def render_login(username="", password=""):
                                  username=username,
                                  password=password,
                                  oauth_check=oauth_check,
+                                 authentik_oidc_enabled=current_app.config.get("AUTHENTIK_OIDC_ENABLED", False),
                                  mail=config.get_mail_server_configured(), page="login")
 
 
