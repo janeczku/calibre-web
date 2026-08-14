@@ -10,6 +10,9 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div id="asc" data-id="series" data-order="{{ order }}" class="btn btn-primary{% if order == 1 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet"></span></div>
       <div id="desc" data-id="series" class="btn btn-primary{% if order == 0 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></div>
+      {% if data == 'series' %}
+      <div id="new" data-id="series" data-toggle="tooltip" title="{{_('Sort according to date added, newest first')}}" class="btn btn-primary{% if order == 2 %} active{% endif%}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></div>
+      {% endif %}
       {% if charlist|length %}
       <div id="all" class="active btn btn-primary {% if charlist|length > 9 %}hidden-sm{% endif %}">{{_('All')}}</div>
       {% endif %}
@@ -24,7 +27,7 @@
     {% if entries[0] %}
         <div id="list" class="row display-flex">
           {% for entry in entries %}
-              <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
+              <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}" data-newest="{{entry.newest.isoformat() if entry.newest else ''}}">
                   <div class="cover">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
                           <span class="img" title="{{entry[0].series[0].name}}">
