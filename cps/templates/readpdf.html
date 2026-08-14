@@ -51,11 +51,20 @@ See https://github.com/adobe-type-tools/cmap-resources
     });
     </script>
 
-    <script src="{{ url_for('static', filename='js/libs/viewer.js') }}" type="module">></script>
+    <script src="{{ url_for('static', filename='js/libs/viewer.js') }}" type="module"></script>
+
+    <script type="text/javascript">
+    window.calibre = {
+        progressUrl: "{{ url_for('web.set_reading_progress', book_id=pdffile, book_format='pdf') }}",
+        useProgress: {{ current_user.is_authenticated | tojson }}
+    };
+    </script>
+    <script src="{{ url_for('static', filename='js/reading/pdf_progress.js') }}" type="module"></script>
 
   </head>
 
   <body tabindex="1">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div id="outerContainer">
 
       <div id="sidebarContainer">
