@@ -21,7 +21,7 @@
     <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
   </head>
-  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'mailset', 'usertable'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
+  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'edituser', 'mailset', 'usertable'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
@@ -56,7 +56,7 @@
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
             {% if current_user.is_authenticated or g.allow_anonymous %}
-              <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop send-btn-tooltip dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle-two="tooltip" title="{{_('Account')}}" data-placement="bottom" data-viewport="#main-nav"><span class="glyphicon glyphicon-user"></span></a>
+              <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop send-btn-tooltip dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-toggle-two="tooltip" title="{{_('Account')}}" data-placement="bottom" data-viewport="#main-nav"><span class="profileDropIcon" aria-hidden="true"><img src="{{ url_for('static', filename='css/img/user-icon.svg') }}" alt=""></span></a><span class="hidden-sm">{{current_user.name}}</span>
                 <ul class="dropdown-menu profileDropli">
                     <li><a id="top_user" href="{{url_for('web.profile')}}" ><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
                     {% if not current_user.is_anonymous %}
