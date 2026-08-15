@@ -1035,6 +1035,12 @@ body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > b
     border-radius: 0 4px 4px 0
 }
 
+button[name="search"],
+button[name='search'] {
+    height: 40px;
+    min-height: 40px;
+}
+
 body > div.navbar.navbar-default.navbar-static-top > div > form > div > .query-search-icon {
     position: absolute;
     left: 16px;
@@ -1960,6 +1966,7 @@ body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > a:ho
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:focus,
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:hover {
     background-color: hsla(0, 0%, 100%, .25);
+    border-color: transparent;
     color: #fff;
 }
 
@@ -1970,7 +1977,7 @@ body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active >
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:hover,
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:hover {
     background-color: var(--color-secondary);
-    border-color: var(--color-secondary);
+    border-color: transparent;
     color: #fff;
 }
 
@@ -4597,7 +4604,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     z-index: 9
 }
 
-body.admin, body.admin td > a {
+body.admin, body.admin td > a,
+body.book_table .book-remove,
+body.book_table .book-remove:hover,
+body.book_table .editable-empty,
+body.book_table .editable-empty:hover {
     color: hsla(0, 0%, 100%, .65)
 }
 
@@ -5018,6 +5029,15 @@ body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.boot
 
 body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > tbody > tr:hover {
     background: 0 0 !important
+}
+
+body.book_table .bootstrap-table .fixed-table-container .fixed-table-body > table > tbody > tr:hover,
+body.book_table .bootstrap-table .fixed-table-container .fixed-table-body > table > tbody > tr:nth-of-type(even):hover {
+    background-color: hsla(0, 0%, 100%, .02) !important;
+}
+
+body.book_table .bootstrap-table .fixed-table-container .fixed-table-body > table > tbody > tr > td {
+    background: transparent;
 }
 
 body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.bootstrap-table > div.fixed-table-container > div.fixed-table-body > #table > tbody > tr > td {
