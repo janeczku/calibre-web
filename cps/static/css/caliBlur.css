@@ -1866,7 +1866,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > form > .btn.bt
 .pagination {
     display: block !important;
     position: fixed;
-    top: 60px;
+    top: 70px;
     right: 0;
     overflow: visible;
     height: 60px;
@@ -1951,6 +1951,27 @@ body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previo
 
 .pagination > .ellipsis, .pagination > a:nth-last-of-type(2) {
     display: none
+}
+
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > a,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > a:focus,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > a:hover,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:focus,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:hover {
+    background-color: hsla(0, 0%, 100%, .25);
+    color: #fff;
+}
+
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > a,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:focus,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:focus,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:hover,
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:hover {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: #fff;
 }
 
 body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6 {
@@ -6374,7 +6395,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     .pagination {
-        top: 48px
+        top: 69px
     }
 
     body > div.container-fluid > div > div.col-sm-10 > div.pagination > a.next:before {
