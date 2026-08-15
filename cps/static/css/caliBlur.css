@@ -4450,14 +4450,32 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     margin-left: 10px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #back, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #back {
+body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back {
     float: right;
     margin-left: 0;
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #back:hover, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #back:hover {
+body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
     background-color: hsla(0, 0%, 100%, .3)
+}
+
+body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px
+}
+
+body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back,
+body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit {
+    float: none;
+    margin-left: 0
+}
+
+body.edituser.admin #get_user_tags, body.newuser.admin #get_user_tags,
+body.edituser.admin #btndeluser, body.newuser.admin #btndeluser {
+    margin-left: 15px
 }
 
 body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 {
@@ -4580,13 +4598,27 @@ body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.di
     float: right
 }
 
-body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a {
+body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a {
     background-color: hsla(0, 0%, 100%, .25);
     margin-right: 10px
 }
 
-body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover {
+body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover {
     background-color: hsla(0, 0%, 100%, .3)
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > * {
+    float: none
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a {
+    margin-right: 0
 }
 
 body.admin {
@@ -7416,6 +7448,10 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
   .formatslist-icon {
       display: none;
   }
+}
+
+#btnConfirmYes-GeneralDeleteModal {
+    margin-bottom:10px;
 }
 
 body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
