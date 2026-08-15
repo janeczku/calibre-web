@@ -89,6 +89,37 @@ $("#archived_cb").on("change", function() {
     $(this).closest("form").submit();
 });
 
+$(document).on("click", ".downloadBtn > #btnGroupDrop1", function (e) {
+    var $button = $(this);
+    var $group = $button.closest(".downloadBtn");
+    var $menu = $group.children("ul.dropdown-menu");
+    var isOpen = $button.attr("aria-expanded") === "true";
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    $(".downloadBtn.open").not($group).removeClass("open").children("ul.dropdown-menu").hide();
+    $(".downloadBtn > #btnGroupDrop1").not($button).attr("aria-expanded", "false");
+
+    if (isOpen) {
+        $group.removeClass("open");
+        $button.attr("aria-expanded", "false");
+        $menu.hide();
+    } else {
+        $group.addClass("open");
+        $button.attr("aria-expanded", "true");
+        $menu.removeClass("offscreen");
+        $menu.show();
+    }
+});
+
+$(document).on("click", function (e) {
+    if ($(e.target).closest(".downloadBtn").length === 0) {
+        $(".downloadBtn.open").removeClass("open").children("ul.dropdown-menu").hide();
+        $(".downloadBtn > #btnGroupDrop1").attr("aria-expanded", "false");
+    }
+});
+
 (function() {
     var templates = {
         add: _.template(

@@ -1321,9 +1321,9 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     font-family: plex-icons-new, serif
 }
 
-#nav_cat .glyphicon-inbox::before, .glyphicon-tags::before {
-    content: "\E067";
-    font-family: Glyphicons Regular, serif;
+#nav_cat .glyphicon-tags::before, .glyphicon-tags::before {
+    //content: "\E067";
+    //font-family: Glyphicons Regular, serif;
     margin-left: 2px
 }
 
@@ -2975,7 +2975,6 @@ body.book .author {
     line-height: 30px;
     margin-top: -5px;
     max-width: calc(100% - 176px);
-    margin-left: 76px
 }
 
 .book-meta > p {
@@ -5080,8 +5079,16 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     right: 5px
 }
 
-body:not(.search) #shelf-actions > .btn-group.open, .downloadBtn.open, .profileDrop[aria-expanded=true] {
+body:not(.search) #shelf-actions > .btn-group.open, .profileDrop[aria-expanded=true] {
     pointer-events: none
+}
+
+.downloadBtn.open {
+    pointer-events: auto;
+}
+
+.downloadBtn > ul.dropdown-menu > li {
+    display: list-item !important;
 }
 
 #btnGroupDrop1[aria-expanded=true] > span, #shelf-actions > .btn-group.open > #add-to-shelf > span {
@@ -5089,7 +5096,7 @@ body:not(.search) #shelf-actions > .btn-group.open, .downloadBtn.open, .profileD
 }
 
 .navigation li a span {
-    vertical-align: middle;
+    vertical-align: middle !important;
     margin-bottom: 1px
 }
 
