@@ -155,7 +155,10 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension, no
 
 
 def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
-    cover_section = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
+    cover_section = tree.xpath(
+        "/pkg:package/pkg:manifest/pkg:item[@id='cover-image' or "
+        "contains(concat(' ', normalize-space(@properties), ' '), ' cover-image ')]/@href",
+        namespaces=ns)
     for cs in cover_section:
         cover_file = _extract_cover(epub_zip, cs, cover_path, tmp_file_path)
         if cover_file:
