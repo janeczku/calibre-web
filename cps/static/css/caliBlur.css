@@ -1964,7 +1964,19 @@ body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > a:focus,
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > a:hover,
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:focus,
-body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:hover {
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > li > span:hover,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > li > a,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > li > span,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > li > a:focus,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > li > a:hover,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > li > span:focus,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > li > span:hover,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > li > a,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > li > span,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > li > a:focus,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > li > a:hover,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > li > span:focus,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > li > span:hover {
     background-color: hsla(0, 0%, 100%, .25);
     border-color: transparent;
     color: #fff;
@@ -1975,7 +1987,19 @@ body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active >
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:focus,
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:focus,
 body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:hover,
-body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:hover {
+body.book_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:hover,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > .active > a,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > .active > span,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > .active > a:focus,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > .active > span:focus,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > .active > a:hover,
+body.usertable .bootstrap-table .fixed-table-pagination .pagination > .active > span:hover,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active > a,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active > span,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:focus,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:focus,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active > a:hover,
+body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active > span:hover {
     background-color: var(--color-secondary);
     border-color: transparent;
     color: #fff;
@@ -4456,6 +4480,31 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     line-height: 1
 }
 
+body.usertable.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type,
+body.user_table.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type {
+    position: fixed;
+    top: 60px;
+    left: 240px;
+    width: calc(100vw - 240px);
+    height: 60px;
+    margin: 0;
+    padding-left: 25px;
+    background: rgba(0, 0, 0, .15);
+    color: hsla(0, 0%, 100%, .7);
+    font-family: "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 60px;
+    white-space: nowrap;
+    text-decoration: none;
+    z-index: 1;
+}
+
+body.usertable.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type::before,
+body.user_table.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type::before {
+    content: none;
+}
+
 .table-striped > tbody > tr:nth-of-type(2n+1) {
     background-color: transparent
 }
@@ -5858,6 +5907,15 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     background: rgba(0, 0, 0, .3);
     margin-left: -15px;
     margin-top: -65px
+}
+
+body.usertable > div.container-fluid > div > div.col-sm-10 > div.discover > div.col-sm-12:before,
+body.user_table > div.container-fluid > div > div.col-sm-10 > div.discover > div.col-sm-12:before {
+    content: none;
+    display: none;
+    background: transparent;
+    height: 0;
+    margin: 0;
 }
 
 body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
