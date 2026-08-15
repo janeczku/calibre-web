@@ -189,16 +189,19 @@
 }
 
 @media only screen and (max-height: 600px) {
-    body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+    body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
+    body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
         padding: 0 !important;
         height: 60px !important
     }
 
-    body.login > div.container-fluid > div.row-fluid > div.col-sm-10 {
+    body.login > div.container-fluid > div.row-fluid > div.col-sm-10,
+    body.register > div.container-fluid > div.row-fluid > div.col-sm-10 {
         top: 60px !important
     }
 
-    body.login .well {
+    body.login .well,
+    body.register .well {
         padding: 0 60px !important
     }
 }
@@ -3713,7 +3716,8 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     color: transparent
 }
 
-body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
     width: 100vw;
     height: 120px;
     margin: 0 !important;
@@ -3724,23 +3728,27 @@ body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-head
     font-size: 20px
 }
 
-body.login > .container-fluid {
+body.login > .container-fluid,
+body.register > .container-fluid {
     width: 100vw;
     height: 100%;
     position: relative
 }
 
-body.login > div.container-fluid > div.row-fluid > div.col-sm-10 {
+body.login > div.container-fluid > div.row-fluid > div.col-sm-10,
+body.register > div.container-fluid > div.row-fluid > div.col-sm-10 {
     width: 100%;
     height: 100%;
     overflow-y: visible !important
 }
 
-body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse {
+body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse,
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse {
     display: none !important
 }
 
-.login .navbar-default {
+.login .navbar-default,
+.register .navbar-default {
     background: 0 0 !important
 }
 
@@ -3754,8 +3762,42 @@ body.author .undefined-img, body.shelfcreate, body.shelfedit {
     background-position: center center, center center !important
 }
 
-body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before {
+body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before,
+body.register > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before {
     display: none
+}
+
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+    pointer-events: none;
+    cursor: default
+}
+
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
+    background: 0 0 !important;
+    color: #ccc !important
+}
+
+body.register .well > form > h2 {
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    top: auto !important;
+    left: auto !important;
+    padding: 20px 0 0 !important;
+    margin: 0 0 20px !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    border-top: none !important;
+    background: transparent !important
+}
+
+body.register .well > form {
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .book-meta > .bookinfo > .comments[aria-expanded=true] + a:after, .book-meta > .description[aria-expanded=true] + a:after {
@@ -4250,7 +4292,7 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
 
 }
 
-.login .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > div.navbar.navbar-default.navbar-static-top > div > form {
+.login .home-btn, .login .plexBack, .register .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.register > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > div.navbar.navbar-default.navbar-static-top > div > form, body.register > div.navbar.navbar-default.navbar-static-top > div > form {
     display: none
 }
 
