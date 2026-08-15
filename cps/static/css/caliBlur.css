@@ -544,7 +544,7 @@ body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
     color: hsla(0, 0%, 100%, .7)
 }
 
-div[aria-label="Edit/Delete book"] > .btn {
+#edit_book {
     width: 50px;
     height: 60px;
     margin: 0;
@@ -559,7 +559,7 @@ div[aria-label="Edit/Delete book"] > .btn {
     color: transparent
 }
 
-div[aria-label="Edit/Delete book"] > .btn > span {
+#edit_book > span {
     visibility: visible;
     position: relative;
     display: inline-block;
@@ -575,7 +575,7 @@ div[aria-label="Edit/Delete book"] > .btn > span {
     margin: auto
 }
 
-div[aria-label="Edit/Delete book"] > .btn > span:before {
+#edit_book > span:before {
     content: "\EA5d";
     font-family: plex-icons, serif;
     font-size: 20px;
@@ -584,7 +584,7 @@ div[aria-label="Edit/Delete book"] > .btn > span:before {
     height: 60px
 }
 
-div[aria-label="Edit/Delete book"] > .btn > span:hover {
+#edit_book > span:hover {
     color: #fff
 }
 

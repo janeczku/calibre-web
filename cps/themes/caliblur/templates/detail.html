@@ -20,6 +20,32 @@
         <div class="col-sm-9 col-lg-9 book-meta">
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
+                    {% if not current_user.is_anonymous %}
+                        <div class="btn-group" role="group" aria-label="Read status">
+                            <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}"
+                                  method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <label class="block-label">
+                                    <input id="have_read_cb" class="readunread-btn-tooltip" type="checkbox"
+                                           data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar"
+                                           title="{% if entry.read_status %}{{ _('Mark As Unread') }}{% else %}{{ _('Mark As Read') }}{% endif %}"
+                                           {% if entry.read_status %}checked{% endif %}>
+                                    <label class="block-label readLbl" for="have_read_cb"></label>
+                                    <span data-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
+                                </label>
+                            </form>
+                        </div>
+                    {% endif %}
+                    {% if current_user.role_edit() %}
+                        <div class="btn-group" role="group" aria-label="Edit book">
+                            <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}"
+                               class="btn btn-primary edit-btn-tooltip" id="edit_book" role="button"
+                               data-toggle="tooltip" title="{{ _('Edit Metadata') }}" data-placement="bottom" data-viewport=".btn-toolbar">
+                                <span class="edit-book-icon" data-toggle="tooltip" title="{{ _('Edit Metadata') }}"
+                                      data-placement="bottom" data-viewport=".btn-toolbar"></span> {{ _('Edit Metadata') }}
+                            </a>
+                        </div>
+                    {% endif %}
                     {% if current_user.role_download() %}
                         {% if entry.data|length %}
                             <div class="btn-group downloadBtn" role="group">
@@ -96,7 +122,9 @@
                             {% else %}
                                 <a target="_blank"
                                    href="{{ url_for('web.read_book', book_id=entry.id, book_format=entry.reader_list[0]) }}"
-                                   id="readbtn" class="btn btn-primary" role="button"><span
+                                   id="readbtn" class="btn btn-primary" role="button"
+                                   data-toggle-two="tooltip" data-placement="bottom" data-viewport=".btn-toolbar"
+                                   title="{{ _('Read in Browser') }}"><span
                                         class="glyphicon glyphicon-book"></span> {{ _('Read in Browser') }}
                                     - {{ entry.reader_list[0] }}</a>
                             {% endif %}
@@ -253,17 +281,6 @@
             {% if not current_user.is_anonymous %}
 
                 <div class="custom_columns">
-                    <p>
-                    <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}"
-                          method="POST">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <label class="block-label">
-                            <input id="have_read_cb" class="readunread-btn-tooltip" type="checkbox" data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.read_status %}{{ _('Mark As Unread') }}{% else %}{{ _('Mark As Read') }}{% endif %}"
-                                   {% if entry.read_status %}checked{% endif %}>
-                            <span data-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
-                        </label>
-                    </form>
-                    </p>
                     {% if current_user.check_visibility(32768) %}
                         <p>
                         <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id) }}"
@@ -344,12 +361,6 @@
                 {% endif %}
                 {% if current_user.role_edit() %}
                     <div class="col-sm-12">
-                        <div class="btn-group" role="group" aria-label="Edit/Delete book">
-                            <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}"
-                               class="btn btn-sm btn-primary edit-btn-tooltip" id="edit_book" role="button"
-                               data-toggle="tooltip" title="{{ _('Edit Metadata') }}" data-placement="bottom" data-viewport=".btn-toolbar"><span
-                                    class="glyphicon glyphicon-edit"></span> {{ _('Edit Metadata') }}</a>
-                        </div>
                         <div class="btn btn-default" data-back="{{ url_for('web.index') }}" id="back">{{_('Cancel')}}</div>
                    </div>
                 {% endif %}
