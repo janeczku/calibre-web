@@ -3493,31 +3493,85 @@ body.shelf-down .btn-group button#btnGroupDrop1 {
     -webkit-font-smoothing: antialiased
 }
 
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-controls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px
+}
+
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-action-row,
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    position: relative;
+    z-index: 1
+}
+
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-action-row {
+    justify-content: space-between
+}
+
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group {
-    position: fixed;
-    top: 60px;
-    right: 0
+    margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center
+}
+
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row {
+    justify-content: space-between;
+    align-items: center
+}
+
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row > .filterheader {
+    flex: 1 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap
+}
+
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"], body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit], body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order] {
+    float: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, .2);
+    color: #fff;
+    overflow: visible;
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4
 }
 
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"] {
     position: relative;
-    float: right;
-    width: 50px;
-    height: 60px;
-    border-radius: 0;
-    background: 0 0;
-    color: transparent;
-    overflow: hidden;
-    padding: 6px 11px
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    background: rgba(206, 61, 42, .8);
+    color: #fff;
+    overflow: visible;
+    padding: 8px 14px
 }
 
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:before {
-    content: "\EA6D";
-    font-family: plex-icons-new, serif;
-    position: absolute;
-    color: hsla(0, 0%, 100%, .7);
-    font-size: 20px;
-    padding: 6px 0 0 2px
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:before,
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before,
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:before {
+    display: none
 }
 
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:hover {
@@ -3528,64 +3582,34 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-b
     color: #fff
 }
 
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit] {
-    position: relative;
-    float: right;
-    width: 50px;
-    height: 60px;
-    border-radius: 0;
-    background: 0 0;
-    color: transparent;
-    overflow: hidden;
-    margin: 0;
-    padding: 6px 13px
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before {
-    content: "\EA5d";
-    font-family: plex-icons, serif;
-    position: absolute;
-    color: hsla(0, 0%, 100%, .7);
-    font-size: 20px;
-    padding: 6px 0 0 2px
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:hover:before {
-    color: #fff
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:hover {
-    background: 0 0
-}
-
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit],
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order] {
     position: relative;
-    float: right;
-    width: 50px;
-    height: 60px;
-    border-radius: 0;
-    background: 0 0;
-    color: transparent;
-    overflow: hidden;
+    float: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    min-width: 0;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, .2);
+    color: #fff;
+    overflow: visible;
     margin: 0;
-    padding: 6px 11px
+    padding: 8px 14px;
+    font-size: 13px;
+    line-height: 1.4
 }
 
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before,
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:before {
-    content: "\E409";
-    font-family: Glyphicons Regular, serif;
-    position: absolute;
-    color: hsla(0, 0%, 100%, .7);
-    font-size: 20px;
-    padding: 6px 0 0 2px
+    display: none
 }
 
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:hover:before {
-    color: #fff
-}
-
+body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:hover,
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:hover {
-    background: 0 0
+    background: rgba(0, 0, 0, .3)
 }
 
 body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
