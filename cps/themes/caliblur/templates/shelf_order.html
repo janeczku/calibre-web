@@ -1,8 +1,9 @@
 {% extends theme("layout.html") %}
 {% block body %}
-  <div class="col-sm-8 col-lg-8 col-xs-12">
+  <div class="discover">
     <h2>{{ title|replace(':', ' —')|replace("'", "") }}</h2>
-    <div>{{_('Drag to Rearrange Order')}}</div>
+    <div style="margin-left:20%; width:calc(80% - 30px);">
+      <div>{{_('Drag to Rearrange Order')}}</div>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
@@ -38,8 +39,11 @@
           </div>
         {% endfor %}
       </div>
-        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Save')}}</button>
+      <div class="pull-right" style="display:flex; gap:10px; margin-top:30px; margin-bottom:60px;">
         <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" id="shelf_back" class="btn btn-default">{{_('Back')}}</a>
+        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-primary" id="ChangeOrder">{{_('Save')}}</button>
+      </div>
+    </div>
   </div>
 {% endblock %}
 
