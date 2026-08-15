@@ -203,24 +203,19 @@ $(function () { // document ready
     });
 });
 
-// Check if lists are empty and add class to buttons
-if ($.trim($("#add-to-shelves").html()).length === 0) {
-    $("#add-to-shelf").addClass("empty-ul");
+// Keep add-to-shelf button state in sync with current dropdown content
+function updateAddToShelfState() {
+    if ($("#add-to-shelves li").length === 0) {
+        $("#add-to-shelf").addClass("empty-ul");
+    } else {
+        $("#add-to-shelf").removeClass("empty-ul");
+    }
 }
 
-shelfLength = $("#add-to-shelves li").length;
-emptyLength = 0;
+updateAddToShelfState();
 
-$("#add-to-shelves").on("click", "li a", function () {
-    emptyLength++;
-
-    setTimeout(function () {
-        if (emptyLength >= shelfLength) {
-            $("#add-to-shelf").addClass("empty-ul");
-        } else {
-            $("#add-to-shelf").removeClass("empty-ul");
-        }
-    }, 100);
+$("#add-to-shelves, #remove-from-shelves").on("click", "[data-shelf-action]", function () {
+    setTimeout(updateAddToShelfState, 100);
 });
 
 // Rest of Tooltips

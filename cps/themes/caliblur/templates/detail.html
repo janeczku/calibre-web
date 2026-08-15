@@ -21,6 +21,54 @@
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
                     {% if not current_user.is_anonymous %}
+                        {% if current_user.shelf.all() or g.shelves_access %}
+                            <div id="shelf-actions" class="btn-toolbar" role="toolbar">
+                                <div class="btn-group" role="group" aria-label="Add to shelves">
+                                    <button id="add-to-shelf" type="button"
+                                            class="btn btn-primary btn-sm dropdown-toggle addtoshelf-btn-tooltip"
+                                            data-toggle-two="tooltip" title="{{ _('Add to shelf') }}" data-placement="bottom" data-viewport=".btn-toolbar"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-list"></span> {{ _('Add to shelf') }}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+                                        {% for shelf in g.shelves_access %}
+                                            {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
+                                                <li>
+                                                    <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                       data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                       data-shelf-action="add"
+                                                    >
+                                                        {{ shelf.name }}{% if shelf.is_public == 1 %}
+                                                            {{ _('(Public)') }}{% endif %}
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div id="remove-from-shelves" class="btn-group" role="group"
+                                     aria-label="Remove from shelves">
+                                    {% if books_shelfs %}
+                                        {% for shelf in g.shelves_access %}
+                                            {% if shelf.id in books_shelfs %}
+                                                <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                   data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                   class="btn btn-sm btn-default" role="button"
+                                                   data-shelf-action="remove"
+                                                >
+									              <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
+									                  class="glyphicon glyphicon-remove"
+									              {% endif %}></span> {{ shelf.name }}{% if shelf.is_public == 1 %} {{ _('(Public)') }}{% endif %}
+                                                </a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div id="shelf-action-errors" class="pull-left" role="alert"></div>
+                            </div>
+                        {% endif %}
                         <div class="btn-group" role="group" aria-label="Read status">
                             <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}"
                                   method="POST">
@@ -272,11 +320,6 @@
                         <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id) }}"
                               method="POST">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <!--label class="block-label">
-                                <input id="archived_cb" class="readunread-btn-tooltip" type="checkbox" data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.is_archived %}{{ _('Restore from archive') }}{% else %}{{ _('Add to archive') }}{% endif %}"
-                                       {% if entry.is_archived %}checked{% endif %}>
-                                <span data-toggle="tooltip" title="{{_('Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader')}}">{{ _('Archive') }}</span>
-                            </label-->
                         </form>
                     {% endif %}
                 </div>
@@ -293,57 +336,6 @@
 
             <div class="more-stuff">
 
-                {% if current_user.is_authenticated %}
-                    {% if current_user.shelf.all() or g.shelves_access %}
-                        <div id="shelf-actions" class="btn-toolbar" role="toolbar">
-                            <div class="btn-group dropup" role="group" aria-label="Add to shelves">
-                                <button id="add-to-shelf" type="button"
-                                        class="btn btn-primary btn-sm dropdown-toggle addtoshelf-btn-tooltip"
-                                        data-toggle-two="tooltip" title="{{ _('Add to shelf') }}" data-placement="bottom" data-viewport=".btn-toolbar"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    <span class="glyphicon glyphicon-list"></span> {{ _('Add to shelf') }}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
-                                    {% for shelf in g.shelves_access %}
-                                        {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
-                                            <li>
-                                                <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                                                   data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                                                   data-shelf-action="add"
-                                                >
-                                                    {{ shelf.name }}{% if shelf.is_public == 1 %}
-                                                        {{ _('(Public)') }}{% endif %}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div id="remove-from-shelves" class="btn-group" role="group"
-                                 aria-label="Remove from shelves">
-                                {% if books_shelfs %}
-                                    {% for shelf in g.shelves_access %}
-                                        {% if shelf.id in books_shelfs %}
-                                            <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                                               data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                                               class="btn btn-sm btn-default" role="button"
-                                               data-shelf-action="remove"
-                                            >
-								              <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
-								                  class="glyphicon glyphicon-remove"
-								              {% endif %}></span> {{ shelf.name }}{% if shelf.is_public == 1 %} {{ _('(Public)') }}{% endif %}
-                                            </a>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div id="shelf-action-errors" class="pull-left" role="alert"></div>
-                        </div>
-                    {% endif %}
-
-                {% endif %}
                 {% if current_user.role_edit() %}
                     <div class="col-sm-12">
                         <div class="btn btn-default" data-back="{{ url_for('web.index') }}" id="back">{{_('Cancel')}}</div>

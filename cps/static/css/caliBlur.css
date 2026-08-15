@@ -5107,6 +5107,11 @@ body:not(.search) #shelf-actions, body:not(.search) #shelf-actions > .btn-group,
     pointer-events: auto
 }
 
+#shelf-actions > .btn-group.open > .dropdown-menu,
+#shelf-actions > .btn-group.open > .dropdown-menu > li > a {
+    pointer-events: auto
+}
+
 .book-meta > .bookinfo > .comments p, .description p {
     margin: 0 0 28px
 }
