@@ -1333,11 +1333,13 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
 #nav_cat .glyphicon-tags::before, .glyphicon-tags::before {
     //content: "\E067";
     //font-family: Glyphicons Regular, serif;
-    margin-left: 2px
+    margin-left: 2px;
+    color: inherit
 }
 
 .navigation #nav_cat a span {
-    margin-right: 8px
+    margin-right: 8px;
+    color: inherit
 }
 
 .navigation .create-shelf a {
