@@ -241,6 +241,12 @@ span.glyphicon.glyphicon-tags {
   vertical-align: text-top;
 }
 
+.navigation span.glyphicon.glyphicon-tags {
+  color: #444;
+  padding-right: 0px;
+  vertical-align: baseline;
+}
+
 .book-meta { padding-bottom: 20px; }
 
 .navbar-default .navbar-toggle .icon-bar { background-color: #000; }

@@ -1,6 +1,7 @@
 {% import 'image.html' as image %}
 {% extends theme("layout.html") %}
 {% block body %}
+<div class="discover">
 <h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader hidden-xs">
@@ -42,7 +43,7 @@
         {% endfor %}
         </div>
     {% endif %}
-
+</div>
 
 {% endblock %}
 {% block js %}
