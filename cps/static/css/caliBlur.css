@@ -1954,22 +1954,17 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1 > d
     width: 100%
 }
 
-body.serieslist > div.container-fluid > div > div.col-sm-10:before {
-    content: "\e044";
-    font-family: 'Glyphicons Halflings', serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.serieslist-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 240px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center
 }
 
 @media screen and (max-width: 992px) {
-  body.serieslist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+  .serieslist-icon {
       top: 180px;
   }
 }
@@ -6403,7 +6398,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 30px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, .authorlist-icon, .catlist-icon, .downloadlist-icon, .langlist-icon, .ratingslist-icon, body.serieslist > div.container-fluid > div > div.col-sm-10:before, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, .authorlist-icon, .catlist-icon, .downloadlist-icon, .langlist-icon, .ratingslist-icon, .serieslist-icon, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
         position: fixed;
         top: 62px;
         right: 23px;

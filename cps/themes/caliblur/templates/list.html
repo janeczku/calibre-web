@@ -22,6 +22,9 @@
   {% if page == 'formatslist' %}
     <span class="formatslist-icon glyphicon glyphicon-file" aria-hidden="true"></span>
   {% endif %}
+  {% if page == 'serieslist' %}
+    <span class="serieslist-icon glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+  {% endif %}
   <h2 class="{{ page }}">{{ _(title)|replace(':', ' —')|replace("'", "") }}</h2>
 
   <div class="filterheader caliblur-filterheader hidden-xs">
