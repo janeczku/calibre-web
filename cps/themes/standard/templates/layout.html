@@ -111,7 +111,7 @@
         {% if current_user.is_authenticated or g.allow_anonymous %}
         <div class="col-sm-2">
           <nav class="navigation">
-            <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
+            <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-tablet-after="#main-nav" in-tablet-class="nav navbar-nav" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if current_user.check_visibility(element['visibility']) and element['public'] %}
