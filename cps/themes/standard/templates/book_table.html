@@ -49,6 +49,7 @@
 <link href="{{ url_for('static', filename='css/libs/bootstrap-wysihtml5-0.0.3.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
+<div class="discover">
 <h2 class="{{page}}">{{_(title)}}</h2>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="col-xs-12 col-sm-6">
@@ -134,6 +135,7 @@
         </tr>
       </thead>
     </table>
+</div>
 
 {% endblock %}
 {% block modal %}

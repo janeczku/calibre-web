@@ -2060,7 +2060,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 240px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center
 }
@@ -2074,14 +2074,10 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
 .authorlist-icon, .langlist-icon {
     font-size: 6vw;
     left: 240px;
-    top: 180px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center;
     position: fixed
-}
-
-.authorlist-icon {
-    top: 240px;
 }
 
 @media screen and (max-width: 992px) {
@@ -2089,11 +2085,6 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
       top: 180px;
   }
 }
-
-.langlist-icon {
-    top: 240px;
-}
-
 
 body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
     top: 60px;
@@ -2127,7 +2118,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 240px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center
 }
@@ -7446,7 +7437,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 240px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center
 }
@@ -7461,7 +7452,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 240px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center
 }
@@ -7482,7 +7473,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 240px;
+    top: 300px;
     width: calc(20% - 55px);
     text-align: center
 }
