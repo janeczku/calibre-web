@@ -2058,12 +2058,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
     -o-transition: background-color .2s, color .2s
 }
 
-body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
-    content: "\E067";
-    font-family: Glyphicons Regular, serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.catlist-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -2073,16 +2068,12 @@ body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
 }
 
 @media screen and (max-width: 992px) {
-  body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+  .catlist-icon {
       top: 180px;
   }
 }
 
-body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.langlist > div.container-fluid > div > div.col-sm-10:before {
-    font-family: 'Glyphicons Halflings', serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.authorlist-icon, .langlist-icon {
     font-size: 6vw;
     left: 240px;
     top: 180px;
@@ -2091,19 +2082,17 @@ body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, bo
     position: fixed
 }
 
-body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
-    content: "\e008";
+.authorlist-icon {
     top: 240px;
 }
 
 @media screen and (max-width: 992px) {
-  body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+  .authorlist-icon {
       top: 180px;
   }
 }
 
-body.langlist > div.container-fluid > div > div.col-sm-10:before {
-    content: "\e034";
+.langlist-icon {
     top: 240px;
 }
 
@@ -2136,12 +2125,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
   }
 }
 
-body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
-    font-family: Glyphicons Halflings, serif;
-    content: "\E026";
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.downloadlist-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -2152,7 +2136,7 @@ body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
 
 
 @media screen and (max-width: 992px) {
-  body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+  .downloadlist-icon {
       top: 180px;
   }
 }
@@ -6380,7 +6364,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 30px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, body.authorlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.catlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.downloadlist > div.container-fluid > div.row-fluid > div.col-sm-10:before, body.langlist > div.container-fluid > div > div.col-sm-10:before, body.ratingslist > div.container-fluid > div > div.col-sm-10:before, body.serieslist > div.container-fluid > div > div.col-sm-10:before, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, .authorlist-icon, .catlist-icon, .downloadlist-icon, .langlist-icon, .ratingslist-icon, body.serieslist > div.container-fluid > div > div.col-sm-10:before, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
         position: fixed;
         top: 62px;
         right: 23px;
@@ -7377,12 +7361,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     text-overflow: ellipsis
 }
 
-body.publisherlist > div.container-fluid > div > div.col-sm-10:before {
-    content: "\e241";
-    font-family: 'Glyphicons Halflings', serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.publisherlist-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -7392,17 +7371,12 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10:before {
 }
 
 @media screen and (max-width: 992px) {
-  body.publisherlist > div.container-fluid > div > div.col-sm-10:before {
+  .publisherlist-icon {
       top: 180px;
   }
 }
 
-body.ratingslist > div.container-fluid > div > div.col-sm-10:before {
-    content: "\e007";
-    font-family: 'Glyphicons Halflings', serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.ratingslist-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -7412,23 +7386,18 @@ body.ratingslist > div.container-fluid > div > div.col-sm-10:before {
 }
 
 @media screen and (max-width: 992px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10:before {
+  .ratingslist-icon {
       top: 180px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10:before {
+  .ratingslist-icon {
       display: none;
   }
 }
 
-body.formatslist > div.container-fluid > div > div.col-sm-10:before {
-    content: "\e022";
-    font-family: 'Glyphicons Halflings', serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.formatslist-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -7438,13 +7407,13 @@ body.formatslist > div.container-fluid > div > div.col-sm-10:before {
 }
 
 @media screen and (max-width: 992px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10:before {
+  .formatslist-icon {
       top: 180px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10:before {
+  .formatslist-icon {
       display: none;
   }
 }
@@ -7542,7 +7511,7 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1 
 }
 
 @media only screen and (max-width: 767px) {
-    body.publisherlist > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+    .publisherlist-icon {
         position: fixed;
         top: 62px;
         right: 23px;

@@ -1,6 +1,27 @@
 {% extends theme("layout.html") %}
 {% block body %}
 <div class="discover">
+  {% if page == 'authorlist' %}
+    <span class="authorlist-icon glyphicon glyphicon-user" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'catlist' %}
+    <span class="catlist-icon glyphicon glyphicon-inbox" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'downloadlist' %}
+    <span class="downloadlist-icon glyphicon glyphicon-download" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'langlist' %}
+    <span class="langlist-icon glyphicon glyphicon-flag" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'publisherlist' %}
+    <span class="publisherlist-icon glyphicon glyphicon-text-size" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'ratingslist' %}
+    <span class="ratingslist-icon glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'formatslist' %}
+    <span class="formatslist-icon glyphicon glyphicon-file" aria-hidden="true"></span>
+  {% endif %}
   <h2 class="{{ page }}">{{ _(title)|replace(':', ' —')|replace("'", "") }}</h2>
 
   <div class="filterheader caliblur-filterheader hidden-xs">
