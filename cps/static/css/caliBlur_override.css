@@ -52,6 +52,49 @@ input.datepicker:focus + input {color: #555}
   height: 40px;
 }
 
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .twitter-typeahead .tt-hint {
+  background-color: hsla(0, 0%, 100%, .08) !important;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:first-child {
+  padding-left: 0;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:last-child {
+  padding-right: 0;
+}
+
+body.blur .input-group-btn > .datepicker_delete.btn.btn-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-width: 40px;
+  margin-bottom: 0;
+  padding: 0 12px;
+}
+
+body.blur .rating-clear .glyphicon-remove {
+  color: #fff;
+}
+
+body.blur .datepicker table tr td.day:hover,
+body.blur .datepicker table tr td span:hover,
+body.blur .datepicker table tr td.active,
+body.blur .datepicker table tr td.active:hover,
+body.blur .datepicker table tr td span.active,
+body.blur .datepicker table tr td span.active:hover {
+  background-color: var(--color-secondary) !important;
+  background-image: none !important;
+  border-color: var(--color-secondary) !important;
+  color: #fff !important;
+}
+
 .book-meta > .author > .author-prefix {
   color: hsla(0, 0%, 100%, .45);
 }
