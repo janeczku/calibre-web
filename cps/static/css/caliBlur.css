@@ -2314,7 +2314,7 @@ body > div.row-fluid {
 }
 
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-    border-top: 1px solid rgba(0, 0, 0, .3);
+    // border-top: 1px solid rgba(0, 0, 0, .3);
     background: rgba(0, 0, 0, .15)
 }
 
@@ -7585,7 +7585,7 @@ body.mailset.admin > div.container-fluid > div > div.col-sm-10 > div.discover > 
 
 body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .fixed-table-container {
     border: none;
-    padding-left: 15px;
+    padding-left: 0px;
     margin-bottom: 30px
 }
 

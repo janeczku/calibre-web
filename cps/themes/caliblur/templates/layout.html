@@ -21,7 +21,7 @@
     <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
   </head>
-  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'edituser', 'mailset', 'usertable'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
+  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'edituser', 'mailset', 'usertable', 'dbconfig'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
