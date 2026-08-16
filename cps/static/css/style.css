@@ -511,16 +511,3 @@ body > div.container-fluid  {
 .input-group .toggle-password {
   height: 40px;
 }
-
-.input-group .toggle-password {
-  min-width: 40px;
-  width: 40px;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.input-group .toggle-password .glyphicon {
-  font-size: 16px;
-  line-height: 1;
-  top: 0;
-}

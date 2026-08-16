@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2026-08-08 16:08+0200\n"
+"POT-Creation-Date: 2026-08-16 14:41+0200\n"
 "PO-Revision-Date: 2022-09-20 21:36+0700\n"
 "Last-Translator: Ha Link <halink0803@gmail.com>\n"
 "Language: vi\n"
@@ -13,309 +13,323 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.18.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
 msgstr "Thống kê"
 
-#: cps/admin.py:154
+#: cps/admin.py:156
 msgid "Server restarted, please reload page."
 msgstr ""
 
-#: cps/admin.py:156
+#: cps/admin.py:158
 msgid "Performing Server shutdown, please close window."
 msgstr ""
 
-#: cps/admin.py:164
+#: cps/admin.py:166
 msgid "Success! Database Reconnected"
 msgstr ""
 
-#: cps/admin.py:167
+#: cps/admin.py:169
 msgid "Unknown command"
 msgstr "Lệnh không tồn tại"
 
-#: cps/admin.py:178
+#: cps/admin.py:180
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:211 cps/editbooks.py:825 cps/editbooks.py:875
-#: cps/editbooks.py:1564 cps/templates/remote_login_verify.html:8
-#: cps/templates/remote_login_verify.html:10 cps/updater.py:615
+#: cps/admin.py:213 cps/editbooks.py:825 cps/editbooks.py:875
+#: cps/editbooks.py:1564
+#: cps/themes/caliblur/templates/remote_login_verify.html:9
+#: cps/themes/caliblur/templates/remote_login_verify.html:11
+#: cps/themes/standard/templates/remote_login_verify.html:9
+#: cps/themes/standard/templates/remote_login_verify.html:11 cps/updater.py:615
 #: cps/uploader.py:117 cps/uploader.py:126
 msgid "Unknown"
 msgstr "Không rõ"
 
-#: cps/admin.py:236
+#: cps/admin.py:238
 msgid "Admin page"
 msgstr "Trang admin"
 
-#: cps/admin.py:256
+#: cps/admin.py:258
 msgid "Basic Configuration"
 msgstr "Thiết lập cơ bản"
 
-#: cps/admin.py:294
+#: cps/admin.py:296
 msgid "UI Configuration"
 msgstr "Thiết lập UI"
 
-#: cps/admin.py:318 cps/admin.py:1005 cps/db.py:809 cps/search.py:150
+#: cps/admin.py:320 cps/admin.py:1011 cps/db.py:809 cps/search.py:150
 #: cps/web.py:752
 #, python-format
 msgid "Custom Column No.%(column)d does not exist in calibre database"
 msgstr ""
 
-#: cps/admin.py:336 cps/templates/admin.html:51
+#: cps/admin.py:338 cps/themes/standard/templates/admin.html:51
 msgid "Edit Users"
 msgstr "Chỉnh sửa người dùng"
 
-#: cps/admin.py:381 cps/opds.py:559 cps/templates/grid.html:14
-#: cps/templates/list.html:13
+#: cps/admin.py:383 cps/opds.py:559 cps/themes/caliblur/templates/list.html:38
+#: cps/themes/standard/templates/grid.html:15
+#: cps/themes/standard/templates/list.html:13
 msgid "All"
 msgstr "Tất cả"
 
-#: cps/admin.py:404 cps/admin.py:1460
+#: cps/admin.py:406 cps/admin.py:1466
 msgid "User not found"
 msgstr "Không tìm thấy user"
 
-#: cps/admin.py:418
+#: cps/admin.py:420
 #, python-brace-format
 msgid "{} users deleted successfully"
 msgstr "{} người dung đã đươc xoá thành công"
 
-#: cps/admin.py:441 cps/templates/config_view_edit.html:133
-#: cps/templates/user_edit.html:45 cps/templates/user_table.html:81
+#: cps/admin.py:443 cps/themes/caliblur/templates/user_edit.html:46
+#: cps/themes/standard/templates/config_view_edit.html:134
+#: cps/themes/standard/templates/user_edit.html:45
+#: cps/themes/standard/templates/user_table.html:81
 msgid "Show All"
 msgstr "Hiển thị tất cả"
 
-#: cps/admin.py:462 cps/admin.py:468
+#: cps/admin.py:464 cps/admin.py:470
 msgid "Malformed request"
 msgstr "Yêu cầu không đúng định dạng"
 
-#: cps/admin.py:480 cps/admin.py:2156
+#: cps/admin.py:482 cps/admin.py:2162
 msgid "Guest Name can't be changed"
 msgstr "Tên người dung khách không thể thay đổi"
 
-#: cps/admin.py:492
+#: cps/admin.py:494
 msgid "Guest can't have this role"
 msgstr "Khách không thể mang vai trò này"
 
-#: cps/admin.py:504 cps/admin.py:2110
+#: cps/admin.py:506 cps/admin.py:2116
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Không còn người dùng quản trị, không thể xoá vai trò admin"
 
-#: cps/admin.py:508 cps/admin.py:522
+#: cps/admin.py:510 cps/admin.py:524
 msgid "Value has to be true or false"
 msgstr "Giá trị phải là true hoặc false"
 
-#: cps/admin.py:510
+#: cps/admin.py:512
 msgid "Invalid role"
 msgstr "Vai trò không hợp lệ"
 
-#: cps/admin.py:514
+#: cps/admin.py:516
 msgid "Guest can't have this view"
 msgstr "Tài khoản khách không có màn hình này"
 
-#: cps/admin.py:524
+#: cps/admin.py:526
 msgid "Invalid view"
 msgstr "View không hợp lệ"
 
-#: cps/admin.py:527
+#: cps/admin.py:529
 msgid "Guest's Locale is determined automatically and can't be set"
 msgstr "Ngôn ngữ của khách được xác định tự động và không thể đặt được"
 
-#: cps/admin.py:531
+#: cps/admin.py:533
 msgid "No Valid Locale Given"
 msgstr "Địa chỉ cung cấp không hợp lệ"
 
-#: cps/admin.py:542
+#: cps/admin.py:544
 msgid "No Valid Book Language Given"
 msgstr "Ngôn ngữ sách không hợp lệ"
 
-#: cps/admin.py:544 cps/editbooks.py:260 cps/editbooks.py:445
+#: cps/admin.py:546 cps/editbooks.py:260 cps/editbooks.py:445
 #: cps/editbooks.py:447
 msgid "Parameter not found"
 msgstr "Tham số không tồn tại"
 
-#: cps/admin.py:581
+#: cps/admin.py:583
 msgid "Invalid Read Column"
 msgstr "Cột đọc không hợp lệ"
 
-#: cps/admin.py:587
+#: cps/admin.py:589
 msgid "Invalid Restricted Column"
 msgstr "Cột bị hạn chế không hợp lệ"
 
-#: cps/admin.py:607 cps/admin.py:1981
+#: cps/admin.py:595
+msgid "Invalid Theme"
+msgstr ""
+
+#: cps/admin.py:613 cps/admin.py:1987
 msgid "Calibre-Web configuration updated"
 msgstr "Thiết lập Calibre-Web đã cập nhật"
 
-#: cps/admin.py:619
+#: cps/admin.py:625
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Bạn có thực sự muốn xóa Kobo Token không?"
 
-#: cps/admin.py:621
+#: cps/admin.py:627
 msgid "Do you really want to delete this domain?"
 msgstr "Bạn có thực sự muốn xóa miền này không?"
 
-#: cps/admin.py:623
+#: cps/admin.py:629
 msgid "Do you really want to delete this user?"
 msgstr "Bạn có thực sự muốn xóa người dùng này không?"
 
-#: cps/admin.py:625
+#: cps/admin.py:631
 msgid "Do you really want to delete this book?"
 msgstr ""
 
-#: cps/admin.py:627
+#: cps/admin.py:633
 msgid "Are you sure you want to delete this shelf?"
 msgstr "Bạn có chắc chắn muốn xóa giá này không?"
 
-#: cps/admin.py:629
+#: cps/admin.py:635
 msgid "Are you sure you want to change locales of selected user(s)?"
 msgstr "Bạn có chắc chắn muốn thay đổi ngôn ngữ của những người dùng đã chọn?"
 
-#: cps/admin.py:631
+#: cps/admin.py:637
 msgid "Are you sure you want to change visible book languages for selected user(s)?"
 msgstr "Bạn có chắc chắn muốn thay đổi ngôn ngữ sách hiển thị cho (những) người dùng đã chọn không?"
 
-#: cps/admin.py:633
+#: cps/admin.py:639
 msgid "Are you sure you want to change the selected role for the selected user(s)?"
 msgstr "Bạn có chắc chắn muốn thay đổi vai trò đã chọn cho (những) người dùng đã chọn không?"
 
-#: cps/admin.py:635
+#: cps/admin.py:641
 msgid "Are you sure you want to change the archive status for the selected book(s)?"
 msgstr ""
 
-#: cps/admin.py:637
+#: cps/admin.py:643
 msgid "Are you sure you want to change the read status for the selected book(s)?"
 msgstr ""
 
-#: cps/admin.py:639
+#: cps/admin.py:645
 msgid "Are you sure you want to change the selected restrictions for the selected user(s)?"
 msgstr "Bạn có chắc chắn muốn thay đổi những giới hạn đã chọn cho người dung?"
 
-#: cps/admin.py:641
+#: cps/admin.py:647
 msgid "Are you sure you want to change the selected visibility restrictions for the selected user(s)?"
 msgstr "Bạn có chắc chắn muốn thay đổi các giới hạn hiển thị đã chọn cho (những) người dùng đã chọn không?"
 
-#: cps/admin.py:644
+#: cps/admin.py:650
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
 msgstr "Bạn có chắc chắn muốn thay đổi hành vi đồng bộ hóa giá cho (những) người dùng đã chọn không?"
 
-#: cps/admin.py:646
+#: cps/admin.py:652
 msgid "Are you sure you want to change Calibre library location?"
 msgstr "Bạn có chắc chắn muốn thay đổi vị trí thư viện Calibre không?"
 
-#: cps/admin.py:648
+#: cps/admin.py:654
 msgid "Calibre-Web will search for updated Covers and update Cover Thumbnails, this may take a while?"
 msgstr ""
 
-#: cps/admin.py:651
+#: cps/admin.py:657
 msgid "Are you sure you want delete Calibre-Web's sync database to force a full sync with your Kobo Reader?"
 msgstr "Bạn có chắc chắn muốn xóa cơ sở dữ liệu đồng bộ của Calibre-Web để bắt buộc đồng bộ hóa hoàn toàn với Kobo Reader của mình không?"
 
-#: cps/admin.py:894 cps/admin.py:900 cps/admin.py:910 cps/admin.py:920
-#: cps/templates/modal_dialogs.html:29 cps/templates/user_table.html:41
-#: cps/templates/user_table.html:58
+#: cps/admin.py:900 cps/admin.py:906 cps/admin.py:916 cps/admin.py:926
+#: cps/themes/caliblur/templates/modal_dialogs.html:29
+#: cps/themes/standard/templates/modal_dialogs.html:29
+#: cps/themes/standard/templates/user_table.html:41
+#: cps/themes/standard/templates/user_table.html:58
 msgid "Deny"
 msgstr "Từ chối"
 
-#: cps/admin.py:896 cps/admin.py:902 cps/admin.py:912 cps/admin.py:922
-#: cps/templates/modal_dialogs.html:28 cps/templates/user_table.html:44
-#: cps/templates/user_table.html:61
+#: cps/admin.py:902 cps/admin.py:908 cps/admin.py:918 cps/admin.py:928
+#: cps/themes/caliblur/templates/modal_dialogs.html:28
+#: cps/themes/standard/templates/modal_dialogs.html:28
+#: cps/themes/standard/templates/user_table.html:44
+#: cps/themes/standard/templates/user_table.html:61
 msgid "Allow"
 msgstr "Cho phép"
 
-#: cps/admin.py:955
+#: cps/admin.py:961
 #, python-brace-format
 msgid "{} sync entries deleted"
 msgstr "{} mục nhập đồng bộ hóa đã bị xóa"
 
-#: cps/admin.py:996
+#: cps/admin.py:1002
 msgid "Tag not found"
 msgstr "Tag không tồn tại"
 
-#: cps/admin.py:1014
+#: cps/admin.py:1020
 msgid "Invalid Action"
 msgstr "Hành động không hợp lệ"
 
-#: cps/admin.py:1137
+#: cps/admin.py:1143
 #, python-format
 msgid "Invalid reverse proxy trusted IP/CIDR entry: %(entry)s"
 msgstr ""
 
-#: cps/admin.py:1148
+#: cps/admin.py:1154
 #, python-format
 msgid "Invalid %(label)s: %(value)s"
 msgstr ""
 
-#: cps/admin.py:1166
+#: cps/admin.py:1172
 msgid "client_secrets.json Is Not Configured For Web Application"
 msgstr ""
 
-#: cps/admin.py:1211
+#: cps/admin.py:1217
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr "Vị trí tệp nhật ký không hợp lệ, vui lòng nhập đường dẫn chính xác"
 
-#: cps/admin.py:1217
+#: cps/admin.py:1223
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1251
+#: cps/admin.py:1257
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr ""
 
-#: cps/admin.py:1257
+#: cps/admin.py:1263
 msgid "Please Enter a LDAP Service Account and Password"
 msgstr ""
 
-#: cps/admin.py:1260
+#: cps/admin.py:1266
 msgid "Please Enter a LDAP Service Account"
-msgstr ""
-
-#: cps/admin.py:1265
-#, python-format
-msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr ""
-
-#: cps/admin.py:1267
-msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
 #: cps/admin.py:1271
 #, python-format
-msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
+msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
 #: cps/admin.py:1273
+msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
+msgstr ""
+
+#: cps/admin.py:1277
+#, python-format
+msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+#: cps/admin.py:1279
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1280
+#: cps/admin.py:1286
 #, python-format
 msgid "LDAP Member User Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:1282
+#: cps/admin.py:1288
 msgid "LDAP Member User Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:1289
+#: cps/admin.py:1295
 msgid "LDAP CACertificate, Certificate or Key Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1320 cps/templates/admin.html:53
+#: cps/admin.py:1326 cps/themes/standard/templates/admin.html:53
 msgid "Add New User"
 msgstr "Thêm người dùng mới"
 
-#: cps/admin.py:1329 cps/templates/admin.html:100
+#: cps/admin.py:1335 cps/themes/standard/templates/admin.html:100
 msgid "Edit Email Server Settings"
 msgstr ""
 
-#: cps/admin.py:1348
+#: cps/admin.py:1354
 msgid "Success! Gmail Account Verified."
 msgstr ""
 
-#: cps/admin.py:1368 cps/admin.py:1371 cps/admin.py:1756 cps/admin.py:1965
-#: cps/admin.py:2063 cps/admin.py:2184 cps/editbooks.py:170
+#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1971
+#: cps/admin.py:2069 cps/admin.py:2190 cps/editbooks.py:170
 #: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
@@ -323,257 +337,261 @@ msgstr ""
 msgid "Oops! Database Error: %(error)s."
 msgstr "Lỗi cơ sở dữ liệu: %(error)s."
 
-#: cps/admin.py:1378
+#: cps/admin.py:1384
 #, python-format
 msgid "Test e-mail queued for sending to %(email)s, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:1381
+#: cps/admin.py:1387
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/admin.py:1383
+#: cps/admin.py:1389
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:1385
+#: cps/admin.py:1391
 msgid "Email Server Settings updated"
 msgstr ""
 
-#: cps/admin.py:1408 cps/templates/admin.html:211
+#: cps/admin.py:1414 cps/themes/standard/templates/admin.html:211
 msgid "Edit Scheduled Tasks Settings"
 msgstr ""
 
-#: cps/admin.py:1420
+#: cps/admin.py:1426
 msgid "Invalid start time for task specified"
 msgstr ""
 
-#: cps/admin.py:1425
+#: cps/admin.py:1431
 msgid "Invalid duration for task specified"
 msgstr ""
 
-#: cps/admin.py:1435
+#: cps/admin.py:1441
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1445 cps/admin.py:1494 cps/admin.py:2180 cps/web.py:1335
+#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2186 cps/web.py:1335
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Lỗi không xác định xảy ra. Xin hãy thử lại sau."
 
-#: cps/admin.py:1449
+#: cps/admin.py:1455
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1479 cps/admin.py:2172
+#: cps/admin.py:1485 cps/admin.py:2178
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Chỉnh sửa người dùng %(nick)s"
 
-#: cps/admin.py:1491
+#: cps/admin.py:1497
 #, python-format
 msgid "Success! Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:1497
+#: cps/admin.py:1503
 msgid "Oops! Please configure the SMTP mail settings."
 msgstr ""
 
-#: cps/admin.py:1508
+#: cps/admin.py:1514
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:1574
+#: cps/admin.py:1580
 msgid "Requesting update package"
 msgstr ""
 
-#: cps/admin.py:1575
+#: cps/admin.py:1581
 msgid "Downloading update package"
 msgstr ""
 
-#: cps/admin.py:1576
+#: cps/admin.py:1582
 msgid "Unzipping update package"
 msgstr "Đang giải nén tệp cập nhật"
 
-#: cps/admin.py:1577
+#: cps/admin.py:1583
 msgid "Replacing files"
 msgstr "They thế tập tin"
 
-#: cps/admin.py:1578
+#: cps/admin.py:1584
 msgid "Database connections are closed"
 msgstr "Liên kết cơ sở dữ liệu đã được đóng"
 
-#: cps/admin.py:1579
+#: cps/admin.py:1585
 msgid "Stopping server"
 msgstr "Đang dừng server"
 
-#: cps/admin.py:1580
+#: cps/admin.py:1586
 msgid "Update finished, please press okay and reload page"
 msgstr "Cập nhật hoàn tất, ấn okay và tải lại trang"
 
-#: cps/admin.py:1581 cps/admin.py:1582 cps/admin.py:1583 cps/admin.py:1584
-#: cps/admin.py:1585 cps/admin.py:1586
+#: cps/admin.py:1587 cps/admin.py:1588 cps/admin.py:1589 cps/admin.py:1590
+#: cps/admin.py:1591 cps/admin.py:1592
 msgid "Update failed:"
 msgstr "Cập nhật thất bại:"
 
-#: cps/admin.py:1581 cps/updater.py:391 cps/updater.py:626 cps/updater.py:628
+#: cps/admin.py:1587 cps/updater.py:391 cps/updater.py:626 cps/updater.py:628
 msgid "HTTP Error"
 msgstr "Lỗi HTTP"
 
-#: cps/admin.py:1582 cps/updater.py:393 cps/updater.py:630
+#: cps/admin.py:1588 cps/updater.py:393 cps/updater.py:630
 msgid "Connection error"
 msgstr "Lỗi kết nối"
 
-#: cps/admin.py:1583 cps/updater.py:395 cps/updater.py:632
+#: cps/admin.py:1589 cps/updater.py:395 cps/updater.py:632
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:1584 cps/updater.py:397 cps/updater.py:634
+#: cps/admin.py:1590 cps/updater.py:397 cps/updater.py:634
 msgid "General error"
 msgstr "Lỗi chung"
 
-#: cps/admin.py:1585
+#: cps/admin.py:1591
 msgid "Update file could not be saved in temp dir"
 msgstr "File cập nhật không thể được lưu trong thư mục tạm thời"
 
-#: cps/admin.py:1586
+#: cps/admin.py:1592
 msgid "Files could not be replaced during update"
 msgstr ""
 
-#: cps/admin.py:1610
+#: cps/admin.py:1616
 msgid "Failed to extract at least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1655
+#: cps/admin.py:1661
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/admin.py:1668
+#: cps/admin.py:1674
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/admin.py:1672
+#: cps/admin.py:1678
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/admin.py:1708
+#: cps/admin.py:1714
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/admin.py:1710
+#: cps/admin.py:1716
 #, python-brace-format
 msgid "{} User Successfully Imported"
 msgstr ""
 
-#: cps/admin.py:1768
+#: cps/admin.py:1774
 msgid "Books path not valid"
 msgstr ""
 
-#: cps/admin.py:1774
+#: cps/admin.py:1780
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1802
+#: cps/admin.py:1808
 msgid "DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1816
+#: cps/admin.py:1822
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1820
+#: cps/admin.py:1826
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1846
+#: cps/admin.py:1852
 msgid "Kepubify binary not found"
 msgstr ""
 
-#: cps/admin.py:1894
+#: cps/admin.py:1900
 msgid "reverse proxy login header name"
 msgstr ""
 
-#: cps/admin.py:1904
+#: cps/admin.py:1910
 msgid "reverse proxy shared secret header name"
 msgstr ""
 
-#: cps/admin.py:1913
+#: cps/admin.py:1919
 msgid "Please configure both reverse proxy shared secret header name and secret"
 msgstr ""
 
-#: cps/admin.py:1917
+#: cps/admin.py:1923
 msgid "Please configure reverse proxy shared secret header name and secret or disable the feature"
 msgstr ""
 
-#: cps/admin.py:1922
+#: cps/admin.py:1928
 msgid "Please configure at least one trusted reverse proxy IP or CIDR"
 msgstr ""
 
-#: cps/admin.py:1946
+#: cps/admin.py:1952
 msgid "Password length has to be between 1 and 40"
 msgstr ""
 
-#: cps/admin.py:1957 cps/helper.py:1007
+#: cps/admin.py:1963 cps/helper.py:1007
 msgid "Please specify a valid UnRar directory"
 msgstr ""
 
-#: cps/admin.py:2004
+#: cps/admin.py:2010
 msgid "Database Settings updated"
 msgstr "Thiết lập cơ sở dữ lieu đã được cập nhật"
 
-#: cps/admin.py:2012
+#: cps/admin.py:2018
 msgid "Database Configuration"
 msgstr "Thiết lập cơ sở dữ lieu :)))"
 
-#: cps/admin.py:2027 cps/web.py:1305
+#: cps/admin.py:2033 cps/web.py:1305
 msgid "Oops! Please complete all fields."
 msgstr "Hãy điền hết các trường!"
 
-#: cps/admin.py:2036
+#: cps/admin.py:2042
 msgid "E-mail is not from valid domain"
 msgstr "Địa chỉ email không hợp lệ"
 
-#: cps/admin.py:2042
+#: cps/admin.py:2048
 msgid "Add new user"
 msgstr "Thêm người dùng mới"
 
-#: cps/admin.py:2053
+#: cps/admin.py:2059
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Người dùng '%(user)s' đã được tạo"
 
-#: cps/admin.py:2059
+#: cps/admin.py:2065
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "Người dùng với địa chỉ email hoặc tên đã tồn tại."
 
-#: cps/admin.py:2089
+#: cps/admin.py:2095
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Người dùng '%(nick)s' đã bị xoá"
 
-#: cps/admin.py:2092
+#: cps/admin.py:2098
 msgid "Can't delete Guest User"
 msgstr "Không thể xoá người dùng khách"
 
-#: cps/admin.py:2095
+#: cps/admin.py:2101
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:2150 cps/web.py:1485
+#: cps/admin.py:2156 cps/web.py:1485
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
-#: cps/admin.py:2176
+#: cps/admin.py:2182
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Người dùng '%(nick)s' đã được cập nhật"
 
-#: cps/basic.py:66 cps/search.py:50 cps/search.py:440
-#: cps/templates/basic_layout.html:23 cps/templates/book_edit.html:242
-#: cps/templates/feed.xml:34 cps/templates/index.xml:12
-#: cps/templates/layout.html:46 cps/templates/layout.html:49
-#: cps/templates/search_form.html:247
+#: cps/basic.py:66 cps/search.py:50 cps/search.py:440 cps/templates/feed.xml:34
+#: cps/templates/index.xml:12 cps/themes/caliblur/templates/book_edit.html:244
+#: cps/themes/caliblur/templates/layout.html:42
+#: cps/themes/simple/templates/basic_layout.html:23
+#: cps/themes/standard/templates/basic_layout.html:23
+#: cps/themes/standard/templates/book_edit.html:242
+#: cps/themes/standard/templates/layout.html:38
+#: cps/themes/standard/templates/layout.html:41
+#: cps/themes/standard/templates/search_form.html:247
 msgid "Search"
 msgstr "Tìm kiếm"
 
@@ -585,11 +603,12 @@ msgstr "chưa cài đặt"
 msgid "Execution permissions missing"
 msgstr ""
 
-#: cps/db.py:1129 cps/templates/config_edit.html:229
-#: cps/templates/config_view_edit.html:62 cps/templates/email_edit.html:41
-#: cps/web.py:567 cps/web.py:601 cps/web.py:646 cps/web.py:686 cps/web.py:713
-#: cps/web.py:1000 cps/web.py:1030 cps/web.py:1075 cps/web.py:1103
-#: cps/web.py:1142
+#: cps/db.py:1129 cps/themes/caliblur/templates/email_edit.html:43
+#: cps/themes/standard/templates/config_edit.html:229
+#: cps/themes/standard/templates/config_view_edit.html:63
+#: cps/themes/standard/templates/email_edit.html:41 cps/web.py:567
+#: cps/web.py:601 cps/web.py:646 cps/web.py:686 cps/web.py:713 cps/web.py:1000
+#: cps/web.py:1030 cps/web.py:1075 cps/web.py:1103 cps/web.py:1142
 msgid "None"
 msgstr "None"
 
@@ -732,11 +751,12 @@ msgstr ""
 msgid "Please wait one minute to register next user"
 msgstr ""
 
-#: cps/error_handler.py:108 cps/templates/layout.html:69
-#: cps/templates/layout.html:104 cps/templates/login.html:27
-#: cps/templates/register.html:17 cps/web.py:1302 cps/web.py:1306
-#: cps/web.py:1312 cps/web.py:1336 cps/web.py:1340 cps/web.py:1353
-#: cps/web.py:1356
+#: cps/error_handler.py:108 cps/themes/caliblur/templates/layout.html:67
+#: cps/themes/caliblur/templates/login.html:33
+#: cps/themes/standard/templates/layout.html:80
+#: cps/themes/standard/templates/register.html:17 cps/web.py:1302
+#: cps/web.py:1306 cps/web.py:1312 cps/web.py:1336 cps/web.py:1340
+#: cps/web.py:1353 cps/web.py:1356
 msgid "Register"
 msgstr "Đăng ký"
 
@@ -767,7 +787,10 @@ msgstr ""
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s không tìm thấy: %(fn)s"
 
-#: cps/helper.py:105 cps/helper.py:236 cps/templates/detail.html:66
+#: cps/helper.py:105 cps/helper.py:236
+#: cps/themes/caliblur/templates/detail.html:127
+#: cps/themes/caliblur/templates/detail.html:128
+#: cps/themes/standard/templates/detail.html:66
 msgid "Send to eReader"
 msgstr ""
 
@@ -973,7 +996,7 @@ msgstr ""
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1154 cps/templates/admin.html:232
+#: cps/helper.py:1154 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -1071,9 +1094,13 @@ msgstr "Không tìm thấy token"
 msgid "Token has expired"
 msgstr "Token đã hết hạn"
 
-#: cps/remotelogin.py:86 cps/remotelogin.py:112 cps/templates/layout.html:68
-#: cps/templates/layout.html:103 cps/templates/login.html:4
-#: cps/templates/login.html:21 cps/web.py:1371
+#: cps/remotelogin.py:86 cps/remotelogin.py:112
+#: cps/themes/caliblur/templates/layout.html:66
+#: cps/themes/caliblur/templates/login.html:4
+#: cps/themes/caliblur/templates/login.html:28
+#: cps/themes/standard/templates/layout.html:79
+#: cps/themes/standard/templates/login.html:4
+#: cps/themes/standard/templates/login.html:28 cps/web.py:1371
 msgid "Login"
 msgstr "Đăng nhập"
 
@@ -1085,142 +1112,146 @@ msgstr ""
 msgid "Success! Please return to your device"
 msgstr "Thành công! Hãy quay lại thiết bị của bạn"
 
-#: cps/render_template.py:41 cps/web.py:423
+#: cps/render_template.py:60 cps/web.py:423
 msgid "Books"
 msgstr "Sách"
 
-#: cps/render_template.py:43
+#: cps/render_template.py:62
 msgid "Show recent books"
 msgstr "Hiển thị sách gần đây"
 
-#: cps/render_template.py:44 cps/templates/index.xml:27
+#: cps/render_template.py:63 cps/templates/index.xml:27
 msgid "Hot Books"
 msgstr "Sách hot"
 
-#: cps/render_template.py:46
+#: cps/render_template.py:65
 msgid "Show Hot Books"
 msgstr "Hiển thị sách hot"
 
-#: cps/render_template.py:48 cps/render_template.py:53
+#: cps/render_template.py:67 cps/render_template.py:72
 msgid "Downloaded Books"
 msgstr "Sách đã tải"
 
-#: cps/render_template.py:50 cps/render_template.py:55
-#: cps/templates/user_table.html:167
+#: cps/render_template.py:69 cps/render_template.py:74
+#: cps/themes/standard/templates/user_table.html:168
 msgid "Show Downloaded Books"
 msgstr "Hiển thị sách đã tải"
 
-#: cps/render_template.py:58 cps/templates/index.xml:36 cps/web.py:438
+#: cps/render_template.py:77 cps/templates/index.xml:36 cps/web.py:438
 msgid "Top Rated Books"
 msgstr "Top sách được đánh giá cao"
 
-#: cps/render_template.py:60 cps/templates/user_table.html:161
+#: cps/render_template.py:79 cps/themes/standard/templates/user_table.html:162
 msgid "Show Top Rated Books"
 msgstr "Hiện thị top những sách được đánh giá cao"
 
-#: cps/render_template.py:61 cps/templates/index.xml:63
+#: cps/render_template.py:80 cps/templates/index.xml:63
 #: cps/templates/index.xml:67 cps/web.py:771
 msgid "Read Books"
 msgstr "Sách đã đọc"
 
-#: cps/render_template.py:63
+#: cps/render_template.py:82
 msgid "Show Read and Unread"
 msgstr ""
 
-#: cps/render_template.py:65 cps/templates/index.xml:70
+#: cps/render_template.py:84 cps/templates/index.xml:70
 #: cps/templates/index.xml:74 cps/web.py:774
 msgid "Unread Books"
 msgstr "Sách chưa đọc"
 
-#: cps/render_template.py:67
+#: cps/render_template.py:86
 msgid "Show unread"
 msgstr "Hiện thị sách chưa đọc"
 
-#: cps/render_template.py:68
+#: cps/render_template.py:87
 msgid "Discover"
 msgstr "Khám phá"
 
-#: cps/render_template.py:70 cps/templates/index.xml:58
-#: cps/templates/user_table.html:159 cps/templates/user_table.html:162
+#: cps/render_template.py:89 cps/templates/index.xml:58
+#: cps/themes/standard/templates/user_table.html:160
+#: cps/themes/standard/templates/user_table.html:163
 msgid "Show Random Books"
 msgstr "Hiển thị sách ngẫu nhiên"
 
-#: cps/render_template.py:71 cps/templates/book_table.html:93
-#: cps/templates/index.xml:97 cps/web.py:1146
+#: cps/render_template.py:90 cps/templates/index.xml:97
+#: cps/themes/standard/templates/book_table.html:94 cps/web.py:1146
 msgid "Categories"
 msgstr "Chủ đề"
 
-#: cps/render_template.py:73 cps/templates/user_table.html:158
+#: cps/render_template.py:92 cps/themes/standard/templates/user_table.html:159
 msgid "Show Category Section"
 msgstr ""
 
-#: cps/render_template.py:74 cps/templates/book_edit.html:86
-#: cps/templates/book_table.html:94 cps/templates/index.xml:106
-#: cps/templates/search_form.html:70 cps/web.py:1036 cps/web.py:1048
+#: cps/render_template.py:93 cps/templates/index.xml:106
+#: cps/themes/caliblur/templates/book_edit.html:88
+#: cps/themes/standard/templates/book_edit.html:86
+#: cps/themes/standard/templates/book_table.html:95
+#: cps/themes/standard/templates/search_form.html:70 cps/web.py:1036
+#: cps/web.py:1048
 msgid "Series"
 msgstr "Series"
 
-#: cps/render_template.py:76 cps/templates/user_table.html:157
+#: cps/render_template.py:95 cps/themes/standard/templates/user_table.html:158
 msgid "Show Series Section"
 msgstr ""
 
-#: cps/render_template.py:77 cps/templates/book_table.html:92
-#: cps/templates/index.xml:79
+#: cps/render_template.py:96 cps/templates/index.xml:79
+#: cps/themes/standard/templates/book_table.html:93
 msgid "Authors"
 msgstr "Tác giả"
 
-#: cps/render_template.py:79 cps/templates/user_table.html:160
+#: cps/render_template.py:98 cps/themes/standard/templates/user_table.html:161
 msgid "Show Author Section"
 msgstr ""
 
-#: cps/render_template.py:81 cps/templates/book_table.html:98
-#: cps/templates/index.xml:88 cps/web.py:1004
+#: cps/render_template.py:100 cps/templates/index.xml:88
+#: cps/themes/standard/templates/book_table.html:99 cps/web.py:1004
 msgid "Publishers"
 msgstr "Nhà phát hành"
 
-#: cps/render_template.py:83 cps/templates/user_table.html:163
+#: cps/render_template.py:102 cps/themes/standard/templates/user_table.html:164
 msgid "Show Publisher Section"
 msgstr ""
 
-#: cps/render_template.py:84 cps/templates/book_table.html:96
-#: cps/templates/index.xml:115 cps/templates/search_form.html:108
-#: cps/web.py:1118
+#: cps/render_template.py:103 cps/templates/index.xml:115
+#: cps/themes/standard/templates/book_table.html:97
+#: cps/themes/standard/templates/search_form.html:108 cps/web.py:1118
 msgid "Languages"
 msgstr "Ngôn ngữ"
 
-#: cps/render_template.py:87 cps/templates/user_table.html:155
+#: cps/render_template.py:106 cps/themes/standard/templates/user_table.html:156
 msgid "Show Language Section"
 msgstr ""
 
-#: cps/render_template.py:88 cps/templates/index.xml:124
+#: cps/render_template.py:107 cps/templates/index.xml:124
 msgid "Ratings"
 msgstr "Đánh giá"
 
-#: cps/render_template.py:90 cps/templates/user_table.html:164
+#: cps/render_template.py:109 cps/themes/standard/templates/user_table.html:165
 msgid "Show Ratings Section"
 msgstr ""
 
-#: cps/render_template.py:91 cps/templates/index.xml:133
+#: cps/render_template.py:110 cps/templates/index.xml:133
 msgid "File formats"
 msgstr "Định dạng file"
 
-#: cps/render_template.py:93 cps/templates/user_table.html:165
+#: cps/render_template.py:112 cps/themes/standard/templates/user_table.html:166
 msgid "Show File Formats Section"
 msgstr ""
 
-#: cps/render_template.py:95 cps/web.py:797
+#: cps/render_template.py:114 cps/web.py:797
 msgid "Archived Books"
 msgstr "Sách đã lưu trữ"
 
-#: cps/render_template.py:97 cps/templates/user_table.html:166
+#: cps/render_template.py:116 cps/themes/standard/templates/user_table.html:167
 msgid "Show Archived Books"
 msgstr ""
 
-#: cps/render_template.py:100 cps/web.py:833
+#: cps/render_template.py:119 cps/web.py:833
 msgid "Books List"
 msgstr "Danh sách sách"
 
-#: cps/render_template.py:102 cps/templates/user_table.html:168
+#: cps/render_template.py:121 cps/themes/standard/templates/user_table.html:169
 msgid "Show Books List"
 msgstr "Hiển thị danh sách sách"
 
@@ -1251,7 +1282,9 @@ msgstr ""
 msgid "Error on search for custom columns, please restart Calibre-Web"
 msgstr ""
 
-#: cps/search.py:384 cps/search.py:416 cps/templates/layout.html:57
+#: cps/search.py:384 cps/search.py:416
+#: cps/themes/caliblur/templates/layout.html:134
+#: cps/themes/standard/templates/layout.html:49
 msgid "Advanced Search"
 msgstr "Tìm kiếm nâng cao"
 
@@ -1325,7 +1358,8 @@ msgstr "Sách đã được xoá khỏi giá: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf"
 msgstr "Xin lỗi bạn không có quyền xoá sách khỏi giá này"
 
-#: cps/shelf.py:262 cps/templates/layout.html:159
+#: cps/shelf.py:262 cps/themes/caliblur/templates/layout.html:146
+#: cps/themes/standard/templates/layout.html:127
 msgid "Create a Shelf"
 msgstr "Tạo một giá sách"
 
@@ -1387,8 +1421,9 @@ msgstr ""
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr ""
 
-#: cps/tasks_status.py:47 cps/templates/layout.html:90
-#: cps/templates/tasks.html:7
+#: cps/tasks_status.py:47 cps/themes/caliblur/templates/layout.html:89
+#: cps/themes/standard/templates/layout.html:68
+#: cps/themes/standard/templates/tasks.html:7
 msgid "Tasks"
 msgstr "Nhiệm vụ"
 
@@ -1449,7 +1484,8 @@ msgstr ""
 msgid "No release information available"
 msgstr ""
 
-#: cps/templates/index.html:6 cps/web.py:450
+#: cps/themes/caliblur/templates/index.html:6
+#: cps/themes/standard/templates/index.html:6 cps/web.py:450
 msgid "Discover (Random Books)"
 msgstr ""
 
@@ -1501,7 +1537,7 @@ msgstr ""
 msgid "Language: %(name)s"
 msgstr ""
 
-#: cps/templates/admin.html:16 cps/web.py:976
+#: cps/themes/standard/templates/admin.html:16 cps/web.py:976
 msgid "Downloads"
 msgstr "Tải xuống"
 
@@ -1682,1401 +1718,36 @@ msgstr ""
 msgid "Clearing cover thumbnail cache"
 msgstr ""
 
-#: cps/tasks/upload.py:39 cps/templates/admin.html:20
-#: cps/templates/layout.html:82 cps/templates/user_table.html:145
+#: cps/tasks/upload.py:39 cps/themes/caliblur/templates/layout.html:80
+#: cps/themes/caliblur/templates/layout.html:81
+#: cps/themes/standard/templates/admin.html:20
+#: cps/themes/standard/templates/layout.html:60
+#: cps/themes/standard/templates/user_table.html:146
 msgid "Upload"
 msgstr "Tải lên"
 
-#: cps/templates/admin.html:9
-msgid "Users"
-msgstr "Người dùng"
-
-#: cps/templates/admin.html:13 cps/templates/login.html:9
-#: cps/templates/login.html:10 cps/templates/register.html:9
-#: cps/templates/user_edit.html:10 cps/templates/user_table.html:134
-msgid "Username"
-msgstr "Tên người dùng"
-
-#: cps/templates/admin.html:14 cps/templates/register.html:14
-#: cps/templates/user_edit.html:15 cps/templates/user_table.html:135
-msgid "Email"
-msgstr "Địa chỉ email"
-
-#: cps/templates/admin.html:15
-msgid "Send to eReader Email"
-msgstr ""
-
-#: cps/templates/admin.html:17 cps/templates/layout.html:93
-#: cps/templates/user_table.html:143
-msgid "Admin"
-msgstr "Admin"
-
-#: cps/templates/admin.html:18 cps/templates/login.html:13
-#: cps/templates/login.html:14 cps/templates/user_edit.html:23
-msgid "Password"
-msgstr "Mật khẩu"
-
-#: cps/templates/admin.html:22 cps/templates/detail.html:28
-#: cps/templates/detail.html:41 cps/templates/shelf.html:8
-#: cps/templates/user_table.html:146
-msgid "Download"
-msgstr "Tải xuống"
-
-#: cps/templates/admin.html:23
-msgid "View Books"
-msgstr "Xem sách"
-
-#: cps/templates/admin.html:24 cps/templates/book_table.html:315
-#: cps/templates/user_table.html:131 cps/templates/user_table.html:148
-msgid "Edit"
-msgstr "Chỉnh sửa"
-
-#: cps/templates/admin.html:25 cps/templates/book_edit.html:17
-#: cps/templates/book_table.html:131 cps/templates/book_table.html:180
-#: cps/templates/modal_dialogs.html:62 cps/templates/modal_dialogs.html:117
-#: cps/templates/user_edit.html:67 cps/templates/user_table.html:149
-msgid "Delete"
-msgstr "Xoá"
-
-#: cps/templates/admin.html:26
-msgid "Public Shelf"
-msgstr "Giá công khai"
-
-#: cps/templates/admin.html:55
-msgid "Import LDAP Users"
-msgstr ""
-
-#: cps/templates/admin.html:62
-msgid "Email Server Settings"
-msgstr "Thiết lập máy chủ email"
-
-#: cps/templates/admin.html:67 cps/templates/email_edit.html:31
-msgid "SMTP Hostname"
-msgstr "SMTP Hostname"
-
-#: cps/templates/admin.html:71 cps/templates/email_edit.html:35
-msgid "SMTP Port"
-msgstr "Cổng SMTP"
-
-#: cps/templates/admin.html:75 cps/templates/email_edit.html:39
-msgid "Encryption"
-msgstr "SSL"
-
-#: cps/templates/admin.html:79 cps/templates/email_edit.html:47
-msgid "SMTP Login"
-msgstr "Đăng nhập SMTP"
-
-#: cps/templates/admin.html:83 cps/templates/admin.html:94
-#: cps/templates/email_edit.html:55
-msgid "From Email"
-msgstr "Từ E-mail"
-
-#: cps/templates/admin.html:90
-msgid "Email Service"
-msgstr ""
-
-#: cps/templates/admin.html:91
-msgid "Gmail via Oauth2"
-msgstr "Gmail via Oauth2"
-
-#: cps/templates/admin.html:106
-msgid "Configuration"
-msgstr "Thiết lập"
-
-#: cps/templates/admin.html:109
-msgid "Calibre Database Directory"
-msgstr "Thư mục cơ sở dữ liệu Calibre"
-
-#: cps/templates/admin.html:113 cps/templates/config_edit.html:68
-msgid "Log Level"
-msgstr "Log Level"
-
-#: cps/templates/admin.html:117
-msgid "Port"
-msgstr "Cổng"
-
-#: cps/templates/admin.html:122
-msgid "External Port"
-msgstr ""
-
-#: cps/templates/admin.html:129 cps/templates/config_view_edit.html:28
-msgid "Books per Page"
-msgstr "Sách mỗi trang"
-
-#: cps/templates/admin.html:133
-msgid "Uploads"
-msgstr "Tải lên"
-
-#: cps/templates/admin.html:137
-msgid "Anonymous Browsing"
-msgstr "Ẩn danh"
-
-#: cps/templates/admin.html:141
-msgid "Public Registration"
-msgstr "Đăng ký công khai"
-
-#: cps/templates/admin.html:145
-msgid "Magic Link Remote Login"
-msgstr "Đăng nhập bằng Magic Link"
-
-#: cps/templates/admin.html:149
-msgid "Reverse Proxy Login"
-msgstr ""
-
-#: cps/templates/admin.html:154 cps/templates/config_edit.html:180
-msgid "Reverse Proxy Header Name"
-msgstr ""
-
-#: cps/templates/admin.html:158
-msgid "Reverse Proxy Trusted IPs/CIDRs"
-msgstr ""
-
-#: cps/templates/admin.html:162 cps/templates/config_edit.html:193
-msgid "Reverse Proxy Shared Secret Header Name"
-msgstr ""
-
-#: cps/templates/admin.html:166
-msgid "Reverse Proxy Shared Secret Header"
-msgstr ""
-
-#: cps/templates/admin.html:170
-msgid "Reverse Proxy Shared Secret Configured"
-msgstr ""
-
-#: cps/templates/admin.html:175
-msgid "Edit Calibre Database Configuration"
-msgstr "Chỉnh sửa thiết lập cơ sở dữ liệu Calibre"
-
-#: cps/templates/admin.html:176
-msgid "Edit Basic Configuration"
-msgstr "Chỉnh sửa thiết lập cơ bản"
-
-#: cps/templates/admin.html:177
-msgid "Edit UI Configuration"
-msgstr "Chỉnh sửa thiết lập UI"
-
-#: cps/templates/admin.html:183
-msgid "Scheduled Tasks"
-msgstr ""
-
-#: cps/templates/admin.html:186 cps/templates/schedule_edit.html:12
-#: cps/templates/tasks.html:18
-msgid "Start Time"
-msgstr ""
-
-#: cps/templates/admin.html:190 cps/templates/schedule_edit.html:20
-msgid "Maximum Duration"
-msgstr ""
-
-#: cps/templates/admin.html:194 cps/templates/schedule_edit.html:29
-msgid "Generate Thumbnails"
-msgstr ""
-
-#: cps/templates/admin.html:198
-msgid "Generate series cover thumbnails"
-msgstr ""
-
-#: cps/templates/admin.html:202 cps/templates/admin.html:224
-#: cps/templates/schedule_edit.html:37
-msgid "Reconnect Calibre Database"
-msgstr ""
-
-#: cps/templates/admin.html:206 cps/templates/schedule_edit.html:41
-msgid "Generate Metadata Backup Files"
-msgstr ""
-
-#: cps/templates/admin.html:213
-msgid "Refresh Thumbnail Cache"
-msgstr ""
-
-#: cps/templates/admin.html:219
-msgid "Administration"
-msgstr "Quản trị"
-
-#: cps/templates/admin.html:220
-msgid "Download Debug Package"
-msgstr "Tải xuống package debug"
-
-#: cps/templates/admin.html:221
-msgid "View Logs"
-msgstr "Xem logs"
-
-#: cps/templates/admin.html:227
-msgid "Restart"
-msgstr "Khởi động lại"
-
-#: cps/templates/admin.html:228
-msgid "Shutdown"
-msgstr "Tắt"
-
-#: cps/templates/admin.html:237
-msgid "Version Information"
-msgstr ""
-
-#: cps/templates/admin.html:241
-msgid "Version"
-msgstr "Phiên bản"
-
-#: cps/templates/admin.html:242
-msgid "Details"
-msgstr "Chi tiết"
-
-#: cps/templates/admin.html:248
-msgid "Current Version"
-msgstr "Phiên bản hiện tại"
-
-#: cps/templates/admin.html:255
-msgid "Check for Update"
-msgstr "Kiểm tra cập nhật"
-
-#: cps/templates/admin.html:256
-msgid "Perform Update"
-msgstr "Bắt đầu cập nhật"
-
-#: cps/templates/admin.html:269
-msgid "Are you sure you want to restart?"
-msgstr "Bạn có chắc chắn muốn khởi động lại?"
-
-#: cps/templates/admin.html:274 cps/templates/admin.html:288
-#: cps/templates/admin.html:308 cps/templates/config_db.html:82
-msgid "OK"
-msgstr "Ok"
-
-#: cps/templates/admin.html:275 cps/templates/admin.html:289
-#: cps/templates/book_edit.html:220 cps/templates/book_table.html:162
-#: cps/templates/book_table.html:181 cps/templates/book_table.html:201
-#: cps/templates/book_table.html:221 cps/templates/book_table.html:241
-#: cps/templates/book_table.html:261 cps/templates/book_table.html:316
-#: cps/templates/config_db.html:66 cps/templates/config_edit.html:453
-#: cps/templates/config_view_edit.html:175 cps/templates/detail.html:350
-#: cps/templates/modal_dialogs.html:63 cps/templates/modal_dialogs.html:100
-#: cps/templates/modal_dialogs.html:118 cps/templates/modal_dialogs.html:136
-#: cps/templates/remote_login_verify.html:16
-#: cps/templates/schedule_edit.html:45 cps/templates/shelf_edit.html:27
-#: cps/templates/tasks.html:47 cps/templates/user_edit.html:144
-msgid "Cancel"
-msgstr "Huỷ bỏ"
-
-#: cps/templates/admin.html:287
-msgid "Are you sure you want to shutdown?"
-msgstr "Bạn có chắc muốn tắt?"
-
-#: cps/templates/admin.html:299
-msgid "Updating, please do not reload this page"
-msgstr "Đang update, làm ơn đừng load lại trang này"
-
-#: cps/templates/author.html:15
-msgid "via"
-msgstr "via"
-
-#: cps/templates/author.html:23
-msgid "In Library"
-msgstr "Trong thư viện"
-
-#: cps/templates/author.html:26 cps/templates/index.html:74
-#: cps/templates/search.html:45 cps/templates/shelf.html:20
-msgid "Sort according to book date, newest first"
-msgstr ""
-
-#: cps/templates/author.html:27 cps/templates/index.html:75
-#: cps/templates/search.html:46 cps/templates/shelf.html:21
-msgid "Sort according to book date, oldest first"
-msgstr ""
-
-#: cps/templates/author.html:28 cps/templates/index.html:76
-#: cps/templates/search.html:47 cps/templates/shelf.html:22
-msgid "Sort title in alphabetical order"
-msgstr ""
-
-#: cps/templates/author.html:29 cps/templates/index.html:77
-#: cps/templates/search.html:48 cps/templates/shelf.html:23
-msgid "Sort title in reverse alphabetical order"
-msgstr ""
-
-#: cps/templates/author.html:30 cps/templates/index.html:80
-#: cps/templates/search.html:51 cps/templates/shelf.html:26
-msgid "Sort according to publishing date, newest first"
-msgstr ""
-
-#: cps/templates/author.html:31 cps/templates/index.html:81
-#: cps/templates/search.html:52 cps/templates/shelf.html:27
-msgid "Sort according to publishing date, oldest first"
-msgstr ""
-
-#: cps/templates/author.html:56 cps/templates/author.html:113
-#: cps/templates/index.html:30 cps/templates/index.html:113
-#: cps/templates/search.html:81 cps/templates/shelf.html:58
-msgid "reduce"
-msgstr ""
-
-#: cps/templates/author.html:97
-msgid "More by"
-msgstr "Cùng tác giả"
-
-#: cps/templates/basic_detail.html:34 cps/templates/detail.html:158
-#: cps/templates/listenmp3.html:62
-#, python-format
-msgid "Book %(index)s of %(range)s"
-msgstr "Sách %(index)s của %(range)s"
-
-#: cps/templates/basic_detail.html:41 cps/templates/book_edit.html:106
-#: cps/templates/detail.html:165 cps/templates/listenmp3.html:69
-#: cps/templates/user_edit.html:33
-msgid "Language"
-msgstr "Ngôn ngữ"
-
-#: cps/templates/basic_detail.html:61 cps/templates/book_edit.html:102
-#: cps/templates/book_edit.html:279 cps/templates/book_edit.html:296
-#: cps/templates/detail.html:200 cps/templates/listenmp3.html:102
-#: cps/templates/search_form.html:16
-msgid "Publisher"
-msgstr "Nhà xuất bản"
-
-#: cps/templates/basic_detail.html:70 cps/templates/detail.html:209
-#: cps/templates/listenmp3.html:111
-msgid "Published"
-msgstr "Đã phát hành"
-
-#: cps/templates/basic_detail.html:76 cps/templates/detail.html:286
-#: cps/templates/listenmp3.html:177
-msgid "Description:"
-msgstr "Mô tả:"
-
-#: cps/templates/basic_index.html:7 cps/templates/layout.html:173
-msgid "Previous"
-msgstr "Trước"
-
-#: cps/templates/basic_index.html:12 cps/templates/feed.xml:22
-#: cps/templates/layout.html:187
+#: cps/templates/feed.xml:22 cps/themes/caliblur/templates/layout.html:173
+#: cps/themes/standard/templates/basic_index.html:12
+#: cps/themes/standard/templates/layout.html:155
 msgid "Next"
 msgstr "Tiếp tục"
 
-#: cps/templates/basic_index.html:18 cps/templates/search.html:6
-msgid "No Results Found"
-msgstr "Không tìm thấy kết quả"
-
-#: cps/templates/basic_layout.html:17 cps/templates/layout.html:26
-#: cps/templates/login.html:30
-msgid "Home"
-msgstr "Trang chủ"
-
-#: cps/templates/basic_layout.html:21 cps/templates/layout.html:47
-msgid "Search Library"
-msgstr "Tìm kiếm thư viện"
-
-#: cps/templates/basic_layout.html:29 cps/templates/layout.html:72
-#: cps/templates/layout.html:98
-msgid "Logout"
-msgstr "Đăng xuất"
-
-#: cps/templates/basic_layout.html:35
-msgid "Normal Theme"
-msgstr ""
-
-#: cps/templates/book_edit.html:11
-msgid "Delete Book"
-msgstr "Xoá sách"
-
-#: cps/templates/book_edit.html:14
-msgid "Delete formats:"
-msgstr "Xoá định dạng:"
-
-#: cps/templates/book_edit.html:25
-msgid "Convert book format:"
-msgstr "Chuyển đổi định dạng sách:"
-
-#: cps/templates/book_edit.html:30
-msgid "Convert from:"
-msgstr "Chuyển đổi từ:"
-
-#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
-msgid "select an option"
-msgstr "chọn một lựa chọn"
-
-#: cps/templates/book_edit.html:37
-msgid "Convert to:"
-msgstr "Chuyển đổi tới:"
-
-#: cps/templates/book_edit.html:46
-msgid "Convert book"
-msgstr "Chuyển đổi sách"
-
-#: cps/templates/book_edit.html:53 cps/templates/layout.html:79
-#: cps/templates/layout.html:136
-msgid "Uploading..."
-msgstr "Đang tải lên..."
-
-#: cps/templates/book_edit.html:53 cps/templates/book_edit.html:257
-#: cps/templates/layout.html:79 cps/templates/layout.html:203
-#: cps/templates/modal_dialogs.html:34 cps/templates/user_edit.html:163
-msgid "Close"
-msgstr "Đóng"
-
-#: cps/templates/book_edit.html:53 cps/templates/layout.html:79
-msgid "Error"
-msgstr "Lỗi"
-
-#: cps/templates/book_edit.html:53 cps/templates/layout.html:79
-msgid "Upload done, processing, please wait..."
-msgstr "Tải lên xong, đang xử lý, đợi chút ..."
-
-#: cps/templates/book_edit.html:58
-msgid "Upload Format"
-msgstr "Định dạng tải lên"
-
-#: cps/templates/book_edit.html:71 cps/templates/search_form.html:8
-msgid "Book Title"
-msgstr "Tên sách"
-
-#: cps/templates/book_edit.html:78 cps/templates/book_edit.html:277
-#: cps/templates/book_edit.html:295 cps/templates/search_form.html:12
-msgid "Author"
-msgstr "Tác giả"
-
-#: cps/templates/book_edit.html:82 cps/templates/search_form.html:52
-msgid "Tags"
-msgstr "Đánh dấu"
-
-#: cps/templates/book_edit.html:90
-msgid "Series ID"
-msgstr "Series ID"
-
-#: cps/templates/book_edit.html:93
-msgid "Published Date"
-msgstr "Ngày xuất bản"
-
-#: cps/templates/book_edit.html:110
-msgid "Rating"
-msgstr "Đánh giá"
-
-#: cps/templates/book_edit.html:114 cps/templates/book_edit.html:282
-#: cps/templates/book_edit.html:297 cps/templates/search_form.html:154
-msgid "Description"
-msgstr "Mô tả"
-
-#: cps/templates/book_edit.html:118
-msgid "Identifiers"
-msgstr "Nhận diện"
-
-#: cps/templates/book_edit.html:122 cps/templates/book_edit.html:306
-msgid "Identifier Type"
-msgstr "Kiểu nhận diện"
-
-#: cps/templates/book_edit.html:123 cps/templates/book_edit.html:307
-msgid "Identifier Value"
-msgstr "Giá trị nhận diện"
-
-#: cps/templates/book_edit.html:124 cps/templates/book_edit.html:308
-#: cps/templates/user_table.html:24
-msgid "Remove"
-msgstr "Xoá"
-
-#: cps/templates/book_edit.html:129
-msgid "Add Identifier"
-msgstr "Thêm nhận diện"
-
-#: cps/templates/book_edit.html:133
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Lấy ảnh bìa từ URL (ảnh JPEG sẽ được tải xuống và lưu trong cơ sở dữ liệu)"
-
-#: cps/templates/book_edit.html:137
-msgid "Upload Cover from Local Disk"
-msgstr "Tải ảnh bìa từ ổ cứng"
-
-#: cps/templates/book_edit.html:149 cps/templates/search_form.html:46
-#: cps/templates/search_form.html:167
-msgid "Yes"
-msgstr "Có"
-
-#: cps/templates/book_edit.html:150 cps/templates/search_form.html:47
-#: cps/templates/search_form.html:168
-msgid "No"
-msgstr "Không"
-
-#: cps/templates/book_edit.html:215
-msgid "View Book on Save"
-msgstr "Xem sách sau khi lưu"
-
-#: cps/templates/book_edit.html:218 cps/templates/book_edit.html:236
-msgid "Fetch Metadata"
-msgstr "Fetch Metadata"
-
-#: cps/templates/book_edit.html:219 cps/templates/config_db.html:65
-#: cps/templates/config_edit.html:452 cps/templates/config_view_edit.html:174
-#: cps/templates/email_edit.html:65 cps/templates/schedule_edit.html:44
-#: cps/templates/shelf_edit.html:25 cps/templates/shelf_order.html:41
-#: cps/templates/user_edit.html:142
-msgid "Save"
-msgstr "Lưu"
-
-#: cps/templates/book_edit.html:239
-msgid "Keyword"
-msgstr "Từ khoá"
-
-#: cps/templates/book_edit.html:240
-msgid "Search keyword"
-msgstr "Tìm kiếm từ khoá"
-
-#: cps/templates/book_edit.html:246
-msgid "Click the cover to load metadata to the form"
-msgstr "Ấn vào ảnh cover để tải metadata vào form"
-
-#: cps/templates/book_edit.html:253 cps/templates/book_edit.html:292
-msgid "Loading..."
-msgstr "Đang tải..."
-
-#: cps/templates/book_edit.html:284 cps/templates/book_edit.html:298
-msgid "Source"
-msgstr "Nguồn"
-
-#: cps/templates/book_edit.html:293
-msgid "Search error!"
-msgstr "Tìm kiếm lỗi!"
-
-#: cps/templates/book_edit.html:294
-msgid "No Result(s) found! Please try another keyword."
-msgstr "Không tìm thấy kết quả! Hãy thử lại với từ khoá khác."
-
-#: cps/templates/book_table.html:12 cps/templates/book_table.html:95
-#: cps/templates/user_table.html:14 cps/templates/user_table.html:77
-#: cps/templates/user_table.html:100
-msgid "This Field is Required"
-msgstr "Đây là trường bắt buộc"
-
-#: cps/templates/book_table.html:25
-msgid "Archive selected books"
-msgstr ""
-
-#: cps/templates/book_table.html:28
-msgid "Unarchive selected books"
-msgstr ""
-
-#: cps/templates/book_table.html:34
-msgid "Mark selected books as read"
-msgstr ""
-
-#: cps/templates/book_table.html:37
-msgid "Mark selected books as unread"
-msgstr ""
-
-#: cps/templates/book_table.html:57
-msgid "Merge selected books"
-msgstr "Gộp những sách đã chọn"
-
-#: cps/templates/book_table.html:60 cps/templates/user_table.html:124
-msgid "Clear selections"
-msgstr ""
-
-#: cps/templates/book_table.html:63
-msgid "Edit selected books"
-msgstr ""
-
-#: cps/templates/book_table.html:67
-msgid "Exchange author and title"
-msgstr "Đổi tác giả và tên sách"
-
-#: cps/templates/book_table.html:73
-msgid "Update Title Sort automatically"
-msgstr "Cập nhật sắp xếp theo tên tự động"
-
-#: cps/templates/book_table.html:77
-msgid "Update Author Sort automatically"
-msgstr "Cập nhật sắp xếp theo tác giả tự động"
-
-#: cps/templates/book_table.html:89 cps/templates/book_table.html:95
-msgid "Enter Title"
-msgstr "Nhập tên sách"
-
-#: cps/templates/book_table.html:89 cps/templates/config_view_edit.html:24
-#: cps/templates/shelf_edit.html:8
-msgid "Title"
-msgstr "Tên"
-
-#: cps/templates/book_table.html:90
-msgid "Enter Title Sort"
-msgstr "Nhập tên sách để sắp xếp"
-
-#: cps/templates/book_table.html:90
-msgid "Title Sort"
-msgstr "Tên sắp xếp"
-
-#: cps/templates/book_table.html:91
-msgid "Enter Author Sort"
-msgstr "Nhập tác giả sắp xếp"
-
-#: cps/templates/book_table.html:91
-msgid "Author Sort"
-msgstr "Tên tác giả sắp xếp"
-
-#: cps/templates/book_table.html:92
-msgid "Enter Authors"
-msgstr "Nhập tên tác giả"
-
-#: cps/templates/book_table.html:93
-msgid "Enter Categories"
-msgstr "Nhập thể loại"
-
-#: cps/templates/book_table.html:94
-msgid "Enter Series"
-msgstr "Nhập tên series"
-
-#: cps/templates/book_table.html:95
-msgid "Series Index"
-msgstr "Chỉ số series"
-
-#: cps/templates/book_table.html:96
-msgid "Enter Languages"
-msgstr "Nhập ngôn ngữ"
-
-#: cps/templates/book_table.html:97
-msgid "Publishing Date"
-msgstr "Ngày phát hành"
-
-#: cps/templates/book_table.html:98
-msgid "Enter Publishers"
-msgstr "Nhập tên nhà phát hành"
-
-#: cps/templates/book_table.html:99
-msgid "Enter comments"
-msgstr "Nhập nhận xét"
-
-#: cps/templates/book_table.html:99
-msgid "Comments"
-msgstr "Nhận xét"
-
-#: cps/templates/book_table.html:101
-msgid "Archive Status"
-msgstr ""
-
-#: cps/templates/book_table.html:103 cps/templates/search_form.html:42
-msgid "Read Status"
-msgstr "Read status"
-
-#: cps/templates/book_table.html:106 cps/templates/book_table.html:108
-#: cps/templates/book_table.html:110 cps/templates/book_table.html:112
-#: cps/templates/book_table.html:116 cps/templates/book_table.html:118
-#: cps/templates/book_table.html:122
-msgid "Enter "
-msgstr "Nhập "
-
-#: cps/templates/book_table.html:128
-msgid "Delete selected books"
-msgstr ""
-
-#: cps/templates/book_table.html:148 cps/templates/book_table.html:172
-#: cps/templates/book_table.html:192 cps/templates/book_table.html:212
-#: cps/templates/book_table.html:232 cps/templates/book_table.html:252
-#: cps/templates/modal_dialogs.html:46 cps/templates/tasks.html:37
-msgid "Are you really sure?"
-msgstr "Bạn có thực sự chắc chắn?"
-
-#: cps/templates/book_table.html:152
-msgid "Books with Title will be merged from:"
-msgstr ""
-
-#: cps/templates/book_table.html:156
-msgid "Into Book with Title:"
-msgstr ""
-
-#: cps/templates/book_table.html:161
-msgid "Merge"
-msgstr "Trộn"
-
-#: cps/templates/book_table.html:176
-msgid "The following books will be deleted:"
-msgstr ""
-
-#: cps/templates/book_table.html:196
-msgid "The following books will be archived:"
-msgstr ""
-
-#: cps/templates/book_table.html:200 cps/templates/detail.html:275
-msgid "Archive"
-msgstr ""
-
-#: cps/templates/book_table.html:216
-msgid "The following books will be unarchived:"
-msgstr ""
-
-#: cps/templates/book_table.html:220
-msgid "Unarchive"
-msgstr ""
-
-#: cps/templates/book_table.html:236
-msgid "The following books will be marked read:"
-msgstr ""
-
-#: cps/templates/book_table.html:240
-msgid "Mark as read"
-msgstr ""
-
-#: cps/templates/book_table.html:256
-msgid "The following books will be marked unread:"
-msgstr ""
-
-#: cps/templates/book_table.html:260
-msgid "Mark as unread"
-msgstr ""
-
-#: cps/templates/book_table.html:272 cps/templates/detail.html:348
-msgid "Edit Metadata"
-msgstr "Chỉnh sửa Metadata"
-
-#: cps/templates/book_table.html:275
-msgid "Edit the fields you want changed. Blank fields will be ignored:"
-msgstr ""
-
-#: cps/templates/config_db.html:12
-msgid "Location of Calibre Database"
-msgstr "Vị trí cơ sở dữ liệu của Calibre"
-
-#: cps/templates/config_db.html:21
-msgid "Separate Book Files from Library"
-msgstr ""
-
-#: cps/templates/config_db.html:34
-msgid "Use Google Drive?"
-msgstr "Dùng Google Drive?"
-
-#: cps/templates/config_db.html:39
-msgid "Authenticate Google Drive"
-msgstr "Xác thực Google Drive"
-
-#: cps/templates/config_db.html:44
-msgid "Google Drive Calibre folder"
-msgstr "Thư mục Calibre trên Google Drive"
-
-#: cps/templates/config_db.html:52
-msgid "Metadata Watch Channel ID"
-msgstr ""
-
-#: cps/templates/config_db.html:55
-msgid "Revoke"
-msgstr "Thu hồi"
-
-#: cps/templates/config_db.html:80
-msgid "New db location is invalid, please enter valid path"
-msgstr "Đường dẫn DB mới không hợp lệ, xin hãy nhập đường dẫn hợp lệ"
-
-#: cps/templates/config_edit.html:18
-msgid "Server Configuration"
-msgstr "Thiết lập máy chủ"
-
-#: cps/templates/config_edit.html:25
-msgid "Server Port"
-msgstr "Cổng máy chủ"
-
-#: cps/templates/config_edit.html:28
-msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr ""
-
-#: cps/templates/config_edit.html:35
-msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr ""
-
-#: cps/templates/config_edit.html:43
-msgid "Update Channel"
-msgstr ""
-
-#: cps/templates/config_edit.html:45
-msgid "Stable"
-msgstr ""
-
-#: cps/templates/config_edit.html:46
-msgid "Nightly"
-msgstr ""
-
-#: cps/templates/config_edit.html:50
-msgid "Trusted Hosts (Comma Separated)"
-msgstr ""
-
-#: cps/templates/config_edit.html:61
-msgid "Logfile Configuration"
-msgstr ""
-
-#: cps/templates/config_edit.html:77
-msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr ""
-
-#: cps/templates/config_edit.html:82
-msgid "Enable Access Log"
-msgstr ""
-
-#: cps/templates/config_edit.html:85
-msgid "Location and name of access logfile (access.log for no entry)"
-msgstr ""
-
-#: cps/templates/config_edit.html:96
-msgid "Feature Configuration"
-msgstr ""
-
-#: cps/templates/config_edit.html:104
-msgid "Convert non-English characters in title and author while saving to disk"
-msgstr ""
-
-#: cps/templates/config_edit.html:108
-msgid "Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)"
-msgstr ""
-
-#: cps/templates/config_edit.html:112
-msgid "Enable Uploads"
-msgstr ""
-
-#: cps/templates/config_edit.html:112
-msgid "(Please ensure that users also have upload permissions)"
-msgstr ""
-
-#: cps/templates/config_edit.html:116
-msgid "Allowed Upload Fileformats"
-msgstr ""
-
-#: cps/templates/config_edit.html:122
-msgid "Enable Anonymous Browsing"
-msgstr ""
-
-#: cps/templates/config_edit.html:126
-msgid "Enable Public Registration"
-msgstr ""
-
-#: cps/templates/config_edit.html:131
-msgid "Use Email as Username"
-msgstr ""
-
-#: cps/templates/config_edit.html:136
-msgid "Enable Magic Link Remote Login"
-msgstr ""
-
-#: cps/templates/config_edit.html:141
-msgid "Enable Kobo sync"
-msgstr ""
-
-#: cps/templates/config_edit.html:146
-msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
-
-#: cps/templates/config_edit.html:149
-msgid "Server External Port (for port forwarded API calls)"
-msgstr ""
-
-#: cps/templates/config_edit.html:157
-msgid "Use Goodreads"
-msgstr "Sử dụng Goodreads"
-
-#: cps/templates/config_edit.html:161
-msgid "Goodreads API Key"
-msgstr "Goodreads API Key"
-
-#: cps/templates/config_edit.html:167
-msgid "Google Books API Key"
-msgstr ""
-
-#: cps/templates/config_edit.html:172
-msgid "Allow Reverse Proxy Authentication"
-msgstr ""
-
-#: cps/templates/config_edit.html:176
-msgid "Security Warning"
-msgstr ""
-
-#: cps/templates/config_edit.html:177
-msgid "Only enable this when Calibre-Web is reachable exclusively through a trusted reverse proxy. Never expose Calibre-Web directly to untrusted networks while reverse proxy authentication is enabled."
-msgstr ""
-
-#: cps/templates/config_edit.html:184
-msgid "Reverse Proxy Trusted IPs/CIDRs (Comma Separated)"
-msgstr ""
-
-#: cps/templates/config_edit.html:189
-msgid "Enable Reverse Proxy Shared Secret Header"
-msgstr ""
-
-#: cps/templates/config_edit.html:197
-msgid "Reverse Proxy Shared Secret"
-msgstr ""
-
-#: cps/templates/config_edit.html:205
-msgid "Login type"
-msgstr "Kiểu đăng nhập"
-
-#: cps/templates/config_edit.html:207
-msgid "Use Standard Authentication"
-msgstr ""
-
-#: cps/templates/config_edit.html:209
-msgid "Use LDAP Authentication"
-msgstr ""
-
-#: cps/templates/config_edit.html:212
-msgid "Use OAuth"
-msgstr ""
-
-#: cps/templates/config_edit.html:219
-msgid "LDAP Server Host Name or IP Address"
-msgstr ""
-
-#: cps/templates/config_edit.html:223
-msgid "LDAP Server Port"
-msgstr ""
-
-#: cps/templates/config_edit.html:227
-msgid "LDAP Encryption"
-msgstr ""
-
-#: cps/templates/config_edit.html:230
-msgid "TLS"
-msgstr ""
-
-#: cps/templates/config_edit.html:231
-msgid "SSL"
-msgstr ""
-
-#: cps/templates/config_edit.html:235
-msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
-
-#: cps/templates/config_edit.html:242
-msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
-msgstr ""
-
-#: cps/templates/config_edit.html:249
-msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
-msgstr ""
-
-#: cps/templates/config_edit.html:258
-msgid "LDAP Authentication"
-msgstr ""
-
-#: cps/templates/config_edit.html:260
-msgid "Anonymous"
-msgstr ""
-
-#: cps/templates/config_edit.html:261
-msgid "Unauthenticated"
-msgstr ""
-
-#: cps/templates/config_edit.html:262
-msgid "Simple"
-msgstr ""
-
-#: cps/templates/config_edit.html:267
-msgid "LDAP Administrator Username"
-msgstr ""
-
-#: cps/templates/config_edit.html:273
-msgid "LDAP Administrator Password"
-msgstr ""
-
-#: cps/templates/config_edit.html:278
-msgid "LDAP Distinguished Name (DN)"
-msgstr ""
-
-#: cps/templates/config_edit.html:282
-msgid "LDAP User Object Filter"
-msgstr ""
-
-#: cps/templates/config_edit.html:287
-msgid "LDAP Server is OpenLDAP?"
-msgstr ""
-
-#: cps/templates/config_edit.html:289
-msgid "Following Settings are Needed For User Import"
-msgstr ""
-
-#: cps/templates/config_edit.html:291
-msgid "LDAP Group Object Filter"
-msgstr ""
-
-#: cps/templates/config_edit.html:295
-msgid "LDAP Group Name"
-msgstr ""
-
-#: cps/templates/config_edit.html:299
-msgid "LDAP Group Members Field"
-msgstr ""
-
-#: cps/templates/config_edit.html:303
-msgid "LDAP Member User Filter Detection"
-msgstr ""
-
-#: cps/templates/config_edit.html:305
-msgid "Autodetect"
-msgstr ""
-
-#: cps/templates/config_edit.html:306
-msgid "Custom Filter"
-msgstr ""
-
-#: cps/templates/config_edit.html:311
-msgid "LDAP Member User Filter"
-msgstr ""
-
-#: cps/templates/config_edit.html:322
-#, python-format
-msgid "Obtain %(provider)s OAuth Credential"
-msgstr ""
-
-#: cps/templates/config_edit.html:325
-#, python-format
-msgid "%(provider)s OAuth Client Id"
-msgstr ""
-
-#: cps/templates/config_edit.html:329
-#, python-format
-msgid "%(provider)s OAuth Client Secret"
-msgstr ""
-
-#: cps/templates/config_edit.html:345
-msgid "External binaries"
-msgstr ""
-
-#: cps/templates/config_edit.html:351
-msgid "Path to Calibre Binaries"
-msgstr ""
-
-#: cps/templates/config_edit.html:359
-msgid "Calibre E-Book Converter Settings"
-msgstr ""
-
-#: cps/templates/config_edit.html:362
-msgid "Path to Kepubify E-Book Converter"
-msgstr ""
-
-#: cps/templates/config_edit.html:370
-msgid "Location of Unrar binary"
-msgstr ""
-
-#: cps/templates/config_edit.html:386
-msgid "Security Settings"
-msgstr ""
-
-#: cps/templates/config_edit.html:394
-msgid "Limit failed login attempts"
-msgstr ""
-
-#: cps/templates/config_edit.html:398
-msgid "Configure Backend for Limiter"
-msgstr ""
-
-#: cps/templates/config_edit.html:402
-msgid "Options for Limiter Backend"
-msgstr ""
-
-#: cps/templates/config_edit.html:408
-msgid "Check if file extensions matches file content on upload"
-msgstr ""
-
-#: cps/templates/config_edit.html:411
-msgid "Session protection"
-msgstr ""
-
-#: cps/templates/config_edit.html:413
-msgid "Basic"
-msgstr ""
-
-#: cps/templates/config_edit.html:414
-msgid "Strong"
-msgstr ""
-
-#: cps/templates/config_edit.html:419
-msgid "User Password policy"
-msgstr ""
-
-#: cps/templates/config_edit.html:423
-msgid "Minimum password length"
-msgstr ""
-
-#: cps/templates/config_edit.html:428
-msgid "Enforce number"
-msgstr ""
-
-#: cps/templates/config_edit.html:432
-msgid "Enforce lowercase characters"
-msgstr ""
-
-#: cps/templates/config_edit.html:436
-msgid "Enforce uppercase characters"
-msgstr ""
-
-#: cps/templates/config_edit.html:440
-msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
-msgstr ""
-
-#: cps/templates/config_edit.html:444
-msgid "Enforce special characters"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:17
-msgid "View Configuration"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:32
-msgid "No. of Random Books to Display"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:36
-msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:40 cps/templates/readcbr.html:101
-msgid "Theme"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:42
-msgid "Standard Theme"
-msgstr "Chủ đề mặc định"
-
-#: cps/templates/config_view_edit.html:43
-msgid "caliBlur! Dark Theme"
-msgstr "calibur! Theme tối"
-
-#: cps/templates/config_view_edit.html:47
-msgid "Regular Expression for Ignoring Columns"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:51
-msgid "Link Read/Unread Status to Calibre Column"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:60
-msgid "View Restrictions based on Calibre column"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:69
-msgid "Regular Expression for Title Sorting"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:80
-msgid "Default Settings for New Users"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:96
-msgid "Admin User"
-msgstr "Người dùng quản trị"
-
-#: cps/templates/config_view_edit.html:92 cps/templates/user_edit.html:101
-msgid "Allow Downloads"
-msgstr "Cho phép tải xuống"
-
-#: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:105
-msgid "Allow eBook Viewer"
-msgstr "Cho phép xem eBook"
-
-#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:110
-msgid "Allow Uploads"
-msgstr "Cho phép tải lên"
-
-#: cps/templates/config_view_edit.html:106 cps/templates/user_edit.html:115
-msgid "Allow Edit"
-msgstr "Cho phép chỉnh sửa"
-
-#: cps/templates/config_view_edit.html:111 cps/templates/user_edit.html:120
-msgid "Allow Delete Books"
-msgstr "Cho phép xoá sách"
-
-#: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:126
-msgid "Allow Changing Password"
-msgstr "Cho phép thay đổi mật khẩu"
-
-#: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:130
-msgid "Allow Editing Public Shelves"
-msgstr "Cho phép chỉnh sửa giá sách công khai"
-
-#: cps/templates/config_view_edit.html:123
-msgid "Default Language"
-msgstr "Ngôn ngữ mặc định"
-
-#: cps/templates/config_view_edit.html:131
-msgid "Default Visible Language of Books"
-msgstr "Ngôn ngữ hiển thị mặc định của sách"
-
-#: cps/templates/config_view_edit.html:147
-msgid "Default Visibilities for New Users"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:84
-#: cps/templates/user_table.html:154
-msgid "Show Random Books in Detail View"
-msgstr "Hiển thị sách ngẫu nhiên trong màn hình chi tiết"
-
-#: cps/templates/config_view_edit.html:166 cps/templates/user_edit.html:87
-msgid "Add Allowed/Denied Tags"
-msgstr ""
-
-#: cps/templates/config_view_edit.html:167
-msgid "Add Allowed/Denied custom column values"
-msgstr "Thêm cho phép/từ chối giá trị cột tuỳ biến"
-
-#: cps/templates/detail.html:85 cps/templates/detail.html:99
-msgid "Read in Browser"
-msgstr "Đọc trên trình duyệt"
-
-#: cps/templates/detail.html:108 cps/templates/detail.html:128
-msgid "Listen in Browser"
-msgstr "Nghe trên trình duyệt"
-
-#: cps/templates/detail.html:259 cps/templates/listenmp3.html:158
-msgid "Mark As Unread"
-msgstr "Đánh dấu chưa đọc"
-
-#: cps/templates/detail.html:260 cps/templates/listenmp3.html:158
-msgid "Mark As Read"
-msgstr "Đánh dấu đã đọc"
-
-#: cps/templates/detail.html:262
-msgid "Mark Book as Read or Unread"
-msgstr ""
-
-#: cps/templates/detail.html:262 cps/templates/listenmp3.html:159
-msgid "Read"
-msgstr "Đọc"
-
-#: cps/templates/detail.html:272 cps/templates/listenmp3.html:166
-msgid "Restore from archive"
-msgstr "Khôi phục từ lưu trữ"
-
-#: cps/templates/detail.html:273 cps/templates/listenmp3.html:166
-msgid "Add to archive"
-msgstr "Thêm vào lưu trữ"
-
-#: cps/templates/detail.html:275
-msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
-msgstr ""
-
-#: cps/templates/detail.html:301 cps/templates/listenmp3.html:190
-#: cps/templates/search.html:16
-msgid "Add to shelf"
-msgstr "Thêm vào giá sách"
-
-#: cps/templates/detail.html:313 cps/templates/detail.html:332
-#: cps/templates/feed.xml:131 cps/templates/layout.html:156
-#: cps/templates/listenmp3.html:201 cps/templates/listenmp3.html:218
-#: cps/templates/search.html:22 cps/templates/search.html:35
+#: cps/templates/feed.xml:131 cps/themes/caliblur/templates/detail.html:44
+#: cps/themes/caliblur/templates/detail.html:63
+#: cps/themes/caliblur/templates/layout.html:143
+#: cps/themes/caliblur/templates/listenmp3.html:201
+#: cps/themes/caliblur/templates/listenmp3.html:218
+#: cps/themes/caliblur/templates/search.html:25
+#: cps/themes/caliblur/templates/search.html:38
+#: cps/themes/standard/templates/detail.html:316
+#: cps/themes/standard/templates/detail.html:335
+#: cps/themes/standard/templates/layout.html:124
+#: cps/themes/standard/templates/listenmp3.html:201
+#: cps/themes/standard/templates/listenmp3.html:218
+#: cps/themes/standard/templates/search.html:22
+#: cps/themes/standard/templates/search.html:35
 msgid "(Public)"
 msgstr "(Công khai)"
-
-#: cps/templates/email_edit.html:13
-msgid "Email Account Type"
-msgstr "Chọn kiểu server"
-
-#: cps/templates/email_edit.html:15
-msgid "Standard Email Account"
-msgstr ""
-
-#: cps/templates/email_edit.html:16
-msgid "Gmail Account"
-msgstr ""
-
-#: cps/templates/email_edit.html:22
-msgid "Setup Gmail Account"
-msgstr ""
-
-#: cps/templates/email_edit.html:24
-msgid "Revoke Gmail Access"
-msgstr "Thu hồi quyền truy cập Gmail"
-
-#: cps/templates/email_edit.html:42
-msgid "STARTTLS"
-msgstr "STARTTLS"
-
-#: cps/templates/email_edit.html:43
-msgid "SSL/TLS"
-msgstr "SSL/TLS"
-
-#: cps/templates/email_edit.html:51
-msgid "SMTP Password"
-msgstr "Mật khẩu SMTP"
-
-#: cps/templates/email_edit.html:58
-msgid "Attachment Size Limit"
-msgstr "Giới hạn kích thước file đính kèm"
-
-#: cps/templates/email_edit.html:66
-msgid "Save and Send Test Email"
-msgstr ""
-
-#: cps/templates/email_edit.html:70 cps/templates/layout.html:26
-#: cps/templates/shelf_order.html:42 cps/templates/user_table.html:174
-msgid "Back"
-msgstr "Quay lại"
-
-#: cps/templates/email_edit.html:74
-msgid "Allowed Domains (Whitelist)"
-msgstr "Domains được chấp nhận (Whitelist)"
-
-#: cps/templates/email_edit.html:78 cps/templates/email_edit.html:105
-msgid "Add Domain"
-msgstr "Thêm domain"
-
-#: cps/templates/email_edit.html:81 cps/templates/email_edit.html:108
-#: cps/templates/user_table.html:27
-msgid "Add"
-msgstr "Thêm"
-
-#: cps/templates/email_edit.html:86 cps/templates/email_edit.html:96
-msgid "Enter domainname"
-msgstr "Nhập tên domain"
-
-#: cps/templates/email_edit.html:92
-msgid "Denied Domains (Blacklist)"
-msgstr "Domain bị từ chối (Blacklist)"
-
-#: cps/templates/generate_kobo_auth_url.html:6
-msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
-
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Kobo Token:"
-msgstr ""
-
-#: cps/templates/grid.html:21
-msgid "List"
-msgstr ""
-
-#: cps/templates/http_error.html:34
-msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
-msgstr ""
-
-#: cps/templates/http_error.html:44
-msgid "Create Issue"
-msgstr ""
-
-#: cps/templates/http_error.html:52
-msgid "Return to Database config"
-msgstr ""
-
-#: cps/templates/http_error.html:54
-msgid "Return to Home"
-msgstr "Quay về trang chủ"
-
-#: cps/templates/http_error.html:57
-msgid "Logout User"
-msgstr ""
-
-#: cps/templates/index.html:71
-msgid "Sort ascending according to download count"
-msgstr ""
-
-#: cps/templates/index.html:72
-msgid "Sort descending according to download count"
-msgstr ""
-
-#: cps/templates/index.html:78 cps/templates/search.html:49
-#: cps/templates/shelf.html:24
-msgid "Sort authors in alphabetical order"
-msgstr ""
-
-#: cps/templates/index.html:79 cps/templates/search.html:50
-#: cps/templates/shelf.html:25
-msgid "Sort authors in reverse alphabetical order"
-msgstr ""
-
-#: cps/templates/index.html:83
-msgid "Sort ascending according to series index"
-msgstr ""
-
-#: cps/templates/index.html:84
-msgid "Sort descending according to series index"
-msgstr ""
 
 #: cps/templates/index.xml:7
 msgid "Start"
@@ -3138,8 +1809,9 @@ msgstr "Sách sắp xếp theo xếp hạng"
 msgid "Books ordered by file formats"
 msgstr "Sách sắp xếp theo định dạng"
 
-#: cps/templates/index.xml:142 cps/templates/layout.html:154
-#: cps/templates/search_form.html:88
+#: cps/templates/index.xml:142 cps/themes/caliblur/templates/layout.html:141
+#: cps/themes/standard/templates/layout.html:122
+#: cps/themes/standard/templates/search_form.html:88
 msgid "Shelves"
 msgstr "Giá sách"
 
@@ -3147,747 +1819,2585 @@ msgstr "Giá sách"
 msgid "Books organized in shelves"
 msgstr "Sách tổ chức theo giá sách"
 
-#: cps/templates/layout.html:32
-msgid "Toggle Navigation"
-msgstr ""
-
-#: cps/templates/layout.html:58
-msgid "Simple Theme"
-msgstr ""
-
-#: cps/templates/layout.html:66 cps/templates/layout.html:96
-msgid "Account"
-msgstr "Tài khoản"
-
-#: cps/templates/layout.html:93 cps/templates/read.html:83
-#: cps/templates/readcbr.html:70 cps/templates/readcbr.html:96
-msgid "Settings"
-msgstr "Thiết lập"
-
-#: cps/templates/layout.html:137
-msgid "Please do not refresh the page"
-msgstr "Làm ơn đừng load lại trang"
-
-#: cps/templates/layout.html:147
-msgid "Browse"
-msgstr "Tìm kiếm"
-
-#: cps/templates/layout.html:160 cps/templates/stats.html:3
-msgid "About"
-msgstr "About"
-
-#: cps/templates/layout.html:199
-msgid "Book Details"
-msgstr "Chi tiết sách"
-
-#: cps/templates/list.html:22
-msgid "Grid"
-msgstr ""
-
-#: cps/templates/listenmp3.html:167
-msgid "Archived"
-msgstr "Lưu trữ"
-
-#: cps/templates/login.html:18
-msgid "Remember Me"
-msgstr "Ghi nhớ tôi"
-
-#: cps/templates/login.html:23
-msgid "Forgot Password?"
-msgstr "Quên mật khẩu?"
-
-#: cps/templates/login.html:34
-msgid "Log in with Magic Link"
-msgstr "Đăng nhập với Magic Link"
-
-#: cps/templates/logviewer.html:6
-msgid "Show Calibre-Web Log: "
-msgstr "Hiển thị Calibre-Web Log: "
-
-#: cps/templates/logviewer.html:8
-msgid "Calibre-Web Log: "
-msgstr "Calibre-Web Log: "
-
-#: cps/templates/logviewer.html:8
-msgid "Stream output, can't be displayed"
-msgstr ""
-
-#: cps/templates/logviewer.html:12
-msgid "Show Access Log: "
-msgstr "Hiển thị log truy cập: "
-
-#: cps/templates/logviewer.html:18
-msgid "Download Calibre-Web Log"
-msgstr "Tải xuống Calibre-Web Log"
-
-#: cps/templates/logviewer.html:21
-msgid "Download Access Log"
-msgstr "Tải xuống log truy cập"
-
-#: cps/templates/modal_dialogs.html:6
-msgid "Select Allowed/Denied Tags"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:7
-msgid "Select Allowed/Denied Custom Column Values"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:8
-msgid "Select Allowed/Denied Tags of User"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:9
-msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:15
-msgid "Enter Tag"
-msgstr "Nhập Tag"
-
-#: cps/templates/modal_dialogs.html:24
-msgid "Add View Restriction"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:50
-msgid "This book format will be permanently erased from database"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:51
-msgid "This book will be permanently erased from database and hard disk"
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:55
-msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:56
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr ""
-
-#: cps/templates/modal_dialogs.html:75
-msgid "Choose File Location"
-msgstr "Chọn file location"
-
-#: cps/templates/modal_dialogs.html:82
-msgid "type"
-msgstr "kiểu"
-
-#: cps/templates/modal_dialogs.html:83
-msgid "name"
-msgstr "tên"
-
-#: cps/templates/modal_dialogs.html:84
-msgid "size"
-msgstr "kích thước"
-
-#: cps/templates/modal_dialogs.html:90
-msgid "Parent Directory"
-msgstr "Thư mục cha"
-
-#: cps/templates/modal_dialogs.html:99
-msgid "Select"
-msgstr "Chọn"
-
-#: cps/templates/modal_dialogs.html:135 cps/templates/tasks.html:46
-msgid "Ok"
-msgstr "Ok"
-
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
 msgstr ""
 
-#: cps/templates/read.html:7
-msgid "epub Reader"
-msgstr "trình đọc epub"
+#: cps/themes/caliblur/templates/book_edit.html:11
+#: cps/themes/caliblur/templates/modal_dialogs.html:46
+#: cps/themes/standard/templates/book_edit.html:11
+#: cps/themes/standard/templates/modal_dialogs.html:46
+msgid "Delete Book"
+msgstr "Xoá sách"
 
-#: cps/templates/read.html:85
-msgid "Choose a theme below:"
+#: cps/themes/caliblur/templates/book_edit.html:15
+msgid "Delete Format"
 msgstr ""
 
-#: cps/templates/read.html:89 cps/templates/readcbr.html:104
-msgid "Light"
-msgstr "Sáng"
+#: cps/themes/caliblur/templates/book_edit.html:18
+#: cps/themes/caliblur/templates/modal_dialogs.html:63
+#: cps/themes/caliblur/templates/modal_dialogs.html:118
+#: cps/themes/caliblur/templates/user_edit.html:68
+#: cps/themes/standard/templates/admin.html:25
+#: cps/themes/standard/templates/book_edit.html:17
+#: cps/themes/standard/templates/book_table.html:132
+#: cps/themes/standard/templates/book_table.html:182
+#: cps/themes/standard/templates/modal_dialogs.html:62
+#: cps/themes/standard/templates/modal_dialogs.html:117
+#: cps/themes/standard/templates/user_edit.html:67
+#: cps/themes/standard/templates/user_table.html:150
+msgid "Delete"
+msgstr "Xoá"
 
-#: cps/templates/read.html:91 cps/templates/readcbr.html:105
-msgid "Dark"
-msgstr "Tối"
+#: cps/themes/caliblur/templates/book_edit.html:26
+#: cps/themes/standard/templates/book_edit.html:25
+msgid "Convert book format:"
+msgstr "Chuyển đổi định dạng sách:"
 
-#: cps/templates/read.html:93
-msgid "Sepia"
+#: cps/themes/caliblur/templates/book_edit.html:31
+#: cps/themes/standard/templates/book_edit.html:30
+msgid "Convert from:"
+msgstr "Chuyển đổi từ:"
+
+#: cps/themes/caliblur/templates/book_edit.html:33
+#: cps/themes/caliblur/templates/book_edit.html:40
+#: cps/themes/standard/templates/book_edit.html:32
+#: cps/themes/standard/templates/book_edit.html:39
+msgid "select an option"
+msgstr "chọn một lựa chọn"
+
+#: cps/themes/caliblur/templates/book_edit.html:38
+#: cps/themes/standard/templates/book_edit.html:37
+msgid "Convert to:"
+msgstr "Chuyển đổi tới:"
+
+#: cps/themes/caliblur/templates/book_edit.html:47
+#: cps/themes/standard/templates/book_edit.html:46
+msgid "Convert book"
+msgstr "Chuyển đổi sách"
+
+#: cps/themes/caliblur/templates/book_edit.html:54
+#: cps/themes/caliblur/templates/layout.html:76
+#: cps/themes/caliblur/templates/layout.html:124
+#: cps/themes/standard/templates/book_edit.html:53
+#: cps/themes/standard/templates/layout.html:57
+msgid "Uploading..."
+msgstr "Đang tải lên..."
+
+#: cps/themes/caliblur/templates/book_edit.html:54
+#: cps/themes/caliblur/templates/book_edit.html:259
+#: cps/themes/caliblur/templates/layout.html:76
+#: cps/themes/caliblur/templates/layout.html:189
+#: cps/themes/caliblur/templates/modal_dialogs.html:34
+#: cps/themes/caliblur/templates/user_edit.html:171
+#: cps/themes/standard/templates/book_edit.html:53
+#: cps/themes/standard/templates/book_edit.html:257
+#: cps/themes/standard/templates/layout.html:57
+#: cps/themes/standard/templates/layout.html:171
+#: cps/themes/standard/templates/modal_dialogs.html:34
+#: cps/themes/standard/templates/user_edit.html:163
+msgid "Close"
+msgstr "Đóng"
+
+#: cps/themes/caliblur/templates/book_edit.html:54
+#: cps/themes/caliblur/templates/layout.html:76
+#: cps/themes/standard/templates/book_edit.html:53
+#: cps/themes/standard/templates/layout.html:57
+msgid "Error"
+msgstr "Lỗi"
+
+#: cps/themes/caliblur/templates/book_edit.html:54
+#: cps/themes/caliblur/templates/layout.html:76
+#: cps/themes/standard/templates/book_edit.html:53
+#: cps/themes/standard/templates/layout.html:57
+msgid "Upload done, processing, please wait..."
+msgstr "Tải lên xong, đang xử lý, đợi chút ..."
+
+#: cps/themes/caliblur/templates/book_edit.html:59
+#: cps/themes/standard/templates/book_edit.html:58
+msgid "Upload Format"
+msgstr "Định dạng tải lên"
+
+#: cps/themes/caliblur/templates/book_edit.html:71
+#: cps/themes/caliblur/templates/detail.html:91
+#: cps/themes/caliblur/templates/detail.html:92
+#: cps/themes/caliblur/templates/detail.html:93
+#: cps/themes/standard/templates/book_table.html:274
+#: cps/themes/standard/templates/detail.html:351
+msgid "Edit Metadata"
+msgstr "Chỉnh sửa Metadata"
+
+#: cps/themes/caliblur/templates/book_edit.html:73
+#: cps/themes/standard/templates/book_edit.html:71
+#: cps/themes/standard/templates/search_form.html:8
+msgid "Book Title"
+msgstr "Tên sách"
+
+#: cps/themes/caliblur/templates/book_edit.html:80
+#: cps/themes/caliblur/templates/book_edit.html:279
+#: cps/themes/caliblur/templates/book_edit.html:297
+#: cps/themes/caliblur/templates/detail.html:200
+#: cps/themes/standard/templates/book_edit.html:78
+#: cps/themes/standard/templates/book_edit.html:277
+#: cps/themes/standard/templates/book_edit.html:295
+#: cps/themes/standard/templates/search_form.html:12
+msgid "Author"
+msgstr "Tác giả"
+
+#: cps/themes/caliblur/templates/book_edit.html:84
+#: cps/themes/standard/templates/book_edit.html:82
+#: cps/themes/standard/templates/search_form.html:52
+msgid "Tags"
+msgstr "Đánh dấu"
+
+#: cps/themes/caliblur/templates/book_edit.html:92
+#: cps/themes/standard/templates/book_edit.html:90
+msgid "Series ID"
+msgstr "Series ID"
+
+#: cps/themes/caliblur/templates/book_edit.html:95
+#: cps/themes/standard/templates/book_edit.html:93
+msgid "Published Date"
+msgstr "Ngày xuất bản"
+
+#: cps/themes/caliblur/templates/book_edit.html:104
+#: cps/themes/caliblur/templates/book_edit.html:281
+#: cps/themes/caliblur/templates/book_edit.html:298
+#: cps/themes/caliblur/templates/detail.html:270
+#: cps/themes/caliblur/templates/listenmp3.html:102
+#: cps/themes/standard/templates/basic_detail.html:61
+#: cps/themes/standard/templates/book_edit.html:102
+#: cps/themes/standard/templates/book_edit.html:279
+#: cps/themes/standard/templates/book_edit.html:296
+#: cps/themes/standard/templates/detail.html:205
+#: cps/themes/standard/templates/listenmp3.html:102
+#: cps/themes/standard/templates/search_form.html:16
+msgid "Publisher"
+msgstr "Nhà xuất bản"
+
+#: cps/themes/caliblur/templates/book_edit.html:108
+#: cps/themes/caliblur/templates/detail.html:230
+#: cps/themes/caliblur/templates/listenmp3.html:69
+#: cps/themes/caliblur/templates/user_edit.html:34
+#: cps/themes/standard/templates/basic_detail.html:41
+#: cps/themes/standard/templates/book_edit.html:106
+#: cps/themes/standard/templates/detail.html:165
+#: cps/themes/standard/templates/listenmp3.html:69
+#: cps/themes/standard/templates/user_edit.html:33
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#: cps/themes/caliblur/templates/book_edit.html:112
+#: cps/themes/standard/templates/book_edit.html:110
+msgid "Rating"
+msgstr "Đánh giá"
+
+#: cps/themes/caliblur/templates/book_edit.html:116
+#: cps/themes/caliblur/templates/book_edit.html:284
+#: cps/themes/caliblur/templates/book_edit.html:299
+#: cps/themes/standard/templates/book_edit.html:114
+#: cps/themes/standard/templates/book_edit.html:282
+#: cps/themes/standard/templates/book_edit.html:297
+#: cps/themes/standard/templates/search_form.html:154
+msgid "Description"
+msgstr "Mô tả"
+
+#: cps/themes/caliblur/templates/book_edit.html:120
+#: cps/themes/standard/templates/book_edit.html:118
+msgid "Identifiers"
+msgstr "Nhận diện"
+
+#: cps/themes/caliblur/templates/book_edit.html:124
+#: cps/themes/caliblur/templates/book_edit.html:308
+#: cps/themes/standard/templates/book_edit.html:122
+#: cps/themes/standard/templates/book_edit.html:306
+msgid "Identifier Type"
+msgstr "Kiểu nhận diện"
+
+#: cps/themes/caliblur/templates/book_edit.html:125
+#: cps/themes/caliblur/templates/book_edit.html:309
+#: cps/themes/standard/templates/book_edit.html:123
+#: cps/themes/standard/templates/book_edit.html:307
+msgid "Identifier Value"
+msgstr "Giá trị nhận diện"
+
+#: cps/themes/caliblur/templates/book_edit.html:126
+#: cps/themes/caliblur/templates/book_edit.html:310
+#: cps/themes/standard/templates/book_edit.html:124
+#: cps/themes/standard/templates/book_edit.html:308
+#: cps/themes/standard/templates/user_table.html:24
+msgid "Remove"
+msgstr "Xoá"
+
+#: cps/themes/caliblur/templates/book_edit.html:131
+#: cps/themes/standard/templates/book_edit.html:129
+msgid "Add Identifier"
+msgstr "Thêm nhận diện"
+
+#: cps/themes/caliblur/templates/book_edit.html:135
+#: cps/themes/standard/templates/book_edit.html:133
+msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgstr "Lấy ảnh bìa từ URL (ảnh JPEG sẽ được tải xuống và lưu trong cơ sở dữ liệu)"
+
+#: cps/themes/caliblur/templates/book_edit.html:139
+#: cps/themes/standard/templates/book_edit.html:137
+msgid "Upload Cover from Local Disk"
+msgstr "Tải ảnh bìa từ ổ cứng"
+
+#: cps/themes/caliblur/templates/book_edit.html:151
+#: cps/themes/standard/templates/book_edit.html:149
+#: cps/themes/standard/templates/search_form.html:46
+#: cps/themes/standard/templates/search_form.html:167
+msgid "Yes"
+msgstr "Có"
+
+#: cps/themes/caliblur/templates/book_edit.html:152
+#: cps/themes/standard/templates/book_edit.html:150
+#: cps/themes/standard/templates/search_form.html:47
+#: cps/themes/standard/templates/search_form.html:168
+msgid "No"
+msgstr "Không"
+
+#: cps/themes/caliblur/templates/book_edit.html:217
+#: cps/themes/standard/templates/book_edit.html:215
+msgid "View Book on Save"
+msgstr "Xem sách sau khi lưu"
+
+#: cps/themes/caliblur/templates/book_edit.html:220
+#: cps/themes/caliblur/templates/book_edit.html:238
+#: cps/themes/standard/templates/book_edit.html:218
+#: cps/themes/standard/templates/book_edit.html:236
+msgid "Fetch Metadata"
+msgstr "Fetch Metadata"
+
+#: cps/themes/caliblur/templates/book_edit.html:221
+#: cps/themes/caliblur/templates/config_db.html:69
+#: cps/themes/caliblur/templates/email_edit.html:73
+#: cps/themes/caliblur/templates/shelf_order.html:45
+#: cps/themes/caliblur/templates/user_edit.html:156
+#: cps/themes/standard/templates/book_edit.html:219
+#: cps/themes/standard/templates/config_db.html:65
+#: cps/themes/standard/templates/config_edit.html:452
+#: cps/themes/standard/templates/config_view_edit.html:175
+#: cps/themes/standard/templates/email_edit.html:66
+#: cps/themes/standard/templates/schedule_edit.html:44
+#: cps/themes/standard/templates/shelf_edit.html:25
+#: cps/themes/standard/templates/shelf_order.html:41
+#: cps/themes/standard/templates/user_edit.html:142
+msgid "Save"
+msgstr "Lưu"
+
+#: cps/themes/caliblur/templates/book_edit.html:222
+#: cps/themes/caliblur/templates/config_db.html:68
+#: cps/themes/caliblur/templates/detail.html:346
+#: cps/themes/caliblur/templates/email_edit.html:72
+#: cps/themes/caliblur/templates/modal_dialogs.html:62
+#: cps/themes/caliblur/templates/modal_dialogs.html:99
+#: cps/themes/caliblur/templates/modal_dialogs.html:117
+#: cps/themes/caliblur/templates/modal_dialogs.html:135
+#: cps/themes/caliblur/templates/remote_login_verify.html:16
+#: cps/themes/caliblur/templates/user_edit.html:154
+#: cps/themes/standard/templates/admin.html:277
+#: cps/themes/standard/templates/admin.html:292
+#: cps/themes/standard/templates/book_edit.html:220
+#: cps/themes/standard/templates/book_table.html:164
+#: cps/themes/standard/templates/book_table.html:183
+#: cps/themes/standard/templates/book_table.html:203
+#: cps/themes/standard/templates/book_table.html:223
+#: cps/themes/standard/templates/book_table.html:243
+#: cps/themes/standard/templates/book_table.html:263
+#: cps/themes/standard/templates/book_table.html:318
+#: cps/themes/standard/templates/config_db.html:66
+#: cps/themes/standard/templates/config_edit.html:453
+#: cps/themes/standard/templates/config_view_edit.html:176
+#: cps/themes/standard/templates/detail.html:353
+#: cps/themes/standard/templates/modal_dialogs.html:63
+#: cps/themes/standard/templates/modal_dialogs.html:99
+#: cps/themes/standard/templates/modal_dialogs.html:118
+#: cps/themes/standard/templates/modal_dialogs.html:136
+#: cps/themes/standard/templates/remote_login_verify.html:16
+#: cps/themes/standard/templates/schedule_edit.html:45
+#: cps/themes/standard/templates/shelf_edit.html:27
+#: cps/themes/standard/templates/tasks.html:47
+#: cps/themes/standard/templates/user_edit.html:144
+msgid "Cancel"
+msgstr "Huỷ bỏ"
+
+#: cps/themes/caliblur/templates/book_edit.html:241
+#: cps/themes/standard/templates/book_edit.html:239
+msgid "Keyword"
+msgstr "Từ khoá"
+
+#: cps/themes/caliblur/templates/book_edit.html:242
+#: cps/themes/standard/templates/book_edit.html:240
+msgid "Search keyword"
+msgstr "Tìm kiếm từ khoá"
+
+#: cps/themes/caliblur/templates/book_edit.html:248
+#: cps/themes/standard/templates/book_edit.html:246
+msgid "Click the cover to load metadata to the form"
+msgstr "Ấn vào ảnh cover để tải metadata vào form"
+
+#: cps/themes/caliblur/templates/book_edit.html:255
+#: cps/themes/caliblur/templates/book_edit.html:294
+#: cps/themes/standard/templates/book_edit.html:253
+#: cps/themes/standard/templates/book_edit.html:292
+msgid "Loading..."
+msgstr "Đang tải..."
+
+#: cps/themes/caliblur/templates/book_edit.html:286
+#: cps/themes/caliblur/templates/book_edit.html:300
+#: cps/themes/standard/templates/book_edit.html:284
+#: cps/themes/standard/templates/book_edit.html:298
+msgid "Source"
+msgstr "Nguồn"
+
+#: cps/themes/caliblur/templates/book_edit.html:295
+#: cps/themes/standard/templates/book_edit.html:293
+msgid "Search error!"
+msgstr "Tìm kiếm lỗi!"
+
+#: cps/themes/caliblur/templates/book_edit.html:296
+#: cps/themes/standard/templates/book_edit.html:294
+msgid "No Result(s) found! Please try another keyword."
+msgstr "Không tìm thấy kết quả! Hãy thử lại với từ khoá khác."
+
+#: cps/themes/caliblur/templates/config_db.html:13
+#: cps/themes/standard/templates/config_db.html:12
+msgid "Location of Calibre Database"
+msgstr "Vị trí cơ sở dữ liệu của Calibre"
+
+#: cps/themes/caliblur/templates/config_db.html:22
+#: cps/themes/standard/templates/config_db.html:21
+msgid "Separate Book Files from Library"
 msgstr ""
 
-#: cps/templates/read.html:95
-msgid "Amber"
+#: cps/themes/caliblur/templates/config_db.html:35
+#: cps/themes/standard/templates/config_db.html:34
+msgid "Use Google Drive?"
+msgstr "Dùng Google Drive?"
+
+#: cps/themes/caliblur/templates/config_db.html:40
+#: cps/themes/standard/templates/config_db.html:39
+msgid "Authenticate Google Drive"
+msgstr "Xác thực Google Drive"
+
+#: cps/themes/caliblur/templates/config_db.html:45
+#: cps/themes/standard/templates/config_db.html:44
+msgid "Google Drive Calibre folder"
+msgstr "Thư mục Calibre trên Google Drive"
+
+#: cps/themes/caliblur/templates/config_db.html:53
+#: cps/themes/standard/templates/config_db.html:52
+msgid "Metadata Watch Channel ID"
 msgstr ""
 
-#: cps/templates/read.html:97
-msgid "Black"
+#: cps/themes/caliblur/templates/config_db.html:56
+#: cps/themes/standard/templates/config_db.html:55
+msgid "Revoke"
+msgstr "Thu hồi"
+
+#: cps/themes/caliblur/templates/config_db.html:84
+#: cps/themes/standard/templates/config_db.html:80
+msgid "New db location is invalid, please enter valid path"
+msgstr "Đường dẫn DB mới không hợp lệ, xin hãy nhập đường dẫn hợp lệ"
+
+#: cps/themes/caliblur/templates/config_db.html:86
+#: cps/themes/standard/templates/admin.html:276
+#: cps/themes/standard/templates/admin.html:291
+#: cps/themes/standard/templates/admin.html:311
+#: cps/themes/standard/templates/config_db.html:82
+msgid "OK"
+msgstr "Ok"
+
+#: cps/themes/caliblur/templates/detail.html:29
+#: cps/themes/caliblur/templates/detail.html:32
+#: cps/themes/caliblur/templates/listenmp3.html:190
+#: cps/themes/caliblur/templates/search.html:18
+#: cps/themes/caliblur/templates/search.html:19
+#: cps/themes/standard/templates/detail.html:304
+#: cps/themes/standard/templates/listenmp3.html:190
+#: cps/themes/standard/templates/search.html:16
+msgid "Add to shelf"
+msgstr "Thêm vào giá sách"
+
+#: cps/themes/caliblur/templates/detail.html:79
+#: cps/themes/caliblur/templates/listenmp3.html:158
+msgid "Mark As Unread"
+msgstr "Đánh dấu chưa đọc"
+
+#: cps/themes/caliblur/templates/detail.html:79
+#: cps/themes/caliblur/templates/listenmp3.html:158
+msgid "Mark As Read"
+msgstr "Đánh dấu đã đọc"
+
+#: cps/themes/caliblur/templates/detail.html:82
+#: cps/themes/standard/templates/detail.html:266
+msgid "Mark Book as Read or Unread"
 msgstr ""
 
-#: cps/templates/read.html:109
-msgid "Reflow text when sidebars are open."
+#: cps/themes/caliblur/templates/detail.html:82
+#: cps/themes/caliblur/templates/listenmp3.html:159
+#: cps/themes/standard/templates/detail.html:266
+#: cps/themes/standard/templates/listenmp3.html:159
+msgid "Read"
+msgstr "Đọc"
+
+#: cps/themes/caliblur/templates/detail.html:146
+#: cps/themes/caliblur/templates/detail.html:147
+#: cps/themes/caliblur/templates/detail.html:162
+#: cps/themes/caliblur/templates/detail.html:163
+#: cps/themes/standard/templates/detail.html:85
+#: cps/themes/standard/templates/detail.html:99
+msgid "Read in Browser"
+msgstr "Đọc trên trình duyệt"
+
+#: cps/themes/caliblur/templates/detail.html:171
+#: cps/themes/caliblur/templates/detail.html:172
+#: cps/themes/caliblur/templates/detail.html:192
+#: cps/themes/standard/templates/detail.html:108
+#: cps/themes/standard/templates/detail.html:128
+msgid "Listen in Browser"
+msgstr "Nghe trên trình duyệt"
+
+#: cps/themes/caliblur/templates/detail.html:223
+#: cps/themes/caliblur/templates/listenmp3.html:62
+#: cps/themes/standard/templates/basic_detail.html:34
+#: cps/themes/standard/templates/detail.html:158
+#: cps/themes/standard/templates/listenmp3.html:62
+#, python-format
+msgid "Book %(index)s of %(range)s"
+msgstr "Sách %(index)s của %(range)s"
+
+#: cps/themes/caliblur/templates/detail.html:279
+#: cps/themes/caliblur/templates/listenmp3.html:111
+#: cps/themes/standard/templates/basic_detail.html:70
+#: cps/themes/standard/templates/detail.html:214
+#: cps/themes/standard/templates/listenmp3.html:111
+msgid "Published"
+msgstr "Đã phát hành"
+
+#: cps/themes/caliblur/templates/detail.html:336
+#: cps/themes/caliblur/templates/listenmp3.html:177
+#: cps/themes/standard/templates/basic_detail.html:76
+#: cps/themes/standard/templates/detail.html:289
+#: cps/themes/standard/templates/listenmp3.html:177
+msgid "Description:"
+msgstr "Mô tả:"
+
+#: cps/themes/caliblur/templates/email_edit.html:14
+#: cps/themes/standard/templates/email_edit.html:13
+msgid "Email Account Type"
+msgstr "Chọn kiểu server"
+
+#: cps/themes/caliblur/templates/email_edit.html:16
+#: cps/themes/standard/templates/email_edit.html:15
+msgid "Standard Email Account"
 msgstr ""
 
-#: cps/templates/read.html:114
-msgid "Show pages count"
+#: cps/themes/caliblur/templates/email_edit.html:17
+#: cps/themes/standard/templates/email_edit.html:16
+msgid "Gmail Account"
 msgstr ""
 
-#: cps/templates/read.html:118
-msgid "Font Size"
+#: cps/themes/caliblur/templates/email_edit.html:24
+#: cps/themes/standard/templates/email_edit.html:22
+msgid "Setup Gmail Account"
 msgstr ""
 
-#: cps/templates/read.html:126
-msgid "Font"
+#: cps/themes/caliblur/templates/email_edit.html:26
+#: cps/themes/standard/templates/email_edit.html:24
+msgid "Revoke Gmail Access"
+msgstr "Thu hồi quyền truy cập Gmail"
+
+#: cps/themes/caliblur/templates/email_edit.html:33
+#: cps/themes/standard/templates/admin.html:67
+#: cps/themes/standard/templates/email_edit.html:31
+msgid "SMTP Hostname"
+msgstr "SMTP Hostname"
+
+#: cps/themes/caliblur/templates/email_edit.html:37
+#: cps/themes/standard/templates/admin.html:71
+#: cps/themes/standard/templates/email_edit.html:35
+msgid "SMTP Port"
+msgstr "Cổng SMTP"
+
+#: cps/themes/caliblur/templates/email_edit.html:41
+#: cps/themes/standard/templates/admin.html:75
+#: cps/themes/standard/templates/email_edit.html:39
+msgid "Encryption"
+msgstr "SSL"
+
+#: cps/themes/caliblur/templates/email_edit.html:44
+#: cps/themes/standard/templates/email_edit.html:42
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/themes/caliblur/templates/email_edit.html:45
+#: cps/themes/standard/templates/email_edit.html:43
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/themes/caliblur/templates/email_edit.html:49
+#: cps/themes/standard/templates/admin.html:79
+#: cps/themes/standard/templates/email_edit.html:47
+msgid "SMTP Login"
+msgstr "Đăng nhập SMTP"
+
+#: cps/themes/caliblur/templates/email_edit.html:53
+#: cps/themes/standard/templates/email_edit.html:51
+msgid "SMTP Password"
+msgstr "Mật khẩu SMTP"
+
+#: cps/themes/caliblur/templates/email_edit.html:57
+#: cps/themes/standard/templates/admin.html:83
+#: cps/themes/standard/templates/admin.html:94
+#: cps/themes/standard/templates/email_edit.html:55
+msgid "From Email"
+msgstr "Từ E-mail"
+
+#: cps/themes/caliblur/templates/email_edit.html:60
+#: cps/themes/standard/templates/email_edit.html:58
+msgid "Attachment Size Limit"
+msgstr "Giới hạn kích thước file đính kèm"
+
+#: cps/themes/caliblur/templates/email_edit.html:74
+#: cps/themes/standard/templates/email_edit.html:67
+msgid "Save and Send Test Email"
 msgstr ""
 
-#: cps/templates/read.html:127
-msgid "Default"
+#: cps/themes/caliblur/templates/email_edit.html:80
+#: cps/themes/standard/templates/email_edit.html:74
+msgid "Allowed Domains (Whitelist)"
+msgstr "Domains được chấp nhận (Whitelist)"
+
+#: cps/themes/caliblur/templates/email_edit.html:84
+#: cps/themes/caliblur/templates/email_edit.html:111
+#: cps/themes/standard/templates/email_edit.html:78
+#: cps/themes/standard/templates/email_edit.html:105
+msgid "Add Domain"
+msgstr "Thêm domain"
+
+#: cps/themes/caliblur/templates/email_edit.html:87
+#: cps/themes/caliblur/templates/email_edit.html:114
+#: cps/themes/standard/templates/email_edit.html:81
+#: cps/themes/standard/templates/email_edit.html:108
+#: cps/themes/standard/templates/user_table.html:27
+msgid "Add"
+msgstr "Thêm"
+
+#: cps/themes/caliblur/templates/email_edit.html:92
+#: cps/themes/caliblur/templates/email_edit.html:102
+#: cps/themes/standard/templates/email_edit.html:86
+#: cps/themes/standard/templates/email_edit.html:96
+msgid "Enter domainname"
+msgstr "Nhập tên domain"
+
+#: cps/themes/caliblur/templates/email_edit.html:98
+#: cps/themes/standard/templates/email_edit.html:92
+msgid "Denied Domains (Blacklist)"
+msgstr "Domain bị từ chối (Blacklist)"
+
+#: cps/themes/caliblur/templates/http_error.html:33
+#: cps/themes/standard/templates/http_error.html:31
+msgid "Calibre-Web Instance is unconfigured, please contact your administrator"
 msgstr ""
 
-#: cps/templates/read.html:128
-msgid "Yahei"
+#: cps/themes/caliblur/templates/http_error.html:43
+#: cps/themes/standard/templates/http_error.html:41
+msgid "Create Issue"
 msgstr ""
 
-#: cps/templates/read.html:129
-msgid "SimSun"
+#: cps/themes/caliblur/templates/http_error.html:51
+#: cps/themes/standard/templates/http_error.html:49
+msgid "Return to Database config"
 msgstr ""
 
-#: cps/templates/read.html:130
-msgid "KaiTi"
+#: cps/themes/caliblur/templates/http_error.html:53
+#: cps/themes/standard/templates/http_error.html:51
+msgid "Return to Home"
+msgstr "Quay về trang chủ"
+
+#: cps/themes/caliblur/templates/http_error.html:56
+#: cps/themes/standard/templates/http_error.html:54
+msgid "Logout User"
 msgstr ""
 
-#: cps/templates/read.html:131
-msgid "Arial"
+#: cps/themes/caliblur/templates/index.html:30
+#: cps/themes/caliblur/templates/index.html:113
+#: cps/themes/caliblur/templates/search.html:84
+#: cps/themes/caliblur/templates/shelf.html:69
+#: cps/themes/standard/templates/author.html:56
+#: cps/themes/standard/templates/author.html:113
+#: cps/themes/standard/templates/index.html:30
+#: cps/themes/standard/templates/index.html:113
+#: cps/themes/standard/templates/search.html:81
+#: cps/themes/standard/templates/shelf.html:58
+msgid "reduce"
 msgstr ""
 
-#: cps/templates/read.html:134
-msgid "Spread"
+#: cps/themes/caliblur/templates/index.html:71
+#: cps/themes/standard/templates/index.html:71
+msgid "Sort ascending according to download count"
 msgstr ""
 
-#: cps/templates/read.html:135
-msgid "Two columns"
+#: cps/themes/caliblur/templates/index.html:72
+#: cps/themes/standard/templates/index.html:72
+msgid "Sort descending according to download count"
 msgstr ""
 
-#: cps/templates/read.html:136
-msgid "One column"
+#: cps/themes/caliblur/templates/index.html:74
+#: cps/themes/caliblur/templates/search.html:48
+#: cps/themes/caliblur/templates/shelf.html:30
+#: cps/themes/standard/templates/author.html:26
+#: cps/themes/standard/templates/index.html:74
+#: cps/themes/standard/templates/search.html:45
+#: cps/themes/standard/templates/shelf.html:20
+msgid "Sort according to book date, newest first"
 msgstr ""
 
-#: cps/templates/readcbr.html:8
-msgid "Comic Reader"
-msgstr "Trình đọc truyện tranh"
-
-#: cps/templates/readcbr.html:75
-msgid "Keyboard Shortcuts"
-msgstr "Phím tắt"
-
-#: cps/templates/readcbr.html:78
-msgid "Previous Page"
-msgstr "Trang trước"
-
-#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:159
-msgid "Next Page"
-msgstr "Trang tiếp theo"
-
-#: cps/templates/readcbr.html:80
-msgid "Single Page Display"
+#: cps/themes/caliblur/templates/index.html:75
+#: cps/themes/caliblur/templates/search.html:49
+#: cps/themes/caliblur/templates/shelf.html:31
+#: cps/themes/standard/templates/author.html:27
+#: cps/themes/standard/templates/index.html:75
+#: cps/themes/standard/templates/search.html:46
+#: cps/themes/standard/templates/shelf.html:21
+msgid "Sort according to book date, oldest first"
 msgstr ""
 
-#: cps/templates/readcbr.html:81
-msgid "Long Strip Display"
+#: cps/themes/caliblur/templates/index.html:76
+#: cps/themes/caliblur/templates/search.html:50
+#: cps/themes/caliblur/templates/shelf.html:32
+#: cps/themes/standard/templates/author.html:28
+#: cps/themes/standard/templates/index.html:76
+#: cps/themes/standard/templates/search.html:47
+#: cps/themes/standard/templates/shelf.html:22
+msgid "Sort title in alphabetical order"
 msgstr ""
 
-#: cps/templates/readcbr.html:82
-msgid "Scale to Best"
+#: cps/themes/caliblur/templates/index.html:77
+#: cps/themes/caliblur/templates/search.html:51
+#: cps/themes/caliblur/templates/shelf.html:33
+#: cps/themes/standard/templates/author.html:29
+#: cps/themes/standard/templates/index.html:77
+#: cps/themes/standard/templates/search.html:48
+#: cps/themes/standard/templates/shelf.html:23
+msgid "Sort title in reverse alphabetical order"
 msgstr ""
 
-#: cps/templates/readcbr.html:83
-msgid "Scale to Width"
+#: cps/themes/caliblur/templates/index.html:78
+#: cps/themes/caliblur/templates/search.html:52
+#: cps/themes/caliblur/templates/shelf.html:34
+#: cps/themes/standard/templates/index.html:78
+#: cps/themes/standard/templates/search.html:49
+#: cps/themes/standard/templates/shelf.html:24
+msgid "Sort authors in alphabetical order"
 msgstr ""
 
-#: cps/templates/readcbr.html:84
-msgid "Scale to Height"
+#: cps/themes/caliblur/templates/index.html:79
+#: cps/themes/caliblur/templates/search.html:53
+#: cps/themes/caliblur/templates/shelf.html:35
+#: cps/themes/standard/templates/index.html:79
+#: cps/themes/standard/templates/search.html:50
+#: cps/themes/standard/templates/shelf.html:25
+msgid "Sort authors in reverse alphabetical order"
 msgstr ""
 
-#: cps/templates/readcbr.html:85
-msgid "Scale to Native"
+#: cps/themes/caliblur/templates/index.html:80
+#: cps/themes/caliblur/templates/search.html:54
+#: cps/themes/caliblur/templates/shelf.html:36
+#: cps/themes/standard/templates/author.html:30
+#: cps/themes/standard/templates/index.html:80
+#: cps/themes/standard/templates/search.html:51
+#: cps/themes/standard/templates/shelf.html:26
+msgid "Sort according to publishing date, newest first"
 msgstr ""
 
-#: cps/templates/readcbr.html:86
-msgid "Rotate Right"
-msgstr "Xoay phải"
-
-#: cps/templates/readcbr.html:87
-msgid "Rotate Left"
-msgstr "Xoay trái"
-
-#: cps/templates/readcbr.html:88
-msgid "Flip Image"
-msgstr "Lật ảnh"
-
-#: cps/templates/readcbr.html:110
-msgid "Display"
+#: cps/themes/caliblur/templates/index.html:81
+#: cps/themes/caliblur/templates/search.html:55
+#: cps/themes/caliblur/templates/shelf.html:37
+#: cps/themes/standard/templates/author.html:31
+#: cps/themes/standard/templates/index.html:81
+#: cps/themes/standard/templates/search.html:52
+#: cps/themes/standard/templates/shelf.html:27
+msgid "Sort according to publishing date, oldest first"
 msgstr ""
 
-#: cps/templates/readcbr.html:113
-msgid "Single Page"
+#: cps/themes/caliblur/templates/index.html:83
+#: cps/themes/standard/templates/index.html:83
+msgid "Sort ascending according to series index"
 msgstr ""
 
-#: cps/templates/readcbr.html:114
-msgid "Long Strip"
+#: cps/themes/caliblur/templates/index.html:84
+#: cps/themes/standard/templates/index.html:84
+msgid "Sort descending according to series index"
 msgstr ""
 
-#: cps/templates/readcbr.html:119
-msgid "Scale"
+#: cps/themes/caliblur/templates/layout.html:24
+msgid "Read more"
 msgstr ""
 
-#: cps/templates/readcbr.html:122
-msgid "Best"
-msgstr "Tốt nhất"
-
-#: cps/templates/readcbr.html:123
-msgid "Width"
-msgstr "Rộng"
-
-#: cps/templates/readcbr.html:124
-msgid "Height"
-msgstr "Cao"
-
-#: cps/templates/readcbr.html:125
-msgid "Native"
+#: cps/themes/caliblur/templates/layout.html:24
+msgid "Read less"
 msgstr ""
 
-#: cps/templates/readcbr.html:130
-msgid "Rotate"
-msgstr "Xoay"
-
-#: cps/templates/readcbr.html:141
-msgid "Flip"
-msgstr "Lật"
-
-#: cps/templates/readcbr.html:144
-msgid "Horizontal"
-msgstr "Ngang"
-
-#: cps/templates/readcbr.html:145
-msgid "Vertical"
-msgstr "Dọc"
-
-#: cps/templates/readcbr.html:150
-msgid "Direction"
-msgstr "Hướng"
-
-#: cps/templates/readcbr.html:153
-msgid "Left to Right"
-msgstr "Trái sang phải"
-
-#: cps/templates/readcbr.html:154
-msgid "Right to Left"
-msgstr "Phải sang trái"
-
-#: cps/templates/readcbr.html:162
-msgid "Reset to Top"
+#: cps/themes/caliblur/templates/layout.html:30
+#: cps/themes/standard/templates/layout.html:28
+msgid "Toggle Navigation"
 msgstr ""
 
-#: cps/templates/readcbr.html:163
-msgid "Remember Position"
+#: cps/themes/caliblur/templates/layout.html:37
+#: cps/themes/simple/templates/basic_layout.html:17
+#: cps/themes/standard/templates/basic_layout.html:17
+msgid "Home"
+msgstr "Trang chủ"
+
+#: cps/themes/caliblur/templates/layout.html:38
+#: cps/themes/caliblur/templates/shelf_order.html:44
+#: cps/themes/standard/templates/email_edit.html:65
+#: cps/themes/standard/templates/shelf_order.html:42
+#: cps/themes/standard/templates/user_table.html:175
+msgid "Back"
+msgstr "Quay lại"
+
+#: cps/themes/caliblur/templates/layout.html:44
+#: cps/themes/simple/templates/basic_layout.html:21
+#: cps/themes/standard/templates/basic_layout.html:21
+#: cps/themes/standard/templates/layout.html:39
+msgid "Search Library"
+msgstr "Tìm kiếm thư viện"
+
+#: cps/themes/caliblur/templates/layout.html:54
+#: cps/themes/standard/templates/layout.html:50
+msgid "Simple Theme"
 msgstr ""
 
-#: cps/templates/readcbr.html:168
-msgid "Scrollbar"
-msgstr "Thanh cuộn"
+#: cps/themes/caliblur/templates/layout.html:59
+msgid "Account"
+msgstr "Tài khoản"
 
-#: cps/templates/readcbr.html:171
-msgid "Show"
-msgstr "Hiện"
+#: cps/themes/caliblur/templates/layout.html:63
+#: cps/themes/caliblur/templates/stats.html:3
+#: cps/themes/standard/templates/layout.html:128
+#: cps/themes/standard/templates/stats.html:3
+msgid "About"
+msgstr "About"
 
-#: cps/templates/readcbr.html:172
-msgid "Hide"
-msgstr "Ẩn"
+#: cps/themes/caliblur/templates/layout.html:70
+#: cps/themes/simple/templates/basic_layout.html:29
+#: cps/themes/standard/templates/basic_layout.html:29
+#: cps/themes/standard/templates/layout.html:75
+msgid "Logout"
+msgstr "Đăng xuất"
 
-#: cps/templates/readdjvu.html:5
-msgid "DJVU Reader"
-msgstr "Trình đọc DJVU"
+#: cps/themes/caliblur/templates/layout.html:79
+msgid "Upload Book"
+msgstr ""
 
-#: cps/templates/readpdf.html:31
-msgid "PDF Reader"
-msgstr "Trình đọc PDF"
+#: cps/themes/caliblur/templates/layout.html:89
+msgid "Manage"
+msgstr ""
 
-#: cps/templates/readtxt.html:6
-msgid "txt Reader"
-msgstr "trình đọc txt"
+#: cps/themes/caliblur/templates/layout.html:92
+#: cps/themes/standard/templates/read.html:83
+#: cps/themes/standard/templates/readcbr.html:70
+#: cps/themes/standard/templates/readcbr.html:96
+msgid "Settings"
+msgstr "Thiết lập"
 
-#: cps/templates/register.html:4
-msgid "Register New Account"
-msgstr "Đăng ký tải khoản mới"
+#: cps/themes/caliblur/templates/layout.html:92
+#: cps/themes/standard/templates/admin.html:17
+#: cps/themes/standard/templates/layout.html:71
+#: cps/themes/standard/templates/user_table.html:144
+msgid "Admin"
+msgstr "Admin"
 
-#: cps/templates/register.html:10
-msgid "Choose a username"
-msgstr "Chọn tên người dùng"
+#: cps/themes/caliblur/templates/layout.html:125
+msgid "Please do not refresh the page"
+msgstr "Làm ơn đừng load lại trang"
 
-#: cps/templates/register.html:15
-msgid "Your Email"
-msgstr "Địa chỉ email của bạn"
+#: cps/themes/caliblur/templates/layout.html:133
+#: cps/themes/standard/templates/layout.html:115
+msgid "Browse"
+msgstr "Tìm kiếm"
 
-#: cps/templates/remote_login.html:5
+#: cps/themes/caliblur/templates/layout.html:159
+#: cps/themes/standard/templates/basic_index.html:7
+#: cps/themes/standard/templates/layout.html:141
+msgid "Previous"
+msgstr "Trước"
+
+#: cps/themes/caliblur/templates/layout.html:185
+#: cps/themes/standard/templates/layout.html:167
+msgid "Book Details"
+msgstr "Chi tiết sách"
+
+#: cps/themes/caliblur/templates/list.html:47
+#: cps/themes/standard/templates/list.html:22
+msgid "Grid"
+msgstr ""
+
+#: cps/themes/caliblur/templates/listenmp3.html:166
+msgid "Restore from archive"
+msgstr "Khôi phục từ lưu trữ"
+
+#: cps/themes/caliblur/templates/listenmp3.html:166
+msgid "Add to archive"
+msgstr "Thêm vào lưu trữ"
+
+#: cps/themes/caliblur/templates/listenmp3.html:167
+#: cps/themes/standard/templates/listenmp3.html:167
+msgid "Archived"
+msgstr "Lưu trữ"
+
+#: cps/themes/caliblur/templates/login.html:9
+#: cps/themes/caliblur/templates/login.html:10
+#: cps/themes/caliblur/templates/user_edit.html:11
+#: cps/themes/standard/templates/admin.html:13
+#: cps/themes/standard/templates/login.html:9
+#: cps/themes/standard/templates/login.html:10
+#: cps/themes/standard/templates/register.html:9
+#: cps/themes/standard/templates/user_edit.html:10
+#: cps/themes/standard/templates/user_table.html:135
+msgid "Username"
+msgstr "Tên người dùng"
+
+#: cps/themes/caliblur/templates/login.html:13
+#: cps/themes/caliblur/templates/login.html:15
+#: cps/themes/caliblur/templates/user_edit.html:24
+#: cps/themes/standard/templates/admin.html:18
+#: cps/themes/standard/templates/login.html:13
+#: cps/themes/standard/templates/login.html:15
+#: cps/themes/standard/templates/user_edit.html:23
+msgid "Password"
+msgstr "Mật khẩu"
+
+#: cps/themes/caliblur/templates/login.html:17
+#: cps/themes/standard/templates/login.html:17
+msgid "Show password"
+msgstr ""
+
+#: cps/themes/caliblur/templates/login.html:17
+#: cps/themes/standard/templates/login.html:17
+msgid "Hide password"
+msgstr ""
+
+#: cps/themes/caliblur/templates/login.html:25
+#: cps/themes/standard/templates/login.html:25
+msgid "Remember Me"
+msgstr "Ghi nhớ tôi"
+
+#: cps/themes/caliblur/templates/login.html:30
+#: cps/themes/standard/templates/login.html:30
+msgid "Forgot Password?"
+msgstr "Quên mật khẩu?"
+
+#: cps/themes/caliblur/templates/login.html:36
+#: cps/themes/standard/templates/login.html:33
+msgid "Log in with Magic Link"
+msgstr "Đăng nhập với Magic Link"
+
+#: cps/themes/caliblur/templates/login.html:39
+#: cps/themes/standard/templates/admin.html:137
+msgid "Anonymous Browsing"
+msgstr "Ẩn danh"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:6
+#: cps/themes/standard/templates/modal_dialogs.html:6
+msgid "Select Allowed/Denied Tags"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:7
+#: cps/themes/standard/templates/modal_dialogs.html:7
+msgid "Select Allowed/Denied Custom Column Values"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:8
+#: cps/themes/standard/templates/modal_dialogs.html:8
+msgid "Select Allowed/Denied Tags of User"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:9
+#: cps/themes/standard/templates/modal_dialogs.html:9
+msgid "Select Allowed/Denied Custom Column Values of User"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:15
+#: cps/themes/standard/templates/modal_dialogs.html:15
+msgid "Enter Tag"
+msgstr "Nhập Tag"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:24
+#: cps/themes/standard/templates/modal_dialogs.html:24
+msgid "Add View Restriction"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:50
+#: cps/themes/standard/templates/modal_dialogs.html:50
+msgid "This book format will be permanently erased from database"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:51
+#: cps/themes/standard/templates/modal_dialogs.html:51
+msgid "This book will be permanently erased from database and hard disk"
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:55
+#: cps/themes/standard/templates/modal_dialogs.html:55
+msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:56
+#: cps/themes/standard/templates/modal_dialogs.html:56
+msgid "Books must first be archived and the device synced before a book can safely be deleted."
+msgstr ""
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:75
+#: cps/themes/standard/templates/modal_dialogs.html:75
+msgid "Choose File Location"
+msgstr "Chọn file location"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:82
+#: cps/themes/standard/templates/modal_dialogs.html:82
+msgid "type"
+msgstr "kiểu"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:83
+#: cps/themes/standard/templates/modal_dialogs.html:83
+msgid "name"
+msgstr "tên"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:84
+#: cps/themes/standard/templates/modal_dialogs.html:84
+msgid "size"
+msgstr "kích thước"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:90
+#: cps/themes/standard/templates/modal_dialogs.html:90
+msgid "Parent Directory"
+msgstr "Thư mục cha"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:100
+#: cps/themes/standard/templates/modal_dialogs.html:100
+msgid "Select"
+msgstr "Chọn"
+
+#: cps/themes/caliblur/templates/modal_dialogs.html:136
+#: cps/themes/standard/templates/modal_dialogs.html:135
+#: cps/themes/standard/templates/tasks.html:46
+msgid "Ok"
+msgstr "Ok"
+
+#: cps/themes/caliblur/templates/remote_login.html:5
+#: cps/themes/standard/templates/remote_login.html:5
 msgid "Magic Link - Authorise New Device"
 msgstr "Magic Link - Xác thực thiết bị mới"
 
-#: cps/templates/remote_login.html:7
+#: cps/themes/caliblur/templates/remote_login.html:7
+#: cps/themes/standard/templates/remote_login.html:7
 msgid "On another device, login and visit:"
 msgstr "Trên thiết bị khác, đăng nhập và thăm quan:"
 
-#: cps/templates/remote_login.html:11
+#: cps/themes/caliblur/templates/remote_login.html:11
+#: cps/themes/standard/templates/remote_login.html:11
 msgid "Once verified, you will automatically be logged in on this device."
 msgstr "Một khi xác nhận, bạn sẽ tự động đăng nhập trên thiết bị này."
 
-#: cps/templates/remote_login.html:14
+#: cps/themes/caliblur/templates/remote_login.html:14
+#: cps/themes/standard/templates/remote_login.html:14
 msgid "This verification link will expire in 10 minutes."
 msgstr "Link xác nhận này sẽ hết hạn trong 10 phút."
 
-#: cps/templates/remote_login_verify.html:4
+#: cps/themes/caliblur/templates/remote_login_verify.html:5
+#: cps/themes/standard/templates/remote_login_verify.html:5
 msgid "Approve Magic Link Login"
 msgstr ""
 
-#: cps/templates/remote_login_verify.html:5
+#: cps/themes/caliblur/templates/remote_login_verify.html:6
+#: cps/themes/standard/templates/remote_login_verify.html:6
 msgid "Review the device that requested access before approving this login."
 msgstr ""
 
-#: cps/templates/remote_login_verify.html:7
+#: cps/themes/caliblur/templates/remote_login_verify.html:8
+#: cps/themes/standard/templates/remote_login_verify.html:8
 msgid "IP address"
 msgstr ""
 
-#: cps/templates/remote_login_verify.html:9
+#: cps/themes/caliblur/templates/remote_login_verify.html:10
+#: cps/themes/standard/templates/remote_login_verify.html:10
 msgid "Browser"
 msgstr ""
 
-#: cps/templates/remote_login_verify.html:12
+#: cps/themes/caliblur/templates/remote_login_verify.html:13
+#: cps/themes/standard/templates/remote_login_verify.html:13
 #, python-format
 msgid "If you approve this request, the device that started it will be logged in as %(username)s."
 msgstr ""
 
-#: cps/templates/remote_login_verify.html:15
+#: cps/themes/caliblur/templates/remote_login_verify.html:15
+#: cps/themes/standard/templates/remote_login_verify.html:15
 msgid "Approve Login"
 msgstr ""
 
-#: cps/templates/schedule_edit.html:33
-msgid "Generate Series Cover Thumbnails"
-msgstr ""
+#: cps/themes/caliblur/templates/search.html:9
+#: cps/themes/standard/templates/basic_index.html:18
+#: cps/themes/standard/templates/search.html:6
+msgid "No Results Found"
+msgstr "Không tìm thấy kết quả"
 
-#: cps/templates/search.html:7
+#: cps/themes/caliblur/templates/search.html:10
+#: cps/themes/standard/templates/search.html:7
 msgid "Search Term:"
 msgstr "Từ khoá tìm kiếm:"
 
-#: cps/templates/search.html:9
+#: cps/themes/caliblur/templates/search.html:12
+#: cps/themes/standard/templates/search.html:9
 msgid "Results for:"
 msgstr "Kết quả cho:"
 
-#: cps/templates/search.html:29
+#: cps/themes/caliblur/templates/search.html:32
+#: cps/themes/standard/templates/search.html:29
 msgid "Remove from shelf"
 msgstr ""
 
-#: cps/templates/search_form.html:21
-msgid "Published Date From"
-msgstr "Ngày phát hành từ"
+#: cps/themes/caliblur/templates/shelf.html:14
+#: cps/themes/standard/templates/admin.html:22
+#: cps/themes/standard/templates/detail.html:28
+#: cps/themes/standard/templates/detail.html:41
+#: cps/themes/standard/templates/shelf.html:8
+#: cps/themes/standard/templates/user_table.html:147
+msgid "Download"
+msgstr "Tải xuống"
 
-#: cps/templates/search_form.html:31
-msgid "Published Date To"
-msgstr "Ngày phát hành tới"
-
-#: cps/templates/search_form.html:44 cps/templates/search_form.html:165
-msgid "Any"
-msgstr ""
-
-#: cps/templates/search_form.html:45 cps/templates/search_form.html:166
-msgid "Empty"
-msgstr ""
-
-#: cps/templates/search_form.html:60
-msgid "Exclude Tags"
-msgstr ""
-
-#: cps/templates/search_form.html:78
-msgid "Exclude Series"
-msgstr ""
-
-#: cps/templates/search_form.html:96
-msgid "Exclude Shelves"
-msgstr ""
-
-#: cps/templates/search_form.html:116
-msgid "Exclude Languages"
-msgstr ""
-
-#: cps/templates/search_form.html:127
-msgid "Extensions"
-msgstr ""
-
-#: cps/templates/search_form.html:135
-msgid "Exclude Extensions"
-msgstr ""
-
-#: cps/templates/search_form.html:145
-msgid "Rating Above"
-msgstr "Đánh giá cao hơn"
-
-#: cps/templates/search_form.html:149
-msgid "Rating Below"
-msgstr "Đánh giá thấp hơn"
-
-#: cps/templates/search_form.html:175 cps/templates/search_form.html:187
-#: cps/templates/search_form.html:201
-msgid "From:"
-msgstr "Từ:"
-
-#: cps/templates/search_form.html:179 cps/templates/search_form.html:191
-#: cps/templates/search_form.html:211
-msgid "To:"
-msgstr "Tới:"
-
-#: cps/templates/shelf.html:13
+#: cps/themes/caliblur/templates/shelf.html:16
+#: cps/themes/standard/templates/shelf.html:13
 msgid "Delete this Shelf"
 msgstr "Xoá giá sách này"
 
-#: cps/templates/shelf.html:14
+#: cps/themes/caliblur/templates/shelf.html:17
+#: cps/themes/standard/templates/shelf.html:14
 msgid "Edit Shelf Properties"
 msgstr "Chỉnh sửa thông tin giá sách"
 
-#: cps/templates/shelf.html:17
+#: cps/themes/caliblur/templates/shelf.html:19
+#: cps/themes/standard/templates/shelf.html:17
 msgid "Arrange books manually"
 msgstr "Sắp xếp sách bằng tay"
 
-#: cps/templates/shelf.html:18
+#: cps/themes/caliblur/templates/shelf.html:28
+#: cps/themes/standard/templates/shelf.html:18
 msgid "Disable Change order"
 msgstr "Khoá thay đổi thứ tự"
 
-#: cps/templates/shelf.html:18
+#: cps/themes/caliblur/templates/shelf.html:28
+#: cps/themes/standard/templates/shelf.html:18
 msgid "Enable Change order"
 msgstr "Mở thay đổi thứ tự"
 
-#: cps/templates/shelf.html:28
+#: cps/themes/caliblur/templates/shelf.html:38
+#: cps/themes/standard/templates/shelf.html:28
 msgid "Sort according to book added to shelf, newest first"
 msgstr ""
 
-#: cps/templates/shelf.html:29
+#: cps/themes/caliblur/templates/shelf.html:39
+#: cps/themes/standard/templates/shelf.html:29
 msgid "Sort according to book added to shelf, oldest first"
 msgstr ""
 
-#: cps/templates/shelf_edit.html:14
-msgid "Share with Everyone"
-msgstr "Chia sửa với tất cả"
-
-#: cps/templates/shelf_edit.html:21
-msgid "Sync this shelf with Kobo device"
-msgstr "Đồng bộ giá sách này với thiết bị Kobo"
-
-#: cps/templates/shelf_order.html:5
+#: cps/themes/caliblur/templates/shelf_order.html:7
+#: cps/themes/standard/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
 msgstr "Kéo để thay đổi lại thứ tự"
 
-#: cps/templates/shelf_order.html:33
+#: cps/themes/caliblur/templates/shelf_order.html:35
+#: cps/themes/standard/templates/shelf_order.html:33
 msgid "Hidden Book"
 msgstr "Sách ẩn"
 
-#: cps/templates/stats.html:7
+#: cps/themes/caliblur/templates/stats.html:9
+#: cps/themes/standard/templates/stats.html:7
 msgid "Library Statistics"
 msgstr "Thống kê thư viện"
 
-#: cps/templates/stats.html:12
+#: cps/themes/caliblur/templates/stats.html:14
+#: cps/themes/standard/templates/stats.html:12
 msgid "Books in this Library"
 msgstr "Sách trong thư viện"
 
-#: cps/templates/stats.html:16
+#: cps/themes/caliblur/templates/stats.html:18
+#: cps/themes/standard/templates/stats.html:16
 msgid "Authors in this Library"
 msgstr "Các tác giả trong thư viện"
 
-#: cps/templates/stats.html:20
+#: cps/themes/caliblur/templates/stats.html:22
+#: cps/themes/standard/templates/stats.html:20
 msgid "Categories in this Library"
 msgstr "Các thể loại trong thư viện"
 
-#: cps/templates/stats.html:24
+#: cps/themes/caliblur/templates/stats.html:26
+#: cps/themes/standard/templates/stats.html:24
 msgid "Series in this Library"
 msgstr "Các series trong thư viện"
 
-#: cps/templates/stats.html:29
+#: cps/themes/caliblur/templates/stats.html:31
+#: cps/themes/standard/templates/stats.html:29
 msgid "System Statistics"
 msgstr "Thống kê hệ thống"
 
-#: cps/templates/stats.html:33
+#: cps/themes/caliblur/templates/stats.html:35
+#: cps/themes/standard/templates/stats.html:33
 msgid "Program"
 msgstr ""
 
-#: cps/templates/stats.html:34
+#: cps/themes/caliblur/templates/stats.html:36
+#: cps/themes/standard/templates/stats.html:34
 msgid "Installed Version"
 msgstr "Phiên bản đã cài đặt"
 
-#: cps/templates/tasks.html:12
-msgid "User"
-msgstr "Người dùng"
+#: cps/themes/caliblur/templates/user_edit.html:16
+#: cps/themes/standard/templates/admin.html:14
+#: cps/themes/standard/templates/register.html:14
+#: cps/themes/standard/templates/user_edit.html:15
+#: cps/themes/standard/templates/user_table.html:136
+msgid "Email"
+msgstr "Địa chỉ email"
 
-#: cps/templates/tasks.html:14
-msgid "Task"
-msgstr "Nhiệm vụ"
-
-#: cps/templates/tasks.html:15
-msgid "Status"
-msgstr "Trạng thái"
-
-#: cps/templates/tasks.html:16
-msgid "Progress"
-msgstr "Tiến độ"
-
-#: cps/templates/tasks.html:17
-msgid "Run Time"
-msgstr "Thời gian chạy"
-
-#: cps/templates/tasks.html:19
-msgid "Message"
-msgstr ""
-
-#: cps/templates/tasks.html:21
-msgid "Actions"
-msgstr ""
-
-#: cps/templates/tasks.html:41
-msgid "This task will be cancelled. Any progress made by this task will be saved."
-msgstr ""
-
-#: cps/templates/tasks.html:42
-msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
-msgstr ""
-
-#: cps/templates/user_edit.html:20
+#: cps/themes/caliblur/templates/user_edit.html:21
+#: cps/themes/standard/templates/user_edit.html:20
 msgid "Reset user Password"
 msgstr "Reset mật khẩu người dùng"
 
-#: cps/templates/user_edit.html:28
+#: cps/themes/caliblur/templates/user_edit.html:29
+#: cps/themes/standard/templates/user_edit.html:28
 msgid "Send to eReader Email Address. Use comma to separate emails for multiple eReaders"
 msgstr ""
 
-#: cps/templates/user_edit.html:43
+#: cps/themes/caliblur/templates/user_edit.html:44
+#: cps/themes/standard/templates/user_edit.html:43
 msgid "Language of Books"
 msgstr "Ngôn ngữ của sách"
 
-#: cps/templates/user_edit.html:54
+#: cps/themes/caliblur/templates/user_edit.html:55
+#: cps/themes/standard/templates/user_edit.html:54
 msgid "OAuth Settings"
 msgstr "Thiết lập OAuth"
 
-#: cps/templates/user_edit.html:56
+#: cps/themes/caliblur/templates/user_edit.html:57
+#: cps/themes/standard/templates/user_edit.html:56
 msgid "Link"
 msgstr "Link"
 
-#: cps/templates/user_edit.html:58
+#: cps/themes/caliblur/templates/user_edit.html:59
+#: cps/themes/standard/templates/user_edit.html:58
 msgid "Unlink"
 msgstr "Unlink"
 
-#: cps/templates/user_edit.html:64
+#: cps/themes/caliblur/templates/user_edit.html:65
+#: cps/themes/standard/templates/user_edit.html:64
 msgid "Kobo Sync Token"
 msgstr "Token đồng bộ Kobo"
 
-#: cps/templates/user_edit.html:66
+#: cps/themes/caliblur/templates/user_edit.html:67
+#: cps/themes/standard/templates/user_edit.html:66
 msgid "Create/View"
 msgstr "Tạo/xem"
 
-#: cps/templates/user_edit.html:70
+#: cps/themes/caliblur/templates/user_edit.html:71
+#: cps/themes/standard/templates/user_edit.html:70
 msgid "Force full kobo sync"
 msgstr "Ép đồng bộ tất cả với Kobo"
 
-#: cps/templates/user_edit.html:88
-msgid "Add allowed/Denied Custom Column Values"
-msgstr ""
+#: cps/themes/caliblur/templates/user_edit.html:85
+#: cps/themes/standard/templates/config_view_edit.html:164
+#: cps/themes/standard/templates/user_edit.html:84
+#: cps/themes/standard/templates/user_table.html:155
+msgid "Show Random Books in Detail View"
+msgstr "Hiển thị sách ngẫu nhiên trong màn hình chi tiết"
 
-#: cps/templates/user_edit.html:137
+#: cps/themes/caliblur/templates/user_edit.html:93
+#: cps/themes/standard/templates/config_view_edit.html:89
+#: cps/themes/standard/templates/user_edit.html:96
+msgid "Admin User"
+msgstr "Người dùng quản trị"
+
+#: cps/themes/caliblur/templates/user_edit.html:98
+#: cps/themes/standard/templates/config_view_edit.html:93
+#: cps/themes/standard/templates/user_edit.html:101
+msgid "Allow Downloads"
+msgstr "Cho phép tải xuống"
+
+#: cps/themes/caliblur/templates/user_edit.html:102
+#: cps/themes/standard/templates/config_view_edit.html:97
+#: cps/themes/standard/templates/user_edit.html:105
+msgid "Allow eBook Viewer"
+msgstr "Cho phép xem eBook"
+
+#: cps/themes/caliblur/templates/user_edit.html:107
+#: cps/themes/standard/templates/config_view_edit.html:102
+#: cps/themes/standard/templates/user_edit.html:110
+msgid "Allow Uploads"
+msgstr "Cho phép tải lên"
+
+#: cps/themes/caliblur/templates/user_edit.html:112
+#: cps/themes/standard/templates/config_view_edit.html:107
+#: cps/themes/standard/templates/user_edit.html:115
+msgid "Allow Edit"
+msgstr "Cho phép chỉnh sửa"
+
+#: cps/themes/caliblur/templates/user_edit.html:117
+#: cps/themes/standard/templates/config_view_edit.html:112
+#: cps/themes/standard/templates/user_edit.html:120
+msgid "Allow Delete Books"
+msgstr "Cho phép xoá sách"
+
+#: cps/themes/caliblur/templates/user_edit.html:123
+#: cps/themes/standard/templates/config_view_edit.html:117
+#: cps/themes/standard/templates/user_edit.html:126
+msgid "Allow Changing Password"
+msgstr "Cho phép thay đổi mật khẩu"
+
+#: cps/themes/caliblur/templates/user_edit.html:127
+#: cps/themes/standard/templates/config_view_edit.html:121
+#: cps/themes/standard/templates/user_edit.html:130
+msgid "Allow Editing Public Shelves"
+msgstr "Cho phép chỉnh sửa giá sách công khai"
+
+#: cps/themes/caliblur/templates/user_edit.html:134
+#: cps/themes/standard/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
 msgstr "Đồng bộ sách trên những giá được chọn với Kobo"
 
-#: cps/templates/user_edit.html:147 cps/templates/user_table.html:169
+#: cps/themes/caliblur/templates/user_edit.html:142
+#: cps/themes/standard/templates/config_view_edit.html:167
+#: cps/themes/standard/templates/user_edit.html:87
+msgid "Add Allowed/Denied Tags"
+msgstr ""
+
+#: cps/themes/caliblur/templates/user_edit.html:143
+#: cps/themes/standard/templates/user_edit.html:88
+msgid "Add allowed/Denied Custom Column Values"
+msgstr ""
+
+#: cps/themes/caliblur/templates/user_edit.html:150
+#: cps/themes/standard/templates/user_edit.html:147
+#: cps/themes/standard/templates/user_table.html:170
 msgid "Delete User"
 msgstr "Xoá người dùng"
 
-#: cps/templates/user_edit.html:159
+#: cps/themes/caliblur/templates/user_edit.html:167
+#: cps/themes/standard/templates/user_edit.html:159
 msgid "Generate Kobo Auth URL"
 msgstr ""
 
-#: cps/templates/user_table.html:80 cps/templates/user_table.html:103
+#: cps/themes/simple/templates/basic_layout.html:35
+#: cps/themes/standard/templates/basic_layout.html:35
+msgid "Normal Theme"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:9
+msgid "Users"
+msgstr "Người dùng"
+
+#: cps/themes/standard/templates/admin.html:15
+msgid "Send to eReader Email"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:23
+msgid "View Books"
+msgstr "Xem sách"
+
+#: cps/themes/standard/templates/admin.html:24
+#: cps/themes/standard/templates/book_table.html:317
+#: cps/themes/standard/templates/user_table.html:132
+#: cps/themes/standard/templates/user_table.html:149
+msgid "Edit"
+msgstr "Chỉnh sửa"
+
+#: cps/themes/standard/templates/admin.html:26
+msgid "Public Shelf"
+msgstr "Giá công khai"
+
+#: cps/themes/standard/templates/admin.html:55
+msgid "Import LDAP Users"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:62
+msgid "Email Server Settings"
+msgstr "Thiết lập máy chủ email"
+
+#: cps/themes/standard/templates/admin.html:90
+msgid "Email Service"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:91
+msgid "Gmail via Oauth2"
+msgstr "Gmail via Oauth2"
+
+#: cps/themes/standard/templates/admin.html:106
+msgid "Configuration"
+msgstr "Thiết lập"
+
+#: cps/themes/standard/templates/admin.html:109
+msgid "Calibre Database Directory"
+msgstr "Thư mục cơ sở dữ liệu Calibre"
+
+#: cps/themes/standard/templates/admin.html:113
+#: cps/themes/standard/templates/config_edit.html:68
+msgid "Log Level"
+msgstr "Log Level"
+
+#: cps/themes/standard/templates/admin.html:117
+msgid "Port"
+msgstr "Cổng"
+
+#: cps/themes/standard/templates/admin.html:122
+msgid "External Port"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:129
+#: cps/themes/standard/templates/config_view_edit.html:28
+msgid "Books per Page"
+msgstr "Sách mỗi trang"
+
+#: cps/themes/standard/templates/admin.html:133
+msgid "Uploads"
+msgstr "Tải lên"
+
+#: cps/themes/standard/templates/admin.html:141
+msgid "Public Registration"
+msgstr "Đăng ký công khai"
+
+#: cps/themes/standard/templates/admin.html:145
+msgid "Magic Link Remote Login"
+msgstr "Đăng nhập bằng Magic Link"
+
+#: cps/themes/standard/templates/admin.html:149
+msgid "Reverse Proxy Login"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:154
+#: cps/themes/standard/templates/config_edit.html:180
+msgid "Reverse Proxy Header Name"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:158
+msgid "Reverse Proxy Trusted IPs/CIDRs"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:162
+#: cps/themes/standard/templates/config_edit.html:193
+msgid "Reverse Proxy Shared Secret Header Name"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:166
+msgid "Reverse Proxy Shared Secret Header"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:170
+msgid "Reverse Proxy Shared Secret Configured"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:175
+msgid "Edit Calibre Database Configuration"
+msgstr "Chỉnh sửa thiết lập cơ sở dữ liệu Calibre"
+
+#: cps/themes/standard/templates/admin.html:176
+msgid "Edit Basic Configuration"
+msgstr "Chỉnh sửa thiết lập cơ bản"
+
+#: cps/themes/standard/templates/admin.html:177
+msgid "Edit UI Configuration"
+msgstr "Chỉnh sửa thiết lập UI"
+
+#: cps/themes/standard/templates/admin.html:183
+msgid "Scheduled Tasks"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:186
+#: cps/themes/standard/templates/schedule_edit.html:12
+#: cps/themes/standard/templates/tasks.html:18
+msgid "Start Time"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:190
+#: cps/themes/standard/templates/schedule_edit.html:20
+msgid "Maximum Duration"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:194
+#: cps/themes/standard/templates/schedule_edit.html:29
+msgid "Generate Thumbnails"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:198
+msgid "Generate series cover thumbnails"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:202
+#: cps/themes/standard/templates/admin.html:224
+#: cps/themes/standard/templates/schedule_edit.html:37
+msgid "Reconnect Calibre Database"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:206
+#: cps/themes/standard/templates/schedule_edit.html:41
+msgid "Generate Metadata Backup Files"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:213
+msgid "Refresh Thumbnail Cache"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:219
+msgid "Administration"
+msgstr "Quản trị"
+
+#: cps/themes/standard/templates/admin.html:220
+msgid "Download Debug Package"
+msgstr "Tải xuống package debug"
+
+#: cps/themes/standard/templates/admin.html:221
+msgid "View Logs"
+msgstr "Xem logs"
+
+#: cps/themes/standard/templates/admin.html:227
+msgid "Restart"
+msgstr "Khởi động lại"
+
+#: cps/themes/standard/templates/admin.html:228
+msgid "Shutdown"
+msgstr "Tắt"
+
+#: cps/themes/standard/templates/admin.html:237
+msgid "Version Information"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:241
+msgid "Version"
+msgstr "Phiên bản"
+
+#: cps/themes/standard/templates/admin.html:242
+msgid "Details"
+msgstr "Chi tiết"
+
+#: cps/themes/standard/templates/admin.html:248
+msgid "Current Version"
+msgstr "Phiên bản hiện tại"
+
+#: cps/themes/standard/templates/admin.html:255
+msgid "Check for Update"
+msgstr "Kiểm tra cập nhật"
+
+#: cps/themes/standard/templates/admin.html:256
+msgid "Perform Update"
+msgstr "Bắt đầu cập nhật"
+
+#: cps/themes/standard/templates/admin.html:268
+msgid "Restart Calibre-Web"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:271
+msgid "Are you sure you want to restart?"
+msgstr "Bạn có chắc chắn muốn khởi động lại?"
+
+#: cps/themes/standard/templates/admin.html:287
+msgid "Stop Calibre-Web"
+msgstr ""
+
+#: cps/themes/standard/templates/admin.html:290
+msgid "Are you sure you want to shutdown?"
+msgstr "Bạn có chắc muốn tắt?"
+
+#: cps/themes/standard/templates/admin.html:302
+msgid "Update Calibre-Web"
+msgstr ""
+
+#: cps/themes/standard/templates/author.html:15
+msgid "via"
+msgstr "via"
+
+#: cps/themes/standard/templates/author.html:23
+msgid "In Library"
+msgstr "Trong thư viện"
+
+#: cps/themes/standard/templates/author.html:97
+msgid "More by"
+msgstr "Cùng tác giả"
+
+#: cps/themes/standard/templates/book_edit.html:14
+msgid "Delete formats:"
+msgstr "Xoá định dạng:"
+
+#: cps/themes/standard/templates/book_table.html:12
+#: cps/themes/standard/templates/book_table.html:96
+#: cps/themes/standard/templates/user_table.html:14
+#: cps/themes/standard/templates/user_table.html:77
+#: cps/themes/standard/templates/user_table.html:100
+msgid "This Field is Required"
+msgstr "Đây là trường bắt buộc"
+
+#: cps/themes/standard/templates/book_table.html:25
+msgid "Archive selected books"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:28
+msgid "Unarchive selected books"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:34
+msgid "Mark selected books as read"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:37
+msgid "Mark selected books as unread"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:58
+msgid "Merge selected books"
+msgstr "Gộp những sách đã chọn"
+
+#: cps/themes/standard/templates/book_table.html:61
+#: cps/themes/standard/templates/user_table.html:125
+msgid "Clear selections"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:64
+msgid "Edit selected books"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:68
+msgid "Exchange author and title"
+msgstr "Đổi tác giả và tên sách"
+
+#: cps/themes/standard/templates/book_table.html:74
+msgid "Update Title Sort automatically"
+msgstr "Cập nhật sắp xếp theo tên tự động"
+
+#: cps/themes/standard/templates/book_table.html:78
+msgid "Update Author Sort automatically"
+msgstr "Cập nhật sắp xếp theo tác giả tự động"
+
+#: cps/themes/standard/templates/book_table.html:90
+#: cps/themes/standard/templates/book_table.html:96
+msgid "Enter Title"
+msgstr "Nhập tên sách"
+
+#: cps/themes/standard/templates/book_table.html:90
+#: cps/themes/standard/templates/config_view_edit.html:24
+#: cps/themes/standard/templates/shelf_edit.html:8
+msgid "Title"
+msgstr "Tên"
+
+#: cps/themes/standard/templates/book_table.html:91
+msgid "Enter Title Sort"
+msgstr "Nhập tên sách để sắp xếp"
+
+#: cps/themes/standard/templates/book_table.html:91
+msgid "Title Sort"
+msgstr "Tên sắp xếp"
+
+#: cps/themes/standard/templates/book_table.html:92
+msgid "Enter Author Sort"
+msgstr "Nhập tác giả sắp xếp"
+
+#: cps/themes/standard/templates/book_table.html:92
+msgid "Author Sort"
+msgstr "Tên tác giả sắp xếp"
+
+#: cps/themes/standard/templates/book_table.html:93
+msgid "Enter Authors"
+msgstr "Nhập tên tác giả"
+
+#: cps/themes/standard/templates/book_table.html:94
+msgid "Enter Categories"
+msgstr "Nhập thể loại"
+
+#: cps/themes/standard/templates/book_table.html:95
+msgid "Enter Series"
+msgstr "Nhập tên series"
+
+#: cps/themes/standard/templates/book_table.html:96
+msgid "Series Index"
+msgstr "Chỉ số series"
+
+#: cps/themes/standard/templates/book_table.html:97
+msgid "Enter Languages"
+msgstr "Nhập ngôn ngữ"
+
+#: cps/themes/standard/templates/book_table.html:98
+msgid "Publishing Date"
+msgstr "Ngày phát hành"
+
+#: cps/themes/standard/templates/book_table.html:99
+msgid "Enter Publishers"
+msgstr "Nhập tên nhà phát hành"
+
+#: cps/themes/standard/templates/book_table.html:100
+msgid "Enter comments"
+msgstr "Nhập nhận xét"
+
+#: cps/themes/standard/templates/book_table.html:100
+msgid "Comments"
+msgstr "Nhận xét"
+
+#: cps/themes/standard/templates/book_table.html:102
+msgid "Archive Status"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:104
+#: cps/themes/standard/templates/search_form.html:42
+msgid "Read Status"
+msgstr "Read status"
+
+#: cps/themes/standard/templates/book_table.html:107
+#: cps/themes/standard/templates/book_table.html:109
+#: cps/themes/standard/templates/book_table.html:111
+#: cps/themes/standard/templates/book_table.html:113
+#: cps/themes/standard/templates/book_table.html:117
+#: cps/themes/standard/templates/book_table.html:119
+#: cps/themes/standard/templates/book_table.html:123
+msgid "Enter "
+msgstr "Nhập "
+
+#: cps/themes/standard/templates/book_table.html:129
+msgid "Delete selected books"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:150
+#: cps/themes/standard/templates/book_table.html:174
+#: cps/themes/standard/templates/book_table.html:194
+#: cps/themes/standard/templates/book_table.html:214
+#: cps/themes/standard/templates/book_table.html:234
+#: cps/themes/standard/templates/book_table.html:254
+#: cps/themes/standard/templates/tasks.html:37
+msgid "Are you really sure?"
+msgstr "Bạn có thực sự chắc chắn?"
+
+#: cps/themes/standard/templates/book_table.html:154
+msgid "Books with Title will be merged from:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:158
+msgid "Into Book with Title:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:163
+msgid "Merge"
+msgstr "Trộn"
+
+#: cps/themes/standard/templates/book_table.html:178
+msgid "The following books will be deleted:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:198
+msgid "The following books will be archived:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:202
+#: cps/themes/standard/templates/detail.html:278
+msgid "Archive"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:218
+msgid "The following books will be unarchived:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:222
+msgid "Unarchive"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:238
+msgid "The following books will be marked read:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:242
+msgid "Mark as read"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:258
+msgid "The following books will be marked unread:"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:262
+msgid "Mark as unread"
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:277
+msgid "Edit the fields you want changed. Blank fields will be ignored:"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:18
+msgid "Server Configuration"
+msgstr "Thiết lập máy chủ"
+
+#: cps/themes/standard/templates/config_edit.html:25
+msgid "Server Port"
+msgstr "Cổng máy chủ"
+
+#: cps/themes/standard/templates/config_edit.html:28
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:35
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:43
+msgid "Update Channel"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:45
+msgid "Stable"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:46
+msgid "Nightly"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:50
+msgid "Trusted Hosts (Comma Separated)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:61
+msgid "Logfile Configuration"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:77
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:82
+msgid "Enable Access Log"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:85
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:96
+msgid "Feature Configuration"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:104
+msgid "Convert non-English characters in title and author while saving to disk"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:108
+msgid "Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:112
+msgid "Enable Uploads"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:112
+msgid "(Please ensure that users also have upload permissions)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:116
+msgid "Allowed Upload Fileformats"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:122
+msgid "Enable Anonymous Browsing"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:126
+msgid "Enable Public Registration"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:131
+msgid "Use Email as Username"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:136
+msgid "Enable Magic Link Remote Login"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:141
+msgid "Enable Kobo sync"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:146
+msgid "Proxy unknown requests to Kobo Store"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:149
+msgid "Server External Port (for port forwarded API calls)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:157
+msgid "Use Goodreads"
+msgstr "Sử dụng Goodreads"
+
+#: cps/themes/standard/templates/config_edit.html:161
+msgid "Goodreads API Key"
+msgstr "Goodreads API Key"
+
+#: cps/themes/standard/templates/config_edit.html:167
+msgid "Google Books API Key"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:172
+msgid "Allow Reverse Proxy Authentication"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:176
+msgid "Security Warning"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:177
+msgid "Only enable this when Calibre-Web is reachable exclusively through a trusted reverse proxy. Never expose Calibre-Web directly to untrusted networks while reverse proxy authentication is enabled."
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:184
+msgid "Reverse Proxy Trusted IPs/CIDRs (Comma Separated)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:189
+msgid "Enable Reverse Proxy Shared Secret Header"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:197
+msgid "Reverse Proxy Shared Secret"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:205
+msgid "Login type"
+msgstr "Kiểu đăng nhập"
+
+#: cps/themes/standard/templates/config_edit.html:207
+msgid "Use Standard Authentication"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:209
+msgid "Use LDAP Authentication"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:212
+msgid "Use OAuth"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:219
+msgid "LDAP Server Host Name or IP Address"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:223
+msgid "LDAP Server Port"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:227
+msgid "LDAP Encryption"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:230
+msgid "TLS"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:231
+msgid "SSL"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:235
+msgid "LDAP CACertificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:242
+msgid "LDAP Certificate Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:249
+msgid "LDAP Keyfile Path (Only needed for Client Certificate Authentication)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:258
+msgid "LDAP Authentication"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:260
+msgid "Anonymous"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:261
+msgid "Unauthenticated"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:262
+msgid "Simple"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:267
+msgid "LDAP Administrator Username"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:273
+msgid "LDAP Administrator Password"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:278
+msgid "LDAP Distinguished Name (DN)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:282
+msgid "LDAP User Object Filter"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:287
+msgid "LDAP Server is OpenLDAP?"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:289
+msgid "Following Settings are Needed For User Import"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:291
+msgid "LDAP Group Object Filter"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:295
+msgid "LDAP Group Name"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:299
+msgid "LDAP Group Members Field"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:303
+msgid "LDAP Member User Filter Detection"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:305
+msgid "Autodetect"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:306
+msgid "Custom Filter"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:311
+msgid "LDAP Member User Filter"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:322
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:325
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:329
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:345
+msgid "External binaries"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:351
+msgid "Path to Calibre Binaries"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:359
+msgid "Calibre E-Book Converter Settings"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:362
+msgid "Path to Kepubify E-Book Converter"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:370
+msgid "Location of Unrar binary"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:386
+msgid "Security Settings"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:394
+msgid "Limit failed login attempts"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:398
+msgid "Configure Backend for Limiter"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:402
+msgid "Options for Limiter Backend"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:408
+msgid "Check if file extensions matches file content on upload"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:411
+msgid "Session protection"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:413
+msgid "Basic"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:414
+msgid "Strong"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:419
+msgid "User Password policy"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:423
+msgid "Minimum password length"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:428
+msgid "Enforce number"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:432
+msgid "Enforce lowercase characters"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:436
+msgid "Enforce uppercase characters"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:440
+msgid "Enforce characters (needed For Chinese/Japanese/Korean Characters)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_edit.html:444
+msgid "Enforce special characters"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:17
+msgid "View Configuration"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:32
+msgid "No. of Random Books to Display"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:36
+msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:40
+#: cps/themes/standard/templates/readcbr.html:101
+msgid "Theme"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:48
+msgid "Regular Expression for Ignoring Columns"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:52
+msgid "Link Read/Unread Status to Calibre Column"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:61
+msgid "View Restrictions based on Calibre column"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:70
+msgid "Regular Expression for Title Sorting"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:81
+msgid "Default Settings for New Users"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:124
+msgid "Default Language"
+msgstr "Ngôn ngữ mặc định"
+
+#: cps/themes/standard/templates/config_view_edit.html:132
+msgid "Default Visible Language of Books"
+msgstr "Ngôn ngữ hiển thị mặc định của sách"
+
+#: cps/themes/standard/templates/config_view_edit.html:148
+msgid "Default Visibilities for New Users"
+msgstr ""
+
+#: cps/themes/standard/templates/config_view_edit.html:168
+msgid "Add Allowed/Denied custom column values"
+msgstr "Thêm cho phép/từ chối giá trị cột tuỳ biến"
+
+#: cps/themes/standard/templates/detail.html:278
+msgid "Mark Book as archived or not, to hide it in Calibre-Web and delete it from Kobo Reader"
+msgstr ""
+
+#: cps/themes/standard/templates/generate_kobo_auth_url.html:6
+msgid "Open the .kobo/Kobo/Kobo eReader.conf file in a text editor and add (or edit):"
+msgstr ""
+
+#: cps/themes/standard/templates/generate_kobo_auth_url.html:11
+msgid "Kobo Token:"
+msgstr ""
+
+#: cps/themes/standard/templates/grid.html:22
+msgid "List"
+msgstr ""
+
+#: cps/themes/standard/templates/logviewer.html:6
+msgid "Show Calibre-Web Log: "
+msgstr "Hiển thị Calibre-Web Log: "
+
+#: cps/themes/standard/templates/logviewer.html:8
+msgid "Calibre-Web Log: "
+msgstr "Calibre-Web Log: "
+
+#: cps/themes/standard/templates/logviewer.html:8
+msgid "Stream output, can't be displayed"
+msgstr ""
+
+#: cps/themes/standard/templates/logviewer.html:12
+msgid "Show Access Log: "
+msgstr "Hiển thị log truy cập: "
+
+#: cps/themes/standard/templates/logviewer.html:18
+msgid "Download Calibre-Web Log"
+msgstr "Tải xuống Calibre-Web Log"
+
+#: cps/themes/standard/templates/logviewer.html:21
+msgid "Download Access Log"
+msgstr "Tải xuống log truy cập"
+
+#: cps/themes/standard/templates/read.html:7
+msgid "epub Reader"
+msgstr "trình đọc epub"
+
+#: cps/themes/standard/templates/read.html:85
+msgid "Choose a theme below:"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:89
+#: cps/themes/standard/templates/readcbr.html:104
+msgid "Light"
+msgstr "Sáng"
+
+#: cps/themes/standard/templates/read.html:91
+#: cps/themes/standard/templates/readcbr.html:105
+msgid "Dark"
+msgstr "Tối"
+
+#: cps/themes/standard/templates/read.html:93
+msgid "Sepia"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:95
+msgid "Amber"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:97
+msgid "Black"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:109
+msgid "Reflow text when sidebars are open."
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:114
+msgid "Show pages count"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:118
+msgid "Font Size"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:126
+msgid "Font"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:127
+msgid "Default"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:128
+msgid "Yahei"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:129
+msgid "SimSun"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:130
+msgid "KaiTi"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:131
+msgid "Arial"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:134
+msgid "Spread"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:135
+msgid "Two columns"
+msgstr ""
+
+#: cps/themes/standard/templates/read.html:136
+msgid "One column"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:8
+msgid "Comic Reader"
+msgstr "Trình đọc truyện tranh"
+
+#: cps/themes/standard/templates/readcbr.html:75
+msgid "Keyboard Shortcuts"
+msgstr "Phím tắt"
+
+#: cps/themes/standard/templates/readcbr.html:78
+msgid "Previous Page"
+msgstr "Trang trước"
+
+#: cps/themes/standard/templates/readcbr.html:79
+#: cps/themes/standard/templates/readcbr.html:159
+msgid "Next Page"
+msgstr "Trang tiếp theo"
+
+#: cps/themes/standard/templates/readcbr.html:80
+msgid "Single Page Display"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:81
+msgid "Long Strip Display"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:82
+msgid "Scale to Best"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:83
+msgid "Scale to Width"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:84
+msgid "Scale to Height"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:85
+msgid "Scale to Native"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:86
+msgid "Rotate Right"
+msgstr "Xoay phải"
+
+#: cps/themes/standard/templates/readcbr.html:87
+msgid "Rotate Left"
+msgstr "Xoay trái"
+
+#: cps/themes/standard/templates/readcbr.html:88
+msgid "Flip Image"
+msgstr "Lật ảnh"
+
+#: cps/themes/standard/templates/readcbr.html:110
+msgid "Display"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:113
+msgid "Single Page"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:114
+msgid "Long Strip"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:119
+msgid "Scale"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:122
+msgid "Best"
+msgstr "Tốt nhất"
+
+#: cps/themes/standard/templates/readcbr.html:123
+msgid "Width"
+msgstr "Rộng"
+
+#: cps/themes/standard/templates/readcbr.html:124
+msgid "Height"
+msgstr "Cao"
+
+#: cps/themes/standard/templates/readcbr.html:125
+msgid "Native"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:130
+msgid "Rotate"
+msgstr "Xoay"
+
+#: cps/themes/standard/templates/readcbr.html:141
+msgid "Flip"
+msgstr "Lật"
+
+#: cps/themes/standard/templates/readcbr.html:144
+msgid "Horizontal"
+msgstr "Ngang"
+
+#: cps/themes/standard/templates/readcbr.html:145
+msgid "Vertical"
+msgstr "Dọc"
+
+#: cps/themes/standard/templates/readcbr.html:150
+msgid "Direction"
+msgstr "Hướng"
+
+#: cps/themes/standard/templates/readcbr.html:153
+msgid "Left to Right"
+msgstr "Trái sang phải"
+
+#: cps/themes/standard/templates/readcbr.html:154
+msgid "Right to Left"
+msgstr "Phải sang trái"
+
+#: cps/themes/standard/templates/readcbr.html:162
+msgid "Reset to Top"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:163
+msgid "Remember Position"
+msgstr ""
+
+#: cps/themes/standard/templates/readcbr.html:168
+msgid "Scrollbar"
+msgstr "Thanh cuộn"
+
+#: cps/themes/standard/templates/readcbr.html:171
+msgid "Show"
+msgstr "Hiện"
+
+#: cps/themes/standard/templates/readcbr.html:172
+msgid "Hide"
+msgstr "Ẩn"
+
+#: cps/themes/standard/templates/readdjvu.html:5
+msgid "DJVU Reader"
+msgstr "Trình đọc DJVU"
+
+#: cps/themes/standard/templates/readpdf.html:31
+msgid "PDF Reader"
+msgstr "Trình đọc PDF"
+
+#: cps/themes/standard/templates/readtxt.html:6
+msgid "txt Reader"
+msgstr "trình đọc txt"
+
+#: cps/themes/standard/templates/register.html:5
+msgid "Register New Account"
+msgstr "Đăng ký tải khoản mới"
+
+#: cps/themes/standard/templates/register.html:10
+msgid "Choose a username"
+msgstr "Chọn tên người dùng"
+
+#: cps/themes/standard/templates/register.html:15
+msgid "Your Email"
+msgstr "Địa chỉ email của bạn"
+
+#: cps/themes/standard/templates/schedule_edit.html:33
+msgid "Generate Series Cover Thumbnails"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:21
+msgid "Published Date From"
+msgstr "Ngày phát hành từ"
+
+#: cps/themes/standard/templates/search_form.html:31
+msgid "Published Date To"
+msgstr "Ngày phát hành tới"
+
+#: cps/themes/standard/templates/search_form.html:44
+#: cps/themes/standard/templates/search_form.html:165
+msgid "Any"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:45
+#: cps/themes/standard/templates/search_form.html:166
+msgid "Empty"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:60
+msgid "Exclude Tags"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:78
+msgid "Exclude Series"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:96
+msgid "Exclude Shelves"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:116
+msgid "Exclude Languages"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:127
+msgid "Extensions"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:135
+msgid "Exclude Extensions"
+msgstr ""
+
+#: cps/themes/standard/templates/search_form.html:145
+msgid "Rating Above"
+msgstr "Đánh giá cao hơn"
+
+#: cps/themes/standard/templates/search_form.html:149
+msgid "Rating Below"
+msgstr "Đánh giá thấp hơn"
+
+#: cps/themes/standard/templates/search_form.html:175
+#: cps/themes/standard/templates/search_form.html:187
+#: cps/themes/standard/templates/search_form.html:201
+msgid "From:"
+msgstr "Từ:"
+
+#: cps/themes/standard/templates/search_form.html:179
+#: cps/themes/standard/templates/search_form.html:191
+#: cps/themes/standard/templates/search_form.html:211
+msgid "To:"
+msgstr "Tới:"
+
+#: cps/themes/standard/templates/shelf_edit.html:14
+msgid "Share with Everyone"
+msgstr "Chia sửa với tất cả"
+
+#: cps/themes/standard/templates/shelf_edit.html:21
+msgid "Sync this shelf with Kobo device"
+msgstr "Đồng bộ giá sách này với thiết bị Kobo"
+
+#: cps/themes/standard/templates/tasks.html:8
+msgid "No Records Found"
+msgstr ""
+
+#: cps/themes/standard/templates/tasks.html:12
+msgid "User"
+msgstr "Người dùng"
+
+#: cps/themes/standard/templates/tasks.html:14
+msgid "Task"
+msgstr "Nhiệm vụ"
+
+#: cps/themes/standard/templates/tasks.html:15
+msgid "Status"
+msgstr "Trạng thái"
+
+#: cps/themes/standard/templates/tasks.html:16
+msgid "Progress"
+msgstr "Tiến độ"
+
+#: cps/themes/standard/templates/tasks.html:17
+msgid "Run Time"
+msgstr "Thời gian chạy"
+
+#: cps/themes/standard/templates/tasks.html:19
+msgid "Message"
+msgstr ""
+
+#: cps/themes/standard/templates/tasks.html:21
+msgid "Actions"
+msgstr ""
+
+#: cps/themes/standard/templates/tasks.html:41
+msgid "This task will be cancelled. Any progress made by this task will be saved."
+msgstr ""
+
+#: cps/themes/standard/templates/tasks.html:42
+msgid "If this is a scheduled task, it will be re-ran during the next scheduled time."
+msgstr ""
+
+#: cps/themes/standard/templates/user_table.html:80
+#: cps/themes/standard/templates/user_table.html:103
 msgid "Select..."
 msgstr "Chọn..."
 
-#: cps/templates/user_table.html:131
+#: cps/themes/standard/templates/user_table.html:132
 msgid "Edit User"
 msgstr "Chỉnh sửa người dùng"
 
-#: cps/templates/user_table.html:134
+#: cps/themes/standard/templates/user_table.html:135
 msgid "Enter Username"
 msgstr "Nhập tên người dùng"
 
-#: cps/templates/user_table.html:135
+#: cps/themes/standard/templates/user_table.html:136
 msgid "Enter Email"
 msgstr ""
 
-#: cps/templates/user_table.html:136
+#: cps/themes/standard/templates/user_table.html:137
 msgid "Enter eReader Email"
 msgstr ""
 
-#: cps/templates/user_table.html:136
+#: cps/themes/standard/templates/user_table.html:137
 msgid "eReader Email"
 msgstr ""
 
-#: cps/templates/user_table.html:137
+#: cps/themes/standard/templates/user_table.html:138
 msgid "Locale"
 msgstr "Ngôn ngữ"
 
-#: cps/templates/user_table.html:138
+#: cps/themes/standard/templates/user_table.html:139
 msgid "Visible Book Languages"
 msgstr "Những ngôn ngữ hiển thị cho sách"
 
-#: cps/templates/user_table.html:139
+#: cps/themes/standard/templates/user_table.html:140
 msgid "Edit Allowed Tags"
 msgstr "Chỉnh sửa những tags đươc cho phép"
 
-#: cps/templates/user_table.html:139
+#: cps/themes/standard/templates/user_table.html:140
 msgid "Allowed Tags"
 msgstr "Tags được cho phép"
 
-#: cps/templates/user_table.html:140
+#: cps/themes/standard/templates/user_table.html:141
 msgid "Edit Denied Tags"
 msgstr "Chỉnh sửa những tags bị từ chối"
 
-#: cps/templates/user_table.html:140
+#: cps/themes/standard/templates/user_table.html:141
 msgid "Denied Tags"
 msgstr "Tags bị từ chối"
 
-#: cps/templates/user_table.html:141
+#: cps/themes/standard/templates/user_table.html:142
 msgid "Edit Allowed Column Values"
 msgstr "Chỉnh sửa những giá trị cột được cho phép"
 
-#: cps/templates/user_table.html:141
+#: cps/themes/standard/templates/user_table.html:142
 msgid "Allowed Column Values"
 msgstr "Giá trị cột được cho phép"
 
-#: cps/templates/user_table.html:142
+#: cps/themes/standard/templates/user_table.html:143
 msgid "Edit Denied Column Values"
 msgstr "Chỉnh sửa những cột giá trị bị từ chối"
 
-#: cps/templates/user_table.html:142
+#: cps/themes/standard/templates/user_table.html:143
 msgid "Denied Column Values"
 msgstr "Những cột giá trị bị từ chối"
 
-#: cps/templates/user_table.html:144
+#: cps/themes/standard/templates/user_table.html:145
 msgid "Change Password"
 msgstr "Đổi mật khẩu"
 
-#: cps/templates/user_table.html:147
+#: cps/themes/standard/templates/user_table.html:148
 msgid "View"
 msgstr "Xem"
 
-#: cps/templates/user_table.html:150
+#: cps/themes/standard/templates/user_table.html:151
 msgid "Edit Public Shelves"
 msgstr "Chỉnh sửa giá sách công khai"
 
-#: cps/templates/user_table.html:152
+#: cps/themes/standard/templates/user_table.html:153
 msgid "Sync selected Shelves with Kobo"
 msgstr "Đồng bộ những giá sách đã chọn với Kobo"
 
-#: cps/templates/user_table.html:156
+#: cps/themes/standard/templates/user_table.html:157
 msgid "Show Read/Unread Section"
 msgstr ""
 
