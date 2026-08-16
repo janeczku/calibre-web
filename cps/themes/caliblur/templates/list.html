@@ -1,0 +1,88 @@
+{% extends theme("layout.html") %}
+{% block body %}
+<div class="discover">
+  {% if page == 'authorlist' %}
+    <span class="authorlist-icon glyphicon glyphicon-user" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'catlist' %}
+    <span class="catlist-icon glyphicon glyphicon-tags" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'downloadlist' %}
+    <span class="downloadlist-icon glyphicon glyphicon-download" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'langlist' %}
+    <span class="langlist-icon glyphicon glyphicon-flag" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'publisherlist' %}
+    <span class="publisherlist-icon glyphicon glyphicon-text-size" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'ratingslist' %}
+    <span class="ratingslist-icon glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'formatslist' %}
+    <span class="formatslist-icon glyphicon glyphicon-file" aria-hidden="true"></span>
+  {% endif %}
+  {% if page == 'serieslist' %}
+    <span class="serieslist-icon glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+  {% endif %}
+  <h2 class="{{ page }}">{{ _(title)|replace(':', ' —')|replace("'", "") }}</h2>
+
+  <div class="filterheader caliblur-filterheader hidden-xs">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% if entries.__len__() and data == 'author' %}
+      <div id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></div>
+    {% endif %}
+    <div id="asc" data-order="{{ order }}" data-id="{{ data }}" class="btn btn-primary{% if order == 1 %} active{% endif %}"><span class="glyphicon glyphicon-sort-by-alphabet"></span></div>
+    <div id="desc" data-id="{{ data }}" class="btn btn-primary{% if order == 0 %} active{% endif %}"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></div>
+    {% if charlist|length %}
+      <div id="all" class="active btn btn-primary {% if charlist|length > 9 %}hidden-sm{% endif %}">{{ _('All') }}</div>
+    {% endif %}
+    <div class="btn-group character {% if charlist|length > 9 %}hidden-sm{% endif %}" role="group">
+      {% for char in charlist %}
+        <div class="btn btn-primary char">{{ char[0] }}</div>
+      {% endfor %}
+    </div>
+
+    {% if data == "series" %}
+      <button class="update-view btn btn-primary" data-target="series_view" id="grid-button" data-view="grid">{{ _('Grid') }}</button>
+    {% endif %}
+  </div>
+
+  <div class="container1">
+    <div id="list" class="col-xs-12 col-sm-6">
+      {% for entry in entries %}
+        {% if loop.index0 == (loop.length / 2 + loop.length % 2)|int and loop.length > 20 %}
+          </div>
+          <div id="second" class="col-xs-12 col-sm-6">
+        {% endif %}
+        <div class="row" {% if entry[0].sort %}data-name="{{ entry[0].name }}"{% endif %} data-id="{% if entry[0].sort %}{{ entry[0].sort }}{% else %}{% if entry[0].format %}{{ entry[0].format }}{% else %}{% if entry[0].rating %}{{ entry[0].rating }}{% else %}{{ entry[0].name }}{% endif %}{% endif %}{% endif %}">
+          <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{ entry[1] }}</span></div>
+          <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{ loop.index0 }}" href="{% if entry.format %}{{ url_for('web.books_list', data=data, sort_param='stored', book_id=entry.format) }}{% else %}{{ url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].id) }}{% endif %}">
+            {% if entry.name %}
+              <div class="rating">
+                {% for number in range(entry.name|int) %}
+                  <span class="glyphicon glyphicon-star good"></span>
+                  {% if loop.last and loop.index < 5 %}
+                    {% for numer in range(5 - loop.index) %}
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% else %}
+              {% if entry.format %}
+                {{ entry.format }}
+              {% else %}
+                {{ entry[0].name }}
+              {% endif %}
+            {% endif %}
+          </a></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
+{% endblock %}

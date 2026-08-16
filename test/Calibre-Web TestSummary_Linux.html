@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2026-08-08T11:08:24.000001</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2026-08-10T16:13:52.000001</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-08-08T12:58:11.000001</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-08-10T18:05:55.000001</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 1 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 4 min</p>
         </div>
       </div>
       </div>
@@ -234,11 +234,11 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestBackupMetadata</td>
         <td class="text-center">21</td>
-        <td class="text-center">20</td>
-        <td class="text-center">1</td>
+        <td class="text-center">21</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -356,32 +356,11 @@
     
     
     
-        <tr id="ft2.13" class="hiddenRow bg-danger">
+        <tr id='pt2.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestBackupMetadata - test_backup_change_custom_Enum</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft2.13')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft2.13" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft2.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_backup_metadata.py&#34;, line 622, in test_backup_change_custom_Enum
-    self.assertEqual(custom[&#34;#value#&#34;], &#34;Huji&#34;)
-AssertionError: None != &#39;Huji&#39;
-</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1919,11 +1898,11 @@ AssertionError: None != &#39;Huji&#39;
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestEditAuthors</td>
         <td class="text-center">10</td>
-        <td class="text-center">9</td>
-        <td class="text-center">1</td>
+        <td class="text-center">10</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1978,32 +1957,11 @@ AssertionError: None != &#39;Huji&#39;
     
     
     
-        <tr id="ft17.6" class="hiddenRow bg-danger">
+        <tr id='pt17.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_change_capital_rename_two_co_authors</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.6')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft17.6" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft17.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author.py&#34;, line 408, in test_change_capital_rename_two_co_authors
-    self.assertEqual(200, ret_code)
-AssertionError: 200 != 404
-</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -3001,7 +2959,7 @@ AssertionError: 200 != 404
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 911, in test_watch_metadata
     self.assertNotIn(&#39;series&#39;, book)
-AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1786178654&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}
+AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1786369888&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}
 </pre>
                     </div>
                     <div class="clearfix"></div>
@@ -4757,11 +4715,11 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="passClass">
         <td>TestSSL</td>
         <td class="text-center">7</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -4825,32 +4783,11 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id="ft44.7" class="hiddenRow bg-danger">
+        <tr id='pt44.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestSSL - test_filepicker_two_file</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft44.7')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id="div_ft44.7" class="popup_window test_output" style="display:block;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
-                                onclick="document.getElementById('div_ft44.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File &#34;/home/ozzie/Development/calibre-web-test/test/test_email_ssl.py&#34;, line 207, in test_filepicker_two_file
-    self.assertTrue(found, f&#34;files folder not found in {elements}&#34;)
-AssertionError: False is not true : files folder not found in [&#39;..&#39;, &#39;.git&#39;, &#39;.idea&#39;, &#39;__pycache__&#39;, &#39;build_release&#39;, &#39;test&#39;, &#39;test_reports&#39;, &#39;venv&#39;, &#39;.gitignore&#39;, &#39;01_08_.log&#39;, &#39;aiosmtd.log&#39;, &#39;combine_results.py&#39;, &#39;gdrive.db&#39;, &#39;lauf_vorher.log&#39;, &#39;ldaptor.log&#39;, &#39;main.py&#39;, &#39;report_template.html&#39;, &#39;result.py&#39;]
-</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -6210,8 +6147,8 @@ AssertionError: False is not true : files folder not found in [&#39;..&#39;, &#3
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
         <td>554</td>
-        <td>539</td>
-        <td>4</td>
+        <td>542</td>
+        <td>1</td>
         <td>0</td>
         <td>11</td>
         <td>&nbsp;</td>
@@ -6296,6 +6233,12 @@ AssertionError: False is not true : files folder not found in [&#39;..&#39;, &#3
             <tr>
               <th>rarfile</th>
               <td>4.2</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-Themes2</th>
+              <td>1.0.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6421,7 +6364,7 @@ AssertionError: False is not true : files folder not found in [&#39;..&#39;, &#3
 </div>
 
 <script>
-    drawCircle(539, 4, 0, 11);
+    drawCircle(542, 1, 0, 11);
     showCase(5);
 </script>
 

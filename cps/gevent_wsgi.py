@@ -34,7 +34,7 @@ class MyWSGIHandler(WSGIHandler):
             delta = '%.6f' % (self.time_finish - self.time_start)
         else:
             delta = '-'
-        forwarded = self.environ.get('HTTP_X_FORWARDED_FOR', None)
+        forwarded = self.environ.get('HTTP_X_FORWARDED_FOR', None) if self.environ else None
         if forwarded:
             client_address = forwarded
         else:

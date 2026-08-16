@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>{{ entry.title }}</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  {% if g.google_site_verification|length > 0 %}
+    <meta name="google-site-verification" content="{{g.google_site_verification}}">
+  {% endif %}  
+
+  <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/soundmanager2.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/bar-ui.js') }}"></script>
+
+  <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bar-ui.css') }}" />
+
+  <script>
+    "use strict";
+  </script>
+
+</head>
+
+<body>
+
+  <div class="row" style="display: inline-block; width: 100%;">
+    <div class="col-sm-3 col-lg-3 col-xs-5">
+      
+    </div>
+    <div class="col-sm-6 col-lg-6 book-meta" style="margin-bottom: 2%;">
+      <img id="detailcover" title="{{entry.title}}" src="{{url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified)}}" style="float: right; margin-top: 20px"/>
+      <h2 id="title">{{entry.title}}</h2>
+      <p class="author">
+          {% for author in entry.ordered_authors %}
+            <a href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            {% if not loop.last %}
+              &amp;
+            {% endif %}
+          {% endfor %}
+        </p>
+      {% if entry.ratings.__len__() > 0 %}
+        <div class="rating">
+        <p>
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star-empty"></span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </p>
+        </div>
+      {% endif %}
+      {% if entry.series|length > 0 %}
+          <p>{{_("Book %(index)s of %(range)s", index=entry.series_index|formatfloat(2), range=(url_for('web.books_list', data='series', sort_param='stored', book_id=entry.series[0].id)|escapedlink(entry.series[0].name))|safe)}}</p>
+
+      {% endif %}
+
+      {% if entry.languages.__len__() > 0 %}
+       <div class="languages">
+       <p>
+      <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+      </p>
+      </div>
+      {% endif %}
+
+      {% if entry.identifiers|length > 0 %}
+      <div class="identifiers">
+        <p>
+        <span class="glyphicon glyphicon-link"></span>
+        {% for identifier in entry.identifiers %}
+          <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.format_type()}}</a>
+        {%endfor%}
+      </p>
+      </div>
+      {% endif %}
+
+      {% if entry.tags|length > 0 %}
+
+      <div class="tags">
+      <p>
+        <span class="glyphicon glyphicon-tags"></span>
+
+        {% for tag in entry.tags %}
+          <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+        {%endfor%}
+      </p>
+
+      </div>
+      {% endif %}
+
+      {% if entry.publishers|length > 0 %}
+      <div class="publishers">
+        <p>
+          <span>{{_('Publisher')}}:
+              <a href="{{url_for('web.books_list', data='publisher', sort_param='stored', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+          </span>
+        </p>
+      </div>
+      {% endif %}
+
+      {% if (entry.pubdate|string)[:10] != '0101-01-01' %}
+      <div class="publishing-date">
+        <p>{{_('Published')}}: {{entry.pubdate|formatdate}} </p>
+      </div>
+      {% endif %}
+      {% if cc|length > 0 %}
+
+
+        {% for c in cc %}
+        <div class="real_custom_columns">
+          {% if entry['custom_column_' ~ c.id]|length > 0 %}
+            {{ c.name }}:
+            {% for column in entry['custom_column_' ~ c.id] %}
+              {% if c.datatype == 'rating' %}
+                {{ (column.value / 2)|formatfloat }}
+              {% else %}
+                {% if c.datatype == 'bool' %}
+                  {% if column.value == true %}
+                    <span class="glyphicon glyphicon-ok"></span>
+                  {% else %}
+                    <span class="glyphicon glyphicon-remove"></span>
+                  {% endif %}
+                {% else %}
+                {% if c.datatype == 'float' %}
+                  {{ column.value|formatfloat(2) }}
+                {% elif c.datatype == 'datetime' %}
+                  {{ column.value|formatdate }}
+                {% elif c.datatype == 'comments' %}
+                  {{column.value|clean_string|safe}}
+                {% elif c.datatype == 'series' %}
+                  {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                {% elif c.datatype == 'text' %}
+                    {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                {% else %}
+                  {{ column.value }}
+                {% endif %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        {% endfor %}
+      {% endif %}
+      {% if not current_user.is_anonymous %}
+
+        <div class="custom_columns">
+          <p>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label class="block-label">
+              <input id="have_read_cb" class="readunread-btn-tooltip" type="checkbox" {% if entry.read_status %}checked{% endif %} disabled data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.read_status %}{{_('Mark As Unread')}}{% else %}{{_('Mark As Read')}}{% endif %}">
+              <span>{{_('Read')}}</span>
+            </label>
+          </p>
+          {% if current_user.check_visibility(32768) %}
+          <p>
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <label class="block-label">
+                <input id="archived_cb" class="readunread-btn-tooltip" type="checkbox" {% if entry.is_archived %}checked{% endif %} disabled data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.is_archived %}{{_('Restore from archive')}}{% else %}{{_('Add to archive')}}{% endif %}">
+                <span>{{_('Archived')}}</span>
+              </label>
+          </p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+
+      {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
+        <div class="comments">
+            <h3 id="decription">{{_('Description:')}}</h3>
+            {{entry.comments[0].text|clean_string|safe}}
+        </div>
+      {% endif %}
+
+
+      <div class="more-stuff">
+
+      {% if current_user.is_authenticated %}
+      {% if current_user.shelf.all() or g.shelves_access %}
+      <div id="shelf-actions" class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="Add to shelves">
+          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
+            <span class="caret"></span>
+          </button>
+          <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+            {% for shelf in g.shelves_access %}
+              {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
+                <li>
+                  <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-shelf-action="add"
+                  >
+                    {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
+                  </a>
+                </li>
+              {% endif %}
+            {%endfor%}
+          </ul>
+        </div>
+        <div id="remove-from-shelves" class="btn-group" role="group" aria-label="Remove from shelves">
+          {% if books_shelfs %}
+            {% for shelf in g.shelves_access %}
+              {% if shelf.id in books_shelfs %}
+                <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
+                >
+                  <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
+                        class="glyphicon glyphicon-remove"
+                        {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
+                </a>
+              {% endif %}
+            {%endfor%}
+          {% endif %}
+        </div>
+        <div id="shelf-action-errors" class="pull-left" role="alert"></div>
+      </div>
+      {% endif %}
+
+      {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+<div class="sm2-bar-ui full-width fixed">
+
+ <div class="bd sm2-main-controls">
+
+  <div class="sm2-inline-texture"></div>
+  <div class="sm2-inline-gradient"></div>
+
+  <div class="sm2-inline-element sm2-button-element">
+   <div class="sm2-button-bd">
+    <a href="#play" class="sm2-inline-button sm2-icon-play-pause">Play / Pause</a>
+   </div>
+  </div>
+
+  <div class="sm2-inline-element sm2-inline-status">
+
+   <div class="sm2-playlist">
+    <div class="sm2-playlist-target">
+     <noscript><p>JavaScript Required.</p></noscript>
+    </div>
+   </div>
+
+   <div class="sm2-progress">
+    <div class="sm2-row">
+    <div class="sm2-inline-time">0:00</div>
+     <div class="sm2-progress-bd">
+      <div class="sm2-progress-track">
+       <div class="sm2-progress-bar"></div>
+       <div class="sm2-progress-ball"><div class="icon-overlay"></div></div>
+      </div>
+     </div>
+     <div class="sm2-inline-duration">0:00</div>
+    </div>
+   </div>
+
+  </div>
+
+  <div class="sm2-inline-element sm2-button-element sm2-volume">
+   <div class="sm2-button-bd">
+    <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
+    <a href="#volume" class="sm2-inline-button sm2-volume-control">Volume</a>
+   </div>
+  </div>
+
+  <div class="sm2-inline-element sm2-button-element">
+   <div class="sm2-button-bd">
+    <a href="#prev" title="Previous" class="sm2-inline-button sm2-icon-previous">&lt; Previous</a>
+   </div>
+  </div>
+
+  <div class="sm2-inline-element sm2-button-element">
+   <div class="sm2-button-bd">
+    <a href="#next" title="Next" class="sm2-inline-button sm2-icon-next">&gt; Next</a>
+   </div>
+  </div>
+
+  <div class="sm2-inline-element sm2-button-element">
+   <div class="sm2-button-bd">
+    <a href="#repeat" title="Repeat playlist" class="sm2-inline-button sm2-icon-repeat">&infin; Repeat</a>
+   </div>
+  </div>
+
+  <div class="sm2-inline-element sm2-button-element sm2-menu">
+   <div class="sm2-button-bd">
+    <a href="#menu" class="sm2-inline-button sm2-icon-menu">Menu</a>
+   </div>
+  </div>
+
+ </div>
+
+ <div class="bd sm2-playlist-drawer sm2-element">
+
+  <div class="sm2-inline-texture">
+   <div class="sm2-box-shadow"></div>
+  </div>
+
+  <!-- playlist content is mirrored here -->
+
+  <div class="sm2-playlist-wrapper">
+    <ul class="sm2-playlist-bd">
+      <li><a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"><b>{% for author in entry.ordered_authors %}{{author.name.replace('|',',')}}
+        {% if not loop.last %} & {% endif %} {% endfor %}</b> - {{entry.title}}</a></li>
+    </ul>
+  </div>
+
+ </div>
+
+</div>
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<script>
+soundManager.setup({
+  useHTML5Audio: true,
+  preferFlash: false,
+  url: '/path/to/swf-files/',
+  onready: function() {
+    var mySound = soundManager.createSound({
+      // id: 'aSound',
+      // url: "{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"
+    });
+    mySound.play();
+  },
+  ontimeout: function() {
+    // Hrmm, SM2 could not start. Missing SWF? Flash blocked? Show an error, etc.?
+  }
+});
+window.calibre = {
+        filePath: "{{ url_for('static', filename='js/libs/') }}",
+        cssPath: "{{ url_for('static', filename='css/') }}",
+        bookUrl: "{{ url_for('static', filename=mp3file) }}/",
+        bookmarkUrl: "{{ url_for('web.set_bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
+        bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
+        useBookmarks: "{{ current_user.is_authenticated | tojson }}"
+
+            };
+</script>
+</body>
+
+</html>

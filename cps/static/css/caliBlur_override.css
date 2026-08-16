@@ -32,8 +32,225 @@ input.datepicker:focus + input {color: #555}
     margin-right: 0;
 }
 
+.caliblur-filterheader {
+  margin: 40px 0;
+  padding: 0 10px 0 40px;
+}
+
 @media only screen and (max-width: 767px) {
         .row-fluid > .col-sm-2 {
         visibility: hidden;
     }
+}
+
+.caliblur-login-panel .btn {
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+body.blur .modal-footer .btn,
+body.blur .modal-body .btn,
+body.blur #GeneralDeleteModal .modal-body .btn,
+body.blur #GeneralChangeModal .modal-body .btn,
+body.blur #deleteModal .modal-footer .btn {
+  margin-bottom: 0;
+}
+
+.advsearch-addtoshelf {
+  height: 40px;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .twitter-typeahead .tt-hint {
+  background-color: hsla(0, 0%, 100%, .08) !important;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:first-child {
+  padding-left: 0;
+}
+
+body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:last-child {
+  padding-right: 0;
+}
+
+body.blur .input-group-btn > .datepicker_delete.btn.btn-default {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-width: 40px;
+  margin-bottom: 0;
+  padding: 0 12px;
+}
+
+body.blur .rating-clear .glyphicon-remove {
+  color: #fff;
+}
+
+body.blur .datepicker table tr td.day:hover,
+body.blur .datepicker table tr td span:hover,
+body.blur .datepicker table tr td.active,
+body.blur .datepicker table tr td.active:hover,
+body.blur .datepicker table tr td span.active,
+body.blur .datepicker table tr td span.active:hover {
+  background-color: var(--color-secondary) !important;
+  background-image: none !important;
+  border-color: var(--color-secondary) !important;
+  color: #fff !important;
+}
+
+.book-meta > .author > .author-prefix {
+  color: hsla(0, 0%, 100%, .45);
+}
+
+.form-upload-label,
+.top-tasks-label {
+  display: none;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-primary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #fff;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-primary:hover,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-primary:focus,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-primary:active {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+  color: #fff;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default {
+  background-color: hsla(0, 0%, 100%, .25);
+  border-color: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default:hover,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default:focus,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default:active {
+  background-color: hsla(0, 0%, 100%, .3);
+  border-color: hsla(0, 0%, 100%, .3);
+  color: #fff;
+}
+
+body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type {
+  width: calc(100vw - 240px);
+  height: 60px;
+  margin: 0;
+  padding-left: 25px;
+  position: fixed;
+  top: 60px;
+  left: 240px;
+  background: rgba(0, 0, 0, .15);
+  color: hsla(0, 0%, 100%, .7);
+  font-family: "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 60px;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type::before {
+  content: none;
+}
+
+body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover {
+  margin-bottom: 120px !important;
+  padding: 0 30px !important;
+}
+
+body.dbconfig.admin .caliblur-dbconfig-form .input-group-btn > .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin-bottom: 0;
+  padding: 0 16px;
+}
+
+body.dbconfig.admin .caliblur-dbconfig-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 15px;
+}
+
+body.dbconfig.admin .caliblur-dbconfig-actions .pull-right {
+  display: flex;
+  gap: 10px;
+}
+
+body.dbconfig.admin .caliblur-dbconfig-actions .btn {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+body.blur .modal-header.bg-info,
+body.blur .modal-header.bg-danger,
+body.blur #InvalidDialog .modal-header {
+  background-color: #323232;
+  border-bottom: 1px solid #222;
+  color: #eee;
+}
+
+body.blur .modal-header.bg-info .modal-title,
+body.blur .modal-header.bg-danger .modal-title,
+body.blur .modal-header.bg-info span,
+body.blur .modal-header.bg-danger span,
+body.blur #InvalidDialog .modal-header .modal-title,
+body.blur #InvalidDialog .modal-header span {
+  color: inherit;
+}
+
+body.blur #fileModal #file_confirm {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #fff;
+}
+
+body.blur #fileModal .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+body.blur #fileModal #element_selected {
+  margin-right: auto;
+}
+
+body.blur #fileModal #file_abort,
+body.blur #fileModal #file_confirm {
+  margin: 0;
+}
+
+body.blur #fileModal #file_confirm:hover,
+body.blur #fileModal #file_confirm:focus,
+body.blur #fileModal #file_confirm:active {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+  color: #fff;
+}
+
+body.blur #fileModal #file_abort {
+  background-color: hsla(0, 0%, 100%, .25);
+  border-color: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.blur #fileModal #file_abort:hover,
+body.blur #fileModal #file_abort:focus,
+body.blur #fileModal #file_abort:active {
+  background-color: hsla(0, 0%, 100%, .3);
+  border-color: hsla(0, 0%, 100%, .3);
+  color: #fff;
 }

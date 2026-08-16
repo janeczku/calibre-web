@@ -1,0 +1,123 @@
+{% import 'image.html' as image %}
+{% extends theme("layout.html") %}
+{% block body %}
+<div class="discover">
+    {% if page == 'advsearch' %}
+      <div class="blur-wrapper"></div>
+    {% endif %}
+    {% if entries|length < 1 %}
+      <h2>{{_('No Results Found')}}</h2>
+      <p>{{_('Search Term:')}} {{adv_searchterm}}</p>
+    {% else %}
+      <h2>{{result_count}} {{_('Results for:')}} {{adv_searchterm}}</h2>
+      {% if current_user.is_authenticated %}
+        {% if current_user.shelf.all() or g.shelves_access %}
+          <div id="shelf-actions" class="btn-toolbar" role="toolbar">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="btn-group" role="group" aria-label="Add to shelves">
+              <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle addtoshelf-btn-tooltip{% if page == 'advsearch' %} advsearch-addtoshelf{% endif %}" data-toggle-two="tooltip" title="{{_('Add to shelf')}}" data-placement="bottom" data-viewport=".btn-toolbar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
+                <span class="caret"></span>
+              </button>
+              <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+                {% for shelf in g.shelves_access %}
+                  {% if not shelf.is_public or current_user.role_edit_shelfs() %}
+                    <li><a class="postAction" role="button" data-action="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  {% endif %}
+                {%endfor%}
+              </ul>
+            </div>
+            <div class="btn-group" role="group" aria-label="Remove from shelves" style="margin-right: 5px;">
+              <button id="remove-from-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-list"></span> {{_('Remove from shelf')}}
+                <span class="caret"></span>
+              </button>
+              <ul id="remove-from-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+                {% for shelf in g.shelves_access %}
+                  {% if not shelf.is_public or current_user.role_edit_shelfs() %}
+                    <li><a class="postAction" role="button" data-action="{{ url_for('shelf.search_from_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  {% endif %}
+                {%endfor%}
+              </ul>
+            </div>
+
+          </div>
+        {% endif %}
+      {% endif %}
+      <div class="filterheader hidden-xs"><!-- ToDo: Implement filter for search results -->
+        <a id="new" data-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" class="btn btn-primary{% if order == "new" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='new', query=query)}}"><span class="glyphicon glyphicon-sort-by-order"></span></a>
+        <a id="old" data-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" class="btn btn-primary{% if order == "old" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='old', query=query)}}"><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+        <a id="asc" data-toggle="tooltip" title="{{_('Sort title in alphabetical order')}}" class="btn btn-primary{% if order == "abc" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='abc', query=query)}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+        <a id="desc" data-toggle="tooltip" title="{{_('Sort title in reverse alphabetical order')}}" class="btn btn-primary{% if order == "zyx" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='zyx', query=query)}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+        <a id="auth_az" data-toggle="tooltip" title="{{_('Sort authors in alphabetical order')}}" class="btn btn-primary{% if order == "authaz" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='authaz', query=query)}}"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+        <a id="auth_za" data-toggle="tooltip" title="{{_('Sort authors in reverse alphabetical order')}}" class="btn btn-primary{% if order == "authza" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='authza', query=query)}}"><span class="glyphicon glyphicon-user"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+        <a id="pub_new" data-toggle="tooltip" title="{{_('Sort according to publishing date, newest first')}}" class="btn btn-primary{% if order == "pubnew" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='pubnew', query=query)}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+        <a id="pub_old" data-toggle="tooltip" title="{{_('Sort according to publishing date, oldest first')}}" class="btn btn-primary{% if order == "pubold" %} active{% endif%}" href="{{url_for('web.books_list', data=page, sort_param='pubold', query=query)}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      </div>
+  {% endif %}
+
+  <div class="row display-flex">
+    {% for entry in entries %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book session">
+      <div class="cover">
+        {% if entry.Books.has_cover is defined %}
+           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
+            <span class="img" title="{{entry.Books.title}}" >
+                {{ image.book_cover(entry.Books) }}
+                {% if entry[2] == True %}<span class="badge read glyphicon glyphicon-ok"></span>{% endif %}
+            </span>
+          </a>
+        {% endif %}
+      </div>
+      <div class="meta">
+        <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-toggle="modal" data-target="#bookDetailsModal" data-remote="false"{% endif %}>
+          <p title="{{entry.Books.title}}" class="title">{{entry.Books.title|shortentitle}}</p>
+        </a>
+        <p class="author">
+          {% for author in entry.Books.authors %}
+            {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+              {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort_param='stored', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            {% endif %}
+          {% endfor %}
+          {% if entry.Books.data|music %}
+            <span class="glyphicon glyphicon-music"></span>
+          {% endif %}
+        </p>
+        {% if entry.Books.series.__len__() > 0 %}
+        <p class="series">
+          <a href="{{url_for('web.books_list', data='series', sort_param='stored', book_id=entry.Books.series[0].id )}}">
+            {{entry.Books.series[0].name}}
+          </a>
+          ({{entry.Books.series_index|formatfloat(2)}})
+        </p>
+        {% endif %}
+
+        {% if entry.Books.ratings.__len__() > 0 %}
+        <div class="rating">
+          {% for number in range((entry.Books.ratings[0].rating/2)|int(2)) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star-empty"></span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

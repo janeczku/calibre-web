@@ -166,6 +166,28 @@ $("#form-upload-format").uploadprogress({
     modalTitleFailed: $("#form-upload-format").data("failed")
 });
 
+$(document).on('click', '.toggle-password', function (event) {
+    event.preventDefault();
+    var $button = $(this);
+    var selector = $button.data('target');
+    var $passwordInput = $(selector);
+    if (!$passwordInput.length) {
+        return;
+    }
+    var isPassword = $passwordInput.attr('type') === 'password';
+    $passwordInput.attr('type', isPassword ? 'text' : 'password');
+    var $icon = $button.find('.glyphicon');
+    if ($icon.length) {
+        $icon.toggleClass('glyphicon-eye-open', !isPassword);
+        $icon.toggleClass('glyphicon-eye-close', isPassword);
+    }
+    var label = isPassword ? _('Hide password') : _('Show password');
+    $button.attr({
+        'aria-label': label,
+        'title': label
+    });
+});
+
 $(document).ready(function() {
     var inp = $('#query').first()
     if (inp.length) {
@@ -384,14 +406,14 @@ $(function() {
         });
     }
 
-    $(".discover .row").isotope({
+    $(".discover .row.display-flex").isotope({
         // options
         itemSelector : ".book",
         layoutMode : "fitRows"
     });
 
     if ($(".load-more").length && $(".next").length) {
-        var $loadMore = $(".load-more .row").infiniteScroll({
+        var $loadMore = $(".load-more .row.display-flex").infiniteScroll({
             debug: false,
             // selector for the paged navigation (it will be hidden)
             path : ".next",
@@ -406,7 +428,7 @@ $(function() {
                 $(" a:not(.dropdown-toggle) ")
                   .removeAttr("data-toggle");
             }
-            $(".load-more .row").isotope( "appended", $(data), null );
+            $(".load-more .row.display-flex").isotope( "appended", $(data), null );
         });
 
         // fix for infinite scroll on CaliBlur Theme (#981)
@@ -826,7 +848,7 @@ $(function() {
     });
 
     $(window).resize(function() {
-        $(".discover .row").isotope("layout");
+        $(".discover .row.display-flex").isotope("layout");
     });
 
     $("#import_ldap_users").click(function() {
@@ -851,7 +873,7 @@ $(function() {
         $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
         $(this).parent().find("span.author-hidden-divider").toggle();
         $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
-        $(".discover .row").isotope("layout");
+        $(".discover .row.display-flex").isotope("layout");
     });
 
     $(".update-view").click(function(e) {

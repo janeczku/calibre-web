@@ -44,7 +44,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError, ArgumentError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services, cli_param
+from . import constants, logger, helper, services, cli_param, themes
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
@@ -121,6 +121,8 @@ def before_request():
     g.allow_anonymous = config.config_anonbrowse
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
+    g.themes = themes.get_available_themes()
+    g.theme = themes.get_theme(config.config_theme)
     g.config_authors_max = config.config_authors_max
     if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
@@ -589,6 +591,10 @@ def update_view_configuration():
         return view_configuration()
     _config_int(to_save, "config_restricted_column")
 
+    if not themes.is_valid_theme(to_save.get("config_theme", "0")):
+        flash(_("Invalid Theme"), category="error")
+        log.debug("Invalid Theme")
+        return view_configuration()
     _config_int(to_save, "config_theme")
     _config_int(to_save, "config_random_books")
     _config_int(to_save, "config_books_per_page")

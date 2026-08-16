@@ -1,0 +1,19 @@
+{% extends theme("layout.html") %}
+{% block body %}
+<div class="well col-sm-6 col-sm-offset-2">
+  <form method="POST" role="form">
+  <h2 style="margin-top: 0">{{ _('Approve Magic Link Login') }}</h2>
+  <p>{{ _('Review the device that requested access before approving this login.') }}</p>
+  <dl class="dl-horizontal">
+    <dt>{{ _('IP address') }}</dt>
+    <dd>{{ request_ip or _('Unknown') }}</dd>
+    <dt>{{ _('Browser') }}</dt>
+    <dd>{{ request_user_agent or _('Unknown') }}</dd>
+  </dl>
+  <p>{{ _('If you approve this request, the device that started it will be logged in as %(username)s.', username=current_user.name) }}</p>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-primary">{{ _('Approve Login') }}</button>
+    <a class="btn btn-default" href="{{ url_for('web.index') }}">{{ _('Cancel') }}</a>
+  </form>
+</div>
+{% endblock %}
