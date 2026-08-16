@@ -166,6 +166,28 @@ $("#form-upload-format").uploadprogress({
     modalTitleFailed: $("#form-upload-format").data("failed")
 });
 
+$(document).on('click', '.toggle-password', function (event) {
+    event.preventDefault();
+    var $button = $(this);
+    var selector = $button.data('target');
+    var $passwordInput = $(selector);
+    if (!$passwordInput.length) {
+        return;
+    }
+    var isPassword = $passwordInput.attr('type') === 'password';
+    $passwordInput.attr('type', isPassword ? 'text' : 'password');
+    var $icon = $button.find('.glyphicon');
+    if ($icon.length) {
+        $icon.toggleClass('glyphicon-eye-open', !isPassword);
+        $icon.toggleClass('glyphicon-eye-close', isPassword);
+    }
+    var label = isPassword ? _('Hide password') : _('Show password');
+    $button.attr({
+        'aria-label': label,
+        'title': label
+    });
+});
+
 $(document).ready(function() {
     var inp = $('#query').first()
     if (inp.length) {

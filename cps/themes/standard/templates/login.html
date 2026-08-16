@@ -11,7 +11,14 @@
     </div>
     <div class="form-group">
       <label for="password">{{_('Password')}}</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}" value="{{ password }}">
+      <div class="input-group">
+        <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}" value="{{ password }}">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default toggle-password" data-target="#password" aria-label="{{_('Show password')}}" title="{{_('Show password')}}">
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+          </button>
+        </span>
+      </div>
     </div>
     <div class="checkbox">
       <label>
