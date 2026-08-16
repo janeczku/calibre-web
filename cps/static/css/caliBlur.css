@@ -3794,7 +3794,8 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
 }
 
 body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
+body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
     width: 100vw;
     height: 120px;
     margin: 0 !important;
@@ -3806,26 +3807,30 @@ body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-h
 }
 
 body.login > .container-fluid,
-body.register > .container-fluid {
+body.register > .container-fluid,
+body.remotelogin > .container-fluid {
     width: 100vw;
     height: 100%;
     position: relative
 }
 
 body.login > div.container-fluid > div.row-fluid > div.col-sm-10,
-body.register > div.container-fluid > div.row-fluid > div.col-sm-10 {
+body.register > div.container-fluid > div.row-fluid > div.col-sm-10,
+body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-10 {
     width: 100%;
     height: 100%;
     overflow-y: visible !important
 }
 
 body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse,
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse {
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse,
+body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse {
     display: none !important
 }
 
 .login .navbar-default,
-.register .navbar-default {
+.register .navbar-default,
+.remotelogin .navbar-default {
     background: 0 0 !important
 }
 
@@ -3840,21 +3845,31 @@ body.author .undefined-img, body.shelfcreate, body.shelfedit {
 }
 
 body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before,
+body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before,
+body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-2::after,
 body.register > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before {
     display: none
 }
 
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-2 {
+    background: none;
+}
+
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
+body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
     pointer-events: none;
     cursor: default
 }
 
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
+body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover,
+body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
     background: 0 0 !important;
     color: #ccc !important
 }
 
-body.register .well > form > h2 {
+body.register .well > form > h2,
+body.remotelogin .well > form > h2,
+body.remotelogin .caliblur-remote-login-form > h2 {
     position: static !important;
     width: 100% !important;
     max-width: none !important;
@@ -3872,9 +3887,19 @@ body.register .well > form > h2 {
     background: transparent !important
 }
 
-body.register .well > form {
+body.register .well > form,
+body.remotelogin .well > form,
+body.remotelogin .caliblur-remote-login-form {
     margin-top: 0;
     padding-top: 0;
+}
+
+body.remotelogin .well > form.caliblur-remote-login-form,
+body.remotelogin .well > .caliblur-remote-login-form {
+    background: rgba(0, 0, 0, .4);
+    border-radius: 4px;
+    padding: 20px 25px 10px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
 }
 
 .book-meta > .bookinfo > .comments[aria-expanded=true] + a:after, .book-meta > .description[aria-expanded=true] + a:after {
@@ -4369,8 +4394,13 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
 
 }
 
-.login .home-btn, .login .plexBack, .register .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.register > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > div.navbar.navbar-default.navbar-static-top > div > form, body.register > div.navbar.navbar-default.navbar-static-top > div > form {
+.login .home-btn, .login .plexBack, .register .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.register > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > div.navbar.navbar-default.navbar-static-top > div > form, body.register > div.navbar.navbar-default.navbar-static-top > div > form, body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > form {
     display: none
+}
+
+body.remotelogin .plexBack,
+body.remotelogin .plexBack > a {
+    display: none !important;
 }
 
 @media only screen and (min-width: 768px) {
