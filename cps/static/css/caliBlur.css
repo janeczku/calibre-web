@@ -410,16 +410,11 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.c
     background-color: hsla(0, 0%, 100%, .3)
 }
 
-body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
-    content: "\e155";
-    font-family: 'Glyphicons Halflings', serif;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
+.shelforder-icon {
     font-size: 6vw;
     position: fixed;
     left: 240px;
-    top: 180px;
+    top: 300px !important;
     width: calc(20% - 55px);
     text-align: center
 }
@@ -6560,7 +6555,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 30px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, .authorlist-icon, .catlist-icon, .downloadlist-icon, .langlist-icon, .ratingslist-icon, .serieslist-icon, body.shelforder > div.container-fluid > div.row-fluid > div.col-sm-10:before {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, .authorlist-icon, .catlist-icon, .downloadlist-icon, .langlist-icon, .ratingslist-icon, .serieslist-icon, .shelforder-icon {
         position: fixed;
         top: 62px;
         right: 23px;

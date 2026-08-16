@@ -1,6 +1,7 @@
 {% extends theme("layout.html") %}
 {% block body %}
   <div class="discover">
+    <span class="shelforder-icon glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span>
     <h2>{{ title|replace(':', ' —')|replace("'", "") }}</h2>
     <div style="margin-left:20%; width:calc(80% - 30px);">
       <div>{{_('Drag to Rearrange Order')}}</div>
@@ -40,8 +41,8 @@
         {% endfor %}
       </div>
       <div class="pull-right" style="display:flex; gap:10px; margin-top:30px; margin-bottom:60px;">
-        <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" id="shelf_back" class="btn btn-default">{{_('Back')}}</a>
-        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-primary" id="ChangeOrder">{{_('Save')}}</button>
+        <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" id="shelf_back" class="btn btn-primary">{{_('Back')}}</a>
+        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Save')}}</button>
       </div>
     </div>
   </div>
