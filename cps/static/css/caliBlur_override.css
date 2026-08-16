@@ -48,6 +48,14 @@ input.datepicker:focus + input {color: #555}
   margin-bottom: 6px;
 }
 
+body.blur .modal-footer .btn,
+body.blur .modal-body .btn,
+body.blur #GeneralDeleteModal .modal-body .btn,
+body.blur #GeneralChangeModal .modal-body .btn,
+body.blur #deleteModal .modal-footer .btn {
+  margin-bottom: 0;
+}
+
 .advsearch-addtoshelf {
   height: 40px;
 }

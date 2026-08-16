@@ -25,11 +25,11 @@
     {% if g.allow_registration %}
     <a class="btn btn-default" id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a>
     {% endif %}
-    {% if g.allow_anonymous %}
-    <a class="btn btn-default" href="{{url_for('web.index')}}">{{ _('Home') }}</a>
-    {% endif %}
     {% if config.config_remote_login %}
-    <a href="{{url_for('remotelogin.remote_login')}}" id="remote_login" class="pull-right">{{_('Log in with Magic Link')}}</a>
+    <a class="btn btn-default" id="remote_login" href="{{url_for('remotelogin.remote_login')}}">{{_('Log in with Magic Link')}}</a>
+    {% endif %}
+    {% if g.allow_anonymous %}
+    <a class="btn btn-default" href="{{url_for('web.index')}}">{{ _('Anonymous Browsing') }}</a>
     {% endif %}
     {% if config.config_login_type == 2 %}
       {% if 1 in oauth_check %}

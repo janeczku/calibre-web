@@ -2262,6 +2262,20 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
     padding: 60px
 }
 
+.modal .well,
+.modal-body .well {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    min-width: 0;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 15px;
+}
+
 .well > form {
     background: rgba(0, 0, 0, .4);
     color: hsla(0, 0%, 100%, .45);
@@ -5528,6 +5542,12 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
     top: 60px;
     left: 240px;
     pointer-events: none
+}
+
+#modal_kobo_token,
+#modal_kobo_token .modal-dialog,
+#modal_kobo_token .modal-content {
+    z-index: 1060 !important;
 }
 
 .modal-dialog {
