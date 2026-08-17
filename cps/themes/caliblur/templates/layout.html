@@ -134,7 +134,7 @@
               <li><a href="{{url_for('search.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
               {% for element in sidebar %}
                 {% if current_user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><span class="glyphicon {{element['glyph']}}"></span> <span class="nav-text">{{_(element['text'])|trim}}</span></a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><i class="bi {{element['glyph']}}" aria-hidden="true"></i> <span class="nav-text">{{_(element['text'])|trim}}</span></a></li>
                 {% endif %}
               {% endfor %}
               {% if current_user.is_authenticated or g.allow_anonymous %}

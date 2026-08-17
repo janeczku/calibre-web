@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% from theme('modal_dialogs.html') import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
 {% import 'image.html' as image %}
-{% set bootstrap5_page = page == 'login' %}
+{% set bootstrap5_page = page in ['login', 'admin'] %}
 <html lang="{{ current_user.locale }}">
   <head>
     <title>{{instance}} | {{title}}</title>
@@ -19,6 +19,7 @@
     {% block header %}{% endblock %}
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" rel="stylesheet" media="screen">
   </head>
   <body class="{{ page }} {{ bodyClass }}">
     <!-- Static navbar -->
@@ -55,8 +56,8 @@
         <div class="navbar-collapse collapse" id="mainNavbar">
           {% if current_user.is_authenticated or g.allow_anonymous %}
           <ul class="nav navbar-nav me-auto">
-            <li class="nav-item"><a class="nav-link" href="{{url_for('search.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}"> {{_('Advanced Search')}}</span></a></li>
-            {% if simple==true %} <li class="nav-item"><a class="nav-link" href="{{url_for('basic.index')}}" id="basic"><span class="glyphicon glyphicon-phone"></span><span>{{_('Simple Theme')}}</span></a></li>{% endif %}
+            <li class="nav-item"><a class="nav-link" href="{{url_for('search.advanced_search')}}" id="advanced_search"><i class="bi bi-search layout-icon" aria-hidden="true"></i><span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}"> {{_('Advanced Search')}}</span></a></li>
+            {% if simple==true %} <li class="nav-item"><a class="nav-link" href="{{url_for('basic.index')}}" id="basic"><i class="bi bi-phone layout-icon" aria-hidden="true"></i><span>{{_('Simple Theme')}}</span></a></li>{% endif %}
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right ms-auto align-items-lg-center" id="main-nav">
@@ -74,19 +75,19 @@
                   </li>
               {% endif %}
               {% if not current_user.is_anonymous and not simple%}
-                <li class="nav-item top_tasks"><a class="nav-link" id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Tasks')}}</span></a></li>
+                <li class="nav-item top_tasks"><a class="nav-link" id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><i class="bi bi-list-task layout-icon" aria-hidden="true"></i> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Tasks')}}</span></a></li>
               {% endif %}
               {% if current_user.role_admin() %}
-                <li class="nav-item"><a class="nav-link" id="top_admin" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Admin')}}</span></a></li>
+                <li class="nav-item"><a class="nav-link" id="top_admin" href="{{url_for('admin.admin')}}"><i class="bi bi-speedometer2 layout-icon" aria-hidden="true"></i> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Admin')}}</span></a></li>
               {% endif %}
-              <li class="nav-item"><a class="nav-link" id="top_user" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{current_user.name}}</span></a></li>
+              <li class="nav-item"><a class="nav-link" id="top_user" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><i class="bi bi-person layout-icon" aria-hidden="true"></i> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{current_user.name}}</span></a></li>
                 {% if not current_user.is_anonymous %}
-                <li class="nav-item"><a class="nav-link" id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Logout')}}</span></a></li>
+                <li class="nav-item"><a class="nav-link" id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><i class="bi bi-box-arrow-right layout-icon" aria-hidden="true"></i> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Logout')}}</span></a></li>
                 {% endif %}
             {% endif %}
             {% if g.allow_registration and not current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" id="login" href="{{url_for('web.login')}}">{% if bootstrap5_page %}<svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 15 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5Z"/><path fill-rule="evenodd" d="M5.854 11.354a.5.5 0 0 1 0-.708L8.293 8 5.854 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0Z"/><path fill-rule="evenodd" d="M1.5 8a.5.5 0 0 1 .5-.5H8.5a.5.5 0 0 1 0 1H2a.5.5 0 0 1-.5-.5Z"/></svg>{% else %}<span class="glyphicon glyphicon-log-in"></span>{% endif %} {{_('Login')}}</a></li>
-            <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" id="register" href="{{url_for('web.register')}}">{% if bootstrap5_page %}<svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 8a3 3 0 1 0-2.83-4H4a2 2 0 1 0 0 4h1.17A3.001 3.001 0 0 0 8 8Z"/><path d="M14 13c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Z"/><path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5Z"/></svg>{% else %}<span class="glyphicon glyphicon-user"></span>{% endif %} {{_('Register')}}</a></li>
+            <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" id="login" href="{{url_for('web.login')}}"><i class="bi bi-box-arrow-in-right layout-icon" aria-hidden="true"></i> {{_('Login')}}</a></li>
+            <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" id="register" href="{{url_for('web.register')}}"><i class="bi bi-person layout-icon" aria-hidden="true"></i> {{_('Register')}}</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
@@ -124,17 +125,17 @@
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if current_user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><span class="glyphicon {{element['glyph']}}"></span> {{_(element['text'])}}</a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><i class="bi {{ element['glyph'] }} layout-icon" aria-hidden="true"></i> {{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
               {% if current_user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge badge-sm bg-secondary rounded-pill">{{shelf.books.all()|length}}</span></a></li>
+                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><i class="bi bi-list-ul layout-icon shelf" aria-hidden="true"></i> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge badge-sm bg-secondary rounded-pill">{{shelf.books.all()|length}}</span></a></li>
                 {% endfor %}
               {% if not current_user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
-                <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('about.stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
+                <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('about.stats')}}"><i class="bi bi-info-circle layout-icon" aria-hidden="true"></i> {{_('About')}}</a></li>
               {% endif %}
               {% endif %}
 

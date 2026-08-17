@@ -5,7 +5,7 @@
 
 .tooltip.bottom .tooltip-inner {
   font-size: 13px;
-  font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family: "Nimbus Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 3px 10px;
@@ -27,6 +27,12 @@
   src: local('Grand Hotel'), local('GrandHotel-Regular'), url("fonts/GrandHotel-Regular.ttf") format('truetype');
 }
 
+@font-face {
+  font-family: "bootstrap-icons";
+  src: url("fonts/bootstrap-icons.woff2") format("woff2"),
+       url("fonts/bootstrap-icons.woff") format("woff");
+}
+
 html.http-error {
   margin: 0;
   height: 100%;
@@ -35,6 +41,15 @@ html.http-error {
 body {
   background: #f2f2f2;
   margin-bottom: 40px;
+}
+
+body,
+body input,
+body button,
+body select,
+body textarea,
+body table {
+  font-family: "Nimbus Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .http-error body {
@@ -517,7 +532,44 @@ body > div.container-fluid  {
     height: 40px;
 }
 
-.theme-icon,
+.btn-file {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  #main-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  #main-nav > li {
+    display: flex;
+    align-items: center;
+  }
+
+  #mainNavbar > .nav > li > a {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  #form-upload.navbar-form {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  #form-upload .form-group {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+
 .password-toggle-icon {
   display: inline-block;
   vertical-align: middle;
@@ -543,5 +595,215 @@ body > div.container-fluid  {
 .oauth-login-links a,
 #remote_login {
   display: inline-flex;
+  align-items: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/*.bi,
+.bi::before,
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: "bootstrap-icons" !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: -.125em;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-search::before {
+  content: "\f52a";
+}
+
+.bi-phone::before {
+  content: "\f4e7";
+}
+
+.bi-list-task::before {
+  content: "\f477";
+}
+
+.bi-speedometer2::before {
+  content: "\f580";
+}
+
+.bi-person::before {
+  content: "\f4e1";
+}
+
+.bi-box-arrow-right::before {
+  content: "\f1c3";
+}
+
+.bi-box-arrow-in-right::before {
+  content: "\f1be";
+}
+
+.bi-book::before {
+  content: "\f194";
+}
+
+.bi-fire::before {
+  content: "\f7f6";
+}
+
+.bi-download::before {
+  content: "\f30a";
+}
+
+.bi-star-fill::before {
+  content: "\f586";
+}
+
+.bi-eye::before {
+  content: "\f341";
+}
+
+.bi-eye-slash::before {
+  content: "\f340";
+}
+
+.bi-shuffle::before {
+  content: "\f544";
+}
+
+.bi-tags::before {
+  content: "\f5b2";
+}
+
+.bi-bookmarks::before {
+  content: "\f1a4";
+}
+
+.bi-type::before {
+  content: "\f5f7";
+}
+
+.bi-flag::before {
+  content: "\f3cc";
+}
+
+.bi-star::before {
+  content: "\f588";
+}
+
+.bi-file-earmark::before {
+  content: "\f392";
+}
+
+.bi-folder2-open::before {
+  content: "\f3d8";
+}
+
+.bi-list-ul::before {
+  content: "\f478";
+}
+
+.bi-info-circle::before {
+  content: "\f431";
+}
+
+.bi-check-circle::before {
+  content: "\f26b";
+}
+
+.bi-check-circle-fill::before {
+  content: "\f26a";
+}
+
+.bi-x-circle::before {
+  content: "\f623";
+}
+
+.bi-x-circle-fill::before {
+  content: "\f622";
+}*/
+
+.admin-dashboard .admin-detail-row:first-child {
+  border-top: 0 !important;
+}
+
+.admin-dashboard .row > .col > h2 {
+  margin-top: 0;
+}
+
+.admin-dashboard .status-indicator {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.admin-dashboard .table > :not(caption) > * > * {
+  vertical-align: middle;
+}
+
+.btn-default,
+.navbar .btn,
+.admin-dashboard .btn,
+.admin-modal .btn,
+.login .card.login-card .btn {
+  background-color: #fff;
+}
+
+.btn-primary,
+.admin-dashboard .btn-primary,
+.admin-modal .btn-primary,
+.login .card.login-card .btn-primary {
+  background-color: #fff;
+  border-color: #ced4da;
+  color: #444;
+}
+
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:active,
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.navbar .btn:hover,
+.navbar .btn:focus,
+.navbar .btn:active,
+.admin-dashboard .btn:hover,
+.admin-dashboard .btn:focus,
+.admin-dashboard .btn:active,
+.admin-modal .btn:hover,
+.admin-modal .btn:focus,
+.admin-modal .btn:active,
+.login .card.login-card .btn:hover,
+.login .card.login-card .btn:focus,
+.login .card.login-card .btn:active {
+  background-color: #fff;
+}
+
+.layout-icon {
+  color: #000;
+}
+
+.navbar .nav-link .layout-icon,
+.navbar .navbar-brand .layout-icon {
+  margin-right: 0.35rem;
+}
+
+.navigation li a .layout-icon {
+  margin-right: 10px;
+}
+
+.admin-dashboard .admin-actions .btn {
+  min-height: 40px;
+}
+
+.admin-modal .modal-header {
   align-items: center;
 }

@@ -20,6 +20,43 @@ function getPath() {
     return jsFileLocation.substr(0, jsFileLocation.search("/static/js/libs/jquery.min.js"));  // the js folder path
 }
 
+function setVisibilityState($elements, hidden) {
+    return $elements.toggleClass("hidden", hidden).toggleClass("d-none", hidden);
+}
+
+function hideElements($elements) {
+    return setVisibilityState($elements, true);
+}
+
+function showElements($elements) {
+    return setVisibilityState($elements, false);
+}
+
+if (typeof $.fn.modal !== "function" && window.bootstrap && window.bootstrap.Modal) {
+    $.fn.modal = function modal(actionOrOptions) {
+        return this.each(function() {
+            var options = typeof actionOrOptions === "object" ? actionOrOptions : {};
+            var instance = window.bootstrap.Modal.getOrCreateInstance(this, options);
+            if (typeof actionOrOptions === "string") {
+                instance[actionOrOptions]();
+            } else if (!actionOrOptions || actionOrOptions.show !== false) {
+                instance.show();
+            }
+        });
+    };
+}
+
+if (typeof $.fn.alert !== "function" && window.bootstrap && window.bootstrap.Alert) {
+    $.fn.alert = function alert(action) {
+        return this.each(function() {
+            var instance = window.bootstrap.Alert.getOrCreateInstance(this);
+            if (action === "close") {
+                instance.close();
+            }
+        });
+    };
+}
+
 function postButton(event, action, location=""){
     event.preventDefault();
     var newForm = jQuery('<form>', {
@@ -325,16 +362,17 @@ $(function() {
     });
 
     function restartTimer() {
-        $("#spinner").addClass("hidden");
+        hideElements($("#spinner"));
         $("#RestartDialog").modal("hide");
     }
 
     function cleanUp() {
         clearInterval(updateTimerID);
-        $("#spinner2").hide();
-        $("#DialogFinished").removeClass("hidden");
-        $("#check_for_update").removeClass("hidden");
-        $("#perform_update").addClass("hidden");
+        hideElements($("#spinner2"));
+        showElements($("#DialogFinished"));
+        showElements($("#check_for_update"));
+        hideElements($("#perform_update"));
+        hideElements($("#update_info"));
         $("#message").alert("close");
         $("#update_table > tbody > tr").each(function () {
             if ($(this).attr("id") !== "current_version") {
@@ -428,7 +466,7 @@ $(function() {
             //extraScrollPx: 300
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
-            $(".pagination").addClass("hidden").html(() => $(response).find(".pagination").html());
+            hideElements($(".pagination")).html(() => $(response).find(".pagination").html());
             if ($("body").hasClass("blur")) {
                 $(" a:not(.dropdown-toggle) ")
                   .removeAttr("data-toggle");
@@ -458,7 +496,7 @@ $(function() {
             url: getPath() + "/shutdown",
             data: JSON.stringify({"parameter":0}),
             success: function success() {
-                $("#spinner").show();
+                showElements($("#spinner"));
                 setTimeout(restartTimer, 3000);
             }
         });
@@ -480,8 +518,9 @@ $(function() {
         var buttonText = $this.html();
         $this.html("...");
         $("#DialogContent").html("");
-        $("#DialogFinished").addClass("hidden");
-        $("#update_error").addClass("hidden");
+        hideElements($("#DialogFinished"));
+        hideElements($("#update_error"));
+        hideElements($("#update_info"));
         if ($("#message").length) {
             $("#message").alert("close");
         }
@@ -496,10 +535,9 @@ $(function() {
 
                 if (data.success === true) {
                     if (data.update === true) {
-                        $("#check_for_update").addClass("hidden");
-                        $("#perform_update").removeClass("hidden");
-                        $("#update_info")
-                            .removeClass("hidden")
+                        hideElements($("#check_for_update"));
+                        showElements($("#perform_update"));
+                        showElements($("#update_info"))
                             .find("span").html(data.commit);
 
                         data.history.forEach(function(entry) {
@@ -514,7 +552,7 @@ $(function() {
                 }
 
                 message = "<div id=\"message\" class=\"alert " + cssClass
-                    + " fade in\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\">&times;</a>"
+                    + " fade in\"><a href=\"#\" class=\"close\" data-bs-dismiss=\"alert\" data-dismiss=\"alert\">&times;</a>"
                     + data.message + "</div>";
 
                 $(message).insertAfter($("#update_table"));
@@ -533,10 +571,10 @@ $(function() {
     });
 
     $("#restart_database").click(function() {
-        $("#DialogHeader").addClass("hidden");
-        $("#DialogFinished").addClass("hidden");
+        hideElements($("#DialogHeader"));
+        hideElements($("#DialogFinished"));
         $("#DialogContent").html("");
-        $("#spinner2").show();
+        showElements($("#spinner2"));
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
@@ -544,32 +582,32 @@ $(function() {
             url: getPath() + "/shutdown",
             data: JSON.stringify({"parameter":2}),
             success: function success(data) {
-                $("#spinner2").hide();
+                hideElements($("#spinner2"));
                 $("#DialogContent").html(data.text);
-                $("#DialogFinished").removeClass("hidden");
+                showElements($("#DialogFinished"));
             }
         });
     });
     $("#metadata_backup").click(function() {
-        $("#DialogHeader").addClass("hidden");
-        $("#DialogFinished").addClass("hidden");
+        hideElements($("#DialogHeader"));
+        hideElements($("#DialogFinished"));
         $("#DialogContent").html("");
-        $("#spinner2").show();
+        showElements($("#spinner2"));
         $.ajax({
             method: "post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: getPath() + "/metadata_backup",
             success: function success(data) {
-                $("#spinner2").hide();
+                hideElements($("#spinner2"));
                 $("#DialogContent").html(data.text);
-                $("#DialogFinished").removeClass("hidden");
+                showElements($("#DialogFinished"));
             }
         });
     });
     $("#perform_update").click(function() {
-        $("#DialogHeader").removeClass("hidden");
-        $("#spinner2").show();
+        showElements($("#DialogHeader"));
+        showElements($("#spinner2"));
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -857,19 +895,19 @@ $(function() {
     });
 
     $("#import_ldap_users").click(function() {
-        $("#DialogHeader").addClass("hidden");
-        $("#DialogFinished").addClass("hidden");
+        hideElements($("#DialogHeader"));
+        hideElements($("#DialogFinished"));
         $("#DialogContent").html("");
-        $("#spinner2").show();
+        showElements($("#spinner2"));
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: getPath() + "/import_ldap_users",
             success: function success(data) {
-                $("#spinner2").hide();
+                hideElements($("#spinner2"));
                 $("#DialogContent").html(data.text);
-                $("#DialogFinished").removeClass("hidden");
+                showElements($("#DialogFinished"));
             }
         });
     });

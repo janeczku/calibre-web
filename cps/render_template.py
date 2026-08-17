@@ -57,66 +57,66 @@ def get_sidebar_config(kwargs=None):
     else:
         content = 'conf' in kwargs
     sidebar = list()
-    sidebar.append({"glyph": "glyphicon-book", "text": _('Books'), "link": 'web.index', "id": "new",
+    sidebar.append({"glyph": "bi-book", "text": _('Books'), "link": 'web.index', "id": "new",
                     "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
                     "show_text": _('Show recent books'), "config_show":False})
-    sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
+    sidebar.append({"glyph": "bi-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
                     "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
                     "show_text": _('Show Hot Books'), "config_show": True})
     if current_user.role_admin():
-        sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.download_list',
+        sidebar.append({"glyph": "bi-download", "text": _('Downloaded Books'), "link": 'web.download_list',
                         "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not current_user.is_anonymous),
                         "page": "download", "show_text": _('Show Downloaded Books'), "no_param":True,
                         "config_show": content})
     else:
-        sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.books_list',
+        sidebar.append({"glyph": "bi-download", "text": _('Downloaded Books'), "link": 'web.books_list',
                         "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not current_user.is_anonymous),
                         "page": "download", "show_text": _('Show Downloaded Books'),
                         "config_show": content})
     sidebar.append(
-        {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
+        {"glyph": "bi-star-fill", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
          "show_text": _('Show Top Rated Books'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
+    sidebar.append({"glyph": "bi-eye", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
                     "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not current_user.is_anonymous),
                     "page": "read", "show_text": _('Show Read and Unread'), "config_show": content})
     sidebar.append(
-        {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
+        {"glyph": "bi-eye-slash", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
          "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not current_user.is_anonymous), "page": "unread",
          "show_text": _('Show unread'), "config_show": False})
-    sidebar.append({"glyph": "glyphicon-random", "text": _('Discover'), "link": 'web.books_list', "id": "rand",
+    sidebar.append({"glyph": "bi-shuffle", "text": _('Discover'), "link": 'web.books_list', "id": "rand",
                     "visibility": constants.SIDEBAR_RANDOM, 'public': True, "page": "discover",
                     "show_text": _('Show Random Books'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-tags", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
+    sidebar.append({"glyph": "bi-tags", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
                     "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category", "no_param":True,
                     "show_text": _('Show Category Section'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
+    sidebar.append({"glyph": "bi-bookmarks", "text": _('Series'), "link": 'web.series_list', "id": "serie",
                     "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series", "no_param":True,
                     "show_text": _('Show Series Section'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
+    sidebar.append({"glyph": "bi-person", "text": _('Authors'), "link": 'web.author_list', "id": "author",
                     "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author", "no_param":True,
                     "show_text": _('Show Author Section'), "config_show": True})
     sidebar.append(
-        {"glyph": "glyphicon-text-size", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
+        {"glyph": "bi-type", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
          "visibility": constants.SIDEBAR_PUBLISHER, 'public': True, "page": "publisher", "no_param":True,
          "show_text": _('Show Publisher Section'), "config_show":True})
-    sidebar.append({"glyph": "glyphicon-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
+    sidebar.append({"glyph": "bi-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
                     "visibility": constants.SIDEBAR_LANGUAGE, 'public': (current_user.filter_language() == 'all'),
                     "page": "language", "no_param":True,
                     "show_text": _('Show Language Section'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-star-empty", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
+    sidebar.append({"glyph": "bi-star", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
                     "visibility": constants.SIDEBAR_RATING, 'public': True, "no_param":True,
                     "page": "rating", "show_text": _('Show Ratings Section'), "config_show": True})
-    sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
+    sidebar.append({"glyph": "bi-file-earmark", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
                     "visibility": constants.SIDEBAR_FORMAT, 'public': True, "no_param":True,
                     "page": "format", "show_text": _('Show File Formats Section'), "config_show": True})
     sidebar.append(
-        {"glyph": "glyphicon-folder-open", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
+        {"glyph": "bi-folder2-open", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not current_user.is_anonymous), "page": "archived",
          "show_text": _('Show Archived Books'), "config_show": content})
     if not simple:
         sidebar.append(
-            {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
+            {"glyph": "bi-list-ul", "text": _('Books List'), "link": 'web.books_table', "id": "list",
              "visibility": constants.SIDEBAR_LIST, 'public': (not current_user.is_anonymous),
              "show_text": _('Show Books List'), "config_show": content, "no_param":True})
     g.shelves_access = ub.session.query(ub.Shelf).filter(
