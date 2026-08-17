@@ -552,8 +552,9 @@ $(function() {
                 }
 
                 message = "<div id=\"message\" class=\"alert " + cssClass
-                    + " fade in\"><a href=\"#\" class=\"close\" data-bs-dismiss=\"alert\" data-dismiss=\"alert\">&times;</a>"
-                    + data.message + "</div>";
+                    + " alert-dismissible fade show\" role=\"alert\">"
+                    + data.message
+                    + "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" data-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
 
                 $(message).insertAfter($("#update_table"));
             }
