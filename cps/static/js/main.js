@@ -183,6 +183,9 @@ $(document).on('click', '.toggle-password', function (event) {
     }
     var showLabel = button.attr('data-password-show') || button.attr('aria-label') || button.attr('title');
     var hideLabel = button.attr('data-password-hide') || showLabel;
+    button.find('.password-icon-hidden').toggleClass('d-none', !isPassword);
+    button.find('.password-icon-visible').toggleClass('d-none', isPassword);
+    button.find('.password-label').text(isPassword ? hideLabel : showLabel);
     var label = isPassword ? hideLabel : showLabel;
     button.attr({
         'aria-label': label,

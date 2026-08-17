@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% from theme('modal_dialogs.html') import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
 {% import 'image.html' as image %}
+{% set bootstrap5_page = page == 'login' %}
 <html lang="{{ current_user.locale }}">
   <head>
     <title>{{instance}} | {{title}}</title>
@@ -14,100 +15,108 @@
     <!-- Bootstrap -->
     <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/libs/' ~ ('bootstrap5.min.css' if bootstrap5_page else 'bootstrap.min.css')) }}" rel="stylesheet" media="screen">
     {% block header %}{% endblock %}
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
   </head>
   <body class="{{ page }} {{ bodyClass }}">
     <!-- Static navbar -->
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
+    <nav class="navbar navbar-default navbar-static-top navbar-expand-lg navbar-light bg-body-tertiary border-bottom" role="navigation">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">{{_('Toggle Navigation')}}</span>
+        <div class="navbar-header d-flex align-items-center">
+          <button type="button" class="navbar-toggle collapsed navbar-toggler" data-toggle="collapse" data-target="#mainNavbar" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="{{_('Toggle Navigation')}}">
+            <span class="sr-only{% if bootstrap5_page %} visually-hidden{% endif %}">{{_('Toggle Navigation')}}</span>
+            {% if bootstrap5_page %}
+            <span class="navbar-toggler-icon"></span>
+            {% else %}
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
+            {% endif %}
           </button>
           <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
         </div>
         {% if current_user.is_authenticated or g.allow_anonymous %}
-          <form class="navbar-form navbar-left" role="search" action="{{url_for('search.simple_search')}}" method="GET">
-            <div class="form-group input-group input-group-sm">
-              <label for="query" class="sr-only">{{_('Search')}}</label>
+          <form class="navbar-form navbar-left d-flex me-auto my-2 my-lg-0" role="search" action="{{url_for('search.simple_search')}}" method="GET">
+            <div class="form-group input-group input-group-sm flex-nowrap">
+              <label for="query" class="sr-only{% if bootstrap5_page %} visually-hidden{% endif %}">{{_('Search')}}</label>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
+              {% if bootstrap5_page %}
+              <button type="submit" id="query_submit" class="btn btn-default{% if bootstrap5_page %} btn-outline-secondary{% endif %}">{{_('Search')}}</button>
+              {% else %}
               <span class="input-group-btn">
                 <button type="submit" id="query_submit" class="btn btn-default">{{_('Search')}}</button>
               </span>
+              {% endif %}
             </div>
           </form>
         {% endif %}
-        <div class="navbar-collapse collapse">
+        <div class="navbar-collapse collapse" id="mainNavbar">
           {% if current_user.is_authenticated or g.allow_anonymous %}
-          <ul class="nav navbar-nav ">
-            <li><a href="{{url_for('search.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
-            {% if simple==true %} <li><a href="{{url_for('basic.index')}}" id="basic"><span class="glyphicon glyphicon-phone"></span><span>{{_('Simple Theme')}}</span></a><li>{% endif %}
+          <ul class="nav navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="{{url_for('search.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}"> {{_('Advanced Search')}}</span></a></li>
+            {% if simple==true %} <li class="nav-item"><a class="nav-link" href="{{url_for('basic.index')}}" id="basic"><span class="glyphicon glyphicon-phone"></span><span>{{_('Simple Theme')}}</span></a></li>{% endif %}
           </ul>
           {% endif %}
-          <ul class="nav navbar-nav navbar-right" id="main-nav">
+          <ul class="nav navbar-nav navbar-right ms-auto align-items-lg-center" id="main-nav">
             {% if current_user.is_authenticated or g.allow_anonymous %}
               {% if current_user.role_upload() and g.allow_upload %}
-                  <li>
+                  <li class="nav-item">
                     <form id="form-upload" class="navbar-form" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
                       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                       <div class="form-group">
-                        <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
+                        <span class="btn btn-default{% if bootstrap5_page %} btn-outline-secondary{% endif %} btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
                         type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
-                        <input class="hide" id="btn-upload2" name="btn-upload2" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}">
+                        <input class="hide d-none" id="btn-upload2" name="btn-upload2" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}">
                       </div>
                     </form>
                   </li>
               {% endif %}
               {% if not current_user.is_anonymous and not simple%}
-                <li class="top_tasks"><a id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="hidden-sm">{{_('Tasks')}}</span></a></li>
+                <li class="nav-item top_tasks"><a class="nav-link" id="top_tasks" href="{{url_for('tasks.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Tasks')}}</span></a></li>
               {% endif %}
               {% if current_user.role_admin() %}
-                <li><a id="top_admin" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="hidden-sm">{{_('Admin')}}</span></a></li>
+                <li class="nav-item"><a class="nav-link" id="top_admin" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Admin')}}</span></a></li>
               {% endif %}
-              <li><a id="top_user" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-sm">{{current_user.name}}</span></a></li>
+              <li class="nav-item"><a class="nav-link" id="top_user" href="{% if not current_user.is_anonymous %}{{url_for('web.profile')}}{% else %}{{url_for('web.login', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}{% endif %}"><span class="glyphicon glyphicon-user"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{current_user.name}}</span></a></li>
                 {% if not current_user.is_anonymous %}
-                <li><a id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="hidden-sm">{{_('Logout')}}</span></a></li>
+                <li class="nav-item"><a class="nav-link" id="logout" href="{{url_for('web.logout', next=(request.path + "?" + request.query_string.decode("utf-8")).rstrip("?"))}}"><span class="glyphicon glyphicon-log-out"></span> <span class="{% if bootstrap5_page %}d-none d-lg-inline{% else %}hidden-sm{% endif %}">{{_('Logout')}}</span></a></li>
                 {% endif %}
             {% endif %}
             {% if g.allow_registration and not current_user.is_authenticated %}
-            <li><a id="login" href="{{url_for('web.login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
-            <li><a id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
+            <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" id="login" href="{{url_for('web.login')}}">{% if bootstrap5_page %}<svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 15 4.5v7a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5Z"/><path fill-rule="evenodd" d="M5.854 11.354a.5.5 0 0 1 0-.708L8.293 8 5.854 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0Z"/><path fill-rule="evenodd" d="M1.5 8a.5.5 0 0 1 .5-.5H8.5a.5.5 0 0 1 0 1H2a.5.5 0 0 1-.5-.5Z"/></svg>{% else %}<span class="glyphicon glyphicon-log-in"></span>{% endif %} {{_('Login')}}</a></li>
+            <li class="nav-item"><a class="nav-link d-flex align-items-center gap-2" id="register" href="{{url_for('web.register')}}">{% if bootstrap5_page %}<svg class="theme-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 8a3 3 0 1 0-2.83-4H4a2 2 0 1 0 0 4h1.17A3.001 3.001 0 0 0 8 8Z"/><path d="M14 13c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Z"/><path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5Z"/></svg>{% else %}<span class="glyphicon glyphicon-user"></span>{% endif %} {{_('Register')}}</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-    </div>
+    </nav>
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
-      <div class="row-fluid text-center" >
+      <div class="row row-fluid text-center" >
         <div id="flash_danger" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
-      <div class="row-fluid text-center">
+      <div class="row row-fluid text-center">
         <div id="flash_info" class="alert alert-info">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "warning" %}
-      <div class="row-fluid text-center">
+      <div class="row row-fluid text-center">
         <div id="flash_warning" class="alert alert-warning">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "success" %}
-      <div class="row-fluid text-center">
+      <div class="row row-fluid text-center">
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
       </div>
       {%endif%}
     {% endfor %}
     {% block flash %}{% endblock %}
     <div class="container-fluid">
-      <div class="row-fluid">
+      <div class="row row-fluid">
         {% if current_user.is_authenticated or g.allow_anonymous %}
         <div class="col-sm-2">
           <nav class="navigation">
@@ -121,7 +130,7 @@
               {% if current_user.is_authenticated or g.allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge badge-sm">{{shelf.books.all()|length}}</span></a></li>
+                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge badge-sm bg-secondary rounded-pill">{{shelf.books.all()|length}}</span></a></li>
                 {% endfor %}
               {% if not current_user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
@@ -163,12 +172,17 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {% if bootstrap5_page %}
+            <button type="button" class="btn-close" data-dismiss="modal" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
+            <h5 class="modal-title" id="bookDetailsModalLabel">{{_('Book Details')}}</h5>
+            {% else %}
+            <button type="button" class="close" data-dismiss="modal" aria-label="{{_('Close')}}"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="bookDetailsModalLabel">{{_('Book Details')}}</h4>
+            {% endif %}
           </div>
           <div class="modal-body">...</div>
           <div class="modal-footer">
-            <button type="button" id="details_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+            <button type="button" id="details_close" class="btn btn-default{% if bootstrap5_page %} btn-outline-secondary{% endif %}" data-dismiss="modal" data-bs-dismiss="modal">{{_('Close')}}</button>
           </div>
         </div>
       </div>
@@ -177,7 +191,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/' ~ ('bootstrap5.min.js' if bootstrap5_page else 'bootstrap.min.js')) }}"></script>
     <script src="{{ url_for('static', filename='js/libs/underscore-umd-min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>

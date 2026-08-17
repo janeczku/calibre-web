@@ -508,6 +508,40 @@ body > div.container-fluid  {
 }
 
 .input-group .form-control,
+.input-group .btn,
 .input-group .toggle-password {
   height: 40px;
+}
+
+.input-group-sm > .input-group-btn > .btn {
+    height: 40px;
+}
+
+.theme-icon,
+.password-toggle-icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.login .card.login-card,
+.login .card.login-card .form-control,
+.login .card.login-card .btn,
+.login .card.login-card .form-check-label,
+.login .card.login-card #remote_login {
+  font-family: "Nimbus Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.login .card.login-card {
+  background: #f5f5f5;
+  border-radius: 0.75rem;
+}
+
+.login-secondary-actions {
+  min-height: 40px;
+}
+
+.oauth-login-links a,
+#remote_login {
+  display: inline-flex;
+  align-items: center;
 }
