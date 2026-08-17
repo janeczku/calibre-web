@@ -467,6 +467,7 @@ div.log {
   border: 1px solid #ddd;
   white-space: nowrap;
   padding: 0.5em;
+  margin-right: 10px;
 }
 
 .badge-sm{

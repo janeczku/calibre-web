@@ -1,28 +1,38 @@
 {% extends theme("layout.html") %}
 {% block body %}
-   <div id="log_group" class="inputs">
-     {% if log_enable %}
-      <div><input type="radio" name="log_radio" id="log1" value="0" checked>
-      <label for="log1">{{_('Show Calibre-Web Log: ')}}</label>{{logfiles[0]}}</div>
-     {% else %}
-     <div><label for="log1">{{_('Calibre-Web Log: ')}}</label> {{_("Stream output, can't be displayed")}}</div>
-     {% endif %}
-     {% if accesslog_enable %}
-      <div><input type="radio" name="log_radio" id="log0" value="1" {% if not log_enable %}checked{% endif %}>
-      <label for="log0">{{_('Show Access Log: ')}}</label>{{logfiles[1]}}</div>
-     {% endif %}
-   </div>
-  <div class="row">
-    <div class="col-xs-6 col-sm-7">
+<div class="container-fluid px-0">
+  <div id="log_group" class="d-flex flex-column gap-2 mb-3">
+    {% if log_enable %}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="log_radio" id="log1" value="0" checked>
+      <label class="form-check-label" for="log1">{{_('Show Calibre-Web Log: ')}}</label>
+      <span>{{logfiles[0]}}</span>
+    </div>
+    {% else %}
+    <div class="text-body-secondary">
+      <span class="fw-semibold">{{_('Calibre-Web Log: ')}}</span> {{_("Stream output, can't be displayed")}}
+    </div>
+    {% endif %}
+    {% if accesslog_enable %}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="log_radio" id="log0" value="1" {% if not log_enable %}checked{% endif %}>
+      <label class="form-check-label" for="log0">{{_('Show Access Log: ')}}</label>
+      <span>{{logfiles[1]}}</span>
+    </div>
+    {% endif %}
+  </div>
+  <div class="row mb-3">
+    <div class="col-12 col-md-8 d-flex flex-wrap gap-2">
       {% if log_enable %}
-      <a class="btn btn-default" id="log_file_0" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a>
+      <a class="btn btn-outline-secondary" id="log_file_0" href="{{url_for('admin.download_log', logtype=0)}}">{{_('Download Calibre-Web Log')}}</a>
       {% endif %}
       {% if accesslog_enable %}
-      <a class="btn btn-default" id="log_file_1" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a>
+      <a class="btn btn-outline-secondary" id="log_file_1" href="{{url_for('admin.download_log', logtype=1)}}">{{_('Download Access Log')}}</a>
       {% endif %}
     </div>
   </div>
-   <div id="renderer" class="log"></div>
+  <div id="renderer" class="log rounded bg-white"></div>
+</div>
 
 {% endblock %}
 {% block js %}
