@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% from theme('modal_dialogs.html') import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
 {% import 'image.html' as image %}
-{% set bootstrap5_page = page in ['login', 'admin', 'logfile'] %}
+{% set bootstrap5_page = page in ['login', 'admin', 'logfile', 'stat'] %}
 <html lang="{{ current_user.locale }}">
   <head>
     <title>{{instance}} | {{title}}</title>

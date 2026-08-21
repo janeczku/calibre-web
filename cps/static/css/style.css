@@ -623,9 +623,7 @@ body > div.container-fluid  {
 }
 
 .btn-default,
-.navbar .btn,
-/*.admin-modal .btn,*/
-.login .card.login-card .btn {
+.navbar .btn {
   background-color: #fff;
 }
 
