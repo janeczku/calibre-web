@@ -22,9 +22,7 @@ import subprocess
 import re
 
 def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subprocess.PIPE, newlines=True):
-    # Linux py2.7 encode as list without quotes no empty element for parameters
     # linux py3.x no encode and as list without quotes no empty element for parameters
-    # windows py2.7 encode as string with quotes empty element for parameters is okay
     # windows py 3.x no encode and as string with quotes empty element for parameters is okay
     # separate handling for windows and linux
     if os.name == 'nt':
