@@ -1,4 +1,4 @@
-# ![Logo](https://github.com/janeczku/calibre-web/blob/master/cps/static/icon.png) Calibre-Web
+<h1><img src="https://github.com/janeczku/calibre-web/blob/master/cps/static/icon.png" alt="Logo" width="32" height="32" /> Calibre-Web</h1>
 
 Calibre-Web is a web app that offers a clean and intuitive interface for browsing, reading, and downloading eBooks using a valid [Calibre](https://calibre-ebook.com) database.
 
