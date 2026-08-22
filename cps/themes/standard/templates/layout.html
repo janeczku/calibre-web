@@ -14,7 +14,8 @@
     {% endif %}
     <!-- Bootstrap -->
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='touch-icon.png') }}">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16.png') }}">
     <link href="{{ url_for('static', filename='css/libs/' ~ ('bootstrap5.min.css' if bootstrap5_page else 'bootstrap.min.css')) }}" rel="stylesheet" media="screen">
     {% block header %}{% endblock %}
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
