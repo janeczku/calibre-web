@@ -30,7 +30,7 @@ See https://github.com/adobe-type-tools/cmap-resources
     {% endif %}      
     <title>{{_('PDF Reader')}} | {{title}}</title>
 
-    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='touch-icon.png') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/viewer.css') }}">
 	  <!-- This snippet is used in production (included from viewer.html) -->
