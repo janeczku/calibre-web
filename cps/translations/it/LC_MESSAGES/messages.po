@@ -2,13 +2,13 @@
 # Copyright (C) 2016 Smart Cities Community
 # This file is distributed under the same license as the Calibre-Web
 # Juan F. Villa <juan.villa@paisdelconocimiento.org>, 2016.
-# SPDX-FileCopyrightText: 2023, 2024, 2025, 2026 Massimo Pissarello <mapi68@gmail.com>
+# SPDX-FileCopyrightText: 2023-2026 Massimo Pissarello <mapi68@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-16 14:48+0200\n"
-"PO-Revision-Date: 2026-03-05 06:42+0100\n"
+"POT-Creation-Date: 2026-08-22 11:31+0200\n"
+"PO-Revision-Date: 2026-08-21 06:04+0200\n"
 "Last-Translator: Massimo Pissarello <mapi68@gmail.com>\n"
 "Language: it\n"
 "Language-Team: Italian <>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: cps/about.py:85
 msgid "Statistics"
@@ -155,7 +155,7 @@ msgstr "Colonna con restrizioni non valida"
 
 #: cps/admin.py:595
 msgid "Invalid Theme"
-msgstr ""
+msgstr "Tema non valido"
 
 #: cps/admin.py:613 cps/admin.py:1987
 msgid "Calibre-Web configuration updated"
@@ -257,12 +257,12 @@ msgstr "Azione non valida"
 #: cps/admin.py:1143
 #, python-format
 msgid "Invalid reverse proxy trusted IP/CIDR entry: %(entry)s"
-msgstr ""
+msgstr "Voce IP/CIDR reverse proxy attendibile non valida: %(entry)s"
 
 #: cps/admin.py:1154
 #, python-format
 msgid "Invalid %(label)s: %(value)s"
-msgstr ""
+msgstr "%(label)s non valido: %(value)s"
 
 #: cps/admin.py:1172
 msgid "client_secrets.json Is Not Configured For Web Application"
@@ -505,27 +505,27 @@ msgstr "La posizione del Certfile non è valida, indica il percorso corretto"
 
 #: cps/admin.py:1852
 msgid "Kepubify binary not found"
-msgstr ""
+msgstr "Eseguibile Kepubify non trovato"
 
 #: cps/admin.py:1900
 msgid "reverse proxy login header name"
-msgstr ""
+msgstr "nome dell'intestazione di accesso reverse proxy"
 
 #: cps/admin.py:1910
 msgid "reverse proxy shared secret header name"
-msgstr ""
+msgstr "nome dell'intestazione del segreto condiviso reverse proxy"
 
 #: cps/admin.py:1919
 msgid "Please configure both reverse proxy shared secret header name and secret"
-msgstr ""
+msgstr "Configura sia il nome dell'intestazione del segreto condiviso reverse proxy sia il segreto"
 
 #: cps/admin.py:1923
 msgid "Please configure reverse proxy shared secret header name and secret or disable the feature"
-msgstr ""
+msgstr "Configura il nome dell'intestazione del segreto condiviso reverse proxy e il segreto, oppure disattiva la funzione"
 
 #: cps/admin.py:1928
 msgid "Please configure at least one trusted reverse proxy IP or CIDR"
-msgstr ""
+msgstr "Configura almeno un IP o CIDR reverse proxy attendibile"
 
 #: cps/admin.py:1952
 msgid "Password length has to be between 1 and 40"
@@ -533,7 +533,7 @@ msgstr "La lunghezza della password deve essere compresa tra 1 e 40"
 
 #: cps/admin.py:1963 cps/helper.py:1007
 msgid "Please specify a valid UnRar directory"
-msgstr ""
+msgstr "Specifica una cartella UnRar valida"
 
 #: cps/admin.py:2010
 msgid "Database Settings updated"
@@ -626,11 +626,11 @@ msgstr "Manca il formato di origine o di destinazione per la conversione"
 
 #: cps/editbooks.py:189 cps/editbooks.py:197
 msgid "Source format for conversion not supported"
-msgstr ""
+msgstr "Formato di origine per la conversione non supportato"
 
 #: cps/editbooks.py:201
 msgid "Destination format for conversion not supported"
-msgstr ""
+msgstr "Formato di destinazione per la conversione non supportato"
 
 #: cps/editbooks.py:209
 #, python-format
@@ -812,33 +812,33 @@ msgstr "E-mail di prova"
 #: cps/helper.py:133
 #, python-format
 msgid "Hi %(name)s!"
-msgstr ""
+msgstr "Ciao %(name)s!"
 
 #: cps/helper.py:135
 msgid "Your account at Calibre-Web has been created."
-msgstr ""
+msgstr "Il tuo account su Calibre-Web è stato creato."
 
 #: cps/helper.py:136
 msgid "Please log in using the following information:"
-msgstr ""
+msgstr "Accedi utilizzando le seguenti informazioni:"
 
 #: cps/helper.py:137
 #, python-format
 msgid "Username: %(name)s"
-msgstr ""
+msgstr "Nome utente: %(name)s"
 
 #: cps/helper.py:138
 #, python-format
 msgid "Password: %(password)s"
-msgstr ""
+msgstr "Password: %(password)s"
 
 #: cps/helper.py:139
 msgid "Don't forget to change your password after your first login."
-msgstr ""
+msgstr "Ricordati di cambiare la password dopo il primo accesso."
 
 #: cps/helper.py:140
 msgid "Regards,"
-msgstr ""
+msgstr "Cordiali saluti,"
 
 #: cps/helper.py:142
 msgid "Get Started with Calibre-Web"
@@ -901,7 +901,7 @@ msgstr "La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'err
 #: cps/helper.py:516 cps/helper.py:525
 #, python-format
 msgid "File %(file)s not found on Google Drive"
-msgstr "Il file %(file) non è stato trovato su Google Drive"
+msgstr "Il file %(file)s non è stato trovato su Google Drive"
 
 #: cps/helper.py:567
 #, python-format
@@ -1019,7 +1019,7 @@ msgstr "Registra con %(provider)s"
 #: cps/oauth_bb.py:140
 #, python-format
 msgid "This %(oauth)s account is already linked to a different user"
-msgstr ""
+msgstr "Questo account %(oauth)s è già collegato a un altro utente"
 
 #: cps/oauth_bb.py:147 cps/remotelogin.py:150
 #, python-format
@@ -1109,7 +1109,7 @@ msgstr "Accesso"
 
 #: cps/remotelogin.py:100
 msgid "Token already approved"
-msgstr ""
+msgstr "Token già approvato"
 
 #: cps/remotelogin.py:108
 msgid "Success! Please return to your device"
@@ -1554,7 +1554,7 @@ msgstr "Elenco formati di file"
 
 #: cps/web.py:1272
 msgid "Book format not supported"
-msgstr ""
+msgstr "Formato libro non supportato"
 
 #: cps/web.py:1274
 msgid "Please configure the SMTP mail settings first..."
@@ -1694,7 +1694,7 @@ msgstr "Converti"
 msgid "Reconnecting Calibre database"
 msgstr "Riconessione al database di Calibre"
 
-#: cps/tasks/mail.py:283
+#: cps/tasks/mail.py:322
 msgid "E-mail"
 msgstr "E-mail"
 
@@ -1835,7 +1835,7 @@ msgstr "Elimina libro"
 
 #: cps/themes/caliblur/templates/book_edit.html:15
 msgid "Delete Format"
-msgstr ""
+msgstr "Elimina formato"
 
 #: cps/themes/caliblur/templates/book_edit.html:18
 #: cps/themes/caliblur/templates/modal_dialogs.html:63
@@ -2539,11 +2539,11 @@ msgstr "Ordina in ordine discendente in base al numero della serie"
 
 #: cps/themes/caliblur/templates/layout.html:24
 msgid "Read more"
-msgstr ""
+msgstr "Leggi di più"
 
 #: cps/themes/caliblur/templates/layout.html:24
 msgid "Read less"
-msgstr ""
+msgstr "Leggi meno"
 
 #: cps/themes/caliblur/templates/layout.html:30
 #: cps/themes/standard/templates/layout.html:28
@@ -2596,11 +2596,11 @@ msgstr "Disconnetti"
 
 #: cps/themes/caliblur/templates/layout.html:79
 msgid "Upload Book"
-msgstr ""
+msgstr "Carica libro"
 
 #: cps/themes/caliblur/templates/layout.html:89
 msgid "Manage"
-msgstr ""
+msgstr "Gestisci"
 
 #: cps/themes/caliblur/templates/layout.html:92
 #: cps/themes/standard/templates/read.html:83
@@ -2679,12 +2679,12 @@ msgstr "Password"
 #: cps/themes/caliblur/templates/login.html:17
 #: cps/themes/standard/templates/login.html:17
 msgid "Show password"
-msgstr ""
+msgstr "Mostra password"
 
 #: cps/themes/caliblur/templates/login.html:17
 #: cps/themes/standard/templates/login.html:17
 msgid "Hide password"
-msgstr ""
+msgstr "Nascondi password"
 
 #: cps/themes/caliblur/templates/login.html:25
 #: cps/themes/standard/templates/login.html:25
@@ -2815,33 +2815,33 @@ msgstr "Questo link di verifica scadrà tra 10 minuti."
 #: cps/themes/caliblur/templates/remote_login_verify.html:5
 #: cps/themes/standard/templates/remote_login_verify.html:5
 msgid "Approve Magic Link Login"
-msgstr ""
+msgstr "Approva accesso con Magic Link"
 
 #: cps/themes/caliblur/templates/remote_login_verify.html:6
 #: cps/themes/standard/templates/remote_login_verify.html:6
 msgid "Review the device that requested access before approving this login."
-msgstr ""
+msgstr "Controlla il dispositivo che ha richiesto l'accesso prima di approvarlo."
 
 #: cps/themes/caliblur/templates/remote_login_verify.html:8
 #: cps/themes/standard/templates/remote_login_verify.html:8
 msgid "IP address"
-msgstr ""
+msgstr "Indirizzo IP"
 
 #: cps/themes/caliblur/templates/remote_login_verify.html:10
 #: cps/themes/standard/templates/remote_login_verify.html:10
 msgid "Browser"
-msgstr ""
+msgstr "Browser"
 
 #: cps/themes/caliblur/templates/remote_login_verify.html:13
 #: cps/themes/standard/templates/remote_login_verify.html:13
 #, python-format
 msgid "If you approve this request, the device that started it will be logged in as %(username)s."
-msgstr ""
+msgstr "Se approvi questa richiesta, il dispositivo che l'ha avviata verrà connesso come %(username)s."
 
 #: cps/themes/caliblur/templates/remote_login_verify.html:15
 #: cps/themes/standard/templates/remote_login_verify.html:15
 msgid "Approve Login"
-msgstr ""
+msgstr "Approva accesso"
 
 #: cps/themes/caliblur/templates/search.html:9
 #: cps/themes/standard/templates/basic_index.html:18
@@ -3186,20 +3186,20 @@ msgstr "Nome dell'intestazione reverse proxy"
 
 #: cps/themes/standard/templates/admin.html:158
 msgid "Reverse Proxy Trusted IPs/CIDRs"
-msgstr ""
+msgstr "IP/CIDR reverse proxy attendibili"
 
 #: cps/themes/standard/templates/admin.html:162
 #: cps/themes/standard/templates/config_edit.html:193
 msgid "Reverse Proxy Shared Secret Header Name"
-msgstr ""
+msgstr "Nome dell'intestazione del segreto condiviso reverse proxy"
 
 #: cps/themes/standard/templates/admin.html:166
 msgid "Reverse Proxy Shared Secret Header"
-msgstr ""
+msgstr "Intestazione del segreto condiviso reverse proxy"
 
 #: cps/themes/standard/templates/admin.html:170
 msgid "Reverse Proxy Shared Secret Configured"
-msgstr ""
+msgstr "Segreto condiviso reverse proxy configurato"
 
 #: cps/themes/standard/templates/admin.html:175
 msgid "Edit Calibre Database Configuration"
@@ -3298,7 +3298,7 @@ msgstr "Esegui l'aggiornamento"
 
 #: cps/themes/standard/templates/admin.html:268
 msgid "Restart Calibre-Web"
-msgstr ""
+msgstr "Riavvia Calibre-Web"
 
 #: cps/themes/standard/templates/admin.html:271
 msgid "Are you sure you want to restart?"
@@ -3306,7 +3306,7 @@ msgstr "Sei sicuro di voler riavviare Calibre-Web?"
 
 #: cps/themes/standard/templates/admin.html:287
 msgid "Stop Calibre-Web"
-msgstr ""
+msgstr "Arresta Calibre-Web"
 
 #: cps/themes/standard/templates/admin.html:290
 msgid "Are you sure you want to shutdown?"
@@ -3314,7 +3314,7 @@ msgstr "Sei sicuro di voler fermare Calibre-Web?"
 
 #: cps/themes/standard/templates/admin.html:302
 msgid "Update Calibre-Web"
-msgstr ""
+msgstr "Aggiorna Calibre-Web"
 
 #: cps/themes/standard/templates/author.html:15
 msgid "via"
@@ -3648,23 +3648,23 @@ msgstr "Consenti autenticazione con reverse proxy"
 
 #: cps/themes/standard/templates/config_edit.html:176
 msgid "Security Warning"
-msgstr ""
+msgstr "Avviso di sicurezza"
 
 #: cps/themes/standard/templates/config_edit.html:177
 msgid "Only enable this when Calibre-Web is reachable exclusively through a trusted reverse proxy. Never expose Calibre-Web directly to untrusted networks while reverse proxy authentication is enabled."
-msgstr ""
+msgstr "Attiva questa opzione solo quando Calibre-Web è raggiungibile esclusivamente tramite un reverse proxy attendibile. Non esporre mai Calibre-Web direttamente a reti non attendibili mentre l'autenticazione con reverse proxy è attiva."
 
 #: cps/themes/standard/templates/config_edit.html:184
 msgid "Reverse Proxy Trusted IPs/CIDRs (Comma Separated)"
-msgstr ""
+msgstr "IP/CIDR reverse proxy attendibili (separati da virgola)"
 
 #: cps/themes/standard/templates/config_edit.html:189
 msgid "Enable Reverse Proxy Shared Secret Header"
-msgstr ""
+msgstr "Attiva l'intestazione del segreto condiviso reverse proxy"
 
 #: cps/themes/standard/templates/config_edit.html:197
 msgid "Reverse Proxy Shared Secret"
-msgstr ""
+msgstr "Segreto condiviso reverse proxy"
 
 #: cps/themes/standard/templates/config_edit.html:205
 msgid "Login type"
@@ -4281,7 +4281,7 @@ msgstr "Sincronizza questo scaffale con il lettore Kobo"
 
 #: cps/themes/standard/templates/tasks.html:8
 msgid "No Records Found"
-msgstr ""
+msgstr "Nessun risultato trovato"
 
 #: cps/themes/standard/templates/tasks.html:12
 msgid "User"
