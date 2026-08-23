@@ -23,6 +23,11 @@ import threading
 import socket
 import mimetypes
 
+try:
+    import certifi
+except ImportError:  # pragma: no cover
+    certifi = None
+
 from io import StringIO
 from email.message import EmailMessage
 from email.utils import formatdate, parseaddr, make_msgid
@@ -193,6 +198,27 @@ class TaskEmail(CalibreTask):
             log.error_or_exception(ex, stacklevel=2)
             self._handleError('Error sending e-mail: {}'.format(ex))
 
+    def _create_ssl_context(self, cafile=None):
+        if cafile:
+            return ssl.create_default_context(cafile=cafile)
+        return ssl.create_default_context()
+
+    @staticmethod
+    def _is_certificate_verification_error(exception):
+        message = str(exception).lower()
+        return ('certificate_verify_failed' in message or
+                'unable to get local issuer certificate' in message or
+                'self signed certificate' in message)
+
+    def _retry_with_certifi_on_ssl_error(self, original_exception, action):
+        if not certifi:
+            raise original_exception
+        cafile = certifi.where()
+        if not cafile:
+            raise original_exception
+        log.warning("SSL certificate verification failed for SMTP %s, retrying with certifi CA bundle", action)
+        return self._create_ssl_context(cafile=cafile)
+
     def send_standard_email(self, msg):
         use_ssl = int(self.settings.get('mail_use_ssl', 0))
         timeout = 600  # set timeout to 5mins
@@ -200,9 +226,15 @@ class TaskEmail(CalibreTask):
         # on python3 debugoutput is caught with overwritten _print_debug function
         log.debug("Start sending e-mail")
         if use_ssl == 2:
-            context = ssl.create_default_context()
-            self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
-                                       timeout=timeout, context=context)
+            try:
+                self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
+                                           timeout=timeout, context=self._create_ssl_context())
+            except ssl.SSLError as ex:
+                if not self._is_certificate_verification_error(ex):
+                    raise
+                context = self._retry_with_certifi_on_ssl_error(ex, 'SSL/TLS connection')
+                self.asyncSMTP = EmailSSL(self.settings["mail_server"], self.settings["mail_port"],
+                                           timeout=timeout, context=context)
         else:
             self.asyncSMTP = Email(self.settings["mail_server"], self.settings["mail_port"], timeout=timeout)
 
@@ -210,8 +242,15 @@ class TaskEmail(CalibreTask):
         if logger.is_debug_enabled():
             self.asyncSMTP.set_debuglevel(1)
         if use_ssl == 1:
-            context = ssl.create_default_context()
-            self.asyncSMTP.starttls(context=context)
+            try:
+                self.asyncSMTP.starttls(context=self._create_ssl_context())
+            except ssl.SSLError as ex:
+                if not self._is_certificate_verification_error(ex):
+                    raise
+                self.asyncSMTP.close()
+                self.asyncSMTP = Email(self.settings["mail_server"], self.settings["mail_port"], timeout=timeout)
+                self.asyncSMTP.ehlo()
+                self.asyncSMTP.starttls(context=self._retry_with_certifi_on_ssl_error(ex, 'STARTTLS'))
         if self.settings["mail_password_e"]:
             self.asyncSMTP.login(str(self.settings["mail_login"]), str(self.settings["mail_password_e"]))
 

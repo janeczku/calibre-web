@@ -366,6 +366,20 @@ $(function() {
         $("#RestartDialog").modal("hide");
     }
 
+    function waitForAdminAlive(onAvailable) {
+        var aliveInterval = setInterval(function () {
+            $.get({
+                url: getPath() + "/admin/alive",
+                success: function (d, statusText, xhr) {
+                    if (xhr.status < 400) {
+                        clearInterval(aliveInterval);
+                        onAvailable();
+                    }
+                },
+            });
+        }, 1000);
+    }    
+
     function cleanUp() {
         clearInterval(updateTimerID);
         hideElements($("#spinner2"));
@@ -496,8 +510,8 @@ $(function() {
             url: getPath() + "/shutdown",
             data: JSON.stringify({"parameter":0}),
             success: function success() {
-                showElements($("#spinner"));
-                setTimeout(restartTimer, 3000);
+                $("#spinner").show();
+                waitForAdminAlive(restartTimer);
             }
         });
     });
@@ -823,26 +837,18 @@ $(function() {
         $("#flash_danger").remove();
         $.post(getPath() + request_path, $(this).closest("form").serialize(), function(data) {
             $('#config_upload_formats').val(data.config_upload);
-            if(data.reboot) {
+            if (data.reboot) {
                 $("#spinning_success").show();
-                var rebootInterval = setInterval(function(){
-                    $.get({
-                        url:getPath() + "/admin/alive",
-                        success: function (d, statusText, xhr) {
-                            if (xhr.status < 400) {
-                                $("#spinning_success").hide();
-                                clearInterval(rebootInterval);
-                                if (data.result) {
-                                    handle_response(data.result);
-                                    data.result = "";
-                                }
-                            }
-                        },
-                    });
-                }, 1000);
+                waitForAdminAlive(function () {
+                    $("#spinning_success").hide();
+                    if (data.result) {
+                        handle_response(data.result);
+                        data.result = "";
+                    }
+                });
             } else {
                 handle_response(data.result);
-            }
+            }           
         });
     });
 
