@@ -1843,15 +1843,14 @@ def _configuration_update_helper():
             _config_string(to_save, "config_upload_formats")
 
         _config_string(to_save, "config_calibre")
-        _config_string(to_save, "config_binariesdir")
         _config_string(to_save, "config_kepubifypath")
-        if "config_kepubifypath" in to_save:
-            if config.config_kepubifypath:
-                kepubify_binary = resolve_binary_path(config.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES)
-                if not kepubify_binary:
-                    return _configuration_result(_('Kepubify binary not found'))
-                config.config_kepubifypath = os.path.dirname(kepubify_binary)
+        if "config_kepubifypath" in to_save and config.config_kepubifypath:
+            kepubify_binary = resolve_binary_path(config.config_kepubifypath, SUPPORTED_KEPUBIFY_BINARIES)
+            if not kepubify_binary:
+                return _configuration_result(_('Kepubify binary not found'))
+            config.config_kepubifypath = os.path.dirname(kepubify_binary)
 
+        _config_string(to_save, "config_binariesdir")
         if "config_binariesdir" in to_save:
             calibre_status = helper.check_calibre(config.config_binariesdir)
             if calibre_status:
@@ -1957,7 +1956,7 @@ def _configuration_update_helper():
 
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")
-        if "config_rarfile_location" in to_save:
+        if "config_rarfile_location" in to_save and config.config_rarfile_location:
             unrar_binary = resolve_binary_path(config.config_rarfile_location, SUPPORTED_UNRAR_BINARIES)
             if not unrar_binary:
                 return _configuration_result(_('Please specify a valid UnRar directory'))
