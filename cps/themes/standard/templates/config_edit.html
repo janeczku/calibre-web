@@ -151,6 +151,24 @@
       </div>
     </div>
     {% endif %}
+    <div class="form-group">
+      <input type="checkbox" id="config_calibre_server_enabled" name="config_calibre_server_enabled" data-control="calibre-server-settings" {% if config.config_calibre_server_enabled %}checked{% endif %}>
+      <label for="config_calibre_server_enabled">{{_('Enable Calibre Content Server')}}</label>
+    </div>
+    <div data-related="calibre-server-settings">
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_calibre_server_port">{{_('Content Server Port')}}</label>
+        <input type="number" min="1" max="65535" class="form-control" name="config_calibre_server_port" id="config_calibre_server_port" value="{% if config.config_calibre_server_port != None %}{{ config.config_calibre_server_port }}{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['port'] %}disabled{% endif %}>
+      </div>
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_calibre_server_username">{{_('Content Server Username')}}</label>
+        <input type="text" class="form-control" name="config_calibre_server_username" id="config_calibre_server_username" value="{% if config.config_calibre_server_username != None %}{{ config.config_calibre_server_username }}{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['username'] %}disabled{% endif %}>
+      </div>
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_calibre_server_password_e">{{_('Content Server Password')}}</label>
+        <input type="password" class="form-control" name="config_calibre_server_password_e" id="config_calibre_server_password_e" value="{% if config.config_calibre_server_env['password'] %}********{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['password'] %}disabled{% endif %}>
+      </div>
+    </div>
     {% if feature_support['goodreads'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>

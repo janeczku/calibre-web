@@ -58,6 +58,7 @@ from .services.worker import WorkerThread
 from .usermanagement import user_login_required
 from .cw_babel import get_available_translations, get_available_locale, get_user_locale_language
 from . import debug_info
+from . import content_server
 from .string_helper import strip_whitespaces
 
 log = logger.create()
@@ -1813,6 +1814,7 @@ def _db_configuration_update_helper():
 
 def _configuration_update_helper():
     reboot_required = False
+    content_server_changed = False
     to_save = request.form.to_dict()
     try:
         reboot_required |= _config_int(to_save, "config_port")
@@ -1954,6 +1956,13 @@ def _configuration_update_helper():
         reboot_required |= _config_string(to_save, "config_limiter_uri")
         reboot_required |= _config_string(to_save, "config_limiter_options")
 
+        # Calibre content server configuration
+        content_server_changed |= _config_checkbox(to_save, "config_calibre_server_enabled")
+        content_server_changed |= _config_int(to_save, "config_calibre_server_port")
+        content_server_changed |= _config_string(to_save, "config_calibre_server_username")
+        if to_save.get("config_calibre_server_password_e"):
+            content_server_changed |= _config_string(to_save, "config_calibre_server_password_e")
+
         # Rarfile Content configuration
         _config_string(to_save, "config_rarfile_location")
         if "config_rarfile_location" in to_save and config.config_rarfile_location:
@@ -1970,6 +1979,11 @@ def _configuration_update_helper():
         _configuration_result(_("Oops! Database Error: %(error)s.", error=e.orig))
 
     config.save()
+    if content_server_changed:
+        if config.config_calibre_server_enabled:
+            content_server.start()
+        else:
+            content_server.stop()
     if reboot_required:
         web_server.stop(True)
 

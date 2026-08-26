@@ -180,6 +180,11 @@ class _Settings(_Base):
     config_limiter_options = Column(String, default="")
     config_check_extensions = Column(Boolean, default=True)
 
+    config_calibre_server_enabled = Column(Boolean, default=False)
+    config_calibre_server_port = Column(Integer, default=8080)
+    config_calibre_server_username = Column(String, default="")
+    config_calibre_server_password_e = Column(String)
+
     def __repr__(self):
         return self.__class__.__name__
 
@@ -362,6 +367,19 @@ class ConfigSQL(object):
                         setattr(self, k, "")
                 else:
                     setattr(self, k, v)
+
+        env_port = os.environ.get("CALIBRE_SERVER_PORT")
+        env_username = os.environ.get("CALIBRE_SERVER_USERNAME")
+        env_password = os.environ.get("CALIBRE_SERVER_PASSWORD")
+        if env_port and env_port.isdigit():
+            self.config_calibre_server_port = int(env_port)
+        if env_username:
+            self.config_calibre_server_username = env_username
+        if env_password:
+            self.config_calibre_server_password_e = env_password
+        self.config_calibre_server_env = {"port": bool(env_port),
+                                          "username": bool(env_username),
+                                          "password": bool(env_password)}
 
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:

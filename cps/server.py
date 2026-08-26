@@ -313,6 +313,8 @@ class WebServer(object):
             return True
 
         log.info("Performing restart of Calibre-Web")
+        from . import content_server
+        content_server.stop()
         args = self._get_args_for_reloading()
         os.execv(args[0].lstrip('"').rstrip('"'), args)
 
