@@ -161,12 +161,21 @@
         <input type="number" min="1" max="65535" class="form-control" name="config_calibre_server_port" id="config_calibre_server_port" value="{% if config.config_calibre_server_port != None %}{{ config.config_calibre_server_port }}{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['port'] %}disabled{% endif %}>
       </div>
       <div class="form-group" style="margin-left:10px;">
-        <label for="config_calibre_server_username">{{_('Content Server Username')}}</label>
-        <input type="text" class="form-control" name="config_calibre_server_username" id="config_calibre_server_username" value="{% if config.config_calibre_server_username != None %}{{ config.config_calibre_server_username }}{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['username'] %}disabled{% endif %}>
+        <input type="checkbox" id="config_calibre_server_anonymous_writes" name="config_calibre_server_anonymous_writes" data-control-invert="calibre-server-auth" {% if config.config_calibre_server_anonymous_writes %}checked{% endif %}>
+        <label for="config_calibre_server_anonymous_writes">{{_('Allow Anonymous Writes (no username or password required)')}}</label>
       </div>
-      <div class="form-group" style="margin-left:10px;">
-        <label for="config_calibre_server_password_e">{{_('Content Server Password')}}</label>
-        <input type="password" class="form-control" name="config_calibre_server_password_e" id="config_calibre_server_password_e" value="{% if config.config_calibre_server_env['password'] %}********{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['password'] %}disabled{% endif %}>
+      <div data-related="calibre-server-auth">
+        <div class="form-group" style="margin-left:10px;">
+          <label for="config_calibre_server_username">{{_('Content Server Username')}}</label>
+          <input type="text" class="form-control" name="config_calibre_server_username" id="config_calibre_server_username" value="{% if config.config_calibre_server_username != None %}{{ config.config_calibre_server_username }}{% endif %}" autocomplete="off" {% if config.config_calibre_server_env['username'] %}disabled{% endif %}>
+        </div>
+        <div class="form-group" style="margin-left:10px;">
+          <label for="config_calibre_server_password_e">{{_('Content Server Password')}}</label>
+          <input type="password" class="form-control" name="config_calibre_server_password_e" id="config_calibre_server_password_e" value="" autocomplete="off" {% if config.config_calibre_server_password_e %}placeholder="********" disabled{% endif %} {% if config.config_calibre_server_env['password'] %}disabled{% endif %}>
+        </div>
+        <div class="form-group" id="calibre_server_password_clear_group" style="margin-left:10px;{% if not config.config_calibre_server_password_e or config.config_calibre_server_env['password'] %}display:none;{% endif %}">
+          <button type="button" id="config_calibre_server_password_clear" class="btn btn-default">{{_('Reset Password')}}</button>
+        </div>
       </div>
     </div>
     {% if feature_support['goodreads'] %}

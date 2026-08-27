@@ -1957,10 +1957,17 @@ def _configuration_update_helper():
         reboot_required |= _config_string(to_save, "config_limiter_options")
 
         # Calibre content server configuration
+        server_username = to_save.get("config_calibre_server_username", config.config_calibre_server_username)
+        server_password = to_save.get("config_calibre_server_password_e") or config.config_calibre_server_password_e
+        if (to_save.get("config_calibre_server_enabled") == "on"
+                and to_save.get("config_calibre_server_anonymous_writes") != "on"
+                and not (server_username and server_password)):
+            return _configuration_result(_('Please enter a content server username and password, or allow anonymous writes'))
         content_server_changed |= _config_checkbox(to_save, "config_calibre_server_enabled")
         content_server_changed |= _config_int(to_save, "config_calibre_server_port")
+        content_server_changed |= _config_checkbox(to_save, "config_calibre_server_anonymous_writes")
         content_server_changed |= _config_string(to_save, "config_calibre_server_username")
-        if to_save.get("config_calibre_server_password_e"):
+        if to_save.get("config_calibre_server_password_e") and not config.config_calibre_server_password_e:
             content_server_changed |= _config_string(to_save, "config_calibre_server_password_e")
 
         # Rarfile Content configuration
@@ -1990,6 +1997,17 @@ def _configuration_update_helper():
     return _configuration_result(None, reboot_required)
 
 
+@admi.route("/admin/config/clear_calibre_server_password", methods=['POST'])
+@user_login_required
+@admin_required
+def clear_calibre_server_password():
+    config.config_calibre_server_password_e = ""
+    config.save()
+    if config.config_calibre_server_enabled:
+        content_server.start()
+    return _configuration_result()
+
+
 def _configuration_result(error_flash=None, reboot=False):
     resp = {}
     if error_flash:
@@ -2000,6 +2018,8 @@ def _configuration_result(error_flash=None, reboot=False):
         resp['result'] = [{'type': "success", 'message': _("Calibre-Web configuration updated")}]
     resp['reboot'] = reboot
     resp['config_upload'] = config.config_upload_formats
+    resp['calibre_server_password_set'] = bool(config.config_calibre_server_password_e)
+    resp['calibre_server_password_env'] = config.config_calibre_server_env['password']
     return make_response(jsonify(resp))
 
 

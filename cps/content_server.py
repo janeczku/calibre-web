@@ -38,7 +38,9 @@ def start():
         log.error("calibre-server binary not found: %s", binary)
         return
     args = [binary, "--port", str(config.config_calibre_server_port)]
-    if config.config_calibre_server_username and config.config_calibre_server_password_e:
+    if config.config_calibre_server_anonymous_writes:
+        args += ["--enable-local-write", "--trusted-ips", "0.0.0.0/0,::/0"]
+    elif config.config_calibre_server_username and config.config_calibre_server_password_e:
         userdb = os.path.join(constants.CONFIG_DIR, "content_server_users.sqlite")
         try:
             os.remove(userdb)
@@ -51,7 +53,7 @@ def start():
         if result.returncode != 0:
             log.error("Failed to create calibre content server user: %s", result.stderr)
             return
-        args += ["--enable-auth", "--userdb", userdb]
+        args += ["--enable-auth", "--auth-mode", "basic", "--userdb", userdb]
     args.append(config.config_calibre_dir)
     try:
         _process = subprocess.Popen(args)
