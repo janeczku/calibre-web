@@ -297,19 +297,30 @@ class TaskEmail(CalibreTask):
                 return None
             if config.config_binariesdir and config.config_embed_metadata:
                 data_path, data_file = do_calibre_export(self.book_id, extension)
-                datafile = os.path.join(data_path, data_file + "." + extension)
+                if data_path is None:
+                    log.warning('Metadata export failed for mail attachment. Falling back to original file: %s',
+                                data_file)
+                    datafile = os.path.join(calibre_path, book_path, filename)
+                else:
+                    datafile = os.path.join(data_path, data_file + "." + extension)
             with open(datafile, 'rb') as file_:
                 data = file_.read()
-            os.remove(datafile)
+            if config.config_binariesdir and config.config_embed_metadata and data_path is not None:
+                os.remove(datafile)
         else:
             datafile = os.path.join(calibre_path, book_path, filename)
             try:
                 if config.config_binariesdir and config.config_embed_metadata:
                     data_path, data_file = do_calibre_export(self.book_id, extension)
-                    datafile = os.path.join(data_path, data_file + "." + extension)
+                    if data_path is None:
+                        log.warning('Metadata export failed for mail attachment. Falling back to original file: %s',
+                                    data_file)
+                        datafile = os.path.join(calibre_path, book_path, filename)
+                    else:
+                        datafile = os.path.join(data_path, data_file + "." + extension)
                 with open(datafile, 'rb') as file_:
                     data = file_.read()
-                if config.config_binariesdir and config.config_embed_metadata:
+                if config.config_binariesdir and config.config_embed_metadata and data_path is not None:
                     os.remove(datafile)
             except IOError as e:
                 log.error_or_exception(e, stacklevel=2)

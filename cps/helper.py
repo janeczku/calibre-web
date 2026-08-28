@@ -938,6 +938,11 @@ def do_download_file(book, book_format, client, data, headers):
                     filename, download_name = do_kepubify_metadata_replace(book, output)
                 elif book_format != "kepub" and config.config_binariesdir:
                     filename, download_name = do_calibre_export(book.id, book_format)
+                    if filename is None:
+                        log.warning('Metadata export failed for book id %s. Falling back to original file: %s',
+                                    book.id, download_name)
+                        filename = os.path.dirname(output)
+                        download_name = book_name
             else:
                 return gd.do_gdrive_download(df, headers)
         else:
@@ -956,6 +961,11 @@ def do_download_file(book, book_format, client, data, headers):
                                                                                       book_name + "." + book_format))
         elif book_format != "kepub" and config.config_binariesdir and config.config_embed_metadata:
             filename, download_name = do_calibre_export(book.id, book_format)
+            if filename is None:
+                log.warning('Metadata export failed for book id %s. Falling back to original file: %s',
+                            book.id, download_name)
+                filename = os.path.join(config.get_book_path(), book.path)
+                download_name = book_name
         else:
             download_name = book_name
 
