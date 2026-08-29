@@ -8,19 +8,17 @@
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off" >
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="panel-group col-md-11 col-lg-8">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefour">
-          <span class="glyphicon glyphicon-plus"></span>
-          {{_('View Configuration')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapsefour" class="panel-collapse collapse">
-      <div class="panel-body">
-                <div class="form-group">
+<div class="accordion col-12 col-lg-8 config-accordion" id="configAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-four">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('View Configuration')}}
+      </button>
+    </h2>
+    <div id="collapsefour" class="accordion-collapse collapse show" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
+        <div class="form-group">
           <label for="config_calibre_web_title">{{_('Title')}}</label>
           <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if conf.config_calibre_web_title != None %}{{ conf.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
         </div>
@@ -73,17 +71,15 @@
         </div>
       </div>
     </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
-          <span class="glyphicon glyphicon-plus"></span>
-          {{_('Default Settings for New Users')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapsesix" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-six">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Default Settings for New Users')}}
+      </button>
+    </h2>
+    <div id="collapsesix" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
         <div class="form-group">
           <input type="checkbox" name="admin_role" id="admin_role" {% if conf.role_admin() %}checked{% endif %}>
           <label for="admin_role">{{_('Admin User')}}</label>
@@ -140,17 +136,15 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapseseven">
-          <span class="glyphicon glyphicon-plus"></span>
-          {{_('Default Visibilities for New Users')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapseseven" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-seven">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseseven" aria-expanded="false" aria-controls="collapseseven">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Default Visibilities for New Users')}}
+      </button>
+    </h2>
+    <div id="collapseseven" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
         {% for element in sidebar %}
           {% if element['config_show'] %}
             <div class="form-group">
@@ -164,16 +158,16 @@
             <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
         </div>
       {% if not simple %}
-        <a href="#" id="get_tags" data-id="0" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
-        <a href="#" id="get_column_values" data-id="0" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied custom column values')}}</a>
+        <a href="#" id="get_tags" data-id="0" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
+        <a href="#" id="get_column_values" data-id="0" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#restrictModal">{{_('Add Allowed/Denied custom column values')}}</a>
       {% endif %}
       </div>
     </div>
   </div>
 </div>
-    <div class="col-sm-12">
-    <button type="submit" name="submit" class="btn btn-default">{{_('Save')}}</button>
-    <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Cancel')}}</a>
+    <div class="col-12">
+    <button type="submit" name="submit" class="btn btn-primary">{{_('Save')}}</button>
+    <a href="{{ url_for('admin.admin') }}" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>
   </form>
 </div>

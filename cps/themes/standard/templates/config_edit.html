@@ -2,25 +2,23 @@
 {% block flash %}
 <div id="spinning_success" class="row-fluid text-center" style="display:none;">
     <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
-</div>
+  </div>
 {% endblock %}
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="panel-group col-md-11 col-lg-8">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapseone">
-          <span class="glyphicon glyphicon-plus"></span>
-          {{_('Server Configuration')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapseone" class="panel-collapse collapse">
-      <div class="panel-body">
+<div class="accordion col-12 col-lg-8 config-accordion" id="configAccordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-one">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseone" aria-expanded="false" aria-controls="collapseone">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Server Configuration')}}
+      </button>
+    </h2>
+    <div id="collapseone" class="accordion-collapse collapse show" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
         <div class="form-group">
           <label for="config_port">{{_('Server Port')}}</label>
           <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if config.config_port != None %}{{ config.config_port }}{% endif %}" autocomplete="off" required>
@@ -28,16 +26,12 @@
         <label for="config_certfile">{{_('SSL certfile location (leave it empty for non-SSL Servers)')}}</label>
          <div class="form-group input-group">
           <input type="text" class="form-control" id="config_certfile" name="config_certfile" value="{% if config.config_certfile != None %}{{ config.config_certfile }}{% endif %}" autocomplete="off">
-          <span class="input-group-btn">
-            <button type="button" data-toggle="modal" data-link="config_certfile" data-target="#fileModal" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-          </span>
+          <button type="button" data-bs-toggle="modal" data-link="config_certfile" data-bs-target="#fileModal" id="certfile_path" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
         </div>
           <label for="config_keyfile" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
          <div class="form-group input-group">
           <input type="text" class="form-control" id="config_keyfile" name="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
-          <span class="input-group-btn">
-            <button type="button" id="keyfile_path" data-toggle="modal" data-link="config_keyfile" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-          </span>
+          <button type="button" id="keyfile_path" data-bs-toggle="modal" data-link="config_keyfile" data-bs-target="#fileModal" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
         </div>
         <div class="form-group">
           <label for="config_updatechannel">{{_('Update Channel')}}</label>
@@ -53,17 +47,15 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
-          <span class="glyphicon glyphicon-plus"></span>
-          {{_('Logfile Configuration')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapsetwo" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-two">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="false" aria-controls="collapsetwo">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Logfile Configuration')}}
+      </button>
+    </h2>
+    <div id="collapsetwo" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
         <div class="form-group">
         <label for="config_log_level">{{_('Log Level')}}</label>
             <select name="config_log_level" id="config_log_level" class="form-control">
@@ -88,17 +80,15 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefour">
-          <span class="glyphicon glyphicon-plus"></span>
-          {{_('Feature Configuration')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapsefour" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-four">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Feature Configuration')}}
+      </button>
+    </h2>
+    <div id="collapsefour" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
     <div class="form-group">
       <input type="checkbox" id="config_unicode_filename" name="config_unicode_filename" {% if config.config_unicode_filename %}checked{% endif %}>
       <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
@@ -151,7 +141,7 @@
       </div>
     </div>
     {% endif %}
-    {% if feature_support['goodreads'] %}
+  {% if feature_support['goodreads'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>
       <label for="config_use_goodreads">{{_('Use Goodreads')}}</label>
@@ -213,7 +203,7 @@
            {% endif %}
         </select>
       </div>
-    {% if feature_support['ldap'] %}
+      {% if feature_support['ldap'] %}
       <div data-related="login-settings-1">
         <div class="form-group">
           <label for="config_ldap_provider_url">{{_('LDAP Server Host Name or IP Address')}}</label>
@@ -236,21 +226,21 @@
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="config_ldap_cacert_path_b" data-toggle="modal" data-link="config_ldap_cacert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="config_ldap_cacert_path_b" data-bs-toggle="modal" data-link="config_ldap_cacert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
           <label for="config_ldap_cert_path">{{_('LDAP Certificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="config_ldap_cert_path_b" data-toggle="modal" data-link="config_ldap_cert_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="config_ldap_cert_path_b" data-bs-toggle="modal" data-link="config_ldap_cert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
           <label for="config_ldap_key_path">{{_('LDAP Keyfile Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
             <span class="input-group-btn">
-              <button type="button" id="config_ldap_key_path_b" data-toggle="modal" data-link="config_ldap_key_path" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+              <button type="button" id="config_ldap_key_path_b" data-bs-toggle="modal" data-link="config_ldap_key_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
         </div>
@@ -308,97 +298,85 @@
           </div>
         <div data-related="ldap_member_user_object-1">
           <div class="form-group">
-              <label for="config_ldap_member_user_object">{{_('LDAP Member User Filter')}}</label>
-              <input type="text" class="form-control" id="config_ldap_member_user_object" name="config_ldap_member_user_object" value="{% if config.config_ldap_member_user_object != None %}{{ config.config_ldap_member_user_object }}{% endif %}" autocomplete="off">
+            <label for="config_ldap_member_user_object">{{_('LDAP Member User Filter')}}</label>
+            <input type="text" class="form-control" id="config_ldap_member_user_object" name="config_ldap_member_user_object" value="{% if config.config_ldap_member_user_object != None %}{{ config.config_ldap_member_user_object }}{% endif %}" autocomplete="off">
           </div>
         </div>
-
       </div>
       {% endif %}
       {% if feature_support['oauth'] %}
-        <div data-related="login-settings-2">
-          {% for prov in provider %}
-          <div class="form-group">
-            <a href="{{prov['obtain_link']}}" target="_blank">{{_('Obtain %(provider)s OAuth Credential', provider=prov['provider_name'])}}</a>
-          </div>
-          <div class="form-group">
-            <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
-            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
-          </div>
-          <div class="form-group">
-            <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
-            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
-          </div>
-        {% endfor %}
+      <div data-related="login-settings-2">
+        {% for prov in provider %}
+        <div class="form-group">
+          <a href="{{prov['obtain_link']}}" target="_blank">{{_('Obtain %(provider)s OAuth Credential', provider=prov['provider_name'])}}</a>
         </div>
+        <div class="form-group">
+          <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
+          <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
+          <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
+        </div>
+        {% endfor %}
+      </div>
       {% endif %}
       {% endif %}
-    {% endif %}
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
-          <span class="glyphicon glyphicon-plus"></span>
-           {{_('External binaries')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapsefive" class="panel-collapse collapse">
-      <div class="panel-body">
-           <label for="config_binariesdir">{{_('Path to Calibre Binaries')}}</label>
-           <div class="form-group input-group">
-           <input type="text" class="form-control" id="config_binariesdir" name="config_binariesdir" value="{% if config.config_binariesdir != None %}{{ config.config_binariesdir }}{% endif %}" autocomplete="off">
-           <span class="input-group-btn">
-             <button type="button" data-toggle="modal" id="binaries_modal_path" data-link="config_binariesdir" data-folderonly="true" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-           </span>
-           </div>
-           <div class="form-group">
-              <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
-              <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
-           </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-five">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefive" aria-expanded="false" aria-controls="collapsefive">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('External binaries')}}
+      </button>
+    </h2>
+    <div id="collapsefive" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
+        <label for="config_binariesdir">{{_('Path to Calibre Binaries')}}</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="config_binariesdir" name="config_binariesdir" value="{% if config.config_binariesdir != None %}{{ config.config_binariesdir }}{% endif %}" autocomplete="off">
+          <button type="button" data-bs-toggle="modal" id="binaries_modal_path" data-link="config_binariesdir" data-folderonly="true" data-bs-target="#fileModal" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
+        </div>
+        <div class="form-group">
+          <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
+          <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
+        </div>
         <label for="config_kepubifypath">{{_('Path to Kepubify E-Book Converter')}}</label>
-           <div class="form-group input-group">
-            <input type="text" class="form-control" id="config_kepubifypath" name="config_kepubifypath" value="{% if config.config_kepubifypath != None %}{{ config.config_kepubifypath }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="kepubify_path" data-toggle="modal" data-link="config_kepubifypath" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-            </span>
-          </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="config_kepubifypath" name="config_kepubifypath" value="{% if config.config_kepubifypath != None %}{{ config.config_kepubifypath }}{% endif %}" autocomplete="off">
+          <button type="button" id="kepubify_path" data-bs-toggle="modal" data-link="config_kepubifypath" data-bs-target="#fileModal" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
+        </div>
         {% if feature_support['rar'] %}
-            <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
-           <div class="form-group input-group">
-            <input type="text" class="form-control" id="config_rarfile_location" name="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="unrar_path" data-toggle="modal" data-link="config_rarfile_location" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-            </span>
-          </div>
+        <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="config_rarfile_location" name="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
+          <button type="button" id="unrar_path" data-bs-toggle="modal" data-link="config_rarfile_location" data-bs-target="#fileModal" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
+        </div>
         {% endif %}
       </div>
     </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
-          <span class="glyphicon glyphicon-plus"></span>
-           {{_('Security Settings')}}
-        </a>
-      </h4>
-    </div>
-    <div id="collapsesix" class="panel-collapse collapse">
-      <div class="panel-body">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-six">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Security Settings')}}
+      </button>
+    </h2>
+    <div id="collapsesix" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+      <div class="accordion-body">
             <div class="form-group">
               <input type="checkbox" id="config_ratelimiter" name="config_ratelimiter" {% if config.config_ratelimiter %}checked{% endif %}>
               <label for="config_ratelimiter">{{_('Limit failed login attempts')}}</label>
             </div>
             <div data-related="ratelimiter_settings">
-               <div class="form-group" style="margin-left:10px;">
+               <div class="form-group ms-3">
                   <label for="config_calibre">{{_('Configure Backend for Limiter')}}</label>
                   <input type="text" class="form-control" id="config_limiter_uri" name="config_limiter_uri" value="{% if config.config_limiter_uri != None %}{{ config.config_limiter_uri }}{% endif %}" autocomplete="off">
                </div>
-               <div class="form-group" style="margin-left:10px;">
+               <div class="form-group ms-3">
                   <label for="config_calibre">{{_('Options for Limiter Backend')}}</label>
                   <input type="text" class="form-control" id="config_limiter_options" name="config_limiter_options" value="{% if config.config_limiter_options != None %}{{ config.config_limiter_options }}{% endif %}" autocomplete="off">
                </div>
@@ -419,38 +397,18 @@
                 <label for="config_password_policy">{{_('User Password policy')}}</label>
             </div>
             <div data-related="password_settings">
-              <div class="form-group" style="margin-left:10px;">
+              <div class="form-group ms-3">
                 <label for="config_password_min_length">{{_('Minimum password length')}}</label>
                 <input type="number" min="1" max="40" class="form-control" name="config_password_min_length" id="config_password_min_length" value="{% if config.config_password_min_length != None %}{{ config.config_password_min_length }}{% endif %}" autocomplete="off" required>
-              </div>
-              <div class="form-group" style="margin-left:10px;">
-                <input type="checkbox" id="config_password_number" name="config_password_number"  {% if config.config_password_number %}checked{% endif %}>
-                <label for="config_password_number">{{_('Enforce number')}}</label>
-              </div>
-              <div class="form-group" style="margin-left:10px;">
-                <input type="checkbox" id="config_password_lower" name="config_password_lower"  {% if config.config_password_lower %}checked{% endif %}>
-                <label for="config_password_lower">{{_('Enforce lowercase characters')}}</label>
-              </div>
-              <div class="form-group" style="margin-left:10px;">
-                <input type="checkbox" id="config_password_upper" name="config_password_upper"  {% if config.config_password_upper %}checked{% endif %}>
-                <label for="config_password_upper">{{_('Enforce uppercase characters')}}</label>
-              </div>
-              <div class="form-group" style="margin-left:10px;">
-                <input type="checkbox" id="config_password_character" name="config_password_character"  {% if config.config_password_character %}checked{% endif %}>
-                <label for="config_password_character">{{_('Enforce characters (needed For Chinese/Japanese/Korean Characters)')}}</label>
-              </div>
-              <div class="form-group" style="margin-left:10px;">
-                <input type="checkbox" id="config_password_special" name="config_password_special"  {% if config.config_password_special %}checked{% endif %}>
-                <label for="config_password_special">{{_('Enforce special characters')}}</label>
               </div>
             </div>
       </div>
     </div>
   </div>
-</div>
-    <div class="col-sm-12">
-    <button type="button" name="submit" id="config_submit" class="btn btn-default">{{_('Save')}}</button>
-    <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-default">{{_('Cancel')}}</a>
+    {% endif %}
+    <div class="col-12">
+      <button type="button" name="submit" id="config_submit" class="btn btn-primary">{{_('Save')}}</button>
+      <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>
   </form>
 </div>
