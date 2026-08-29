@@ -744,31 +744,6 @@ $(function() {
 
         $("#restrict-elements-table").bootstrapTable({
             url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
-            columns: [
-                {
-                    field: "Element",
-                    title: "",
-                    sortable: false
-                },
-                {
-                    field: "type",
-                    title: "",
-                    visible: true
-                },
-                {
-                    field: "id",
-                    title: "",
-                    visible: false
-                },
-                {
-                    field: "action",
-                    title: "",
-                    formatter: "RestrictionActions",
-                    align: "right",
-                    valign: "middle",
-                    clickToSelect: false
-                }
-            ],
             rowStyle: function(row) {
                 if (row.id.charAt(0) === "a") {
                     return {classes: "bg-primary"};
@@ -780,8 +755,8 @@ $(function() {
                 $(".no-records-found").addClass("hidden");
                 $(".fixed-table-loading").addClass("hidden");
             },
-            onClickCell: function (field, value, row, $element) {
-                if (field === "action") {
+            onClickCell: function (field, value, row) {
+                if (field === 3) {
                     $.ajax ({
                         type: "Post",
                         data: "id=" + row.id + "&type=" + row.type + "&Element=" + encodeURIComponent(row.Element),

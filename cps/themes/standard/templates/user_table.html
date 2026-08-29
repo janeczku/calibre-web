@@ -186,8 +186,8 @@
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-locale-all.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
 {% if not current_user.locale == 'en' %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
