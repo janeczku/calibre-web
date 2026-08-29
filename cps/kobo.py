@@ -987,8 +987,6 @@ def HandleUnimplementedRequest(dummy=None):
 @kobo.route("/v1/assets", methods=["GET"])
 def HandleUserRequest(dummy=None):
     [limiter.limiter.clear(limit.limit, *limit.request_args) for limit in limiter.current_limits]
-    log.error("Key: {}".format(limiter.current_limit.key))
-    log.error("Remaining: {}".format(limiter.current_limit.remaining))
     log.debug("Unimplemented User Request received: %s (request is forwarded to kobo if configured)", request.base_url)
     return redirect_or_proxy_request()
 
@@ -1063,8 +1061,6 @@ def make_calibre_web_auth_response():
 @kobo.route("/v1/auth/device", methods=["POST"])
 @requires_kobo_auth
 def HandleAuthRequest():
-    log.error(limiter.current_limit)
-    log.error(limiter.current_limit)
     log.debug('Kobo Auth request')
     if config.config_kobo_proxy:
         try:
