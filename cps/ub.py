@@ -23,7 +23,7 @@ import sys
 from datetime import datetime, timezone, timedelta
 import itertools
 import uuid
-from flask import session as flask_session
+from flask import session as flask_session, has_request_context, g
 from binascii import hexlify
 
 from .cw_login import AnonymousUserMixin, current_user
@@ -460,7 +460,7 @@ class KoboReadingState(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     book_id = Column(Integer)
     last_modified = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
-    priority_timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    priority_timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all, delete")
     statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all, delete")
 
@@ -494,7 +494,11 @@ def receive_before_flush(session, flush_context, instances):
     for change in itertools.chain(session.new, session.dirty):
         if isinstance(change, (ReadBook, KoboStatistics, KoboBookmark)):
             if change.kobo_reading_state:
-                change.kobo_reading_state.last_modified = datetime.now(timezone.utc)
+                ts = (g.kobo_reading_state_lm
+                      if has_request_context() and getattr(g, 'kobo_reading_state_lm', None)
+                      else datetime.now(timezone.utc))
+                change.kobo_reading_state.last_modified = ts
+                change.kobo_reading_state.priority_timestamp = ts
     # Maintain the last_modified_bit for the Shelf table.
     for change in itertools.chain(session.new, session.deleted):
         if isinstance(change, BookShelf):
