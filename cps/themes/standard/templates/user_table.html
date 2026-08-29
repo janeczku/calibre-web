@@ -14,17 +14,17 @@
     {% if validate %}data-edit-validate="{{ _('This Field is Required') }}"{% endif %}>
     {% if elements %}
         <div class="multi_select">
-            <select class="multi_selector" id="{{ parameter }}" data-live-search="true" data-style="btn-default" data-dropup-auto="false" aria-disabled="true" multiple disabled>
+          <select class="multi_selector" id="{{ parameter }}" data-live-search="true" data-style="btn-outline-secondary" data-dropup-auto="false" aria-disabled="true" multiple disabled>
               {% for tag in elements %}
               <option class="tags_click" value="{{tag.id}}">{% if tag.name %}{{tag.name}}{% else %}{{tag.value}}{% endif %}</option>
               {% endfor %}
             </select>
             <div class="btn-group btn-group-justified" role="group">
               <div class="btn-group" role="group">
-                  <div class="multi_head btn btn-default hidden" data-set="remove" data-name="{{parameter}}" aria-disabled="true">{{_('Remove')}}</div>
+                <div class="multi_head btn btn-outline-secondary hidden" data-set="remove" data-name="{{parameter}}" aria-disabled="true">{{_('Remove')}}</div>
               </div>
               <div class="btn-group" role="group">
-                  <div class="multi_head btn btn-default hidden" data-set="add" data-name="{{parameter}}" aria-disabled="true">{{_('Add')}}</div>
+                <div class="multi_head btn btn-outline-secondary hidden" data-set="add" data-name="{{parameter}}" aria-disabled="true">{{_('Add')}}</div>
               </div>
             </div>
         </div>
@@ -117,15 +117,16 @@
 <link href="{{ url_for('static', filename='css/libs/bootstrap-select.min.css') }}" rel="stylesheet" >
 {% endblock %}
 {% block body %}
-<div class="discover">
-  <h2 class="{{page}}">{{_(title)}}</h2>
+<div class="container-fluid user-edit-page px-0 px-lg-2">
+  <h2 class="h3 mb-3 {{page}}">{{_(title)}}</h2>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-  <div class="col-xs-12 col-sm-12">
-    <div class="row">
-      <div class="btn btn-default disabled mass_selection" id="user_delete_selection" aria-disabled="true">{{_('Clear selections')}}</div>
+  <div class="col-12">
+    <div class="row mb-3">
+    <button type="button" class="btn btn-outline-secondary disabled mass_selection" id="user_delete_selection" aria-disabled="true">{{_('Clear selections')}}</button>
     </div>
   </div>
-  <table id="user-table" class="table table-no-bordered table-striped"
+  <div class="table-responsive">
+    <table id="user-table" class="table table-striped align-middle"
          data-url="{{url_for('admin.list_users')}}"  data-locale="{{ current_user.locale }}">
     <thead>
       <tr>
@@ -167,12 +168,13 @@
         {{ user_checkbox_row("sidebar_view", "sidebar_archived", _('Show Archived Books'), visiblility, sidebar_settings)}}
         {{ user_checkbox_row("sidebar_view", "sidebar_download", _('Show Downloaded Books'), visiblility, sidebar_settings)}}
         {{ user_checkbox_row("sidebar_view", "sidebar_list", _('Show Books List'), visiblility, sidebar_settings)}}
-        <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-default button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
+        <th data-align="right" data-formatter="UserActions" data-switchable="false"><div><div class="btn btn-outline-secondary button_head disabled" aria-disabled="true">{{_('Delete User')}}</div></div><br>{{_('Delete User')}}</th>
       </tr>
     </thead>
-  </table>
-  <div class="errorlink">
-    <div class="btn btn-default" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</div>
+    </table>
+  </div>
+  <div class="errorlink mt-3">
+    <button type="button" class="btn btn-outline-secondary" data-back="{{ url_for('admin.admin') }}" id="back">{{_('Back')}}</button>
   </div>
 </div>
 {% endblock %}

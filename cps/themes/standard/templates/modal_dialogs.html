@@ -9,10 +9,10 @@
         <h4 class="modal-title hidden" id="h4">{{_('Select Allowed/Denied Custom Column Values of User')}}</h4>
       </div>
       <div class="modal-body">
-          <table class="table table-no-bordered" id="restrict-elements-table" data-id-field="id" data-show-header="false" data-editable-mode="inline">
+          <table class="table table-no-bordered" id="restrict-elements-table" data-id-field="id" data-show-header="false">
             <thead>
               <tr>
-                  <th data-field="Element" id="Element" data-escape="true" data-editable-type="text" data-editable="true" data-editable-title="{{_('Enter Tag')}}"></th>
+                  <th data-field="Element" id="Element" data-escape="true"></th>
                   <th data-field="type" id="type" data-visible="true"></th>
                   <th data-field="id" id="id" data-visible="false"></th>
                   <th data-align="right" data-formatter="RestrictionActions"></th>
@@ -20,18 +20,18 @@
             </thead>
           </table>
           <form id="add_restriction" action="" method="POST">
-          <div class="form-group required">
-            <label for="add_element">{{_('Add View Restriction')}}</label>
+          <div class="mb-3 required">
+            <label for="add_element" class="form-label">{{_('Add View Restriction')}}</label>
             <input type="text" class="form-control" name="add_element" id="add_element">
           </div>
-          <div class="form-group required">
-            <input type="button" class="btn btn-default" value="{{_('Allow')}}" name="submit_allow" id="submit_allow" data-dismiss="static">
-            <input type="button" class="btn btn-default" value="{{_('Deny')}}" name="submit_deny" id="submit_restrict" data-dismiss="static">
+          <div class="d-flex flex-wrap gap-2 mt-2">
+            <input type="button" class="btn btn-primary" value="{{_('Allow')}}" name="submit_allow" id="submit_allow" data-bs-dismiss="static">
+            <input type="button" class="btn btn-outline-secondary" value="{{_('Deny')}}" name="submit_deny" id="submit_restrict" data-bs-dismiss="static">
           </div>
           </form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="restrict_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+        <button type="button" id="restrict_close" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
   </div>
@@ -59,8 +59,8 @@
         </div>
 
       <div class="modal-footer">
-        <input type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_confirm" id="delete_confirm" data-dismiss="modal">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_confirm" id="delete_confirm" data-bs-dismiss="modal">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -86,7 +86,7 @@
               </thead>
               <tbody id="tbody">
                 <tr class="tr-clickable hidden" id="parent" data-type="dir" data-path="..">
-                  <td><span class="glyphicon glyphicon-folder-close"></span></td>
+                  <td><i class="bi bi-folder2" aria-hidden="true"></i></td>
                   <td title="{{_('Parent Directory')}}"><span class="parentdir">..</span></td>
                   <td></td>
                 </tr>
@@ -96,8 +96,8 @@
         </div>
       <div class="modal-footer">
         <div class="text-left" id="element_selected"></div>
-        <button type="button" id="file_abort" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
-        <input type="button" class="btn btn-primary" data-path="" data-link=""  data-folderonly="" data-filefilter="" data-newfile="" value="{{_('Select')}}" name="file_confirm" id="file_confirm" data-dismiss="modal">
+        <button type="button" id="file_abort" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
+        <input type="button" class="btn btn-primary" data-path="" data-link=""  data-folderonly="" data-filefilter="" data-newfile="" value="{{_('Select')}}" name="file_confirm" id="file_confirm" data-bs-dismiss="modal">
       </div>
     </div>
   </div>
@@ -114,8 +114,8 @@
       <div class="modal-body text-center">
         <span id="text-GeneralDeleteModal"></span>
           <p></p>
-        <button id="btnConfirmYes-GeneralDeleteModal" type="button" class="btn btn btn-danger">{{_('Delete')}}</button>
-        <button id="btnConfirmNo-GeneralDeleteModal" type="button" class="btn btn-default">{{_('Cancel')}}</button>
+        <button id="btnConfirmYes-GeneralDeleteModal" type="button" class="btn btn-danger">{{_('Delete')}}</button>
+        <button id="btnConfirmNo-GeneralDeleteModal" type="button" class="btn btn-outline-secondary">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -132,8 +132,8 @@
       <div class="modal-body text-center">
         <span id="text-GeneralChangeModal"></span>
           <p></p>
-        <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn btn-default">{{_('Ok')}}</button>
-        <button id="btnConfirmNo-GeneralChangeModal" type="button" class="btn btn-default">{{_('Cancel')}}</button>
+        <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn-primary">{{_('Ok')}}</button>
+        <button id="btnConfirmNo-GeneralChangeModal" type="button" class="btn btn-outline-secondary">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>

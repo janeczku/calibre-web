@@ -455,7 +455,7 @@ $(function() {
             element = {
                 editable: {
                     mode: "inline",
-                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    emptytext: "<span class='bi bi-plus-lg'></span>",
                     ajaxOptions: {
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
@@ -744,6 +744,31 @@ $(function() {
 
         $("#restrict-elements-table").bootstrapTable({
             url: getPath() + "/ajax/listrestriction/" + type + "/" + userId,
+            columns: [
+                {
+                    field: "Element",
+                    title: "",
+                    sortable: false
+                },
+                {
+                    field: "type",
+                    title: "",
+                    visible: true
+                },
+                {
+                    field: "id",
+                    title: "",
+                    visible: false
+                },
+                {
+                    field: "action",
+                    title: "",
+                    formatter: "RestrictionActions",
+                    align: "right",
+                    valign: "middle",
+                    clickToSelect: false
+                }
+            ],
             rowStyle: function(row) {
                 if (row.id.charAt(0) === "a") {
                     return {classes: "bg-primary"};
@@ -755,8 +780,8 @@ $(function() {
                 $(".no-records-found").addClass("hidden");
                 $(".fixed-table-loading").addClass("hidden");
             },
-            onClickCell: function (field, value, row) {
-                if (field === 3) {
+            onClickCell: function (field, value, row, $element) {
+                if (field === "action") {
                     $.ajax ({
                         type: "Post",
                         data: "id=" + row.id + "&type=" + row.type + "&Element=" + encodeURIComponent(row.Element),
@@ -829,7 +854,7 @@ $(function() {
             element = {
                 editable: {
                     mode: "inline",
-                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    emptytext: "<span class='bi bi-plus-lg'></span>",
                     error: function(response) {
                         return response.responseText;
                     }
@@ -957,7 +982,7 @@ function TableActions (value, row) {
     return [
         "<a class=\"danger remove\"  data-value=\"" + row.id
         + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<i class=\"bi bi-trash3\"></i>",
         "</a>"
     ].join("");
 }
@@ -966,7 +991,7 @@ function TableActions (value, row) {
 function RestrictionActions (value, row) {
     return [
         "<div class=\"danger remove\" data-restriction-id=\"" + row.id + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<i class=\"bi bi-trash3\"></i>",
         "</div>"
     ].join("");
 }
@@ -975,7 +1000,7 @@ function RestrictionActions (value, row) {
 function EbookActions (value, row) {
     return [
         "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<i class=\"bi bi-trash3\"></i>",
         "</div>"
     ].join("");
 }
@@ -984,7 +1009,7 @@ function EbookActions (value, row) {
 function UserActions (value, row) {
     return [
         "<div class=\"user-remove\" data-value=\"delete\" onclick=\"deleteUser(this, '" + row.id + "')\" data-pk=\"" + row.id + "\" title=\"Remove\">",
-        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "<i class=\"bi bi-trash3\"></i>",
         "</div>"
     ].join("");
 }
@@ -995,7 +1020,7 @@ function TaskActions (value, row) {
     if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
         return [
             "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
-            "<i class=\"glyphicon glyphicon-ban-circle\"></i>",
+            "<i class=\"bi bi-x-circle\"></i>",
             "</div>"
         ].join("");
     }

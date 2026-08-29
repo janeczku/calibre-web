@@ -241,6 +241,10 @@ table .bg-dark-danger a { color: #fff; }
   color: #45b29d !important;
 }
 
+.navbar {
+  margin-bottom: 20px;
+}
+
 .more-stuff {
   margin-top: 20px;
   padding-top: 20px;
