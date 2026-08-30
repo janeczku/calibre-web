@@ -54,18 +54,18 @@
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="col-xs-12 col-sm-6">
         <div class="row form-group">
-          <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">
+          <div class="btn btn-outline-secondary disabled" id="merge_books" aria-disabled="true">
             {{_('Merge selected books')}}
           </div>
-          <div class="btn btn-default disabled mass_selection" id="book_delete_selection" aria-disabled="true">
+          <div class="btn btn-outline-secondary disabled mass_selection" id="book_delete_selection" aria-disabled="true">
             {{_('Clear selections')}}
           </div>
-          <div class="btn btn-default disabled" id="edit_selected_books" aria-disabled="true">
+          <div class="btn btn-outline-secondary disabled" id="edit_selected_books" aria-disabled="true">
             {{_('Edit selected books')}}
           </div>
         </div>
         <div class="row form-group">
-            <div class="btn btn-default disabled" id="table_xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span>{{_('Exchange author and title')}}</div>
+            <div class="btn btn-outline-secondary disabled" id="table_xchange" ><span class="bi bi-arrow-up"></span><span class="bi bi-arrow-down"></span>{{_('Exchange author and title')}}</div>
         </div>
       </div>
      <div class="filterheader col-xs-12 col-sm-6">
@@ -125,7 +125,7 @@
             {% endfor %}
           {% if current_user.role_delete_books() and current_user.role_edit()%}
             <th data-align="right" data-formatter="EbookActions" data-switchable="false">
-                <div><div class="btn btn-default button_head disabled" aria-disabled="true">
+                <div><div class="btn btn-outline-secondary button_head disabled" aria-disabled="true">
                     {{_('Delete selected books')}}
                 </div></div>
                 <br>
@@ -160,8 +160,8 @@
             <div class="text-left" id="merge_to"></div>
         </div>
       <div class="modal-footer">
-        <input id="merge_confirm" type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" data-dismiss="modal">
-        <button id="merge_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="merge_confirm" type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" data-bs-dismiss="modal">
+        <button id="merge_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -179,8 +179,8 @@
         <p></p>
             <div class="text-left" id="display-delete-selected-books"></div>
       <div class="modal-footer">
-        <input id="delete_selected_confirm" type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_selected_confirm" data-dismiss="modal">
-        <button id="delete_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="delete_selected_confirm" type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_selected_confirm" data-bs-dismiss="modal">
+        <button id="delete_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>
@@ -199,8 +199,8 @@
         <p></p>
             <div class="text-left" id="display-archive-selected-books"></div>
       <div class="modal-footer">
-        <input id="archive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Archive')}}" name="archive_selected_confirm" data-dismiss="modal">
-        <button id="archive_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="archive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Archive')}}" name="archive_selected_confirm" data-bs-dismiss="modal">
+        <button id="archive_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>
@@ -219,8 +219,8 @@
         <p></p>
             <div class="text-left" id="display-unarchive-selected-books"></div>
       <div class="modal-footer">
-        <input id="unarchive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Unarchive')}}" name="unarchive_selected_confirm" data-dismiss="modal">
-        <button id="unarchive_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="unarchive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Unarchive')}}" name="unarchive_selected_confirm" data-bs-dismiss="modal">
+        <button id="unarchive_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>
@@ -239,8 +239,8 @@
         <p></p>
             <div class="text-left" id="display-read-selected-books"></div>
       <div class="modal-footer">
-        <input id="read_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as read')}}" name="read_selected_confirm" data-dismiss="modal">
-        <button id="read_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="read_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as read')}}" name="read_selected_confirm" data-bs-dismiss="modal">
+        <button id="read_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>
@@ -259,8 +259,8 @@
         <p></p>
             <div class="text-left" id="display-unread-selected-books"></div>
       <div class="modal-footer">
-        <input id="unread_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as unread')}}" name="unread_selected_confirm" data-dismiss="modal">
-        <button id="read_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="unread_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as unread')}}" name="unread_selected_confirm" data-bs-dismiss="modal">
+        <button id="read_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>
@@ -314,8 +314,8 @@
       </div>
 
       <div class="modal-footer">
-        <input id="edit_selected_confirm" type="button" class="btn btn-danger" value="{{_('Edit')}}" name="edit_selected_confirm" id="edit_selected_confirm" data-dismiss="modal">
-        <button id="edit_selected_abort" type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+        <input id="edit_selected_confirm" type="button" class="btn btn-danger" value="{{_('Edit')}}" name="edit_selected_confirm" id="edit_selected_confirm" data-bs-dismiss="modal">
+        <button id="edit_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
       </div>
       </div>
     </div>

@@ -11,7 +11,7 @@
           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-bs-toggle="modal" data-bs-target="#bookDetailsModal" data-remote="false"{% endif %}>
               <span class="img d-block position-relative" title="{{ entry.Books.title }}">
                 {{ image.book_cover(entry.Books) }}
-                {% if entry[2] == True %}<span class="badge bg-success rounded-pill position-absolute top-0 end-0 m-2"><i class="bi bi-check-lg"></i></span>{% endif %}
+                {% if entry[2] == True %}<span class="badge bg-success rounded-pill cover-check-badge"><i class="bi bi-check-lg"></i></span>{% endif %}
               </span>
           </a>
       </div>
@@ -94,7 +94,7 @@
           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-bs-toggle="modal" data-bs-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img d-block position-relative" title="{{ entry.Books.title }}">
               {{ image.book_cover(entry.Books) }}
-              {% if entry[2] == True %}<span class="badge bg-success rounded-pill position-absolute top-0 end-0 m-2"><i class="bi bi-check-lg"></i></span>{% endif %}
+              {% if entry[2] == True %}<span class="badge bg-success rounded-pill cover-check-badge"><i class="bi bi-check-lg"></i></span>{% endif %}
             </span>
           </a>
       </div>

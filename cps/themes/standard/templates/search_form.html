@@ -23,7 +23,7 @@
           <input type="text" class="datepicker form-control" name="publishstart" id="publishstart" value="">
           <input type="text" class="form-control fake-input hidden" id="fake_publishstart" value="">
           <span class="input-group-btn">
-            <button type="button" id="publishstart_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+            <button type="button" id="publishstart_delete" class="datepicker_delete btn btn-outline-secondary"><span class="bi bi-x-circle"></span></button>
           </span>
         </div>
       </div>
@@ -33,7 +33,7 @@
           <input type="text" class="datepicker form-control" name="publishend" id="publishend" value="">
           <input type="text" class="form-control fake-input hidden" id="fake_publishend" value="">
           <span class="input-group-btn">
-            <button type="button" id="publishend_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+            <button type="button" id="publishend_delete" class="datepicker_delete btn btn-outline-secondary"><span class="bi bi-x-circle"></span></button>
           </span>
         </div>
       </div>
@@ -203,7 +203,7 @@
             <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}_start" id="{{ 'custom_column_' ~ c.id }}_start" value="">
             <input type="text" class="form-control fake-input hidden" id="fake_{{ 'custom_column_' ~ c.id }}_start" value="">
             <span class="input-group-btn">
-              <button type="button" id="{{ 'custom_column_' ~ c.id }}_start_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+              <button type="button" id="{{ 'custom_column_' ~ c.id }}_start_delete" class="datepicker_delete btn btn-outline-secondary"><span class="bi bi-x-circle"></span></button>
             </span>
           </div>
         </div>
@@ -213,7 +213,7 @@
             <input type="text" class="datepicker form-control" name="{{ 'custom_column_' ~ c.id }}_end" id="{{ 'custom_column_' ~ c.id }}_end" value="">
             <input type="text" class="form-control fake-input hidden" id="fake_{{ 'custom_column_' ~ c.id }}_end" value="">
             <span class="input-group-btn">
-              <button type="button" id="{{ 'custom_column_' ~ c.id }}_end_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
+              <button type="button" id="{{ 'custom_column_' ~ c.id }}_end_delete" class="datepicker_delete btn btn-outline-secondary"><span class="bi bi-x-circle"></span></button>
             </span>
           </div>
         </div>
@@ -244,7 +244,7 @@
     {% endfor %}
     {% endif %}
 
-    <button type="submit" id="adv_submit" class="btn btn-default">{{_('Search')}}</button>
+    <button type="submit" id="adv_submit" class="btn btn-primary">{{_('Search')}}</button>
   </form>
 </div>
 {% endblock %}

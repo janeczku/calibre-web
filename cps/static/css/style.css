@@ -347,6 +347,13 @@ span.glyphicon.glyphicon-tags {
   background-color: #fff;
 }
 
+.cover .badge.cover-check-badge {
+  top: auto;
+  bottom: 2px;
+  left: 2px;
+  right: auto;
+}
+
 .cover .read {
   position: relative;
   top: -20px;

@@ -48,10 +48,10 @@
         <div class="rating">
         <p>
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
-            <span class="glyphicon glyphicon-star good"></span>
+            <span class="bi bi-star-fill text-warning"></span>
             {% if loop.last and loop.index < 5 %}
               {% for numer in range(5 - loop.index) %}
-                <span class="glyphicon glyphicon-star-empty"></span>
+                <span class="bi bi-star"></span>
               {% endfor %}
             {% endif %}
           {% endfor %}
@@ -74,7 +74,7 @@
       {% if entry.identifiers|length > 0 %}
       <div class="identifiers">
         <p>
-        <span class="glyphicon glyphicon-link"></span>
+        <span class="bi bi-link-45deg"></span>
         {% for identifier in entry.identifiers %}
           <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.format_type()}}</a>
         {%endfor%}
@@ -86,7 +86,7 @@
 
       <div class="tags">
       <p>
-        <span class="glyphicon glyphicon-tags"></span>
+        <span class="bi bi-tags"></span>
 
         {% for tag in entry.tags %}
           <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
@@ -124,9 +124,9 @@
               {% else %}
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="bi bi-check-lg"></span>
                   {% else %}
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <span class="bi bi-x-lg"></span>
                   {% endif %}
                 {% else %}
                 {% if c.datatype == 'float' %}
@@ -186,8 +186,8 @@
       {% if current_user.shelf.all() or g.shelves_access %}
       <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
-          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
+          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="bi bi-list"></span> {{_('Add to shelf')}}
             <span class="caret"></span>
           </button>
           <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
@@ -211,10 +211,10 @@
               {% if shelf.id in books_shelfs %}
                 <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
+                   class="btn btn-sm btn-outline-secondary" role="button" data-shelf-action="remove"
                 >
                   <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
-                        class="glyphicon glyphicon-remove"
+                        class="bi bi-x-lg"
                         {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                 </a>
               {% endif %}

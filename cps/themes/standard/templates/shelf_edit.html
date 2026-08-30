@@ -22,9 +22,9 @@
           </label>
       </div>
     {% endif %}
-    <button type="submit" class="btn btn-default" id="submit">{{_('Save')}}</button>
+    <button type="submit" class="btn btn-primary" id="submit">{{_('Save')}}</button>
     {% if shelf.id != None %}
-      <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Cancel')}}</a>
+      <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     {% endif %}
   </form>
 </div>

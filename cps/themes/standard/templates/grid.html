@@ -19,7 +19,7 @@
         <div class="btn btn-primary btn-sm char">{{char.char}}</div>
         {% endfor %}
       </div>
-        <div class="update-view btn btn-primary btn-sm" data-target="series_view" id="list-button" data-view="list">{{_('List')}}</div>
+        <div class="update-view btn btn-primary btn-sm" data-bs-target="series_view" id="list-button" data-view="list">{{_('List')}}</div>
     </div>
 
     {% if entries[0] %}
@@ -30,7 +30,7 @@
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
                           <span class="img d-block position-relative" title="{{entry[0].series[0].name}}">
                               {{ image.book_cover(entry[0])}}
-                              <span class="badge bg-secondary rounded-pill position-absolute top-0 end-0 m-2">{{entry.count}}</span>
+                              <span class="badge bg-secondary rounded-pill">{{entry.count}}</span>
                             </span>
                       </a>
                   </div>

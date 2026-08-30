@@ -67,7 +67,7 @@
         {% endif %}
         <a class="btn btn-outline-secondary" id="admin_new_user" href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a>
         {% if config.config_login_type == 1 %}
-        <button type="button" class="btn btn-outline-secondary" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Import LDAP Users')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="import_ldap_users" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Import LDAP Users')}}</button>
         {% endif %}
       </div>
     </div>
@@ -163,11 +163,11 @@
       <div class="admin-actions d-flex flex-wrap gap-2">
         <a class="btn btn-outline-secondary" id="debug" href="{{url_for('admin.download_debug')}}">{{_('Download Debug Package')}}</a>
         <a class="btn btn-outline-secondary" id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a>
-        <button type="button" class="btn btn-outline-secondary" id="restart_database" data-toggle="modal" data-target="#StatusDialog" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</button>
-        <button type="button" class="btn btn-outline-secondary" id="admin_restart" data-toggle="modal" data-target="#RestartDialog" data-bs-toggle="modal" data-bs-target="#RestartDialog">{{_('Restart')}}</button>
-        <button type="button" class="btn btn-outline-secondary" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog" data-bs-toggle="modal" data-bs-target="#ShutdownDialog">{{_('Shutdown')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="restart_database" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="admin_restart" data-bs-toggle="modal" data-bs-target="#RestartDialog">{{_('Restart')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="admin_stop" data-bs-toggle="modal" data-bs-target="#ShutdownDialog">{{_('Shutdown')}}</button>
         {% if config.schedule_metadata_backup %}
-        <button type="button" class="btn btn-outline-secondary" id="metadata_backup" data-toggle="modal" data-target="#StatusDialog" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Queue all books for metadata backup')}}</button>
+        <button type="button" class="btn btn-outline-secondary" id="metadata_backup" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Queue all books for metadata backup')}}</button>
         {% endif %}
       </div>
     </div>
@@ -198,7 +198,7 @@
       <div class="alert alert-warning d-none mt-3" id="update_info"><span></span></div>
       <div class="admin-actions d-flex flex-wrap gap-2 mt-3">
         <button type="button" class="btn btn-primary" id="check_for_update">{{_('Check for Update')}}</button>
-        <button type="button" class="btn btn-primary d-none" id="perform_update" data-toggle="modal" data-target="#StatusDialog" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Perform Update')}}</button>
+        <button type="button" class="btn btn-primary d-none" id="perform_update" data-bs-toggle="modal" data-bs-target="#StatusDialog">{{_('Perform Update')}}</button>
       </div>
       {% endif %}
     </div>
@@ -211,7 +211,7 @@
     <div class="modal-content">
       <div class="modal-header bg-info-subtle">
         <h5 class="modal-title" id="RestartDialogLabel">{{_('Restart Calibre-Web')}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="{{_('Close')}}"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
       </div>
       <div class="modal-body text-center">
         <p>{{_('Are you sure you want to restart?')}}</p>
@@ -221,7 +221,7 @@
         <p></p>
         <div class="d-flex justify-content-center gap-2">
           <button type="button" class="btn btn-primary" id="restart">{{_('OK')}}</button>
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-dismiss="modal">{{_('Cancel')}}</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-bs-dismiss="modal">{{_('Cancel')}}</button>
         </div>
       </div>
     </div>
@@ -232,13 +232,13 @@
     <div class="modal-content">
       <div class="modal-header bg-info-subtle">
         <h5 class="modal-title" id="ShutdownDialogLabel">{{_('Stop Calibre-Web')}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="{{_('Close')}}"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
       </div>
       <div class="modal-body text-center">
         <p>{{_('Are you sure you want to shutdown?')}}</p>
         <div class="d-flex justify-content-center gap-2">
-          <button type="button" class="btn btn-primary" id="shutdown" data-bs-dismiss="modal" data-dismiss="modal">{{_('OK')}}</button>
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-dismiss="modal">{{_('Cancel')}}</button>
+          <button type="button" class="btn btn-primary" id="shutdown" data-bs-dismiss="modal">{{_('OK')}}</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
         </div>
       </div>
     </div>
@@ -257,7 +257,7 @@
         <p></p>
         <div id="DialogContent"></div>
         <p></p>
-        <button type="button" class="btn btn-primary d-none" id="DialogFinished" data-bs-dismiss="modal" data-dismiss="modal">{{_('OK')}}</button>
+        <button type="button" class="btn btn-primary d-none" id="DialogFinished" data-bs-dismiss="modal">{{_('OK')}}</button>
       </div>
     </div>
   </div>

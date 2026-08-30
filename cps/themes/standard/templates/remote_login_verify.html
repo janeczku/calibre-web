@@ -13,7 +13,7 @@
   <p>{{ _('If you approve this request, the device that started it will be logged in as %(username)s.', username=current_user.name) }}</p>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <button type="submit" class="btn btn-primary">{{ _('Approve Login') }}</button>
-    <a class="btn btn-default" href="{{ url_for('web.index') }}">{{ _('Cancel') }}</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('web.index') }}">{{ _('Cancel') }}</a>
   </form>
 </div>
 {% endblock %}
