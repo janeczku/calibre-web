@@ -450,7 +450,7 @@ $(function() {
                 }
                 data.files.forEach(function(entry) {
                     if(entry.type === "dir") {
-                        var type = "<span class=\"glyphicon glyphicon-folder-close\"></span>";
+                        var type = "<span class=\"bi bi-folder\"></span>";
                 } else {
                     var type = "";
                 }

@@ -17,7 +17,7 @@
         {{_('Server Configuration')}}
       </button>
     </h2>
-    <div id="collapseone" class="accordion-collapse collapse show" data-bs-parent="#configAccordion">
+    <div id="collapseone" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
       <div class="accordion-body">
         <div class="form-group">
           <label for="config_port">{{_('Server Port')}}</label>
@@ -406,7 +406,7 @@
     </div>
   </div>
     {% endif %}
-    <div class="col-12">
+    <div class="col-12 mt-3">
       <button type="button" name="submit" id="config_submit" class="btn btn-primary">{{_('Save')}}</button>
       <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>

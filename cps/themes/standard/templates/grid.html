@@ -2,41 +2,41 @@
 {% extends theme("layout.html") %}
 {% block body %}
 <div class="discover">
-<h1 class="{{page}}">{{_(title)}}</h1>
+<h1 class="{{page}} h2 mb-3">{{_(title)}}</h1>
 
-    <div class="filterheader hidden-xs">
+    <div class="filterheader d-none d-md-block mb-3">
       {% if entries.__len__() and data == 'author' %}
-        <div id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></div>
+        <div id="sort_name" class="btn btn-primary btn-sm"><b>B,A <-> A B</b></div>
       {% endif %}
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div id="asc" data-id="series" data-order="{{ order }}" class="btn btn-primary{% if order == 1 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet"></span></div>
-      <div id="desc" data-id="series" class="btn btn-primary{% if order == 0 %} active{% endif%}"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></div>
+      <div id="asc" data-id="series" data-order="{{ order }}" class="btn btn-primary btn-sm{% if order == 1 %} active{% endif%}"><i class="bi bi-sort-alpha-down"></i></div>
+      <div id="desc" data-id="series" class="btn btn-primary btn-sm{% if order == 0 %} active{% endif%}"><i class="bi bi-sort-alpha-down-alt"></i></div>
       {% if charlist|length %}
-      <div id="all" class="active btn btn-primary {% if charlist|length > 9 %}hidden-sm{% endif %}">{{_('All')}}</div>
+      <div id="all" class="active btn btn-primary btn-sm {% if charlist|length > 9 %}d-none d-md-inline-block{% endif %}">{{_('All')}}</div>
       {% endif %}
-      <div class="btn-group character {% if charlist|length > 9 %}hidden-sm{% endif %}" role="group">
+      <div class="btn-group character {% if charlist|length > 9 %}d-none d-md-inline-flex{% endif %}" role="group">
         {% for char in charlist%}
-        <div class="btn btn-primary char">{{char.char}}</div>
+        <div class="btn btn-primary btn-sm char">{{char.char}}</div>
         {% endfor %}
       </div>
-        <div class="update-view btn btn-primary" data-target="series_view" id="list-button" data-view="list">{{_('List')}}</div>
+        <div class="update-view btn btn-primary btn-sm" data-target="series_view" id="list-button" data-view="list">{{_('List')}}</div>
     </div>
 
     {% if entries[0] %}
-        <div id="list" class="row display-flex">
+        <div id="list" class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 g-3">
           {% for entry in entries %}
-              <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
-                  <div class="cover">
+              <div class="col book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
+                  <div class="cover mb-2">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
-                          <span class="img" title="{{entry[0].series[0].name}}">
+                          <span class="img d-block position-relative" title="{{entry[0].series[0].name}}">
                               {{ image.book_cover(entry[0])}}
-                              <span class="badge">{{entry.count}}</span>
+                              <span class="badge bg-secondary rounded-pill position-absolute top-0 end-0 m-2">{{entry.count}}</span>
                             </span>
                       </a>
                   </div>
                   <div class="meta">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
-                          <p title="{{entry[0].series[0].name|shortentitle}}" class="title">{{entry[0].series[0].name|shortentitle}}</p>
+                          <p title="{{entry[0].series[0].name|shortentitle}}" class="title mb-0">{{entry[0].series[0].name|shortentitle}}</p>
                       </a>
                   </div>
               </div>

@@ -16,7 +16,7 @@
         {{_('View Configuration')}}
       </button>
     </h2>
-    <div id="collapsefour" class="accordion-collapse collapse show" data-bs-parent="#configAccordion">
+    <div id="collapsefour" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
       <div class="accordion-body">
         <div class="form-group">
           <label for="config_calibre_web_title">{{_('Title')}}</label>
@@ -165,7 +165,7 @@
     </div>
   </div>
 </div>
-    <div class="col-12">
+    <div class="col-12 mt-3">
     <button type="submit" name="submit" class="btn btn-primary">{{_('Save')}}</button>
     <a href="{{ url_for('admin.admin') }}" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>

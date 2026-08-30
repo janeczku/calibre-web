@@ -206,6 +206,14 @@ table .bg-dark-danger a { color: #fff; }
   box-shadow: 0 5px 8px -6px #777;
 }
 
+.container-fluid .book .cover span .img,
+.container-fluid .book .cover span img.bs5-cover-image {
+  height: 225px;
+  width: auto;
+  object-fit: cover;
+  display: block;
+}
+
 .container-fluid .book .meta { margin-top: 10px; }
 .media-body p { text-align: justify; }
 .container-fluid .book .meta p { margin: 0; }
@@ -258,6 +266,22 @@ table .bg-dark-danger a { color: #fff; }
 
 .config-accordion .accordion-button::after {
   filter: grayscale(100%) brightness(45%);
+}
+
+.config-accordion .accordion-button .bi-plus-lg::before {
+  content: "\f4fe";
+}
+
+.config-accordion .accordion-button:not(.collapsed) .bi-plus-lg::before {
+  content: "\f2ea";
+}
+
+.config-accordion .accordion-button .bi-plus-lg {
+  font-size: 1.2rem;
+  line-height: 1;
+  width: 1.2rem;
+  display: inline-block;
+  text-align: center;
 }
 
 .config-accordion .accordion-body {

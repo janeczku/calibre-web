@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% from theme('modal_dialogs.html') import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
 {% import 'image.html' as image %}
-{% set bootstrap5_page = page in ['login', 'admin', 'logfile', 'stat', 'tasks', 'newuser', 'edituser', 'me', 'usertable', 'mailset', 'config', 'uiconfig', 'dbconfig'] %}
+{% set bootstrap5_page = page in ['login', 'admin', 'logfile', 'stat', 'tasks', 'newuser', 'edituser', 'me', 'usertable', 'mailset', 'config', 'uiconfig', 'dbconfig', 'root', 'newest', 'hot', 'download', 'rated', 'read', 'unread', 'discover', 'author', 'publisher', 'series', 'ratings', 'formats', 'category', 'language', 'archived'] %}
 <html lang="{{ current_user.locale }}">
   <head>
     <title>{{instance}} | {{title}}</title>
