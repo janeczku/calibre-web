@@ -20,6 +20,7 @@
 import os
 import re
 import json
+import time
 from datetime import datetime, timezone
 from urllib.parse import quote
 import unidecode
@@ -48,6 +49,7 @@ from flask_babel import get_locale
 from flask import flash, g, Flask
 
 from . import logger, ub, isoLanguages
+from . import hierarchy
 from .pagination import Pagination
 from .string_helper import strip_whitespaces
 
@@ -1072,6 +1074,77 @@ class CalibreDB:
 
         return cc
 
+    def hierarchical_cc_filter(self, col_id, path):
+        """SQLAlchemy filter matching a hierarchy node and all of its descendants.
+
+        Matches:      Computers            (exact leaf)
+                      Computers.DB         (descendant)
+                      Computers.DB.Oracle  (deeper descendant)
+        Does NOT match: ComputersX         (prefix collision guard via trailing '.')
+        """
+        cc = cc_classes[col_id]
+        return or_(
+            cc.value == path,
+            cc.value.like(hierarchy.like_pattern(path), escape=hierarchy.ESCAPE_CHAR)
+        )
+
+    def get_hierarchical_column_ids(self, ttl=300):
+        """Return the set of custom column ids that behave as hierarchies.
+
+        A column qualifies only when at least one stored value is a proper
+        prefix (value + separator) of another stored value, e.g. 'Computers'
+        and 'Computers.DB'. This avoids false positives on columns whose
+        values merely contain dots (Dewey '778.3', LCC 'QA76.76.C68', ...).
+        Result is cached process-wide for `ttl` seconds.
+        """
+        now = time.monotonic()
+        cached = getattr(self.__class__, '_hier_cache', None)
+        if cached is not None and now - cached[0] < ttl:
+            return cached[1]
+        ids = set()
+        for cid, cc in cc_classes.items():
+            try:
+                values = [r[0] for r in self.session.query(cc.value).distinct()]
+            except OperationalError:
+                continue
+            if hierarchy.is_hierarchical_value_set(values):
+                ids.add(cid)
+        self.__class__._hier_cache = (now, ids)
+        return ids
+
+    def hierarchical_cc_search_filter(self, col_id, term):
+        """Calibre-style search semantics for hierarchical columns: a term
+        matches the exact value or any of its descendants ('Computers'
+        matches 'Computers' and 'Computers.DB'), case-insensitively.
+        Non-hierarchical columns keep the fuzzy substring behaviour."""
+        cc = cc_classes[col_id]
+        pattern = func.lower(hierarchy.like_pattern(term))
+        return or_(
+            func.lower(cc.value) == func.lower(term),
+            func.lower(cc.value).like(pattern, escape=hierarchy.ESCAPE_CHAR)
+        )
+
+    def get_hierarchical_tree(self, col_id, apply_common_filters=True):
+        """Return the nested tree (list of root nodes) for custom column `col_id`,
+        honouring user visibility filters. See cps/hierarchy.py for the node shape.
+        """
+        cc = cc_classes.get(col_id)
+        if cc is None:
+            return []
+        rel = getattr(Books, 'custom_column_' + str(col_id))
+        q = (self.session.query(Books.id, cc.value)
+            .select_from(Books)
+            .join(rel)
+            .distinct())
+        if apply_common_filters:
+            q = q.filter(self.common_filters())
+        try:
+            rows = q.all()
+        except OperationalError:
+            log.error("Failed to read custom column %s for hierarchy tree", col_id)
+            return []
+        return hierarchy.parse_tag_hierarchy([r[1] for r in rows])
+
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term, config, offset=None, order=None, limit=None, *join):
         order = order[0] if order else [Books.sort]
@@ -1196,9 +1269,14 @@ class Category:
     count = None
     rating = None
 
-    def __init__(self, name, cat_id, rating=None):
+    def __init__(self, name, cat_id, rating=None, path=None, children=None):
         self.name = name
         self.sort = name
         self.id = cat_id
         self.rating = rating
         self.count = 1
+        # Hierarchical custom column support: full dotted path and nested
+        # child nodes (list of Category instances). Flat categories keep
+        # the previous behaviour (path == name, no children).
+        self.path = path or name
+        self.children = children or []

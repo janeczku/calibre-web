@@ -1,0 +1,21 @@
+{% extends theme("layout.html") %}
+{% from theme('macros/hierarchy.html') import render_details_tree %}
+{% block body %}
+<div class="discover">
+  {% if page == 'cclist' %}
+    <span class="catlist-icon glyphicon glyphicon-tags" aria-hidden="true"></span>
+  {% endif %}
+  <h2 class="{{ page }}">{{ _(title)|replace(':', ' —')|replace("'", "") }}</h2>
+  <p class="hierarchy-hint">{{_('Select a category to see the books assigned to it and all of its sub-categories.')}}</p>
+  <div class="btn-group hierarchy-actions" role="group">
+    <button id="hierarchy-expand-all" class="btn btn-primary btn-sm">{{_('Expand all')}}</button>
+    <button id="hierarchy-collapse-all" class="btn btn-primary btn-sm">{{_('Collapse all')}}</button>
+  </div>
+  <div class="hierarchy-tree" data-col-id="{{ col_id }}">
+    {{ render_details_tree(entries, col_id) }}
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/hierarchy.js') }}"></script>
+{% endblock %}

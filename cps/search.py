@@ -105,6 +105,12 @@ def adv_search_custom_columns(cc, term, q):
                 if c.datatype == 'rating':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == int(float(custom_query) * 2)))
+                elif c.datatype in ('text', 'enumeration') and \
+                        c.id in calibre_db.get_hierarchical_column_ids():
+                    # Hierarchical column: match the node itself plus all
+                    # descendants ('Computers' -> 'Computers.DB', ...)
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                        calibre_db.hierarchical_cc_search_filter(c.id, custom_query)))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
