@@ -260,9 +260,11 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
+{% if not bootstrap5_page %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select.min.js')}}"></script>
 {% if not current_user.locale == 'en' %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-select/defaults-' + current_user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% endif %}
 {% endif %}
 {% endblock %}
 {% block header %}
