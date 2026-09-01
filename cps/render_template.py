@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from flask import g, abort, request, render_template
+from flask import g, abort, request, render_template, url_for
 from flask_themes2 import render_theme_template
 from jinja2 import TemplateNotFound
 from flask_babel import gettext as _
@@ -119,10 +119,74 @@ def get_sidebar_config(kwargs=None):
             {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
              "visibility": constants.SIDEBAR_LIST, 'public': (not current_user.is_anonymous),
              "show_text": _('Show Books List'), "config_show": content, "no_param":True})
+    sidebar.extend(get_custom_column_sidebar_entries())
     g.shelves_access = ub.session.query(ub.Shelf).filter(
         or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
 
     return sidebar, simple
+
+
+def get_custom_column_sidebar_entries():
+    """Sidebar entries for all browsable tag-like custom columns
+    (datatype text/enumeration). Hierarchical columns render as a tree,
+    flat ones as a plain list - both through web.cc_category_list.
+
+    Per-user visibility is stored independently of the built-in section
+    flags in User.view_settings ('cc_sidebar' page, key 'show_cc_<id>'),
+    managed via named checkboxes on the profile page (/me). Entries are
+    omitted entirely when the user disabled them.
+    Failures (e.g. DB not ready) silently skip the extra entries."""
+    entries = []
+    try:
+        from . import calibre_db, db
+        if not db.cc_classes:
+            return entries
+        for col in calibre_db.get_cc_columns(config):
+            if col.datatype not in ('text', 'enumeration'):
+                continue
+            prop = 'show_cc_%d' % col.id
+            if current_user.get_view_property('cc_sidebar', prop) is False:
+                continue
+            entries.append({
+                "glyph": "glyphicon-tags",
+                "text": col.name,
+                "link": 'web.cc_category_list',
+                "href": url_for('web.cc_category_list', column_id=col.id),
+                "id": "cc_%d" % col.id,
+                "visibility": constants.SIDEBAR_CATEGORY,
+                'public': True,
+                "page": "cclist",
+                # Visibility is managed by the dedicated named-checkbox group
+                # on the profile page (see get_custom_column_visibility_options),
+                # not by the generic config_show loop.
+                "config_show": False,
+            })
+    except Exception:
+        log.debug("Could not build custom column sidebar entries", exc_info=True)
+    return entries
+
+
+def get_custom_column_visibility_options():
+    """All browsable custom columns with their per-user sidebar visibility
+    state, for the named checkbox group on the profile page (/me).
+    Disabled columns are included so they can be re-enabled."""
+    options = []
+    try:
+        from . import calibre_db, db
+        if not db.cc_classes:
+            return options
+        for col in calibre_db.get_cc_columns(config):
+            if col.datatype not in ('text', 'enumeration'):
+                continue
+            options.append({
+                'id': col.id,
+                'name': col.name,
+                'visible': current_user.get_view_property(
+                    'cc_sidebar', 'show_cc_%d' % col.id) is not False,
+            })
+    except Exception:
+        log.debug("Could not build custom column visibility options", exc_info=True)
+    return options
 
 
 # Returns the template for rendering and includes the instance name

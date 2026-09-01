@@ -511,3 +511,65 @@ body > div.container-fluid  {
 .input-group .toggle-password {
   height: 40px;
 }
+
+/* ---- Hierarchical custom columns -------------------------------------- */
+.hierarchy-tree ul.hierarchy-children {
+  padding-left: 1.4em;
+}
+
+.hierarchy-node > a .hierarchy-toggle {
+  display: inline-block;
+  margin-right: .4em;
+  transition: transform .15s ease;
+}
+
+.hierarchy-node.expanded > a .hierarchy-toggle {
+  transform: rotate(90deg);
+}
+
+.hierarchy-node.collapsed > ul.hierarchy-children {
+  display: none;
+}
+
+.hierarchy-details {
+  padding-left: 1.2em;
+}
+
+.hierarchy-details > summary {
+  cursor: pointer;
+}
+
+.hierarchy-details > summary .badge,
+.hierarchy-node .badge {
+  font-size: .7em;
+  margin-left: .4em;
+}
+
+.hierarchy-breadcrumb {
+  padding: .4em 0;
+}
+
+.hierarchy-breadcrumb .sep {
+  margin: 0 .3em;
+  opacity: .6;
+}
+
+.hierarchy-hint {
+  opacity: .75;
+}
+
+.hierarchy-subcategories h3 {
+  margin-top: .4em;
+}
+
+.hierarchy-sublist {
+  margin: .3em 0;
+}
+
+.hierarchy-sublist li {
+  padding: .15em 0;
+}
+
+.hierarchy-sublist li a {
+  display: inline-block;
+}

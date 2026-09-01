@@ -1,0 +1,52 @@
+{# Recursive rendering helpers for hierarchical custom columns.
+   Shared by the standard and caliblur themes via theme(). #}
+
+{% macro hierarchy_breadcrumbs(trails, col_id) %}
+  {# `trails` is a list of trails; each trail is a list of (name, path) pairs.
+     A bare (name, path) pair passed directly degrades gracefully instead of
+     raising, so a wrong call shape can never produce a server error. #}
+  {% for trail in trails %}
+    <nav class="hierarchy-breadcrumb">
+      {% if trail and trail[0] is string %}
+        <a href="{{ url_for('web.cc_category_list', column_id=col_id, category_path=trail[1]) }}">{{ trail[0] }}</a>
+      {% else %}
+        {% for name, path in trail %}
+          <a href="{{ url_for('web.cc_category_list', column_id=col_id, category_path=path) }}">{{ name }}</a>
+          {%- if not loop.last %}<span class="sep">&rsaquo;</span>{% endif %}
+        {% endfor %}
+      {% endif %}
+    </nav>
+  {% endfor %}
+{% endmacro %}
+
+{% macro render_tree_nodes(nodes, col_id, current_path='', depth=0) %}
+  {% for node in nodes %}
+    <li class="hierarchy-node depth-{{ depth }}{% if current_path.startswith(node.path) %} expanded{% else %} collapsed{% endif %}" data-path="{{ node.path }}">
+      <a href="{{ url_for('web.cc_category_list', column_id=col_id, category_path=node.path) }}">
+        <span class="hierarchy-toggle glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+        {{ node.name }} <span class="badge badge-sm">{{ node.total_count }}</span>
+      </a>
+      {% if node.children %}
+        <ul class="hierarchy-children list-unstyled">
+          {{ render_tree_nodes(node.children, col_id, current_path, depth + 1) }}
+        </ul>
+      {% endif %}
+    </li>
+  {% endfor %}
+{% endmacro %}
+
+{% macro render_details_tree(nodes, col_id, current_path='') %}
+  {% for node in nodes %}
+    <details class="hierarchy-details" data-path="{{ node.path }}"
+             {% if current_path.startswith(node.path) %}open{% endif %}>
+      <summary>
+        <a href="{{ url_for('web.cc_category_list', column_id=col_id, category_path=node.path) }}">
+          {{ node.name }} <span class="badge badge-sm">{{ node.total_count }}</span>
+        </a>
+      </summary>
+      {% if node.children %}
+        {{ render_details_tree(node.children, col_id, current_path) }}
+      {% endif %}
+    </details>
+  {% endfor %}
+{% endmacro %}
