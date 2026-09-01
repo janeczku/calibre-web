@@ -23,6 +23,29 @@ if ($(".tiny_editor").length) {
     });
 }
 
+$(function () {
+    if (typeof TomSelect === "undefined") {
+        return;
+    }
+
+    $(".advanced-search-select").each(function () {
+        const select = this;
+
+        if (select.tomselect) {
+            select.tomselect.destroy();
+        }
+
+        new TomSelect(select, {
+            maxItems: null,
+            persist: false,
+            create: false,
+            plugins: ["remove_button"],
+            closeAfterSelect: false,
+            hideSelected: false
+        });
+    });
+});
+
 $(".datepicker").datepicker({
     format: "yyyy-mm-dd",
     language: language
@@ -220,36 +243,41 @@ $(".form-group #publisher").typeahead(
     }
 );
 
-$("#search").on("change input.typeahead:selected", function(event) {
+$("#search").on("change input.typeahead:selected", function (event) {
     if (event.target.type === "search" && event.target.tagName === "INPUT") {
         return;
     }
-    var form = $("form").serialize();
-    $.getJSON( getPath() + "/get_matching_tags", form, function( data ) {
-        $(".tags_click").each(function() {
-            if ($.inArray(parseInt($(this).val(), 10), data.tags) === -1) {
-                if (!$(this).prop("selected")) {
-                    $(this).prop("disabled", true);
-                }
-            } else {
-                $(this).prop("disabled", false);
+
+    var form = $("#search").serialize();
+    $.getJSON(getPath() + "/get_matching_tags", form, function (data) {
+        $(".tags_click").each(function () {
+            var option = $(this);
+            var tagId = parseInt(option.val(), 10);
+            var isMatching = $.inArray(tagId, data.tags) !== -1;
+
+            if (isMatching) {
+                option.prop("disabled", false);
+                return;
+            }
+
+            if (!option.prop("selected")) {
+                option.prop("disabled", true);
             }
         });
-        $("#include_tag option:selected").each(function () {
-            $("#exclude_tag").find("[value=" + $(this).val() + "]").prop("disabled", true);
+
+        $("#include_tag, #exclude_tag").each(function () {
+            var select = this;
+            if (typeof TomSelect !== "undefined" && select.tomselect) {
+                select.tomselect.refreshOptions(false);
+                return;
+            }
+            if (typeof $.fn.selectpicker === "function") {
+                $(select).selectpicker("refresh");
+            }
         });
-        $("#include_tag").selectpicker("refresh");
-        $("#exclude_tag").selectpicker("refresh");
     });
 });
 
-/*$("#btn-upload-format").on("change", function () {
-    var filename = $(this).val();
-    if (filename.substring(3, 11) === "fakepath") {
-        filename = filename.substring(12);
-    } // Remove c:\fake at beginning from localhost chrome
-    $("#upload-format").text(filename);
-});*/
 
 $("#btn-upload-cover").on("change", function () {
     var filename = $(this).val();

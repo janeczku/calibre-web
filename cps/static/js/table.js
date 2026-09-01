@@ -21,6 +21,36 @@
 var selections = [];
 var reload = false;
 
+function syncTomSelects() {
+    if (typeof TomSelect === "undefined") {
+        return;
+    }
+    $(".multi_selector").each(function () {
+        if (!this.tomselect) {
+            new TomSelect(this, {
+                persist: false,
+                maxItems: null,
+                plugins: ['remove_button'],
+                closeAfterSelect: false,
+                create: false
+            });
+        } else {
+            this.tomselect.sync();
+        }
+    });
+}
+
+function clearTomSelects() {
+    if (typeof TomSelect === "undefined") {
+        return;
+    }
+    $(".multi_selector").each(function () {
+        if (this.tomselect) {
+            this.tomselect.clear();
+        }
+    });
+}
+
 $(function() {
     $('#tasktable').bootstrapTable({
         striped: true
@@ -946,9 +976,7 @@ function handle_header_buttons () {
         $(".multi_selector").attr("aria-disabled", false);
         $(".multi_selector").removeAttr("disabled");
         $(".header_select").removeAttr("disabled");
-        if (typeof $.fn.selectpicker === "function") {
-            $('.multi_selector').selectpicker('refresh');
-        }
+        syncTomSelects();
     }
 }
 
@@ -1067,8 +1095,8 @@ function loadSuccess() {
     $(".header_select").each(function() {
         $(this).prop("selectedIndex", 0);
     });
-    $('.multi_selector').selectpicker('deselectAll');
-    $('.multi_selector').selectpicker('refresh');
+    clearTomSelects();
+    syncTomSelects();
     $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").editable("disable");
     $(".editable[data-name='locale'][data-pk='"+guest.data("pk")+"']").hide();
     $("input[data-name='admin_role'][data-pk='"+guest.data("pk")+"']").prop("disabled", true);
@@ -1101,7 +1129,7 @@ function move_header_elements() {
             item.addClass("myselect");
         }
     });
-    $(".multi_selector").selectpicker();
+    syncTomSelects();
     if ($(".multi_head").length) {
         if (!$._data($(".multi_head").get(0), "events")) {
             // Functions have to be here, otherwise the callbacks are not fired if visible columns are changed
