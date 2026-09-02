@@ -52,6 +52,14 @@ body table {
   font-family: "Nimbus Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.col-sm-10 {
+  padding-right: 15px;
+}
+
+.table-responsive {
+  overflow-x: visible;
+}
+
 .http-error body {
   margin: 0;
   height: 100%;
@@ -78,6 +86,33 @@ a,
 .book-remove:hover { color: #23527c; }
 .user-remove:hover { color: #23527c; }
 .btn-default a { color: #444; }
+
+body.user_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.user_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn,
+body.usertable .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.usertable .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn {
+  background-color: #fff;
+  border-color: var(--bs-border-color);
+  color: var(--bs-body-color);
+}
+
+body.user_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn .fa-search,
+body.user_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn .fa-search,
+body.usertable .bootstrap-table .fixed-table-toolbar .search .input-group > .btn .fa-search,
+body.usertable .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn .fa-search,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn .fa-search,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn .fa-search {
+  color: inherit;
+}
+
+body.user_table .bootstrap-table .fixed-table-container .fixed-table-body table thead th[data-field="0"],
+body.usertable .bootstrap-table .fixed-table-container .fixed-table-body table thead th[data-field="0"] {
+  width: 130px !important;
+  min-width: 130px !important;
+  white-space: nowrap;
+}
 .panel-title > a { text-decoration: none; }
 
 .navigation li a {

@@ -518,6 +518,11 @@ $(function() {
     // $.fn.editable.defaults.display = comment_display;
 
     $("#books-table").bootstrapTable({
+        iconsPrefix: "bi",
+        icons: {
+            search: "bi-search",
+            columns: "bi-layout-three-columns"
+        },
         sidePagination: "server",
         pageList: "[10, 25, 50, 100]",
         queryParams: queryParams,
@@ -876,6 +881,11 @@ $(function() {
     });
 
     $("#user-table").bootstrapTable({
+        iconsPrefix: "bi",
+        icons: {
+            search: "bi-search",
+            columns: "bi-layout-three-columns"
+        },
         sidePagination: "server",
         queryParams: queryParams,
         pagination: true,
