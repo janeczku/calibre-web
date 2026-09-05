@@ -259,6 +259,18 @@ table .bg-dark-danger a { color: #fff; }
   color: #444;
 }
 
+.container-fluid .book .meta a {
+  text-decoration: none;
+}
+
+.title {
+  text-decoration: none;
+}
+
+.author-name {
+  text-decoration: none;
+}
+
 .container-fluid .book .meta .series {
   font-weight: 400;
   font-size: 12px;
@@ -271,9 +283,48 @@ table .bg-dark-danger a { color: #fff; }
 }
 
 .container-fluid .book .meta .rating { margin-top: 5px; }
-.rating .glyphicon-star-empty { color: #444; }
-.rating .glyphicon-star.good { color: #444; }
-.rating-clear .glyphicon-remove { color: #333; }
+
+.rating-input i,
+.rating-input .rating-clear i,
+.rating .glyphicon-star-empty,
+.rating .glyphicon-star.good,
+.rating-clear .glyphicon-remove {
+  font-family: "bootstrap-icons" !important;
+  font-style: normal;
+  font-weight: normal !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.rating-input i.glyphicon-star,
+.rating .glyphicon-star.good {
+  color: #f4b400;
+}
+
+.rating-input i.glyphicon-star::before,
+.rating .glyphicon-star.good::before {
+  content: "\f586";
+}
+
+.rating-input i.glyphicon-star-empty,
+.rating .glyphicon-star-empty {
+  color: #adb5bd;
+}
+
+.rating-input i.glyphicon-star-empty::before,
+.rating .glyphicon-star-empty::before {
+  content: "\f588";
+}
+
+.rating-clear .glyphicon-remove,
+.rating-input .rating-clear i.glyphicon-remove {
+  color: #333;
+}
+
+.rating-clear .glyphicon-remove::before,
+.rating-input .rating-clear i.glyphicon-remove::before {
+  content: "\f623";
+}
 
 .container-fluid .author .author-hidden,
 .container-fluid .author .author-hidden-divider { display: none; }
@@ -285,6 +336,8 @@ table .bg-dark-danger a { color: #fff; }
 }
 
 .navbar {
+  --bs-navbar-padding-x: 0;
+  --bs-navbar-padding-y: 0;
   margin-bottom: 20px;
 }
 

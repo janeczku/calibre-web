@@ -7,53 +7,41 @@
     <div class="col-12 col-lg-10">
       <div class="row g-3">
         {% if new_user or ( current_user and content.name != "Guest" and current_user.role_admin() ) %}
-        <div class="col-12">
-          <div class="mb-3 required">
+        <div class="form-group required">
             <label for="name" class="form-label">{{_('Username')}}</label>
             <input type="text" class="form-control" name="name" id="name" value="{{ content.name if content.name != None }}" autocomplete="off">
-          </div>
         </div>
         {% endif %}
-        <div class="col-12">
-          <div class="mb-3">
+        <div class="form-group">
             <label for="email" class="form-label">{{_('Email')}}</label>
             <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
-          </div>
         </div>
         {% if ( current_user and current_user.role_passwd() or current_user.role_admin() ) and not content.role_anonymous() %}
           {% if current_user and current_user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
-            <div class="col-12">
+            <div class="form-group">
               <a class="btn btn-outline-secondary postAction" id="resend_password" role="button" data-action="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a>
             </div>
           {% endif %}
-          <div class="col-12">
-            <div class="mb-3">
+          <div class="form-group">
               <label for="password" class="form-label">{{_('Password')}}</label>
               <input type="password" class="form-control" name="password" id="password" data-lang="{{ current_user.locale }}" data-verify="{{ config.config_password_policy }}" {% if config.config_password_policy %} data-min={{ config.config_password_min_length }} data-word={{ config.config_password_character }} data-special={{ config.config_password_special }} data-upper={{ config.config_password_upper }} data-lower={{ config.config_password_lower }} data-number={{ config.config_password_number }}{% endif %} value="" autocomplete="off">
-            </div>
           </div>
         {% endif %}
-        <div class="col-12">
-          <div class="mb-3">
+        <div class="form-group">
             <label for="kindle_mail" class="form-label">{{_('Send to eReader Email Address. Use comma to separate emails for multiple eReaders')}}</label>
             <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
-          </div>
         </div>
         {% if not content.role_anonymous() %}
-        <div class="col-12 col-md-6">
-          <div class="mb-3">
+        <div class="form-group">
             <label for="locale" class="form-label">{{_('Language')}}</label>
             <select name="locale" id="locale" class="form-select">
                 {% for translation in translations %}
                     <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
                 {% endfor %}
             </select>
-          </div>
         </div>
         {% endif %}
-
-        <div class="col-12 col-md-6">
-          <div class="mb-3">
+        <div class="form-group">
             <label for="default_language" class="form-label">{{_('Language of Books')}}</label>
             <select name="default_language" id="default_language" class="form-select">
                 <option value="all" {% if content.default_language == "all" %}selected{% endif %}>{{ _('Show All') }}</option>
@@ -61,36 +49,29 @@
                 <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.name }}</option>
                 {% endfor %}
             </select>
-          </div>
         </div>
         {% if registered_oauth.keys()| length > 0 and not new_user and profile %}
           {% for id, name in registered_oauth.items() %}
-        <div class="col-12">
-          <div class="mb-3">
+        <div class="form-group">
             <label class="form-label">{{ name }} {{_('OAuth Settings')}}</label>
             {% if id not in oauth_status %}
             <div><a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
             {% else %}
             <div><a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
             {% endif %}
-          </div>
         </div>
           {% endfor %}
         {% endif %}
         {% if kobo_support and not new_user %}
-        <div class="col-12">
-          <div class="mb-3">
+        <div class="form-group">
             <label class="form-label">{{ _('Kobo Sync Token')}}</label>
             <div class="d-flex flex-wrap gap-2">
               <a class="btn btn-outline-secondary" id="config_create_kobo_token" data-bs-toggle="modal" data-bs-target="#modal_kobo_token" data-remote="false" href="{{ url_for('kobo_auth.generate_auth_token', user_id=content.id) }}">{{_('Create/View')}}</a>
               <div class="btn btn-danger" id="config_delete_kobo_token" data-value="{{ content.id }}" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
             </div>
-          </div>
         </div>
-        <div class="col-12">
-          <div class="mb-3">
+        <div class="form-group">
             <div class="btn btn-outline-secondary" id="kobo_full_sync" data-value="{% if current_user.role_admin() %}{{ content.id }}{% else %}0{% endif %}" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Force full kobo sync')}}</div>
-          </div>
         </div>
         {% endif %}
       </div>
