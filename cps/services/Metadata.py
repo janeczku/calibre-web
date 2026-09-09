@@ -19,7 +19,8 @@ import abc
 import dataclasses
 import os
 import re
-from typing import Dict, Generator, List, Optional, Union
+from typing import Dict, Generator, List, Optional, Tuple, Union
+from urllib.parse import urlsplit
 
 from cps import constants
 
@@ -50,12 +51,54 @@ class MetaRecord:
     tags: Optional[List[str]] = dataclasses.field(default_factory=list)
 
 
+# Metadata providers that declare COVER_HOSTS, registered when their class is created
+_cover_header_providers: List[type] = []
+
+
+def cover_headers_for(url: str) -> Dict[str, str]:
+    """Extra HTTP headers needed to download the cover image at url, or {} if none
+    of the metadata providers claims that host (see Metadata.COVER_HOSTS)"""
+    if not url:
+        return {}
+    for provider in _cover_header_providers:
+        headers = provider.cover_headers(url)
+        if headers:
+            return headers
+    return {}
+
+
 class Metadata:
     __name__ = "Generic"
     __id__ = "generic"
+    # Some cover image hosts refuse "hot-linked" downloads (e.g. they check the
+    # Referer header). A provider can list the host suffixes of its cover images
+    # in COVER_HOSTS and the headers needed to fetch them in COVER_HEADERS.
+    # Calibre-Web then sends these headers when it downloads such a cover and
+    # serves the cover preview in the metadata dialog via /metadata/cover_proxy.
+    COVER_HOSTS: Tuple[str, ...] = ()
+    COVER_HEADERS: Dict[str, str] = {}
 
     def __init__(self):
         self.active = True
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if cls.COVER_HOSTS:
+            _cover_header_providers.append(cls)
+
+    @classmethod
+    def cover_headers(cls, url: str) -> Dict[str, str]:
+        """Headers needed to download the cover at url, or {} if this provider
+        does not handle the host of url"""
+        try:
+            host = (urlsplit(url).hostname or "").lower()
+        except ValueError:
+            return {}
+        for suffix in cls.COVER_HOSTS:
+            suffix = suffix.lower()
+            if host == suffix or host.endswith("." + suffix):
+                return dict(cls.COVER_HEADERS)
+        return {}
 
     def set_status(self, state):
         self.active = state
