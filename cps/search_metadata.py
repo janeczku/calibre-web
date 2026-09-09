@@ -165,6 +165,8 @@ def metadata_change_active_provider(prov_name):
 
 COVER_PROXY_MAX_BYTES = 5 * 1024 * 1024
 COVER_PROXY_TIMEOUT = (10, 30)
+# raster formats only: an SVG served from our own origin could carry scripts
+COVER_PROXY_CONTENT_TYPES = ("image/jpeg", "image/png", "image/webp", "image/gif")
 
 
 def _fetch_cover(url, headers):
@@ -180,24 +182,29 @@ def _fetch_cover(url, headers):
 def metadata_cover_proxy():
     """Cover preview for hosts that refuse hot-linked requests (see Metadata.COVER_HOSTS).
     Only urls on hosts declared by a metadata provider are fetched, so this is not an open proxy."""
-    url = _safe_metadata_url(request.args.get("url"))
+    try:
+        url = _safe_metadata_url(request.args.get("url"))
+        scheme = urlsplit(url).scheme
+    except ValueError:  # malformed url, e.g. an invalid IPv6 literal
+        abort(404)
     headers = cover_headers_for(url)
-    if not headers or urlsplit(url).scheme not in ("http", "https"):
+    if scheme not in ("http", "https") or not headers:
         abort(404)
     generic_cover = redirect(url_for("static", filename="generic_cover.jpg"))
     try:
-        img = _fetch_cover(url, headers)
-        img.raise_for_status()
-        content_type = img.headers.get("Content-Type", "")
-        if not content_type.startswith("image/"):
-            log.warning("Cover proxy: %s returned content type '%s'", url, content_type)
-            return generic_cover
-        content = bytearray()
-        for chunk in img.iter_content(chunk_size=65536):
-            content.extend(chunk)
-            if len(content) > COVER_PROXY_MAX_BYTES:
-                log.warning("Cover proxy: %s is larger than %d bytes", url, COVER_PROXY_MAX_BYTES)
+        # the context manager closes the streamed response on every exit path
+        with _fetch_cover(url, headers) as img:
+            img.raise_for_status()
+            content_type = img.headers.get("Content-Type", "").split(";")[0].strip().lower()
+            if content_type not in COVER_PROXY_CONTENT_TYPES:
+                log.warning("Cover proxy: %s returned content type '%s'", url, content_type)
                 return generic_cover
+            content = bytearray()
+            for chunk in img.iter_content(chunk_size=65536):
+                content.extend(chunk)
+                if len(content) > COVER_PROXY_MAX_BYTES:
+                    log.warning("Cover proxy: %s is larger than %d bytes", url, COVER_PROXY_MAX_BYTES)
+                    return generic_cover
     except Exception as ex:  # requests errors, advocate UnacceptableAddressException, ...
         log.warning("Cover proxy: download of %s failed: %s", url, ex)
         return generic_cover
@@ -205,7 +212,6 @@ def metadata_cover_proxy():
     response.headers["Content-Type"] = content_type
     response.headers["Cache-Control"] = "private, max-age=3600"
     return response
-
 
 @meta.route("/metadata/search", methods=["POST"])
 @user_login_required
