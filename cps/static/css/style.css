@@ -553,7 +553,7 @@ input.pill:checked + label {
   color: #fff;
 }
 
-input.pill:not(:checked) + label .glyphicon { display: none; }
+input.pill:not(:checked) + label .bi { display: none; }
 
 .author-link {
   display: inline-block;
