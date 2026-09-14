@@ -138,6 +138,10 @@ in your Docker run/compose file. Omit this variable for a lightweight image.
    - Set **Path to Calibre Binaries** to `/usr/bin`.
    - Set **Path to Unrar** to `/usr/bin/unrar`.
 
+## Easypanel
+
+[Easypanel](https://easypanel.io/) can deploy Calibre-Web with one click using its [official template](https://easypanel.io/templates/calibre-web), which runs the LinuxServer Docker image above for you.
+
 ## Troubleshooting
 
 - **Common Issues**: 
