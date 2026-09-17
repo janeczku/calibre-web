@@ -179,7 +179,7 @@ msgstr "Möchten Sie dieses Buch wirklich löschen?"
 
 #: cps/admin.py:633
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Möchten Sie dieses Bücherregal wirklich löschen?"
+msgstr "Möchten Sie dieses Regal wirklich löschen?"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change locales of selected user(s)?"
@@ -211,7 +211,7 @@ msgstr "Möchten Sie die Sichtbarkeitsrestriktionen für die ausgewählten Benut
 
 #: cps/admin.py:650
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Möchten Sie die Synchronisation von Bücherregalen für die ausgewählten Benutzer wirklich verändern?"
+msgstr "Möchten Sie die Synchronisation von Regalen für die ausgewählten Benutzer wirklich verändern?"
 
 #: cps/admin.py:652
 msgid "Are you sure you want to change Calibre library location?"
@@ -1293,26 +1293,26 @@ msgstr "Erweiterte Suche"
 
 #: cps/shelf.py:49 cps/shelf.py:111 cps/shelf.py:157
 msgid "Invalid shelf specified"
-msgstr "Ungültiges Bücherregal angegeben"
+msgstr "Ungültiges Regal angegeben"
 
 #: cps/shelf.py:55
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Du hast keine Berechtigung, ein Buch zu diesem Bücherregal hinzuzufügen"
+msgstr "Du hast keine Berechtigung, ein Buch zu diesem Regal hinzuzufügen"
 
 #: cps/shelf.py:64
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr "Buch ist bereits Teil des Bücherregals %(shelfname)s"
+msgstr "Buch ist bereits Teil des Regals %(shelfname)s"
 
 #: cps/shelf.py:77
 #, python-format
 msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
-msgstr "%(book_id)s ist eine ungültige Buch ID. Buch konnte nicht zu Bücherregal hinzugefügt werden"
+msgstr "%(book_id)s ist eine ungültige Buch ID. Buch konnte nicht zu Regal hinzugefügt werden"
 
 #: cps/shelf.py:97
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr "Das Buch wurde zum Bücherregal %(sname)s hinzugefügt"
+msgstr "Das Buch wurde zum Regal %(sname)s hinzugefügt"
 
 #: cps/shelf.py:116
 msgid "You are not allowed to remove a book from the shelf"
@@ -1335,71 +1335,71 @@ msgstr ""
 
 #: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
-msgstr "Keine Erlaubnis Bücher zu diesem Bücherregal hinzuzufügen"
+msgstr "Keine Erlaubnis Bücher zu diesem Regal hinzuzufügen"
 
 #: cps/shelf.py:178
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
-msgstr "Bücher sind bereits Teil des Bücherregals %(name)s"
+msgstr "Bücher sind bereits Teil des Regals %(name)s"
 
 #: cps/shelf.py:190
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "Bücher wurden zum Bücherregal %(sname)s hinzugefügt"
+msgstr "Bücher wurden zum Regal %(sname)s hinzugefügt"
 
 #: cps/shelf.py:197
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
-msgstr "Bücher konnten nicht zum Bücherregal %(sname)s hinzugefügt werden"
+msgstr "Bücher konnten nicht zum Regal %(sname)s hinzugefügt werden"
 
 #: cps/shelf.py:243
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
-msgstr "Das Buch wurde aus dem Bücherregal: %(sname)s entfernt"
+msgstr "Das Buch wurde aus dem Regal: %(sname)s entfernt"
 
 #: cps/shelf.py:252
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr "Sie haben keine Berechtigung um Bücher aus diesem Bücherregal zu löschen"
+msgstr "Sie haben keine Berechtigung um Bücher aus diesem Regal zu löschen"
 
 #: cps/shelf.py:262 cps/themes/caliblur/templates/layout.html:146
 #: cps/themes/standard/templates/layout.html:127
 msgid "Create a Shelf"
-msgstr "Bücherregal erzeugen"
+msgstr "Regal erzeugen"
 
 #: cps/shelf.py:270 cps/shelf.py:312
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Sie dürfen dieses Bücherregal nicht editieren"
+msgstr "Sie dürfen dieses Regal nicht editieren"
 
 #: cps/shelf.py:272
 msgid "Edit a shelf"
-msgstr "Bücherregal editieren"
+msgstr "Regal editieren"
 
 #: cps/shelf.py:281
 msgid "Error deleting Shelf"
-msgstr "Fehler beim Löschen des Bücherregals"
+msgstr "Fehler beim Löschen des Regals"
 
 #: cps/shelf.py:283
 msgid "Shelf successfully deleted"
-msgstr "Bücherregal erfolgreich gelöscht"
+msgstr "Regal erfolgreich gelöscht"
 
 #: cps/shelf.py:336
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Reihenfolge in Bücherregal '%(name)s' verändern"
+msgstr "Reihenfolge in Regal '%(name)s' verändern"
 
 #: cps/shelf.py:371
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr "Sie haben keine Berechtigung um ein öffentliches Bücherregal zu erzeugen"
+msgstr "Sie haben keine Berechtigung um ein öffentliches Regal zu erzeugen"
 
 #: cps/shelf.py:388
 #, python-format
 msgid "Shelf %(title)s created"
-msgstr "Bücherregal %(title)s erzeugt"
+msgstr "Regal %(title)s erzeugt"
 
 #: cps/shelf.py:391
 #, python-format
 msgid "Shelf %(title)s changed"
-msgstr "Bücherregal %(title)s verändert"
+msgstr "Regal %(title)s verändert"
 
 #: cps/shelf.py:405
 msgid "There was an error"
@@ -1408,21 +1408,21 @@ msgstr "Es trat ein Fehler auf"
 #: cps/shelf.py:427
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "Es existiert bereit ein öffentliches Bücherregal mit dem Namen '%(title)s'."
+msgstr "Es existiert bereit ein öffentliches Regal mit dem Namen '%(title)s'."
 
 #: cps/shelf.py:438
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "Es existiert bereit ein privates Bücherregal mit dem Namen '%(title)s'."
+msgstr "Es existiert bereit ein privates Regal mit dem Namen '%(title)s'."
 
 #: cps/shelf.py:528
 #, python-format
 msgid "Shelf: '%(name)s'"
-msgstr "Bücherregal: '%(name)s'"
+msgstr "Regal: '%(name)s'"
 
 #: cps/shelf.py:534
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr "Fehler beim Öffnen des Bücherregals. Bücherregal exisitert nicht oder ist nicht zugänglich"
+msgstr "Fehler beim Öffnen des Regals. Regal exisitert nicht oder ist nicht zugänglich"
 
 #: cps/tasks_status.py:47 cps/themes/caliblur/templates/layout.html:89
 #: cps/themes/standard/templates/layout.html:68
@@ -1816,11 +1816,11 @@ msgstr "Bücher nach Dateiformat sortiert"
 #: cps/themes/standard/templates/layout.html:122
 #: cps/themes/standard/templates/search_form.html:88
 msgid "Shelves"
-msgstr "Bücherregale"
+msgstr "Regale"
 
 #: cps/templates/index.xml:146
 msgid "Books organized in shelves"
-msgstr "Bücher in Bücherregalen organisiert"
+msgstr "Bücher in Regalen organisiert"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2222,7 +2222,7 @@ msgstr "OK"
 #: cps/themes/standard/templates/listenmp3.html:190
 #: cps/themes/standard/templates/search.html:16
 msgid "Add to shelf"
-msgstr "Zu Bücherregal hinzufügen"
+msgstr "Zu Regal hinzufügen"
 
 #: cps/themes/caliblur/templates/detail.html:79
 #: cps/themes/caliblur/templates/listenmp3.html:158
@@ -2862,7 +2862,7 @@ msgstr "Ergebnisse für:"
 #: cps/themes/caliblur/templates/search.html:32
 #: cps/themes/standard/templates/search.html:29
 msgid "Remove from shelf"
-msgstr "Von Bücherregal entfernen"
+msgstr "Von Regal entfernen"
 
 #: cps/themes/caliblur/templates/shelf.html:14
 #: cps/themes/standard/templates/admin.html:22
@@ -2876,7 +2876,7 @@ msgstr "Download"
 #: cps/themes/caliblur/templates/shelf.html:16
 #: cps/themes/standard/templates/shelf.html:13
 msgid "Delete this Shelf"
-msgstr "Lösche dieses Bücherregal"
+msgstr "Lösche dieses Regal"
 
 #: cps/themes/caliblur/templates/shelf.html:17
 #: cps/themes/standard/templates/shelf.html:14
@@ -2901,12 +2901,12 @@ msgstr "Manuelles Sortieren aktivieren"
 #: cps/themes/caliblur/templates/shelf.html:38
 #: cps/themes/standard/templates/shelf.html:28
 msgid "Sort according to book added to shelf, newest first"
-msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, neuestes zuerst"
+msgstr "Sortiere nach Buch zu Regal hinzugefügt, neuestes zuerst"
 
 #: cps/themes/caliblur/templates/shelf.html:39
 #: cps/themes/standard/templates/shelf.html:29
 msgid "Sort according to book added to shelf, oldest first"
-msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, ältestes zuerst"
+msgstr "Sortiere nach Buch zu Regal hinzugefügt, ältestes zuerst"
 
 #: cps/themes/caliblur/templates/shelf_order.html:7
 #: cps/themes/standard/templates/shelf_order.html:5
@@ -3064,12 +3064,12 @@ msgstr "Ändern des Passworts erlauben"
 #: cps/themes/standard/templates/config_view_edit.html:121
 #: cps/themes/standard/templates/user_edit.html:130
 msgid "Allow Editing Public Shelves"
-msgstr "Editieren öffentlicher Bücherregale erlauben"
+msgstr "Editieren öffentlicher Regale erlauben"
 
 #: cps/themes/caliblur/templates/user_edit.html:134
 #: cps/themes/standard/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
-msgstr "Nur Bücher aus ausgewählten Bücherregalen mit Kobo synchronisieren"
+msgstr "Nur Bücher aus ausgewählten Regalen mit Kobo synchronisieren"
 
 #: cps/themes/caliblur/templates/user_edit.html:142
 #: cps/themes/standard/templates/config_view_edit.html:167
@@ -3119,7 +3119,7 @@ msgstr "Editieren"
 
 #: cps/themes/standard/templates/admin.html:26
 msgid "Public Shelf"
-msgstr "Öffentliches Bücherregal"
+msgstr "Öffentliches Regal"
 
 #: cps/themes/standard/templates/admin.html:55
 msgid "Import LDAP Users"
@@ -4237,7 +4237,7 @@ msgstr "Serien ausschließen"
 
 #: cps/themes/standard/templates/search_form.html:96
 msgid "Exclude Shelves"
-msgstr "Bücherregale ausschliessen"
+msgstr "Regale ausschliessen"
 
 #: cps/themes/standard/templates/search_form.html:116
 msgid "Exclude Languages"
@@ -4273,11 +4273,11 @@ msgstr "Bis:"
 
 #: cps/themes/standard/templates/shelf_edit.html:14
 msgid "Share with Everyone"
-msgstr "Bücherregal mit anderen Benutzern teilen"
+msgstr "Regal mit anderen Benutzern teilen"
 
 #: cps/themes/standard/templates/shelf_edit.html:21
 msgid "Sync this shelf with Kobo device"
-msgstr "Dieses Bücherregal mit Kobo synchronisieren"
+msgstr "Dieses Regal mit Kobo synchronisieren"
 
 #: cps/themes/standard/templates/tasks.html:8
 msgid "No Records Found"
@@ -4394,11 +4394,11 @@ msgstr "Ansicht"
 
 #: cps/themes/standard/templates/user_table.html:151
 msgid "Edit Public Shelves"
-msgstr "Öffentliche Bücherregale bearbeiten"
+msgstr "Öffentliche Regale bearbeiten"
 
 #: cps/themes/standard/templates/user_table.html:153
 msgid "Sync selected Shelves with Kobo"
-msgstr "Ausgesuchte Bücherregale mit Kobo synchronisieren"
+msgstr "Ausgesuchte Regale mit Kobo synchronisieren"
 
 #: cps/themes/standard/templates/user_table.html:157
 msgid "Show Read/Unread Section"
