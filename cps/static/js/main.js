@@ -211,19 +211,20 @@ $(document).on('click', '.toggle-password', function (event) {
     if (!passwordInput.length) {
         return;
     }
-    var isPassword = passwordInput.attr('type') === 'password';
-    passwordInput.attr('type', isPassword ? 'text' : 'password');
+    var isPasswordHidden = passwordInput.attr('type') === 'password';
+    passwordInput.attr('type', isPasswordHidden ? 'text' : 'password');
     var icon = button.find('.glyphicon');
     if (icon.length) {
-        icon.toggleClass('glyphicon-eye-open', !isPassword);
-        icon.toggleClass('glyphicon-eye-close', isPassword);
+        icon.toggleClass('glyphicon-eye-open', isPasswordHidden);
+        icon.toggleClass('glyphicon-eye-close', !isPasswordHidden);
     }
     var showLabel = button.attr('data-password-show') || button.attr('aria-label') || button.attr('title');
     var hideLabel = button.attr('data-password-hide') || showLabel;
-    button.find('.password-icon-hidden').toggleClass('d-none', !isPassword);
-    button.find('.password-icon-visible').toggleClass('d-none', isPassword);
-    button.find('.password-label').text(isPassword ? hideLabel : showLabel);
-    var label = isPassword ? hideLabel : showLabel;
+    var passwordVisible = passwordInput.attr('type') === 'text';
+    button.find('.password-icon-hidden').toggleClass('d-none', passwordVisible);
+    button.find('.password-icon-visible').toggleClass('d-none', !passwordVisible);
+    button.find('.password-label').text(passwordVisible ? hideLabel : showLabel);
+    var label = passwordVisible ? hideLabel : showLabel;
     button.attr({
         'aria-label': label,
         'title': label
