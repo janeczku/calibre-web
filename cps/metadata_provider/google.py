@@ -22,12 +22,21 @@ from urllib.parse import quote
 from datetime import datetime
 
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 from cps import logger, config
 from cps.isoLanguages import get_lang3, get_language_name
 from cps.services.Metadata import MetaRecord, MetaSourceInfo, Metadata
 
 log = logger.create()
+
+# Google answers a share of requests with a transient 5xx, which is otherwise
+# indistinguishable from "not found". raise_on_status lets the last response
+# through so it is logged with its status instead of as a MaxRetryError.
+RETRY = Retry(total=3, backoff_factor=0.3, status_forcelist=(500, 502, 503, 504),
+              raise_on_status=False)
+TIMEOUT = (5, 15)
 
 
 class Google(Metadata):
@@ -38,7 +47,6 @@ class Google(Metadata):
     BOOK_URL = "https://books.google.com/books?id="
     SEARCH_URL = "https://www.googleapis.com/books/v1/volumes?q="
     ISBN_TYPE = "ISBN_13"
-    API_KEY = "&key=" + config.config_googlebooks_api_key 
 
     def search(
         self, query: str, generic_cover: str = "", locale: str = "en"
@@ -50,12 +58,21 @@ class Google(Metadata):
             if title_tokens:
                 tokens = [quote(t.encode("utf-8")) for t in title_tokens]
                 query = "+".join(tokens)
+            # Read per search, so a key saved in the admin page takes effect
+            # without a restart.
+            key = config.config_googlebooks_api_key
             try:
-                results = requests.get(Google.SEARCH_URL + query + Google.API_KEY)
+                # A session per call: Session is not thread-safe and the
+                # providers are searched in a thread pool.
+                session = requests.Session()
+                session.mount("https://", HTTPAdapter(max_retries=RETRY))
+                results = session.get(
+                    Google.SEARCH_URL + query + ("&key=" + key if key else ""),
+                    timeout=TIMEOUT)
                 results.raise_for_status()
             except Exception as e:
                 log.warning(e)
-                return []
+                return None      # None is a failed search, [] is an empty one
             for result in results.json().get("items", []):
                 val.append(
                     self._parse_search_result(

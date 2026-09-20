@@ -157,6 +157,7 @@ def metadata_search():
     data = list()
     active = current_user.view_settings.get("metadata", {})
     locale = get_locale()
+    asked = failed = 0
     if query:
         static_cover = url_for("static", filename="generic_cover.jpg")
         # ret = cl[0].search(query, static_cover, locale)
@@ -166,6 +167,20 @@ def metadata_search():
                 for c in cl
                 if active.get(c.__id__, True)
             }
+            asked = len(meta)
             for future in concurrent.futures.as_completed(meta):
-                data.extend(_serialize_metadata_records(future.result()))
+                try:
+                    records = future.result()
+                except Exception as e:
+                    # One provider raising used to fail the whole request.
+                    log.warning("Metadata provider %s failed: %s", meta[future].__id__, e)
+                    records = None
+                if records is None:     # failed, as opposed to found nothing
+                    failed += 1
+                    continue
+                data.extend(_serialize_metadata_records(records))
+    # Nothing to say about the keyword if every source failed, so 502 makes the
+    # client show "Search error!" rather than "No Result(s) found!".
+    if asked and failed == asked:
+        return make_response(jsonify(data), 502)
     return make_response(jsonify(data))
