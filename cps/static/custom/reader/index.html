@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title></title>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Permissions-Policy" content="interest-cohort=()">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<link rel="icon" type="image/png" href="img/favicon.png">
+	<link rel="stylesheet" href="css/main.css">
+
+	<!-- Libs -->
+	<script src="js/libs/jszip.min.js"></script>
+	<script src="js/libs/md5.min.js"></script>
+	<script src="js/libs/epub.min.js"></script>
+
+	<!-- Reader -->
+	<script type="module">
+		import { Reader } from "./js/epubreader.min.js"
+		const url = new URL(window.location)
+		const path = url.searchParams.get("bookPath") || "https://s3.amazonaws.com/moby-dick/"
+		window.onload = (e) => new Reader(path)
+	</script>
+</head>
+
+<body>
+</body>
+
+</html>
