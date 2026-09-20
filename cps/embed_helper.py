@@ -42,13 +42,28 @@ def do_calibre_export(book_id, book_format):
                        str(book_id)]
         p = process_open(opf_command, quotes, my_env)
         _, err = p.communicate()
+        if p.returncode != 0:
+            if isinstance(err, str):
+                error_message = err.strip()
+            elif err is not None:
+                error_message = err.decode('utf-8', errors='replace').strip()
+            else:
+                error_message = ''
+            if not error_message:
+                error_message = 'calibredb export failed with return code %s' % p.returncode
+            log.error('Metadata embedder encountered an error: %s', error_message)
+            return None, error_message
         if err:
-            log.error('Metadata embedder encountered an error: %s', err)
+            if isinstance(err, str):
+                error_message = err.strip()
+            else:
+                error_message = err.decode('utf-8', errors='replace').strip()
+            log.error('Metadata embedder encountered an error: %s', error_message)
+            return None, error_message
         return tmp_dir, temp_file_name
     except OSError as ex:
-        # ToDo real error handling
         log.error_or_exception(ex)
-        return None, None
+        return None, str(ex)
 
 
 def get_calibre_binarypath(binary):
@@ -58,5 +73,5 @@ def get_calibre_binarypath(binary):
             return os.path.join(binariesdir, SUPPORTED_CALIBRE_BINARIES[binary])
         except KeyError as ex:
             log.error("Binary not supported by Calibre-Web: %s", SUPPORTED_CALIBRE_BINARIES[binary])
-            pass
+            log.error_or_exception(ex)
     return ""

@@ -908,11 +908,13 @@ class CalibreDB:
     def order_authors(self, entries, list_return=False, combined=False):
         for entry in entries:
             if combined:
-                sort_authors = entry.Books.author_sort.split('&')
+                author_sort = entry.Books.author_sort
                 authors_list = entry.Books.authors
             else:
-                sort_authors = entry.author_sort.split('&')
+                author_sort = entry.author_sort
                 authors_list = entry.authors
+            # author_sort is nullable in Calibre's schema, fall back to the unsorted author list
+            sort_authors = author_sort.split('&') if author_sort else []
 
             # Create dictionary for O(1) lookup instead of nested loops
             authors_by_sort = {}

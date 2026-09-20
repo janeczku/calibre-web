@@ -31,7 +31,7 @@ log = logger.create()
 try:
     import magic
     error = None
-except ImportError as e:
+except (ImportError, FileNotFoundError) as e:
     error = "Cannot import python-magic, checking uploaded file metadata will not work: {}".format(e)
 
 

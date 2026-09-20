@@ -845,11 +845,15 @@ def prepare_authors(authr, calibre_path, gdrive=False):
                 sorted_old_author = helper.get_sorted_author(old_author_name)
                 sorted_renamed_author = helper.get_sorted_author(in_aut)
                 # change author sort path
-                try:
-                    author_index = one_book.author_sort.index(sorted_old_author)
-                    one_book.author_sort = one_book.author_sort.replace(sorted_old_author, sorted_renamed_author)
-                except ValueError:
-                    log.error("Sorted author {} not found in database".format(sorted_old_author))
+                author_sort = one_book.author_sort
+                if author_sort:
+                    try:
+                        author_index = author_sort.index(sorted_old_author)
+                        one_book.author_sort = author_sort.replace(sorted_old_author, sorted_renamed_author)
+                    except ValueError:
+                        log.error("Sorted author {} not found in database".format(sorted_old_author))
+                        author_index = -1
+                else:
                     author_index = -1
                 # change book path if changed author is first author -> match on first position
                 if author_index == 0:

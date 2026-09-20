@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2026-08-22 11:31+0200\n"
+"POT-Creation-Date: 2026-09-20 09:04+0200\n"
 "PO-Revision-Date: 2026-08-16 14:41+0200\n"
 "Last-Translator: Sebastian Holzer\n"
 "Language: de\n"
@@ -100,7 +100,7 @@ msgstr "Zeige alle"
 msgid "Malformed request"
 msgstr "Ungültige Anfrage"
 
-#: cps/admin.py:482 cps/admin.py:2162
+#: cps/admin.py:482 cps/admin.py:2161
 msgid "Guest Name can't be changed"
 msgstr "Name 'Guest' kann nicht geändert werden"
 
@@ -108,7 +108,7 @@ msgstr "Name 'Guest' kann nicht geändert werden"
 msgid "Guest can't have this role"
 msgstr "Benutzer 'Guest' kann diese Rolle nicht haben"
 
-#: cps/admin.py:506 cps/admin.py:2116
+#: cps/admin.py:506 cps/admin.py:2115
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Kein Admin Benutzer verblieben, Admin Berechtigung kann nicht entfernt werden"
 
@@ -157,7 +157,7 @@ msgstr "Ungültiger Spaltenname für Einschränkung"
 msgid "Invalid Theme"
 msgstr ""
 
-#: cps/admin.py:613 cps/admin.py:1987
+#: cps/admin.py:613 cps/admin.py:1986
 msgid "Calibre-Web configuration updated"
 msgstr "Konfiguration von Calibre-Web wurde aktualisiert"
 
@@ -179,7 +179,7 @@ msgstr "Möchten Sie dieses Buch wirklich löschen?"
 
 #: cps/admin.py:633
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Möchten Sie dieses Bücherregal wirklich löschen?"
+msgstr "Möchten Sie dieses Regal wirklich löschen?"
 
 #: cps/admin.py:635
 msgid "Are you sure you want to change locales of selected user(s)?"
@@ -211,7 +211,7 @@ msgstr "Möchten Sie die Sichtbarkeitsrestriktionen für die ausgewählten Benut
 
 #: cps/admin.py:650
 msgid "Are you sure you want to change shelf sync behavior for the selected user(s)?"
-msgstr "Möchten Sie die Synchronisation von Bücherregalen für die ausgewählten Benutzer wirklich verändern?"
+msgstr "Möchten Sie die Synchronisation von Regalen für die ausgewählten Benutzer wirklich verändern?"
 
 #: cps/admin.py:652
 msgid "Are you sure you want to change Calibre library location?"
@@ -331,8 +331,8 @@ msgstr "SMTP-Einstellungen ändern"
 msgid "Success! Gmail Account Verified."
 msgstr "G-Mail Konto verifiziert."
 
-#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1971
-#: cps/admin.py:2069 cps/admin.py:2190 cps/editbooks.py:170
+#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1970
+#: cps/admin.py:2068 cps/admin.py:2189 cps/editbooks.py:170
 #: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
@@ -374,7 +374,7 @@ msgstr "Ungültige Laufzeit für Aufgaben spezifiziert"
 msgid "Scheduled tasks settings updated"
 msgstr "Einstellungen für Geplante Aufgaben aktualisiert"
 
-#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2186 cps/web.py:1335
+#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2185 cps/web.py:1335
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuchen."
 
@@ -382,7 +382,7 @@ msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuche
 msgid "Settings DB is not Writeable"
 msgstr "Einstellungsdatenbank ist nicht schreibbar"
 
-#: cps/admin.py:1485 cps/admin.py:2178
+#: cps/admin.py:1485 cps/admin.py:2177
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Benutzer %(nick)s bearbeiten"
@@ -503,85 +503,85 @@ msgstr "Schlüsseldatei ist ungültig, bitte einen gültigen Pfad angeben"
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Zertifikatsdatei ist ungültig, bitte einen gültigen Pfad angeben"
 
-#: cps/admin.py:1852
+#: cps/admin.py:1850
 msgid "Kepubify binary not found"
 msgstr ""
 
-#: cps/admin.py:1900
+#: cps/admin.py:1899
 msgid "reverse proxy login header name"
 msgstr ""
 
-#: cps/admin.py:1910
+#: cps/admin.py:1909
 msgid "reverse proxy shared secret header name"
 msgstr ""
 
-#: cps/admin.py:1919
+#: cps/admin.py:1918
 msgid "Please configure both reverse proxy shared secret header name and secret"
 msgstr ""
 
-#: cps/admin.py:1923
+#: cps/admin.py:1922
 msgid "Please configure reverse proxy shared secret header name and secret or disable the feature"
 msgstr ""
 
-#: cps/admin.py:1928
+#: cps/admin.py:1927
 msgid "Please configure at least one trusted reverse proxy IP or CIDR"
 msgstr ""
 
-#: cps/admin.py:1952
+#: cps/admin.py:1951
 msgid "Password length has to be between 1 and 40"
 msgstr "Passwortlänge muss zwischen 1 und 40 Zeichen liegen"
 
-#: cps/admin.py:1963 cps/helper.py:1007
+#: cps/admin.py:1962 cps/helper.py:1017
 msgid "Please specify a valid UnRar directory"
 msgstr ""
 
-#: cps/admin.py:2010
+#: cps/admin.py:2009
 msgid "Database Settings updated"
 msgstr "Datenbankeinstellung aktualisiert"
 
-#: cps/admin.py:2018
+#: cps/admin.py:2017
 msgid "Database Configuration"
 msgstr "Datenbank-Konfiguration"
 
-#: cps/admin.py:2033 cps/web.py:1305
+#: cps/admin.py:2032 cps/web.py:1305
 msgid "Oops! Please complete all fields."
 msgstr "Bitte alle Felder ausfüllen."
 
-#: cps/admin.py:2042
+#: cps/admin.py:2041
 msgid "E-mail is not from valid domain"
 msgstr "E-Mail bezieht sich nicht auf eine gültige Domain"
 
-#: cps/admin.py:2048
+#: cps/admin.py:2047
 msgid "Add new user"
 msgstr "Neuen Benutzer hinzufügen"
 
-#: cps/admin.py:2059
+#: cps/admin.py:2058
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Benutzer '%(user)s' angelegt"
 
-#: cps/admin.py:2065
+#: cps/admin.py:2064
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "Es existiert bereits ein Account für diese E-Mail Adresse oder diesen Benutzernamen."
 
-#: cps/admin.py:2095
+#: cps/admin.py:2094
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Benutzer '%(nick)s' gelöscht"
 
-#: cps/admin.py:2098
+#: cps/admin.py:2097
 msgid "Can't delete Guest User"
 msgstr "Benutzer 'Guest' kann nicht gelöscht werden"
 
-#: cps/admin.py:2101
+#: cps/admin.py:2100
 msgid "No admin user remaining, can't delete user"
 msgstr "Benutzer kann nicht gelöscht werden, es wäre kein Admin Benutzer übrig"
 
-#: cps/admin.py:2156 cps/web.py:1485
+#: cps/admin.py:2155 cps/web.py:1485
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-Mail kann nicht leer sein und muss gültig sein"
 
-#: cps/admin.py:2182
+#: cps/admin.py:2181
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Benutzer '%(nick)s' aktualisiert"
@@ -965,41 +965,41 @@ msgstr "Ungültiger Coverdatei-Inhalt"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Es werden nur jpg/jpeg Dateien als Cover unterstützt"
 
-#: cps/helper.py:989 cps/helper.py:1152
+#: cps/helper.py:999 cps/helper.py:1162
 msgid "Cover"
 msgstr "Titelbild"
 
-#: cps/helper.py:1017
+#: cps/helper.py:1027
 msgid "Error executing UnRar"
 msgstr "Fehler beim Ausführen von UnRar"
 
-#: cps/helper.py:1025
+#: cps/helper.py:1035
 msgid "Could not find the specified directory"
 msgstr "Angegebener Ordner konnte nicht gefunden werden"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1038
 msgid "Please specify a directory, not a file"
 msgstr "Bitte keine Datei sondern einen Ordner angeben"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1052
 msgid "Calibre binaries not viable"
 msgstr "Calibre Programm ist nicht nutzbar"
 
-#: cps/helper.py:1051
+#: cps/helper.py:1061
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "Fehlende Calibre Binärdateien: %(missing)s"
 
-#: cps/helper.py:1053
+#: cps/helper.py:1063
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Ausführberechtigung fehlt: %(missing)s"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1068
 msgid "Error executing Calibre"
 msgstr "Fehler beim Ausführen von Calibre"
 
-#: cps/helper.py:1154 cps/themes/standard/templates/admin.html:232
+#: cps/helper.py:1164 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr "Alle Bücher für Metadaten Backup einreihen"
 
@@ -1293,26 +1293,26 @@ msgstr "Erweiterte Suche"
 
 #: cps/shelf.py:49 cps/shelf.py:111 cps/shelf.py:157
 msgid "Invalid shelf specified"
-msgstr "Ungültiges Bücherregal angegeben"
+msgstr "Ungültiges Regal angegeben"
 
 #: cps/shelf.py:55
 msgid "Sorry you are not allowed to add a book to that shelf"
-msgstr "Du hast keine Berechtigung, ein Buch zu diesem Bücherregal hinzuzufügen"
+msgstr "Du hast keine Berechtigung, ein Buch zu diesem Regal hinzuzufügen"
 
 #: cps/shelf.py:64
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr "Buch ist bereits Teil des Bücherregals %(shelfname)s"
+msgstr "Buch ist bereits Teil des Regals %(shelfname)s"
 
 #: cps/shelf.py:77
 #, python-format
 msgid "%(book_id)s is a invalid Book Id. Could not be added to Shelf"
-msgstr "%(book_id)s ist eine ungültige Buch ID. Buch konnte nicht zu Bücherregal hinzugefügt werden"
+msgstr "%(book_id)s ist eine ungültige Buch ID. Buch konnte nicht zu Regal hinzugefügt werden"
 
 #: cps/shelf.py:97
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr "Das Buch wurde zum Bücherregal %(sname)s hinzugefügt"
+msgstr "Das Buch wurde zum Regal %(sname)s hinzugefügt"
 
 #: cps/shelf.py:116
 msgid "You are not allowed to remove a book from the shelf"
@@ -1335,71 +1335,71 @@ msgstr ""
 
 #: cps/shelf.py:162
 msgid "You are not allowed to add a book to the shelf"
-msgstr "Keine Erlaubnis Bücher zu diesem Bücherregal hinzuzufügen"
+msgstr "Keine Erlaubnis Bücher zu diesem Regal hinzuzufügen"
 
 #: cps/shelf.py:178
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
-msgstr "Bücher sind bereits Teil des Bücherregals %(name)s"
+msgstr "Bücher sind bereits Teil des Regals %(name)s"
 
 #: cps/shelf.py:190
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "Bücher wurden zum Bücherregal %(sname)s hinzugefügt"
+msgstr "Bücher wurden zum Regal %(sname)s hinzugefügt"
 
 #: cps/shelf.py:197
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
-msgstr "Bücher konnten nicht zum Bücherregal %(sname)s hinzugefügt werden"
+msgstr "Bücher konnten nicht zum Regal %(sname)s hinzugefügt werden"
 
 #: cps/shelf.py:243
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
-msgstr "Das Buch wurde aus dem Bücherregal: %(sname)s entfernt"
+msgstr "Das Buch wurde aus dem Regal: %(sname)s entfernt"
 
 #: cps/shelf.py:252
 msgid "Sorry you are not allowed to remove a book from this shelf"
-msgstr "Sie haben keine Berechtigung um Bücher aus diesem Bücherregal zu löschen"
+msgstr "Sie haben keine Berechtigung um Bücher aus diesem Regal zu löschen"
 
 #: cps/shelf.py:262 cps/themes/caliblur/templates/layout.html:146
 #: cps/themes/standard/templates/layout.html:127
 msgid "Create a Shelf"
-msgstr "Bücherregal erzeugen"
+msgstr "Regal erzeugen"
 
 #: cps/shelf.py:270 cps/shelf.py:312
 msgid "Sorry you are not allowed to edit this shelf"
-msgstr "Sie dürfen dieses Bücherregal nicht editieren"
+msgstr "Sie dürfen dieses Regal nicht editieren"
 
 #: cps/shelf.py:272
 msgid "Edit a shelf"
-msgstr "Bücherregal editieren"
+msgstr "Regal editieren"
 
 #: cps/shelf.py:281
 msgid "Error deleting Shelf"
-msgstr "Fehler beim Löschen des Bücherregals"
+msgstr "Fehler beim Löschen des Regals"
 
 #: cps/shelf.py:283
 msgid "Shelf successfully deleted"
-msgstr "Bücherregal erfolgreich gelöscht"
+msgstr "Regal erfolgreich gelöscht"
 
 #: cps/shelf.py:336
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Reihenfolge in Bücherregal '%(name)s' verändern"
+msgstr "Reihenfolge in Regal '%(name)s' verändern"
 
 #: cps/shelf.py:371
 msgid "Sorry you are not allowed to create a public shelf"
-msgstr "Sie haben keine Berechtigung um ein öffentliches Bücherregal zu erzeugen"
+msgstr "Sie haben keine Berechtigung um ein öffentliches Regal zu erzeugen"
 
 #: cps/shelf.py:388
 #, python-format
 msgid "Shelf %(title)s created"
-msgstr "Bücherregal %(title)s erzeugt"
+msgstr "Regal %(title)s erzeugt"
 
 #: cps/shelf.py:391
 #, python-format
 msgid "Shelf %(title)s changed"
-msgstr "Bücherregal %(title)s verändert"
+msgstr "Regal %(title)s verändert"
 
 #: cps/shelf.py:405
 msgid "There was an error"
@@ -1408,21 +1408,21 @@ msgstr "Es trat ein Fehler auf"
 #: cps/shelf.py:427
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "Es existiert bereit ein öffentliches Bücherregal mit dem Namen '%(title)s'."
+msgstr "Es existiert bereit ein öffentliches Regal mit dem Namen '%(title)s'."
 
 #: cps/shelf.py:438
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "Es existiert bereit ein privates Bücherregal mit dem Namen '%(title)s'."
+msgstr "Es existiert bereit ein privates Regal mit dem Namen '%(title)s'."
 
 #: cps/shelf.py:528
 #, python-format
 msgid "Shelf: '%(name)s'"
-msgstr "Bücherregal: '%(name)s'"
+msgstr "Regal: '%(name)s'"
 
 #: cps/shelf.py:534
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr "Fehler beim Öffnen des Bücherregals. Bücherregal exisitert nicht oder ist nicht zugänglich"
+msgstr "Fehler beim Öffnen des Regals. Regal exisitert nicht oder ist nicht zugänglich"
 
 #: cps/tasks_status.py:47 cps/themes/caliblur/templates/layout.html:89
 #: cps/themes/standard/templates/layout.html:68
@@ -1666,27 +1666,32 @@ msgstr "%(format)s Format nicht gefunden"
 msgid "Ebook converter failed with unknown error"
 msgstr "E-Book Converter mit unbekanntem Fehler fehlgeschlagen"
 
-#: cps/tasks/convert.py:237
+#: cps/tasks/convert.py:229
+#, python-format
+msgid "Metadata export failed: %(error)s"
+msgstr ""
+
+#: cps/tasks/convert.py:240
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify Konverter Aufruf fehlgeschlagen: %(error)s"
 
-#: cps/tasks/convert.py:257
+#: cps/tasks/convert.py:260
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Konvertierte Datei nicht gefunden, oder mehr als eine Datei im Pfad %(folder)s"
 
-#: cps/tasks/convert.py:294 cps/tasks/convert.py:345
+#: cps/tasks/convert.py:297 cps/tasks/convert.py:348
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "Calibre fehlgeschlagen mit Fehler: %(error)s"
 
-#: cps/tasks/convert.py:322
+#: cps/tasks/convert.py:325
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Fehler des E-Book-Converters: %(error)s"
 
-#: cps/tasks/convert.py:350
+#: cps/tasks/convert.py:353
 msgid "Convert"
 msgstr "Konvertiere"
 
@@ -1694,7 +1699,7 @@ msgstr "Konvertiere"
 msgid "Reconnecting Calibre database"
 msgstr "Calibre Datenbank wird neu verbunden"
 
-#: cps/tasks/mail.py:322
+#: cps/tasks/mail.py:333
 msgid "E-mail"
 msgstr "E-Mail"
 
@@ -1816,11 +1821,11 @@ msgstr "Bücher nach Dateiformat sortiert"
 #: cps/themes/standard/templates/layout.html:122
 #: cps/themes/standard/templates/search_form.html:88
 msgid "Shelves"
-msgstr "Bücherregale"
+msgstr "Regale"
 
 #: cps/templates/index.xml:146
 msgid "Books organized in shelves"
-msgstr "Bücher in Bücherregalen organisiert"
+msgstr "Bücher in Regalen organisiert"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2222,7 +2227,7 @@ msgstr "OK"
 #: cps/themes/standard/templates/listenmp3.html:190
 #: cps/themes/standard/templates/search.html:16
 msgid "Add to shelf"
-msgstr "Zu Bücherregal hinzufügen"
+msgstr "Zu Regal hinzufügen"
 
 #: cps/themes/caliblur/templates/detail.html:79
 #: cps/themes/caliblur/templates/listenmp3.html:158
@@ -2862,7 +2867,7 @@ msgstr "Ergebnisse für:"
 #: cps/themes/caliblur/templates/search.html:32
 #: cps/themes/standard/templates/search.html:29
 msgid "Remove from shelf"
-msgstr "Von Bücherregal entfernen"
+msgstr "Von Regal entfernen"
 
 #: cps/themes/caliblur/templates/shelf.html:14
 #: cps/themes/standard/templates/admin.html:22
@@ -2876,7 +2881,7 @@ msgstr "Download"
 #: cps/themes/caliblur/templates/shelf.html:16
 #: cps/themes/standard/templates/shelf.html:13
 msgid "Delete this Shelf"
-msgstr "Lösche dieses Bücherregal"
+msgstr "Lösche dieses Regal"
 
 #: cps/themes/caliblur/templates/shelf.html:17
 #: cps/themes/standard/templates/shelf.html:14
@@ -2901,12 +2906,12 @@ msgstr "Manuelles Sortieren aktivieren"
 #: cps/themes/caliblur/templates/shelf.html:38
 #: cps/themes/standard/templates/shelf.html:28
 msgid "Sort according to book added to shelf, newest first"
-msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, neuestes zuerst"
+msgstr "Sortiere nach Buch zu Regal hinzugefügt, neuestes zuerst"
 
 #: cps/themes/caliblur/templates/shelf.html:39
 #: cps/themes/standard/templates/shelf.html:29
 msgid "Sort according to book added to shelf, oldest first"
-msgstr "Sortiere nach Buch zu Bücherregal hinzugefügt, ältestes zuerst"
+msgstr "Sortiere nach Buch zu Regal hinzugefügt, ältestes zuerst"
 
 #: cps/themes/caliblur/templates/shelf_order.html:7
 #: cps/themes/standard/templates/shelf_order.html:5
@@ -3064,12 +3069,12 @@ msgstr "Ändern des Passworts erlauben"
 #: cps/themes/standard/templates/config_view_edit.html:121
 #: cps/themes/standard/templates/user_edit.html:130
 msgid "Allow Editing Public Shelves"
-msgstr "Editieren öffentlicher Bücherregale erlauben"
+msgstr "Editieren öffentlicher Regale erlauben"
 
 #: cps/themes/caliblur/templates/user_edit.html:134
 #: cps/themes/standard/templates/user_edit.html:137
 msgid "Sync only books in selected shelves with Kobo"
-msgstr "Nur Bücher aus ausgewählten Bücherregalen mit Kobo synchronisieren"
+msgstr "Nur Bücher aus ausgewählten Regalen mit Kobo synchronisieren"
 
 #: cps/themes/caliblur/templates/user_edit.html:142
 #: cps/themes/standard/templates/config_view_edit.html:167
@@ -3119,7 +3124,7 @@ msgstr "Editieren"
 
 #: cps/themes/standard/templates/admin.html:26
 msgid "Public Shelf"
-msgstr "Öffentliches Bücherregal"
+msgstr "Öffentliches Regal"
 
 #: cps/themes/standard/templates/admin.html:55
 msgid "Import LDAP Users"
@@ -4237,7 +4242,7 @@ msgstr "Serien ausschließen"
 
 #: cps/themes/standard/templates/search_form.html:96
 msgid "Exclude Shelves"
-msgstr "Bücherregale ausschliessen"
+msgstr "Regale ausschliessen"
 
 #: cps/themes/standard/templates/search_form.html:116
 msgid "Exclude Languages"
@@ -4273,11 +4278,11 @@ msgstr "Bis:"
 
 #: cps/themes/standard/templates/shelf_edit.html:14
 msgid "Share with Everyone"
-msgstr "Bücherregal mit anderen Benutzern teilen"
+msgstr "Regal mit anderen Benutzern teilen"
 
 #: cps/themes/standard/templates/shelf_edit.html:21
 msgid "Sync this shelf with Kobo device"
-msgstr "Dieses Bücherregal mit Kobo synchronisieren"
+msgstr "Dieses Regal mit Kobo synchronisieren"
 
 #: cps/themes/standard/templates/tasks.html:8
 msgid "No Records Found"
@@ -4394,11 +4399,11 @@ msgstr "Ansicht"
 
 #: cps/themes/standard/templates/user_table.html:151
 msgid "Edit Public Shelves"
-msgstr "Öffentliche Bücherregale bearbeiten"
+msgstr "Öffentliche Regale bearbeiten"
 
 #: cps/themes/standard/templates/user_table.html:153
 msgid "Sync selected Shelves with Kobo"
-msgstr "Ausgesuchte Bücherregale mit Kobo synchronisieren"
+msgstr "Ausgesuchte Regale mit Kobo synchronisieren"
 
 #: cps/themes/standard/templates/user_table.html:157
 msgid "Show Read/Unread Section"
