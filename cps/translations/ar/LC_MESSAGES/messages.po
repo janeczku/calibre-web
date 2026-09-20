@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2026-08-22 11:31+0200\n"
+"POT-Creation-Date: 2026-09-20 09:04+0200\n"
 "PO-Revision-Date: 2025-06-07 14:44+0300\n"
 "Last-Translator: UsamaFoad <usamafoad@gmail.com>\n"
 "Language: ar\n"
@@ -100,7 +100,7 @@ msgstr "إظهار الكل"
 msgid "Malformed request"
 msgstr "طلب مشوه"
 
-#: cps/admin.py:482 cps/admin.py:2162
+#: cps/admin.py:482 cps/admin.py:2161
 msgid "Guest Name can't be changed"
 msgstr "لا يمكن تغيير اسم الضيف"
 
@@ -108,7 +108,7 @@ msgstr "لا يمكن تغيير اسم الضيف"
 msgid "Guest can't have this role"
 msgstr "لا يمكن للضيف الحصول على هذا الدور"
 
-#: cps/admin.py:506 cps/admin.py:2116
+#: cps/admin.py:506 cps/admin.py:2115
 msgid "No admin user remaining, can't remove admin role"
 msgstr "لم يتبق مستخدم مسؤول، ولا يمكن إزالة دور المسؤول"
 
@@ -157,7 +157,7 @@ msgstr "عمود مقيد خاطئ"
 msgid "Invalid Theme"
 msgstr ""
 
-#: cps/admin.py:613 cps/admin.py:1987
+#: cps/admin.py:613 cps/admin.py:1986
 msgid "Calibre-Web configuration updated"
 msgstr "تم تحديث تكوين Calibre-Web"
 
@@ -331,8 +331,8 @@ msgstr "تعديل إعدادات خادم البريد الإلكتروني"
 msgid "Success! Gmail Account Verified."
 msgstr "تم التحقق بنجاح! تم التحقق من حساب Gmail."
 
-#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1971
-#: cps/admin.py:2069 cps/admin.py:2190 cps/editbooks.py:170
+#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1970
+#: cps/admin.py:2068 cps/admin.py:2189 cps/editbooks.py:170
 #: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
@@ -374,7 +374,7 @@ msgstr "مدة غير صالحة للمهمة المحددة"
 msgid "Scheduled tasks settings updated"
 msgstr "تم تحديث إعدادات المهام المجدولة"
 
-#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2186 cps/web.py:1335
+#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2185 cps/web.py:1335
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "عفواً! حدث خطأ غير معروف. يُرجى المحاولة لاحقًا."
 
@@ -382,7 +382,7 @@ msgstr "عفواً! حدث خطأ غير معروف. يُرجى المحاولة
 msgid "Settings DB is not Writeable"
 msgstr "قاعدة بيانات الإعدادات غير قابلة للكتابة"
 
-#: cps/admin.py:1485 cps/admin.py:2178
+#: cps/admin.py:1485 cps/admin.py:2177
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "تعديل المستخدم %(nick)s"
@@ -503,85 +503,85 @@ msgstr "موقع الملف الرئيسي غير صالح، يرجى إدخال
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "موقع ملف الشهادة غير صالح، يرجى إدخال المسار الصحيح"
 
-#: cps/admin.py:1852
+#: cps/admin.py:1850
 msgid "Kepubify binary not found"
 msgstr ""
 
-#: cps/admin.py:1900
+#: cps/admin.py:1899
 msgid "reverse proxy login header name"
 msgstr ""
 
-#: cps/admin.py:1910
+#: cps/admin.py:1909
 msgid "reverse proxy shared secret header name"
 msgstr ""
 
-#: cps/admin.py:1919
+#: cps/admin.py:1918
 msgid "Please configure both reverse proxy shared secret header name and secret"
 msgstr ""
 
-#: cps/admin.py:1923
+#: cps/admin.py:1922
 msgid "Please configure reverse proxy shared secret header name and secret or disable the feature"
 msgstr ""
 
-#: cps/admin.py:1928
+#: cps/admin.py:1927
 msgid "Please configure at least one trusted reverse proxy IP or CIDR"
 msgstr ""
 
-#: cps/admin.py:1952
+#: cps/admin.py:1951
 msgid "Password length has to be between 1 and 40"
 msgstr "يجب أن يكون طول كلمة المرور بين 1 و 40"
 
-#: cps/admin.py:1963 cps/helper.py:1007
+#: cps/admin.py:1962 cps/helper.py:1017
 msgid "Please specify a valid UnRar directory"
 msgstr ""
 
-#: cps/admin.py:2010
+#: cps/admin.py:2009
 msgid "Database Settings updated"
 msgstr "تم تحديث إعدادات قاعدة البيانات"
 
-#: cps/admin.py:2018
+#: cps/admin.py:2017
 msgid "Database Configuration"
 msgstr "تكوين قاعدة البيانات"
 
-#: cps/admin.py:2033 cps/web.py:1305
+#: cps/admin.py:2032 cps/web.py:1305
 msgid "Oops! Please complete all fields."
 msgstr "عفواً! الرجاء تعبئة جميع الحقول."
 
-#: cps/admin.py:2042
+#: cps/admin.py:2041
 msgid "E-mail is not from valid domain"
 msgstr "البريد الإلكتروني ليس من نطاق صالح"
 
-#: cps/admin.py:2048
+#: cps/admin.py:2047
 msgid "Add new user"
 msgstr "إضافة مستخدم جديد"
 
-#: cps/admin.py:2059
+#: cps/admin.py:2058
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "تم إنشاء المستخدم '%(user)s'"
 
-#: cps/admin.py:2065
+#: cps/admin.py:2064
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "عفواً! يوجد حساب بالفعل لهذا البريد الإلكتروني أو الاسم."
 
-#: cps/admin.py:2095
+#: cps/admin.py:2094
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "تم حذف المستخدم '%(nick)s'"
 
-#: cps/admin.py:2098
+#: cps/admin.py:2097
 msgid "Can't delete Guest User"
 msgstr "لا يمكن حذف المستخدم الضيف"
 
-#: cps/admin.py:2101
+#: cps/admin.py:2100
 msgid "No admin user remaining, can't delete user"
 msgstr "لم يتبق مستخدم مسؤول، لا يمكن حذف المستخدم"
 
-#: cps/admin.py:2156 cps/web.py:1485
+#: cps/admin.py:2155 cps/web.py:1485
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "لا يمكن أن يكون البريد الإلكتروني فارغًا ويجب أن يكون بريدًا إلكترونيًا صالحًا"
 
-#: cps/admin.py:2182
+#: cps/admin.py:2181
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "تم تحديث المستخدم '%(nick)s'"
@@ -965,41 +965,41 @@ msgstr "محتوى ملف الغلاف غير صالح"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "ملفات jpg/jpeg فقط مدعومة كملفات غلاف"
 
-#: cps/helper.py:989 cps/helper.py:1152
+#: cps/helper.py:999 cps/helper.py:1162
 msgid "Cover"
 msgstr "الغلاف"
 
-#: cps/helper.py:1017
+#: cps/helper.py:1027
 msgid "Error executing UnRar"
 msgstr "خطأ في تنفيذ UnRar"
 
-#: cps/helper.py:1025
+#: cps/helper.py:1035
 msgid "Could not find the specified directory"
 msgstr "تعذر العثور على الدليل المحدد"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1038
 msgid "Please specify a directory, not a file"
 msgstr "الرجاء تحديد دليل، وليس ملف"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1052
 msgid "Calibre binaries not viable"
 msgstr "ملفات Calibre الثنائية غير قابلة للاستخدام"
 
-#: cps/helper.py:1051
+#: cps/helper.py:1061
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "ملفات Calibre الثنائية مفقودة: %(missing)s"
 
-#: cps/helper.py:1053
+#: cps/helper.py:1063
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "أذونات التنفيذ مفقودة: %(missing)s"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1068
 msgid "Error executing Calibre"
 msgstr "خطأ في تنفيذ Calibre"
 
-#: cps/helper.py:1154 cps/themes/standard/templates/admin.html:232
+#: cps/helper.py:1164 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr "وضع جميع الكتب في قائمة الانتظار لنسخ البيانات الوصفية احتياطيًا"
 
@@ -1666,27 +1666,32 @@ msgstr "لم يتم العثور على تنسيق %(format)s على القرص"
 msgid "Ebook converter failed with unknown error"
 msgstr "فشل محول الكتب الإلكترونية بخطأ غير معروف"
 
-#: cps/tasks/convert.py:237
+#: cps/tasks/convert.py:229
+#, python-format
+msgid "Metadata export failed: %(error)s"
+msgstr ""
+
+#: cps/tasks/convert.py:240
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "فشل محول Kepubify: %(error)s"
 
-#: cps/tasks/convert.py:257
+#: cps/tasks/convert.py:260
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "لم يتم العثور على الملف المحول أو أكثر من ملف واحد في المجلد %(folder)s"
 
-#: cps/tasks/convert.py:294 cps/tasks/convert.py:345
+#: cps/tasks/convert.py:297 cps/tasks/convert.py:348
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "فشل Calibre مع الخطأ: %(error)s"
 
-#: cps/tasks/convert.py:322
+#: cps/tasks/convert.py:325
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "فشل محول الكتب الإلكترونية: %(error)s"
 
-#: cps/tasks/convert.py:350
+#: cps/tasks/convert.py:353
 msgid "Convert"
 msgstr "تحويل"
 
@@ -1694,7 +1699,7 @@ msgstr "تحويل"
 msgid "Reconnecting Calibre database"
 msgstr "إعادة الاتصال بقاعدة بيانات Calibre"
 
-#: cps/tasks/mail.py:322
+#: cps/tasks/mail.py:333
 msgid "E-mail"
 msgstr "بريد إلكتروني"
 

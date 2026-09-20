@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-08-22 11:31+0200\n"
+"POT-Creation-Date: 2026-09-20 09:04+0200\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Malformed request"
 msgstr ""
 
-#: cps/admin.py:482 cps/admin.py:2162
+#: cps/admin.py:482 cps/admin.py:2161
 msgid "Guest Name can't be changed"
 msgstr ""
 
@@ -108,7 +108,7 @@ msgstr ""
 msgid "Guest can't have this role"
 msgstr ""
 
-#: cps/admin.py:506 cps/admin.py:2116
+#: cps/admin.py:506 cps/admin.py:2115
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
@@ -157,7 +157,7 @@ msgstr ""
 msgid "Invalid Theme"
 msgstr ""
 
-#: cps/admin.py:613 cps/admin.py:1987
+#: cps/admin.py:613 cps/admin.py:1986
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web yapılandırması güncellendi"
 
@@ -331,8 +331,8 @@ msgstr ""
 msgid "Success! Gmail Account Verified."
 msgstr ""
 
-#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1971
-#: cps/admin.py:2069 cps/admin.py:2190 cps/editbooks.py:170
+#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1970
+#: cps/admin.py:2068 cps/admin.py:2189 cps/editbooks.py:170
 #: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
@@ -374,7 +374,7 @@ msgstr ""
 msgid "Scheduled tasks settings updated"
 msgstr ""
 
-#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2186 cps/web.py:1335
+#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2185 cps/web.py:1335
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
 
@@ -382,7 +382,7 @@ msgstr "Bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
 msgid "Settings DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:1485 cps/admin.py:2178
+#: cps/admin.py:1485 cps/admin.py:2177
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "%(nick)s kullanıcısını düzenle"
@@ -503,85 +503,85 @@ msgstr ""
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:1852
+#: cps/admin.py:1850
 msgid "Kepubify binary not found"
 msgstr ""
 
-#: cps/admin.py:1900
+#: cps/admin.py:1899
 msgid "reverse proxy login header name"
 msgstr ""
 
-#: cps/admin.py:1910
+#: cps/admin.py:1909
 msgid "reverse proxy shared secret header name"
 msgstr ""
 
-#: cps/admin.py:1919
+#: cps/admin.py:1918
 msgid "Please configure both reverse proxy shared secret header name and secret"
 msgstr ""
 
-#: cps/admin.py:1923
+#: cps/admin.py:1922
 msgid "Please configure reverse proxy shared secret header name and secret or disable the feature"
 msgstr ""
 
-#: cps/admin.py:1928
+#: cps/admin.py:1927
 msgid "Please configure at least one trusted reverse proxy IP or CIDR"
 msgstr ""
 
-#: cps/admin.py:1952
+#: cps/admin.py:1951
 msgid "Password length has to be between 1 and 40"
 msgstr ""
 
-#: cps/admin.py:1963 cps/helper.py:1007
+#: cps/admin.py:1962 cps/helper.py:1017
 msgid "Please specify a valid UnRar directory"
 msgstr ""
 
-#: cps/admin.py:2010
+#: cps/admin.py:2009
 msgid "Database Settings updated"
 msgstr ""
 
-#: cps/admin.py:2018
+#: cps/admin.py:2017
 msgid "Database Configuration"
 msgstr ""
 
-#: cps/admin.py:2033 cps/web.py:1305
+#: cps/admin.py:2032 cps/web.py:1305
 msgid "Oops! Please complete all fields."
 msgstr "Lütfen tüm alanları doldurun!"
 
-#: cps/admin.py:2042
+#: cps/admin.py:2041
 msgid "E-mail is not from valid domain"
 msgstr "E-posta izin verilen bir servisten değil"
 
-#: cps/admin.py:2048
+#: cps/admin.py:2047
 msgid "Add new user"
 msgstr "Yeni kullanıcı ekle"
 
-#: cps/admin.py:2059
+#: cps/admin.py:2058
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "'%(user)s' kullanıcısı oluşturuldu"
 
-#: cps/admin.py:2065
+#: cps/admin.py:2064
 msgid "Oops! An account already exists for this Email. or name."
 msgstr ""
 
-#: cps/admin.py:2095
+#: cps/admin.py:2094
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Kullanıcı '%(nick)s' silindi"
 
-#: cps/admin.py:2098
+#: cps/admin.py:2097
 msgid "Can't delete Guest User"
 msgstr ""
 
-#: cps/admin.py:2101
+#: cps/admin.py:2100
 msgid "No admin user remaining, can't delete user"
 msgstr "Başka yönetici kullanıcı olmadığından silinemedi"
 
-#: cps/admin.py:2156 cps/web.py:1485
+#: cps/admin.py:2155 cps/web.py:1485
 msgid "Email can't be empty and has to be a valid Email"
 msgstr ""
 
-#: cps/admin.py:2182
+#: cps/admin.py:2181
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "'%(nick)s' kullanıcısı güncellendi"
@@ -965,41 +965,41 @@ msgstr ""
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:989 cps/helper.py:1152
+#: cps/helper.py:999 cps/helper.py:1162
 msgid "Cover"
 msgstr ""
 
-#: cps/helper.py:1017
+#: cps/helper.py:1027
 msgid "Error executing UnRar"
 msgstr ""
 
-#: cps/helper.py:1025
+#: cps/helper.py:1035
 msgid "Could not find the specified directory"
 msgstr ""
 
-#: cps/helper.py:1028
+#: cps/helper.py:1038
 msgid "Please specify a directory, not a file"
 msgstr ""
 
-#: cps/helper.py:1042
+#: cps/helper.py:1052
 msgid "Calibre binaries not viable"
 msgstr ""
 
-#: cps/helper.py:1051
+#: cps/helper.py:1061
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1053
+#: cps/helper.py:1063
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1058
+#: cps/helper.py:1068
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1154 cps/themes/standard/templates/admin.html:232
+#: cps/helper.py:1164 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr ""
 
@@ -1666,27 +1666,32 @@ msgstr ""
 msgid "Ebook converter failed with unknown error"
 msgstr ""
 
-#: cps/tasks/convert.py:237
+#: cps/tasks/convert.py:229
+#, python-format
+msgid "Metadata export failed: %(error)s"
+msgstr ""
+
+#: cps/tasks/convert.py:240
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:257
+#: cps/tasks/convert.py:260
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""
 
-#: cps/tasks/convert.py:294 cps/tasks/convert.py:345
+#: cps/tasks/convert.py:297 cps/tasks/convert.py:348
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr ""
 
-#: cps/tasks/convert.py:322
+#: cps/tasks/convert.py:325
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "eKitap-Dönüştürücü hatası: %(error)s"
 
-#: cps/tasks/convert.py:350
+#: cps/tasks/convert.py:353
 msgid "Convert"
 msgstr ""
 
@@ -1694,7 +1699,7 @@ msgstr ""
 msgid "Reconnecting Calibre database"
 msgstr ""
 
-#: cps/tasks/mail.py:322
+#: cps/tasks/mail.py:333
 msgid "E-mail"
 msgstr ""
 

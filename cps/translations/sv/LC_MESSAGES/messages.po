@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2026-08-22 11:31+0200\n"
+"POT-Creation-Date: 2026-09-20 09:04+0200\n"
 "PO-Revision-Date: 2026-08-15 12:46+0300\n"
 "Last-Translator: Jonatan Nyberg, 2026\n"
 "Language: sv\n"
@@ -101,7 +101,7 @@ msgstr "Visa alla"
 msgid "Malformed request"
 msgstr "Felaktig begäran"
 
-#: cps/admin.py:482 cps/admin.py:2162
+#: cps/admin.py:482 cps/admin.py:2161
 msgid "Guest Name can't be changed"
 msgstr "Gästnamnet kan inte ändras"
 
@@ -109,7 +109,7 @@ msgstr "Gästnamnet kan inte ändras"
 msgid "Guest can't have this role"
 msgstr "Gäst kan inte ha den här rollen"
 
-#: cps/admin.py:506 cps/admin.py:2116
+#: cps/admin.py:506 cps/admin.py:2115
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Ingen administratörsanvändare kvar, kan inte ta bort administratörsrollen"
 
@@ -158,7 +158,7 @@ msgstr "Ogiltig begränsningskolumn"
 msgid "Invalid Theme"
 msgstr ""
 
-#: cps/admin.py:613 cps/admin.py:1987
+#: cps/admin.py:613 cps/admin.py:1986
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web-konfigurationen har uppdaterats"
 
@@ -332,8 +332,8 @@ msgstr "Ändra SMTP-inställningar"
 msgid "Success! Gmail Account Verified."
 msgstr "Gmail-kontot har verifierats."
 
-#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1971
-#: cps/admin.py:2069 cps/admin.py:2190 cps/editbooks.py:170
+#: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1970
+#: cps/admin.py:2068 cps/admin.py:2189 cps/editbooks.py:170
 #: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
@@ -375,7 +375,7 @@ msgstr "Ogiltig varaktighet har angetts för uppgiften"
 msgid "Scheduled tasks settings updated"
 msgstr "Inställningarna för schemalagda uppgifter har uppdaterats"
 
-#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2186 cps/web.py:1335
+#: cps/admin.py:1451 cps/admin.py:1500 cps/admin.py:2185 cps/web.py:1335
 msgid "Oops! An unknown error occurred. Please try again later."
 msgstr "Ett okänt fel uppstod. Försök igen senare."
 
@@ -383,7 +383,7 @@ msgstr "Ett okänt fel uppstod. Försök igen senare."
 msgid "Settings DB is not Writeable"
 msgstr "Inställningsdatabasen är inte skrivbar"
 
-#: cps/admin.py:1485 cps/admin.py:2178
+#: cps/admin.py:1485 cps/admin.py:2177
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Redigera användaren %(nick)s"
@@ -504,85 +504,85 @@ msgstr "Nyckelfilens plats är inte giltig. Ange rätt sökväg"
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "Certifikatfilens plats är inte giltig. Ange rätt sökväg"
 
-#: cps/admin.py:1852
+#: cps/admin.py:1850
 msgid "Kepubify binary not found"
 msgstr "Körfilen för Kepubify hittades inte"
 
-#: cps/admin.py:1900
+#: cps/admin.py:1899
 msgid "reverse proxy login header name"
 msgstr "namn på inloggningshuvud för omvänd proxy"
 
-#: cps/admin.py:1910
+#: cps/admin.py:1909
 msgid "reverse proxy shared secret header name"
 msgstr "namn på huvud för delad hemlighet för omvänd proxy"
 
-#: cps/admin.py:1919
+#: cps/admin.py:1918
 msgid "Please configure both reverse proxy shared secret header name and secret"
 msgstr "Konfigurera både namnet på huvudet för den delade hemligheten och själva hemligheten för den omvända proxyn"
 
-#: cps/admin.py:1923
+#: cps/admin.py:1922
 msgid "Please configure reverse proxy shared secret header name and secret or disable the feature"
 msgstr "Konfigurera namn och hemlighet för den omvända proxyns huvud för delad hemlighet, eller inaktivera funktionen"
 
-#: cps/admin.py:1928
+#: cps/admin.py:1927
 msgid "Please configure at least one trusted reverse proxy IP or CIDR"
 msgstr "Konfigurera minst en betrodd IP-adress eller CIDR för omvänd proxy"
 
-#: cps/admin.py:1952
+#: cps/admin.py:1951
 msgid "Password length has to be between 1 and 40"
 msgstr "Lösenordets längd måste vara mellan 1 och 40 tecken"
 
-#: cps/admin.py:1963 cps/helper.py:1007
+#: cps/admin.py:1962 cps/helper.py:1017
 msgid "Please specify a valid UnRar directory"
 msgstr "Ange en giltig katalog för UnRar"
 
-#: cps/admin.py:2010
+#: cps/admin.py:2009
 msgid "Database Settings updated"
 msgstr "Databasinställningarna har uppdaterats"
 
-#: cps/admin.py:2018
+#: cps/admin.py:2017
 msgid "Database Configuration"
 msgstr "Databaskonfiguration"
 
-#: cps/admin.py:2033 cps/web.py:1305
+#: cps/admin.py:2032 cps/web.py:1305
 msgid "Oops! Please complete all fields."
 msgstr "Fyll i alla fält!"
 
-#: cps/admin.py:2042
+#: cps/admin.py:2041
 msgid "E-mail is not from valid domain"
 msgstr "E-postadressen kommer inte från en giltig domän"
 
-#: cps/admin.py:2048
+#: cps/admin.py:2047
 msgid "Add new user"
 msgstr "Lägg till ny användare"
 
-#: cps/admin.py:2059
+#: cps/admin.py:2058
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Användaren '%(user)s' skapad"
 
-#: cps/admin.py:2065
+#: cps/admin.py:2064
 msgid "Oops! An account already exists for this Email. or name."
 msgstr "Hittade ett befintligt konto för den här e-postadressen eller namnet."
 
-#: cps/admin.py:2095
+#: cps/admin.py:2094
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Användaren '%(nick)s' borttagen"
 
-#: cps/admin.py:2098
+#: cps/admin.py:2097
 msgid "Can't delete Guest User"
 msgstr "Det går inte att ta bort gästanvändaren"
 
-#: cps/admin.py:2101
+#: cps/admin.py:2100
 msgid "No admin user remaining, can't delete user"
 msgstr "Ingen administratörsanvändare finns kvar. Användaren kan inte tas bort"
 
-#: cps/admin.py:2156 cps/web.py:1485
+#: cps/admin.py:2155 cps/web.py:1485
 msgid "Email can't be empty and has to be a valid Email"
 msgstr "E-postadressen får inte vara tom och måste vara giltig"
 
-#: cps/admin.py:2182
+#: cps/admin.py:2181
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Användaren '%(nick)s' uppdaterad"
@@ -966,41 +966,41 @@ msgstr "Ogiltigt innehåll i omslagsfilen"
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Endast jpg/jpeg-filer stöds som omslagsfil"
 
-#: cps/helper.py:989 cps/helper.py:1152
+#: cps/helper.py:999 cps/helper.py:1162
 msgid "Cover"
 msgstr "Omslag"
 
-#: cps/helper.py:1017
+#: cps/helper.py:1027
 msgid "Error executing UnRar"
 msgstr "Fel vid körning av UnRar"
 
-#: cps/helper.py:1025
+#: cps/helper.py:1035
 msgid "Could not find the specified directory"
 msgstr "Den angivna katalogen hittades inte"
 
-#: cps/helper.py:1028
+#: cps/helper.py:1038
 msgid "Please specify a directory, not a file"
 msgstr "Ange en katalog, inte en fil"
 
-#: cps/helper.py:1042
+#: cps/helper.py:1052
 msgid "Calibre binaries not viable"
 msgstr "Calibre-körfilerna kan inte användas"
 
-#: cps/helper.py:1051
+#: cps/helper.py:1061
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "Calibre-körfiler saknas: %(missing)s"
 
-#: cps/helper.py:1053
+#: cps/helper.py:1063
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Körbehörighet saknas: %(missing)s"
 
-#: cps/helper.py:1058
+#: cps/helper.py:1068
 msgid "Error executing Calibre"
 msgstr "Fel vid körning av Calibre"
 
-#: cps/helper.py:1154 cps/themes/standard/templates/admin.html:232
+#: cps/helper.py:1164 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr "Lägg alla böcker i kö för säkerhetskopiering av metadata"
 
@@ -1667,27 +1667,32 @@ msgstr "%(format)s-format hittades inte på disken"
 msgid "Ebook converter failed with unknown error"
 msgstr "E-bokkonverteraren misslyckades med okänt fel"
 
-#: cps/tasks/convert.py:237
+#: cps/tasks/convert.py:229
+#, python-format
+msgid "Metadata export failed: %(error)s"
+msgstr ""
+
+#: cps/tasks/convert.py:240
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr "Kepubify-konverteraren misslyckades: %(error)s"
 
-#: cps/tasks/convert.py:257
+#: cps/tasks/convert.py:260
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr "Konverterad fil hittades inte eller mer än en fil i mappen %(folder)s"
 
-#: cps/tasks/convert.py:294 cps/tasks/convert.py:345
+#: cps/tasks/convert.py:297 cps/tasks/convert.py:348
 #, python-format
 msgid "Calibre failed with error: %(error)s"
 msgstr "calibre misslyckades med fel: %(error)s"
 
-#: cps/tasks/convert.py:322
+#: cps/tasks/convert.py:325
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "E-bokkonverteraren misslyckades: %(error)s"
 
-#: cps/tasks/convert.py:350
+#: cps/tasks/convert.py:353
 msgid "Convert"
 msgstr "Konvertera"
 
@@ -1695,7 +1700,7 @@ msgstr "Konvertera"
 msgid "Reconnecting Calibre database"
 msgstr "Återansluter Calibre-databasen"
 
-#: cps/tasks/mail.py:322
+#: cps/tasks/mail.py:333
 msgid "E-mail"
 msgstr "E-post"
 
