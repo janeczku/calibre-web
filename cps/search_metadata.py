@@ -24,15 +24,22 @@ import os
 import sys
 from urllib.parse import urlsplit
 
-from flask import Blueprint, request, url_for, make_response, jsonify
+import requests
+from flask import Blueprint, request, url_for, make_response, jsonify, abort, redirect
 from .cw_login import current_user
 from flask_babel import get_locale
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 from sqlalchemy.orm.attributes import flag_modified
 
-from cps.services.Metadata import Metadata
-from . import constants, logger, ub, web_server
+from cps.services.Metadata import Metadata, cover_headers_for
+from . import constants, logger, ub, web_server, cli_param
 from .usermanagement import user_login_required
+
+try:
+    from . import cw_advocate
+    use_advocate = True
+except ImportError:
+    use_advocate = False
 
 
 meta = Blueprint("metadata", __name__)
@@ -57,6 +64,12 @@ def _safe_metadata_url(value):
 def _sanitize_metadata_record(record):
     record["url"] = _safe_metadata_url(record.get("url"))
     record["cover"] = _safe_metadata_url(record.get("cover"))
+    # covers on hosts that refuse hot-linking are shown through our proxy,
+    # "cover" keeps the original url (it is what gets saved with the book)
+    if record["cover"] and cover_headers_for(record["cover"]):
+        record["cover_display"] = url_for("metadata.metadata_cover_proxy", url=record["cover"])
+    else:
+        record["cover_display"] = record["cover"]
     source = record.get("source")
     if isinstance(source, dict):
         source["link"] = _safe_metadata_url(source.get("link"))
@@ -149,6 +162,56 @@ def metadata_change_active_provider(prov_name):
         return make_response(jsonify(_serialize_metadata_records(data)))
     return ""
 
+
+COVER_PROXY_MAX_BYTES = 5 * 1024 * 1024
+COVER_PROXY_TIMEOUT = (10, 30)
+# raster formats only: an SVG served from our own origin could carry scripts
+COVER_PROXY_CONTENT_TYPES = ("image/jpeg", "image/png", "image/webp", "image/gif")
+
+
+def _fetch_cover(url, headers):
+    if cli_param.allow_localhost:
+        return requests.get(url, headers=headers, timeout=COVER_PROXY_TIMEOUT, allow_redirects=False, stream=True)
+    if use_advocate:
+        return cw_advocate.get(url, headers=headers, timeout=COVER_PROXY_TIMEOUT, allow_redirects=False, stream=True)
+    raise RuntimeError("python module advocate is not installed but is needed")
+
+
+@meta.route("/metadata/cover_proxy")
+@user_login_required
+def metadata_cover_proxy():
+    """Cover preview for hosts that refuse hot-linked requests (see Metadata.COVER_HOSTS).
+    Only urls on hosts declared by a metadata provider are fetched, so this is not an open proxy."""
+    try:
+        url = _safe_metadata_url(request.args.get("url"))
+        scheme = urlsplit(url).scheme
+    except ValueError:  # malformed url, e.g. an invalid IPv6 literal
+        abort(404)
+    headers = cover_headers_for(url)
+    if scheme not in ("http", "https") or not headers:
+        abort(404)
+    generic_cover = redirect(url_for("static", filename="generic_cover.jpg"))
+    try:
+        # the context manager closes the streamed response on every exit path
+        with _fetch_cover(url, headers) as img:
+            img.raise_for_status()
+            content_type = img.headers.get("Content-Type", "").split(";")[0].strip().lower()
+            if content_type not in COVER_PROXY_CONTENT_TYPES:
+                log.warning("Cover proxy: %s returned content type '%s'", url, content_type)
+                return generic_cover
+            content = bytearray()
+            for chunk in img.iter_content(chunk_size=65536):
+                content.extend(chunk)
+                if len(content) > COVER_PROXY_MAX_BYTES:
+                    log.warning("Cover proxy: %s is larger than %d bytes", url, COVER_PROXY_MAX_BYTES)
+                    return generic_cover
+    except Exception as ex:  # requests errors, advocate UnacceptableAddressException, ...
+        log.warning("Cover proxy: download of %s failed: %s", url, ex)
+        return generic_cover
+    response = make_response(bytes(content))
+    response.headers["Content-Type"] = content_type
+    response.headers["Cache-Control"] = "private, max-age=3600"
+    return response
 
 @meta.route("/metadata/search", methods=["POST"])
 @user_login_required

@@ -62,6 +62,7 @@ from .constants import (STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBN
 from .binary_helper import resolve_binary_path, SUPPORTED_UNRAR_BINARIES
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
+from .services.Metadata import cover_headers_for
 from .tasks.mail import TaskEmail
 from .tasks.thumbnail import TaskClearCoverThumbnailCache, TaskGenerateCoverThumbnails
 from .tasks.metadata_backup import TaskBackupMetadata
@@ -827,10 +828,12 @@ def get_series_thumbnail(series_id, resolution):
 # saves book cover from url
 def save_cover_from_url(url, book_path):
     try:
+        # some cover hosts (e.g. douban) refuse downloads without a Referer, see Metadata.COVER_HOSTS
+        headers = cover_headers_for(url) or None
         if cli_param.allow_localhost:
-            img = requests.get(url, timeout=(10, 200), allow_redirects=False)  # ToDo: Error Handling
+            img = requests.get(url, headers=headers, timeout=(10, 200), allow_redirects=False)  # ToDo: Error Handling
         elif use_advocate:
-            img = cw_advocate.get(url, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
+            img = cw_advocate.get(url, headers=headers, timeout=(10, 200), allow_redirects=False)      # ToDo: Error Handling
         else:
             log.error("python module advocate is not installed but is needed")
             return False, _("Python module 'advocate' is not installed but is needed for cover uploads")

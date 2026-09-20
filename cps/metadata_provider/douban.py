@@ -45,6 +45,13 @@ class Douban(Metadata):
     META_URL = "https://book.douban.com/"
     SEARCH_JSON_URL = "https://www.douban.com/j/search"
     SEARCH_URL = "https://www.douban.com/search"
+    USER_AGENT = ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.56')
+    # Douban's image CDN (img*.doubanio.com) answers HTTP 418 unless the request
+    # carries a douban.com Referer and a browser-like User-Agent
+    COVER_HOSTS = ("doubanio.com",)
+    COVER_HEADERS = {"Referer": META_URL, "User-Agent": USER_AGENT}
+    TIMEOUT = 15
 
     ID_PATTERN = re.compile(r"sid: (?P<id>\d+),")
     AUTHORS_PATTERN = re.compile(r"作者|译者")
@@ -63,10 +70,7 @@ class Douban(Metadata):
     RATING_XPATH = "//div[@class='rating_self clearfix']/strong"
 
     session = requests.Session()
-    session.headers = {
-        'user-agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.56',
-    }
+    session.headers = {'user-agent': USER_AGENT}
 
     def search(self,
                query: str,
@@ -106,7 +110,8 @@ class Douban(Metadata):
                                  params={
                                      "cat": 1001,
                                      "q": query
-                                 })
+                                 },
+                                 timeout=self.TIMEOUT)
             r.raise_for_status()
 
         except Exception as e:
@@ -128,7 +133,8 @@ class Douban(Metadata):
                                  params={
                                      "cat": 1001,
                                      "q": query
-                                 })
+                                 },
+                                 timeout=self.TIMEOUT)
             r.raise_for_status()
 
         except Exception as e:
@@ -151,7 +157,7 @@ class Douban(Metadata):
         log.debug(f"start parsing {url}")
 
         try:
-            r = self.session.get(url)
+            r = self.session.get(url, timeout=self.TIMEOUT)
             r.raise_for_status()
         except Exception as e:
             log.warning(e)
