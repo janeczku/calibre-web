@@ -546,6 +546,8 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
         else:
             # Check new path is not valid path
             if not os.path.exists(new_path):
+                # Ensure destination author folder exists before moving
+                os.makedirs(os.path.dirname(new_path), exist_ok=True)
                 # move original path to new path
                 log.debug("Moving title: %s to %s", path, new_path)
                 shutil.move(path, new_path)
