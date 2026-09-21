@@ -58,6 +58,12 @@ class ReverseProxied(object):
         proxy_set_header X-Scheme $scheme;
         proxy_set_header X-Script-Name /myprefix;
         }
+
+    When the direct peer address is listed in the "Reverse Proxy Trusted
+    IPs/CIDRs" admin setting, REMOTE_ADDR is also replaced with the first
+    address in X-Forwarded-For, so per-IP rate limiting (e.g. the Kobo sync
+    endpoint) and access logs see the real client instead of the proxy for
+    every request.
     """
 
     def __init__(self, application):
@@ -79,6 +85,16 @@ class ReverseProxied(object):
                         environ.pop(header_key, None)
                         log.warning("Discarded reverse proxy auth header '%s' from untrusted source IP-address: %s",
                                     header_name, environ.get("REMOTE_ADDR"))
+
+        # Only honor X-Forwarded-For when it comes from a trusted proxy (same
+        # trust boundary as the reverse proxy auth headers above), otherwise
+        # any client could spoof it. Behind an untrusted/unconfigured proxy,
+        # REMOTE_ADDR is left as the direct peer address, same as before.
+        forwarded_for = environ.get("HTTP_X_FORWARDED_FOR", "")
+        if forwarded_for and is_trusted_proxy_source(environ.get("REMOTE_ADDR"), trusted_proxy_config):
+            client_address = forwarded_for.split(",")[0].strip()
+            if client_address:
+                environ["REMOTE_ADDR"] = client_address
 
         self.proxied = False
         self.script_name = "/"
