@@ -31,7 +31,7 @@ from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, text, or_, and_, true
 from sqlalchemy.exc import InvalidRequestError, OperationalError
 
-from . import logger, config, db, calibre_db, ub, isoLanguages, constants
+from . import logger, config, db, calibre_db, ub, isoLanguages, constants, hierarchy
 from .usermanagement import requires_basic_auth_if_no_ano, auth
 from .helper import get_download_link, get_book_cover
 from .pagination import Pagination
@@ -243,6 +243,63 @@ def feed_letter_category(book_id):
 @requires_basic_auth_if_no_ano
 def feed_category(book_id):
     return render_xml_dataset(db.Tags, book_id)
+
+
+@opds.route("/opds/custom_column/<int:column_id>", defaults={'category_path': ''})
+@opds.route("/opds/custom_column/<int:column_id>/<path:category_path>")
+@requires_basic_auth_if_no_ano
+def feed_cc_category(column_id, category_path):
+    """OPDS navigation/acquisition feed for one hierarchical custom column.
+
+    /opds/custom_column/1                    -> top-level nodes
+    /opds/custom_column/1/Computers          -> child nodes (navigation)
+    /opds/custom_column/1/Computers.DB       -> books under the leaf (acquisition)
+    Nodes with children take precedence over directly attached books;
+    those remain reachable through the OPDS search.
+    """
+    if column_id not in db.cc_classes:
+        abort(404)
+    col = calibre_db.session.query(db.CustomColumns).filter(
+        db.CustomColumns.id == column_id).first()
+    if not col or col.datatype not in ('text', 'enumeration'):
+        abort(404)
+
+    # Flask's <path:...> converter captures slashes; our separator is '.'
+    path = (category_path or '').replace('/', hierarchy.SEPARATOR)
+    path = hierarchy.join_path([path])
+    off = int(request.args.get("offset") or 0)
+    cc = calibre_db.get_cc_columns(config, filter_config_custom_read=True)
+
+    if path:
+        node = hierarchy.get_node_by_path(
+            calibre_db.get_hierarchical_tree(column_id), path)
+        if node is None:
+            abort(404)
+        if node['children']:
+            elements = [{'column_id': column_id, 'path': child['path'],
+                         'name': child['name']} for child in node['children']]
+            pagination = Pagination(1, config.config_books_per_page,
+                                    max(len(elements), 1))
+            return render_xml_template('feed.xml', hierarchyelements=elements,
+                                       pagination=pagination, cc=cc)
+
+    if path:
+        entries, __, pagination = calibre_db.fill_indexpage(
+            (int(off) / (int(config.config_books_per_page)) + 1), 0,
+            db.Books,
+            getattr(db.Books, 'custom_column_' + str(column_id)).any(
+                calibre_db.hierarchical_cc_filter(column_id, path)),
+            [db.Books.timestamp.desc()],
+            True, config.config_read_column)
+        return render_xml_template('feed.xml', entries=entries,
+                                   pagination=pagination, cc=cc)
+
+    elements = [{'column_id': column_id, 'path': n['path'], 'name': n['name']}
+                for n in calibre_db.get_hierarchical_tree(column_id)]
+    pagination = Pagination(1, config.config_books_per_page,
+                            max(len(elements), 1))
+    return render_xml_template('feed.xml', hierarchyelements=elements,
+                               pagination=pagination, cc=cc)
 
 
 @opds.route("/opds/series")

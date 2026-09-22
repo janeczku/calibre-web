@@ -241,7 +241,14 @@
                                         {% elif c.datatype == 'series' %}
                                             {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                                         {% elif c.datatype == 'text' %}
-                                            {{ column.value.strip() }}{% if not loop.last %}, {% endif %}
+                                            {% if '.' in column.value %}
+                                                {% set parts = column.value.strip().split('.') %}
+                                                {% for part in parts %}
+                                                    <a class="hierarchy-crumb" href="{{ url_for('web.cc_category_list', column_id=c.id, category_path=parts[:loop.index]|join('.')) }}">{{ part }}</a>{% if not loop.last %}. {% endif %}
+                                                {% endfor %}
+                                            {% else %}
+                                                {{ column.value.strip() }}
+                                            {% endif %}{% if not loop.last %}, {% endif %}
                                         {% else %}
                                             {{ column.value }}
                                         {% endif %}

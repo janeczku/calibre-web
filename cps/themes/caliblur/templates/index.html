@@ -1,6 +1,22 @@
 {% import 'image.html' as image %}
 {% extends theme("layout.html") %}
 {% block body %}
+{% if breadcrumbs %}
+  {% from theme('macros/hierarchy.html') import hierarchy_breadcrumbs %}
+  <div class="discover">
+  {{ hierarchy_breadcrumbs(breadcrumbs, col_id) }}
+  </div>
+{% endif %}
+{% if subcategories %}
+  <div class="discover hierarchy-subcategories">
+    <h3>{{_('Subcategories')}}</h3>
+    <ul class="hierarchy-sublist list-unstyled">
+    {% for sub in subcategories %}
+      <li><a href="{{ url_for('web.cc_category_list', column_id=col_id, category_path=sub.path) }}">{{ sub.name }} <span class="badge badge-sm">{{ sub.total_count }}</span></a></li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endif %}
 {% if current_user.show_detail_random() and page != "discover" %}
 <div class="discover random-books caliblur-index">
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
