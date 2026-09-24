@@ -703,13 +703,15 @@ def do_edit_book(book_id, upload_formats=None):
         # Add default series_index to book
         modify_date |= edit_book_series_index(to_save.get("series_index"), book)
         # Handle book comments/description
-        modify_date |= edit_book_comments(Markup(to_save.get('comments')).unescape(), book)
-        # Handle identifiers
-        input_identifiers = identifier_list(to_save, book)
-        modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
-        if warning:
-            flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
-        modify_date |= modification
+        if to_save.get('comments') is not None:
+            modify_date |= edit_book_comments(Markup(to_save['comments']).unescape(), book)
+        # Handle identifiers, the upload format form has no identifier fields
+        if not upload_formats:
+            input_identifiers = identifier_list(to_save, book)
+            modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
+            if warning:
+                flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
+            modify_date |= modification
         # Handle book tags
         modify_date |= edit_book_tags(to_save.get('tags'), book)
         # Handle book series
@@ -780,7 +782,13 @@ def do_edit_book(book_id, upload_formats=None):
 
 def merge_metadata(book, meta, to_save):
     if meta.cover:
-        to_save['cover_format'] = meta.cover
+        # use the cover extracted from the uploaded file only if the book has none yet
+        if book.has_cover or to_save.get('format_cover'):
+            os.remove(meta.cover)
+        else:
+            move_coverfile(meta, book)
+            helper.replace_cover_thumbnail_cache(book.id)
+            to_save['format_cover'] = True
     for s_field, m_field in [
             ('tags', 'tags'), ('authors', 'author'), ('series', 'series'),
             ('series_index', 'series_id'), ('languages', 'languages'),
