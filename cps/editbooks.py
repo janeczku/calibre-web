@@ -1493,7 +1493,21 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
                 error = True
                 continue
 
-            file_name = book.path.rsplit('/', 1)[-1]
+            # Do not replace a format the book already has: the new file would overwrite
+            # the stored one while its database entry (size) and the book's last_modified
+            # stay unchanged. The format has to be deleted first.
+            if calibre_db.get_book_format(book_id, file_ext.upper()):
+                flash(_("Format %(ext)s already exists for this book, delete it before uploading a new one",
+                        ext=file_ext.upper()), category="error")
+                error = True
+                continue
+
+            # name the file like the other formats of the book ("title - author")
+            if book.data:
+                file_name = book.data[0].name
+            else:
+                file_name = (helper.get_valid_filename(book.title, chars=42) + ' - '
+                             + helper.get_valid_filename(book.authors[0].name, chars=42))
             filepath = os.path.normpath(os.path.join(config.get_book_path(), book.path))
             saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
 
@@ -1515,22 +1529,18 @@ def upload_book_formats(requested_files, book, book_id, no_cover=True):
 
             file_size = os.path.getsize(saved_filename)
 
-            # Format entry already exists, no need to update the database
-            if calibre_db.get_book_format(book_id, file_ext.upper()):
-                log.warning('Book format %s already existing', file_ext.upper())
-            else:
-                try:
-                    db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
-                    calibre_db.session.add(db_format)
-                    calibre_db.session.commit()
-                    calibre_db.create_functions(config)
-                except (OperationalError, IntegrityError, StaleDataError) as e:
-                    calibre_db.session.rollback()
-                    log.error_or_exception("Database error: {}".format(e))
-                    flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
-                          category="error")
-                    error = True
-                    continue
+            try:
+                db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
+                calibre_db.session.add(db_format)
+                calibre_db.session.commit()
+                calibre_db.create_functions(config)
+            except (OperationalError, IntegrityError, StaleDataError) as e:
+                calibre_db.session.rollback()
+                log.error_or_exception("Database error: {}".format(e))
+                flash(_("Oops! Database Error: %(error)s.", error=e.orig if hasattr(e, "orig") else e),
+                      category="error")
+                error = True
+                continue
 
             # Queue uploader info
             link = '<a href="{}">{}</a>'.format(url_for('web.show_book', book_id=book.id), escape(book.title))
