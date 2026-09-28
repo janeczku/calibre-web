@@ -1,0 +1,471 @@
+#sidebar {
+	top: 0;
+	width: 390px;
+	height: 100vh;
+	z-index: 12;
+	transform: translateX(-390px);
+	transition: 0.25s;
+	grid-template-rows: 58px;
+}
+
+#sidebar.open {
+	transform: translateX(0);
+	box-shadow: 0 0 16px rgba(0,0,0,.28);
+}
+
+#sidebar .menu {
+	grid-row: 1;
+	grid-column: 1 / 3;
+	height: 58px;
+	border: 0;
+	border-bottom: 1px solid #BDC3C7;
+	position: sticky;
+}
+
+#sidebar .list-container {
+	height: calc(100% - 73px);
+	padding: 15px 0 0 0;
+	overflow: auto;
+}
+
+/* sidebar tabs */
+
+#sidebar .tabs {
+	grid-column: 1;
+	grid-row: 2;
+	width: 58px;
+}
+
+#sidebar .tab-selector {
+	width: 58px;
+	height: 36px;
+	margin: 11px 0;
+	position: absolute;
+	transition: transform 0.5s;
+	border-left: 2px solid #1A73E8 !important;
+}
+
+/* sidebar panels */
+
+#sidebar .panels {
+	width: 332px;
+	margin: 0;
+	padding: 0;
+	grid-column: 2;
+	grid-row: 1 / 3;
+	overflow: hidden;
+}
+
+#sidebar .panel {
+	height: 100vh;
+	margin: 0;
+	padding: 0;
+	position: sticky;
+	font-size: small;
+}
+
+#sidebar .panel > .box {
+	width: 100%;
+	align-content: center;
+}
+
+#sidebar .panel .box.header span.label {
+	color: #5F6368;
+	font-size: 18px;
+	font-style: normal;
+	margin: 0 11px;
+}
+
+#sidebar .panel .box.header {
+	align-items: center;
+	grid-template: 36px / auto 116px;
+}
+
+#sidebar .panel input[class^="btn-"] {
+	height: 21px;
+}
+
+#sidebar .panel input[type=button] {
+	color: #fff !important;
+	cursor: pointer;
+	margin: 0 11px;
+	padding: 0;
+	height: 36px;
+	border: 0;
+	border-radius: 4px;
+	background-color: #1A73E8 !important;
+	font-weight: bold !important;
+}
+
+#sidebar .panel input[type=button]:hover {
+	box-shadow: 0 0 2px rgba(0,0,0,.28);
+	background-color: #1B66C9 !important;
+}
+
+#sidebar .panel input[type=button]:disabled {
+	cursor: auto;
+	box-shadow: none;
+	background-color: #BDC3C7 !important;
+}
+
+#sidebar .panel ul {
+	margin: 0;
+	padding-right: 11px;
+}
+
+#sidebar .panel li {
+	width: calc(100% - 2px);
+	margin-left: 2px;
+	list-style: none;
+	font-weight: 500;
+}
+
+#sidebar .panel li:hover {
+	background-color: #F2F3F4 !important;
+}
+
+#sidebar .panel li.selected {
+	margin-left: 0px;
+	border-left: 2px solid #1A73E8 !important;
+	background-color: #F2F3F4 !important;
+}
+
+/* #sidebar .panel li.selected a {
+	color: #797D7F !important;
+}
+
+#sidebar .panel li a {
+	color: #515A5A;
+	display: inline-block;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#sidebar .panel li a:hover {
+	color: #797D7F !important;
+} */
+
+#sidebar .panel li #item-box {
+	display: grid;
+	padding: 6px 0;
+	align-items: baseline;
+}
+
+#sidebar .panel li #item-box span {
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+	text-align: center;
+}
+
+#sidebar .panel li #item-box span.btn-remove {
+	background-color: #BDC3C7 !important;
+}
+
+#sidebar .panel li #item-box span.btn-remove::before {
+	content: 'X';
+}
+
+#sidebar .panel li #item-box span[class^="toggle-"]::before {
+	color: #000 !important;
+	opacity: 0.8;
+
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+#sidebar .panel li > ul {
+	width: calc(100% - 24px);
+	padding: 0 0 0 24px;
+	display: none;
+}
+
+#sidebar .row {
+	margin: 0;
+	padding: 6px 11px 0px 11px;
+	display: flex;
+	min-height: 23px;
+	align-items: baseline;
+	vertical-align: middle;
+}
+
+#sidebar .row label {
+	flex: 1;
+	padding: 1px;
+	font-weight: 500;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+#sidebar .row select {
+	flex: 1;
+	width: 100%;
+	padding: 2px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	outline-color: #1A73E8 !important;
+}
+
+#sidebar .row input[type="checkbox"] {
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	cursor: pointer;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 2px;
+
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+#sidebar .row input[type="checkbox"]:checked {
+	appearance: auto;
+	-webkit-appearance: auto;
+	-moz-appearance: auto;
+}
+
+#sidebar .row input[type="number"] {
+	flex: 0.9867;
+	width: 100%;
+	padding: 3px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	outline-color: #1A73E8 !important;
+}
+
+/* toc panel */
+
+#contents.panel ul {
+	padding-left: 0;
+}
+
+#contents.panel li {
+	padding: 0;
+}
+
+#contents.panel li #item-box {
+	grid-template: auto / 24px auto;
+}
+
+#contents.panel li a {
+	width: calc(100% - 24px);
+}
+
+#contents.panel li #item-box span.toggle-collapsed::before {
+	content: '\002B';
+}
+
+#contents.panel #item-box span.toggle-expanded::before {
+	content: '\2212';
+}
+
+/* bookmarks panel */
+
+#bookmarks.panel ul {
+	padding-left: 0px;
+}
+
+#bookmarks.panel li #item-box {
+	grid-template: auto / auto 22px;
+	padding: 6px;
+}
+
+/* search panel */
+
+#search.panel ul {
+	padding-left: 0px;
+}
+
+#search.panel li #item-box {
+	padding: 6px;
+}
+
+#search.panel input[type="search"] {
+	width: calc(100% - 22px);
+	height: 36px;
+	border-color: #BDC3C7;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 18px;
+	margin: 0 11px;
+	padding: 8px 12px;
+	outline-color: #1A73E8;
+}
+
+/* annotations panel */
+
+#annotations.panel ul {
+	padding-left: 0px;
+}
+
+#annotations.panel li #item-box {
+	grid-template: auto / auto 22px;
+	padding: 6px;
+}
+
+#annotations.panel li > a {
+	width: calc(100% - 38px);
+	margin: 0 6px;
+}
+
+/* metadata panel */
+
+#metadata.panel ul {
+	padding-left: 0px;
+}
+
+#metadata.panel li #item-box {
+	padding: 6px;
+	justify-items: left;
+}
+
+#metadata.panel li #item-box span {
+	cursor: auto;
+}
+
+#metadata.panel li #item-box span.label {
+	font-weight: bold;
+}
+
+#metadata.panel li #item-box span.value {
+	text-align: left;
+}
+
+/**
+ * iPhone 5     : 320 x 568
+ * iPhone 6/7/8 : 375 x 667
+ * iPhone 11    : 375 x 812
+ */
+@media
+only screen and (height: 320px) and (orientation: landscape),
+only screen and (height: 375px) and (orientation: landscape) {
+	#sidebar .tabs {
+		overflow: auto;
+	}
+}
+
+/**
+ * iPhone 5 : 320 x 568
+ */
+@media
+only screen and (width: 320px) and (orientation: portrait),
+only screen and (height: 320px) and (orientation: landscape) {
+	#sidebar {
+		width: 320px;
+		transform: translateX(-320px);
+		grid-template-rows: 52px;
+	}
+
+	#sidebar .menu {
+		height: 52px;
+	}
+
+	#sidebar .tabs {
+		width: 52px;
+	}
+
+	#sidebar .panels {
+		width: 268px;
+	}
+
+	#sidebar .panel .box.header {
+		grid-template: 30px / auto 116px;
+	}
+
+	#sidebar .panel .box.header span.label {
+		font-size: 16px;
+	}
+
+	#sidebar .panel .box.header input[type="button"] {
+		height: 30px;
+	}
+
+	#sidebar .panel .box input[type="search"] {
+		height: 30px;
+		padding: 6px 10px;
+	}
+
+	#sidebar .tab-selector {
+		display: none;
+	}
+
+	#sidebar .list-container {
+		height: calc(100% - 67px);
+	}
+}
+
+/**
+ * iPhone 6/7/8 : 375 x 667
+ * iPhone 11    : 375 x 812
+ */
+@media
+only screen and (width: 375px) and (orientation: portrait),
+only screen and (height: 375px) and (orientation: landscape) {
+	#sidebar {
+		width: 375px;
+		transform: translateX(-375px);
+	}
+
+	#sidebar .panels {
+		width: 317px;
+	}
+
+	#sidebar .tab-selector {
+		display: none;
+	}
+}
+
+/**
+ * Pixel 7 : 412 x 915
+ */
+@media
+only screen and (width: 412px) and (orientation: portrait),
+only screen and (height: 412px) and (orientation: landscape) {
+	#sidebar {
+		width: 412px;
+		transform: translateX(-412px);
+	}
+
+	#sidebar .panels {
+		width: 354px;
+	}
+}
+
+/**
+ * iPhone 6/7/8 Plus : 414 x 736
+ */
+@media
+only screen and (width: 414px) and (orientation: portrait),
+only screen and (height: 414px) and (orientation: landscape) {
+	#sidebar {
+		width: 414px;
+		transform: translateX(-414px);
+	}
+
+	#sidebar .panels {
+		width: 356px;
+	}
+}
+
+/**
+ * iPhone 14/15 Pro Max : 430 x 932
+ */
+@media
+only screen and (width: 430px) and (orientation: portrait),
+only screen and (height: 430px) and (orientation: landscape) {
+	#sidebar {
+		width: 430px;
+		transform: translateX(-430px);
+	}
+
+	#sidebar .panels {
+		width: 372px;
+	}
+}
