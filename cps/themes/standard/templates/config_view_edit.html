@@ -16,7 +16,7 @@
         {{_('View Configuration')}}
       </button>
     </h2>
-    <div id="collapsefour" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapsefour" class="accordion-collapse collapse">
       <div class="accordion-body">
         <div class="form-group">
           <label for="config_calibre_web_title">{{_('Title')}}</label>
@@ -78,7 +78,7 @@
         {{_('Default Settings for New Users')}}
       </button>
     </h2>
-    <div id="collapsesix" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapsesix" class="accordion-collapse collapse">
       <div class="accordion-body">
         <div class="form-group">
           <input type="checkbox" name="admin_role" id="admin_role" {% if conf.role_admin() %}checked{% endif %}>
@@ -143,7 +143,7 @@
         {{_('Default Visibilities for New Users')}}
       </button>
     </h2>
-    <div id="collapseseven" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapseseven" class="accordion-collapse collapse">
       <div class="accordion-body">
         {% for element in sidebar %}
           {% if element['config_show'] %}

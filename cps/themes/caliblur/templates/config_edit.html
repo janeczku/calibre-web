@@ -17,7 +17,7 @@
         {{_('Server Configuration')}}
       </button>
     </h2>
-    <div id="collapseone" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapseone" class="accordion-collapse collapse">
       <div class="accordion-body">
         <div class="form-group">
           <label for="config_port">{{_('Server Port')}}</label>
@@ -54,7 +54,7 @@
         {{_('Logfile Configuration')}}
       </button>
     </h2>
-    <div id="collapsetwo" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapsetwo" class="accordion-collapse collapse">
       <div class="accordion-body">
         <div class="form-group">
         <label for="config_log_level">{{_('Log Level')}}</label>
@@ -87,7 +87,7 @@
         {{_('Feature Configuration')}}
       </button>
     </h2>
-    <div id="collapsefour" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapsefour" class="accordion-collapse collapse">
       <div class="accordion-body">
     <div class="form-group">
       <input type="checkbox" id="config_unicode_filename" name="config_unicode_filename" {% if config.config_unicode_filename %}checked{% endif %}>
@@ -332,7 +332,7 @@
         {{_('External binaries')}}
       </button>
     </h2>
-    <div id="collapsefive" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapsefive" class="accordion-collapse collapse">
       <div class="accordion-body">
         <label for="config_binariesdir">{{_('Path to Calibre Binaries')}}</label>
         <div class="input-group mb-3">
@@ -365,7 +365,7 @@
         {{_('Security Settings')}}
       </button>
     </h2>
-    <div id="collapsesix" class="accordion-collapse collapse" data-bs-parent="#configAccordion">
+    <div id="collapsesix" class="accordion-collapse collapse">
       <div class="accordion-body">
             <div class="form-group">
               <input type="checkbox" id="config_ratelimiter" name="config_ratelimiter" {% if config.config_ratelimiter %}checked{% endif %}>
