@@ -1,4 +1,4 @@
-.form-control, .home-btn, .home-btn > a, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+.form-control, .home-btn, .home-btn > a, body > nav.navbar > div > div.navbar-header > a {
     font-variant-caps: normal;
     font-variant-numeric: normal;
     font-weight: 400;
@@ -15,7 +15,7 @@
     text-overflow: ellipsis
 }
 
-.shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+.shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body > nav.navbar > div > div.navbar-header > a {
     line-height: 60px;
     -webkit-tap-highlight-color: transparent;
     -webkit-text-size-adjust: 100%;
@@ -160,7 +160,7 @@
 }
 
 @media only screen and (max-width: 991px) and (min-width: 768px) {
-    body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a > span:before {
+    body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a > span:before {
         font-size: 18px
     }
 
@@ -189,14 +189,14 @@
 }
 
 @media only screen and (max-height: 600px) {
-    body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
-    body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+    body.login > nav.navbar > div > div.navbar-header > a,
+    body.register > nav.navbar > div > div.navbar-header > a {
         padding: 0 !important;
         height: 60px !important
     }
 
-    body.login > div.container-fluid > div.row-fluid > div.col-sm-10,
-    body.register > div.container-fluid > div.row-fluid > div.col-sm-10 {
+    body.login > div.container-fluid > div.row > div.col-sm-10,
+    body.register > div.container-fluid > div.row > div.col-sm-10 {
         top: 60px !important
     }
 
@@ -206,7 +206,7 @@
     }
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a[href*=advanced_search] {
+body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a[href*=advanced_search] {
     display: none
 }
 
@@ -248,7 +248,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.c
     background-color: transparent
 }
 
-.navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover {
+nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
     color: #fff;
     background-color: hsla(0, 0%, 100%, .08)
 }
@@ -349,7 +349,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.c
     text-transform: uppercase
 }
 
-.home-btn > a, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+.home-btn > a, body > nav.navbar > div > div.navbar-header > a {
     text-transform: none;
     -moz-user-select: none;
     -webkit-font-smoothing: antialiased
@@ -651,7 +651,7 @@ a:hover {
     cursor: pointer
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+body > nav.navbar > div > div.navbar-header > a {
     margin: 60px auto auto !important;
     width: 240px;
     height: 60px;
@@ -744,7 +744,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     content: "\EA30"
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.home-btn > a:hover:before {
+body > nav.navbar > div > div.home-btn > a:hover:before {
     color: #fff
 }
 
@@ -757,13 +757,56 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.home-btn > a:hove
     content: ''
 }
 
-.navbar-default {
+nav.navbar {
     background-color: rgba(0, 0, 0, .6) !important;
     border: none;
     position: fixed;
     width: 100%;
     height: 60px;
-    z-index: -9
+    z-index: 10;
+    padding: 0;
+    display: block;
+    min-height: 60px;
+}
+
+nav.navbar > .container-fluid {
+    display: block;
+    padding: 0;
+    height: 60px;
+}
+
+nav.navbar .navbar-header {
+    float: left;
+}
+
+nav.navbar .navbar-brand {
+    line-height: 60px;
+}
+
+nav.navbar > .container-fluid > .navbar-form {
+    float: left;
+}
+
+nav.navbar .navbar-collapse {
+    flex-grow: 0;
+}
+
+nav.navbar .navbar-nav {
+    display: block;
+    margin: 0;
+    float: left;
+}
+
+nav.navbar .navbar-nav > li > a {
+    display: block;
+}
+
+nav.navbar .navbar-toggler {
+    display: none;
+}
+
+body:not(.read-frame):not(.login):not(.register):not(.remotelogin) {
+    font-size: 14px;
 }
 
 body:not(.read-frame) {
@@ -787,18 +830,18 @@ body:not(.read-frame) {
     scrollbar-width: thin;
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div {
+body > nav.navbar > div > form > div {
     position: relative;
     width: 360px
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn {
+body > nav.navbar > div > form > div > span.input-group-btn {
     opacity: 0;
     pointer-events: none;
     z-index: 999999;
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > span.input-group-btn {
+body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     opacity: 1;
     pointer-events: auto
 }
@@ -849,7 +892,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     display: none
 }
 
-.profileDropli > li > a > span.hidden-sm {
+.profileDropli > li > a > span.caliblur-nav-label {
     display: inline !important
 }
 
@@ -914,8 +957,8 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
 }
 
 #form-upload .form-group .btn:before {
-    content: "\e043";
-    font-family: 'Glyphicons Halflings', serif;
+    content: "\f193";
+    font-family: bootstrap-icons;
     font-style: normal;
     font-weight: 400;
     line-height: 1;
@@ -933,7 +976,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     z-index: -9
 }
 
-#top_admin > span.hidden-sm, #top_tasks > span.hidden-sm {
+#top_admin > span.caliblur-nav-label, #top_tasks > span.caliblur-nav-label {
     display: none
 }
 
@@ -1021,7 +1064,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     background: hsla(0, 0%, 100%, .25) !important
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span > button {
+body > nav.navbar > div > form > div > span > button {
     background-color: #555;
     color: #eee;
     border: none;
@@ -1035,7 +1078,7 @@ button[name='search'] {
     min-height: 40px;
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > .query-search-icon {
+body > nav.navbar > div > form > div > .query-search-icon {
     position: absolute;
     left: 16px;
     top: 50%;
@@ -1045,7 +1088,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form > div > .query-s
     transform: translateY(-50%)
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > .query-search-icon {
+body > nav.navbar > div > form.search-focus > div > .query-search-icon {
     color: #555;
     z-index: 999;
 }
@@ -1061,7 +1104,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > d
     color: #555 !important
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn {
+body > nav.navbar > div > form > div > span.input-group-btn {
     position: absolute;
     right: 5px;
     left: auto;
@@ -1075,7 +1118,7 @@ body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.inp
     transform: translateY(-50%)
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn > button {
+body > nav.navbar > div > form > div > span.input-group-btn > button {
     position: relative;
     display: flex;
     align-items: center;
@@ -1085,37 +1128,37 @@ body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.inp
     padding: 0
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > div > span.input-group-btn > button > .glyphicon {
+body > nav.navbar > div > form > div > span.input-group-btn > button > .glyphicon {
     top: 0
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form {
+body > nav.navbar > div > form {
     margin-left: -140px;
     padding: 0;
     margin-top: 10px;
     margin-bottom: 10px
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input::-webkit-input-placeholder {
+body > nav.navbar > div > form > .form-group > input::-webkit-input-placeholder {
     color: hsla(0, 0%, 100%, .65);
     opacity: 1
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input:-moz-placeholder {
+body > nav.navbar > div > form > .form-group > input:-moz-placeholder {
     color: hsla(0, 0%, 100%, .65);
     opacity: 1
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input::-moz-placeholder {
+body > nav.navbar > div > form > .form-group > input::-moz-placeholder {
     color: hsla(0, 0%, 100%, .65);
     opacity: 1
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input:-ms-input-placeholder {
+body > nav.navbar > div > form > .form-group > input:-ms-input-placeholder {
     color: hsla(0, 0%, 100%, .65)
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > input {
+body > nav.navbar > div > form > .form-group > input {
     border-radius: 4px;
     height: 40px;
     width: 360px;
@@ -1123,30 +1166,31 @@ body > div.navbar.navbar-default.navbar-static-top > div > form > .form-group > 
 }
 
 #main-nav {
-    margin-right: 15px
+    margin-right: 15px;
+    float: right;
 }
 
 #main-nav > li {
     float: right
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li {
+body > nav.navbar > div > div.navbar-collapse.collapse > ul, body > nav.navbar > div > div.navbar-collapse.collapse > ul > li {
     height: 60px
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a {
+body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a {
     height: 60px;
     padding: 20px 10px;
     color: hsla(0, 0%, 100%, .7)
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
+body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
     content: "\EA31";
     font-family: plex-icons-new, serif;
     font-size: 20px
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > #top_admin > span:last-of-type {
+body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > #top_admin > span:last-of-type {
     vertical-align: top
 }
 
@@ -1665,7 +1709,7 @@ body > .container-fluid {
     left: 0
 }
 
-body > div.container-fluid > div.row-fluid > div.col-sm-2 {
+body > div.container-fluid > div.row > div.col-sm-2 {
     position: absolute;
     width: 240px;
     height: calc(100% - 60px);
@@ -1676,7 +1720,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-2 {
     overflow-y: auto
 }
 
-body > div.container-fluid > div.row-fluid > div.col-sm-10 {
+body > div.container-fluid > div.row > div.col-sm-10 {
     width: calc(100vw - 237px);
     height: calc(100% - 60px);
     padding: 0;
@@ -1905,7 +1949,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.pagination .page-previous
     color: hsla(0, 0%, 100%, .7)
 }
 
-.navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+nav.navbar .navbar-nav > li > a:focus, nav.navbar .navbar-nav > li > a:hover {
     color: #fff !important
 }
 
@@ -3622,7 +3666,7 @@ body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-b
     background: rgba(0, 0, 0, .3)
 }
 
-body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
+body > nav.navbar > div > div.navbar-header > a:hover {
     color: #fff !important;
     -webkit-transition: color .2s;
     -o-transition: color .2s;
@@ -3777,6 +3821,20 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     background-color: hsla(0, 0%, 100%, .25)
 }
 
+.login .toggle-password {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: #fff;
+}
+
+.login .toggle-password:hover,
+.login .toggle-password:focus,
+.login .toggle-password:active {
+    background-color: var(--color-secondary-hover);
+    border-color: var(--color-secondary-hover);
+    color: #fff;
+}
+
 .login ::-webkit-input-placeholder {
     color: transparent
 }
@@ -3793,9 +3851,9 @@ body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a
     color: transparent
 }
 
-body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
-body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+body.login > nav.navbar > div > div.navbar-header > a,
+body.register > nav.navbar > div > div.navbar-header > a,
+body.remotelogin > nav.navbar > div > div.navbar-header > a {
     width: 100vw;
     height: 120px;
     margin: 0 !important;
@@ -3806,32 +3864,84 @@ body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navba
     font-size: 20px
 }
 
-body.login > .container-fluid,
-body.register > .container-fluid,
-body.remotelogin > .container-fluid {
-    width: 100vw;
-    height: 100%;
-    position: relative
+body.login > nav.navbar,
+body.register > nav.navbar,
+body.remotelogin > nav.navbar {
+    min-height: 120px;
+    background: transparent !important;
+    border: 0;
 }
 
-body.login > div.container-fluid > div.row-fluid > div.col-sm-10,
-body.register > div.container-fluid > div.row-fluid > div.col-sm-10,
-body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-10 {
+body.login > nav.navbar > .container-fluid,
+body.register > nav.navbar > .container-fluid,
+body.remotelogin > nav.navbar > .container-fluid {
+    justify-content: center;
+}
+
+body.login > nav.navbar > .container-fluid > .navbar-header,
+body.register > nav.navbar > .container-fluid > .navbar-header,
+body.remotelogin > nav.navbar > .container-fluid > .navbar-header {
+    width: 100%;
+    justify-content: center;
+}
+
+body.login > nav.navbar .navbar-toggler,
+body.register > nav.navbar .navbar-toggler,
+body.remotelogin > nav.navbar .navbar-toggler {
+    display: none;
+}
+
+body.login > nav.navbar .home-btn,
+body.login > nav.navbar .plexBack,
+body.login > nav.navbar .navbar-form,
+body.register > nav.navbar .home-btn,
+body.register > nav.navbar .plexBack,
+body.register > nav.navbar .navbar-form,
+body.remotelogin > nav.navbar .home-btn,
+body.remotelogin > nav.navbar .plexBack,
+body.remotelogin > nav.navbar .navbar-form {
+    display: none !important;
+}
+
+body.login > nav.navbar .navbar-brand,
+body.register > nav.navbar .navbar-brand,
+body.remotelogin > nav.navbar .navbar-brand {
+    width: 100%;
+    height: 120px;
+    margin: 0 !important;
+    float: none;
+    padding: 60px 0 0;
+    color: #ccc !important;
+    font-family: "Open Sans Bold", "Open Sans", sans-serif;
+    font-size: 20px;
+    line-height: 60px;
+    text-align: center;
+}
+
+body.login > div.container-fluid > div.row > div.col-sm-10,
+body.register > div.container-fluid > div.row > div.col-sm-10,
+body.remotelogin > div.container-fluid > div.row > div.col-sm-10 {
     width: 100%;
     height: 100%;
     overflow-y: visible !important
 }
 
-body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse,
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse,
-body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse {
+body.login > nav.navbar > div > div.navbar-collapse.collapse,
+body.register > nav.navbar > div > div.navbar-collapse.collapse,
+body.remotelogin > nav.navbar > div > div.navbar-collapse.collapse {
     display: none !important
 }
 
-.login .navbar-default,
-.register .navbar-default,
-.remotelogin .navbar-default {
+.login nav.navbar,
+.register nav.navbar,
+.remotelogin nav.navbar {
     background: 0 0 !important
+}
+
+.login > nav.navbar,
+.register > nav.navbar,
+.remotelogin > nav.navbar {
+    background: transparent !important;
 }
 
 body.login:not(.read-frame), body.shelfcreate, body.shelfedit {
@@ -3844,10 +3954,10 @@ body.author .undefined-img, body.shelfcreate, body.shelfedit {
     background-position: center center, center center !important
 }
 
-body.login > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before,
-body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before,
-body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-2::after,
-body.register > div.container-fluid > div.row-fluid > div.col-sm-10::before, body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a::before {
+body.login > div.container-fluid > div.row > div.col-sm-10::before, body.login > nav.navbar > div > div.navbar-header > a::before,
+body.remotelogin > div.container-fluid > div.row > div.col-sm-10::before, body.register > nav.navbar > div > div.navbar-header > a::before,
+body.remotelogin > div.container-fluid > div.row > div.col-sm-2::after,
+body.register > div.container-fluid > div.row > div.col-sm-10::before {
     display: none
 }
 
@@ -3855,14 +3965,14 @@ body.remotelogin > div.container-fluid > div.row-fluid > div.col-sm-2 {
     background: none;
 }
 
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a,
-body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+body.register > nav.navbar > div > div.navbar-header > a,
+body.remotelogin > nav.navbar > div > div.navbar-header > a {
     pointer-events: none;
     cursor: default
 }
 
-body.register > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover,
-body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
+body.register > nav.navbar > div > div.navbar-header > a:hover,
+body.remotelogin > nav.navbar > div > div.navbar-header > a:hover {
     background: 0 0 !important;
     color: #ccc !important
 }
@@ -3968,7 +4078,7 @@ body.remotelogin .well > .caliblur-remote-login-form {
     border-left: 4px solid transparent
 }
 
-.navigation > ul > li > a > span.hidden-sm {
+.navigation > ul > li > a > span.caliblur-nav-label {
     display: inline-block !important
 }
 
@@ -4394,7 +4504,7 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
 
 }
 
-.login .home-btn, .login .plexBack, .register .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.register > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > div.navbar.navbar-default.navbar-static-top > div > form, body.register > div.navbar.navbar-default.navbar-static-top > div > form, body.remotelogin > div.navbar.navbar-default.navbar-static-top > div > form {
+.login .home-btn, .login .plexBack, .register .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.register > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > nav.navbar > div > form, body.register > nav.navbar > div > form, body.remotelogin > nav.navbar > div > form {
     display: none
 }
 
@@ -4408,11 +4518,11 @@ body.remotelogin .plexBack > a {
         background: rgba(0, 0, 0, .15)
     }
 
-    body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a#logout {
+    body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a#logout {
         display: none
     }
 
-    body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a#top_user {
+    body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a#top_user {
         height: 60px;
         padding: 0 !important;
         background: 0 0 !important;
@@ -4423,11 +4533,11 @@ body.remotelogin .plexBack > a {
         right: 15px
     }
 
-    body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.hidden-sm {
+    body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.caliblur-nav-label {
         display: none
     }
 
-    body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.glyphicon-user {
+    body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.glyphicon-user {
         width: 30px;
         height: 30px;
         margin: 15px;
@@ -4435,7 +4545,7 @@ body.remotelogin .plexBack > a {
         color: hsla(0, 0%, 100%, .7)
     }
 
-    body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.glyphicon-user:before {
+    body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.glyphicon-user:before {
         content: '';
         display: inline-block;
         overflow: hidden;
@@ -4447,7 +4557,7 @@ body.remotelogin .plexBack > a {
         height: 30px
     }
 
-    body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.glyphicon-user:after {
+    body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a#top_user > span.glyphicon-user:after {
         content: '';
         display: inline-block;
         width: 0;
@@ -4459,7 +4569,7 @@ body.remotelogin .plexBack > a {
         border-left: 4px solid transparent
     }
 
-    body:not(.blur) #nav_createshelf, body:not(.blur) #scnd-nav > #nav_about, body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li:not(.form-upload) > #form-upload, body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li:not(.top_admin) > #top_admin, body:not(.blur) > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li:not(.top_tasks) > #top_tasks {
+    body:not(.blur) #nav_createshelf, body:not(.blur) #scnd-nav > #nav_about, body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li:not(.form-upload) > #form-upload, body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li:not(.top_admin) > #top_admin, body:not(.blur) > nav.navbar > div > div.navbar-collapse.collapse > ul > li:not(.top_tasks) > #top_tasks {
         display: none
     }
 
@@ -5236,7 +5346,7 @@ body.tasks > div.container-fluid > div > div.col-sm-10 > div.discover > div.boot
     margin: 0
 }
 
-body.login > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a:hover {
+body.login > nav.navbar > div > div.navbar-header > a:hover {
     color: #ccc !important;
     background-color: transparent !important
 }
@@ -5303,7 +5413,7 @@ body:not(.search) #shelf-actions, body:not(.search) #shelf-actions > .btn-group,
     margin: 0 0 28px
 }
 
-#login, .profileDrop + span.hidden-sm {
+#login, .profileDrop + span.caliblur-nav-label {
     display: none
 }
 
@@ -5488,7 +5598,7 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
     display: block
 }
 
-#main-nav + #scnd-nav li a[href*=advanced_search] span.hidden-sm {
+#main-nav + #scnd-nav li a[href*=advanced_search] span.caliblur-nav-label {
     display: inline-block !important
 }
 
@@ -6004,6 +6114,10 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
 }
 
 @media only screen and (max-width: 767px) {
+    body:not(.read-frame):not(.login):not(.register):not(.remotelogin) {
+        font-size: 13px;
+    }
+
     #form-upload .form-group .btn:before, #top_admin > .glyphicon, #top_tasks > .glyphicon-tasks {
         -moz-osx-font-smoothing: grayscale;
         font-weight: 400;
@@ -6024,7 +6138,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         background-image: none !important
     }
 
-    .navbar-default {
+    nav.navbar {
         height: 48px;
         min-height: 48px
     }
@@ -6037,21 +6151,23 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin: 0
     }
 
-    .navbar > .container-fluid > .navbar-header > button.navbar-toggle {
+    .navbar > .container-fluid > .navbar-header > button.navbar-toggler {
         border: 0;
         float: left;
         padding: 0;
         width: 48px;
         height: 48px;
         margin: 0;
-        top: 0
+        top: 0;
+        display: block;
+        position: relative;
     }
 
-    .navbar > .container-fluid > .navbar-header > button.navbar-toggle:active, .navbar > .container-fluid > .navbar-header > button.navbar-toggle:focus, .navbar > .container-fluid > .navbar-header > button.navbar-toggle:hover {
+    .navbar > .container-fluid > .navbar-header > button.navbar-toggler:active, .navbar > .container-fluid > .navbar-header > button.navbar-toggler:focus, .navbar > .container-fluid > .navbar-header > button.navbar-toggler:hover {
         background: 0 0
     }
 
-    .navbar > .container-fluid > .navbar-header > button.navbar-toggle:before {
+    .navbar > .container-fluid > .navbar-header > button.navbar-toggler:before {
         content: '';
         display: inline-block;
         overflow: hidden;
@@ -6065,12 +6181,12 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         left: 9px
     }
 
-    .navbar > .container-fluid > .navbar-header > button.navbar-toggle > span {
+    .navbar > .container-fluid > .navbar-header > button.navbar-toggler > span {
         opacity: 0;
         position: absolute
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-header > a {
+    body > nav.navbar > div > div.navbar-header > a {
         margin: 0 !important;
         height: 48px;
         line-height: 48px;
@@ -6078,7 +6194,8 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         background: 0 0 !important;
         color: hsla(0, 0%, 100%, .7) !important;
         font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
-        pointer-events: none
+        pointer-events: none;
+        float: left;
     }
 
     .home-btn {
@@ -6105,7 +6222,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         line-height: 48px
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form {
+    body > nav.navbar > div > form {
         margin: 0;
         padding: 0;
         border: 0;
@@ -6117,7 +6234,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         height: 48px
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form > div {
+    body > nav.navbar > div > form > div {
         width: 40px;
         height: 48px
     }
@@ -6134,7 +6251,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         transition: all 0s
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus {
+    body > nav.navbar > div > form.search-focus {
         position: absolute;
         top: 0;
         left: 0;
@@ -6142,11 +6259,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         width: 100vw
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div.form-group {
+    body > nav.navbar > div > form.search-focus > div.form-group {
         width: 100vw
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > #query {
+    body > nav.navbar > div > form.search-focus > div > #query {
         width: calc(100vw - 100px) !important;
         margin: 0 !important
     }
@@ -6161,7 +6278,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding-left: 15px
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > form.search-focus > div > .query-search-icon {
+    body > nav.navbar > div > form.search-focus > div > .query-search-icon {
         left: 0;
         width: 50px;
         height: 48px;
@@ -6172,11 +6289,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         cursor: pointer
     }
 
-    .mobile-navbar-brand, .profileDrop > .profileDropIcon:after, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul:first-of-type:not(.navbar-right) {
+    .mobile-navbar-brand, .profileDrop > .profileDropIcon:after, body > nav.navbar > div > div.navbar-collapse.collapse > ul:first-of-type:not(.navbar-right) {
         display: none
     }
 
-    #form-upload > .form-group:before, .profileDrop + span.hidden-sm {
+    #form-upload > .form-group:before, .profileDrop + span.caliblur-nav-label {
         font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif
     }
 
@@ -6213,12 +6330,12 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         z-index: 99
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a.profileDrop {
+    body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a.profileDrop {
         height: 120px;
         width: 100%
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > a.profileDrop:before {
+    body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > a.profileDrop:before {
         right: auto;
         position: absolute;
         left: 211px;
@@ -6241,7 +6358,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         top: 0
     }
 
-    .profileDrop + span.hidden-sm {
+    .profileDrop + span.caliblur-nav-label {
         display: block;
         position: absolute;
         top: 70px;
@@ -6287,8 +6404,8 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     }
 
     #form-upload .form-group .btn:before {
-        content: "\e043";
-        font-family: 'Glyphicons Halflings', serif;
+        content: "\f193";
+        font-family: bootstrap-icons;
         line-height: 1;
         -webkit-font-smoothing: antialiased;
         color: #fff;
@@ -6385,7 +6502,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-right: 10px
     }
 
-    #top_tasks > .glyphicon-tasks::before, body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
+    #top_tasks > .glyphicon-tasks::before, body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
         text-transform: none;
         font-family: plex-icons-new, serif;
         -webkit-font-smoothing: antialiased;
@@ -6402,13 +6519,13 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         font-size: 16px
     }
 
-    body > div.navbar.navbar-default.navbar-static-top > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
+    body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > #top_admin > .glyphicon-dashboard::before {
         content: "\EA56";
         line-height: 22px;
         font-size: 14px
     }
 
-    #top_admin > span.hidden-sm, #top_tasks > span.hidden-sm {
+    #top_admin > span.caliblur-nav-label, #top_tasks > span.caliblur-nav-label {
         display: inline-block;
         line-height: 22px
     }
@@ -6468,11 +6585,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-left: 12px
     }
 
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    nav.navbar .navbar-nav .open .dropdown-menu > li > a {
         color: hsla(0, 0%, 100%, .7)
     }
 
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus, .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+    nav.navbar .navbar-nav .open .dropdown-menu > li > a:focus, nav.navbar .navbar-nav .open .dropdown-menu > li > a:hover {
         color: #fff;
         background-color: hsla(0, 0%, 100%, .08)
     }
@@ -6500,11 +6617,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         display: none !important
     }
 
-    .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.login .navbar > .container-fluid > .navbar-header > button.navbar-toggle, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
+    .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.login .navbar > .container-fluid > .navbar-header > button.navbar-toggler, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
         display: none
     }
 
-    body > div.container-fluid > div.row-fluid > div.col-sm-10 {
+    body > div.container-fluid > div.row > div.col-sm-10 {
         width: 100%;
         top: 42px;
         height: calc(100% - 42px)
@@ -6812,7 +6929,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin: 0 10px 10px 0
     }
 
-    .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover {
+    nav.navbar .navbar-nav .open .dropdown-menu > .active > a, nav.navbar .navbar-nav .open .dropdown-menu > .active > a:focus, nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
         color: var(--color-primary);
         background-color: transparent
     }
@@ -7436,7 +7553,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         transition: all 0s
     }
 
-    .navbar-collapse.collapse.in {
+    .navbar-collapse.collapse.show {
         visibility: visible;
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
@@ -7464,11 +7581,11 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         opacity: 1
     }
 
-    .navbar-collapse:not(.in) > * {
+    .navbar-collapse:not(.show) > * {
         margin: 0 !important
     }
 
-    .navbar-collapse.collapse.in + .sidebar-backdrop {
+    .navbar-collapse.collapse.show + .sidebar-backdrop {
         width: calc(100vw);
         height: 100%;
         position: fixed;

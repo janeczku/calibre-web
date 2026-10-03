@@ -27,9 +27,11 @@ input.datepicker {color: transparent}
 input.datepicker:focus {color: transparent}
 input.datepicker:focus + input {color: #555}
 
-.col-sm-3.col-lg-2.col-xs-6.book.session {
+.col-sm-3.col-lg-2.col-6.book.session {
     margin-left: 0;
     margin-right: 0;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .caliblur-filterheader {
@@ -37,9 +39,62 @@ input.datepicker:focus + input {color: #555}
   padding: 0 10px 0 40px;
 }
 
+.caliblur-filterheader .btn {
+  font-size: 14px;
+  color: #fff;
+}
+
+.caliblur-index .cover,
+.caliblur-index .cover img {
+  border-radius: 0 !important;
+}
+
+nav.navbar .profileDrop.dropdown-toggle::after {
+  display: none;
+}
+
+body > .container-fluid > .row {
+  --bs-gutter-x: 30px;
+}
+
+@media only screen and (min-width: 768px) {
+  nav.navbar #mainNavbar {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  nav.navbar #main-nav {
+    display: block;
+  }
+
+  #top_admin > span.caliblur-nav-label,
+  #top_tasks > span.caliblur-nav-label,
+  .profileDrop + span.caliblur-nav-label {
+    display: none !important;
+  }
+}
+
 @media only screen and (max-width: 767px) {
-        .row-fluid > .col-sm-2 {
+  nav.navbar #main-nav {
+    float: none;
+  }
+
+  #top_admin > .bi,
+  #top_tasks > .bi {
+    margin-right: 10px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+        .row > .col-sm-2 {
         visibility: hidden;
+    }
+
+    .col-sm-3.col-lg-2.col-6.book.session {
+        padding-left: 5px;
+        padding-right: 5px;
     }
 }
 
@@ -60,24 +115,24 @@ body.blur #deleteModal .modal-footer .btn {
   height: 40px;
 }
 
-body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .twitter-typeahead .tt-hint {
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .twitter-typeahead .tt-hint {
   background-color: hsla(0, 0%, 100%, .08) !important;
 }
 
-body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row {
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row {
   margin-left: 0;
   margin-right: 0;
 }
 
-body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:first-child {
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:first-child {
   padding-left: 0;
 }
 
-body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:last-child {
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:last-child {
   padding-right: 0;
 }
 
-body.blur .input-group-btn > .datepicker_delete.btn.btn-default {
+body.blur .datepicker_delete.btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,7 +142,7 @@ body.blur .input-group-btn > .datepicker_delete.btn.btn-default {
   padding: 0 12px;
 }
 
-body.blur .rating-clear .glyphicon-remove {
+body.blur .rating-clear .bi-x {
   color: #fff;
 }
 
@@ -126,15 +181,15 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editabl
   color: #fff;
 }
 
-body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default {
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-outline-secondary {
   background-color: hsla(0, 0%, 100%, .25);
   border-color: hsla(0, 0%, 100%, .25);
   color: #fff;
 }
 
-body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default:hover,
-body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default:focus,
-body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-default:active {
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-outline-secondary:hover,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-outline-secondary:focus,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-outline-secondary:active {
   background-color: hsla(0, 0%, 100%, .3);
   border-color: hsla(0, 0%, 100%, .3);
   color: #fff;
@@ -167,7 +222,7 @@ body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover {
   padding: 0 30px !important;
 }
 
-body.dbconfig.admin .caliblur-dbconfig-form .input-group-btn > .btn {
+body.dbconfig.admin .caliblur-dbconfig-form .input-group > .btn {
   display: flex;
   align-items: center;
   justify-content: center;

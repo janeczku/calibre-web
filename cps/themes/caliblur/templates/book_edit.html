@@ -1,21 +1,21 @@
 {% extends theme("layout.html") %}
 {% block body %}
 {% if book %}
-  <div class="col-sm-3 col-lg-3 col-xs-12">
+  <div class="col-sm-3 col-lg-3 col-12">
     <div class="cover">
         <!-- Always use full-sized image for the book edit page -->
         <img id="detailcover" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
     </div>
 {% if current_user.role_delete_books() %}
     <div class="text-center">
-      <button type="button" class="btn btn-danger delete-book-btn-tooltip" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal" data-toggle-two="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{{_('Delete Book')}}">{{_("Delete Book")}}</button>
+      <button type="button" class="btn btn-danger delete-book-btn-tooltip" id="delete" data-bs-toggle="modal" data-delete-id="{{ book.id }}" data-bs-target="#deleteModal" data-toggle-two="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar" title="{{_('Delete Book')}}">{{_("Delete Book")}}</button>
     </div>
     {% if book.data|length > 1 %}
       <div class="text-center more-stuff">
-        <button id="deleteButton" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-remove"></span>{{_('Delete Format')}}<span class="caret"></span></button>
+        <button id="deleteButton" type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-x"></i>{{_('Delete Format')}}</button>
         <ul class="dropdown-menu delete-dropdown">
       {% for file in book.data %}
-          <li><button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button></li>
+          <li><button type="button" class="btn btn-danger" id="delete_format" data-bs-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-bs-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button></li>
       {% endfor %}
         </ul>
       </div>
@@ -44,7 +44,7 @@
                   </select>
               </div>
           </div>
-          <button type="submit" class="btn btn-primary" id="btn-book-convert" name="btn-book-convert"><span class="glyphicon glyphicon-duplicate"></span> {{_('Convert book')}}</button>
+          <button type="submit" class="btn btn-primary" id="btn-book-convert" name="btn-book-convert"><i class="bi bi-copy"></i> {{_('Convert book')}}</button>
       </form>
   </div>
 {% endif %}
@@ -67,14 +67,14 @@
 </div>
 <form role="form" action="{{ url_for('edit-book.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-  <div class="col-sm-9 col-xs-12">
+  <div class="col-sm-9 col-12">
     <h2>{{_('Edit Metadata')}}</h2>
     <div class="form-group">
       <label for="title">{{_('Book Title')}}</label>
       <input type="text" class="form-control" name="title" id="title" value="{{book.title}}">
     </div>
     <div class="text-center">
-        <button type="button" class="btn btn-default" id="xchange" ><span class="glyphicon glyphicon-arrow-up"></span><span class="glyphicon glyphicon-arrow-down"></span></button>
+        <button type="button" class="btn btn-outline-secondary" id="xchange" ><i class="bi bi-arrow-up"></i><i class="bi bi-arrow-down"></i></button>
     </div>
     <div id="author_div" class="form-group">
       <label for="bookAuthor">{{_('Author')}}</label>
@@ -95,10 +95,8 @@
     <label for="pubdate">{{_('Published Date')}}</label>
     <div class="form-group input-group">
        <input type="text" class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
-       <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
-      <span class="input-group-btn">
-        <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
-      </span>
+       <input type="text" class="form-control fake-input d-none" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
+      <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-outline-secondary"><i class="bi bi-x-circle"></i></button>
     </div>
     <div class="form-group">
       <label for="publisher">{{_('Publisher')}}</label>
@@ -123,12 +121,12 @@
 	<tr>
       <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
 	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
-	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
+	  <td><a class="btn btn-outline-secondary" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
 	</tr>
 	{% endfor %}
       </tbody>
       </table>
-      <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
+      <a id="add-identifier-line" class="btn btn-outline-secondary">{{_('Add Identifier')}}</a>
     </div>
     {% if current_user.role_upload() and g.allow_upload %}
     <div class="form-group">
@@ -176,13 +174,11 @@
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value  %}{{ book['custom_column_' ~ c.id][0].value|formatdateinput}}{% endif %}"
                   {% endif %}>
-                <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input hidden" id="fake_pubdate_{{ c.id }}"
+                <input type="text" class="fake_custom_column_{{ c.id }} form-control fake-input d-none" id="fake_pubdate_{{ c.id }}"
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
                   {% endif %}>
-                <span class="input-group-btn">
-                  <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-default"><span class="glyphicon glyphicon-remove-circle"></span></button>
-                </span>
+                <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-outline-secondary"><i class="bi bi-x-circle"></i></button>
               </div>
             {% endif %}
 
@@ -217,9 +213,9 @@
         <input name="detail_view" type="checkbox" checked> {{_('View Book on Save')}}
       </label>
     </div>
-    <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Fetch Metadata')}}</a>
-    <button type="submit" id="submit" class="btn btn-default">{{_('Save')}}</button>
-    <a href="{{ url_for('web.show_book', book_id=book.id) }}" id="edit_cancel" class="btn btn-default">{{_('Cancel')}}</a>
+    <a href="#" id="get_meta" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#metaModal">{{_('Fetch Metadata')}}</a>
+    <button type="submit" id="submit" class="btn btn-primary">{{_('Save')}}</button>
+    <a href="{{ url_for('web.show_book', book_id=book.id) }}" id="edit_cancel" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
   </div>
 </form>
 
@@ -234,20 +230,18 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title text-center" id="metaModalLabel">{{_('Fetch Metadata')}}</h4>
-        <form class="padded-bottom" id="meta-search">
-          <div class="input-group">
-            <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
-            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_("Search keyword")}}">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-primary" id="do-search">{{_("Search")}}</button>
-            </span>
-          </div>
-        </form>
-        <div class="text-center"><strong>{{_('Click the cover to load metadata to the form')}}</strong></div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
       </div>
       <div class="modal-body">
+        <form class="padded-bottom" id="meta-search">
+          <div class="input-group">
+            <label class="sr-only visually-hidden" for="keyword">{{_('Keyword')}}</label>
+            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_("Search keyword")}}">
+            <button type="submit" class="btn btn-primary" id="do-search">{{_("Search")}}</button>
+          </div>
+        </form>
+        <div class="text-center padded-bottom"><strong>{{_('Click the cover to load metadata to the form')}}</strong></div>
         <div class="text-center padded-bottom" id="metadata_provider">
         </div>
 
@@ -256,7 +250,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="meta_close" type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+        <button id="meta_close" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
   </div>
@@ -265,25 +259,25 @@
 
 {% block js %}
 <script type="text/template" id="template-book-result">
-  <li class="media" data-related="<%- source.id %>">
-    <img class="pull-left img-responsive"
-         data-toggle="modal"
-         data-target="#metaModal"
+  <li class="media d-flex mb-3" data-related="<%- source.id %>">
+    <img class="pull-left img-responsive img-fluid flex-shrink-0"
+         data-bs-toggle="modal"
+         data-bs-target="#metaModal"
          src="<%- cover || '{{ url_for('static', filename='img/academicpaper.svg') }}' %>"
          alt="Cover"
     >
-    <div class="media-body">
-      <h4 class="media-heading">
+    <div class="media-body flex-grow-1 ms-3">
+      <h4 class="media-heading mb-1">
         <a class="meta_title" href="<%- url %>" target="_blank" rel="noopener"><%- title %></a>
       </h4>
-      <p class="meta_author">{{_('Author')}}：<%- authors.join(" & ") %></p>
+      <p class="meta_author mb-1">{{_('Author')}}：<%- authors.join(" & ") %></p>
       <% if (publisher) { %>
-        <p class="meta_publisher">{{_('Publisher')}}：<%- publisher %></p>
+        <p class="meta_publisher mb-1">{{_('Publisher')}}：<%- publisher %></p>
       <% } %>
       <% if (description) { %>
-        <p class="meta_description">{{_('Description')}}: <%- description %></p>
+        <p class="meta_description mb-1">{{_('Description')}}: <%- description %></p>
       <% } %>
-      <p>{{_('Source')}}:
+      <p class="mb-0">{{_('Source')}}:
         <a class="meta_source" href="<%- source.link %>" target="_blank" rel="noopener"><%- source.description %></a>
       </p>
     </div>
@@ -307,7 +301,7 @@
     var line = '<tr>';
     line += '<td><input type="text" class="form-control" name="identifier-type-'+ rand_id +'" required="required" placeholder={{_('Identifier Type')|safe|tojson}}></td>';
     line += '<td><input type="text" class="form-control" name="identifier-val-'+ rand_id +'" required="required" placeholder={{_('Identifier Value')|safe|tojson}}></td>';
-    line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>';
+    line += '<td><a class="btn btn-outline-secondary" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>';
     line += '</tr>';
     $("#identifier-table").append(line);
   });

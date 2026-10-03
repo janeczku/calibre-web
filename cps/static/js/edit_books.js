@@ -57,14 +57,14 @@ $(".datepicker").datepicker({
         pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
         $(this).next('input')
             .val(pubDate.toLocaleDateString(language.replaceAll("_","-")))
-            .removeClass("hidden");
+            .removeClass("d-none");
     }
 }).trigger("change");
 
 $(".datepicker_delete").click(function() {
     var inputs = $(this).parent().siblings('input');
     $(inputs[0]).data('datepicker').clearDates();
-    $(inputs[1]).addClass('hidden');
+    $(inputs[1]).addClass('d-none');
 });
 
 
@@ -293,4 +293,3 @@ $("#xchange").click(function () {
     $("#title").val($("#authors").val());
     $("#authors").val(title);
 });
-

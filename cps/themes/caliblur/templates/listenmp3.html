@@ -13,12 +13,14 @@
   {% endif %}  
 
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/bootstrap5.bundle.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/soundmanager2.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/bar-ui.js') }}"></script>
 
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='touch-icon.png') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='css/libs/bootstrap5.min.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" rel="stylesheet" media="screen">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bar-ui.css') }}" />
 
   <script>
@@ -30,7 +32,7 @@
 <body>
 
   <div class="row" style="display: inline-block; width: 100%;">
-    <div class="col-sm-3 col-lg-3 col-xs-5">
+    <div class="col-sm-3 col-lg-3 col-5">
       
     </div>
     <div class="col-sm-6 col-lg-6 book-meta" style="margin-bottom: 2%;">
@@ -48,10 +50,10 @@
         <div class="rating">
         <p>
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
-            <span class="glyphicon glyphicon-star good"></span>
+            <i class="bi bi-star-fill good"></i>
             {% if loop.last and loop.index < 5 %}
               {% for numer in range(5 - loop.index) %}
-                <span class="glyphicon glyphicon-star-empty"></span>
+                <i class="bi bi-star"></i>
               {% endfor %}
             {% endif %}
           {% endfor %}
@@ -66,7 +68,7 @@
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+      <span class="badge text-bg-secondary">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
       </p>
       </div>
       {% endif %}
@@ -74,7 +76,7 @@
       {% if entry.identifiers|length > 0 %}
       <div class="identifiers">
         <p>
-        <span class="glyphicon glyphicon-link"></span>
+        <i class="bi bi-link-45deg"></i>
         {% for identifier in entry.identifiers %}
           <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.format_type()}}</a>
         {%endfor%}
@@ -86,7 +88,7 @@
 
       <div class="tags">
       <p>
-        <span class="glyphicon glyphicon-tags"></span>
+        <i class="bi bi-tags"></i>
 
         {% for tag in entry.tags %}
           <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
@@ -124,9 +126,9 @@
               {% else %}
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <i class="bi bi-check"></i>
                   {% else %}
-                    <span class="glyphicon glyphicon-remove"></span>
+                    <i class="bi bi-x"></i>
                   {% endif %}
                 {% else %}
                 {% if c.datatype == 'float' %}
@@ -155,7 +157,7 @@
           <p>
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <label class="block-label">
-              <input id="have_read_cb" class="readunread-btn-tooltip" type="checkbox" {% if entry.read_status %}checked{% endif %} disabled data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.read_status %}{{_('Mark As Unread')}}{% else %}{{_('Mark As Read')}}{% endif %}">
+              <input id="have_read_cb" class="readunread-btn-tooltip" type="checkbox" {% if entry.read_status %}checked{% endif %} disabled data-bs-toggle="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.read_status %}{{_('Mark As Unread')}}{% else %}{{_('Mark As Read')}}{% endif %}">
               <span>{{_('Read')}}</span>
             </label>
           </p>
@@ -163,7 +165,7 @@
           <p>
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <label class="block-label">
-                <input id="archived_cb" class="readunread-btn-tooltip" type="checkbox" {% if entry.is_archived %}checked{% endif %} disabled data-toggle="tooltip" data-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.is_archived %}{{_('Restore from archive')}}{% else %}{{_('Add to archive')}}{% endif %}">
+                <input id="archived_cb" class="readunread-btn-tooltip" type="checkbox" {% if entry.is_archived %}checked{% endif %} disabled data-bs-toggle="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar" title="{% if entry.is_archived %}{{_('Restore from archive')}}{% else %}{{_('Add to archive')}}{% endif %}">
                 <span>{{_('Archived')}}</span>
               </label>
           </p>
@@ -186,9 +188,8 @@
       {% if current_user.shelf.all() or g.shelves_access %}
       <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
-          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
-            <span class="caret"></span>
+          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-list"></i> {{_('Add to shelf')}}
           </button>
           <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
             {% for shelf in g.shelves_access %}
@@ -211,10 +212,10 @@
               {% if shelf.id in books_shelfs %}
                 <a data-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
+                   class="btn btn-sm btn-outline-secondary" role="button" data-shelf-action="remove"
                 >
                   <span {% if not shelf.is_public or current_user.role_edit_shelfs() %}
-                        class="glyphicon glyphicon-remove"
+                        class="bi bi-x"
                         {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                 </a>
               {% endif %}

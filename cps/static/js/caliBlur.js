@@ -111,7 +111,7 @@ if ($("body.book").length > 0) {
 // Hide dropdown and collapse menus on click-off
 $(document).mouseup(function (e) {
     var container = new Array();
-    container.push($(".navbar-collapse.collapse.in"));
+    container.push($(".navbar-collapse.collapse.show"));
 
     $.each(container, function (key, value) {
         if (!$(value).is(e.target) // if the target of the click isn't the container...
@@ -121,7 +121,9 @@ $(document).mouseup(function (e) {
                 $(value).hide();
             } else {
                 if ($(value).hasClass("collapse")) {
-                    $(value).collapse("toggle");
+                    $(value).each(function () {
+                        bootstrap.Collapse.getOrCreateInstance(this, {toggle: false}).hide();
+                    });
                 }
             }
         }
@@ -135,7 +137,7 @@ modalWanted = ["admin", "editbook", "config", "uiconfig", "me", "edituser"];
 if ($.inArray(bodyClass[0], modalWanted) != -1) {
 } else {
     $(" a:not(.dropdown-toggle) ")
-        .removeAttr("data-toggle", "data-target", "data-remote");
+        .removeAttr("data-toggle data-target data-remote data-bs-toggle data-bs-target");
 }
 
 
@@ -221,17 +223,22 @@ $("#add-to-shelves, #remove-from-shelves").on("click", "[data-shelf-action]", fu
 // Rest of Tooltips
 if ($("body.epub").length === 0) {
     $(document).ready(function () {
-        $("[data-toggle='tooltip']").tooltip({container: "body", trigger: "hover"});
-        $("[data-toggle-two='tooltip']").tooltip({container: "body", trigger: "hover"});
+        document.querySelectorAll("[data-bs-toggle='tooltip'], [data-toggle-two='tooltip']").forEach(function (element) {
+            bootstrap.Tooltip.getOrCreateInstance(element, {container: "body", trigger: "hover"});
+        });
     });
 
 
     $('[data-toggle-two="tooltip"]').click(function () {
-        $('[data-toggle-two="tooltip"]').tooltip("hide");
+        $('[data-toggle-two="tooltip"]').each(function () {
+            bootstrap.Tooltip.getOrCreateInstance(this).hide();
+        });
     });
 
-    $('[data-toggle="tooltip"]').click(function () {
-        $('[data-toggle="tooltip"]').tooltip("hide");
+    $('[data-bs-toggle="tooltip"]').click(function () {
+        $('[data-bs-toggle="tooltip"]').each(function () {
+            bootstrap.Tooltip.getOrCreateInstance(this).hide();
+        });
     });
 }
 

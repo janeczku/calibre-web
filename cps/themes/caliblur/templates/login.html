@@ -13,11 +13,9 @@
       <label for="password">{{_('Password')}}</label>
       <div class="input-group">
         <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}" value="{{ password }}">
-        <span class="input-group-btn">
-          <button type="button" class="btn btn-default toggle-password" data-target="#password" data-password-show="{{_('Show password')}}" data-password-hide="{{_('Hide password')}}" aria-label="{{_('Show password')}}" title="{{_('Show password')}}">
-            <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-          </button>
-        </span>
+        <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#password" data-password-show="{{_('Show password')}}" data-password-hide="{{_('Hide password')}}" aria-label="{{_('Show password')}}" title="{{_('Show password')}}">
+          <i class="bi bi-eye-slash" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
     <div class="checkbox">
@@ -25,18 +23,18 @@
         <input type="checkbox" name="remember_me" checked> {{_('Remember Me')}}
       </label>
     </div>
-    <button type="submit" name="submit" class="btn btn-default">{{_('Login')}}</button>
+    <button type="submit" name="submit" class="btn btn-outline-secondary">{{_('Login')}}</button>
     {% if config.config_login_type == 0 and mail%}
-    <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot Password?')}}</button>
+    <button type="submit" name="forgot" value="forgot" class="btn btn-outline-secondary">{{_('Forgot Password?')}}</button>
     {% endif %}
     {% if g.allow_registration %}
-    <a class="btn btn-default" id="register" href="{{url_for('web.register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a>
+    <a class="btn btn-outline-secondary" id="register" href="{{url_for('web.register')}}"><i class="bi bi-person"></i> {{_('Register')}}</a>
     {% endif %}
     {% if config.config_remote_login %}
-    <a class="btn btn-default" id="remote_login" href="{{url_for('remotelogin.remote_login')}}">{{_('Log in with Magic Link')}}</a>
+    <a class="btn btn-outline-secondary" id="remote_login" href="{{url_for('remotelogin.remote_login')}}">{{_('Log in with Magic Link')}}</a>
     {% endif %}
     {% if g.allow_anonymous %}
-    <a class="btn btn-default" href="{{url_for('web.index')}}">{{ _('Anonymous Browsing') }}</a>
+    <a class="btn btn-outline-secondary" href="{{url_for('web.index')}}">{{ _('Anonymous Browsing') }}</a>
     {% endif %}
     {% if config.config_login_type == 2 %}
       {% if 1 in oauth_check %}

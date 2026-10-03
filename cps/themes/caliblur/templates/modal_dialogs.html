@@ -25,13 +25,13 @@
             <input type="text" class="form-control" name="add_element" id="add_element">
           </div>
           <div class="form-group required">
-            <input type="button" class="btn btn-default" value="{{_('Allow')}}" name="submit_allow" id="submit_allow" data-dismiss="static">
-            <input type="button" class="btn btn-default" value="{{_('Deny')}}" name="submit_deny" id="submit_restrict" data-dismiss="static">
+            <input type="button" class="btn btn-outline-secondary" value="{{_('Allow')}}" name="submit_allow" id="submit_allow">
+            <input type="button" class="btn btn-outline-secondary" value="{{_('Deny')}}" name="submit_deny" id="submit_restrict">
           </div>
           </form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="restrict_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+        <button type="button" id="restrict_close" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Close')}}</button>
       </div>
     </div>
   </div>
@@ -47,8 +47,8 @@
       </div>
         <div class="modal-body text-center">
           <p>
-          <span class="hidden" id="book_format">{{_('This book format will be permanently erased from database')}}</span>
-          <span class="hidden" id="book_complete">{{_('This book will be permanently erased from database and hard disk')}}</span>
+          <span class="d-none" id="book_format">{{_('This book format will be permanently erased from database')}}</span>
+          <span class="d-none" id="book_complete">{{_('This book will be permanently erased from database and hard disk')}}</span>
 		  </p>
           {% if config.config_kobo_sync %}
           <p>
@@ -59,8 +59,8 @@
         </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">{{_('Cancel')}}</button>
-        <input type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_confirm" id="delete_confirm" data-dismiss="modal">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
+        <input type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_confirm" id="delete_confirm" data-bs-dismiss="modal">
       </div>
     </div>
   </div>
@@ -86,7 +86,7 @@
               </thead>
               <tbody id="tbody">
                 <tr class="tr-clickable hidden" id="parent" data-type="dir" data-path="..">
-                  <td><span class="glyphicon glyphicon-folder-close"></span></td>
+                  <td><i class="bi bi-folder"></i></td>
                   <td title="{{_('Parent Directory')}}"><span class="parentdir">..</span></td>
                   <td></td>
                 </tr>
@@ -96,8 +96,8 @@
         </div>
       <div class="modal-footer">
         <div class="text-left" id="element_selected"></div>
-        <button type="button" id="file_abort" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
-        <input type="button" class="btn btn-primary" data-path="" data-link=""  data-folderonly="" data-filefilter="" data-newfile="" value="{{_('Select')}}" name="file_confirm" id="file_confirm" data-dismiss="modal">
+        <button type="button" id="file_abort" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
+        <input type="button" class="btn btn-primary" data-path="" data-link=""  data-folderonly="" data-filefilter="" data-newfile="" value="{{_('Select')}}" name="file_confirm" id="file_confirm" data-bs-dismiss="modal">
       </div>
     </div>
   </div>
@@ -133,7 +133,7 @@
         <span id="text-GeneralChangeModal"></span>
           <p></p>
         <button id="btnConfirmNo-GeneralChangeModal" type="button" class="btn btn-primary">{{_('Cancel')}}</button>
-        <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn btn-default">{{_('Ok')}}</button>
+        <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn-outline-secondary">{{_('Ok')}}</button>
       </div>
     </div>
   </div>

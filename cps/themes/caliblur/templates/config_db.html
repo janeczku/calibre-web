@@ -1,6 +1,6 @@
 {% extends theme("layout.html") %}
 {% block flash %}
-<div id="spinning_success" class="row-fluid text-center" style="display:none;">
+<div id="spinning_success" class="row text-center" style="display:none;">
     <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}" alt="" aria-hidden="true"></div>
 </div>
 {% endblock %}
@@ -13,9 +13,7 @@
     <label for="config_calibre_dir">{{ _('Location of Calibre Database') }}</label>
     <div class="form-group required input-group">
       <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
-      <span class="input-group-btn">
-        <button type="button" data-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-      </span>
+      <button type="button" data-bs-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-bs-target="#fileModal" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
     </div>
     <div class="form-group required">
       <input type="checkbox" id="config_calibre_split" name="config_calibre_split" data-control="split_settings" data-t ="{{ config.config_calibre_split_dir }}" {% if config.config_calibre_split %}checked{% endif %}>
@@ -24,9 +22,7 @@
     <div data-related="split_settings">
       <div class="form-group required input-group">
         <input type="text" class="form-control" id="config_calibre_split_dir" name="config_calibre_split_dir" value="{% if config.config_calibre_split_dir != None %}{{ config.config_calibre_split_dir }}{% endif %}" autocomplete="off">
-        <span class="input-group-btn">
-          <button type="button" data-toggle="modal" id="calibre_modal_split_path" data-link="config_calibre_split_dir" data-filefilter="" data-target="#fileModal" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
-        </span>
+        <button type="button" data-bs-toggle="modal" id="calibre_modal_split_path" data-link="config_calibre_split_dir" data-filefilter="" data-bs-target="#fileModal" class="btn btn-outline-secondary"><i class="bi bi-folder2-open"></i></button>
       </div>
     </div>
     {% if feature_support['gdrive'] %}
@@ -53,7 +49,7 @@
               <label for="config_google_drive_watch_changes_response">{{ _('Metadata Watch Channel ID') }}</label>
               <div class="form-group input-group required">
                 <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ config.config_google_drive_watch_changes_response['expiration'] | strftime }}" autocomplete="off" disabled="">
-                <span class="input-group-btn"><a href="{{ url_for('gdrive.revoke_watch_gdrive') }}" id="watch_revoke" class="btn btn-primary">{{ _('Revoke') }}</a></span>
+                <a href="{{ url_for('gdrive.revoke_watch_gdrive') }}" id="watch_revoke" class="btn btn-primary">{{ _('Revoke') }}</a>
               </div>
             {% else %}
               <a href="{{ url_for('gdrive.watch_gdrive') }}" id="enable_gdrive_watch" class="btn btn-primary">Enable watch of metadata.db</a>
@@ -66,7 +62,7 @@
   <div class="col-sm-12 clearfix caliblur-dbconfig-actions">
     <div class="pull-right">
       <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-primary">{{ _('Cancel') }}</a>
-      <button id="db_submit" type="submit" form="db_config_form" class="btn btn-default">{{ _('Save') }}</button>
+      <button id="db_submit" type="submit" form="db_config_form" class="btn btn-outline-secondary">{{ _('Save') }}</button>
     </div>
   </div>
 </form>
@@ -83,7 +79,7 @@
       <div class="modal-body text-center">
         <p>{{ _('New db location is invalid, please enter valid path') }}</p>
         <p></p>
-        <button type="button" class="btn btn-default" id="invalid_confirm" data-dismiss="modal">{{ _('OK') }}</button>
+        <button type="button" class="btn btn-outline-secondary" id="invalid_confirm" data-bs-dismiss="modal">{{ _('OK') }}</button>
       </div>
     </div>
   </div>
