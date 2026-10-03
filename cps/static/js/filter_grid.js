@@ -20,8 +20,10 @@ var direction = $("#asc").data('order');  // 0=Descending order; 1= ascending or
 var $list = $("#list").isotope({
     itemSelector: ".book",
     layoutMode: "fitRows",
+    sortBy: "name",
+    sortAscending: direction === 1,
     getSortData: {
-        title: ".title"
+        name: "[data-id]"
     },
 });
 
@@ -41,10 +43,9 @@ $("#desc").click(function() {
         url: getPath() + "/ajax/view",
         data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
     });
-    // invert sorting order to make already inverted start order working
     $list.isotope({
         sortBy: "name",
-        sortAscending: !$list.data('isotope').options.sortAscending
+        sortAscending: false
     });
     direction = 0;
 });
@@ -66,7 +67,7 @@ $("#asc").click(function() {
     });
     $list.isotope({
         sortBy: "name",
-        sortAscending: !$list.data('isotope').options.sortAscending
+        sortAscending: true
     });
     direction = 1;
 });

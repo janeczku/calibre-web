@@ -206,12 +206,15 @@
 </div>
 
 <!-- Modal -->
+{% endblock %}
+{% block modal %}
+{{ change_confirm_modal() }}
 <div id="RestartDialog" class="modal fade admin-modal" tabindex="-1" aria-labelledby="RestartDialogLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-info-subtle">
         <h5 class="modal-title" id="RestartDialogLabel">{{_('Restart Calibre-Web')}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
       </div>
       <div class="modal-body text-center">
         <p>{{_('Are you sure you want to restart?')}}</p>
@@ -221,7 +224,7 @@
         <p></p>
         <div class="d-flex justify-content-center gap-2">
           <button type="button" class="btn btn-primary" id="restart">{{_('OK')}}</button>
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" data-bs-dismiss="modal">{{_('Cancel')}}</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
         </div>
       </div>
     </div>
@@ -262,7 +265,4 @@
     </div>
   </div>
 </div>
-{% endblock %}
-{% block modal %}
-{{ change_confirm_modal() }}
 {% endblock %}

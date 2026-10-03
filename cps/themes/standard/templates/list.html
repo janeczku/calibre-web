@@ -1,6 +1,6 @@
 {% extends theme("layout.html") %}
 {% block body %}
-<h1 class="{{page}} h2 mb-3">{{_(title)}}</h1>
+<h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader d-none d-md-block mb-3">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -23,13 +23,14 @@
       {% endif %}
     </div>
   <div class="container-fluid px-0">
-    <div id="list" class="row g-3">
+    <div class="row">
+    <div id="list" class="col-12{% if entries|length > 20 %} col-md-6{% endif %}">
     {% for entry in entries %}
       {% if loop.index0 == (loop.length/2+loop.length%2)|int and loop.length > 20 %}
         </div>
         <div id="second" class="col-12 col-md-6">
       {% endif %}
-      <div class="row{% if loop.first %} mt-2{% endif %}" {% if entry[0].sort %}data-name="{{entry[0].name}}"{% endif %} data-id="{% if entry[0].sort %}{{entry[0].sort}}{% else %}{% if entry[0].format %}{{entry[0].format}}{% else %}{% if entry[0].rating %}{{entry[0].rating}}{% else %}{{entry[0].name}}{% endif %}{% endif %}{% endif %}">
+      <div class="row" {% if entry[0].sort %}data-name="{{entry[0].name}}"{% endif %} data-id="{% if entry[0].sort %}{{entry[0].sort}}{% else %}{% if entry[0].format %}{{entry[0].format}}{% else %}{% if entry[0].rating %}{{entry[0].rating}}{% else %}{{entry[0].name}}{% endif %}{% endif %}{% endif %}">
         <div class="col-2 col-md-1 text-start"><span class="badge bg-secondary rounded-pill">{{entry[1]}}</span></div>
         <div class="col-10 col-md-11"><a id="list_{{loop.index0}}" href="{% if entry.format %}{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry.format )}}{% else %}{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].id )}}{% endif %}">
           {% if entry.name %}
@@ -50,6 +51,7 @@
             {{entry[0].name}}{% endif %}{% endif %}</a></div>
       </div>
     {% endfor %}
+    </div>
     </div>
   </div>
 {% endblock %}

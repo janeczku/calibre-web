@@ -24,7 +24,6 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
 }
 
 input.datepicker {color: transparent}
-input.datepicker:focus {color: transparent}
 input.datepicker:focus + input {color: #eee}
 
 .col-sm-3.col-lg-2.col-6.book.session {
@@ -85,17 +84,15 @@ body > .container-fluid > .row {
   #top_tasks > .bi {
     margin-right: 10px;
   }
-}
 
-@media only screen and (max-width: 767px) {
-    body > .container-fluid > .row > .col-sm-2 {
-        visibility: hidden;
-    }
+  body > .container-fluid > .row > .col-sm-2 {
+    visibility: hidden;
+  }
 
-    .col-sm-3.col-lg-2.col-6.book.session {
-        padding-left: 5px;
-        padding-right: 5px;
-    }
+  .col-sm-3.col-lg-2.col-6.book.session {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 }
 
 .caliblur-login-panel .btn {
@@ -104,10 +101,7 @@ body > .container-fluid > .row {
 }
 
 body.blur .modal-footer .btn,
-body.blur .modal-body .btn,
-body.blur #GeneralDeleteModal .modal-body .btn,
-body.blur #GeneralChangeModal .modal-body .btn,
-body.blur #deleteModal .modal-footer .btn {
+body.blur .modal-body .btn {
   margin-bottom: 0;
 }
 

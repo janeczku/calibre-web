@@ -98,15 +98,6 @@ body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group .inpu
   color: var(--bs-body-color);
 }
 
-body.user_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn .fa-search,
-body.user_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn .fa-search,
-body.usertable .bootstrap-table .fixed-table-toolbar .search .input-group > .btn .fa-search,
-body.usertable .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn .fa-search,
-body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn .fa-search,
-body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn .fa-search {
-  color: inherit;
-}
-
 body.user_table .bootstrap-table .fixed-table-container .fixed-table-body table thead th[data-field="0"],
 body.usertable .bootstrap-table .fixed-table-container .fixed-table-body table thead th[data-field="0"] {
   width: 130px !important;
@@ -484,12 +475,6 @@ span.glyphicon.glyphicon-tags {
 .discover .btn { margin-bottom: 5px; }
 .button-link { color: #fff; }
 
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active,
-.btn-primary.active,
-.open .dropdown-toggle.btn-primary { background-color: #1c5484; }
-
 .btn-primary.disabled,
 .btn-primary[disabled],
 fieldset[disabled] .btn-primary,
@@ -528,6 +513,9 @@ table .bg-primary:hover { background-color: #1c5484; }
   position: absolute;
   pointer-events: none;
   top: 0;
+  left: 0;
+  width: calc(100% - 40px);
+  margin-left: 0 !important;
 }
 
 input.pill {
@@ -807,19 +795,7 @@ body > div.container-fluid  {
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
-.btn-primary.active,
-.admin-dashboard .btn-primary:hover,
-.admin-dashboard .btn-primary:focus,
-.admin-dashboard .btn-primary:active,
-.admin-dashboard .btn-primary.active,
-.admin-modal .btn-primary:hover,
-.admin-modal .btn-primary:focus,
-.admin-modal .btn-primary:active,
-.admin-modal .btn-primary.active,
-.login .card.login-card .btn-primary:hover,
-.login .card.login-card .btn-primary:focus,
-.login .card.login-card .btn-primary:active,
-.login .card.login-card .btn-primary.active {
+.btn-primary.active {
   background-color: #d9e8f7;
   border-color: #89b9e2;
   color: #2b5f88;

@@ -10,16 +10,16 @@
 {% block body %}
 <div class="single">
     <div class="row">
-        <div class="col-sm-3 col-lg-3 col-xs-5">
+        <div class="col-5 col-md-3">
             <div class="cover">
                 <!-- Always use full-sized image for the detail page -->
                 <img id="detailcover" title="{{ entry.title }}"
                      src="{{ url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified) }}"/>
             </div>
         </div>
-        <div class="col-sm-9 col-lg-9 book-meta">
+        <div class="col-12 col-md-9 book-meta">
             <div class="btn-toolbar" role="toolbar">
-                <div class="btn-group" role="group" aria-label="Download, send to eReader, reading">
+                <div class="d-flex flex-wrap gap-1" role="group" aria-label="Download, send to eReader, reading">
                     {% if current_user.role_download() %}
                         {% if entry.data|length %}
                             <div class="btn-group" role="group">
@@ -44,7 +44,7 @@
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         {% for format in entry.data %}
                                             <li>
-                                                <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}">{{ format.format }}
+                                                <a class="dropdown-item" href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower|replace('kepub', 'kepub.epub')) }}">{{ format.format }}
                                                     ({{ format.uncompressed_size|filesizeformat }})</a></li>
                                         {% endfor %}
                                     </ul>
@@ -66,10 +66,10 @@
                                         <span class="bi bi-send"></span>{{ _('Send to eReader') }}
                                         <span class="caret"></span>
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
+                                    <ul class="dropdown-menu" aria-labelledby="sendbtn2">
                                         {% for format in entry.email_share_list %}
                                             <li>
-                                                <a class="sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</a>
+                                                <button type="button" class="dropdown-item sendbtn-form" data-href="{{url_for('web.send_to_ereader', book_id=entry.id, book_format=format['format'], convert=format['convert'])}}">{{ format['text'] }}</button>
                                             </li>
                                         {% endfor %}
                                     </ul>
@@ -87,7 +87,7 @@
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                                     {% for format in entry.reader_list %}
-                                        <li><a target="_blank"
+                                        <li><a class="dropdown-item" target="_blank"
                                                href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
                                         </li>
                                     {% endfor %}
@@ -109,16 +109,10 @@
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
-                                    {% for format in entry.reader_list %}
-                                        <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                                <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
 
                                     {% for format in entry.data %}
                                         {% if format.format|lower in entry.audio_entries %}
-                                            <li><a target="_blank"
+                                            <li><a class="dropdown-item" target="_blank"
                                                    href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{ format.format|lower }}</a>
                                             </li>
                                         {% endif %}
@@ -308,7 +302,7 @@
                                     {% for shelf in g.shelves_access %}
                                         {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
                                             <li>
-                                                <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                <a class="dropdown-item" href="#" data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                    data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                    data-shelf-action="add"
                                                 >
@@ -338,7 +332,7 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
-                            <div id="shelf-action-errors" class="pull-left" role="alert"></div>
+                            <div id="shelf-action-errors" class="float-start" role="alert"></div>
                         </div>
                     {% endif %}
 
@@ -362,7 +356,7 @@
 {% block js %}
 <script type="text/template" id="template-shelf-add">
     <li>
-        <a data-href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
+        <a class="dropdown-item" href="#" data-href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
             <%= content %>
         </a>
     </li>

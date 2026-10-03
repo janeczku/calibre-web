@@ -23,20 +23,21 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/standard.css') }}" rel="stylesheet" media="screen">
   </head>
   <body class="{{ page }} {{ bodyClass }}">
     <!-- Static navbar -->
-    <nav class="navbar navbar-default navbar-static-top navbar-expand-lg navbar-light bg-body-tertiary border-bottom" role="navigation">
+    <nav class="navbar navbar-default navbar-static-top navbar-expand-md navbar-light bg-body-tertiary border-bottom" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header d-flex align-items-center">
+          <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
           <button type="button" class="navbar-toggle collapsed navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="{{_('Toggle Navigation')}}">
             <span class="visually-hidden">{{_('Toggle Navigation')}}</span>
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
         </div>
         {% if current_user.is_authenticated or g.allow_anonymous %}
-          <form class="navbar-form navbar-left d-flex me-auto my-2 my-lg-0" role="search" action="{{url_for('search.simple_search')}}" method="GET">
+          <form class="navbar-form navbar-left d-flex me-auto" role="search" action="{{url_for('search.simple_search')}}" method="GET">
             <div class="form-group input-group input-group-sm flex-nowrap">
               <label for="query" class="visually-hidden">{{_('Search')}}</label>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
@@ -110,17 +111,17 @@
     <div class="container-fluid">
       <div class="row row-fluid">
         {% if current_user.is_authenticated or g.allow_anonymous %}
-        <div class="col-sm-2">
+        <div class="col-md-2 sidebar-column d-none d-md-block">
           <nav class="navigation">
-            <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
-              <li class="nav-head hidden-xs">{{_('Browse')}}</li>
+            <ul class="list-unstyled" id="scnd-nav">
+              <li class="nav-head d-none d-md-block">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if current_user.check_visibility(element['visibility']) and element['public'] %}
                     <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><i class="bi {{ element['glyph'] }} layout-icon" aria-hidden="true"></i> {{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
               {% if current_user.is_authenticated or g.allow_anonymous %}
-                <li class="nav-head hidden-xs public-shelves">{{_('Shelves')}}</li>
+                <li class="nav-head d-none d-md-block public-shelves">{{_('Shelves')}}</li>
                 {% for shelf in g.shelves_access %}
                   <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><i class="bi bi-list-ul layout-icon shelf" aria-hidden="true"></i> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge badge-sm bg-secondary rounded-pill">{{shelf.books.all()|length}}</span></a></li>
                 {% endfor %}
@@ -134,7 +135,7 @@
           </nav>
         </div>
         {% endif %}
-        <div class="col-sm-10">
+        <div class="col-12 col-md-10 page-content">
           {% block body %}{% endblock %}
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
@@ -180,12 +181,11 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename='js/libs/bootstrap5.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/underscore-umd-min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/standard.js') }}"></script>
     {% block js %}{% endblock %}
   </body>
 </html>

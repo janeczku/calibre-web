@@ -52,8 +52,9 @@
 <div class="discover">
   <h2 class="{{page}}">{{_(title)}}</h2>
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <div class="col-xs-12 col-sm-6">
-        <div class="row form-group">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="d-flex flex-wrap gap-1 form-group">
           <div class="btn btn-outline-secondary disabled" id="merge_books" aria-disabled="true">
             {{_('Merge selected books')}}
           </div>
@@ -64,18 +65,19 @@
             {{_('Edit selected books')}}
           </div>
         </div>
-        <div class="row form-group">
+        <div class="form-group">
             <div class="btn btn-outline-secondary disabled" id="table_xchange" ><span class="bi bi-arrow-up"></span><span class="bi bi-arrow-down"></span>{{_('Exchange author and title')}}</div>
         </div>
       </div>
-     <div class="filterheader col-xs-12 col-sm-6">
-      <div class="row form-group">
+     <div class="filterheader col-12 col-md-6">
+      <div class="form-group">
         <input type="checkbox" id="autoupdate_titlesort" name="autoupdate_titlesort" checked>
         <label for="autoupdate_titlesort">{{_('Update Title Sort automatically')}}</label>
       </div>
-      <div class="row form-group">
+      <div class="form-group">
         <input type="checkbox" id="autoupdate_authorsort" name="autoupdate_authorsort" checked>
         <label for="autoupdate_authorsort">{{_('Update Author Sort automatically')}}</label>
+      </div>
       </div>
     </div>
 

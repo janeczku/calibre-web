@@ -4,14 +4,14 @@
 {% if current_user.show_detail_random() and page != "discover" %}
 <div class="discover random-books mb-4">
   <h2 class="random-books h4 mb-3">{{_('Discover (Random Books)')}}</h2>
-  <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 g-3">
+  <div class="row display-flex row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
    {% for entry in random %}
     <div class="col book session" id="books_rand">
       <div class="cover mb-2">
           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-bs-toggle="modal" data-bs-target="#bookDetailsModal" data-remote="false"{% endif %}>
               <span class="img d-block position-relative" title="{{ entry.Books.title }}">
                 {{ image.book_cover(entry.Books) }}
-                {% if entry[2] == True %}<span class="badge bg-success rounded-pill cover-check-badge"><i class="bi bi-check-lg"></i></span>{% endif %}
+                {% if entry[2] == True %}<span class="badge rounded-pill cover-check-badge"><i class="bi bi-check-lg"></i></span>{% endif %}
               </span>
           </a>
       </div>
@@ -64,7 +64,7 @@
 </div>
 {% endif %}
 <div class="discover load-more">
-  <h2 class="{{title}} h3 mb-3">{{title}}</h2>
+  <h2 class="{{title}} mb-3">{{title}}</h2>
    {% if page != 'discover' %}
     <div class="filterheader d-none d-md-block mb-3">
     {% if page == 'hot' %}
@@ -86,7 +86,7 @@
     {% endif %}
     </div>
    {% endif %}
-  <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 g-3">
+  <div class="row display-flex row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
     {% if entries[0] %}
     {% for entry in entries %}
     <div class="col book session" id="books">
@@ -94,7 +94,7 @@
           <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-bs-toggle="modal" data-bs-target="#bookDetailsModal" data-remote="false"{% endif %}>
             <span class="img d-block position-relative" title="{{ entry.Books.title }}">
               {{ image.book_cover(entry.Books) }}
-              {% if entry[2] == True %}<span class="badge bg-success rounded-pill cover-check-badge"><i class="bi bi-check-lg"></i></span>{% endif %}
+              {% if entry[2] == True %}<span class="badge rounded-pill cover-check-badge"><i class="bi bi-check-lg"></i></span>{% endif %}
             </span>
           </a>
       </div>

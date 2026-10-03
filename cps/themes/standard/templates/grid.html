@@ -2,7 +2,7 @@
 {% extends theme("layout.html") %}
 {% block body %}
 <div class="discover">
-<h1 class="{{page}} h2 mb-3">{{_(title)}}</h1>
+<h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader d-none d-md-block mb-3">
       {% if entries.__len__() and data == 'author' %}
@@ -23,14 +23,14 @@
     </div>
 
     {% if entries[0] %}
-        <div id="list" class="row row-cols-2 row-cols-sm-3 row-cols-lg-6 g-3">
+        <div id="list" class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-3">
           {% for entry in entries %}
               <div class="col book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
                   <div class="cover mb-2">
                       <a href="{{url_for('web.books_list', data=data, sort_param='stored', book_id=entry[0].series[0].id )}}">
                           <span class="img d-block position-relative" title="{{entry[0].series[0].name}}">
                               {{ image.book_cover(entry[0])}}
-                              <span class="badge bg-secondary rounded-pill">{{entry.count}}</span>
+                              <span class="badge rounded-pill">{{entry.count}}</span>
                             </span>
                       </a>
                   </div>

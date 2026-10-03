@@ -1,6 +1,6 @@
 {% extends theme("layout.html") %}
 {% block body %}
-  <div class="col-sm-8 col-lg-8 col-xs-12">
+  <div class="col-12 col-sm-8">
     <h2>{{title}}</h2>
     <div>{{_('Drag to Rearrange Order')}}</div>
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -8,14 +8,14 @@
         {% for entry in entries %}
           <div id="{{entry['Books']['id']}}" class="list-group-item">
             <div class="row">
-              <div class="col-lg-2 col-sm-4 hidden-xs">
+              <div class="col-lg-2 col-md-4 d-none d-md-block">
                 {% if entry['visible'] %}
                   <img title="{{entry['Books']['title']}}" class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
                 {% else %}
                   <img title="{{entry['Books']['title']}}" class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
                 {% endif %}
               </div>
-              <div class="col-lg-10 col-sm-8 col-xs-12">
+              <div class="col-12 col-lg-10 col-md-8">
               {% if entry['visible'] %}
                   {{entry['Books']['title']}}
                   {% if entry['Books']['series']|length > 0 %}

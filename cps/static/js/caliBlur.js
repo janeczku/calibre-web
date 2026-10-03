@@ -106,9 +106,6 @@ if ($("body.book").length > 0) {
 //    Start of Global Work    //
 ///////////////////////////////
 
-// The shared datepicker handler toggles Bootstrap 5's d-none class.
-$("body.advanced_search .fake-input.hidden").removeClass("hidden").addClass("d-none");
-
 // Hide dropdown and collapse menus on click-off
 $(document).mouseup(function (e) {
     var container = new Array();

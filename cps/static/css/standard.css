@@ -1,0 +1,240 @@
+html {
+  font-size: 14px;
+}
+
+body {
+  --bs-body-color: #333;
+  color: var(--bs-body-color);
+  line-height: 1.42857143;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.btn:hover,
+.btn:focus,
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar-brand:hover,
+.navbar-brand:focus,
+.dropdown-item:hover,
+.dropdown-item:focus,
+.page-link:hover,
+.page-link:focus {
+  text-decoration: none;
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 1.1;
+  font-weight: 500;
+}
+
+h1, .h1 { font-size: 36px; }
+h2, .h2 { font-size: 30px; }
+h3, .h3 { font-size: 24px; }
+h4, .h4 { font-size: 18px; }
+
+.row {
+  --bs-gutter-x: 30px;
+}
+
+body > .container-fluid {
+  padding-left: 15px;
+}
+
+body > .container-fluid > .row-fluid {
+  margin-inline: 0;
+}
+
+.page-content,
+.sidebar-column {
+  max-height: calc(100vh - 111px);
+  overflow-y: auto;
+}
+
+.sidebar-column {
+  scrollbar-width: none;
+}
+
+.sidebar-column::-webkit-scrollbar {
+  display: none;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.navbar > .container-fluid {
+  padding-inline: 15px;
+}
+
+.navbar-brand {
+  padding: 15px 0;
+  line-height: 20px;
+}
+
+.navbar-form[role="search"] {
+  margin: 8px 0 8px 15px;
+}
+
+.navbar .btn-file {
+  height: 34px;
+}
+
+.navbar .navbar-toggler {
+  padding: 5px 9px;
+}
+
+.navbar .navbar-toggler-icon {
+  width: 22px;
+  height: 20px;
+}
+
+.navbar #scnd-nav a {
+  display: block;
+  padding: 10px 15px;
+  color: #444;
+  text-decoration: none;
+}
+
+.navbar #scnd-nav a:hover {
+  background-color: rgba(153, 153, 153, 0.4);
+}
+
+.navbar #scnd-nav .layout-icon {
+  margin-right: 10px;
+}
+
+.form-control,
+.form-select {
+  font-size: 14px;
+  min-height: 34px;
+  border-color: #ccc;
+  border-radius: 4px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group > label {
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.btn-primary {
+  --bs-btn-bg: #337ab7;
+  --bs-btn-border-color: #2e6da4;
+  --bs-btn-hover-bg: #286090;
+  --bs-btn-hover-border-color: #204d74;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: #204d74;
+  --bs-btn-active-border-color: #122b40;
+  --bs-btn-active-color: #fff;
+}
+
+body .btn-primary:is(:hover, :focus) {
+  background-color: var(--bs-btn-hover-bg);
+  border-color: var(--bs-btn-hover-border-color);
+  color: var(--bs-btn-hover-color);
+}
+
+body .btn-primary:is(:active, .active) {
+  background-color: var(--bs-btn-active-bg);
+  border-color: var(--bs-btn-active-border-color);
+  color: var(--bs-btn-active-color);
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: #333;
+  --bs-btn-border-color: #ccc;
+  background-color: #fff;
+}
+
+.bootstrap-table .fixed-table-toolbar .btn-secondary {
+  --bs-btn-color: #333;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #ccc;
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: #e6e6e6;
+  --bs-btn-hover-border-color: #adadad;
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: #d4d4d4;
+  --bs-btn-active-border-color: #8c8c8c;
+}
+
+.btn {
+  --bs-btn-border-radius: 4px;
+}
+
+.layout-icon {
+  color: inherit;
+}
+
+.book-meta .author {
+  margin-bottom: 10px;
+}
+
+.rating {
+  --bs-warning-rgb: 68, 68, 68;
+  color: #444;
+}
+
+.rating-input i.glyphicon-star,
+.rating .glyphicon-star.good {
+  color: #444;
+}
+
+.filterheader .btn {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  .navbar-form[role="search"] .form-group {
+    margin-bottom: 0;
+  }
+
+  .navbar-form[role="search"] .form-control {
+    width: 165px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-header {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .navbar-form[role="search"] {
+    width: calc(100% + 30px);
+    flex: 0 0 calc(100% + 30px);
+    padding: 10px 15px;
+    margin-left: -15px;
+    border-top: 1px solid #e7e7e7;
+  }
+
+  .navbar-form[role="search"] .form-group {
+    margin-bottom: 0;
+  }
+
+  .navbar-form[role="search"] .form-control {
+    width: 1%;
+  }
+
+  #mainNavbar .nav-link span {
+    display: inline !important;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+}

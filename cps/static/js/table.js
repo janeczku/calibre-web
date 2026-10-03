@@ -1012,7 +1012,7 @@ function RestrictionActions (value, row) {
 /* Function for deleting books */
 function EbookActions (value, row) {
     return [
-        "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<div class=\"book-remove\" data-bs-toggle=\"modal\" data-bs-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"bi bi-trash3\"></i>",
         "</div>"
     ].join("");
@@ -1032,7 +1032,7 @@ function TaskActions (value, row) {
     var cancellableStats = [0, 2];
     if (row.task_id && row.is_cancellable && cancellableStats.includes(row.stat)) {
         return [
-            "<div class=\"danger task-cancel\" data-toggle=\"modal\" data-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
+            "<div class=\"danger task-cancel\" data-bs-toggle=\"modal\" data-bs-target=\"#cancelTaskModal\" data-task-id=\"" + row.task_id + "\" title=\"Cancel\">",
             "<i class=\"bi bi-x-circle\"></i>",
             "</div>"
         ].join("");

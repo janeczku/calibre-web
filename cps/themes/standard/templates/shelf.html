@@ -16,7 +16,7 @@
       {% if entries.__len__() %}
       <a id="order_shelf" href="{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Arrange books manually') }} </a>
       <button id="toggle_order_shelf" data-alt-text="{% if status == "on" %}{{_('Disable Change order')}}{% else %}{{_('Enable Change order')}}{% endif %}" data-view="shelf" class="btn btn-primary{% if status == 'on' %} dummy">{{ _('Enable Change order') }}{% else%}">{{ _('Disable Change order') }}{% endif %}</button>
-        <div class="filterheader hidden-xs">
+        <div class="filterheader d-none d-md-block">
           <a data-bs-toggle="tooltip" title="{{_('Sort according to book date, newest first')}}" id="new" class="btn btn-primary {% if order == "new" %} active{% endif %}{% if status == "on" %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='new')}}"><span class="bi bi-book"></span> <span class="bi bi-calendar3"></span><span class="bi bi-sort-down"></span></a>
           <a data-bs-toggle="tooltip" title="{{_('Sort according to book date, oldest first')}}" id="old" class="btn btn-primary {% if order == 'old' %} active{% endif %}{% if status == 'on' %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='old')}}"><span class="bi bi-book"></span> <span class="bi bi-calendar3"></span><span class="bi bi-sort-up"></span></a>
           <a data-bs-toggle="tooltip" title="{{_('Sort title in alphabetical order')}}" id="asc" class="btn btn-primary {% if order == 'abc' %} active{% endif %}{% if status == 'on' %} disabled{% endif %}" href="{{url_for('shelf.show_shelf', shelf_id=shelf.id, sort_param='abc')}}"><span class="bi bi-type"></span><span class="bi bi-sort-alpha-down"></span></a>
@@ -34,7 +34,7 @@
   {% endif %}
   <div class="row display-flex">
     {% for entry in entries %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book session">
+    <div class="col-6 col-md-3 col-lg-2 book session">
       <div class="cover">
             <a href="{{ url_for('web.show_book', book_id=entry.Books.id) }}" {% if simple==false %}data-bs-toggle="modal" data-bs-target="#bookDetailsModal" data-remote="false"{% endif %}>
               <span class="img" title="{{entry.Books.title}}" >

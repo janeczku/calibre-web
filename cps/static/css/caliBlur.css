@@ -2091,10 +2091,6 @@ body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
     padding: 4px 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:nth-of-type(even) {
-    background: hsla(0, 0%, 100%, .02)
-}
-
 body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row > .col-xs-6 {
     width: calc(91.666% - 30px);
     overflow: hidden;
@@ -2262,28 +2258,6 @@ body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
 
 @media screen and (max-width: 992px) {
   body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
-}
-
-body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
-}
-
-@media screen and (max-width: 992px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
-}
-
-body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
-}
-
-@media screen and (max-width: 992px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
       top: 60px;
   }
 }
@@ -3311,13 +3285,6 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
     order: 1
 }
 
-.book-meta > div.btn-toolbar ul.dropdown-menu.offscreen {
-    position: fixed;
-    top: 120px;
-    right: 14px;
-    left: auto !important
-}
-
 .btn-primary.active, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open .dropdown-toggle.btn-primary {
     background-color: hsla(0, 0%, 100%, .3)
 }
@@ -3343,21 +3310,6 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden
-}
-
-.dropdown-menu.offscreen {
-    right: 0;
-    left: auto !important
-}
-
-ul.dropdown-menu.offscreen {
-    margin: 2px -160px 0
-}
-
-div.btn-group[role=group][aria-label^="Download, send"] .dropdown-menu.offscreen {
-    position: fixed;
-    top: 120px;
-    right: 5px
 }
 
 .dropdown-menu {
@@ -4557,11 +4509,6 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
     color: var(--color-primary)
 }
 
-.navbar-right > li > ul.dropdown-menu.offscreen {
-    right: -10px
-
-}
-
 .login .home-btn, .login .plexBack, .register .plexBack, body.login > div.container-fluid > div.row-fluid > div.col-sm-2, body.register > div.container-fluid > div.row-fluid > div.col-sm-2, body.login > nav.navbar > div > form, body.register > nav.navbar > div > form, body.remotelogin > nav.navbar > div > form {
     display: none
 }
@@ -5569,13 +5516,6 @@ body.editbook .rating-input .bi {
 body.editbook .rating-input .bi-star-fill,
 body.editbook .rating-input .bi:hover {
     color: hsla(0, 0%, 100%, .7);
-}
-
-body.editbook .input-group > .form-control.fake-input,
-body.advanced_search .input-group > .form-control.fake-input {
-    left: 0;
-    width: calc(100% - 40px);
-    margin-left: 0 !important;
 }
 
 body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
@@ -8219,5 +8159,3 @@ div.comments[data-readmore] {
     transition: height 300ms;
     overflow: hidden
 }
-
-.dropdown-menu > .offscreen

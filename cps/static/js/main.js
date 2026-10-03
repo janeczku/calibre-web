@@ -491,7 +491,7 @@ $(function() {
 
         // fix for infinite scroll on CaliBlur Theme (#981)
 
-        $(".col-sm-10").bind("scroll", function () {
+        $(".page-content, .col-sm-10").bind("scroll", function () {
             if (
                 $(this).scrollTop() + $(this).innerHeight() >=
                 $(this)[0].scrollHeight - 5

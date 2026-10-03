@@ -20,10 +20,6 @@ var sort = 0;       // Show sorted entries
 
 $("#sort_name").click(function() {
     $("#sort_name").toggleClass("active");
-    var className = $("h1").attr("Class") + "_sort_name";
-    var obj = {};
-    obj[className] = sort;
-
     var count = 0;
     var index = 0;
     var store;
@@ -34,13 +30,13 @@ $("#sort_name").click(function() {
     var listItems = $("#list").children(".row");
     var listlength = listItems.length;
     // check for each element if its Starting character matches
-    $(".row").each(function() {
+    listItems.each(function() {
         if ( sort === 1) {
             store = this.attributes["data-name"];
         } else {
             store = this.attributes["data-id"];
         }
-        $(this).find("a").html(store.value);
+        $(this).find("a").text(store.value);
         if ($(this).css("display") !== "none") {
             count++;
         }
@@ -50,7 +46,7 @@ $("#sort_name").click(function() {
     if (count > 20) {
         var middle = parseInt(count / 2, 10) + (count % 2);
         // search for the middle of all visibe elements
-        $(".row").each(function() {
+        listItems.each(function() {
             index++;
             if ($(this).css("display") !== "none") {
                 middle--;
@@ -83,18 +79,16 @@ $("#desc").click(function() {
     var index = 0;
     var list = $("#list");
     var second = $("#second");
-    // var cnt = ;
     list.append(second.contents());
     var listItems = list.children(".row");
     var reversed, elementLength, middle;
     reversed = listItems.get().reverse();
     elementLength = reversed.length;
     // Find count of middle element
-    var count = $(".row:visible").length;
+    var count = listItems.filter(":visible").length;
     if (count > 20) {
         middle = parseInt(count / 2, 10) + (count % 2);
 
-        //var middle = parseInt(count / 2) + (count % 2);
         // search for the middle of all visible elements
         $(reversed).each(function() {
             index++;
@@ -139,11 +133,10 @@ $("#asc").click(function() {
     var elementLength = reversed.length;
 
     // Find count of middle element
-    var count = $(".row:visible").length;
+    var count = listItems.filter(":visible").length;
     if (count > 20) {
         var middle = parseInt(count / 2, 10) + (count % 2);
 
-        //var middle = parseInt(count / 2) + (count % 2);
         // search for the middle of all visible elements
         $(reversed).each(function() {
             index++;
@@ -155,7 +148,6 @@ $("#asc").click(function() {
             }
         });
 
-        // middle = parseInt(elementLength / 2) + (elementLength % 2);
         list.append(reversed.slice(0, index));
         second.append(reversed.slice(index, elementLength));
     } else {
@@ -197,7 +189,7 @@ $(".char").click(function() {
     var listItems = $("#list").children(".row");
     var listlength = listItems.length;
     // check for each element if its Starting character matches
-    $(".row").each(function() {
+    listItems.each(function() {
         if (this.attributes["data-id"].value.charAt(0).toUpperCase() !== character) {
             $(this).hide();
         } else {
@@ -209,7 +201,7 @@ $(".char").click(function() {
         // Find count of middle element
         var middle = parseInt(count / 2, 10) + (count % 2);
         // search for the middle of all visibe elements
-        $(".row").each(function() {
+        listItems.each(function() {
             index++;
             if ($(this).css("display") !== "none") {
                 middle--;
