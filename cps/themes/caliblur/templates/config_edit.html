@@ -401,6 +401,18 @@
                 <label for="config_password_min_length">{{_('Minimum password length')}}</label>
                 <input type="number" min="1" max="40" class="form-control" name="config_password_min_length" id="config_password_min_length" value="{% if config.config_password_min_length != None %}{{ config.config_password_min_length }}{% endif %}" autocomplete="off" required>
               </div>
+              {% for field, caption in [
+                  ('config_password_number', _('Enforce number')),
+                  ('config_password_lower', _('Enforce lowercase characters')),
+                  ('config_password_upper', _('Enforce uppercase characters')),
+                  ('config_password_character', _('Enforce characters (needed For Chinese/Japanese/Korean Characters)')),
+                  ('config_password_special', _('Enforce special characters'))
+              ] %}
+              <div class="form-group ms-3">
+                <input type="checkbox" id="{{ field }}" name="{{ field }}" {% if config[field] %}checked{% endif %}>
+                <label for="{{ field }}">{{ caption }}</label>
+              </div>
+              {% endfor %}
             </div>
       </div>
     </div>

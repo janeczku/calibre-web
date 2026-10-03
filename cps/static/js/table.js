@@ -25,7 +25,7 @@ function syncTomSelects() {
     if (typeof TomSelect === "undefined") {
         return;
     }
-    $(".multi_selector").each(function () {
+    $("select.multi_selector").each(function () {
         if (!this.tomselect) {
             new TomSelect(this, {
                 persist: false,
@@ -44,7 +44,7 @@ function clearTomSelects() {
     if (typeof TomSelect === "undefined") {
         return;
     }
-    $(".multi_selector").each(function () {
+    $("select.multi_selector").each(function () {
         if (this.tomselect) {
             this.tomselect.clear();
         }
@@ -971,9 +971,10 @@ function handle_header_buttons () {
         $(".button_head").addClass("disabled");
         $(".multi_head").attr("aria-disabled", true);
         $(".multi_head").addClass("hidden");
-        $(".multi_selector").attr("aria-disabled", true);
-        $(".multi_selector").attr("disabled", true);
+        $("select.multi_selector").attr("aria-disabled", true);
+        $("select.multi_selector").attr("disabled", true);
         $(".header_select").attr("disabled", true);
+        syncTomSelects();
     } else {
         $(".mass_selection").removeClass("disabled");
         $(".mass_selection").attr("aria-disabled", false);
@@ -983,8 +984,8 @@ function handle_header_buttons () {
         $(".button_head").removeClass("disabled");
         $(".multi_head").attr("aria-disabled", false);
         $(".multi_head").removeClass("hidden");
-        $(".multi_selector").attr("aria-disabled", false);
-        $(".multi_selector").removeAttr("disabled");
+        $("select.multi_selector").attr("aria-disabled", false);
+        $("select.multi_selector").removeAttr("disabled");
         $(".header_select").removeAttr("disabled");
         syncTomSelects();
     }

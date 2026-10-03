@@ -225,7 +225,7 @@
                                 <a href="{{ identifier_link|escape }}" target="_blank" class="btn btn-xs btn-success"
                                    role="button">{{ identifier.format_type() }}</a>
                             {% else %}
-                                <span class="btn btn-xs btn-success" role="button">{{ identifier.format_type() }}</span>
+                                <span class="btn btn-xs btn-success" role="button" title="{{ identifier_link }}">{{ identifier.format_type() }}</span>
                             {% endif %}
                         {% endfor %}
                     </p>

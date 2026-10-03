@@ -138,7 +138,7 @@ $(function () {
         var initial = String(element.data("initial")) === "true";
         var val = element.prop('checked');
         var params = {id : id, value: val};
-        $('[data-related="' + id + '"]').toggle(val);
+        $('[data-related="' + id + '"]').toggleClass("d-none", !val);
         if (!initial) {
             params['initial'] = initial;
             params['query'] = keyword;

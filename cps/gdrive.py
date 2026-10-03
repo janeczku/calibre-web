@@ -138,9 +138,14 @@ try:
             response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
             log.debug('%r', response)
             if response:
-                dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
-                if not response['deleted'] and response['file']['title'] == 'metadata.db' \
-                  and response['file']['md5Checksum'] != hashlib.md5(dbpath).hexdigest():  # nosec
+                dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+                if response['deleted'] or response['file']['title'] != 'metadata.db':
+                    return ''
+                checksum = hashlib.md5()  # nosec
+                with open(dbpath, 'rb') as database:
+                    for chunk in iter(lambda: database.read(65536), b''):
+                        checksum.update(chunk)
+                if response['file']['md5Checksum'] != checksum.hexdigest():
                     tmp_dir = get_temp_dir()
 
                     log.info('Database file updated')

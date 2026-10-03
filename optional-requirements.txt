@@ -30,6 +30,7 @@ SQLAlchemy-Utils>=0.33.5,<0.43.0
 # metadata extraction
 rarfile>=3.2,<5.0
 scholarly>=1.2.0,<1.8
+bibtexparser>=1.1.0,<2.0.0
 markdown2>=2.0.0,<2.6.0
 html2text>=2020.1.16,<2025.4.16
 python-dateutil>=2.1,<2.10.0
