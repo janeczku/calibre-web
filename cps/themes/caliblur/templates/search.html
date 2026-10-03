@@ -15,13 +15,13 @@
           <div id="shelf-actions" class="btn-toolbar" role="toolbar">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="btn-group" role="group" aria-label="Add to shelves">
-              <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle addtoshelf-btn-tooltip{% if page == 'advsearch' %} advsearch-addtoshelf{% endif %}" data-toggle-two="tooltip" title="{{_('Add to shelf')}}" data-bs-placement="bottom" data-viewport=".btn-toolbar" data-bs-toggle="dropdown" aria-expanded="false">
+              <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle{% if page == 'advsearch' %} advsearch-addtoshelf{% endif %}" title="{{_('Add to shelf')}}" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-list"></i> {{_('Add to shelf')}}
               </button>
               <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                 {% for shelf in g.shelves_access %}
                   {% if not shelf.is_public or current_user.role_edit_shelfs() %}
-                    <li><a class="postAction" role="button" data-action="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                    <li><a class="dropdown-item postAction" role="button" data-action="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                   {% endif %}
                 {%endfor%}
               </ul>
@@ -33,7 +33,7 @@
               <ul id="remove-from-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                 {% for shelf in g.shelves_access %}
                   {% if not shelf.is_public or current_user.role_edit_shelfs() %}
-                    <li><a class="postAction" role="button" data-action="{{ url_for('shelf.search_from_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                    <li><a class="dropdown-item postAction" role="button" data-action="{{ url_for('shelf.search_from_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                   {% endif %}
                 {%endfor%}
               </ul>

@@ -49,7 +49,7 @@
   </div>
 
   <div class="container1">
-    <div id="list" class="col-12 col-sm-6">
+    <div id="list" class="col-12{% if entries|length > 20 %} col-sm-6{% endif %}">
       {% for entry in entries %}
         {% if loop.index0 == (loop.length / 2 + loop.length % 2)|int and loop.length > 20 %}
           </div>

@@ -60,8 +60,8 @@
           {% endif %}
           <ul class="nav navbar-nav" id="main-nav">
             {% if current_user.is_authenticated or g.allow_anonymous %}
-              <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop send-btn-tooltip dropdown" data-bs-toggle="dropdown" role="button" aria-expanded="false" data-toggle-two="tooltip" title="{{_('Account')}}" data-bs-placement="bottom" data-viewport="#main-nav"><span class="profileDropIcon" aria-hidden="true"><img src="{{ url_for('static', filename='css/img/user-icon.svg') }}" alt=""></span></a><span class="caliblur-nav-label">{{current_user.name}}</span>
-                <ul class="dropdown-menu profileDropli">
+              <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop dropdown" data-bs-toggle="dropdown" role="button" aria-expanded="false" title="{{_('Account')}}"><span class="profileDropIcon" aria-hidden="true"><img src="{{ url_for('static', filename='css/img/user-icon.svg') }}" alt=""></span></a><span class="caliblur-nav-label">{{current_user.name}}</span>
+                <ul class="dropdown-menu dropdown-menu-end profileDropli">
                     <li><a id="top_user" href="{{url_for('web.profile')}}" ><i class="bi bi-person"></i> <span class="caliblur-nav-label">{{current_user.name}}</span></a></li>
                     {% if not current_user.is_anonymous %}
                     <li class="dropdown"><a id="nav_about" href="{{url_for('about.stats')}}"><i class="bi bi-info-circle"></i> {{_('About')}}</a></li>

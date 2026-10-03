@@ -424,15 +424,15 @@ nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
     float: left
 }
 
-#have_read_form > label {
+#have_read_form > .block-label {
     margin: 0;
     top: 0;
     height: 60px
 }
 
-#have_read_form > label > label {
+#have_read_form > .block-label > label {
     position: relative;
-    width: 1px;
+    width: 0;
     height: 1px;
     top: 0
 }
@@ -455,7 +455,7 @@ nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
 }
 
 #have_read_cb + label:before, #have_read_cb:checked + label:before {
-    font-family: 'Glyphicons Halflings', serif;
+    font-family: bootstrap-icons;
     font-size: 16px;
     height: 40px;
     width: 60px;
@@ -471,12 +471,12 @@ nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
 }
 
 #have_read_cb:checked + label:before {
-    content: "\e105";
-    color: var(--color-primary)
+    content: "\f341";
+    color: hsla(0, 0%, 100%, .7)
 }
 
 #have_read_cb + label:before {
-    content: "\e106";
+    content: "\f340";
     color: hsla(0, 0%, 100%, .7)
 }
 
@@ -573,8 +573,6 @@ nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
 }
 
 #edit_book > span:before {
-    content: "\EA5d";
-    font-family: plex-icons, serif;
     font-size: 20px;
     padding: 16px 15px;
     display: inline-block;
@@ -633,7 +631,8 @@ nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
 }
 
 a {
-    color: hsla(0, 0%, 100%, .45)
+    color: hsla(0, 0%, 100%, .45);
+    text-decoration: none
 }
 
 a:hover {
@@ -918,7 +917,7 @@ body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     cursor: pointer !important
 }
 
-.btn, .rating-input .glyphicon:hover {
+.btn, .rating-input :is(.glyphicon, .bi):hover {
     cursor: pointer
 }
 
@@ -1226,7 +1225,10 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > h2 {
     width: 200px
 }
 
-.btn-default {
+:is(.btn-default, .btn-outline-secondary) {
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--color-secondary);
+    --bs-btn-disabled-border-color: var(--color-secondary);
     border-color: var(--color-secondary);
     color: #fff;
     background-color: var(--color-secondary);
@@ -1235,7 +1237,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > h2 {
     transition: background-color .1s
 }
 
-.btn-default:hover {
+:is(.btn-default, .btn-outline-secondary):hover {
     border-color: var(--color-secondary-hover);
     color: #fff;
     background-color: var(--color-secondary-hover)
@@ -1270,6 +1272,10 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
 }
 
 .btn-primary {
+    --bs-btn-active-color: #fff;
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: hsla(0, 0%, 100%, .25);
+    --bs-btn-disabled-border-color: hsla(0, 0%, 100%, .25);
     color: #fff;
     background-color: hsla(0, 0%, 100%, .25);
     border-color: hsla(0, 0%, 100%, .25)
@@ -1279,7 +1285,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
     border-color: hsla(0, 0%, 100%, .3)
 }
 
-.btn-default.active, .btn-default.focus, .btn-default:active, .btn-default:focus, .open > .dropdown-toggle.btn-default {
+:is(.btn-default, .btn-outline-secondary).active, :is(.btn-default, .btn-outline-secondary).focus, :is(.btn-default, .btn-outline-secondary):active, :is(.btn-default, .btn-outline-secondary):focus, .open > .dropdown-toggle:is(.btn-default, .btn-outline-secondary) {
     border-color: var(--color-secondary-hover);
     color: #fff;
     background-color: var(--color-secondary-hover)
@@ -1759,6 +1765,10 @@ body > div.container-fluid > div > div.col-sm-10 > div.single {
     padding: 60px 15px !important
 }
 
+body.book .single > .row {
+    --bs-gutter-x: 30px;
+}
+
 body > div.container-fluid > div > div.col-sm-10 > div.discover {
     margin-top: 0
 }
@@ -1904,7 +1914,7 @@ body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1
     left: 240px
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > form > .btn.btn-default {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > form > .btn:is(.btn-default, .btn-outline-secondary) {
     float: right;
     margin: 0 0 0 10px
 }
@@ -2105,6 +2115,8 @@ body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row >
 
 
 body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 {
+    display: flex;
+    flex-wrap: wrap;
     width: calc(80% - 30px);
     margin: 120px 0 30px 20%;
     border-top: 2px solid rgba(0, 0, 0, .3);
@@ -2121,7 +2133,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
     padding: 4px 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row:nth-of-type(even) {
+body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:nth-of-type(even) {
     background: hsla(0, 0%, 100%, .02)
 }
 
@@ -2155,6 +2167,10 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
     top: 300px;
     width: calc(20% - 55px);
     text-align: center
+}
+
+.catlist-icon.bi::before {
+    color: #999;
 }
 
 @media screen and (max-width: 992px) {
@@ -2454,12 +2470,12 @@ body > div.row-fluid {
     background-color: rgba(0, 0, 0, .45)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.col-sm-3.col-lg-3.col-xs-12, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3 {
+body > div.container-fluid > div > div.col-sm-10 > div.col-sm-3.col-lg-3.col-12, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3 {
     max-width: calc(25% - 75px);
     position: fixed
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.col-sm-3.col-lg-3.col-xs-12 {
+body > div.container-fluid > div > div.col-sm-10 > div.col-sm-3.col-lg-3.col-12 {
     padding-top: 40px;
     padding-bottom: 40px
 }
@@ -2517,7 +2533,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > div > s
     padding-left: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn.btn-default {
+body > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn:is(.btn-default, .btn-outline-secondary) {
     float: right;
     margin: 0 0 0 10px;
     text-transform: uppercase;
@@ -2543,6 +2559,11 @@ textarea {
     background: rgba(0, 0, 0, .5)
 }
 
+#metaModal > .modal-dialog {
+    max-width: 900px;
+    width: calc(100% - 20px);
+}
+
 #metaModal > .modal-dialog > .modal-content {
     z-index: 9999999999999999999999;
     max-height: calc(100% - 90px);
@@ -2554,7 +2575,8 @@ textarea {
 #metaModal > .modal-dialog > .modal-content > .modal-header {
     padding: 0;
     background: #282828;
-    border-radius: 3px 3px 0 0
+    border-radius: 3px 3px 0 0;
+    position: relative;
 }
 
 #metaModal > .modal-dialog > .modal-content > .modal-header > h4 {
@@ -2571,12 +2593,13 @@ textarea {
     font-weight: 400;
     color: #eee;
     border-radius: 3px 3px 0 0;
-    margin-bottom: 0
+    margin-bottom: 0;
+    width: 100%;
 }
 
 #metaModal > .modal-dialog > .modal-content > .modal-header > h4:before {
-    content: "\E025";
-    font: normal normal normal 16px/1 Glyphicons Halflings;
+    content: "\f30a";
+    font: normal normal normal 16px/1 bootstrap-icons;
     color: #999;
     padding-right: 10px
 }
@@ -2589,34 +2612,38 @@ textarea {
     font-style: normal
 }
 
-#metaModal > .modal-dialog > .modal-content > .modal-header > .close {
+#metaModal > .modal-dialog > .modal-content > .modal-header > .btn-close {
     color: #eee;
     opacity: .2;
     font-size: 20px;
     text-shadow: none;
-    margin: 20px
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    filter: invert(1);
 }
 
-#metaModal > .modal-dialog > .modal-content > .modal-header > .close:hover {
+#metaModal > .modal-dialog > .modal-content > .modal-header > .btn-close:hover {
     opacity: .5
 }
 
-#metaModal > .modal-dialog > .modal-content > .modal-header > #meta-search {
+#metaModal > .modal-dialog > .modal-content > .modal-body > #meta-search {
     margin: 25px 0 0
 }
 
-#metaModal > .modal-dialog > .modal-content > .modal-header > #meta-search > .input-group > input {
+#metaModal > .modal-dialog > .modal-content > .modal-body > #meta-search > .input-group > input {
     width: calc(100% - 51px);
     border-radius: 0;
     background-color: hsla(0, 0%, 100%, .15)
 }
 
-#metaModal > .modal-dialog > .modal-content > .modal-header > #meta-search > .input-group {
+#metaModal > .modal-dialog > .modal-content > .modal-body > #meta-search > .input-group {
     max-width: 100%;
     width: 100%
 }
 
-#metaModal > .modal-dialog > .modal-content > .modal-header > #meta-search > .input-group > span > button {
+#metaModal > .modal-dialog > .modal-content > .modal-body > #meta-search > .input-group > button {
     height: 40px;
     width: 50px;
     padding: 0;
@@ -2631,7 +2658,8 @@ textarea {
     vertical-align: middle;
     background-color: hsla(0, 0%, 100%, .15);
     border-radius: 0;
-    margin: 0 0 0 -1px
+    margin: 0 0 0 -1px;
+    flex-shrink: 0;
 }
 
 .dropdown-menu > li > a, .plexBack {
@@ -2659,7 +2687,8 @@ textarea {
 }
 
 #metaModal > .modal-dialog > .modal-content > .modal-body {
-    padding: 0
+    padding: 0;
+    display: flow-root;
 }
 
 #metaModal > .modal-dialog > .modal-content > .modal-body > .text-center {
@@ -2808,7 +2837,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9
     pointer-events: none
 }
 
-body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-xs-12 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-12 {
     margin: 50px 0
 }
 
@@ -2958,24 +2987,24 @@ a:focus {
     padding: 0
 }
 
-#bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 {
+#bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-5 {
     padding: 30px 15px 15px 30px;
     height: 300px
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 {
+body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-5 {
     padding: 15px;
     height: 300px;
     pointer-events: none
 }
 
-#bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover {
+#bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-5 > div.cover, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-5 > div.cover {
     margin: auto;
     width: 100%;
     max-width: 200px;
 }
 
-#bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img {
+#bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-5 > div.cover > img {
     margin: 0 auto;
     max-height: 300px;
     max-width: 200px;
@@ -3061,7 +3090,7 @@ body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-
     margin-top: -25px
 }
 
-.book-meta > .bookinfo > .rating .glyphicon-star {
+.book-meta > .bookinfo > .rating .bi {
     color: hsla(0, 0%, 100%, .25)
 }
 
@@ -3083,7 +3112,7 @@ body.book .author {
     max-width: calc(100% - 100px)
 }
 
-.bookinfo .rating .glyphicon-star.good {
+.bookinfo .rating .bi-star-fill.good {
     color: hsla(0, 0%, 100%, .7)
 }
 
@@ -3119,7 +3148,7 @@ body.book .author {
     text-overflow: ellipsis
 }
 
-.book-meta > .bookinfo > .identifiers .glyphicon-link, .book-meta > .bookinfo > .tags .glyphicon-tags {
+.book-meta > .bookinfo > .identifiers .bi-link-45deg, .book-meta > .bookinfo > .tags .bi-tags {
     margin-left: -40px;
     margin-right: 17px;
     color: hsla(0, 0%, 100%, .45);
@@ -3168,7 +3197,7 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
     float: left
 }
 
-#add-to-shelf, #btnGroupDrop1, #readbtn,  #sendbtn, .book-meta .btn-toolbar > .btn-group > .btn-group:nth-child(1) > a:first-of-type, .book-meta .btn-toolbar > .btn-group > .btn-warning, .btn-toolbar > .btn-group > #btnGroupDrop2, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 {
+.book-meta > .btn-toolbar .btn {
     background: 0 0;
     color: transparent;
     width: 50px;
@@ -3176,6 +3205,28 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
     margin: 0;
     overflow: hidden;
     padding: 0
+}
+
+.book-meta > .btn-toolbar .btn > .bi {
+    display: block;
+    color: hsla(0, 0%, 100%, .7);
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.book-meta > .btn-toolbar .btn:hover > .bi {
+    color: #fff;
+}
+
+.book-meta > .btn-toolbar .dropdown-toggle::after {
+    position: absolute;
+    top: 29px;
+    right: 3px;
+    color: hsla(0, 0%, 100%, .7);
+}
+
+#add-to-shelf.dropdown-toggle::after {
+    display: none;
 }
 
 #add-to-shelf > span.caret, #btnGroupDrop1 > span.caret, #read-in-browser > span.caret, .btn-toolbar > .btn-group > #btnGroupDrop2 > span.caret, .btn-toolbar > .btn-group > .btn-group > #btnGroupDrop2 > span.caret {
@@ -3310,6 +3361,11 @@ div.btn-group[role=group][aria-label^="Download, send"] .dropdown-menu.offscreen
 }
 
 .dropdown-menu {
+    --bs-dropdown-color: rgba(255, 255, 255, .7);
+    --bs-dropdown-link-color: rgba(255, 255, 255, .7);
+    --bs-dropdown-link-hover-color: #fff;
+    --bs-dropdown-link-hover-bg: rgba(255, 255, 255, .08);
+    color: var(--bs-dropdown-color);
     border-radius: 4px !important;
     font-size: 13px;
     font-family: Open Sans Semibold, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -3325,9 +3381,6 @@ div.btn-group[role=group][aria-label^="Download, send"] .dropdown-menu.offscreen
     transform-origin: center top;
     border: 0;
     overflow-y: auto;
-}
-.dropdown-menu:not(.datepicker-dropdown):not(.profileDropli) {
-    left: 0 !important;
 }
 #add-to-shelves {
   min-height: 48px;
@@ -3395,8 +3448,13 @@ div.btn-group[role=group][aria-label^="Download, send"] .dropdown-menu.offscreen
     color: hsla(0, 0%, 100%, .45)
 }
 
-.rating .glyphicon-star.good {
+.rating .glyphicon-star.good,
+.rating .bi-star-fill.good {
     color: var(--color-primary)
+}
+
+.rating .bi-star {
+    color: #444
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div.discover > .btn-danger {
@@ -3480,17 +3538,17 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     margin-left: calc(100vw - 400px)
 }
 
-body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9.col-xs-12 > button.btn.btn-default {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9.col-12 > button#submit {
     float: right
 }
 
-body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9.col-xs-12 > a:last-of-type {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9.col-12 > a:last-of-type {
     float: right;
     background: hsla(0, 0%, 100%, .25);
     margin-right: 10px
 }
 
-body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9.col-xs-12 > a:last-of-type:hover {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9.col-12 > a:last-of-type:hover {
     background: hsla(0, 0%, 100%, .3)
 }
 
@@ -4323,11 +4381,11 @@ body.shelf.modal-open > .container-fluid {
     border-radius: 3px
 }
 
-#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body > .btn-default {
+#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary) {
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:hover {
+#DeleteShelfDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -4445,7 +4503,7 @@ body.shelf.modal-open > .container-fluid {
     cursor: pointer
 }
 
-.btn-default.active:hover, .btn-default:active:hover {
+:is(.btn-default, .btn-outline-secondary).active:hover, :is(.btn-default, .btn-outline-secondary):active:hover {
     border-color: var(--color-secondary-hover);
     color: #fff;
     background-color: var(--color-secondary-hover)
@@ -4468,7 +4526,7 @@ body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div
     padding-bottom: 0
 }
 
-body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn.btn-default {
+body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn:is(.btn-default, .btn-outline-secondary) {
     margin-right: 15px;
     margin-top: 20px
 }
@@ -4601,7 +4659,7 @@ body.remotelogin .plexBack > a {
     }
 }
 
-body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
+body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before {
     width: calc(100vw - 240px);
     height: 60px;
     margin: 0;
@@ -4629,12 +4687,12 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     left: 240px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before {
     position: fixed;
     left: 240px
 }
 
-body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before {
+body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before {
     position: fixed;
     left: 240px
 }
@@ -4692,7 +4750,7 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     border: collapse;
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > .admin-user-background, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > .admin-user-background {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
     display: block;
     position: fixed;
     left: calc(240px + ((20% - 55px - 6vw) / 2));
@@ -4710,7 +4768,7 @@ body.edituser.admin > div.container-fluid > div > div.col-sm-10 > div.discover, 
     border-top: 2px solid rgba(0, 0, 0, .3)
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1 {
     width: auto;
     position: absolute;
     top: 60px;
@@ -4723,30 +4781,30 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     padding-left: 30px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit {
     float: right;
     margin-left: 10px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back {
     float: right;
     margin-left: 0;
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 10px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back,
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back,
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit {
     float: none;
     margin-left: 0
 }
@@ -4756,15 +4814,15 @@ body.edituser.admin #btndeluser, body.newuser.admin #btndeluser {
     margin-left: 15px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 {
     margin-bottom: 60px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 {
     padding: 0
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > h2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > h2 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > h2 {
     color: #eee;
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
     line-height: 24px;
@@ -4784,19 +4842,19 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     height: auto
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
     height: 200px;
     padding: 0;
     margin: 15px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a {
     width: 100%;
     display: inline-block;
     height: 100%
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover {
     outline: solid var(--color-secondary);
     font-size: 50px;
     -o-transition: outline 0s;
@@ -4804,7 +4862,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     -webkit-transition: outline 0s
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:before {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:before {
     content: "\e352";
     display: inline-block;
     position: absolute;
@@ -4835,14 +4893,14 @@ body.book_table .editable-empty:hover {
     color: hsla(0, 0%, 100%, .65)
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:before {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:before {
     -o-transition: opacity .2s;
     transition: opacity .2s;
     -webkit-transition: opacity .2s;
     opacity: 1
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:after, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:after {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:after, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:after {
     position: absolute;
     content: '';
     width: 100%;
@@ -4855,7 +4913,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
     background: radial-gradient(farthest-corner at 50% 50%, rgba(50, 50, 50, .5) 50%, #323232 100%)
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:after, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:after {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:after, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a:hover:after {
     opacity: 1;
     -o-transition: opacity .2s;
     transition: opacity .2s;
@@ -4876,16 +4934,16 @@ body.admin .panel-default > .panel-collapse > .panel-body, body.admin .panel-def
     border: none
 }
 
-body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > *, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > * {
+body.config.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > *, body.uiconfig.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > * {
     float: right
 }
 
-body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a {
+body.config.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.uiconfig.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > a, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a {
     background-color: hsla(0, 0%, 100%, .25);
     margin-right: 10px
 }
 
-body.config.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.uiconfig.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover {
+body.config.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.uiconfig.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > div.col-sm-12 > a:hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -5126,17 +5184,17 @@ body.search > div.container-fluid > div > div.col-sm-10 > div.discover > h2 + p:
     color: #eee
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 {
     max-width: calc(25% - 75px);
     position: fixed
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
     margin-left: 25% !important;
     width: 75%
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete {
     position: fixed;
     top: 60px;
     right: 0;
@@ -5149,22 +5207,22 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div
     border-radius: 0
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:before {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:before {
     content: "\EA6D";
     font-family: plex-icons-new, serif;
     font-size: 18px;
     color: hsla(0, 0%, 100%, .7)
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover {
     background: #ce3d2a
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover:before {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center > #delete:hover:before {
     color: #fff
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center.more-stuff > h4, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center.more-stuff > h4 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-3 > div.text-center.more-stuff > h4, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-3 > div.text-center.more-stuff > h4 {
     color: #eee;
     margin: 20px;
     text-transform: uppercase;
@@ -5371,15 +5429,11 @@ body.login > nav.navbar > div > div.navbar-header > a:hover {
     right: 5px
 }
 
-body:not(.search) #shelf-actions > .btn-group.open, .profileDrop[aria-expanded=true] {
-    pointer-events: none
-}
-
-.downloadBtn.open {
+.caliblur-download.open {
     pointer-events: auto;
 }
 
-.downloadBtn > ul.dropdown-menu > li {
+.caliblur-download > ul.dropdown-menu > li {
     display: list-item !important;
 }
 
@@ -5392,21 +5446,16 @@ body:not(.search) #shelf-actions > .btn-group.open, .profileDrop[aria-expanded=t
     margin-bottom: 1px
 }
 
+.navigation li a > .bi,
+#scnd-nav li a > .bi {
+    display: inline-block;
+    width: 14px;
+    margin-right: 10px;
+    text-align: center;
+}
+
 .navigation li.active a .glyphicon-star {
     color: var(--color-primary)
-}
-
-body:not(.search) #shelf-actions, body:not(.search) #shelf-actions > .btn-group, body:not(.search) #shelf-actions > .btn-group > .empty-ul {
-    pointer-events: none
-}
-
-#shelf-actions > .btn-group > #add-to-shelf[aria-expanded=false]:not(.empty-ul) {
-    pointer-events: auto
-}
-
-#shelf-actions > .btn-group.open > .dropdown-menu,
-#shelf-actions > .btn-group.open > .dropdown-menu > li > a {
-    pointer-events: auto
 }
 
 .book-meta > .bookinfo > .comments p, .description p {
@@ -5461,7 +5510,7 @@ body.admin > div.container-fluid div.scheduled_tasks_details {
     margin-bottom: 20px
 }
 
-body.admin .btn-default {
+body.admin :is(.btn-default, .btn-outline-secondary) {
     margin-bottom: 10px
 }
 
@@ -5473,7 +5522,7 @@ body.admin .btn-default {
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
     max-width: calc(25% - 75px);
     position: fixed;
     padding-left: 30px;
@@ -5481,12 +5530,55 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
     z-index: 9
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-9 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-9 {
     margin-left: 25% !important;
     width: 75%
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
+body.editbook #book_edit_frm > .col-sm-9 {
+    padding: 0 15px;
+    display: flow-root;
+}
+
+body.editbook #book_edit_frm h2 {
+    margin: 20px 0 10px;
+    font-size: 30px;
+    line-height: 1.1;
+}
+
+body.editbook .form-group {
+    margin-bottom: 15px;
+}
+
+body.editbook .form-group > label,
+body.editbook .control-label,
+body.editbook label[for="pubdate"] {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+body.editbook select.form-control {
+    appearance: auto;
+}
+
+body.editbook .rating-input .bi {
+    color: hsla(0, 0%, 100%, .45);
+    font-size: 18px;
+}
+
+body.editbook .rating-input .bi-star-fill,
+body.editbook .rating-input .bi:hover {
+    color: hsla(0, 0%, 100%, .7);
+}
+
+body.editbook .input-group > .form-control.fake-input,
+body.advanced_search .input-group > .form-control.fake-input {
+    left: 0;
+    width: calc(100% - 40px);
+    margin-left: 0 !important;
+}
+
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
     position: fixed;
     top: 60px;
     right: 0;
@@ -5499,7 +5591,7 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
     border-radius: 0
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before {
     content: "\EA6D";
     font-family: plex-icons-new, serif;
     font-size: 18px;
@@ -5512,19 +5604,20 @@ body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm
     text-transform: uppercase
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover {
     background: #ce3d2a
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before {
     color: #fff
 }
 
-body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4 {
     color: #eee;
     margin: 20px;
     text-transform: uppercase;
-    font-size: 16px
+    font-size: 16px;
+    line-height: 1.1;
 }
 
 #main-nav + #scnd-nav {
@@ -5698,7 +5791,7 @@ body.admin.modal-open .navbar {
     z-index: 0 !important
 }
 
-#RestartDialog, #ShutdownDialog, #StatusDialog, #deleteModal, #cancelTaskModal {
+#deleteModal, #cancelTaskModal {
     top: 0;
     overflow: hidden;
     padding-top: 70px;
@@ -5708,7 +5801,7 @@ body.admin.modal-open .navbar {
     background: rgba(0, 0, 0, .5)
 }
 
-#RestartDialog:before, #ShutdownDialog:before, #StatusDialog:before, #deleteModal:before, #cancelTaskModal:before {
+#deleteModal:before, #cancelTaskModal:before {
     content: "\E208";
     padding-right: 10px;
     display: block;
@@ -5729,7 +5822,7 @@ body.admin.modal-open .navbar {
     z-index: 99
 }
 
-#RestartDialog.in:before, #ShutdownDialog.in:before, #StatusDialog.in:before, #deleteModal.in:before, #cancelTaskModal.in:before {
+#deleteModal.in:before, #cancelTaskModal.in:before {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0)
 }
@@ -5837,7 +5930,7 @@ body.admin.modal-open .navbar {
     background: #282828
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart), #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown), #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#restart), #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#shutdown), #deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary), #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary) {
     float: right;
     z-index: 9;
     position: relative;
@@ -5897,23 +5990,23 @@ body.admin.modal-open .navbar {
     border-radius: 3px
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart) {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#restart) {
     margin: 25px 0 0 10px
 }
 
-#ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown) {
+#ShutdownDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#shutdown) {
     margin: 55px 0 0 10px
 }
 
-#deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
+#deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary) {
     margin: 0 0 0 10px
 }
 
-#cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-default {
+#cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary) {
     margin: 0 0 0 10px
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#restart):hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#shutdown):hover, #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-default:hover, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > .btn-default:hover {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#restart):hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#shutdown):hover, #deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary):hover, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary):hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -6056,13 +6149,13 @@ body.authorlist .blur-wrapper:after {
     margin-top: 0 !important
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > h2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > h2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > h2 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > h2 {
     position: absolute;
     margin-top: -30px;
     font-size: 14px
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
     display: -ms-grid;
     display: grid;
@@ -6078,7 +6171,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     margin-bottom: 0
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12:before {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12:before {
     content: '';
     display: block;
     position: absolute;
@@ -6098,13 +6191,13 @@ body.user_table > div.container-fluid > div > div.col-sm-10 > div.discover > div
     margin: 0;
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
     width: 135px !important;
     max-width: 135px !important;
     min-width: 135px !important
 }
 
-body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a > img, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img, body.me > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a > img, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img {
     width: 135px !important;
     height: 200px !important
 }
@@ -6580,7 +6673,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         color: #fff
     }
 
-    .navbar-nav .open .dropdown-menu.profileDropli {
+    .navbar-nav .dropdown-menu.profileDropli {
         width: 210px;
         margin-left: 12px
     }
@@ -6633,7 +6726,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding: 10px !important
     }
 
-    .author > .container-fluid > .row-fluid > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
         top: 48px;
         left: 0;
         padding-left: 10px;
@@ -6649,7 +6742,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         font-size: 13px
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > h1 {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1 {
         top: 10px;
         left: 55px;
         font-size: 16px
@@ -6714,7 +6807,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding-left: 12px
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > .admin-user-background, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > .admin-user-background {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
         position: absolute;
         top: 20px;
         left: 30px;
@@ -6776,19 +6869,19 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-bottom: 10px
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12:before {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12:before {
         width: 100%;
         margin-left: 0;
         margin-top: -45px
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
         width: 100px !important;
         max-width: 100px !important;
         min-width: 100px !important
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a > img, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img, body.me > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2 > a > img, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 > a > img {
         width: 100px !important;
         height: 150px !important
     }
@@ -6869,7 +6962,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-bottom: 5px
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row {
         padding: 0
     }
 
@@ -6950,7 +7043,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-bottom: 15px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn.btn-default {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > form > .btn:is(.btn-default, .btn-outline-secondary) {
         margin-bottom: 20px;
         margin-top: 10px
     }
@@ -6959,7 +7052,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         border-top: 1px solid hsla(0, 0%, 78%, .15)
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12:before {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12:before, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12:before {
         height: 1px;
         background: hsla(0, 0%, 78%, .15)
     }
@@ -7088,7 +7181,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         display: none
     }
 
-    div.btn-group[role=group][aria-label^="Download, send"] > .downloadBtn {
+    div.btn-group[role=group][aria-label^="Download, send"] > .caliblur-download {
         border-left: 0
     }
 
@@ -7099,7 +7192,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         -webkit-transition: none
     }
 
-    body.book > div.container-fluid > div.row-fluid > div.col-sm-10 {
+    body.book > div.container-fluid > div.row > div.col-sm-10 {
         width: 100%;
         top: 0;
         height: calc(100% - 0px)
@@ -7110,7 +7203,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding: 15px !important
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 {
+    body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-5 {
         position: absolute;
         height: 150px;
         width: 100px;
@@ -7119,7 +7212,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-top: 75px
     }
 
-    #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img {
+    #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-5 > div.cover > img {
         width: 100px;
         height: 150px
     }
@@ -7309,19 +7402,19 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         margin-top: 125px
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 {
         float: left;
         width: 100%;
         margin-bottom: 10px;
         grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)) !important
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 {
         margin-bottom: 20px;
         padding-right: 15px
     }
 
-    body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2, body.me > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > div.col-sm-12 > div.col-sm-2, body > div.container-fluid > div.row > div.col-sm-10 > div.discover > div.col-sm-12 > div.col-sm-2 {
         height: 150px;
         padding: 0;
         margin: 7.5px auto
@@ -7331,12 +7424,12 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding: 15px 0 !important
     }
 
-    body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > .btn.btn-default {
+    body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > .btn:is(.btn-default, .btn-outline-secondary) {
         display: block;
         margin: 10px 15px 0 100%
     }
 
-    body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > a.btn.btn-default {
+    body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > form > a.btn:is(.btn-default, .btn-outline-secondary) {
         margin-bottom: 15px
     }
 
@@ -7344,7 +7437,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         background: 0 0
     }
 
-    body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
+    body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
         position: relative;
         max-width: unset;
         width: 100%;
@@ -7352,13 +7445,13 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         padding: 15px;
     }
 
-    body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
+    body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
         padding: 15px;
         margin: 0 !important;
         width: 100%
     }
 
-    #deleteButton, body.editbook > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
+    #deleteButton, body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
         top: 48px;
         height: 42px
     }
@@ -7605,7 +7698,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         max-width: 500px
     }
 
-    .col-xs-12 > .row > .col-xs-2 {
+    .container1 > .col-12 > .row > .col-2 {
         position: absolute;
         padding: 15px 0 0;
         text-align: center;
@@ -7613,7 +7706,7 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         pointer-events: none;
     }
 
-    .col-xs-12 > .row > .col-xs-10 {
+    .container1 > .col-12 > .row > .col-10 {
         padding: 0;
         width: 100%;
         height: 100%;
@@ -7621,26 +7714,27 @@ body.edituser.admin > div.container-fluid > div.row-fluid > div.col-sm-10 > div.
         max-width: calc(100vw - 40px)
     }
 
-    .col-xs-12 > .row > .col-xs-10 > a {
+    .container1 > .col-12 > .row > .col-10 > a {
         padding: 15px 15px 15px 16.66666667%;
         display: block;
         color: #eee
     }
 
-    .col-xs-12 > .row > .col-xs-10 > a:hover {
+    .container1 > .col-12 > .row > .col-10 > a:hover {
         color: #eee;
         text-decoration: none
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:nth-of-type(even) {
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row:nth-of-type(even) {
         background: 0 0
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row {
+        position: relative;
         border-bottom: 1px solid hsla(0, 0%, 78%, .15)
     }
 
-    .col-xs-12 > .row > .col-xs-10:after {
+    .container1 > .col-12 > .row > .col-10:after {
         content: '';
         position: absolute;
         width: 0;
@@ -8033,7 +8127,7 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     padding: 20px 20px 0 0
 }
 
-#DeleteDomain > .modal-dialog > .modal-content > .modal-body > #btndeletedomain, #DeleteDomain > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#btndeletedomain) {
+#DeleteDomain > .modal-dialog > .modal-content > .modal-body > #btndeletedomain, #DeleteDomain > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#btndeletedomain) {
     margin: 55px 0 0 10px;
     float: right;
     z-index: 9;
@@ -8045,11 +8139,11 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
     border-radius: 3px
 }
 
-#DeleteDomain > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#btndeletedomain) {
+#DeleteDomain > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#btndeletedomain) {
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-#DeleteDomain > .modal-dialog > .modal-content > .modal-body > .btn-default:not(#btndeletedomain):hover {
+#DeleteDomain > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#btndeletedomain):hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -8114,10 +8208,6 @@ body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .glyphic
 
 #sendbtn2:focus span, #sendbtn2:hover span, #read-in-browser:focus span, #read-in-browser:hover span {
     color: #fff
-}
-
-#sendbtn2[aria-expanded=true], #read-in-browser[aria-expanded=true] {
-    pointer-events: none
 }
 
 div.comments + [data-readmore-toggle], div.comments[data-readmore] {

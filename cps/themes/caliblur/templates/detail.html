@@ -13,7 +13,7 @@
         <div class="col-sm-3 col-lg-3 col-5">
             <div class="cover">
                 <!-- Always use full-sized image for the detail page -->
-                <img id="detailcover" title="{{ entry.title }}"
+                <img id="detailcover" class="img-fluid" alt="{{ entry.title }}" title="{{ entry.title }}"
                      src="{{ url_for('web.get_cover', book_id=entry.id, resolution='og', c=entry|last_modified) }}"/>
             </div>
         </div>
@@ -26,7 +26,7 @@
                                 <div class="btn-group" role="group" aria-label="Add to shelves">
                                     <button id="add-to-shelf" type="button"
                                             class="btn btn-primary btn-sm dropdown-toggle addtoshelf-btn-tooltip"
-                                            data-toggle-two="tooltip" title="{{ _('Add to shelf') }}" data-bs-placement="bottom" data-viewport=".btn-toolbar"
+                                            title="{{ _('Add to shelf') }}"
                                             data-bs-toggle="dropdown"
                                             aria-expanded="false">
                                         <i class="bi bi-list"></i> {{ _('Add to shelf') }}
@@ -35,7 +35,7 @@
                                         {% for shelf in g.shelves_access %}
                                             {% if not shelf.id in books_shelfs and ( not shelf.is_public or current_user.role_edit_shelfs() ) %}
                                                 <li>
-                                                    <a data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                                                    <a class="dropdown-item" data-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                        data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                                                        data-shelf-action="add"
                                                     >
@@ -72,14 +72,14 @@
                             <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id) }}"
                                   method="POST">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                <label class="block-label">
+                                <div class="block-label">
                                     <input id="have_read_cb" class="readunread-btn-tooltip" type="checkbox"
                                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar"
                                            title="{% if entry.read_status %}{{ _('Mark As Unread') }}{% else %}{{ _('Mark As Read') }}{% endif %}"
                                            {% if entry.read_status %}checked{% endif %}>
                                     <label class="block-label readLbl" for="have_read_cb"></label>
                                     <span data-bs-toggle="tooltip" title="{{_('Mark Book as Read or Unread')}}">{{ _('Read') }}</span>
-                                </label>
+                                </div>
                             </form>
                         </div>
                     {% endif %}
@@ -88,19 +88,18 @@
                             <a href="{{ url_for('edit-book.show_edit_book', book_id=entry.id) }}"
                                class="btn btn-primary edit-btn-tooltip" id="edit_book" role="button"
                                data-bs-toggle="tooltip" title="{{ _('Edit Metadata') }}" data-bs-placement="bottom" data-viewport=".btn-toolbar">
-                                <span class="edit-book-icon" data-bs-toggle="tooltip" title="{{ _('Edit Metadata') }}"
+                                <span class="bi bi-pencil" data-bs-toggle="tooltip" title="{{ _('Edit Metadata') }}"
                                       data-bs-placement="bottom" data-viewport=".btn-toolbar"></span> {{ _('Edit Metadata') }}
                             </a>
                         </div>
                     {% endif %}
                     {% if current_user.role_download() %}
                         {% if entry.data|length %}
-                            <div class="btn-group downloadBtn" role="group">
+                            <div class="btn-group caliblur-download" role="group">
                                 {% if entry.data|length > 0 %}
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary"
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
                                             aria-haspopup="true" aria-expanded="false"
-                                            data-toggle-two="tooltip" title="" data-bs-placement="bottom" data-viewport=".btn-toolbar"
-                                            data-original-title="Download :"><i class="bi bi-download"></i>Download :</button>
+                                            data-bs-toggle="dropdown" title="{{ _('Download') }}"><i class="bi bi-download"></i>{{ _('Download') }}</button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         {% for format in entry.data %}
                                             <li>
@@ -123,7 +122,7 @@
                             {% else %}
                                 <div class="btn-group sendBtn" role="group">
                                     <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle send-btn-tooltip"
-                                            data-bs-toggle="dropdown" data-toggle-two="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar" title="{{ _('Send to eReader') }}" aria-expanded="false">
+                                            data-bs-toggle="dropdown" title="{{ _('Send to eReader') }}" aria-expanded="false">
                                         <i class="bi bi-send"></i>{{ _('Send to eReader') }}
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="send-to-ereader">
@@ -141,7 +140,7 @@
                         <div class="btn-group readBtn" role="group">
                             {% if entry.reader_list|length > 1 %}
                                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle send-btn-tooltip"
-                                        data-bs-toggle="dropdown" data-toggle-two="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar" title="{{ _('Read in Browser') }}" aria-expanded="false">
+                                        data-bs-toggle="dropdown" title="{{ _('Read in Browser') }}" aria-expanded="false">
                                     <i class="bi bi-book"></i> {{ _('Read in Browser') }}
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="read-in-browser">
@@ -164,15 +163,9 @@
                     {% if entry.audio_entries|length > 0 and current_user.role_viewer() %}
                         <div class="btn-group listenBtn" role="group">
                             {% if entry.audio_entries|length > 1 %}
-                                <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle send-btn-tooltip" data-bs-toggle="dropdown" data-toggle-two="tooltip" data-bs-placement="bottom" data-viewport=".btn-toolbar" title="{{ _('Listen in Browser') }}" aria-expanded="false">
+                                <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle send-btn-tooltip" data-bs-toggle="dropdown" title="{{ _('Listen in Browser') }}" aria-expanded="false">
                                     <i class="bi bi-music-note"></i> {{ _('Listen in Browser') }}
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
-                                    {% for format in entry.reader_list %}
-                                        <li><a href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
                                 <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
                                     {% for format in entry.audio_entries %}
                                         <li><a href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{ format }}</a></li>
@@ -217,7 +210,7 @@
             {% if entry.languages|length > 0 %}
                 <div class="languages">
                     <p>
-                        <span class="badge text-bg-secondary">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+                        <span>{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
                     </p>
                 </div>
             {% endif %}
@@ -345,7 +338,7 @@
 {% block js %}
 <script type="text/template" id="template-shelf-add">
     <li>
-        <a data-href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
+        <a class="dropdown-item" data-href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
             <%= content %>
         </a>
     </li>

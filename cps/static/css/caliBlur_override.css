@@ -25,7 +25,7 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
 
 input.datepicker {color: transparent}
 input.datepicker:focus {color: transparent}
-input.datepicker:focus + input {color: #555}
+input.datepicker:focus + input {color: #eee}
 
 .col-sm-3.col-lg-2.col-6.book.session {
     margin-left: 0;
@@ -88,7 +88,7 @@ body > .container-fluid > .row {
 }
 
 @media only screen and (max-width: 767px) {
-        .row > .col-sm-2 {
+    body > .container-fluid > .row > .col-sm-2 {
         visibility: hidden;
     }
 
@@ -165,6 +165,377 @@ body.blur .datepicker table tr td span.active:hover {
 .form-upload-label,
 .top-tasks-label {
   display: none;
+}
+
+.admin-dashboard {
+  --bs-gutter-x: 30px;
+}
+
+.admin-dashboard > .row > .col > h2 {
+  margin: 20px 0 10px;
+}
+
+.admin-dashboard > .row {
+  margin: 0;
+}
+
+.admin-dashboard > .row > .col {
+  padding: 0;
+}
+
+.admin-dashboard .admin-detail-list {
+  background: rgba(0, 0, 0, .2);
+  border-bottom: 2px solid rgba(0, 0, 0, .3);
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .admin-detail-row {
+  margin: 0;
+}
+
+.admin-dashboard .admin-detail-row > .col-6 {
+  padding: 8px 15px;
+  border-top: 2px solid rgba(0, 0, 0, .3);
+  overflow-wrap: anywhere;
+}
+
+body.admin .table,
+body.book_table .table {
+  --bs-table-color: hsla(0, 0%, 100%, .65);
+  --bs-table-bg: transparent;
+  --bs-table-striped-color: hsla(0, 0%, 100%, .65);
+  --bs-table-striped-bg: transparent;
+  --bs-table-hover-color: #fff;
+  --bs-table-hover-bg: rgba(0, 0, 0, .08);
+}
+
+body.tasks #tasktable {
+  --bs-table-color: #eee;
+  --bs-table-bg: transparent;
+  --bs-table-striped-color: #eee;
+  --bs-table-striped-bg: rgba(255, 255, 255, .02);
+  --bs-table-hover-color: #fff;
+  --bs-table-hover-bg: rgba(255, 255, 255, .04);
+}
+
+.admin-dashboard .table {
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .table > :not(caption) > * > * {
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  border-bottom: 0;
+  line-height: 20px;
+}
+
+.admin-dashboard .table th {
+  font-family: "Open Sans Semibold", sans-serif;
+}
+
+.admin-dashboard .table-responsive {
+  overflow-x: auto;
+}
+
+body.admin .discover .form-group,
+body.admin .accordion .form-group,
+.caliblur-schedule-form .form-group {
+  margin-bottom: 15px;
+}
+
+body.admin .discover label,
+.caliblur-schedule-form label {
+  margin-bottom: 5px;
+}
+
+body.admin select.form-control,
+.caliblur-schedule-form select.form-control {
+  appearance: auto;
+}
+
+body.admin .discover > form > [class*="col-"],
+body.admin .discover > form[class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+body.admin .discover > form > [class*="col-"] > .col-sm-6 {
+  float: left;
+}
+
+.caliblur-config-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px;
+  clear: both;
+  padding-top: 20px;
+}
+
+body.admin .caliblur-config-actions .btn {
+  margin-bottom: 0;
+}
+
+body.admin .caliblur-config-accordion {
+  padding: 0 15px;
+  border: 0;
+  --bs-accordion-bg: transparent;
+  --bs-accordion-border-color: transparent;
+}
+
+body.admin .accordion-item {
+  margin-bottom: 5px;
+  border: 0;
+  border-radius: 0;
+  background: rgba(0, 0, 0, .15);
+}
+
+body.admin .accordion-header {
+  margin: 0;
+}
+
+body.admin .accordion-button {
+  padding: 10px 15px;
+  font-family: "Open Sans Semibold", sans-serif;
+  font-size: 16px;
+  line-height: 1.14375;
+  border-radius: 0 !important;
+  color: hsla(0, 0%, 100%, .65);
+  background: transparent;
+  box-shadow: none;
+}
+
+body.admin .accordion-button::after {
+  display: none;
+}
+
+body.admin .accordion-button:not(.collapsed) {
+  color: #eee;
+}
+
+body.admin .accordion-button .bi {
+  margin-right: 5px !important;
+  display: inline-flex;
+  line-height: 1;
+}
+
+body.admin .accordion-button .bi::before {
+  font-weight: bold !important;
+}
+
+body.admin .accordion-button:not(.collapsed) .bi-plus-lg::before {
+  content: "\f63b";
+}
+
+body.admin .accordion-body {
+  padding: 15px;
+  color: hsla(0, 0%, 100%, .65);
+}
+
+body.admin .accordion .input-group > .btn {
+  height: 36px;
+  margin-bottom: 10px;
+}
+
+body.admin .discover .pull-right {
+  float: right;
+}
+
+body.admin .discover #config_back,
+body.admin .discover #config_back:hover {
+  background: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+.caliblur-schedule-form .btn {
+  float: right;
+  margin-left: 10px;
+}
+
+.caliblur-schedule-form #email_back {
+  background: hsla(0, 0%, 100%, .25);
+}
+
+.caliblur-log-downloads > div {
+  padding: 0 15px;
+}
+
+body.admin .col-sm-10 .btn-primary,
+.caliblur-schedule-form .btn-primary {
+  background: var(--color-secondary);
+  color: #fff;
+}
+
+body.admin .col-sm-10 .btn-primary:hover,
+.caliblur-schedule-form .btn-primary:hover {
+  background: var(--color-secondary-hover);
+}
+
+body.admin .bootstrap-table .pagination,
+body.book_table .bootstrap-table .pagination {
+  display: flex !important;
+  flex-direction: row;
+}
+
+body.admin .bootstrap-table .pagination .page-link,
+body.book_table .bootstrap-table .pagination .page-link {
+  font-size: 15px;
+  line-height: 1.42857143;
+}
+
+body.usertable.admin .bootstrap-table .btn-secondary,
+body.usertable.admin .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.usertable.admin .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn,
+body.book_table .bootstrap-table .btn-secondary,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn,
+body.usertable.admin #user_delete_selection,
+body.mailset.admin .discover .btn-outline-secondary {
+  background: var(--color-secondary);
+  color: #fff;
+}
+
+.caliblur-user-table .ts-control,
+.caliblur-user-table .ts-dropdown {
+  background: #323232;
+  color: #eee;
+  border-color: transparent;
+}
+
+.caliblur-user-table .ts-control input {
+  color: #eee;
+}
+
+.caliblur-user-table select.multi_selector,
+.caliblur-user-table .header_select {
+  background: var(--color-secondary);
+  color: #fff;
+  border: 0;
+}
+
+.caliblur-user-table .header_select {
+  height: 36px;
+  padding: 0 16px;
+  font-family: "Open Sans Bold", sans-serif;
+  font-size: 14px;
+}
+
+.caliblur-user-table .fixed-table-container .table thead th .th-inner {
+  padding: 8px;
+}
+
+body.newuser.admin .discover > h1,
+body.edituser.admin .discover > h1 {
+  margin-top: 20px;
+}
+
+.caliblur-user-table > .col-12 {
+  padding: 40px 15px 60px;
+}
+
+.caliblur-user-table .table-responsive {
+  overflow: visible;
+}
+
+.caliblur-user-table .fixed-table-toolbar .btn {
+  margin-bottom: 0;
+}
+
+.caliblur-user-table .columns .dropdown-toggle::after,
+body.book_table .columns .dropdown-toggle::after {
+  display: none;
+}
+
+body.book_table .discover > .col-sm-6 {
+  float: left;
+  padding: 0 15px;
+}
+
+body.book_table .discover > .col-sm-6 > .row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+body.book_table .discover > .col-sm-6 > .row > .btn,
+body.book_table .discover > .col-sm-6 > .row > label {
+  width: auto;
+}
+
+body.book_table .discover > .col-sm-6 > .row > input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+body.book_table .discover > .filterheader {
+  margin: 0;
+}
+
+body.book_table .discover > .bootstrap-table {
+  clear: both;
+}
+
+body.advanced_search .rating-input .glyphicon-star {
+  color: var(--color-primary);
+}
+
+body.advanced_search .rating-input .glyphicon-star-empty {
+  color: hsla(0, 0%, 100%, .45);
+}
+
+body.advanced_search .ts-control,
+body.advanced_search .ts-dropdown {
+  background: #323232;
+  border-color: transparent;
+  color: #eee;
+}
+
+body.advanced_search .ts-control input {
+  color: #eee;
+}
+
+body.advanced_search .ts-control .item {
+  background: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.advanced_search .ts-dropdown .active {
+  background: hsla(0, 0%, 100%, .08);
+  color: #fff;
+}
+
+.caliblur-schedule-form {
+  padding: 0 15px 0 30px;
+}
+
+body.mailset .discover > form {
+  padding-left: 30px;
+}
+
+body.mailset.admin .discover > form > .form-group,
+body.mailset.admin .discover > form > div > .form-group {
+  padding-left: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+  .admin-dashboard,
+  .caliblur-user-table {
+    --bs-gutter-x: 20px;
+  }
+
+  body.admin .caliblur-config-accordion {
+    width: 100%;
+    padding: 0;
+  }
+
+  body.admin .caliblur-config-actions {
+    flex-wrap: wrap;
+  }
+
+  body.admin .discover > form > [class*="col-"] > .col-sm-6 {
+    width: 100%;
+    padding: 0 15px;
+  }
 }
 
 body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover .editable-buttons .btn-primary {

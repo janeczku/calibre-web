@@ -4,7 +4,7 @@
   <div class="col-sm-3 col-lg-3 col-12">
     <div class="cover">
         <!-- Always use full-sized image for the book edit page -->
-        <img id="detailcover" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
+        <img id="detailcover" class="img-fluid" alt="{{book.title}}" title="{{book.title}}" src="{{url_for('web.get_cover', book_id=book.id, resolution='og', c=book|last_modified)}}" />
     </div>
 {% if current_user.role_delete_books() %}
     <div class="text-center">
@@ -27,7 +27,7 @@
       <form class="padded-bottom" action="{{ url_for('edit-book.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <div class="form-group">
-              <div class="text-left">
+              <div class="text-start">
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
                   <select class="form-control" name="book_format_from" id="book_format_from">
                     <option disabled selected value>-- {{_('select an option')}} --</option>
@@ -96,7 +96,9 @@
     <div class="form-group input-group">
        <input type="text" class="datepicker form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
        <input type="text" class="form-control fake-input d-none" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
-      <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-outline-secondary"><i class="bi bi-x-circle"></i></button>
+      <span class="d-flex">
+        <button type="button" id="pubdate_delete" class="datepicker_delete btn btn-outline-secondary"><i class="bi bi-x-circle"></i></button>
+      </span>
     </div>
     <div class="form-group">
       <label for="publisher">{{_('Publisher')}}</label>
@@ -108,7 +110,7 @@
     </div>
     <div class="form-group">
       <label for="rating">{{_('Rating')}}</label>
-      <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
+      <input type="number" name="rating" id="rating" class="rating input-lg" data-icon-lib="bi" data-active-icon="bi-star-fill" data-inactive-icon="bi-star" data-clearable-icon="bi-x" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
       <div class="form-group">
       <label for="comments">{{_('Description')}}</label>
@@ -178,7 +180,9 @@
                   {% if book['custom_column_' ~ c.id]|length > 0 %}
                     value="{% if book['custom_column_' ~ c.id][0].value %}{{book['custom_column_' ~ c.id][0].value|formatdate}}{% endif %}"
                   {% endif %}>
-                <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-outline-secondary"><i class="bi bi-x-circle"></i></button>
+                <span class="d-flex">
+                  <button type="button" id="{{ 'custom_column_' ~ c.id }}_delete" class="datepicker_delete btn btn-outline-secondary"><i class="bi bi-x-circle"></i></button>
+                </span>
               </div>
             {% endif %}
 
@@ -214,7 +218,7 @@
       </label>
     </div>
     <a href="#" id="get_meta" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#metaModal">{{_('Fetch Metadata')}}</a>
-    <button type="submit" id="submit" class="btn btn-primary">{{_('Save')}}</button>
+    <button type="submit" id="submit" class="btn btn-outline-secondary">{{_('Save')}}</button>
     <a href="{{ url_for('web.show_book', book_id=book.id) }}" id="edit_cancel" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
   </div>
 </form>

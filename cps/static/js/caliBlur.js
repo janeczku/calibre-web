@@ -79,16 +79,14 @@ if ($("body.book").length > 0) {
         var splitText = $(this).text().split(':');
         var label = splitText.shift().trim();
         var value = splitText.join(':').trim();
-        var class_value = ""
         // Preserve Links
         if ($(this).find('a').length) {
             value = $(this).find('a').first().removeClass();
         }
-        // Preserve glyphicons
-        if ($(this).find('span').length) {
-            class_value = $(this).find('span').first().attr('class');
+        if ($(this).find('.bi').length) {
+            value = $(this).find('.bi').clone();
         }
-        $(this).html('<span>' + label + '</span><span class="' + class_value + '"></span>').find('span').last().append(value);
+        $(this).html('<span>' + label + '</span><span></span>').find('span').last().append(value);
     });
 
     $(".book-meta h2:first").clone()
@@ -107,6 +105,9 @@ if ($("body.book").length > 0) {
 /////////////////////////////////
 //    Start of Global Work    //
 ///////////////////////////////
+
+// The shared datepicker handler toggles Bootstrap 5's d-none class.
+$("body.advanced_search .fake-input.hidden").removeClass("hidden").addClass("d-none");
 
 // Hide dropdown and collapse menus on click-off
 $(document).mouseup(function (e) {
@@ -149,17 +150,6 @@ $("input#query").focusout(function () {
     setTimeout(function () {
         $('form[role="search"]').removeClass("search-focus");
     }, 100);
-});
-
-// Check if dropdown goes out of viewport and add class
-
-$(document).on("click", ".dropdown-toggle", function () {
-    // Add .offscreen if part of container not visible
-    $(".dropdown-menu:visible").filter(function () {
-        return $(this).visible() === false;
-    }).each(function () {
-        $(this).addClass("offscreen");
-    });
 });
 
 // Collapse long text into read-more
