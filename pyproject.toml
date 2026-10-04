@@ -96,6 +96,9 @@ ldap = [
     "python-ldap>=3.0.0,<3.5.0",
     "Flask-SimpleLDAP>=1.4.0,<2.2.0",
 ]
+cloudflare_access = [
+    "PyJWT>=2.15.0,<2.16.0",
+]
 oauth = [
     "Flask-Dance>=2.0.0,<7.2.0",
     "SQLAlchemy-Utils>=0.33.5,<0.43.0",
