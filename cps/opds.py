@@ -471,7 +471,17 @@ def get_database_stats():
 
 @opds.route("/opds/thumb_240_240/<book_id>")
 @opds.route("/opds/cover_240_240/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_get_cover_medium(book_id):
+    return get_book_cover(book_id, constants.COVER_THUMBNAIL_MEDIUM)
+
+
 @opds.route("/opds/cover_90_90/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_get_cover_small(book_id):
+    return get_book_cover(book_id, constants.COVER_THUMBNAIL_SMALL)
+
+
 @opds.route("/opds/cover/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
