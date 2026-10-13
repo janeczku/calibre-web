@@ -68,16 +68,15 @@ from .tasks.metadata_backup import TaskBackupMetadata
 from .file_helper import get_temp_dir
 from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub, replace_metadata
 from .embed_helper import do_calibre_export
+from .cover import save_image
 
 log = logger.create()
 try:
-    from wand.image import Image
-    from wand.exceptions import MissingDelegateError, BlobError
-    use_IM = True
-except (ImportError, RuntimeError) as e:
-    log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', e)
-    use_IM = False
-    MissingDelegateError = BaseException
+    from PIL import Image
+    use_pillow = True
+except ImportError as e:
+    log.debug('Cannot import Pillow, generating covers from non jpg files will not work: %s', e)
+    use_pillow = False
 
 
 # Convert existing book entry to new format
@@ -844,9 +843,6 @@ def save_cover_from_url(url, book_path):
         # "Invalid host" can be the result of a redirect response
         log.error(u'Cover Download Error %s', ex)
         return False, _("Error Downloading Cover")
-    except MissingDelegateError as ex:
-        log.info(u'File Format Error %s', ex)
-        return False, _("Cover Format Error")
     except UnacceptableAddressException as e:
         log.error("Localhost or local network was accessed for cover upload")
         return False, _("You are not allowed to access localhost or the local network for cover uploads")
@@ -861,14 +857,14 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
             log.error("Failed to create path for cover")
             return False, _("Failed to create path for cover")
     try:
-        # upload of jpg file without wand
+        # upload of jpg file without Pillow
         if isinstance(img, requests.Response):
             with open(os.path.join(filepath, saved_filename), 'wb') as f:
                 f.write(img.content)
         else:
-            if hasattr(img, "metadata"):
+            if use_pillow and isinstance(img, Image.Image):
                 # upload of jpg/png... via url
-                img.save(filename=os.path.join(filepath, saved_filename))
+                save_image(img, os.path.join(filepath, saved_filename))
                 img.close()
             else:
                 # upload of jpg/png... from hdd
@@ -883,20 +879,19 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
 def save_cover(img, book_path):
     content_type = img.headers.get('content-type')
 
-    if use_IM:
+    if use_pillow:
         if content_type not in ('image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/bmp'):
             log.error("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
             return False, _("Only jpg/jpeg/png/webp/bmp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
         try:
             if hasattr(img, 'stream'):
-                imgc = Image(blob=img.stream)
+                imgc = Image.open(img.stream)
             else:
-                imgc = Image(blob=io.BytesIO(img.content))
-            imgc.format = 'jpeg'
-            imgc.transform_colorspace("srgb")
+                imgc = Image.open(io.BytesIO(img.content))
+            imgc.load()
             img = imgc
-        except (BlobError, MissingDelegateError):
+        except (OSError, ValueError, Image.DecompressionBombError):
             log.error("Invalid cover file content")
             return False, _("Invalid cover file content")
     else:

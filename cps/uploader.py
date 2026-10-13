@@ -18,6 +18,7 @@
 
 import os
 import hashlib
+import importlib.metadata
 from flask_babel import gettext as _
 
 from . import logger, comic, isoLanguages
@@ -29,12 +30,11 @@ from .string_helper import strip_whitespaces
 log = logger.create()
 
 try:
-    from wand.image import Image, Color
-    from wand import version as ImageVersion
-    from wand.exceptions import PolicyError
-    use_generic_pdf_cover = False
-except (ImportError, RuntimeError) as e:
-    log.debug('Cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
+    import pypdfium2 as pdfium
+    from .cover import use_pillow, save_image
+    use_generic_pdf_cover = not use_pillow
+except ImportError as e:
+    log.debug('Cannot import pypdfium2, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 
 try:
@@ -247,30 +247,24 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
     try:
         cover_file_name = tmp_file_path + ".jpg"
-        with Image() as img:
-            img.options["pdf:use-cropbox"] = "true"
-            img.read(filename=tmp_file_path + '[0]', resolution=150)
-            img.compression_quality = 88
-            if img.alpha_channel:
-                img.alpha_channel = 'remove'
-                img.background_color = Color('white')
-            img.save(filename=cover_file_name)
+        pdf = pdfium.PdfDocument(tmp_file_path)
+        try:
+            # render the first page (crop box) at 150 dpi on a white background
+            save_image(pdf[0].render(scale=150 / 72).to_pil(), cover_file_name)
+        finally:
+            pdf.close()
         return cover_file_name
-    except PolicyError as ex:
-        log.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)
-        return None
     except Exception as ex:
         log.warning('Cannot extract cover image, using default: %s', ex)
-        log.warning('On Windows this error could be caused by missing ghostscript')
         return None
 
 
 def get_magick_version():
     ret = dict()
     if not use_generic_pdf_cover:
-        ret['Image Magick'] = ImageVersion.MAGICK_VERSION
+        ret['pypdfium2'] = importlib.metadata.version('pypdfium2')
     else:
-        ret['Image Magick'] = 'not installed'
+        ret['pypdfium2'] = 'not installed'
     return ret
 
 
