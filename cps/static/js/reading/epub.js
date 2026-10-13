@@ -51,8 +51,12 @@ var reader;
             if (ev.pointers && ev.pointers.length > 1) return; // ignore multi-touch
             var win = isIframeDoc ? target.defaultView : window;
             if (hasActiveSelection(win)) return; // do not navigate when selecting text
-            // Mapping per requirement: L->R = PREV, R->L = NEXT (independent of RTL)
-            if (ev.type === "swipeleft") reader.rendition.next();
+            // R->L = NEXT, L->R = PREV; reversed for right-to-left books
+            var forward = ev.type === "swipeleft";
+            if (reader.book.package && reader.book.package.metadata.direction === "rtl") {
+                forward = !forward;
+            }
+            if (forward) reader.rendition.next();
             else reader.rendition.prev();
         });
         hammerManagers.push(mc);
@@ -146,8 +150,8 @@ var reader;
         }
     };
 
-    // Apply saved or default mode on load
-    var savedMode = localStorage.getItem("calibre.reader.navMode") || "sizes";
+    // Apply saved or default mode on load (gestures on touch screens, side arrows otherwise)
+    var savedMode = localStorage.getItem("calibre.reader.navMode") || window.cwDefaultNavMode();
     window.applyNavigationMode(savedMode);
 
     // Update progress percentage
