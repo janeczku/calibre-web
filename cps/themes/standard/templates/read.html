@@ -114,6 +114,19 @@
             <input type="checkbox" id="showPagesCount" name="showPagesCount"/>{{_('Show pages count')}}
           </p>
         </div>
+        <div class="form-group" id="navigationMode">
+          <label class="item">{{ _('Navigation') }}:</label>
+          <button type="button" id="navSides" onclick="selectNavMode('sides')">
+            <span id="navSidesTick"> </span>{{_('Sides')}}
+          </button>
+          <button
+            type="button"
+            id="navGestures"
+            onclick="selectNavMode('gestures')"
+          >
+            <span id="navGesturesTick"> </span>{{_('Gestures (mobile)')}}
+          </button>
+        </div>
         <div class="form-group fontSizeWrapper">
           <label>{{ _('Font Size') }}</label>
           <div class="font-size-controls" style="display: flex;align-items: center;gap: 10px;margin-top: 2px;">
@@ -306,6 +319,23 @@
           reader.rendition.spread(id==="spread" ? true : "none");
         }
 
+        function selectNavMode(mode) {
+          var tickSides = document.getElementById("navSidesTick");
+          var tickGest = document.getElementById("navGesturesTick");
+          if (tickSides) tickSides.textContent = mode === "sides" ? "✓" : "";
+          if (tickGest) tickGest.textContent = mode === "gestures" ? "✓" : "";
+          localStorage.setItem("calibre.reader.navMode", mode);
+          if (window.applyNavigationMode) {
+            window.applyNavigationMode(mode);
+          }
+        }
+        // Initialize nav mode on load
+        (function () {
+          var savedMode =
+            localStorage.getItem("calibre.reader.navMode") || "sides";
+          selectNavMode(savedMode);
+        })();
+
         // Pages counter visibility setting
         (function () {
             var checkbox = document.getElementById("showPagesCount");
@@ -489,6 +519,7 @@
       })();
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/hammer.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
     </body>
