@@ -70,7 +70,13 @@
 #back-button {
   width: 50px !important;
   right: 50px;
-  // position: absolute;
+  position: absolute;
+}
+
+/* Keep the custom theme color picker inside narrow (phone) screens */
+body .pcr-app[data-theme] {
+  box-sizing: border-box;
+  max-width: calc(100vw - 16px);
 }
 
 #progress {

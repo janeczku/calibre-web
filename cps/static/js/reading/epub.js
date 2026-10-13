@@ -24,33 +24,135 @@ var reader;
         $("#bookmark, #show-Bookmarks").remove();
     }
 
-    // Enable swipe support
-    // I have no idea why swiperRight/swiperLeft from plugins is not working, events just don't get fired
-    var touchStart = 0;
-    var touchEnd = 0;
+    // Navigation mode: 'sides' or 'gestures'
+    var hammerManagers = [];
 
-    reader.rendition.on('touchstart', function(event) {
-        touchStart = event.changedTouches[0].screenX;
-    });
-    reader.rendition.on('touchend', function(event) {
-      touchEnd = event.changedTouches[0].screenX;
-        if (touchStart < touchEnd) {
-            if(reader.book.package.metadata.direction === "rtl") {
-    			reader.rendition.next();
-    		} else {
-    			reader.rendition.prev();
-    		}
-            // Swiped Right
+    function hasActiveSelection(win) {
+        try {
+            var sel = win.getSelection && win.getSelection();
+            return sel && sel.type === "Range" && sel.toString().length > 0;
+        } catch (e) {
+            return false;
         }
-        if (touchStart > touchEnd) {
-            if(reader.book.package.metadata.direction === "rtl") {
-    			reader.rendition.prev();
-    		} else {
+    }
+
+    function bindHammer(target, isIframeDoc) {
+        if (typeof Hammer === "undefined") {
+            return;
+        }
+        var mc = new Hammer(target);
+        mc.get("swipe").set({
+            direction: Hammer.DIRECTION_HORIZONTAL,
+            threshold: 25,
+            velocity: 0.3,
+        });
+        mc.on("swipeleft swiperight", function (ev) {
+            if (!window.cwGesturesEnabled) return;
+            if (ev.pointers && ev.pointers.length > 1) return; // ignore multi-touch
+            var win = isIframeDoc ? target.defaultView : window;
+            if (hasActiveSelection(win)) return; // do not navigate when selecting text
+            // R->L = NEXT, L->R = PREV; reversed for right-to-left books
+            var forward = ev.type === "swipeleft";
+            if (reader.book.package && reader.book.package.metadata.direction === "rtl") {
+                forward = !forward;
+            }
+            if (forward) reader.rendition.next();
+            else reader.rendition.prev();
+        });
+        hammerManagers.push(mc);
+    }
+
+    function destroyHammers() {
+        while (hammerManagers.length) {
+            var mc = hammerManagers.pop();
+            try {
+                mc.destroy();
+            } catch (e) {}
+        }
+    }
+
+    function enableSideClicks() {
+        var prevBtn = document.getElementById("prev");
+        var nextBtn = document.getElementById("next");
+        if (prevBtn) {
+            prevBtn.style.display = "";
+            prevBtn.onclick = function () {
+                reader.rendition.prev();
+            };
+        }
+        if (nextBtn) {
+            nextBtn.style.display = "";
+            nextBtn.onclick = function () {
                 reader.rendition.next();
-    		}
-            // Swiped Left
+            };
         }
-    });
+    }
+
+    function disableSideClicks() {
+        var prevBtn = document.getElementById("prev");
+        var nextBtn = document.getElementById("next");
+        if (prevBtn) {
+            prevBtn.onclick = null;
+            prevBtn.style.display = "none";
+        }
+        if (nextBtn) {
+            nextBtn.onclick = null;
+            nextBtn.style.display = "none";
+        }
+    }
+
+    function enableGestures() {
+        // Bind to outer container
+        if (reader && reader.rendition && reader.rendition.container) {
+            bindHammer(reader.rendition.container, false);
+        }
+        // Bind swipe on sidebar to close/open main
+        try {
+            var sidebarEl = document.getElementById("tocView");
+            if (sidebarEl && typeof Hammer !== "undefined") {
+                var sidebarMc = new Hammer(sidebarEl);
+                sidebarMc.get("swipe").set({
+                    direction: Hammer.DIRECTION_HORIZONTAL,
+                    threshold: 25,
+                    velocity: 0.3,
+                });
+                sidebarMc.on("swipeleft swiperight", function (ev) {
+                    if ($("#sidebar").hasClass("open")) {
+                        $("#slider").click();
+                    }
+                });
+                hammerManagers.push(sidebarMc);
+            }
+        } catch (e) {}
+        // Bind to inner iframes when rendered
+        reader.rendition.on("rendered", function (section, contents) {
+            var docEl = contents.document;
+            if (docEl && docEl.documentElement && docEl.documentElement.style) {
+                docEl.documentElement.style.touchAction = "pan-y";
+            }
+            bindHammer(docEl, true);
+        });
+    }
+
+    window.applyNavigationMode = function (mode) {
+        if (!window.cwInitialized) {
+            destroyHammers();
+            enableGestures();
+            window.cwInitialized = true;
+        }
+
+        if (mode === "sides") {
+            enableSideClicks();
+            window.cwGesturesEnabled = false;
+        } else {
+            disableSideClicks();
+            window.cwGesturesEnabled = true;
+        }
+    };
+
+    // Apply saved or default mode on load (gestures on touch screens, side arrows otherwise)
+    var savedMode = localStorage.getItem("calibre.reader.navMode") || window.cwDefaultNavMode();
+    window.applyNavigationMode(savedMode);
 
     // Update progress percentage
     let progressDiv = document.getElementById("progress");
@@ -185,6 +287,12 @@ var reader;
         const savedFont = localStorage.getItem("calibre.reader.font");
         if (savedFont && window.selectFont) {
             window.selectFont(savedFont);
+        }
+
+        // Restore saved spread/columns setting
+        const savedSpread = localStorage.getItem("calibre.reader.spread");
+        if (savedSpread && (savedSpread === "spread" || savedSpread === "nonespread")) {
+            reader.rendition.spread(savedSpread === "spread" ? true : "none");
         }
     });
 })();
