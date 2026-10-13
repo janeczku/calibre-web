@@ -28,14 +28,10 @@ from .string_helper import strip_whitespaces
 
 log = logger.create()
 
-try:
-    from wand.image import Image, Color
-    from wand import version as ImageVersion
-    from wand.exceptions import PolicyError
-    use_generic_pdf_cover = False
-except (ImportError, RuntimeError) as e:
-    log.debug('Cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
-    use_generic_pdf_cover = True
+from .imagemagick import Image, Color, ImageVersion, PolicyError, use_IM, import_error as im_import_error
+use_generic_pdf_cover = not use_IM
+if use_generic_pdf_cover:
+    log.debug('Cannot import Image, generating pdf covers for pdf uploads will not work: %s', im_import_error)
 
 try:
     from pypdf import PdfReader

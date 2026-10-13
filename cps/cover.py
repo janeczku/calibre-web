@@ -18,11 +18,7 @@
 
 import os
 
-try:
-    from wand.image import Image
-    use_IM = True
-except (ImportError, RuntimeError) as e:
-    use_IM = False
+from .imagemagick import Image, use_IM
 
 
 NO_JPEG_EXTENSIONS = ['.png', '.webp', '.bmp']
