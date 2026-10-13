@@ -28,11 +28,9 @@ from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
 from sqlalchemy import func, text, or_
 from flask_babel import lazy_gettext as N_
 
-try:
-    from wand.image import Image
-    use_IM = True
-except (ImportError, RuntimeError) as e:
-    use_IM = False
+from ..cover import use_pillow, save_image
+if use_pillow:
+    from PIL import Image
 
 
 def get_resize_height(resolution):
@@ -64,6 +62,16 @@ def get_best_fit(width, height, image_width, image_height):
     return {'width': resize_width, 'height': resize_height}
 
 
+def resize_and_crop_center(img, width, height):
+    # Scale the image to fill a quarter of the series canvas and cut out its centre
+    dimensions = get_best_fit(width, height, img.width, img.height)
+    img = img.resize((int(dimensions['width']), int(dimensions['height'])), Image.LANCZOS)
+    crop_width, crop_height = int(width / 2.0), int(height / 2.0)
+    left = (img.width - crop_width) // 2
+    top = (img.height - crop_height) // 2
+    return img.crop((left, top, left + crop_width, top + crop_height))
+
+
 class TaskGenerateCoverThumbnails(CalibreTask):
     def __init__(self, book_id=-1, task_message=''):
         super(TaskGenerateCoverThumbnails, self).__init__(task_message)
@@ -78,7 +86,7 @@ class TaskGenerateCoverThumbnails(CalibreTask):
         ]
 
     def run(self, worker_thread):
-        if use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
+        if use_pillow and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
             self.message = 'Scanning Books'
             books_with_covers = self.get_books_with_covers(self.book_id)
             count = len(books_with_covers)
@@ -189,15 +197,13 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                     raise Exception('Google Drive cover url not found')
                 try:
                     stream = BytesIO(content)
-                    with Image(file=stream) as img:
+                    with Image.open(stream) as img:
                         filename = self.cache.get_cache_file_path(thumbnail.filename,
                                                                   constants.CACHE_TYPE_THUMBNAILS)
                         height = get_resize_height(thumbnail.resolution)
                         if img.height > height:
                             width = get_resize_width(thumbnail.resolution, img.width, img.height)
-                            img.resize(width=width, height=height, filter='lanczos')
-                            img.format = thumbnail.format
-                            img.save(filename=filename)
+                            save_image(img.resize((width, height), Image.LANCZOS), filename, thumbnail.format)
                         else:
                             stream.seek(0)
                             with open(filename, 'wb') as fd:
@@ -216,14 +222,12 @@ class TaskGenerateCoverThumbnails(CalibreTask):
                 if not os.path.isfile(book_cover_filepath):
                     raise Exception('Book cover file not found')
 
-                with Image(filename=book_cover_filepath) as img:
+                with Image.open(book_cover_filepath) as img:
                     height = get_resize_height(thumbnail.resolution)
                     filename = self.cache.get_cache_file_path(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
                     if img.height > height:
                         width = get_resize_width(thumbnail.resolution, img.width, img.height)
-                        img.resize(width=width, height=height, filter='lanczos')
-                        img.format = thumbnail.format
-                        img.save(filename=filename)
+                        save_image(img.resize((width, height), Image.LANCZOS), filename, thumbnail.format)
                     else:
                         # take cover as is
                         copyfile(book_cover_filepath, filename)
@@ -258,7 +262,7 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
     def run(self, worker_thread):
         with app.app_context():
             calibre_db = db.CalibreDB(app)
-            if calibre_db.session and use_IM and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
+            if calibre_db.session and use_pillow and self.stat != STAT_CANCELLED and self.stat != STAT_ENDED:
                 self.message = 'Scanning Series'
                 all_series = self.get_series_with_four_plus_books(calibre_db)
                 count = len(all_series)
@@ -371,7 +375,8 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
         left = 0
         width = 0
         height = 0
-        with Image() as canvas:
+        canvas = None
+        try:
             for book in books:
                 if config.config_use_google_drive:
                     if not gdriveutils.is_gdrive_ready():
@@ -384,23 +389,16 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
                     stream = None
                     try:
                         stream = urlopen(web_content_link)
-                        with Image(file=stream) as img:
+                        with Image.open(BytesIO(stream.read())) as img:
                             # Use the first image in this set to determine the width and height to scale the
                             # other images in this set
                             if width == 0 or height == 0:
                                 width = get_resize_width(thumbnail.resolution, img.width, img.height)
                                 height = get_resize_height(thumbnail.resolution)
-                                canvas.blank(width, height)
+                                canvas = Image.new('RGB', (width, height), 'white')
 
-                            dimensions = get_best_fit(width, height, img.width, img.height)
-
-                            # resize and crop the image
-                            img.resize(width=int(dimensions['width']), height=int(dimensions['height']),
-                                       filter='lanczos')
-                            img.crop(width=int(width / 2.0), height=int(height / 2.0), gravity='center')
-
-                            # add the image to the canvas
-                            canvas.composite(img, left, top)
+                            # resize and crop the image, then add it to the canvas
+                            canvas.paste(resize_and_crop_center(img, width, height), (left, top))
 
                     except Exception as ex:
                         self.log.debug('Error generating thumbnail file: ' + str(ex))
@@ -413,22 +411,16 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
                 if not os.path.isfile(book_cover_filepath):
                     raise Exception('Book cover file not found')
 
-                with Image(filename=book_cover_filepath) as img:
+                with Image.open(book_cover_filepath) as img:
                     # Use the first image in this set to determine the width and height to scale the
                     # other images in this set
                     if width == 0 or height == 0:
                         width = get_resize_width(thumbnail.resolution, img.width, img.height)
                         height = get_resize_height(thumbnail.resolution)
-                        canvas.blank(width, height)
+                        canvas = Image.new('RGB', (width, height), 'white')
 
-                    dimensions = get_best_fit(width, height, img.width, img.height)
-
-                    # resize and crop the image
-                    img.resize(width=int(dimensions['width']), height=int(dimensions['height']), filter='lanczos')
-                    img.crop(width=int(width / 2.0), height=int(height / 2.0), gravity='center')
-
-                    # add the image to the canvas
-                    canvas.composite(img, left, top)
+                    # resize and crop the image, then add it to the canvas
+                    canvas.paste(resize_and_crop_center(img, width, height), (left, top))
 
                 # set the coordinates for the next iteration
                 if left == 0 and top == 0:
@@ -439,9 +431,11 @@ class TaskGenerateSeriesThumbnails(CalibreTask):
                 else:
                     left = int(width / 2.0)
 
-            canvas.format = thumbnail.format
             filename = self.cache.get_cache_file_path(thumbnail.filename, constants.CACHE_TYPE_THUMBNAILS)
-            canvas.save(filename=filename)
+            save_image(canvas, filename, thumbnail.format)
+        finally:
+            if canvas is not None:
+                canvas.close()
 
     @property
     def name(self):
