@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ current_user.locale }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; object-src 'none'; frame-src 'self' blob:; connect-src 'self' blob:; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline' blob:; style-src-elem 'self' 'unsafe-inline' blob:; font-src 'self' blob: data:; media-src 'self' blob: data:; base-uri 'none'; form-action 'none'">
+    <title>{{ _('eBook Reader') }} | {{ title }}</title>
+    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobi_reader.css') }}">
+</head>
+<body data-book-format="{{ book_format }}"
+      data-book-url="{{ url_for('web.serve_book', book_id=bookid, book_format=book_format, anyname='file.' + book_format) }}"
+      data-back-url="{{ url_for('web.show_book', book_id=bookid) }}"
+      data-back-label="{{ _('Back to book') }}"
+      data-error-loading="{{ _('Could not load this book.') }}"
+      data-error-unsupported="{{ _('This file is not a valid MOBI, AZW or AZW3 book.') }}">
+<div id="toolbar">
+    <a class="button" href="{{ url_for('web.show_book', book_id=bookid) }}" title="{{ _('Back to book') }}"
+       aria-label="{{ _('Back to book') }}">&#8592;</a>
+    <span id="book-title">{{ title }}</span>
+    <span id="chapter-title" aria-live="polite"></span>
+    <button id="toc-toggle" type="button" aria-controls="toc" aria-expanded="false">{{ _('Contents') }}</button>
+</div>
+<div id="reader-main">
+    <aside id="toc" aria-label="{{ _('Contents') }}" aria-hidden="true">
+        <h2>{{ _('Contents') }}</h2>
+        <nav id="toc-nav"></nav>
+    </aside>
+    <div id="toc-backdrop"></div>
+    <main id="view-container"></main>
+    <div id="status">
+        <p>{{ _('Loading book...') }}</p>
+        <noscript><p>{{ _('This reader requires JavaScript.') }}</p></noscript>
+    </div>
+</div>
+<div id="controls">
+    <button id="prev-page" class="nav-button" type="button" aria-label="{{ _('Previous page') }}"
+            title="{{ _('Previous page') }}">&#8249;</button>
+    <input id="progress-slider" type="range" min="0" max="1" step="0.001" value="0"
+           aria-label="{{ _('Reading progress') }}">
+    <span id="progress-label">0%</span>
+    <button id="next-page" class="nav-button" type="button" aria-label="{{ _('Next page') }}"
+            title="{{ _('Next page') }}">&#8250;</button>
+</div>
+<script type="module" src="{{ url_for('static', filename='js/reading/mobi.js') }}"></script>
+</body>
+</html>

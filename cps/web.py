@@ -105,7 +105,8 @@ def add_security_headers(resp):
     if request.endpoint == "edit-book.show_edit_book" or config.config_use_google_drive:
         csp += " *"
     if request.endpoint == "web.read_book":
-        csp += " blob: ; style-src-elem 'self' blob: 'unsafe-inline'"
+        csp += " blob: ; style-src-elem 'self' blob: 'unsafe-inline'; frame-src 'self' blob:; " \
+               "child-src 'self' blob:; media-src 'self' blob: data:"
     csp += "; object-src 'none';"
     resp.headers['Content-Security-Policy'] = csp
     resp.headers['X-Content-Type-Options'] = 'nosniff'
@@ -116,6 +117,12 @@ def add_security_headers(resp):
 
 
 web = Blueprint('web', __name__)
+
+MOBI_MIME_TYPES = {
+    "mobi": "application/x-mobipocket-ebook",
+    "azw": "application/vnd.amazon.ebook",
+    "azw3": "application/vnd.amazon.ebook",
+}
 
 log = logger.create()
 
@@ -1210,7 +1217,8 @@ def serve_book(book_id, book_format, anyname):
     if config.config_use_google_drive:
         try:
             headers = Headers()
-            headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
+            headers["Content-Type"] = MOBI_MIME_TYPES.get(
+                book_format, mimetypes.types_map.get('.' + book_format, "application/octet-stream"))
             if not range_header:                
                 headers['Accept-Ranges'] = 'bytes'
             df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
@@ -1239,6 +1247,8 @@ def serve_book(book_id, book_format, anyname):
         # enable byte range read of pdf
         response = make_response(
             send_from_directory(os.path.join(config.get_book_path(), book.path), data.name + "." + book_format))
+        if book_format in MOBI_MIME_TYPES:
+            response.headers["Content-Type"] = MOBI_MIME_TYPES[book_format]
         if not range_header:
             response.headers['Accept-Ranges'] = 'bytes'
         return response
@@ -1601,6 +1611,10 @@ def read_book(book_id, book_format):
         log.debug("Start djvu reader for %d", book_id)
         return render_title_template('readdjvu.html', djvufile=book_id, title=book.title,
                                      extension=book_format.lower())
+    elif book_format.upper() in constants.EXTENSIONS_READER_MOBI:
+        log.debug("Start MOBI/KF8 reader for %d", book_id)
+        return render_title_template('readmobi.html', bookid=book_id, title=book.title,
+                                     book_format=book_format.lower())
     else:
         for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:

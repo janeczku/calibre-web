@@ -58,7 +58,7 @@ from .tasks.convert import TaskConvert
 from . import logger, config, db, ub, fs
 from . import gdriveutils as gd
 from .constants import (STATIC_DIR as _STATIC_DIR, CACHE_TYPE_THUMBNAILS, THUMBNAIL_TYPE_COVER, THUMBNAIL_TYPE_SERIES,
-                        SUPPORTED_CALIBRE_BINARIES)
+                        SUPPORTED_CALIBRE_BINARIES, EXTENSIONS_READER_MOBI)
 from .binary_helper import resolve_binary_path, SUPPORTED_UNRAR_BINARIES
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread
@@ -202,7 +202,7 @@ def check_send_to_ereader(entry):
 # Check if a reader is existing for any of the book formats, if not, return empty list, otherwise return
 # list with supported formats
 def check_read_formats(entry):
-    extensions_reader = {'TXT', 'PDF', 'EPUB', 'KEPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'}
+    extensions_reader = {'TXT', 'PDF', 'EPUB', 'KEPUB', 'CBZ', 'CBT', 'CBR', 'DJVU', 'DJV'} | EXTENSIONS_READER_MOBI
     book_formats = list()
     if len(entry.data):
         for ele in iter(entry.data):
