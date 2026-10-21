@@ -148,6 +148,8 @@ del env_CALIBRE_PORT
 
 
 EXTENSIONS_AUDIO = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
+# Formats rendered by the browser-based MOBI/KF8 reader
+EXTENSIONS_READER_MOBI = {'MOBI', 'AZW', 'AZW3'}
 EXTENSIONS_CONVERT_FROM = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf',
                            'txt', 'htmlz', 'rtf', 'odt', 'cbz', 'cbr', 'prc']
 EXTENSIONS_CONVERT_TO = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2',

@@ -1,0 +1,246 @@
+:root {
+    color-scheme: light dark;
+    --bg: #f4f4f4;
+    --surface: #ffffff;
+    --text: #202020;
+    --muted: #666666;
+    --border: #d8d8d8;
+    --hover: #ececec;
+    --accent: #2b6cb0;
+    --shadow: rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #181818;
+        --surface: #242424;
+        --text: #e8e8e8;
+        --muted: #a0a0a0;
+        --border: #3a3a3a;
+        --hover: #333333;
+        --accent: #7fb3e8;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+#toolbar,
+#controls {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.25rem 0.75rem;
+    background: var(--surface);
+}
+
+#toolbar {
+    border-bottom: 1px solid var(--border);
+}
+
+#controls {
+    border-top: 1px solid var(--border);
+}
+
+#book-title {
+    flex: 1 1 auto;
+    overflow: hidden;
+    font-weight: 600;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#chapter-title {
+    flex: 0 1 auto;
+    max-width: 30%;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#reader-main {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+#view-container {
+    position: absolute;
+    inset: 0;
+}
+
+foliate-view {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+button,
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+    background: var(--hover);
+}
+
+button:focus-visible,
+.button:focus-visible,
+#toc a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.nav-button {
+    font-size: 1.4rem;
+}
+
+#progress-slider {
+    flex: 1 1 auto;
+    min-width: 0;
+    accent-color: var(--accent);
+}
+
+#progress-label {
+    min-width: 3.5em;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+#toc {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    width: min(340px, 85vw);
+    padding: 1rem;
+    overflow: auto;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+}
+
+#toc.open {
+    transform: translateX(0);
+}
+
+#toc h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+}
+
+#toc ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+#toc ul ul {
+    padding-left: 1rem;
+}
+
+#toc a {
+    display: block;
+    padding: 0.45rem 0.35rem;
+    border-radius: 4px;
+    color: inherit;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+#toc a:hover {
+    background: var(--hover);
+}
+
+#toc-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    background: var(--shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+#toc-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#status {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: var(--bg);
+    text-align: center;
+}
+
+#status.error {
+    color: var(--text);
+}
+
+#status p {
+    max-width: 36rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    #chapter-title {
+        display: none;
+    }
+
+    #toolbar,
+    #controls {
+        padding: 0.25rem 0.4rem;
+    }
+}
