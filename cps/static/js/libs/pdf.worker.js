@@ -43318,6 +43318,28 @@ class Catalog {
         }
         throw new FormatError("Page dictionary kids object is not an array.");
       }
+      if (Number.isInteger(count) && count === kids.length && pageIndex >= currentPageIndex && pageIndex < currentPageIndex + kids.length && kids.every(kid => kid instanceof Ref)) {
+        try {
+          const directRef = kids[pageIndex - currentPageIndex];
+          const directObj = await xref.fetchAsync(directRef);
+          if (directObj instanceof Dict) {
+            let directType = directObj.getRaw("Type");
+            if (directType instanceof Ref) {
+              directType = await xref.fetchAsync(directType);
+            }
+            if (isName(directType, "Page") || !directObj.has("Kids")) {
+              if (!pageKidsCountCache.has(directRef)) {
+                pageKidsCountCache.put(directRef, 1);
+              }
+              if (!pageIndexCache.has(directRef)) {
+                pageIndexCache.put(directRef, pageIndex);
+              }
+              return [directObj, directRef];
+            }
+          }
+        } catch (directEx) {
+        }
+      }
       for (let last = kids.length - 1; last >= 0; last--) {
         nodesToVisit.push(kids[last]);
       }
@@ -43430,7 +43452,8 @@ class Catalog {
     const xref = this.xref;
     function pagesBeforeRef(kidRef) {
       let total = 0,
-        parentRef;
+        parentRef,
+        parentCount = null;
       return xref.fetchAsync(kidRef).then(function (node) {
         if (isRefsEqual(kidRef, pageRef) && !isDict(node, "Page") && !(node instanceof Dict && !node.has("Type") && node.has("Contents"))) {
           throw new FormatError("The reference does not point to a /Page dictionary.");
@@ -43450,10 +43473,26 @@ class Catalog {
         if (!(parent instanceof Dict)) {
           throw new FormatError("Parent must be a dictionary.");
         }
+        const parentRawCount = parent.get("Count");
+        parentCount = Number.isInteger(parentRawCount) ? parentRawCount : null;
         return parent.getAsync("Kids");
       }).then(function (kids) {
         if (!kids) {
           return null;
+        }
+        if (parentCount !== null && parentCount === kids.length) {
+          for (let i = 0; i < kids.length; i++) {
+            if (!(kids[i] instanceof Ref)) {
+              parentCount = null;
+              break;
+            }
+            if (isRefsEqual(kids[i], kidRef)) {
+              return [total + i, parentRef];
+            }
+          }
+          if (parentCount !== null) {
+            throw new FormatError("Kid reference not found in parent's kids.");
+          }
         }
         const kidPromises = [];
         let found = false;
@@ -59986,6 +60025,9 @@ class PDFDocument {
     }
   }
   async checkLastPage(recoveryMode = false) {
+    if (this.linearization) {
+      return;
+    }
     const {
       catalog,
       pdfManager

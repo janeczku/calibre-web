@@ -42,6 +42,7 @@ See https://github.com/adobe-type-tools/cmap-resources
         PDFViewerApplicationOptions.set('disableAutoFetch', true);
         PDFViewerApplicationOptions.set('disableRange', false);
         PDFViewerApplicationOptions.set('disableStream', true);
+        PDFViewerApplicationOptions.set('rangeChunkSize', 2097152);
         PDFViewerApplicationOptions.set('disablePreferences', true);
         PDFViewerApplicationOptions.set('cMapUrl', "{{ url_for('static', filename='cmaps/') }}");
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
@@ -49,6 +50,41 @@ See https://github.com/adobe-type-tools/cmap-resources
         PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
         PDFViewerApplicationOptions.set('defaultUrl',"{{ url_for('web.serve_book', book_id=pdffile, book_format='pdf') }}")
     });
+    </script>
+
+    <script type="text/javascript">
+    // 跳页/翻页后预加载当前页起的 15 页（触发对应数据块的后台加载，翻页时命中缓存）
+    (function () {
+        var PRELOAD_AHEAD = 15;
+        var preloadGen = 0;
+        function preloadFrom(pageNumber) {
+            var app = window.PDFViewerApplication;
+            var doc = app && app.pdfDocument;
+            if (!doc) return;
+            var gen = ++preloadGen;
+            var end = Math.min(pageNumber + PRELOAD_AHEAD, doc.numPages);
+            var i = Math.max(pageNumber, 1);
+            (function next() {
+                if (gen !== preloadGen || i > end) return;
+                var p = i++;
+                doc.getPage(p).then(function (page) {
+                    if (gen !== preloadGen) return null;
+                    return page.getOperatorList();
+                }).then(next, next);
+            })();
+        }
+        window.addEventListener('webviewerloaded', function () {
+            var app = window.PDFViewerApplication;
+            app.initializedPromise.then(function () {
+                app.eventBus.on('documentinit', function () {
+                    setTimeout(function () { preloadFrom(app.page || 1); }, 1500);
+                });
+                app.eventBus.on('pagechanging', function (evt) {
+                    preloadFrom(evt.pageNumber);
+                });
+            });
+        });
+    })();
     </script>
 
     <script src="{{ url_for('static', filename='js/libs/viewer.js') }}" type="module">></script>
