@@ -35,3 +35,13 @@ gdrive_credentials
 client_secrets.json
 gmail.json
 /.key
+
+# Local analysis environment and private data
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+app.db
+gdrive.db
+client_secrets.json
