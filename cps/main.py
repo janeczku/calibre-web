@@ -76,10 +76,12 @@ def main():
     app.register_blueprint(meta)
     app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
+    # The profile page links to kobo_auth as soon as Kobo sync is on, which can happen without a restart.
+    if kobo_auth:
+        app.register_blueprint(kobo_auth)
     if kobo_available:
         limiter.limit("3/minute", key_func=get_remote_address)(kobo)
         app.register_blueprint(kobo)
-        app.register_blueprint(kobo_auth)
     if oauth_available:
         app.register_blueprint(oauth)
     success = web_server.start()
