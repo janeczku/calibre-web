@@ -12,7 +12,7 @@ PAGE = '{% extends theme("layout.html") %}{% block body %}P{% endblock %}'
 def fallback_app(bare_app, bundled_dir):
     make_theme(bundled_dir, "standard", templates={"layout.html": LAYOUT, "page.html": PAGE})
     make_theme(bundled_dir, "demo")
-    themes.init_app_themes(bare_app)
+    themes.init_app_themes(bare_app, bare_app.root_path + "/cfg/app.db")
     return bare_app
 
 

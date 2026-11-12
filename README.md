@@ -19,10 +19,11 @@ Calibre-Web is a web app that offers a clean and intuitive interface for browsin
    - [Quick start](#quick-start)
    - [Requirements](#requirements)
 4. [Docker Images](#docker-images)
-5. [Troubleshooting](#troubleshooting)
-6. [Contributor Recognition](#contributor-recognition)
-7. [Contact](#contact)
-8. [Contributing to Calibre-Web](#contributing-to-calibre-web)
+5. [Custom Themes](#custom-themes)
+6. [Troubleshooting](#troubleshooting)
+7. [Contributor Recognition](#contributor-recognition)
+8. [Contact](#contact)
+9. [Contributing to Calibre-Web](#contributing-to-calibre-web)
 
 </details>
 
@@ -137,6 +138,35 @@ in your Docker run/compose file. Omit this variable for a lightweight image.
 - **Paths Configuration**:
    - Set **Path to Calibre Binaries** to `/usr/bin`.
    - Set **Path to Unrar** to `/usr/bin/unrar`.
+
+## Custom Themes
+
+Besides the bundled *Standard* and *caliBlur!* themes, Calibre-Web loads themes from a `themes` folder next to your settings database (`app.db`), or from the folder set in the `CALIBRE_THEMES_DIR` environment variable. Each theme is a folder with an `info.json`, a `static/` folder for CSS, JavaScript, fonts and images, and optionally `templates/`:
+
+```
+themes/
+  mytheme/
+    info.json
+    static/css/mytheme.css
+```
+
+```json
+{
+  "name": "My Theme",
+  "identifier": "mytheme",
+  "application": "cps",
+  "author": "Your Name",
+  "options": {"css_files": ["css/mytheme.css"], "body_class": "mytheme"}
+}
+```
+
+- The folder name must equal `identifier` and may only contain letters, digits and underscores.
+- A theme cannot replace the bundled `standard` or `caliblur` themes; such folders are skipped with a warning in the log.
+- Restart Calibre-Web after adding or changing a theme, then select it under **Admin → Edit UI Configuration → Theme**.
+
+With Docker, mounting the config folder (e.g. `./config:/config`) already covers `/config/themes`; a separate read-only mount such as `./my-themes:/config/themes:ro` works as well.
+
+See [docs/themes.md](docs/themes.md) for the full guide to creating a theme.
 
 ## Troubleshooting
 

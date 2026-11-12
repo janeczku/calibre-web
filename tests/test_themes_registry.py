@@ -26,3 +26,10 @@ def test_basic_blueprint_uses_standard(theme_app):
     with theme_app.app_context():
         assert themes.get_theme_identifier("caliblur", "basic") == "standard"
         assert themes.get_theme_identifier("caliblur", "web") == "caliblur"
+
+
+def test_missing_theme_warns_once(theme_app, caplog):
+    with theme_app.app_context():
+        themes.get_theme("gone_once")
+        themes.get_theme("gone_once")
+    assert caplog.text.count("gone_once") == 1
