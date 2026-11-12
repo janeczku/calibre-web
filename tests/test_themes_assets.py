@@ -9,7 +9,7 @@ def asset_app(bare_app, bundled_dir):
     make_theme(bundled_dir, "demo",
                static={"css/a.css": "body{}"},
                options={"css_files": ["css/a.css"], "js_files": ["js/b.js"]})
-    themes.init_app_themes(bare_app)
+    themes.init_app_themes(bare_app, bare_app.root_path + "/cfg/app.db")
     return bare_app
 
 

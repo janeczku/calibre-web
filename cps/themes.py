@@ -19,7 +19,7 @@
 import os
 
 from flask import current_app
-from flask_themes2 import Themes, active_theme, static_file_url
+from flask_themes2 import IDENTIFIER, Theme, Themes, active_theme, packaged_themes_loader, static_file_url
 from jinja2 import pass_context
 
 from . import logger
@@ -30,6 +30,8 @@ DEFAULT_THEME = "standard"
 
 # config_theme (integer) values used before themes were stored by identifier
 LEGACY_THEME_IDS = {0: "standard", 1: "caliblur"}
+
+_warned_missing = set()
 
 
 def legacy_theme_identifier(theme_id):
@@ -51,7 +53,8 @@ def get_theme(identifier):
     loaded = _loaded_themes()
     if identifier in loaded:
         return loaded[identifier]
-    if identifier:
+    if identifier and identifier not in _warned_missing:
+        _warned_missing.add(identifier)
         log.warning("Theme '%s' not found, using '%s'", identifier, DEFAULT_THEME)
     return loaded[DEFAULT_THEME]
 
@@ -80,7 +83,42 @@ def theme_assets(theme, kind):
     return [static_file_url(theme, filename) for filename in theme.options.get(kind, [])]
 
 
-def init_app_themes(app):
-    Themes().init_themes(app, app_identifier="cps")
+def get_user_themes_dir(settings_path):
+    """Folder with user-installed themes: $CALIBRE_THEMES_DIR, else 'themes' next to app.db."""
+    return os.environ.get("CALIBRE_THEMES_DIR") or os.path.join(
+        os.path.dirname(os.path.abspath(settings_path)), "themes")
+
+
+def user_themes_loader(app):
+    """Flask-Themes2 loader for the user themes folder; never shadows a bundled theme."""
+    path = app.config.get("CW_USER_THEMES_DIR")
+    if not path or not os.path.isdir(path):
+        return []
+    bundled_path = os.path.join(app.root_path, "themes")
+    bundled = set(os.listdir(bundled_path)) if os.path.isdir(bundled_path) else set()
+    loaded = []
+    for folder in sorted(os.listdir(path)):
+        theme_path = os.path.join(path, folder)
+        if not os.path.isdir(theme_path):
+            continue
+        try:
+            theme = Theme(theme_path)
+        except Exception as e:
+            log.warning("Theme folder '%s' skipped: invalid info.json (%s)", folder, e)
+            continue
+        if theme.identifier != folder or not IDENTIFIER.match(folder):
+            log.warning("Theme folder '%s' skipped: identifier must equal the folder name "
+                        "and use only letters, digits and underscores", folder)
+        elif folder in bundled:
+            log.warning("Theme folder '%s' skipped: a bundled theme has the same identifier", folder)
+        else:
+            loaded.append(theme)
+    return loaded
+
+
+def init_app_themes(app, settings_path):
+    app.config["CW_USER_THEMES_DIR"] = get_user_themes_dir(settings_path)
+    log.info("Loading user themes from %s", app.config["CW_USER_THEMES_DIR"])
+    Themes().init_themes(app, app_identifier="cps", loaders=[packaged_themes_loader, user_themes_loader])
     app.jinja_env.globals["theme"] = theme_template
     app.jinja_env.globals["theme_assets"] = theme_assets
