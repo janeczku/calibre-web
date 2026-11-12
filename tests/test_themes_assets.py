@@ -31,4 +31,19 @@ def test_theme_static_is_served(asset_app):
 
 
 def test_theme_assets_is_a_jinja_global(asset_app):
-    assert asset_app.jinja_env.globals["theme_assets"] is themes.theme_assets
+    assert "theme_assets" in asset_app.jinja_env.globals
+
+
+def test_theme_globals_work_without_g_theme(asset_app):
+    # error pages can render before admin.before_request has set g.theme (e.g. CSRF failure)
+    from flask import render_template_string
+    with asset_app.test_request_context():
+        out = render_template_string(
+            "{{ theme_assets('css_files')|join(',') }}|{{ theme_body_class() }}", _theme="demo")
+    assert out == "/_themes/demo/css/a.css|"
+
+
+def test_theme_globals_default_to_standard_without_theme_context(asset_app):
+    from flask import render_template_string
+    with asset_app.test_request_context():
+        assert render_template_string("{{ theme_assets('css_files')|join(',') }}") == ""

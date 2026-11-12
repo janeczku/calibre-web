@@ -45,4 +45,4 @@ def test_theme_chain_stops_on_unknown_and_cycles(family_app):
 
 
 def test_body_class_is_a_jinja_global(family_app):
-    assert family_app.jinja_env.globals["theme_body_class"] is themes.theme_body_class
+    assert "theme_body_class" in family_app.jinja_env.globals
