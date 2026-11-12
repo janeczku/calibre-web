@@ -259,7 +259,6 @@ body.admin .discover > form > [class*="col-"] > .col-sm-6 {
 
 .caliblur-config-actions {
   display: flex;
-  flex-direction: row-reverse;
   gap: 10px;
   clear: both;
   padding-top: 20px;
