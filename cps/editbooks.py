@@ -1055,8 +1055,10 @@ def delete_whole_book(book_id, book):
                 else:
                     del_cc = getattr(book, cc_string)[0]
                     getattr(book, cc_string).remove(del_cc)
-                    log.debug('remove ' + str(c.id))
-                    calibre_db.session.delete(del_cc)
+                    # text/enumeration values are shared between books: only drop an orphaned row
+                    if c.datatype in ('int', 'datetime', 'comments') or len(del_cc.books) == 0:
+                        log.debug('remove ' + str(c.id))
+                        calibre_db.session.delete(del_cc)
                     calibre_db.session.commit()
         else:
             modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
