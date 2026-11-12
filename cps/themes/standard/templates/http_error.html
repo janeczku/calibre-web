@@ -20,11 +20,11 @@
 
     <link href="{{ url_for('static', filename='css/libs/bootstrap5.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
-    {% for url in theme_assets(g.theme, 'css_files') %}
+    {% for url in theme_assets('css_files') %}
     <link href="{{ url }}" rel="stylesheet" media="screen">
     {% endfor %}
   </head>
-  <body class="{{ theme_body_class(g.theme) }}">
+  <body class="{{ theme_body_class() }}">
   <div class="container-fluid" style="overflow-y: auto">
   <div class="row">
     <div class="col">

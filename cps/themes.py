@@ -142,10 +142,28 @@ def user_themes_loader(app):
     return loaded
 
 
+def _context_theme(ctx):
+    """Theme being rendered: the template context's _theme (set by themed_render), else standard."""
+    try:
+        return get_theme(active_theme(ctx))
+    except (RuntimeError, AttributeError):  # no _theme and not a _themes/<id>/ template
+        return get_theme(DEFAULT_THEME)
+
+
+@pass_context
+def _jinja_theme_assets(ctx, kind):
+    return theme_assets(_context_theme(ctx), kind)
+
+
+@pass_context
+def _jinja_theme_body_class(ctx):
+    return theme_body_class(_context_theme(ctx))
+
+
 def init_app_themes(app, settings_path):
     app.config["CW_USER_THEMES_DIR"] = get_user_themes_dir(settings_path)
     log.info("Loading user themes from %s", app.config["CW_USER_THEMES_DIR"])
     Themes().init_themes(app, app_identifier="cps", loaders=[packaged_themes_loader, user_themes_loader])
     app.jinja_env.globals["theme"] = theme_template
-    app.jinja_env.globals["theme_assets"] = theme_assets
-    app.jinja_env.globals["theme_body_class"] = theme_body_class
+    app.jinja_env.globals["theme_assets"] = _jinja_theme_assets
+    app.jinja_env.globals["theme_body_class"] = _jinja_theme_body_class
