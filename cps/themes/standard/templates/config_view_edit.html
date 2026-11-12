@@ -37,6 +37,9 @@
         <div class="form-group">
         <label for="config_theme">{{_('Theme')}}</label>
             <select name="config_theme_identifier" id="config_theme" class="form-control">
+                {% if conf.config_theme_identifier not in g.themes|map(attribute='identifier') %}
+                <option value="{{ conf.config_theme_identifier }}" selected>{{ conf.config_theme_identifier }} ({{_('not found')}})</option>
+                {% endif %}
                 {% for theme in g.themes %}
                 <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{{ _(theme.name) }}</option>
                 {% endfor %}

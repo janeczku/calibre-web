@@ -591,7 +591,9 @@ def update_view_configuration():
         return view_configuration()
     _config_int(to_save, "config_restricted_column")
 
-    if not themes.is_valid_theme(to_save.get("config_theme_identifier")):
+    # a theme folder that is missing right now may still be the stored choice: keep it unless changed
+    if (not themes.is_valid_theme(to_save.get("config_theme_identifier"))
+            and to_save.get("config_theme_identifier") != config.config_theme_identifier):
         flash(_("Invalid Theme"), category="error")
         log.debug("Invalid Theme")
         return view_configuration()
