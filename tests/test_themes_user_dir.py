@@ -68,3 +68,20 @@ def test_user_loader_skips_invalid(bare_app, cfg_dir, monkeypatch, caplog):
     assert identifiers(bare_app) == ["caliblur", "standard"]
     for folder in ("bad_json", "noauthor", "mismatch", "my-theme"):
         assert folder in caplog.text
+
+
+@pytest.mark.parametrize("bad", [
+    {"name": 123},
+    {"options": ["not", "a", "dict"]},
+    {"options": {"parent": ["standard"]}},
+    {"options": {"css_files": "css/a.css"}},
+    {"options": {"js_files": [1, 2]}},
+    {"options": {"body_class": ["x"]}},
+])
+def test_user_loader_skips_wrong_value_types(bare_app, cfg_dir, monkeypatch, caplog, bad):
+    monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
+    make_theme(cfg_dir / "themes", "typed", info_overrides=bad)
+    caplog.set_level(logging.WARNING)
+    init(bare_app, cfg_dir)
+    assert identifiers(bare_app) == ["caliblur", "standard"]
+    assert "typed" in caplog.text
