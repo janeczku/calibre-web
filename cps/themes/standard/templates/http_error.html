@@ -18,8 +18,11 @@
     <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}"/>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
 
-    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/libs/bootstrap5.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+    {% for url in theme_assets(g.theme, 'css_files') %}
+    <link href="{{ url }}" rel="stylesheet" media="screen">
+    {% endfor %}
   </head>
   <body>
   <div class="container-fluid" style="overflow-y: auto">

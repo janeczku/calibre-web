@@ -19,7 +19,7 @@
 import os
 
 from flask import current_app
-from flask_themes2 import Themes, active_theme
+from flask_themes2 import Themes, active_theme, static_file_url
 from jinja2 import pass_context
 
 from . import logger
@@ -75,6 +75,12 @@ def theme_template(ctx, templatename):
     return "_themes/{}/{}".format(DEFAULT_THEME, templatename)
 
 
+def theme_assets(theme, kind):
+    """URLs of the theme's own static files listed in info.json options[kind]."""
+    return [static_file_url(theme, filename) for filename in theme.options.get(kind, [])]
+
+
 def init_app_themes(app):
     Themes().init_themes(app, app_identifier="cps")
     app.jinja_env.globals["theme"] = theme_template
+    app.jinja_env.globals["theme_assets"] = theme_assets
