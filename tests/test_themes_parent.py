@@ -46,3 +46,13 @@ def test_theme_chain_stops_on_unknown_and_cycles(family_app):
 
 def test_body_class_is_a_jinja_global(family_app):
     assert "theme_body_class" in family_app.jinja_env.globals
+
+
+def test_theme_static_follows_the_parent_chain(bare_app, bundled_dir):
+    from flask import render_template_string
+    make_theme(bundled_dir, "parentish", static={"js/p.js": "", "js/both.js": ""})
+    make_theme(bundled_dir, "kid", static={"js/both.js": ""}, options={"parent": "parentish"})
+    themes.init_app_themes(bare_app, bare_app.root_path + "/cfg/app.db")
+    with bare_app.test_request_context():
+        out = render_template_string("{{ theme_static('js/p.js') }} {{ theme_static('js/both.js') }}", _theme="kid")
+    assert out == "/_themes/parentish/js/p.js /_themes/kid/js/both.js"
