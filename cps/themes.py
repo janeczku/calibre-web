@@ -160,6 +160,14 @@ def _jinja_theme_body_class(ctx):
     return theme_body_class(_context_theme(ctx))
 
 
+@pass_context
+def _jinja_theme_static(ctx, filename):
+    """URL of a static file from the first theme in the active chain that has it."""
+    chain = theme_chain(_context_theme(ctx))
+    owner = next((t for t in chain if os.path.isfile(os.path.join(t.static_path, filename))), chain[0])
+    return static_file_url(owner, filename)
+
+
 def init_app_themes(app, settings_path):
     app.config["CW_USER_THEMES_DIR"] = get_user_themes_dir(settings_path)
     log.info("Loading user themes from %s", app.config["CW_USER_THEMES_DIR"])
@@ -167,3 +175,4 @@ def init_app_themes(app, settings_path):
     app.jinja_env.globals["theme"] = theme_template
     app.jinja_env.globals["theme_assets"] = _jinja_theme_assets
     app.jinja_env.globals["theme_body_class"] = _jinja_theme_body_class
+    app.jinja_env.globals["theme_static"] = _jinja_theme_static
