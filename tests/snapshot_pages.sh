@@ -37,6 +37,8 @@ fetch /admin/mailsettings mailsettings 200
 fetch /admin/usertable usertable 200
 fetch /admin/scheduledtasks scheduledtasks 200
 fetch /admin/user/1 user1 200
+fetch /simpleshelf/1 simpleshelf 200
+fetch /shelf/1 shelf 200
 fetch /does-not-exist notfound 404
 curl -s -b "$JAR" -c "$JAR" -o /dev/null "$BASE/logout"
 fetch /login login 200
