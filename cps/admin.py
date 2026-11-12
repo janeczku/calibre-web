@@ -124,7 +124,8 @@ def before_request():
     g.theme = themes.get_theme(config.config_theme_identifier)
     g.config_authors_max = config.config_authors_max
     if ('/static/' not in request.path and not config.db_configured and
-        request.endpoint not in ('admin.ajax_db_config',
+        request.endpoint not in ('_themes.static',
+                                 'admin.ajax_db_config',
                                  'admin.simulatedbchange',
                                  'admin.db_configuration',
                                  'web.login',
