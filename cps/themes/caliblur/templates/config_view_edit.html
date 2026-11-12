@@ -36,9 +36,9 @@
         </div>
         <div class="form-group">
         <label for="config_theme">{{_('Theme')}}</label>
-            <select name="config_theme" id="config_theme" class="form-control">
+            <select name="config_theme_identifier" id="config_theme" class="form-control">
                 {% for theme in g.themes %}
-                <option value="{{ theme['id'] }}" {% if conf.config_theme == theme['id'] %}selected{% endif %}>{{ _(theme['label']) }}</option>
+                <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{{ _(theme.name) }}</option>
                 {% endfor %}
             </select>
         </div>

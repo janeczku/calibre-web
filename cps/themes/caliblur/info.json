@@ -3,5 +3,10 @@
   "identifier": "caliblur",
   "application": "cps",
   "author": "Calibre-Web",
-  "description": "Dark caliBlur theme"
+  "description": "Dark caliBlur theme",
+  "options": {
+    "css_files": ["css/caliBlur.css", "css/caliBlur_override.css"],
+    "js_files": ["js/libs/jquery.visible.min.js", "js/libs/compromise.min.js", "js/libs/readmore.min.js", "js/caliBlur.js"],
+    "body_class": "blur"
+  }
 }

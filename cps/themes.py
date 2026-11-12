@@ -16,89 +16,47 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-THEMES = (
-    {
-        "id": 0,
-        "identifier": "standard",
-        "label": "Standard Theme",
-        "configurable": True,
-        "css_files": (),
-        "js_files": (),
-        "body_class": "",
-        "show_home_shortcuts": False,
-        "profile_dropdown": False,
-        "show_upload_loader": False
-    },
-    {
-        "id": 1,
-        "identifier": "caliblur",
-        "label": "caliBlur! Dark Theme",
-        "configurable": True,
-        "css_files": (
-            "css/caliBlur.css",
-            "css/caliBlur_override.css"
-        ),
-        "js_files": (
-            "js/libs/jquery.visible.min.js",
-            "js/libs/compromise.min.js",
-            "js/libs/readmore.min.js",
-            "js/caliBlur.js"
-        ),
-        "body_class": "blur",
-        "show_home_shortcuts": True,
-        "profile_dropdown": True,
-        "show_upload_loader": True
-    },
-    {
-        "id": 2,
-        "identifier": "simple",
-        "label": "Simple Theme",
-        "configurable": False,
-        "css_files": (),
-        "js_files": (),
-        "body_class": "",
-        "show_home_shortcuts": False,
-        "profile_dropdown": False,
-        "show_upload_loader": False
-    }
-)
+from flask import current_app
 
-THEMES_BY_ID = {theme["id"]: theme for theme in THEMES}
-THEMES_BY_IDENTIFIER = {theme["identifier"]: theme for theme in THEMES}
-DEFAULT_THEME = THEMES_BY_ID[0]
-SIMPLE_THEME_IDENTIFIER = THEMES_BY_ID[2]["identifier"]
+from . import logger
+
+log = logger.create()
+
+DEFAULT_THEME = "standard"
+
+# config_theme (integer) values used before themes were stored by identifier
+LEGACY_THEME_IDS = {0: "standard", 1: "caliblur"}
+
+
+def legacy_theme_identifier(theme_id):
+    try:
+        return LEGACY_THEME_IDS.get(int(theme_id), DEFAULT_THEME)
+    except (TypeError, ValueError):
+        return DEFAULT_THEME
+
+
+def _loaded_themes():
+    return current_app.theme_manager.themes
 
 
 def get_available_themes():
-    return [theme for theme in THEMES if theme["configurable"]]
+    return sorted(_loaded_themes().values(), key=lambda theme: theme.name.lower())
 
 
-def get_default_theme():
-    return DEFAULT_THEME
+def get_theme(identifier):
+    loaded = _loaded_themes()
+    if identifier in loaded:
+        return loaded[identifier]
+    if identifier:
+        log.warning("Theme '%s' not found, using '%s'", identifier, DEFAULT_THEME)
+    return loaded[DEFAULT_THEME]
 
 
-def get_theme(theme_id):
-    try:
-        theme_id = int(theme_id)
-    except (TypeError, ValueError):
-        return DEFAULT_THEME
-    return THEMES_BY_ID.get(theme_id, DEFAULT_THEME)
+def is_valid_theme(identifier):
+    return identifier in _loaded_themes()
 
 
-def is_valid_theme(theme_id):
-    try:
-        theme_id = int(theme_id)
-    except (TypeError, ValueError):
-        return False
-    theme = THEMES_BY_ID.get(theme_id)
-    return bool(theme and theme["configurable"])
-
-
-def get_theme_identifier(theme_id, blueprint_name=None):
+def get_theme_identifier(identifier, blueprint_name=None):
     if blueprint_name == "basic":
-        return SIMPLE_THEME_IDENTIFIER
-    return get_theme(theme_id)["identifier"]
-
-
-def get_theme_by_identifier(identifier):
-    return THEMES_BY_IDENTIFIER.get(identifier, DEFAULT_THEME)
+        return DEFAULT_THEME
+    return get_theme(identifier).identifier
