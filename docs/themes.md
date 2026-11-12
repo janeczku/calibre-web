@@ -113,6 +113,10 @@ INFO {themes.py} Loading user themes from /config/themes
 
 To install a theme, copy its folder (unzipped) into that `themes/` folder and restart Calibre-Web.
 
+> **Only install themes from sources you trust.** A theme is code, not just styling: its templates are Jinja
+> templates that run unsandboxed on the server with access to the application, and its JavaScript runs in the
+> browser of every user, including administrators. Read a theme's `templates/` and JavaScript before installing it.
+
 **Docker.** If the config folder is already a volume (for example `./config:/config` with the
 linuxserver.io image), put themes in `./config/themes/`. You can also mount a separate folder, read-only is fine:
 
@@ -149,7 +153,7 @@ If a theme is skipped, the log says which folder and why.
 |---|---|---|
 | `name` | yes | Name shown in the theme dropdown. |
 | `identifier` | yes | Unique id; must equal the folder name. Stored in the settings when the theme is selected. |
-| `application` | yes | Always `"cps"`. |
+| `application` | yes | Always `"cps"`. Any other value makes Calibre-Web ignore the theme without a log message. |
 | `author` | yes | Your name. |
 | `description` | no | Short description. |
 | `version` | no | Your theme's version. |
@@ -328,7 +332,7 @@ pages, the login page (log out first) and an error page (open a URL that does no
 
 | Problem | Cause and fix |
 |---|---|
-| Theme not in the dropdown | Look for `Theme folder '…' skipped` in the log: invalid `info.json`, folder name different from `identifier`, a `-` in the name, or the name of a bundled theme. Restart after fixing. |
+| Theme not in the dropdown | Look for `Theme folder '…' skipped` in the log: invalid `info.json`, a value of the wrong type, folder name different from `identifier`, a `-` in the name, or the name of a bundled theme. A theme whose `application` is not `"cps"` is dropped **without** a log line, so check that field too. Restart after fixing. |
 | Theme in the dropdown, styles not applied | Check the browser's network panel for 404s: paths in `css_files` are relative to `static/`. Check that your selectors use your `body_class`. |
 | Changes not visible | Restart Calibre-Web after changing `info.json` or templates; force-reload the browser for CSS and JS changes. |
 | Page looks like Standard after an upgrade | Your selected theme folder is missing; the log says `Theme '…' not found, using 'standard'`. |
@@ -336,4 +340,5 @@ pages, the login page (log out first) and an error page (open a URL that does no
 | Error after an upgrade on one page | A template you copied no longer matches what the page passes in. Compare it with the new standard template, or delete your copy to fall back to standard. |
 
 For developers working on Calibre-Web itself: `tests/snapshot_pages.sh` saves the HTML of the main pages so you can
-diff a theme or template change before and after (see `CLAUDE.md`).
+diff a theme or template change before and after. Run it twice against a copy of `app.db`, with `CW_USER`/`CW_PASS`
+set, and compare with `diff -r -I csrf_token before/ after/`.
