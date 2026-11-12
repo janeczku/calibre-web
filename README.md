@@ -156,9 +156,11 @@ themes/
   "identifier": "mytheme",
   "application": "cps",
   "author": "Your Name",
-  "options": {"css_files": ["css/mytheme.css"], "body_class": "mytheme"}
+  "options": {"parent": "standard", "css_files": ["css/mytheme.css"], "body_class": "mytheme"}
 }
 ```
+
+`"parent": "standard"` builds on the Standard look (its CSS and JavaScript load before yours); leave it out to start from the unstyled base layout.
 
 - The folder name must equal `identifier` and may only contain letters, digits and underscores.
 - A theme cannot replace the bundled `standard` or `caliblur` themes; such folders are skipped with a warning in the log.

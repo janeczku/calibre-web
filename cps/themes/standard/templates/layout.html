@@ -23,12 +23,11 @@
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/standard.css') }}" rel="stylesheet" media="screen">
     {% for url in theme_assets(g.theme, 'css_files') %}
     <link href="{{ url }}" rel="stylesheet" media="screen">
     {% endfor %}
   </head>
-  <body class="{{ page }} {{ bodyClass }} {{ g.theme.options.body_class }}">
+  <body class="{{ page }} {{ bodyClass }} {{ theme_body_class(g.theme) }}">
     <!-- Static navbar -->
     <nav class="navbar navbar-default navbar-static-top navbar-expand-md navbar-light bg-body-tertiary border-bottom" role="navigation">
       <div class="container-fluid">
@@ -188,7 +187,6 @@
     <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/standard.js') }}"></script>
     {% for url in theme_assets(g.theme, 'js_files') %}
     <script src="{{ url }}"></script>
     {% endfor %}
