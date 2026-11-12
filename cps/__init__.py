@@ -27,7 +27,6 @@ import mimetypes
 
 from flask import Flask
 from flask.sessions import SecureCookieSessionInterface
-from flask_themes2 import Themes
 from .MyLoginManager import MyLoginManager
 from flask_principal import Principal
 
@@ -38,6 +37,7 @@ from .server import WebServer
 from .dep_check import dependency_check
 from .updater import Updater
 from . import config_sql
+from . import themes
 from . import cache_buster
 from . import ub, db
 
@@ -110,7 +110,6 @@ calibre_db = db.CalibreDB(app)
 web_server = WebServer()
 
 updater_thread = Updater()
-themes_extension = Themes()
 
 if limiter_present:
     limiter = Limiter(key_func=True, headers_enabled=True, in_memory_fallback_enabled=True, default_limits=[],
@@ -182,7 +181,7 @@ def create_app():
                          res['found']))
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     if not hasattr(app, "theme_manager"):
-        themes_extension.init_themes(app)
+        themes.init_app_themes(app)
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)
