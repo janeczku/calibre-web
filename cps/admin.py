@@ -120,9 +120,8 @@ def before_request():
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
     g.allow_upload = config.config_uploading
-    g.current_theme = config.config_theme
     g.themes = themes.get_available_themes()
-    g.theme = themes.get_theme(config.config_theme)
+    g.theme = themes.get_theme(config.config_theme_identifier)
     g.config_authors_max = config.config_authors_max
     if ('/static/' not in request.path and not config.db_configured and
         request.endpoint not in ('admin.ajax_db_config',
@@ -591,11 +590,11 @@ def update_view_configuration():
         return view_configuration()
     _config_int(to_save, "config_restricted_column")
 
-    if not themes.is_valid_theme(to_save.get("config_theme", "0")):
+    if not themes.is_valid_theme(to_save.get("config_theme_identifier")):
         flash(_("Invalid Theme"), category="error")
         log.debug("Invalid Theme")
         return view_configuration()
-    _config_int(to_save, "config_theme")
+    _config_string(to_save, "config_theme_identifier")
     _config_int(to_save, "config_random_books")
     _config_int(to_save, "config_books_per_page")
     _config_int(to_save, "config_authors_max")
