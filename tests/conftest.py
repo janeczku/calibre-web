@@ -46,7 +46,12 @@ def bundled_dir(tmp_path):
 
 
 @pytest.fixture
-def theme_app(tmp_path, bundled_dir):
-    app = Flask("cps", root_path=str(tmp_path))
-    Themes().init_themes(app, app_identifier="cps")
-    return app
+def bare_app(tmp_path, bundled_dir):
+    """Flask app whose bundled themes live in bundled_dir; themes not initialised."""
+    return Flask("cps", root_path=str(tmp_path))
+
+
+@pytest.fixture
+def theme_app(bare_app):
+    Themes().init_themes(bare_app, app_identifier="cps")
+    return bare_app

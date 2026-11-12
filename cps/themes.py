@@ -16,7 +16,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 from flask import current_app
+from flask_themes2 import Themes, active_theme
+from jinja2 import pass_context
 
 from . import logger
 
@@ -60,3 +64,17 @@ def get_theme_identifier(identifier, blueprint_name=None):
     if blueprint_name == "basic":
         return DEFAULT_THEME
     return get_theme(identifier).identifier
+
+
+@pass_context
+def theme_template(ctx, templatename):
+    """Jinja global ``theme()``: the active theme's template, else the standard one."""
+    theme = _loaded_themes().get(active_theme(ctx))
+    if theme and os.path.exists(os.path.join(theme.templates_path, templatename)):
+        return "_themes/{}/{}".format(theme.identifier, templatename)
+    return "_themes/{}/{}".format(DEFAULT_THEME, templatename)
+
+
+def init_app_themes(app):
+    Themes().init_themes(app, app_identifier="cps")
+    app.jinja_env.globals["theme"] = theme_template
