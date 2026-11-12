@@ -115,6 +115,23 @@ def get_user_themes_dir(settings_path):
         os.path.dirname(os.path.abspath(settings_path)), "themes")
 
 
+def _info_type_error(theme):
+    """Reason why info.json has a value of the wrong type, or None."""
+    options = theme.info.get("options", {})
+    if not isinstance(theme.name, str):
+        return "'name' must be a string"
+    if not isinstance(options, dict):
+        return "'options' must be an object"
+    for key in ("parent", "body_class"):
+        if key in options and not isinstance(options[key], str):
+            return "'options.{}' must be a string".format(key)
+    for key in ("css_files", "js_files"):
+        if key in options and not (isinstance(options[key], list)
+                                   and all(isinstance(f, str) for f in options[key])):
+            return "'options.{}' must be a list of strings".format(key)
+    return None
+
+
 def user_themes_loader(app):
     """Flask-Themes2 loader for the user themes folder; never shadows a bundled theme."""
     path = app.config.get("CW_USER_THEMES_DIR")
@@ -132,7 +149,10 @@ def user_themes_loader(app):
         except Exception as e:
             log.warning("Theme folder '%s' skipped: invalid info.json (%s)", folder, e)
             continue
-        if theme.identifier != folder or not IDENTIFIER.match(folder):
+        type_error = _info_type_error(theme)
+        if type_error:
+            log.warning("Theme folder '%s' skipped: %s", folder, type_error)
+        elif theme.identifier != folder or not IDENTIFIER.match(folder):
             log.warning("Theme folder '%s' skipped: identifier must equal the folder name "
                         "and use only letters, digits and underscores", folder)
         elif folder in bundled:

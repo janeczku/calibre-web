@@ -179,7 +179,8 @@ under a sub-path behind a reverse proxy).
   body.sepia { background-image: url("../img/paper.png"); }  /* static/img/paper.png */
   ```
 
-- **From a template**, use `theme_static('img/logo.svg')` to get the URL of a file in the active theme.
+- **From a template**, use `theme_static('img/logo.svg')` to get the URL of a file: it comes from the active theme,
+  or from the first parent theme that has the file.
 
 Calibre-Web's Content Security Policy only allows fonts from its own address, and scripts and stylesheets only from
 its own address plus the hosts an admin lists as trusted. Host fonts, scripts and stylesheets inside your theme instead
@@ -256,7 +257,8 @@ shelf_edit.html  shelf_order.html  shelfdown.html  stats.html  tasks.html  user_
   can, because new texts have no translations.
 
 Templates have access to the same variables as the standard ones, among others `current_user`, `g.theme` (the
-active theme), `page`, `title`, `url_for`, `theme_static`, `theme_assets` and `theme_body_class`.
+selected theme; not set on some early error pages), `page`, `title`, `url_for`, `theme_static(path)`, `theme_assets('css_files' | 'js_files')` and
+`theme_body_class()`.
 
 A template-overriding theme is tied to the Calibre-Web version it was written for. When upgrading, compare your
 templates with the new standard ones.
