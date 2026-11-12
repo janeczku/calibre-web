@@ -69,18 +69,44 @@ def get_theme_identifier(identifier, blueprint_name=None):
     return get_theme(identifier).identifier
 
 
-@pass_context
-def theme_template(ctx, templatename):
-    """Jinja global ``theme()``: the active theme's template, else the standard one."""
-    theme = _loaded_themes().get(active_theme(ctx))
-    if theme and os.path.exists(os.path.join(theme.templates_path, templatename)):
-        return "_themes/{}/{}".format(theme.identifier, templatename)
+def theme_chain(theme):
+    """The theme followed by its parent, grandparent, ... (options.parent)."""
+    chain = [theme]
+    parent = theme.options.get("parent")
+    while parent:
+        if parent in (t.identifier for t in chain):
+            log.warning("Theme '%s': parent '%s' forms a cycle, ignored", chain[-1].identifier, parent)
+            break
+        if parent not in _loaded_themes():
+            log.warning("Theme '%s': parent '%s' not found, ignored", chain[-1].identifier, parent)
+            break
+        chain.append(_loaded_themes()[parent])
+        parent = chain[-1].options.get("parent")
+    return chain
+
+
+def resolve_template(identifier, templatename):
+    """First theme in the chain of `identifier` that has the template, else standard."""
+    for theme in theme_chain(get_theme(identifier)):
+        if os.path.exists(os.path.join(theme.templates_path, templatename)):
+            return "_themes/{}/{}".format(theme.identifier, templatename)
     return "_themes/{}/{}".format(DEFAULT_THEME, templatename)
 
 
+@pass_context
+def theme_template(ctx, templatename):
+    """Jinja global ``theme()``."""
+    return resolve_template(active_theme(ctx), templatename)
+
+
 def theme_assets(theme, kind):
-    """URLs of the theme's own static files listed in info.json options[kind]."""
-    return [static_file_url(theme, filename) for filename in theme.options.get(kind, [])]
+    """URLs of the static files listed in options[kind] of the theme and its ancestors, ancestors first."""
+    return [static_file_url(t, filename)
+            for t in reversed(theme_chain(theme)) for filename in t.options.get(kind, [])]
+
+
+def theme_body_class(theme):
+    return " ".join(c for c in (t.options.get("body_class") for t in reversed(theme_chain(theme))) if c)
 
 
 def get_user_themes_dir(settings_path):
@@ -122,3 +148,4 @@ def init_app_themes(app, settings_path):
     Themes().init_themes(app, app_identifier="cps", loaders=[packaged_themes_loader, user_themes_loader])
     app.jinja_env.globals["theme"] = theme_template
     app.jinja_env.globals["theme_assets"] = theme_assets
+    app.jinja_env.globals["theme_body_class"] = theme_body_class

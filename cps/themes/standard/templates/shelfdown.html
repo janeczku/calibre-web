@@ -25,7 +25,7 @@
     {% endfor %}
     {% block header %}{% endblock %}
   </head>
-  <body class="{{ page }} shelf-down {{ g.theme.options.body_class }}">
+  <body class="{{ page }} shelf-down {{ theme_body_class(g.theme) }}">
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>

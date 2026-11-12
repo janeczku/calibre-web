@@ -24,7 +24,7 @@
     <link href="{{ url }}" rel="stylesheet" media="screen">
     {% endfor %}
   </head>
-  <body class="{{ g.theme.options.body_class }}">
+  <body class="{{ theme_body_class(g.theme) }}">
   <div class="container-fluid" style="overflow-y: auto">
   <div class="row">
     <div class="col">
