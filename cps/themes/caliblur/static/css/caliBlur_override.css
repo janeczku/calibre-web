@@ -233,17 +233,17 @@ body.tasks #tasktable {
 
 body.admin .discover .form-group,
 body.admin .accordion .form-group,
-.caliblur-schedule-form .form-group {
+body.blur .schedule-form .form-group {
   margin-bottom: 15px;
 }
 
 body.admin .discover label,
-.caliblur-schedule-form label {
+body.blur .schedule-form label {
   margin-bottom: 5px;
 }
 
 body.admin select.form-control,
-.caliblur-schedule-form select.form-control {
+body.blur .schedule-form select.form-control {
   appearance: auto;
 }
 
@@ -259,7 +259,6 @@ body.admin .discover > form > [class*="col-"] > .col-sm-6 {
 
 .caliblur-config-actions {
   display: flex;
-  flex-direction: row-reverse;
   gap: 10px;
   clear: both;
   padding-top: 20px;
@@ -340,12 +339,12 @@ body.admin .discover #config_back:hover {
   color: #fff;
 }
 
-.caliblur-schedule-form .btn {
+body.blur .schedule-form .btn {
   float: right;
   margin-left: 10px;
 }
 
-.caliblur-schedule-form #email_back {
+body.blur .schedule-form #email_back {
   background: hsla(0, 0%, 100%, .25);
 }
 
@@ -354,13 +353,13 @@ body.admin .discover #config_back:hover {
 }
 
 body.admin .col-sm-10 .btn-primary,
-.caliblur-schedule-form .btn-primary {
+body.blur .schedule-form .btn-primary {
   background: var(--color-secondary);
   color: #fff;
 }
 
 body.admin .col-sm-10 .btn-primary:hover,
-.caliblur-schedule-form .btn-primary:hover {
+body.blur .schedule-form .btn-primary:hover {
   background: var(--color-secondary-hover);
 }
 
@@ -498,7 +497,7 @@ body.advanced_search .ts-dropdown .active {
   color: #fff;
 }
 
-.caliblur-schedule-form {
+body.blur .schedule-form {
   padding: 0 15px 0 30px;
 }
 

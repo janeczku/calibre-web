@@ -16,89 +16,183 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-THEMES = (
-    {
-        "id": 0,
-        "identifier": "standard",
-        "label": "Standard Theme",
-        "configurable": True,
-        "css_files": (),
-        "js_files": (),
-        "body_class": "",
-        "show_home_shortcuts": False,
-        "profile_dropdown": False,
-        "show_upload_loader": False
-    },
-    {
-        "id": 1,
-        "identifier": "caliblur",
-        "label": "caliBlur! Dark Theme",
-        "configurable": True,
-        "css_files": (
-            "css/caliBlur.css",
-            "css/caliBlur_override.css"
-        ),
-        "js_files": (
-            "js/libs/jquery.visible.min.js",
-            "js/libs/compromise.min.js",
-            "js/libs/readmore.min.js",
-            "js/caliBlur.js"
-        ),
-        "body_class": "blur",
-        "show_home_shortcuts": True,
-        "profile_dropdown": True,
-        "show_upload_loader": True
-    },
-    {
-        "id": 2,
-        "identifier": "simple",
-        "label": "Simple Theme",
-        "configurable": False,
-        "css_files": (),
-        "js_files": (),
-        "body_class": "",
-        "show_home_shortcuts": False,
-        "profile_dropdown": False,
-        "show_upload_loader": False
-    }
-)
+import os
 
-THEMES_BY_ID = {theme["id"]: theme for theme in THEMES}
-THEMES_BY_IDENTIFIER = {theme["identifier"]: theme for theme in THEMES}
-DEFAULT_THEME = THEMES_BY_ID[0]
-SIMPLE_THEME_IDENTIFIER = THEMES_BY_ID[2]["identifier"]
+from flask import current_app
+from flask_themes2 import IDENTIFIER, Theme, Themes, active_theme, packaged_themes_loader, static_file_url
+from jinja2 import pass_context
+
+from . import logger
+
+log = logger.create()
+
+DEFAULT_THEME = "standard"
+
+# config_theme (integer) values used before themes were stored by identifier
+LEGACY_THEME_IDS = {0: "standard", 1: "caliblur"}
+
+_warned_missing = set()
+
+
+def legacy_theme_identifier(theme_id):
+    try:
+        return LEGACY_THEME_IDS.get(int(theme_id), DEFAULT_THEME)
+    except (TypeError, ValueError):
+        return DEFAULT_THEME
+
+
+def _loaded_themes():
+    return current_app.theme_manager.themes
 
 
 def get_available_themes():
-    return [theme for theme in THEMES if theme["configurable"]]
+    return sorted(_loaded_themes().values(), key=lambda theme: theme.name.lower())
 
 
-def get_default_theme():
-    return DEFAULT_THEME
+def get_theme(identifier):
+    loaded = _loaded_themes()
+    if identifier in loaded:
+        return loaded[identifier]
+    if identifier and identifier not in _warned_missing:
+        _warned_missing.add(identifier)
+        log.warning("Theme '%s' not found, using '%s'", identifier, DEFAULT_THEME)
+    return loaded[DEFAULT_THEME]
 
 
-def get_theme(theme_id):
-    try:
-        theme_id = int(theme_id)
-    except (TypeError, ValueError):
-        return DEFAULT_THEME
-    return THEMES_BY_ID.get(theme_id, DEFAULT_THEME)
+def is_valid_theme(identifier):
+    return identifier in _loaded_themes()
 
 
-def is_valid_theme(theme_id):
-    try:
-        theme_id = int(theme_id)
-    except (TypeError, ValueError):
-        return False
-    theme = THEMES_BY_ID.get(theme_id)
-    return bool(theme and theme["configurable"])
-
-
-def get_theme_identifier(theme_id, blueprint_name=None):
+def get_theme_identifier(identifier, blueprint_name=None):
     if blueprint_name == "basic":
-        return SIMPLE_THEME_IDENTIFIER
-    return get_theme(theme_id)["identifier"]
+        return DEFAULT_THEME
+    return get_theme(identifier).identifier
 
 
-def get_theme_by_identifier(identifier):
-    return THEMES_BY_IDENTIFIER.get(identifier, DEFAULT_THEME)
+def theme_chain(theme):
+    """The theme followed by its parent, grandparent, ... (options.parent)."""
+    chain = [theme]
+    parent = theme.options.get("parent")
+    while parent:
+        if parent in (t.identifier for t in chain):
+            log.warning("Theme '%s': parent '%s' forms a cycle, ignored", chain[-1].identifier, parent)
+            break
+        if parent not in _loaded_themes():
+            log.warning("Theme '%s': parent '%s' not found, ignored", chain[-1].identifier, parent)
+            break
+        chain.append(_loaded_themes()[parent])
+        parent = chain[-1].options.get("parent")
+    return chain
+
+
+def resolve_template(identifier, templatename):
+    """First theme in the chain of `identifier` that has the template, else standard."""
+    for theme in theme_chain(get_theme(identifier)):
+        if os.path.exists(os.path.join(theme.templates_path, templatename)):
+            return "_themes/{}/{}".format(theme.identifier, templatename)
+    return "_themes/{}/{}".format(DEFAULT_THEME, templatename)
+
+
+@pass_context
+def theme_template(ctx, templatename):
+    """Jinja global ``theme()``."""
+    return resolve_template(active_theme(ctx), templatename)
+
+
+def theme_assets(theme, kind):
+    """URLs of the static files listed in options[kind] of the theme and its ancestors, ancestors first."""
+    return [static_file_url(t, filename)
+            for t in reversed(theme_chain(theme)) for filename in t.options.get(kind, [])]
+
+
+def theme_body_class(theme):
+    return " ".join(c for c in (t.options.get("body_class") for t in reversed(theme_chain(theme))) if c)
+
+
+def get_user_themes_dir(settings_path):
+    """Folder with user-installed themes: $CALIBRE_THEMES_DIR, else 'themes' next to app.db."""
+    return os.environ.get("CALIBRE_THEMES_DIR") or os.path.join(
+        os.path.dirname(os.path.abspath(settings_path)), "themes")
+
+
+def _info_type_error(theme):
+    """Reason why info.json has a value of the wrong type, or None."""
+    options = theme.info.get("options", {})
+    if not isinstance(theme.name, str):
+        return "'name' must be a string"
+    if not isinstance(options, dict):
+        return "'options' must be an object"
+    for key in ("parent", "body_class"):
+        if key in options and not isinstance(options[key], str):
+            return "'options.{}' must be a string".format(key)
+    for key in ("css_files", "js_files"):
+        if key in options and not (isinstance(options[key], list)
+                                   and all(isinstance(f, str) for f in options[key])):
+            return "'options.{}' must be a list of strings".format(key)
+    return None
+
+
+def user_themes_loader(app):
+    """Flask-Themes2 loader for the user themes folder; never shadows a bundled theme."""
+    path = app.config.get("CW_USER_THEMES_DIR")
+    if not path or not os.path.isdir(path):
+        return []
+    bundled_path = os.path.join(app.root_path, "themes")
+    bundled = set(os.listdir(bundled_path)) if os.path.isdir(bundled_path) else set()
+    loaded = []
+    for folder in sorted(os.listdir(path)):
+        theme_path = os.path.join(path, folder)
+        if not os.path.isdir(theme_path):
+            continue
+        try:
+            theme = Theme(theme_path)
+        except Exception as e:
+            log.warning("Theme folder '%s' skipped: invalid info.json (%s)", folder, e)
+            continue
+        type_error = _info_type_error(theme)
+        if type_error:
+            log.warning("Theme folder '%s' skipped: %s", folder, type_error)
+        elif theme.identifier != folder or not IDENTIFIER.match(folder):
+            log.warning("Theme folder '%s' skipped: identifier must equal the folder name "
+                        "and use only letters, digits and underscores", folder)
+        elif folder in bundled:
+            log.warning("Theme folder '%s' skipped: a bundled theme has the same identifier", folder)
+        else:
+            loaded.append(theme)
+    return loaded
+
+
+def _context_theme(ctx):
+    """Theme being rendered: the template context's _theme (set by themed_render), else standard."""
+    try:
+        return get_theme(active_theme(ctx))
+    except (RuntimeError, AttributeError):  # no _theme and not a _themes/<id>/ template
+        return get_theme(DEFAULT_THEME)
+
+
+@pass_context
+def _jinja_theme_assets(ctx, kind):
+    return theme_assets(_context_theme(ctx), kind)
+
+
+@pass_context
+def _jinja_theme_body_class(ctx):
+    return theme_body_class(_context_theme(ctx))
+
+
+@pass_context
+def _jinja_theme_static(ctx, filename):
+    """URL of a static file from the first theme in the active chain that has it."""
+    chain = theme_chain(_context_theme(ctx))
+    owner = next((t for t in chain if os.path.isfile(os.path.join(t.static_path, filename))), chain[0])
+    return static_file_url(owner, filename)
+
+
+def init_app_themes(app, settings_path):
+    app.config["CW_USER_THEMES_DIR"] = get_user_themes_dir(settings_path)
+    log.info("Loading user themes from %s", app.config["CW_USER_THEMES_DIR"])
+    Themes().init_themes(app, app_identifier="cps", loaders=[packaged_themes_loader, user_themes_loader])
+    app.jinja_env.globals["theme"] = theme_template
+    app.jinja_env.globals["theme_assets"] = _jinja_theme_assets
+    app.jinja_env.globals["theme_body_class"] = _jinja_theme_body_class
+    app.jinja_env.globals["theme_static"] = _jinja_theme_static

@@ -1,36 +1,9 @@
-<!DOCTYPE html>
-{% from theme('modal_dialogs.html') import restrict_modal, delete_book, filechooser_modal, delete_confirm_modal, change_confirm_modal %}
-{% import 'image.html' as image %}
-<html lang="{{ current_user.locale }}">
-  <head>
-    <title>{{instance}} | {{title}}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="mobile-web-app-capable" content="yes">
-    {% if g.google_site_verification|length > 0 %}
-      <meta name="google-site-verification" content="{{g.google_site_verification}}">
-    {% endif %}
-    <!-- Bootstrap -->
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16.png') }}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='favicon-96.png') }}"/>
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}"/>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"/>
+{% extends "_themes/standard/layout.html" %}
+{% block body_class %}{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'edituser', 'mailset', 'usertable', 'dbconfig'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}{% endblock %}
+{% block body_attrs %} data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}"{% endblock %}
+{% block navbar_class %}navbar navbar-expand-md navbar-static-top{% endblock %}
 
-    <link href="{{ url_for('static', filename='css/libs/bootstrap5.min.css') }}" rel="stylesheet" media="screen">
-    {% block header %}{% endblock %}
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/caliBlur.css') }}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
-  </head>
-  <body class="{{ page }} {{ bodyClass }} blur{% if page == 'stat' %} stats{% endif %}{% if page in ['config', 'uiconfig', 'newuser', 'edituser', 'mailset', 'usertable', 'dbconfig'] %} admin{% endif %}{% if page == 'advsearch' %} advanced_search{% endif %}" data-readmore-more="{{_('Read more')}}" data-readmore-less="{{_('Read less')}}">
-    <!-- Static navbar -->
-    <nav class="navbar navbar-expand-md navbar-static-top" role="navigation">
-      <div class="container-fluid">
+{% block nav_header %}
         <div class="navbar-header d-flex align-items-center">
           <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="{{_('Toggle Navigation')}}">
             <span class="visually-hidden">{{_('Toggle Navigation')}}</span>
@@ -38,9 +11,14 @@
           </button>
           <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
         </div>
+{% endblock %}
+
+{% block nav_after_header %}
         <div class="home-btn"><a class="home-btn-tooltip" href="{{url_for('web.index', page=1)}}" data-bs-toggle="tooltip" title="{{_('Home')}}" data-bs-placement="bottom"></a></div>
         <div class="plexBack"><a class="back-btn-tooltip" href="{{url_for('web.index')}}" data-bs-toggle="tooltip" title="{{_('Back')}}" data-bs-placement="bottom"></a></div>
-        {% if current_user.is_authenticated or g.allow_anonymous %}
+{% endblock %}
+
+{% block nav_search %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search.simple_search')}}" method="GET">
             <div class="form-group">
               <label for="query" class="visually-hidden">{{_('Search')}}</label>
@@ -51,15 +29,17 @@
               </span>
             </div>
           </form>
-        {% endif %}
-        <div class="navbar-collapse collapse" id="mainNavbar">
-          {% if current_user.is_authenticated or g.allow_anonymous %}
+{% endblock %}
+
+{% block nav_links %}
           <ul class="nav navbar-nav">
             {% if simple==true %} <li><a href="{{url_for('basic.index')}}" id="basic"><i class="bi bi-phone"></i><span>{{_('Simple Theme')}}</span></a><li>{% endif %}
           </ul>
-          {% endif %}
-          <ul class="nav navbar-nav" id="main-nav">
-            {% if current_user.is_authenticated or g.allow_anonymous %}
+{% endblock %}
+
+{% block main_nav_class %}nav navbar-nav{% endblock %}
+
+{% block nav_main_start %}
               <li class="dropdown"><a href="#" class="dropdown-toggle profileDrop dropdown" data-bs-toggle="dropdown" role="button" aria-expanded="false" title="{{_('Account')}}"><span class="profileDropIcon" aria-hidden="true"><img src="{{ url_for('static', filename='css/img/user-icon.svg') }}" alt=""></span></a><span class="caliblur-nav-label">{{current_user.name}}</span>
                 <ul class="dropdown-menu dropdown-menu-end profileDropli">
                     <li><a id="top_user" href="{{url_for('web.profile')}}" ><i class="bi bi-person"></i> <span class="caliblur-nav-label">{{current_user.name}}</span></a></li>
@@ -75,6 +55,9 @@
                     {% endif %}
                 </ul>
               </li>
+{% endblock %}
+
+{% block nav_upload %}
               {% if current_user.role_upload() and g.allow_upload %}
                   <li class="form-upload">
                     <form id="form-upload" class="navbar-form" action="{{ url_for('edit-book.upload') }}" data-title="{{_('Uploading...')}}" data-footer="{{_('Close')}}" data-failed="{{_('Error')}}" data-message="{{_('Upload done, processing, please wait...')}}" method="post" enctype="multipart/form-data">
@@ -89,18 +72,29 @@
                     </form>
                   </li>
               {% endif %}
+{% endblock %}
+
+{% block nav_tasks %}
               {% if not current_user.is_anonymous and not simple%}
                 <li class="top_tasks"><span class="top-tasks-label">{{_('Manage')}}</span><a id="top_tasks" class="tasks-btn-tooltip" href="{{url_for('tasks.get_tasks_status')}}" data-bs-toggle="tooltip" title="{{_('Tasks')}}" data-bs-placement="bottom" data-viewport="#main-nav"><i class="bi bi-list-task"></i> <span class="caliblur-nav-label">{{_('Tasks')}}</span></a></li>
               {% endif %}
+{% endblock %}
+
+{% block nav_admin %}
               {% if current_user.role_admin() %}
                 <li class="top_admin"><a id="top_admin" class="admin-btn-tooltip" href="{{url_for('admin.admin')}}" data-bs-toggle="tooltip" title="{{_('Settings')}}" data-bs-placement="bottom" data-viewport="#main-nav"><i class="bi bi-speedometer2"></i> <span class="caliblur-nav-label">{{_('Admin')}}</span></a></li>
               {% endif %}
-            {% endif %}
-          </ul>
-        </div><!--/.nav-collapse -->
+{% endblock %}
+
+{# profile, login, register and logout live in the account dropdown (nav_main_start) #}
+{% block nav_user %}{% endblock %}
+{% block nav_guest %}{% endblock %}
+
+{% block nav_after_collapse %}
         <div class="sidebar-backdrop"></div>
-      </div>
-    </nav>
+{% endblock %}
+
+{% block flash_messages %}
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
       <div class="row text-center" >
@@ -123,94 +117,42 @@
       </div>
       {%endif%}
     {% endfor %}
-    {% block flash %}{% endblock %}
+{% endblock %}
+
+{% block before_content %}
     <div id="loader" hidden="true">
         <h3>{{_('Uploading...')}}</h3>
         <span>{{_("Please do not refresh the page")}}</span>.
     </div>
-    <div class="container-fluid">
-      <div class="row">
-        {% if current_user.is_authenticated or g.allow_anonymous %}
-        <div class="col-sm-2">
-          <nav class="navigation">
-            <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-tablet-after="#main-nav" in-tablet-class="nav navbar-nav" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
-              <li class="nav-head d-none d-sm-block">{{_('Browse')}}</li>
-              <li><a href="{{url_for('search.advanced_search')}}" id="advanced_search"><i class="bi bi-search"></i><span class="caliblur-nav-label"> {{_('Advanced Search')}}</span></a></li>
-              {% for element in sidebar %}
-                {% if current_user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><i class="bi {{element['glyph']}}" aria-hidden="true"></i> <span class="nav-text">{{_(element['text'])|trim}}</span></a></li>
-                {% endif %}
-              {% endfor %}
-              {% if current_user.is_authenticated or g.allow_anonymous %}
-                <li class="nav-head d-none d-sm-block public-shelves">{{_('Shelves')}}</li>
-                {% for shelf in g.shelves_access %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><i class="bi bi-list shelf"></i> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge text-bg-secondary">{{shelf.books.all()|length}}</span></a></li>
-                {% endfor %}
-              {% if not current_user.is_anonymous %}
-                <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
-              {% endif %}
-              {% endif %}
+{% endblock %}
 
-            </ul>
-          </nav>
-        </div>
-        {% endif %}
-        <div class="col-sm-10">
-          {% block body %}{% endblock %}
-          {% if pagination and (pagination.has_next or pagination.has_prev) %}
-            <div class="pagination">
-              {% if pagination.has_prev %}
-              <li class="page-item page-previous"><a class="page-link" aria-label="next page" href="{{ (pagination.page - 1)|url_for_other_page }}">&laquo; {{_('Previous')}}</a></li>
-              {% endif %}
-            {% for page in pagination.iter_pages() %}
-              {% if page %}
-                {% if page != pagination.page %}
-                  <li class="page-item"><a class="page-link" aria-label="to page {{ page }}" href="{{ (page)|url_for_other_page }}">{{ page }}</a></li>
-                {% else %}
-                  <li class="page-item active"><a class="page-link" aria-label="to page {{ page }}" href="{{ (page)|url_for_other_page }}">{{ page }}</a></li>
-                {% endif %}
-              {% else %}
-                <li class="page-item page-last-separator disabled"><a class="page-link" aria-label="">…</a></li>
-              {% endif %}
-            {% endfor %}
-            {% if pagination.has_next %}
-              <li class="page-item page-next"><a class="page-link next" aria-label="next page" href="{{ (pagination.page + 1)|url_for_other_page }}">{{_('Next')}} &raquo;</a></li>
-            {% endif %}
-            </div>
-          {% endif %}
-      </div>
-    </div>
-  </div>
-    <div class="modal fade" id="bookDetailsModal" tabindex="-1" role="dialog" aria-labelledby="bookDetailsModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
+{% block content_row_class %}row{% endblock %}
+{% block sidebar_column_class %}col-sm-2{% endblock %}
+{% block scnd_nav_attrs %} intent in-standard-append="nav.navigation" in-tablet-after="#main-nav" in-tablet-class="nav navbar-nav" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav"{% endblock %}
+{% block nav_head_class %}d-sm-block{% endblock %}
+
+{% block sidebar_top %}
+              <li><a href="{{url_for('search.advanced_search')}}" id="advanced_search"><i class="bi bi-search"></i><span class="caliblur-nav-label"> {{_('Advanced Search')}}</span></a></li>
+{% endblock %}
+
+{% block sidebar_item %}
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{% if element['no_param'] %}{{url_for(element['link'], data=element['page'])}}{%else%}{{url_for(element['link'], data=element['page'], sort_param='stored')}}{% endif %}"><i class="bi {{element['glyph']}}" aria-hidden="true"></i> <span class="nav-text">{{_(element['text'])|trim}}</span></a></li>
+{% endblock %}
+
+{% block sidebar_shelf_item %}
+                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><i class="bi bi-list shelf"></i> {{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %} <span class="badge text-bg-secondary">{{shelf.books.all()|length}}</span></a></li>
+{% endblock %}
+
+{# "About" lives in the account dropdown #}
+{% block sidebar_about %}{% endblock %}
+
+{% block content_column_class %}col-sm-10{% endblock %}
+
+{% block details_modal_title %}
             <h4 class="modal-title" id="bookDetailsModalLabel">{{_('Book Details')}}</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
-          </div>
-          <div class="modal-body">...</div>
-          <div class="modal-footer">
-            <button type="button" id="details_close" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Close')}}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% block modal %}{% endblock %}
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/libs/bootstrap5.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/underscore-umd-min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/jquery.form.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
-    {% block js %}{% endblock %}
-  </body>
-</html>
+{% endblock %}
+
+{% block vendor_js %}
+    <script src="{{ theme_static('js/libs/intention.min.js') }}"></script>
+    <script src="{{ theme_static('js/libs/context.min.js') }}"></script>
+{% endblock %}

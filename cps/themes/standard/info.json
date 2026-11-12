@@ -3,5 +3,14 @@
   "identifier": "standard",
   "application": "cps",
   "author": "Calibre-Web",
-  "description": "Standard Calibre-Web theme"
+  "description": "Standard Calibre-Web theme",
+  "options": {
+    "css_files": [
+      "css/standard.css"
+    ],
+    "js_files": [
+      "js/standard.js"
+    ],
+    "body_class": ""
+  }
 }

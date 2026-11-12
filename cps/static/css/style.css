@@ -816,6 +816,9 @@ body > div.container-fluid  {
 
 .admin-dashboard .admin-actions .btn {
   min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .admin-modal .modal-header {

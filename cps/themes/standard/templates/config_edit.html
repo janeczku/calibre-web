@@ -9,7 +9,7 @@
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="accordion col-12 col-lg-8 config-accordion" id="configAccordion">
+<div class="accordion col-12 col-lg-8 {% block config_accordion_class %}config-accordion{% endblock %}" id="configAccordion">
   <div class="accordion-item">
     <h2 class="accordion-header" id="heading-one">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseone" aria-expanded="false" aria-controls="collapseone">
@@ -418,7 +418,8 @@
     </div>
   </div>
     {% endif %}
-    <div class="col-12 mt-3">
+    </div>
+    <div class="{% block config_actions_class %}col-12 mt-3{% endblock %}">
       <button type="button" name="submit" id="config_submit" class="btn btn-primary">{{_('Save')}}</button>
       <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>

@@ -8,7 +8,7 @@
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off" >
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="accordion col-12 col-lg-8 config-accordion" id="configAccordion">
+<div class="accordion col-12 col-lg-8 {% block config_accordion_class %}config-accordion{% endblock %}" id="configAccordion">
   <div class="accordion-item">
     <h2 class="accordion-header" id="heading-four">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
@@ -36,9 +36,12 @@
         </div>
         <div class="form-group">
         <label for="config_theme">{{_('Theme')}}</label>
-            <select name="config_theme" id="config_theme" class="form-control">
+            <select name="config_theme_identifier" id="config_theme" class="form-control">
+                {% if conf.config_theme_identifier not in g.themes|map(attribute='identifier') %}
+                <option value="{{ conf.config_theme_identifier }}" selected>{{ conf.config_theme_identifier }} ({{_('not found')}})</option>
+                {% endif %}
                 {% for theme in g.themes %}
-                <option value="{{ theme['id'] }}" {% if conf.config_theme == theme['id'] %}selected{% endif %}>{{ _(theme['label']) }}</option>
+                <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{{ _(theme.name) }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -165,7 +168,7 @@
     </div>
   </div>
 </div>
-    <div class="col-12 mt-3">
+    <div class="{% block config_actions_class %}col-12 mt-3{% endblock %}">
     <button type="submit" name="submit" class="btn btn-primary">{{_('Save')}}</button>
     <a href="{{ url_for('admin.admin') }}" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>
