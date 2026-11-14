@@ -824,3 +824,8 @@ body > div.container-fluid  {
 .admin-modal .modal-header {
   align-items: center;
 }
+
+/* Theme list on UI configuration: the update action reads as a link, so rows keep their height */
+#theme-table .theme-update {
+  font: inherit;
+}

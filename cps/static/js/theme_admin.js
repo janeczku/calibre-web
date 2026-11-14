@@ -193,7 +193,7 @@ $(function () {
                 if (entry.error) {
                     lines.push(name + ": " + entry.error);
                 } else if (entry.update_available) {
-                    $("<button type=\"button\" class=\"btn btn-sm btn-primary theme-update\"></button>")
+                    $("<button type=\"button\" class=\"btn btn-link p-0 border-0 align-baseline theme-update\"></button>")
                         .attr("data-identifier", identifier)
                         .text(fill($root.attr("data-msg-update"), {version: entry.latest}))
                         .appendTo($row.find(".theme-action"));

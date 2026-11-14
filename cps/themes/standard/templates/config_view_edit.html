@@ -10,6 +10,60 @@
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 <div class="accordion col-12 col-lg-8 {% block config_accordion_class %}config-accordion{% endblock %}" id="configAccordion">
   <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-four">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('View Configuration')}}
+      </button>
+    </h2>
+    <div id="collapsefour" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <div class="form-group">
+          <label for="config_calibre_web_title">{{_('Title')}}</label>
+          <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if conf.config_calibre_web_title != None %}{{ conf.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="config_books_per_page">{{_('Books per Page')}}</label>
+          <input type="number" min="1" max="200" class="form-control" name="config_books_per_page" id="config_books_per_page" value="{% if conf.config_books_per_page != None %}{{ conf.config_books_per_page }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_random_books">{{_('No. of Random Books to Display')}}</label>
+          <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if conf.config_random_books != None %}{{ conf.config_random_books }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_authors_max">{{_('No. of Authors to Display Before Hiding (0=Disable Hiding)')}}</label>
+          <input type="number" min="0" max="999" class="form-control" name="config_authors_max" id="config_authors_max" value="{% if conf.config_authors_max != None %}{{ conf.config_authors_max }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_columns_to_ignore">{{_('Regular Expression for Ignoring Columns')}}</label>
+          <input type="text" class="form-control" name="config_columns_to_ignore" id="config_columns_to_ignore" value="{% if conf.config_columns_to_ignore != None %}{{ conf.config_columns_to_ignore }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_read_column">{{_('Link Read/Unread Status to Calibre Column')}}</label>
+              <select name="config_read_column" id="config_read_column" class="form-control">
+                <option value="0" {% if conf.config_read_column == 0 %}selected{% endif %}></option>
+                {%  for readColumn in readColumns %}
+                <option value="{{ readColumn.id }}" {% if readColumn.id == conf.config_read_column %}selected{% endif %}>{{ readColumn.name }}</option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="form-group">
+          <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
+              <select name="config_restricted_column" id="config_restricted_column" class="form-control">
+                <option value="0" {% if conf.config_restricted_column == 0 %}selected{% endif %}>{{ _('None') }}</option>
+                {%  for restrictColumn in restrictColumns %}
+                <option value="{{ restrictColumn.id }}" {% if restrictColumn.id == conf.config_restricted_column %}selected{% endif %}>{{ restrictColumn.name }}</option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="form-group">
+          <label for="config_title_regex">{{_('Regular Expression for Title Sorting')}}</label>
+          <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if conf.config_title_regex != None %}{{ conf.config_title_regex }}{% endif %}" autocomplete="off">
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
     <h2 class="accordion-header" id="heading-theme">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetheme" aria-expanded="false" aria-controls="collapsetheme">
         <span class="bi bi-plus-lg me-2"></span>
@@ -78,60 +132,6 @@
       </div>
     </div>
   </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="heading-four">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
-        <span class="bi bi-plus-lg me-2"></span>
-        {{_('View Configuration')}}
-      </button>
-    </h2>
-    <div id="collapsefour" class="accordion-collapse collapse">
-      <div class="accordion-body">
-        <div class="form-group">
-          <label for="config_calibre_web_title">{{_('Title')}}</label>
-          <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if conf.config_calibre_web_title != None %}{{ conf.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
-        </div>
-        <div class="form-group">
-          <label for="config_books_per_page">{{_('Books per Page')}}</label>
-          <input type="number" min="1" max="200" class="form-control" name="config_books_per_page" id="config_books_per_page" value="{% if conf.config_books_per_page != None %}{{ conf.config_books_per_page }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_random_books">{{_('No. of Random Books to Display')}}</label>
-          <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if conf.config_random_books != None %}{{ conf.config_random_books }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_authors_max">{{_('No. of Authors to Display Before Hiding (0=Disable Hiding)')}}</label>
-          <input type="number" min="0" max="999" class="form-control" name="config_authors_max" id="config_authors_max" value="{% if conf.config_authors_max != None %}{{ conf.config_authors_max }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_columns_to_ignore">{{_('Regular Expression for Ignoring Columns')}}</label>
-          <input type="text" class="form-control" name="config_columns_to_ignore" id="config_columns_to_ignore" value="{% if conf.config_columns_to_ignore != None %}{{ conf.config_columns_to_ignore }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_read_column">{{_('Link Read/Unread Status to Calibre Column')}}</label>
-              <select name="config_read_column" id="config_read_column" class="form-control">
-                <option value="0" {% if conf.config_read_column == 0 %}selected{% endif %}></option>
-                {%  for readColumn in readColumns %}
-                <option value="{{ readColumn.id }}" {% if readColumn.id == conf.config_read_column %}selected{% endif %}>{{ readColumn.name }}</option>
-                {% endfor %}
-              </select>
-        </div>
-        <div class="form-group">
-          <label for="config_restricted_column">{{_('View Restrictions based on Calibre column')}}</label>
-              <select name="config_restricted_column" id="config_restricted_column" class="form-control">
-                <option value="0" {% if conf.config_restricted_column == 0 %}selected{% endif %}>{{ _('None') }}</option>
-                {%  for restrictColumn in restrictColumns %}
-                <option value="{{ restrictColumn.id }}" {% if restrictColumn.id == conf.config_restricted_column %}selected{% endif %}>{{ restrictColumn.name }}</option>
-                {% endfor %}
-              </select>
-        </div>
-        <div class="form-group">
-          <label for="config_title_regex">{{_('Regular Expression for Title Sorting')}}</label>
-          <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if conf.config_title_regex != None %}{{ conf.config_title_regex }}{% endif %}" autocomplete="off">
-        </div>
-        </div>
-      </div>
-    </div>
   <div class="accordion-item">
     <h2 class="accordion-header" id="heading-six">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">
