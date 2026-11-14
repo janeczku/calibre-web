@@ -117,6 +117,39 @@ To install a theme, copy its folder (unzipped) into that `themes/` folder and re
 > templates that run unsandboxed on the server with access to the application, and its JavaScript runs in the
 > browser of every user, including administrators. Read a theme's `templates/` and JavaScript before installing it.
 
+### From the admin page
+
+Go to **Admin → Edit UI Configuration → Theme**. The table lists the installed themes with their version and source.
+
+- **Upload theme** takes a `.zip` of a theme folder: `info.json` at the top of the archive, or inside one single
+  top-level folder (as in a GitHub source download). Only `info.json`, `static/`, `templates/` and top-level
+  `LICENSE*`/`README*`/`COPYING*` files are installed; everything else in the archive is ignored.
+- If a theme with the same identifier is already installed, you are asked to confirm the version change
+  (*"Install version 1.2? You currently have version 1.1 installed."*). The same question appears for upgrades,
+  reinstalls and downgrades.
+- If the theme contains templates or JavaScript, a second dialog says which of the two it found and what that code
+  can do. Install only after clicking **I trust this theme**; **Cancel** (or closing the dialog) installs nothing.
+- The theme is available immediately, without a restart. Installing does not select it: choose it in the dropdown and
+  click **Save**.
+- If the themes folder is read-only (for example a `:ro` Docker mount), the upload and update buttons are disabled
+  and the page says so. Install themes by copying them into the folder instead.
+
+Allowed file types: in `templates/` only `.html`, `.xml` and `.jinja`; in `static/` stylesheets, scripts, source
+maps, JSON, images (`.png .jpg .jpeg .gif .webp .svg .ico`), fonts (`.woff .woff2 .ttf .otf .eot`) and `.txt`. HTML
+files in `static/` are not allowed. An archive with any other kept file, a symlink, or a path that leaves the theme
+folder is rejected as a whole. Limits: 20 MB per archive, 2000 entries, 100 MB unpacked.
+
+**Check for updates** looks up the latest GitHub release of every installed theme that has a `repository` in its
+`info.json` (bundled themes are never checked). When the release tag (`v1.3` or `1.3`) is a higher version number than
+the installed `version`, the row shows **Update to version 1.3**, which downloads and installs it with the same
+confirmations as an upload. If either version is not a plain number like `1.3` or `1.3.1`, only the latest release is
+shown and you can download and upload it yourself.
+
+For theme authors: give `info.json` a numeric `version` and a `repository`, tag releases `v<version>`, and attach the
+theme as a `.zip` asset to the release. Without a `.zip` asset the release's source zip is used, which works as long
+as the repository root is the theme folder (only `info.json`, `static/`, `templates/` and licence/readme files are
+kept). Draft and pre-releases are ignored.
+
 **Docker.** If the config folder is already a volume (for example `./config:/config` with the
 linuxserver.io image), put themes in `./config/themes/`. You can also mount a separate folder, read-only is fine:
 
@@ -143,7 +176,7 @@ Rules that apply to every installed theme:
 - The folder name must be exactly the theme's `identifier`.
 - Identifiers may only contain letters, digits and underscores, and must not start with a digit (`my_theme`, not `my-theme`).
 - A theme cannot replace a bundled theme: a folder called `standard` or `caliblur` is skipped.
-- Changes are picked up on restart.
+- Changes are picked up on restart, or immediately when installed from the admin page.
 
 If a theme is skipped, the log says which folder and why.
 

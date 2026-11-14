@@ -10,6 +10,72 @@
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 <div class="accordion col-12 col-lg-8 {% block config_accordion_class %}config-accordion{% endblock %}" id="configAccordion">
   <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-theme">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetheme" aria-expanded="false" aria-controls="collapsetheme">
+        <span class="bi bi-plus-lg me-2"></span>
+        {{_('Theme')}}
+      </button>
+    </h2>
+    <div id="collapsetheme" class="accordion-collapse collapse">
+      <div class="accordion-body">
+        <div class="form-group">
+        <label for="config_theme">{{_('Theme')}}</label>
+            <select name="config_theme_identifier" id="config_theme" class="form-control">
+                {% if conf.config_theme_identifier not in g.themes|map(attribute='identifier') %}
+                <option value="{{ conf.config_theme_identifier }}" selected>{{ conf.config_theme_identifier }} ({{_('not found')}})</option>
+                {% endif %}
+                {% for theme in g.themes %}
+                <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{{ _(theme.name) }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="theme-admin"
+             data-stage-url="{{ url_for('admin.theme_stage') }}"
+             data-stage-update-url="{{ url_for('admin.theme_stage_update') }}"
+             data-commit-url="{{ url_for('admin.theme_commit') }}"
+             data-discard-url="{{ url_for('admin.theme_discard') }}"
+             data-check-url="{{ url_for('admin.theme_check_updates') }}"
+             data-writable="{{ 'true' if themes_writable else 'false' }}"
+             data-msg-failed="{{_('Request failed')}}"
+             data-msg-update="{{_('Update to version %(version)s', version='{version}')}}"
+             data-msg-up-to-date="{{_('Up to date')}}"
+             data-msg-latest="{{_('Latest release: %(version)s', version='{version}')}}"
+             data-msg-no-repository="{{_('No installed theme has a GitHub repository.')}}">
+          <div class="table-responsive overflow-auto">
+            <table id="theme-table" class="table table-sm">
+              <thead>
+                <tr>
+                  <th>{{_('Name')}}</th>
+                  <th>{{_('Version')}}</th>
+                  <th>{{_('Source')}}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in theme_rows %}
+                <tr data-identifier="{{ row.identifier }}">
+                  <td class="theme-name">{{ _(row.name) }}</td>
+                  <td>{{ row.version or '—' }}</td>
+                  <td>{% if row.bundled %}{{_('bundled')}}{% elif row.repository %}<a href="{{ row.repository }}" target="_blank" rel="noopener noreferrer">GitHub <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span></a>{% endif %}</td>
+                  <td class="theme-action"></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <button type="button" id="theme-check-updates" class="btn btn-outline-secondary">{{_('Check for updates')}}</button>
+          <div id="theme-status" class="form-text" aria-live="polite"></div>
+          <div class="my-3 p-3 rounded border border-warning"><span class="bi bi-exclamation-triangle-fill text-warning me-2" aria-hidden="true"></span>{{_('Themes can run code on this server and in your users\' browsers. Only install themes from sources you trust.')}}</div>
+          <input type="file" id="theme-file" accept=".zip,application/zip" class="d-none">
+          <button type="button" id="theme-upload" class="btn btn-outline-primary" {% if not themes_writable %}disabled{% endif %}>{{_('Upload theme')}}</button>
+          {% if not themes_writable %}
+          <div class="form-text">{{_('The themes folder %(path)s is read-only; install themes by copying them there.', path=themes_dir)}}</div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
     <h2 class="accordion-header" id="heading-four">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="false" aria-controls="collapsefour">
         <span class="bi bi-plus-lg me-2"></span>
@@ -33,17 +99,6 @@
         <div class="form-group">
           <label for="config_authors_max">{{_('No. of Authors to Display Before Hiding (0=Disable Hiding)')}}</label>
           <input type="number" min="0" max="999" class="form-control" name="config_authors_max" id="config_authors_max" value="{% if conf.config_authors_max != None %}{{ conf.config_authors_max }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-        <label for="config_theme">{{_('Theme')}}</label>
-            <select name="config_theme_identifier" id="config_theme" class="form-control">
-                {% if conf.config_theme_identifier not in g.themes|map(attribute='identifier') %}
-                <option value="{{ conf.config_theme_identifier }}" selected>{{ conf.config_theme_identifier }} ({{_('not found')}})</option>
-                {% endif %}
-                {% for theme in g.themes %}
-                <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{{ _(theme.name) }}</option>
-                {% endfor %}
-            </select>
         </div>
         <div class="form-group">
           <label for="config_columns_to_ignore">{{_('Regular Expression for Ignoring Columns')}}</label>
@@ -177,10 +232,46 @@
 {% endblock %}
 {% block modal %}
 {{ restrict_modal() }}
+<div class="modal fade" id="themeVersionModal" tabindex="-1" aria-labelledby="themeVersionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="themeVersionModalLabel">{{_('Install theme')}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
+      </div>
+      <div class="modal-body">
+        <p class="theme-version-text" data-template="{{_('Install version %(new)s? You currently have version %(old)s installed.', new='{new}', old='{old}')}}" data-unknown="{{_('unknown')}}"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
+        <button type="button" class="btn btn-primary theme-confirm">{{_('Install')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="themeTrustModal" tabindex="-1" aria-labelledby="themeTrustModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="themeTrustModalLabel">{{_('This theme contains code')}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{_('Close')}}"></button>
+      </div>
+      <div class="modal-body">
+        <p class="trust-templates d-none">{{_('This theme contains templates. Templates run on the server with full access to Calibre-Web and its data; a malicious theme can take over this server. Check the theme\'s templates/ folder.')}}</p>
+        <p class="trust-js d-none">{{_('This theme contains JavaScript. It runs in the browser of every user, including administrators, and can do anything they can do. Check the theme\'s .js files.')}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
+        <button type="button" class="btn btn-danger theme-confirm">{{_('I trust this theme')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script src="{{ url_for('static', filename='js/theme_admin.js') }}"></script>
 {% endblock %}
