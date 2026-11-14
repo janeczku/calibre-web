@@ -142,7 +142,7 @@ def user_themes_loader(app):
     loaded = []
     for folder in sorted(os.listdir(path)):
         theme_path = os.path.join(path, folder)
-        if not os.path.isdir(theme_path):
+        if folder.startswith(".") or not os.path.isdir(theme_path):
             continue
         try:
             theme = Theme(theme_path)

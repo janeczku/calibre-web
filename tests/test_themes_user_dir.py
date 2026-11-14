@@ -85,3 +85,11 @@ def test_user_loader_skips_wrong_value_types(bare_app, cfg_dir, monkeypatch, cap
     init(bare_app, cfg_dir)
     assert identifiers(bare_app) == ["caliblur", "standard"]
     assert "typed" in caplog.text
+
+
+def test_user_loader_ignores_dot_folders_silently(bare_app, cfg_dir, monkeypatch, caplog):
+    monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
+    make_theme(cfg_dir / "themes", ".demo.incoming-abc", info_overrides={"identifier": "demo"})
+    init(bare_app, cfg_dir)
+    assert identifiers(bare_app) == ["caliblur", "standard"]
+    assert ".demo" not in caplog.text
