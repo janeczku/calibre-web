@@ -1,6 +1,8 @@
 import json
 import os
+import stat
 import sys
+import zipfile
 
 import flask_themes2
 import pytest
@@ -24,6 +26,18 @@ def make_theme(base_dir, identifier, templates=None, static=None, options=None, 
             target = path / folder / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content)
+    return path
+
+
+def make_zip(path, entries, symlinks=None):
+    """Write a zip with the given {name: content} entries and {name: target} symlink entries."""
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for name, content in entries.items():
+            zf.writestr(name, content)
+        for name, target in (symlinks or {}).items():
+            info = zipfile.ZipInfo(name)
+            info.external_attr = (stat.S_IFLNK | 0o777) << 16
+            zf.writestr(info, target)
     return path
 
 

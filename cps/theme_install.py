@@ -17,11 +17,16 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import json
 import os
 import re
+import stat
+import zipfile
+import zlib
 
 from flask import current_app
 from flask_babel import lazy_gettext as N_
+from flask_themes2 import IDENTIFIER, Theme
 
 from . import logger, themes
 
@@ -42,6 +47,14 @@ GITHUB_HOSTS = {"api.github.com", "github.com", "codeload.github.com",
 
 _REPOSITORY_RE = re.compile(r"https://github\.com/([A-Za-z0-9-]{1,39})/([A-Za-z0-9._-]{1,100})/?")
 _VERSION_RE = re.compile(r"[0-9]+(\.[0-9]+)*")
+
+_DRIVE_RE = re.compile(r"[A-Za-z]:")
+_ROOT_DOC_RE = re.compile(r"(LICENSE|README|COPYING)[^/]*")
+_STATIC_EXTENSIONS = {".css", ".js", ".map", ".json", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico",
+                      ".woff", ".woff2", ".ttf", ".otf", ".eot", ".txt"}
+_TEMPLATE_EXTENSIONS = {".html", ".xml", ".jinja"}
+_ROOT_DOC_EXTENSIONS = {"", ".txt", ".md"}
+_CHUNK = 64 * 1024
 
 _warned_repository = set()
 
@@ -120,3 +133,134 @@ def installed_themes():
             "repository": "https://github.com/{}/{}".format(*parsed) if parsed else None,
         })
     return rows
+
+
+def _check_entry(info):
+    """Reject encrypted entries, non-regular files and hostile names; return the name without a trailing '/'."""
+    if info.flag_bits & 0x1:
+        raise ThemeInstallError("encrypted", N_("The archive contains encrypted files."))
+    fmt = stat.S_IFMT(info.external_attr >> 16)  # 0 when the zip tool stored permission bits only
+    if fmt not in (0, stat.S_IFREG, stat.S_IFDIR):
+        raise ThemeInstallError("bad_type", N_("The archive contains links or special files."))
+    name = info.filename
+    bad = (not name or "\x00" in name or "\\" in name or name.startswith("/") or _DRIVE_RE.match(name)
+           or len(name.encode("utf-8")) > 1024)
+    if not bad:
+        name = name[:-1] if name.endswith("/") else name
+        bad = any(seg in ("", ".", "..") or len(seg.encode("utf-8")) > 255 for seg in name.split("/"))
+    if bad:
+        raise ThemeInstallError("bad_path", N_("The archive contains an invalid file name: %(name)s",
+                                               name=info.filename[:100]))
+    return name
+
+
+def _is_kept(rel):
+    return rel == "info.json" or rel.startswith(("static/", "templates/")) or \
+        (_ROOT_DOC_RE.fullmatch(rel) is not None)
+
+
+def _check_extension(rel):
+    ext = os.path.splitext(rel.rsplit("/", 1)[-1])[1].lower()
+    if rel == "info.json":
+        return
+    if rel.startswith("static/"):
+        allowed = _STATIC_EXTENSIONS
+    elif rel.startswith("templates/"):
+        allowed = _TEMPLATE_EXTENSIONS
+    else:
+        allowed = _ROOT_DOC_EXTENSIONS
+    if ext not in allowed:
+        raise ThemeInstallError("bad_extension", N_("File type not allowed in a theme: %(name)s", name=rel[:100]))
+
+
+def _write_member(zf, info, target, rel, limit, limit_code, total):
+    """Copy one entry to target counting real bytes; return the new running total."""
+    try:
+        os.makedirs(os.path.dirname(target), 0o755, exist_ok=True)
+        out = open(target, "xb")
+    except (FileExistsError, NotADirectoryError):
+        raise ThemeInstallError("duplicate", N_("The archive contains conflicting entries: %(name)s", name=rel[:100]))
+    with out, zf.open(info) as src:
+        size = 0
+        while True:
+            chunk = src.read(_CHUNK)
+            if not chunk:
+                break
+            size += len(chunk)
+            total += len(chunk)
+            if size > limit:
+                raise ThemeInstallError(limit_code, N_("The archive is too large."))
+            if total > MAX_TOTAL_BYTES:
+                raise ThemeInstallError("too_large", N_("The archive is too large."))
+            out.write(chunk)
+    os.chmod(target, 0o644)
+    return total
+
+
+def extract_theme_zip(zip_path, dest, bundled):
+    """Validate zip_path and extract the theme into the empty directory dest.
+
+    Returns {"info", "has_templates", "has_js"}; raises ThemeInstallError (caller deletes dest).
+    """
+    if not zipfile.is_zipfile(zip_path):
+        raise ThemeInstallError("not_zip", N_("The file is not a valid zip archive."))
+    try:
+        with zipfile.ZipFile(zip_path) as zf:
+            return _extract(zf, dest, bundled)
+    except (zipfile.BadZipFile, zlib.error, EOFError, NotImplementedError, RuntimeError):
+        raise ThemeInstallError("not_zip", N_("The file is not a valid zip archive."))
+
+
+def _extract(zf, dest, bundled):
+    infos = zf.infolist()
+    if len(infos) > MAX_ENTRIES:
+        raise ThemeInstallError("too_many_entries", N_("The archive contains too many files."))
+    entries = []
+    for info in infos:
+        name = _check_entry(info)
+        if name.startswith("__MACOSX/") or name.rsplit("/", 1)[-1] == ".DS_Store":
+            continue
+        entries.append((name, info))
+    files = [(n, i) for n, i in entries if not i.filename.endswith("/")]
+
+    if any(n == "info.json" for n, _ in files):
+        prefix = ""
+    else:
+        top = {n.split("/", 1)[0] for n, _ in entries}
+        if len(top) == 1 and any(n == next(iter(top)) + "/info.json" for n, _ in files):
+            prefix = next(iter(top)) + "/"
+        else:
+            raise ThemeInstallError("no_info", N_("The archive has no info.json."))
+
+    kept = []
+    for name, info in files:
+        rel = name[len(prefix):]
+        if _is_kept(rel):
+            _check_extension(rel)
+            kept.append((rel, info))
+
+    real_dest = os.path.realpath(dest)
+    total = 0
+    for rel, info in kept:
+        target = os.path.join(dest, rel)
+        if not os.path.realpath(target).startswith(real_dest + os.sep):
+            raise ThemeInstallError("bad_path", N_("The archive contains an invalid file name: %(name)s", name=rel[:100]))
+        if rel == "info.json":
+            total = _write_member(zf, info, target, rel, MAX_INFO_BYTES, "bad_info", total)
+        else:
+            total = _write_member(zf, info, target, rel, MAX_FILE_BYTES, "too_large", total)
+
+    try:
+        theme = Theme(dest)
+    except Exception:
+        raise ThemeInstallError("bad_info", N_("info.json is not valid."))
+    type_error = themes._info_type_error(theme)
+    identifier = theme.identifier
+    if type_error or not isinstance(identifier, str) or not IDENTIFIER.fullmatch(identifier) \
+            or theme.application != "cps":
+        raise ThemeInstallError("bad_info", N_("info.json is not valid."))
+    if identifier in bundled:
+        raise ThemeInstallError("bundled", N_("A bundled theme already uses this identifier."))
+    return {"info": theme.info,
+            "has_templates": any(r.startswith("templates/") for r, _ in kept),
+            "has_js": any(r.endswith(".js") for r, _ in kept)}
