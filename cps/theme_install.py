@@ -281,9 +281,28 @@ def _extract(zf, dest, bundled):
         raise ThemeInstallError("bad_info", N_("info.json is not valid."))
     if identifier in bundled:
         raise ThemeInstallError("bundled", N_("A bundled theme already uses this identifier."))
+    options = theme.info.get("options") or {}
+    for key in ("css_files", "js_files"):
+        for entry in options.get(key) or []:
+            if not _safe_asset_path(entry):
+                raise ThemeInstallError("bad_info", N_("info.json is not valid."))
     return {"info": theme.info,
             "has_templates": any(r.startswith("templates/") for r, _ in kept),
-            "has_js": any(r.lower().endswith(".js") for r, _ in kept)}
+            "has_js": bool(options.get("js_files")) or any(r.lower().endswith(".js") for r, _ in kept)}
+
+
+def _safe_asset_path(value):
+    """A relative, forward-slash path inside the theme's static folder."""
+    return (isinstance(value, str) and "\\" not in value and ":" not in value
+            and all(part not in ("", ".", "..") for part in value.split("/")))
+
+
+THEME_STATIC_CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; sandbox"
+
+
+def theme_static_csp(endpoint):
+    """The sandbox CSP for files served from a theme's static folder, None for any other endpoint."""
+    return THEME_STATIC_CSP if endpoint == "_themes.static" else None
 
 
 def staging_root(settings_path):
@@ -305,6 +324,8 @@ def prepare_staging_root(path):
     except OSError:
         raise ThemeInstallError("unsafe_staging", N_("The staging folder is not safe to use."))
     if not stat.S_ISDIR(st.st_mode) or (os.name != "nt" and (st.st_uid != os.getuid() or st.st_mode & 0o077)):
+        log.error("Theme staging folder %s is not safe (not a directory, or not owned by this user, or accessible "
+                  "by others)", path)
         raise ThemeInstallError("unsafe_staging", N_("The staging folder is not safe to use."))
 
 
@@ -522,6 +543,7 @@ def _commit_locked(entry, confirm_version, trust_code):
     had_old = False
     try:
         shutil.copytree(entry["path"], incoming)
+        os.chmod(incoming, 0o755)
         if os.path.exists(target):
             os.replace(target, old)
             had_old = True
@@ -565,10 +587,11 @@ _REDIRECT_CODES = (301, 302, 303, 307, 308)
 
 def _http_get(url, stream=False, timeout=(5, 15)):
     """The only network call of the installer; never follows redirects itself."""
-    return requests.get(url, headers={"Accept": "application/vnd.github+json",
-                                      "X-GitHub-Api-Version": GITHUB_API_VERSION,
-                                      "User-Agent": "Calibre-Web"},
-                        stream=stream, timeout=timeout, allow_redirects=False, verify=True)
+    headers = {"User-Agent": "Calibre-Web"}
+    if urlsplit(url).hostname == "api.github.com":
+        headers["Accept"] = "application/vnd.github+json"
+        headers["X-GitHub-Api-Version"] = GITHUB_API_VERSION
+    return requests.get(url, headers=headers, stream=stream, timeout=timeout, allow_redirects=False, verify=True)
 
 
 def check_host(url):

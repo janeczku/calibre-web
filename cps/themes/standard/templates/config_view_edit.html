@@ -38,6 +38,7 @@
              data-check-url="{{ url_for('admin.theme_check_updates') }}"
              data-writable="{{ 'true' if themes_writable else 'false' }}"
              data-msg-failed="{{_('Request failed')}}"
+             data-msg-expired="{{_('The page has expired. Reload it and try again.')}}"
              data-msg-update="{{_('Update to version %(version)s', version='{version}')}}"
              data-msg-up-to-date="{{_('Up to date')}}"
              data-msg-latest="{{_('Latest release: %(version)s', version='{version}')}}"
@@ -69,6 +70,7 @@
           <div class="my-3 p-3 rounded border border-warning"><span class="bi bi-exclamation-triangle-fill text-warning me-2" aria-hidden="true"></span>{{_('Themes can run code on this server and in your users\' browsers. Only install themes from sources you trust.')}}</div>
           <input type="file" id="theme-file" accept=".zip,application/zip" class="d-none">
           <button type="button" id="theme-upload" class="btn btn-outline-primary" {% if not themes_writable %}disabled{% endif %}>{{_('Upload theme')}}</button>
+          <div class="form-text">{{_('Installing reloads this page; save other changes first.')}}</div>
           {% if not themes_writable %}
           <div class="form-text">{{_('The themes folder %(path)s is read-only; install themes by copying them there.', path=themes_dir)}}</div>
           {% endif %}

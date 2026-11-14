@@ -210,3 +210,35 @@ def test_mkdtemp_failure_mapped(env, monkeypatch):
         raise OSError("x")
     monkeypatch.setattr(ti.tempfile, "mkdtemp", boom)
     assert code_of(lambda: stage({"info.json": info()})) == "install_failed"
+
+
+def test_installed_root_folder_is_world_readable(env):
+    if os.name == "nt":
+        pytest.skip("POSIX modes")
+    import stat
+    install()
+    assert stat.S_IMODE(os.stat(env[1] / "themes" / "demo").st_mode) == 0o755
+
+
+@pytest.mark.parametrize("bad", ["/abs/x.css", "../../admin/x.css", "a/../x.css", "a\\b.css", "c:x.css",
+                                 "a//b.css", "./x.css", ""])
+@pytest.mark.parametrize("key", ["css_files", "js_files"])
+def test_unsafe_asset_paths_rejected(env, key, bad):
+    assert code_of(stage, {"info.json": info(options={key: ["ok/x", bad]})}) == "bad_info"
+
+
+def test_declared_js_files_count_as_code(env):
+    s = stage({"info.json": info(options={"js_files": ["js/a.js"]})})
+    assert s["has_js"] is True
+    s = stage({"info.json": info(options={"css_files": ["css/a.css"]})})
+    assert s["has_js"] is False
+
+
+def test_unsafe_staging_logs_path(tmp_path, caplog):
+    loose = tmp_path / "loose"
+    loose.mkdir()
+    os.chmod(loose, 0o777)
+    if os.name != "nt":
+        with caplog.at_level("ERROR"):
+            code_of(ti.prepare_staging_root, str(loose))
+        assert str(loose) in caplog.text

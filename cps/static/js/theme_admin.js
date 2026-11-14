@@ -24,6 +24,7 @@ $(function () {
     var csrfToken = $root.closest("form").find("input[name='csrf_token']").val();
     var writable = $root.attr("data-writable") === "true";
     var failedText = $root.attr("data-msg-failed");
+    var expiredText = $root.attr("data-msg-expired");
     var $status = $("#theme-status");
     var $file = $("#theme-file");
 
@@ -40,7 +41,7 @@ $(function () {
     }
 
     // Resolves with the JSON body; rejects with an Error carrying a message fit for the status line.
-    // Non-JSON answers (413/429/CSRF error pages, login redirects) get the generic message.
+    // A non-JSON 400 (expired CSRF token) says the page expired; other non-JSON answers get the generic message.
     function post(url, data) {
         return fetch(url, {
             method: "POST",
@@ -56,7 +57,11 @@ $(function () {
                 if (resp.ok && json) {
                     return json;
                 }
-                throw new Error(json && typeof json.error === "string" ? json.error : failedText);
+                if (json && typeof json.error === "string") {
+                    throw new Error(json.error);
+                }
+                // A 400 that is not ours (JSON) is the CSRF error page of an expired form.
+                throw new Error(resp.status === 400 ? expiredText : failedText);
             });
         });
     }

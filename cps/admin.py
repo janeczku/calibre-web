@@ -355,8 +355,11 @@ def theme_commit():
         result = theme_install.commit(request.form.get("token", ""), current_user.id,
                                       request.form.get("confirm_version"),
                                       request.form.get("trust_code") == "true")
-        flash(_("Theme %(name)s %(version)s installed", name=result["name"], version=result["version"]),
-              category="success")
+        if result["version"]:
+            message = _("Theme %(name)s %(version)s installed", name=result["name"], version=result["version"])
+        else:
+            message = _("Theme %(name)s installed", name=result["name"])
+        flash(message, category="success")
         return result
     return _theme_json(action)
 
