@@ -129,7 +129,7 @@ def test_init_app_empties_staging_and_leftovers(env):
     staging = app.config["CW_THEME_STAGING_DIR"]
     open(os.path.join(staging, "junk.zip"), "w").close()
     os.mkdir(os.path.join(staging, "dir"))
-    (cfg / "themes" / ".demo.old-x").mkdir()
+    (cfg / "themes" / ".demo.old-ab").mkdir()
     (cfg / "themes" / ".demo.incoming-y").mkdir()
     ti.init_app(app, str(cfg / "app.db"))
     assert not os.listdir(staging)
@@ -151,3 +151,62 @@ def test_prepare_staging_root_refuses_unsafe(tmp_path):
     loose.mkdir()
     loose.chmod(0o777)
     assert code_of(ti.prepare_staging_root, str(loose)) == "unsafe_staging"
+
+
+def test_startup_restores_theme_from_old_folder(env):
+    app, cfg = env
+    install()
+    themes_dir = cfg / "themes"
+    (themes_dir / "demo").rename(themes_dir / ".demo.old-abc")
+    ti.init_app(app, str(cfg / "app.db"))
+    assert [p.name for p in themes_dir.iterdir()] == ["demo"]
+
+
+def test_startup_deletes_old_folder_when_theme_exists(env):
+    app, cfg = env
+    install()
+    (cfg / "themes" / ".demo.old-abc").mkdir()
+    ti.init_app(app, str(cfg / "app.db"))
+    assert [p.name for p in (cfg / "themes").iterdir()] == ["demo"]
+
+
+def test_double_failure_leaves_old_and_next_startup_restores(env, monkeypatch):
+    app, cfg = env
+    install(version="1.0")
+    s = stage({"info.json": info(version="1.1")})
+    real = os.replace
+
+    def flaky(src, dst):
+        if ".incoming-" in str(src) or ".old-" in str(src):
+            raise OSError("boom")
+        return real(src, dst)
+    monkeypatch.setattr(ti.os, "replace", flaky)
+    assert code_of(ti.commit, s["token"], 1, "1.1", False) == "install_failed"
+    monkeypatch.undo()
+    names = [p.name for p in (cfg / "themes").iterdir()]
+    assert len(names) == 1 and names[0].startswith(".demo.old-")
+    ti.init_app(app, str(cfg / "app.db"))
+    assert json.loads((cfg / "themes/demo/info.json").read_text())["version"] == "1.0"
+
+
+def test_stray_file_counts_as_installed(env):
+    app, cfg = env
+    (cfg / "themes").mkdir()
+    (cfg / "themes" / "demo").write_text("x")
+    s = stage({"info.json": info()})
+    assert s["installed"] is True
+    assert code_of(ti.commit, s["token"], 1, None, False) == "needs_version_confirm"
+
+
+def test_reload_failure_still_succeeds(env, monkeypatch):
+    def boom(app):
+        raise RuntimeError("x")
+    monkeypatch.setattr(ti, "reload_themes", boom)
+    assert install()["identifier"] == "demo"
+
+
+def test_mkdtemp_failure_mapped(env, monkeypatch):
+    def boom(**kw):
+        raise OSError("x")
+    monkeypatch.setattr(ti.tempfile, "mkdtemp", boom)
+    assert code_of(lambda: stage({"info.json": info()})) == "install_failed"

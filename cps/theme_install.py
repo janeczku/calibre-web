@@ -63,6 +63,7 @@ _ROOT_DOC_EXTENSIONS = {"", ".txt", ".md"}
 _CHUNK = 64 * 1024
 
 _warned_repository = set()
+_OLD_RE = re.compile(r"\.([A-Za-z0-9_]+)\.old-[0-9a-f]+")
 _staged = {}
 _lock = threading.Lock()
 
@@ -297,7 +298,10 @@ def prepare_staging_root(path):
         pass
     except OSError:
         raise ThemeInstallError("unsafe_staging", N_("The staging folder could not be created."))
-    st = os.lstat(path)
+    try:
+        st = os.lstat(path)
+    except OSError:
+        raise ThemeInstallError("unsafe_staging", N_("The staging folder is not safe to use."))
     if not stat.S_ISDIR(st.st_mode) or (os.name != "nt" and (st.st_uid != os.getuid() or st.st_mode & 0o077)):
         raise ThemeInstallError("unsafe_staging", N_("The staging folder is not safe to use."))
 
@@ -335,11 +339,34 @@ def init_app(app, settings_path):
     try:
         path = app.config.get("CW_USER_THEMES_DIR")
         if path and os.path.isdir(path) and os.access(path, os.W_OK):
-            for name in os.listdir(path):
-                if name.startswith(".") and (".incoming-" in name or ".old-" in name):
-                    shutil.rmtree(os.path.join(path, name), ignore_errors=True)
+            _clean_themes_dir(path)
     except Exception:
         log.error("Leftovers in the themes folder could not be removed", exc_info=True)
+
+
+def _clean_themes_dir(path):
+    """Restore a theme lost in an interrupted swap from its newest '.old' folder; delete other leftovers."""
+    olds = {}
+    for name in os.listdir(path):
+        if not name.startswith("."):
+            continue
+        match = _OLD_RE.fullmatch(name)
+        if match and IDENTIFIER.fullmatch(match.group(1)):
+            olds.setdefault(match.group(1), []).append(name)
+        elif ".incoming-" in name:
+            shutil.rmtree(os.path.join(path, name), ignore_errors=True)
+    for identifier, names in olds.items():
+        names.sort(key=lambda n: os.lstat(os.path.join(path, n)).st_mtime, reverse=True)
+        if not os.path.lexists(os.path.join(path, identifier)):
+            try:
+                os.replace(os.path.join(path, names[0]), os.path.join(path, identifier))
+                log.warning("Theme '%s' restored from '%s' after an interrupted update", identifier, names[0])
+                names = names[1:]
+            except OSError:
+                log.error("Theme '%s' could not be restored from '%s'", identifier, names[0], exc_info=True)
+                names = names[1:]
+        for name in names:
+            shutil.rmtree(os.path.join(path, name), ignore_errors=True)
 
 
 def write_capped(chunks, dest_path, limit):
@@ -381,7 +408,11 @@ def stage_zip(zip_path, user_id, source, sha256, expected_identifier=None):
         prepare_staging_root(root)
         with _lock:
             _purge_expired()
-        folder = tempfile.mkdtemp(dir=root)
+        try:
+            folder = tempfile.mkdtemp(dir=root)
+        except OSError:
+            log.error("Theme install: staging folder could not be created", exc_info=True)
+            raise ThemeInstallError("install_failed", N_("The theme could not be installed."))
         try:
             result = extract_theme_zip(zip_path, folder, bundled_identifiers())
             theme_info = result["info"]
@@ -397,7 +428,7 @@ def stage_zip(zip_path, user_id, source, sha256, expected_identifier=None):
         except OSError:
             pass
     version = display_version(theme_info.get("version"))
-    installed = os.path.isdir(os.path.join(current_app.config["CW_USER_THEMES_DIR"], identifier))
+    installed = os.path.lexists(os.path.join(current_app.config["CW_USER_THEMES_DIR"], identifier))
     installed_version = None
     if installed:
         try:
@@ -464,7 +495,7 @@ def _commit_locked(entry, confirm_version, trust_code):
     base = current_app.config["CW_USER_THEMES_DIR"]
     target = os.path.join(base, identifier)
     old_version = None
-    if os.path.exists(target):
+    if os.path.lexists(target):
         if confirm_version != (entry["version"] or ""):
             raise ThemeInstallError("needs_version_confirm", N_("Confirm the version to replace the installed theme."))
         old_version = _installed_version(target)
@@ -488,7 +519,11 @@ def _commit_locked(entry, confirm_version, trust_code):
             os.replace(incoming, target)
         except OSError:
             if had_old:
-                os.replace(old, target)
+                try:
+                    os.replace(old, target)
+                except OSError:
+                    log.error("Theme '%s' could not be put back; its files are in '%s'", identifier,
+                              os.path.basename(old), exc_info=True)
             raise
     except OSError:
         log.error("Theme '%s' could not be installed", identifier, exc_info=True)
@@ -496,7 +531,11 @@ def _commit_locked(entry, confirm_version, trust_code):
         raise ThemeInstallError("install_failed", N_("The theme could not be installed."))
     if had_old:
         shutil.rmtree(old, ignore_errors=True)
-    reload_themes(current_app)
+    try:
+        reload_themes(current_app)
+    except Exception:
+        log.error("Themes could not be reloaded after installing '%s'; restart to load it", identifier,
+                  exc_info=True)
     log.info("Theme '%s' installed by '%s': %s -> %s (%s, sha256 %s)", identifier, _admin_name(entry["user_id"]),
              old_version, entry["version"], entry["source"], entry["sha256"])
     return {"identifier": identifier, "name": entry["name"], "version": entry["version"]}
