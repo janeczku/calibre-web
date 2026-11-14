@@ -40,8 +40,8 @@ GITHUB_API_VERSION = "2026-03-10"
 GITHUB_HOSTS = {"api.github.com", "github.com", "codeload.github.com",
                 "objects.githubusercontent.com", "release-assets.githubusercontent.com"}
 
-_REPOSITORY_RE = re.compile(r"^https://github\.com/([A-Za-z0-9-]{1,39})/([A-Za-z0-9._-]{1,100})/?$")
-_VERSION_RE = re.compile(r"^\d+(\.\d+)*$")
+_REPOSITORY_RE = re.compile(r"https://github\.com/([A-Za-z0-9-]{1,39})/([A-Za-z0-9._-]{1,100})/?")
+_VERSION_RE = re.compile(r"[0-9]+(\.[0-9]+)*")
 
 _warned_repository = set()
 
@@ -59,7 +59,7 @@ def parse_version(value):
         return None
     if value[:1] in ("v", "V"):
         value = value[1:]
-    if not _VERSION_RE.match(value):
+    if len(value) > MAX_VERSION_LEN or not _VERSION_RE.fullmatch(value):
         return None
     parts = [int(p) for p in value.split(".")]
     while parts and parts[-1] == 0:
@@ -84,18 +84,23 @@ def parse_repository(value):
     """(owner, repo) of a https://github.com/owner/repo URL, else None."""
     if not isinstance(value, str):
         return None
-    match = _REPOSITORY_RE.match(value)
+    match = _REPOSITORY_RE.fullmatch(value)
     if not match:
         return None
     owner, repo = match.groups()
     if repo.endswith(".git"):
         repo = repo[:-4]
-    return (owner, repo) if repo else None
+    if not repo or not repo.strip("."):
+        return None
+    return owner, repo
 
 
 def bundled_identifiers():
     path = os.path.join(current_app.root_path, "themes")
-    return set(os.listdir(path)) if os.path.isdir(path) else set()
+    if not os.path.isdir(path):
+        return set()
+    return {n for n in os.listdir(path)
+            if not n.startswith((".", "_")) and os.path.isdir(os.path.join(path, n))}
 
 
 def installed_themes():
