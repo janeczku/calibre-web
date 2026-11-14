@@ -61,6 +61,13 @@ $(function () {
         });
     }
 
+    // One pass with a function replacer, so "$&" or "{old}" inside a value is inserted literally.
+    function fill(template, values) {
+        return template.replace(/\{(new|old|version)\}/g, function (match, key) {
+            return key in values ? String(values[key]) : match;
+        });
+    }
+
     function formData(fields) {
         var data = new FormData();
         Object.keys(fields).forEach(function (key) {
@@ -98,9 +105,10 @@ $(function () {
         if (summary.installed) {
             var $text = $("#themeVersionModal .theme-version-text");
             var unknown = $text.attr("data-unknown");
-            $text.text($text.attr("data-template")
-                .replace("{new}", summary.version || unknown)
-                .replace("{old}", summary.installed_version || unknown));
+            $text.text(fill($text.attr("data-template"), {
+                "new": summary.version || unknown,
+                old: summary.installed_version || unknown
+            }));
             step = ask("themeVersionModal");
         }
         return step.then(function (ok) {
@@ -182,10 +190,10 @@ $(function () {
                 } else if (entry.update_available) {
                     $("<button type=\"button\" class=\"btn btn-sm btn-primary theme-update\"></button>")
                         .attr("data-identifier", identifier)
-                        .text($root.attr("data-msg-update").replace("{version}", entry.latest))
+                        .text(fill($root.attr("data-msg-update"), {version: entry.latest}))
                         .appendTo($row.find(".theme-action"));
                 } else if (entry.latest && !(comparable(entry.latest) && comparable(installed))) {
-                    lines.push(name + ": " + $root.attr("data-msg-latest").replace("{version}", entry.latest));
+                    lines.push(name + ": " + fill($root.attr("data-msg-latest"), {version: entry.latest}));
                 } else {
                     lines.push(name + ": " + $root.attr("data-msg-up-to-date"));
                 }

@@ -136,8 +136,9 @@ Go to **Admin → Edit UI Configuration → Theme**. The table lists the install
 
 Allowed file types: in `templates/` only `.html`, `.xml` and `.jinja`; in `static/` stylesheets, scripts, source
 maps, JSON, images (`.png .jpg .jpeg .gif .webp .svg .ico`), fonts (`.woff .woff2 .ttf .otf .eot`) and `.txt`. HTML
-files in `static/` are not allowed. An archive with any other kept file, a symlink, or a path that leaves the theme
-folder is rejected as a whole. Limits: 20 MB per archive, 2000 entries, 100 MB unpacked.
+files in `static/` are not allowed. Top-level `LICENSE*`, `README*` and `COPYING*` files must end in `.txt` or `.md` or
+have no extension. An archive with any other kept file (for example a `LICENSE.html`), a symlink, or a path that
+leaves the theme folder is rejected as a whole. Limits: 20 MB per archive, 2000 entries, 100 MB unpacked.
 
 **Check for updates** looks up the latest GitHub release of every installed theme that has a `repository` in its
 `info.json` (bundled themes are never checked). When the release tag (`v1.3` or `1.3`) is a higher version number than

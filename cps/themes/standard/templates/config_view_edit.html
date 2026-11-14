@@ -20,12 +20,13 @@
       <div class="accordion-body">
         <div class="form-group">
         <label for="config_theme">{{_('Theme')}}</label>
+            {% set bundled_themes = theme_rows|selectattr('bundled')|map(attribute='identifier')|list %}
             <select name="config_theme_identifier" id="config_theme" class="form-control">
                 {% if conf.config_theme_identifier not in g.themes|map(attribute='identifier') %}
                 <option value="{{ conf.config_theme_identifier }}" selected>{{ conf.config_theme_identifier }} ({{_('not found')}})</option>
                 {% endif %}
                 {% for theme in g.themes %}
-                <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{{ _(theme.name) }}</option>
+                <option value="{{ theme.identifier }}" {% if conf.config_theme_identifier == theme.identifier %}selected{% endif %}>{% if theme.identifier in bundled_themes %}{{ _(theme.name) }}{% else %}{{ theme.name }}{% endif %}</option>
                 {% endfor %}
             </select>
         </div>
@@ -48,13 +49,13 @@
                   <th>{{_('Name')}}</th>
                   <th>{{_('Version')}}</th>
                   <th>{{_('Source')}}</th>
-                  <th></th>
+                  <th><span class="visually-hidden">{{_('Actions')}}</span></th>
                 </tr>
               </thead>
               <tbody>
                 {% for row in theme_rows %}
                 <tr data-identifier="{{ row.identifier }}">
-                  <td class="theme-name">{{ _(row.name) }}</td>
+                  <td class="theme-name">{% if row.bundled %}{{ _(row.name) }}{% else %}{{ row.name }}{% endif %}</td>
                   <td>{{ row.version or '—' }}</td>
                   <td>{% if row.bundled %}{{_('bundled')}}{% elif row.repository %}<a href="{{ row.repository }}" target="_blank" rel="noopener noreferrer">GitHub <span class="bi bi-box-arrow-up-right" aria-hidden="true"></span></a>{% endif %}</td>
                   <td class="theme-action"></td>
