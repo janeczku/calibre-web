@@ -604,8 +604,7 @@ def _release_info(resp):
             raise _github_error()
         if url is zipball and name.lower().endswith(".zip"):
             url = link
-    tag = tag[:MAX_VERSION_LEN]
-    version = tag[1:] if tag[:1] in ("v", "V") and tag[1:2].isdigit() else tag
+    version = tag[1:] if tag[:1] in ("v", "V") else tag
     return {"tag": tag, "version": version, "download_url": url}
 
 
@@ -645,6 +644,9 @@ def download(url, dest_path):
     except requests.RequestException:
         log.warning("Theme install: download failed", exc_info=True)
         raise _github_error()
+    except OSError:
+        log.error("Theme install: the download could not be written", exc_info=True)
+        raise ThemeInstallError("install_failed", N_("The theme could not be installed."))
 
 
 def _repository_themes():
@@ -671,7 +673,7 @@ def check_updates():
             if e.code == "rate_limited":
                 limited = entry["error"]
             continue
-        entry["latest"] = release["version"]
+        entry["latest"] = release["version"][:MAX_VERSION_LEN]
         entry["update_available"] = is_newer(release["version"], row["version"])
     return result
 

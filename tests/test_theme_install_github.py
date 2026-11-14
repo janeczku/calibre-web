@@ -120,15 +120,16 @@ def test_network_error(monkeypatch):
     assert exc.value.code == "github_error"
 
 
-def test_long_tag_is_capped(monkeypatch):
-    route(monkeypatch, {API: release(tag="x" * 100)})
-    assert len(ti.latest_release("o", "demo")["version"]) <= ti.MAX_VERSION_LEN
+def test_version_strips_one_leading_v(monkeypatch):
+    route(monkeypatch, {API: release(tag="vv1")})
+    assert ti.latest_release("o", "demo")["version"] == "v1"
 
 
 @pytest.mark.parametrize("url", [
     "https://github.com/x", "http://github.com/x", "https://evil.example/x", "https://github.com@evil.example/x",
     "https://user@github.com/x", "https://github.com:8443/x", "https://github.com.evil.example/x",
-    "ftp://github.com/x", "https://GITHUB.com.evil/x", "//github.com/x", "", "https:///x"])
+    "ftp://github.com/x", "https://GITHUB.com.evil/x", "//github.com/x", "", "https:///x",
+    "https://evil.example\\@github.com/x"])
 def test_check_host(url):
     if url == "https://github.com/x":
         ti.check_host(url)
@@ -292,3 +293,31 @@ def test_stage_update_no_repository(env, monkeypatch):
     route(monkeypatch, {})
     for ident in ("standard", "unknown", "norepo"):
         assert code_of(ti.stage_update, ident, 1) == "no_repository"
+
+
+def test_check_updates_long_tag(genv, monkeypatch):
+    app, cfg = genv
+    add_theme(cfg, "a", repo="https://github.com/o/a")
+    reload(app)
+    route(monkeypatch, {"https://api.github.com/repos/o/a/releases/latest": release("v1." + "0" * 40)})
+    entry = ti.check_updates()["a"]
+    assert entry["update_available"] is False and len(entry["latest"]) <= ti.MAX_VERSION_LEN
+
+
+def test_download_write_error_is_install_failed(tmp_path, monkeypatch):
+    route(monkeypatch, {ASSET: FakeResp(200, body=b"x")})
+
+    def boom(*a, **k):
+        raise OSError("/secret/path")
+    monkeypatch.setattr(ti, "write_capped", boom)
+    with pytest.raises(ThemeInstallError) as exc:
+        ti.download(ASSET, str(tmp_path / "a.zip"))
+    assert exc.value.code == "install_failed" and "secret" not in str(exc.value.message)
+
+
+def test_download_exactly_max_redirects(tmp_path, monkeypatch):
+    urls = ["https://github.com/h%d" % i for i in range(ti.MAX_REDIRECTS + 1)]
+    routes = {urls[i]: FakeResp(302, headers={"Location": urls[i + 1]}) for i in range(ti.MAX_REDIRECTS)}
+    routes[urls[-1]] = FakeResp(200, body=b"ok")
+    route(monkeypatch, routes)
+    assert ti.download(urls[0], str(tmp_path / "a.zip")) == hashlib.sha256(b"ok").hexdigest()
