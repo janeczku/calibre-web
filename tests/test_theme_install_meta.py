@@ -93,3 +93,11 @@ def test_installed_themes_invalid_repository_and_numeric_version(bare_app, tmp_p
     assert rows["bad_repo_theme"]["repository"] is None
     assert rows["bad_repo_theme"]["version"] == "1.5"
     assert len(warnings) == 1
+
+
+def test_check_content_length():
+    for bad, code in ((None, "no_length"), (ti.MAX_ZIP_BYTES + 64 * 1024 + 1, "too_large")):
+        with pytest.raises(ti.ThemeInstallError) as e:
+            ti.check_content_length(bad)
+        assert e.value.code == code
+    ti.check_content_length(1000)

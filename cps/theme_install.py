@@ -392,6 +392,14 @@ def write_capped(chunks, dest_path, limit):
     return digest.hexdigest()
 
 
+def check_content_length(value):
+    """Reject uploads without a Content-Length or larger than the zip limit plus multipart overhead."""
+    if value is None:
+        raise ThemeInstallError("no_length", N_("The upload size is unknown."))
+    if value > MAX_ZIP_BYTES + 64 * 1024:
+        raise ThemeInstallError("too_large", N_("The archive is too large."))
+
+
 def _drop(entry):
     shutil.rmtree(entry["path"], ignore_errors=True)
 

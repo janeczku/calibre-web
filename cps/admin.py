@@ -22,6 +22,7 @@
 
 import os
 import re
+import secrets
 import json
 import ipaddress
 import operator
@@ -33,7 +34,7 @@ from datetime import time as datetime_time
 from functools import wraps
 from urllib.parse import urlparse
 
-from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, \
+from flask import current_app, Blueprint, flash, redirect, url_for, abort, request, make_response, \
     send_from_directory, g, jsonify
 from markupsafe import Markup
 from .cw_login import current_user
@@ -44,7 +45,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError, ArgumentError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services, cli_param, themes
+from . import constants, logger, helper, services, cli_param, themes, theme_install, limiter
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
@@ -293,7 +294,79 @@ def view_configuration():
                                  restrictColumns=restrict_columns,
                                  languages=languages,
                                  translations=translations,
+                                 theme_rows=theme_install.installed_themes(),
+                                 themes_writable=theme_install.themes_dir_writable(),
+                                 themes_dir=current_app.config["CW_USER_THEMES_DIR"],
                                  title=_("UI Configuration"), page="uiconfig")
+
+
+def _theme_json(action):
+    try:
+        return jsonify(action())
+    except theme_install.ThemeInstallError as e:
+        return jsonify(error=str(e.message)), 400
+    except Exception:
+        log.error("Theme installation failed", exc_info=True)
+        return jsonify(error=_("Theme installation failed")), 500
+
+
+@admi.route("/admin/themes/stage", methods=["POST"])
+@user_login_required
+@admin_required
+@limiter.limit("10/minute")
+def theme_stage():
+    def action():
+        theme_install.check_content_length(request.content_length)
+        f = request.files.get("file")
+        if f is None:
+            raise theme_install.ThemeInstallError("no_file", _("No file was uploaded."))
+        root = current_app.config["CW_THEME_STAGING_DIR"]
+        theme_install.prepare_staging_root(root)
+        path = os.path.join(root, secrets.token_hex(8) + ".zip")
+        sha = theme_install.write_capped(iter(lambda: f.stream.read(65536), b""), path,
+                                         theme_install.MAX_ZIP_BYTES)
+        return theme_install.stage_zip(path, current_user.id, "upload", sha)
+    return _theme_json(action)
+
+
+@admi.route("/admin/themes/stage_update", methods=["POST"])
+@user_login_required
+@admin_required
+@limiter.limit("10/minute")
+def theme_stage_update():
+    return _theme_json(lambda: theme_install.stage_update(request.form.get("identifier", ""), current_user.id))
+
+
+@admi.route("/admin/themes/commit", methods=["POST"])
+@user_login_required
+@admin_required
+def theme_commit():
+    def action():
+        result = theme_install.commit(request.form.get("token", ""), current_user.id,
+                                      request.form.get("confirm_version"),
+                                      request.form.get("trust_code") == "true")
+        flash(_("Theme %(name)s %(version)s installed", name=result["name"], version=result["version"]),
+              category="success")
+        return result
+    return _theme_json(action)
+
+
+@admi.route("/admin/themes/discard", methods=["POST"])
+@user_login_required
+@admin_required
+def theme_discard():
+    def action():
+        theme_install.discard(request.form.get("token", ""), current_user.id)
+        return {}
+    return _theme_json(action)
+
+
+@admi.route("/admin/themes/check_updates", methods=["POST"])
+@user_login_required
+@admin_required
+@limiter.limit("10/minute")
+def theme_check_updates():
+    return _theme_json(theme_install.check_updates)
 
 
 @admi.route("/admin/usertable")
