@@ -47,7 +47,7 @@ def test_directory_entries_allowed(tmp_path):
 
 @pytest.mark.parametrize("name", ["../evil.css", "/abs/static/a.css", "C:/x/static/a.css",
                                   "static\\a.css", "static//a.css", "static/./a.css",
-                                  "o/.github/../../evil", "static/" + "a" * 256 + ".css",
+                                  "o/.github/../../evil", "static/x.html:.css", "static:x/a.css", "static/" + "a" * 256 + ".css",
                                   "static/" + "/".join(["abcdefgh"] * 130) + ".css"])
 def test_bad_paths_rejected_even_when_skipped(tmp_path, name):
     assert code_of(tmp_path, {"info.json": ok_info, name: "x"}) == "bad_path"
@@ -169,3 +169,28 @@ def test_oversized_info_json(tmp_path):
 
 def test_two_top_folders_no_root_info(tmp_path):
     assert code_of(tmp_path, {"a/info.json": ok_info, "b/x": "x"}) == "no_info"
+
+
+def test_uppercase_js_sets_has_js(tmp_path):
+    r, _ = extract(tmp_path, {"info.json": ok_info, "static/x.JS": "alert(1)"})
+    assert r["has_js"]
+
+
+def test_invalid_utf8_name_is_not_zip(tmp_path):
+    z = tmp_path / "t.zip"
+    with zipfile.ZipFile(z, "w") as zf:
+        zf.writestr("info.json", ok_info)
+        zf.writestr("static/\u00e9.css", "x")  # non-ASCII name sets the UTF-8 flag
+    z.write_bytes(z.read_bytes().replace("\u00e9".encode(), b"\xff\xfe"))
+    dest = tmp_path / "out"
+    dest.mkdir()
+    with pytest.raises(ti.ThemeInstallError) as e:
+        ti.extract_theme_zip(str(z), str(dest), set())
+    assert e.value.code == "not_zip"
+
+
+def test_os_error_while_writing_is_write_failed(tmp_path, monkeypatch):
+    def boom(*a, **k):
+        raise OSError(36, "File name too long")
+    monkeypatch.setattr(ti.os, "makedirs", boom)
+    assert code_of(tmp_path, {"info.json": ok_info}) == "write_failed"

@@ -143,7 +143,7 @@ def _check_entry(info):
     if fmt not in (0, stat.S_IFREG, stat.S_IFDIR):
         raise ThemeInstallError("bad_type", N_("The archive contains links or special files."))
     name = info.filename
-    bad = (not name or "\x00" in name or "\\" in name or name.startswith("/") or _DRIVE_RE.match(name)
+    bad = (not name or "\x00" in name or "\\" in name or name.startswith("/") or ":" in name or _DRIVE_RE.match(name)
            or len(name.encode("utf-8")) > 1024)
     if not bad:
         name = name[:-1] if name.endswith("/") else name
@@ -174,6 +174,15 @@ def _check_extension(rel):
 
 
 def _write_member(zf, info, target, rel, limit, limit_code, total):
+    """Copy one entry to target counting real bytes; return the new running total."""
+    try:
+        return _copy_member(zf, info, target, rel, limit, limit_code, total)
+    except OSError:
+        log.error("Theme install: writing '%s' failed", rel[:100], exc_info=True)
+        raise ThemeInstallError("write_failed", N_("The theme could not be written."))
+
+
+def _copy_member(zf, info, target, rel, limit, limit_code, total):
     """Copy one entry to target counting real bytes; return the new running total."""
     try:
         os.makedirs(os.path.dirname(target), 0o755, exist_ok=True)
@@ -207,7 +216,7 @@ def extract_theme_zip(zip_path, dest, bundled):
     try:
         with zipfile.ZipFile(zip_path) as zf:
             return _extract(zf, dest, bundled)
-    except (zipfile.BadZipFile, zlib.error, EOFError, NotImplementedError, RuntimeError):
+    except (zipfile.BadZipFile, zlib.error, EOFError, NotImplementedError, RuntimeError, ValueError):
         raise ThemeInstallError("not_zip", N_("The file is not a valid zip archive."))
 
 
@@ -263,4 +272,4 @@ def _extract(zf, dest, bundled):
         raise ThemeInstallError("bundled", N_("A bundled theme already uses this identifier."))
     return {"info": theme.info,
             "has_templates": any(r.startswith("templates/") for r, _ in kept),
-            "has_js": any(r.endswith(".js") for r, _ in kept)}
+            "has_js": any(r.lower().endswith(".js") for r, _ in kept)}
