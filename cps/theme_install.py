@@ -29,7 +29,9 @@ import threading
 import time
 import zipfile
 import zlib
+from urllib.parse import urljoin, urlsplit
 
+import requests
 from flask import current_app
 from flask_babel import lazy_gettext as N_
 from flask_themes2 import IDENTIFIER, Theme
@@ -547,3 +549,146 @@ def _installed_version(path):
             return display_version(json.load(f).get("version"))
     except (OSError, ValueError, AttributeError):
         return None
+
+
+_RELEASE_URL = "https://api.github.com/repos/%s/%s/releases/latest"
+_REDIRECT_CODES = (301, 302, 303, 307, 308)
+
+
+def _http_get(url, stream=False, timeout=(5, 15)):
+    """The only network call of the installer; never follows redirects itself."""
+    return requests.get(url, headers={"Accept": "application/vnd.github+json",
+                                      "X-GitHub-Api-Version": GITHUB_API_VERSION,
+                                      "User-Agent": "Calibre-Web"},
+                        stream=stream, timeout=timeout, allow_redirects=False, verify=True)
+
+
+def check_host(url):
+    """bad_host unless url is https on an allowed GitHub host (no userinfo, no port other than 443)."""
+    try:
+        parts = urlsplit(url)
+        ok = (parts.scheme == "https" and parts.hostname in GITHUB_HOSTS and parts.username is None
+              and parts.password is None and parts.port in (None, 443))
+    except (ValueError, AttributeError):
+        ok = False
+    if not ok:
+        raise ThemeInstallError("bad_host", N_("The download address is not allowed."))
+
+
+def _github_error():
+    return ThemeInstallError("github_error", N_("GitHub could not be reached or returned an unexpected answer."))
+
+
+def _release_info(resp):
+    """Validated {"tag", "version", "download_url"} of a latest-release response."""
+    if resp.status_code == 404:
+        raise ThemeInstallError("no_release", N_("The repository has no release."))
+    if resp.status_code in (403, 429):
+        raise ThemeInstallError("rate_limited", N_("GitHub rate limit reached, try again later."))
+    if resp.status_code == 400 and re.search(r"api[ -]version", resp.text or "", re.I):
+        raise ThemeInstallError("api_version", N_("GitHub rejected the API version used by Calibre-Web."))
+    if resp.status_code != 200:
+        raise _github_error()
+    data = resp.json()
+    if not isinstance(data, dict):
+        raise _github_error()
+    tag, assets, zipball = data.get("tag_name"), data.get("assets"), data.get("zipball_url")
+    if not isinstance(tag, str) or not isinstance(zipball, str) or not isinstance(assets, list):
+        raise _github_error()
+    url = zipball
+    for asset in assets:
+        if not isinstance(asset, dict):
+            raise _github_error()
+        name, link = asset.get("name"), asset.get("browser_download_url")
+        if not isinstance(name, str) or not isinstance(link, str):
+            raise _github_error()
+        if url is zipball and name.lower().endswith(".zip"):
+            url = link
+    tag = tag[:MAX_VERSION_LEN]
+    version = tag[1:] if tag[:1] in ("v", "V") and tag[1:2].isdigit() else tag
+    return {"tag": tag, "version": version, "download_url": url}
+
+
+def latest_release(owner, repo):
+    try:
+        resp = _http_get(_RELEASE_URL % (owner, repo))
+        try:
+            return _release_info(resp)
+        finally:
+            resp.close()
+    except ThemeInstallError:
+        raise
+    except (requests.RequestException, ValueError):
+        log.warning("Theme install: release lookup failed for %s/%s", owner, repo, exc_info=True)
+        raise _github_error()
+
+
+def download(url, dest_path):
+    """Download url (GitHub hosts only, every redirect hop checked) to dest_path; returns its SHA-256."""
+    try:
+        for _ in range(MAX_REDIRECTS + 1):
+            check_host(url)
+            resp = _http_get(url, stream=True, timeout=(5, 30))
+            try:
+                if resp.status_code in _REDIRECT_CODES:
+                    location = resp.headers.get("Location")
+                    if not location:
+                        raise _github_error()
+                    url = urljoin(url, location)
+                    continue
+                if resp.status_code != 200:
+                    raise _github_error()
+                return write_capped(resp.iter_content(65536), dest_path, MAX_ZIP_BYTES)
+            finally:
+                resp.close()
+        raise ThemeInstallError("too_many_redirects", N_("The download was redirected too often."))
+    except requests.RequestException:
+        log.warning("Theme install: download failed", exc_info=True)
+        raise _github_error()
+
+
+def _repository_themes():
+    for row in installed_themes():
+        parsed = None if row["bundled"] else parse_repository(row["repository"])
+        if parsed:
+            yield row, parsed
+
+
+def check_updates():
+    """identifier -> {"latest", "update_available", "error"} for installed user themes with a repository."""
+    result = {}
+    limited = None
+    for row, (owner, repo) in _repository_themes():
+        entry = {"latest": None, "update_available": False, "error": None}
+        result[row["identifier"]] = entry
+        if limited:
+            entry["error"] = limited
+            continue
+        try:
+            release = latest_release(owner, repo)
+        except ThemeInstallError as e:
+            entry["error"] = str(e.message)
+            if e.code == "rate_limited":
+                limited = entry["error"]
+            continue
+        entry["latest"] = release["version"]
+        entry["update_available"] = is_newer(release["version"], row["version"])
+    return result
+
+
+def stage_update(identifier, user_id):
+    """Download the latest release of an installed theme and stage it; same summary as stage_zip."""
+    parsed = None
+    for row, repo in _repository_themes():
+        if row["identifier"] == identifier:
+            parsed = repo
+    if not parsed:
+        raise ThemeInstallError("no_repository", N_("The theme has no GitHub repository."))
+    owner, repo = parsed
+    release = latest_release(owner, repo)
+    root = current_app.config["CW_THEME_STAGING_DIR"]
+    prepare_staging_root(root)
+    path = os.path.join(root, secrets.token_hex(8) + ".zip")
+    sha256 = download(release["download_url"], path)
+    return stage_zip(path, user_id, "github:%s/%s@%s" % (owner, repo, release["tag"]), sha256,
+                     expected_identifier=identifier)
