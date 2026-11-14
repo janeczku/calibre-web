@@ -37,7 +37,7 @@ from .server import WebServer
 from .dep_check import dependency_check
 from .updater import Updater
 from . import config_sql
-from . import themes
+from . import theme_install, themes
 from . import cache_buster
 from . import ub, db
 
@@ -182,6 +182,7 @@ def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     if not hasattr(app, "theme_manager"):
         themes.init_app_themes(app, cli_param.settings_path)
+        theme_install.init_app(app, cli_param.settings_path)
 
     if os.environ.get('FLASK_DEBUG'):
         cache_buster.init_cache_busting(app)

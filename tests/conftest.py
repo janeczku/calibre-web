@@ -69,3 +69,45 @@ def bare_app(tmp_path, bundled_dir):
 def theme_app(bare_app):
     Themes().init_themes(bare_app, app_identifier="cps")
     return bare_app
+
+
+def info(version="1.0", **extra):
+    """info.json text of the theme 'demo'; version=None leaves the key out."""
+    data = {"name": "Demo", "identifier": "demo", "application": "cps", "author": "t"}
+    if version is not None:
+        data["version"] = version
+    data.update(extra)
+    return json.dumps(data)
+
+
+@pytest.fixture
+def env(bare_app, tmp_path, monkeypatch):
+    """Test app with themes and theme installer initialised; yields (app, config dir)."""
+    from cps import theme_install, themes
+    monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
+    temp = tmp_path / "systemtemp"
+    temp.mkdir()
+    monkeypatch.setattr(theme_install.tempfile, "tempdir", str(temp))
+    cfg = tmp_path / "cfg"
+    cfg.mkdir()
+    themes.init_app_themes(bare_app, str(cfg / "app.db"))
+    theme_install.init_app(bare_app, str(cfg / "app.db"))
+    with bare_app.app_context():
+        yield bare_app, cfg
+
+
+def stage(entries, user_id=1, **kw):
+    """Zip entries into the staging folder and stage them (needs the env fixture)."""
+    from flask import current_app
+    from cps import theme_install
+    path = make_zip(os.path.join(current_app.config["CW_THEME_STAGING_DIR"], "up.zip"), entries)
+    return theme_install.stage_zip(str(path), user_id, "upload", "0" * 64, **kw)
+
+
+def install(version="1.0", extra=None, trust=False, confirm=None, user_id=1):
+    """Stage and commit theme 'demo'; confirm defaults to the version when already installed."""
+    from cps import theme_install
+    s = stage({"info.json": info(version=version), **(extra or {})}, user_id=user_id)
+    if confirm is None and s["installed"]:
+        confirm = s["version"] or ""
+    return theme_install.commit(s["token"], user_id, confirm, trust)

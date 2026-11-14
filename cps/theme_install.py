@@ -17,10 +17,16 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
+import hashlib
 import json
 import os
 import re
+import secrets
+import shutil
 import stat
+import tempfile
+import threading
+import time
 import zipfile
 import zlib
 
@@ -57,6 +63,8 @@ _ROOT_DOC_EXTENSIONS = {"", ".txt", ".md"}
 _CHUNK = 64 * 1024
 
 _warned_repository = set()
+_staged = {}
+_lock = threading.Lock()
 
 
 class ThemeInstallError(Exception):
@@ -273,3 +281,230 @@ def _extract(zf, dest, bundled):
     return {"info": theme.info,
             "has_templates": any(r.startswith("templates/") for r, _ in kept),
             "has_js": any(r.lower().endswith(".js") for r, _ in kept)}
+
+
+def staging_root(settings_path):
+    digest = hashlib.sha256(os.path.abspath(settings_path).encode("utf-8")).hexdigest()[:12]
+    return os.path.join(tempfile.gettempdir(), "calibre-web-theme-staging-" + digest)
+
+
+def prepare_staging_root(path):
+    """Create the private staging folder, or verify an existing one is ours and not accessible by others."""
+    try:
+        os.mkdir(path, 0o700)
+        return
+    except FileExistsError:
+        pass
+    except OSError:
+        raise ThemeInstallError("unsafe_staging", N_("The staging folder could not be created."))
+    st = os.lstat(path)
+    if not stat.S_ISDIR(st.st_mode) or (os.name != "nt" and (st.st_uid != os.getuid() or st.st_mode & 0o077)):
+        raise ThemeInstallError("unsafe_staging", N_("The staging folder is not safe to use."))
+
+
+def themes_dir_writable():
+    path = current_app.config["CW_USER_THEMES_DIR"]
+    try:
+        os.makedirs(path, exist_ok=True)
+    except OSError:
+        return False
+    return os.access(path, os.W_OK)
+
+
+def _empty_dir(path):
+    for name in os.listdir(path):
+        full = os.path.join(path, name)
+        if os.path.isdir(full) and not os.path.islink(full):
+            shutil.rmtree(full, ignore_errors=True)
+        else:
+            try:
+                os.remove(full)
+            except OSError:
+                pass
+
+
+def init_app(app, settings_path):
+    """Prepare the staging folder and remove leftovers of interrupted installs; never raises."""
+    try:
+        root = staging_root(settings_path)
+        app.config["CW_THEME_STAGING_DIR"] = root
+        prepare_staging_root(root)
+        _empty_dir(root)
+    except Exception:
+        log.error("Theme staging folder could not be prepared", exc_info=True)
+    try:
+        path = app.config.get("CW_USER_THEMES_DIR")
+        if path and os.path.isdir(path) and os.access(path, os.W_OK):
+            for name in os.listdir(path):
+                if name.startswith(".") and (".incoming-" in name or ".old-" in name):
+                    shutil.rmtree(os.path.join(path, name), ignore_errors=True)
+    except Exception:
+        log.error("Leftovers in the themes folder could not be removed", exc_info=True)
+
+
+def write_capped(chunks, dest_path, limit):
+    """Write chunks to dest_path and return their SHA-256; too_large (file removed) beyond limit bytes."""
+    digest = hashlib.sha256()
+    size = 0
+    try:
+        with open(dest_path, "wb") as out:
+            for chunk in chunks:
+                size += len(chunk)
+                if size > limit:
+                    raise ThemeInstallError("too_large", N_("The archive is too large."))
+                digest.update(chunk)
+                out.write(chunk)
+    except BaseException:
+        try:
+            os.remove(dest_path)
+        except OSError:
+            pass
+        raise
+    return digest.hexdigest()
+
+
+def _drop(entry):
+    shutil.rmtree(entry["path"], ignore_errors=True)
+
+
+def _purge_expired():
+    """Caller holds _lock."""
+    now = time.time()
+    for token in [t for t, e in _staged.items() if now - e["created"] > STAGE_TTL]:
+        _drop(_staged.pop(token))
+
+
+def stage_zip(zip_path, user_id, source, sha256, expected_identifier=None):
+    """Validate and extract zip_path into a staging folder; the zip is deleted afterwards."""
+    try:
+        root = current_app.config["CW_THEME_STAGING_DIR"]
+        prepare_staging_root(root)
+        with _lock:
+            _purge_expired()
+        folder = tempfile.mkdtemp(dir=root)
+        try:
+            result = extract_theme_zip(zip_path, folder, bundled_identifiers())
+            theme_info = result["info"]
+            identifier = theme_info["identifier"]
+            if expected_identifier is not None and identifier != expected_identifier:
+                raise ThemeInstallError("wrong_theme", N_("The archive contains a different theme."))
+        except BaseException:
+            shutil.rmtree(folder, ignore_errors=True)
+            raise
+    finally:
+        try:
+            os.remove(zip_path)
+        except OSError:
+            pass
+    version = display_version(theme_info.get("version"))
+    installed = os.path.isdir(os.path.join(current_app.config["CW_USER_THEMES_DIR"], identifier))
+    installed_version = None
+    if installed:
+        try:
+            with open(os.path.join(current_app.config["CW_USER_THEMES_DIR"], identifier, "info.json"),
+                      encoding="utf-8") as f:
+                installed_version = display_version(json.load(f).get("version"))
+        except (OSError, ValueError, AttributeError):
+            pass
+    token = secrets.token_urlsafe(32)
+    name = theme_info.get("name")
+    with _lock:
+        _staged[token] = {"path": folder, "identifier": identifier, "name": name, "version": version,
+                          "has_templates": result["has_templates"], "has_js": result["has_js"],
+                          "user_id": user_id, "created": time.time(), "source": source, "sha256": sha256}
+    return {"token": token, "identifier": identifier, "name": name, "version": version, "installed": installed,
+            "installed_version": installed_version, "has_templates": result["has_templates"],
+            "has_js": result["has_js"]}
+
+
+def discard(token, user_id):
+    with _lock:
+        _purge_expired()
+        entry = _staged.get(token)
+        if entry and entry["user_id"] == user_id:
+            _drop(_staged.pop(token))
+
+
+def reload_themes(app):
+    """Rescan all theme loaders and drop cached templates so new files are used without a restart."""
+    manager = app.theme_manager
+    manager._themes = {t.identifier: t for loader in manager.loaders for t in loader(app)
+                       if manager.valid_app_id(t.application)}
+    if app.jinja_env.cache is not None:
+        app.jinja_env.cache.clear()
+    themes._warned_missing.clear()
+
+
+def _admin_name(user_id):
+    try:
+        from .cw_login import current_user
+        if current_user.is_authenticated:
+            return current_user.name
+    except Exception:
+        pass
+    return user_id
+
+
+def commit(token, user_id, confirm_version, trust_code):
+    """Install a staged theme (replacing an installed one atomically) and reload the themes."""
+    with _lock:
+        _purge_expired()
+        entry = _staged.get(token)
+        if entry is None or entry["user_id"] != user_id:
+            raise ThemeInstallError("bad_token", N_("The upload has expired. Please upload the theme again."))
+        del _staged[token]
+        try:
+            return _commit_locked(entry, confirm_version, trust_code)
+        finally:
+            _drop(entry)
+
+
+def _commit_locked(entry, confirm_version, trust_code):
+    identifier = entry["identifier"]
+    base = current_app.config["CW_USER_THEMES_DIR"]
+    target = os.path.join(base, identifier)
+    old_version = None
+    if os.path.exists(target):
+        if confirm_version != (entry["version"] or ""):
+            raise ThemeInstallError("needs_version_confirm", N_("Confirm the version to replace the installed theme."))
+        old_version = _installed_version(target)
+    if (entry["has_templates"] or entry["has_js"]) and not trust_code:
+        raise ThemeInstallError("needs_trust", N_("This theme contains code. Confirm that you trust it."))
+    if not themes_dir_writable():
+        raise ThemeInstallError("read_only", N_("The themes folder is not writable."))
+    if identifier in bundled_identifiers():
+        raise ThemeInstallError("bundled", N_("A bundled theme already uses this identifier."))
+
+    suffix = secrets.token_hex(4)
+    incoming = os.path.join(base, ".{}.incoming-{}".format(identifier, suffix))
+    old = os.path.join(base, ".{}.old-{}".format(identifier, suffix))
+    had_old = False
+    try:
+        shutil.copytree(entry["path"], incoming)
+        if os.path.exists(target):
+            os.replace(target, old)
+            had_old = True
+        try:
+            os.replace(incoming, target)
+        except OSError:
+            if had_old:
+                os.replace(old, target)
+            raise
+    except OSError:
+        log.error("Theme '%s' could not be installed", identifier, exc_info=True)
+        shutil.rmtree(incoming, ignore_errors=True)
+        raise ThemeInstallError("install_failed", N_("The theme could not be installed."))
+    if had_old:
+        shutil.rmtree(old, ignore_errors=True)
+    reload_themes(current_app)
+    log.info("Theme '%s' installed by '%s': %s -> %s (%s, sha256 %s)", identifier, _admin_name(entry["user_id"]),
+             old_version, entry["version"], entry["source"], entry["sha256"])
+    return {"identifier": identifier, "name": entry["name"], "version": entry["version"]}
+
+
+def _installed_version(path):
+    try:
+        with open(os.path.join(path, "info.json"), encoding="utf-8") as f:
+            return display_version(json.load(f).get("version"))
+    except (OSError, ValueError, AttributeError):
+        return None
