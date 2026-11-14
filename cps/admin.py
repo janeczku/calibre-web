@@ -37,6 +37,8 @@ from urllib.parse import urlparse
 from flask import current_app, Blueprint, flash, redirect, url_for, abort, request, make_response, \
     send_from_directory, g, jsonify
 from markupsafe import Markup
+from flask_limiter.util import get_remote_address
+from werkzeug.exceptions import HTTPException
 from .cw_login import current_user
 from flask_babel import gettext as _
 from flask_babel import get_locale, format_time, format_datetime, format_timedelta
@@ -45,7 +47,7 @@ from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError, ArgumentError
 from sqlalchemy.sql.expression import func, or_, text
 
-from . import constants, logger, helper, services, cli_param, themes, theme_install, limiter
+from . import constants, logger, helper, services, cli_param, themes, theme_install, limiter, csrf
 from . import db, calibre_db, ub, web_server, config, updater_thread, gdriveutils, \
     kobo_sync_status, schedule
 from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash, check_email, \
@@ -305,6 +307,8 @@ def _theme_json(action):
         return jsonify(action())
     except theme_install.ThemeInstallError as e:
         return jsonify(error=str(e.message)), 400
+    except HTTPException:
+        raise
     except Exception:
         log.error("Theme installation failed", exc_info=True)
         return jsonify(error=_("Theme installation failed")), 500
@@ -313,10 +317,12 @@ def _theme_json(action):
 @admi.route("/admin/themes/stage", methods=["POST"])
 @user_login_required
 @admin_required
-@limiter.limit("10/minute")
+@limiter.limit("10/minute", key_func=get_remote_address)
 def theme_stage():
     def action():
         theme_install.check_content_length(request.content_length)
+        if csrf:
+            csrf.protect()  # exempt from the global hook so the size check runs before the body is parsed
         f = request.files.get("file")
         if f is None:
             raise theme_install.ThemeInstallError("no_file", _("No file was uploaded."))
@@ -329,10 +335,14 @@ def theme_stage():
     return _theme_json(action)
 
 
+if csrf:
+    csrf.exempt(theme_stage)
+
+
 @admi.route("/admin/themes/stage_update", methods=["POST"])
 @user_login_required
 @admin_required
-@limiter.limit("10/minute")
+@limiter.limit("10/minute", key_func=get_remote_address)
 def theme_stage_update():
     return _theme_json(lambda: theme_install.stage_update(request.form.get("identifier", ""), current_user.id))
 
@@ -364,7 +374,7 @@ def theme_discard():
 @admi.route("/admin/themes/check_updates", methods=["POST"])
 @user_login_required
 @admin_required
-@limiter.limit("10/minute")
+@limiter.limit("10/minute", key_func=get_remote_address)
 def theme_check_updates():
     return _theme_json(theme_install.check_updates)
 
