@@ -156,7 +156,8 @@ If a theme is skipped, the log says which folder and why.
 | `application` | yes | Always `"cps"`. Any other value makes Calibre-Web ignore the theme without a log message. |
 | `author` | yes | Your name. |
 | `description` | no | Short description. |
-| `version` | no | Your theme's version. |
+| `version` | no | Your theme's version, e.g. `1.2`. Compared numerically with release tags (`v1.2`). |
+| `repository` | no | `https://github.com/<owner>/<repo>`. Enables *Check for updates* (see Installing a theme). |
 | `license`, `license_url`, `website` | no | Informational. |
 | `options.parent` | no | Identifier of a theme to build on. See [Parent themes](#parent-themes). |
 | `options.css_files` | no | Stylesheets to load, relative to `static/`, in order. |
