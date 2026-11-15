@@ -3414,7 +3414,7 @@ div.btn-group[role=group][aria-label^="Download, send"] > div.btn-group[role=gro
 }
 
 .rating .glyphicon-star.good,
-.rating .bi-star-fill.good {
+.rating .bi-star-fill {
     color: var(--color-primary)
 }
 

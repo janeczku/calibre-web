@@ -23,29 +23,77 @@ body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
   line-height: 15px;
 }
 
+/* standard's read badge (index): small square in the top-left corner, like .read */
+body.blur .cover .badge.cover-check-badge {
+  top: 0;
+  bottom: auto;
+  left: 0;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  line-height: 15px;
+  border-radius: 0 !important;
+}
+
 input.datepicker {color: transparent}
 input.datepicker:focus + input {color: #eee}
 
-.col-sm-3.col-lg-2.col-6.book.session {
+.col-sm-3.col-lg-2.col-6.book.session,
+body.blur .discover > .row.g-3 > .book.session {
     margin-left: 0;
     margin-right: 0;
     padding-left: 15px;
     padding-right: 15px;
 }
 
-.caliblur-filterheader {
-  margin: 40px 0;
+/* standard's index grid uses g-3 gutters; caliBlur keeps the default row gutter */
+body.blur .discover > .row.g-3 {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+}
+
+.caliblur-filterheader,
+body.blur:not(.author) .discover.load-more > .filterheader {
+  margin: 40px 0 !important;
   padding: 0 10px 0 40px;
 }
 
-.caliblur-filterheader .btn {
+.caliblur-filterheader .btn,
+body.blur:not(.author) .discover.load-more > .filterheader .btn {
   font-size: 14px;
   color: #fff;
 }
 
 .caliblur-index .cover,
-.caliblur-index .cover img {
+.caliblur-index .cover img,
+body.blur .discover > .row.g-3 .cover,
+body.blur .discover > .row.g-3 .cover img {
   border-radius: 0 !important;
+}
+
+/* undo standard's spacing utilities on the index grid */
+body.blur .discover.random-books > h2,
+body.blur:not(.author) .discover.load-more > h2 {
+  margin-bottom: 0 !important;
+}
+
+body.blur .discover > .row.g-3 .cover {
+  margin-bottom: 10px !important;
+}
+
+/* standard's span.img is d-block: give it the cover height so the image keeps filling it */
+body.blur .discover > .row.g-3 .cover .img {
+  height: 100%;
+}
+
+body.blur .discover > .row.g-3 .meta > a > .title,
+body.blur .discover > .row.g-3 .meta > .author,
+body.blur .discover > .row.g-3 .meta > .series {
+  margin-bottom: 0 !important;
+}
+
+body.blur .discover > .row.g-3 .rating.small {
+  font-size: 1em;
 }
 
 nav.navbar .profileDrop.dropdown-toggle::after {
@@ -125,9 +173,14 @@ body > .container-fluid > .row > .col-sm-10 > .pagination {
     visibility: hidden;
   }
 
-  .col-sm-3.col-lg-2.col-6.book.session {
+  .col-sm-3.col-lg-2.col-6.book.session,
+  body.blur .discover > .row.g-3 > .book.session {
     padding-left: 5px;
     padding-right: 5px;
+  }
+
+  body.blur .discover > .row.g-3 .cover {
+    margin-bottom: 0 !important;
   }
 }
 
