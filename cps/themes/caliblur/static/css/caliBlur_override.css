@@ -71,8 +71,6 @@ body.blur .discover > h1 + .filterheader .btn {
   color: #fff;
 }
 
-.caliblur-index .cover,
-.caliblur-index .cover img,
 body.blur .discover > .row.g-3 .cover,
 body.blur .discover > .row.g-3 .cover img {
   border-radius: 0 !important;
@@ -247,7 +245,7 @@ body.blur.advsearch #add-to-shelf {
 }
 
 /* standard's search stars carry .text-warning (!important) */
-body.blur .rating .bi-star-fill.text-warning {
+body.blur:is(.search, .advsearch) .rating .bi-star-fill.text-warning {
   color: var(--color-primary) !important;
 }
 
@@ -359,7 +357,7 @@ body.blur .admin-dashboard .row.g-4 > .col-lg-6:first-child > .admin-detail-list
 
 body.blur .admin-dashboard .admin-actions {
   margin-top: 0 !important;
-  gap: 0 !important;
+  gap: 4px !important;
 }
 
 body.blur .admin-dashboard .admin-actions .btn {
