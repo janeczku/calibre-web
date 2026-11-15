@@ -5,7 +5,7 @@
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <div class="col-md-10 col-lg-8">
+    <div class="col-md-10 col-lg-8 clearfix">
     {% if new_user or ( current_user and content.name != "Guest" and current_user.role_admin() ) %}
     <div class="form-group required">
       <label for="name">{{_('Username')}}</label>

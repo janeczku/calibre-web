@@ -22,20 +22,20 @@
     "<div class=\"modal-dialog upload-modal-dialog\">" +
     "  <div class=\"modal-content\">" +
     "    <div class=\"modal-header\">" +
-    "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +
     "      <h4 class=\"modal-title\">Uploading</h4>" +
+    "      <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>" +
     "    </div>" +
     "    <div class=\"modal-body\">" +
     "      <div class=\"modal-message\"></div>" +
     "      <div class=\"progress\">" +
-    "        <div class=\"progress-bar progress-bar-striped active\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\"" +
+    "        <div class=\"progress-bar progress-bar-striped progress-bar-animated\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\"" +
     "             aria-valuemax=\"100\" style=\"width: 0%;min-width: 2em;\">" +
     "          0%" +
     "        </div>" +
     "     </div>" +
     "   </div>" +
     "   <div class=\"modal-footer\" style=\"display:none\">" +
-    "     <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Close</button>" +
+    "     <button type=\"button\" class=\"btn btn-outline-secondary\" data-bs-dismiss=\"modal\">Close</button>" +
     "   </div>" +
     "   </div>" +
     "  </div>" +
@@ -67,7 +67,7 @@
             this.$modalTitle.text(this.options.modalTitle);
             this.$modalFooter.hide();
             this.$modalBar.addClass("progress-bar-success");
-            this.$modalBar.removeClass("progress-bar-danger");
+            this.$modalBar.removeClass("progress-bar-danger bg-danger");
             if (this.xhr) {
                 this.xhr.abort();
             }
@@ -80,6 +80,7 @@
                 backdrop: "static",
                 keyboard: false
             });
+            this.$modal.modal("show");
 
             // We need the native XMLHttpRequest for the progress event
             var xhr = new XMLHttpRequest();
@@ -126,7 +127,7 @@
 
             this.setProgress(100);
             this.$modalBar.removeClass("progress-bar-success");
-            this.$modalBar.addClass("progress-bar-danger");
+            this.$modalBar.addClass("progress-bar-danger bg-danger");
             this.$modalFooter.show();
 
             var contentType = xhr.getResponseHeader("Content-Type");
@@ -141,7 +142,7 @@
             }
             else if (contentType || xhr.status === 422) {
                 var responseText = xhr.responseText;
-                if (contentType.indexOf("text/plain") === -1) {
+                if (!contentType || contentType.indexOf("text/plain") === -1) {
                     responseText = "<pre>" + responseText + "</pre>";
                     document.write(responseText);
                 } else {

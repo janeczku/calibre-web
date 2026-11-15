@@ -1071,6 +1071,10 @@ body > nav.navbar > div > form > div > span > button {
     border-radius: 0 4px 4px 0
 }
 
+nav.navbar #query_submit {
+    background-color: #555;
+}
+
 button[name="search"],
 button[name='search'] {
     height: 40px;
@@ -1887,7 +1891,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
 }
 
 @media only screen and (min-width: 768px) {
-    body > div.container-fluid > div.row-fluid > div.col-sm-2:after {
+    body > div.container-fluid > div.row > div.col-sm-2:after {
         width: 100%;
         height: 60px;
         background: rgba(0, 0, 0, .15);
