@@ -35,3 +35,7 @@ gdrive_credentials
 client_secrets.json
 gmail.json
 /.key
+
+# foliate-js vendored dependencies
+!cps/static/js/libs/foliate/vendor/
+!cps/static/js/libs/foliate/vendor/**
