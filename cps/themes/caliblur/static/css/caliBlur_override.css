@@ -1255,8 +1255,9 @@ body.blur.me .user-edit-page > h1 {
 }
 
 /* the form and its two parts are Bootstrap rows/columns with g-3 gutters: lay them out as before,
-   fields col-md-10 col-lg-8 wide, no gutters */
+   fields col-md-10 col-lg-8 wide (--cb-fields: their share of the form), no gutters */
 body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+  --cb-fields: 1;
   display: block;
   margin: 0;
 }
@@ -1267,15 +1268,19 @@ body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > [class*="col-"] 
 }
 
 @media (min-width: 768px) {
-  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > .col-lg-10 {
-    width: 83.33333333%;
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+    --cb-fields: .8333333333;
   }
 }
 
 @media (min-width: 992px) {
-  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > .col-lg-10 {
-    width: 66.66666667%;
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+    --cb-fields: .6666666667;
   }
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > .col-lg-10 {
+  width: calc(var(--cb-fields) * 100%);
 }
 
 body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > div > .row {
@@ -1306,18 +1311,12 @@ body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_t
   margin-bottom: 20px;
 }
 
-/* it sits in the left checkbox column (the longer list); widen it to about the full form width:
-   the column is half of the fields column, which is 83.3% (md) / 66.7% (lg) of the form */
+/* it sits in the left checkbox column (the longer list), which is half of the fields part: widen it to
+   the form width minus the 15px column padding on both sides */
 @media (min-width: 768px) {
   body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
-    width: 240%;
+    width: calc((200% + 30px) / var(--cb-fields) - 30px);
     margin-bottom: 60px;
-  }
-}
-
-@media (min-width: 992px) {
-  body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
-    width: 300%;
   }
 }
 
