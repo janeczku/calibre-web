@@ -1077,7 +1077,8 @@ body.blur #fileModal #file_confirm,
 body.blur #restrictModal #submit_allow,
 body.blur #btnConfirmYes-GeneralChangeModal,
 body.blur.me #user_submit,
-body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf) {
+body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf),
+body.blur.shelforder #ChangeOrder {
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
   color: #fff;
@@ -1109,6 +1110,7 @@ body.blur #fileModal #file_confirm:active,
 body.blur #restrictModal #submit_allow:is(:hover, :focus, :active),
 body.blur.me #user_submit:is(:hover, :focus, :active),
 body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf):is(:hover, :focus, :active),
+body.blur.shelforder #ChangeOrder:is(:hover, :focus, :active),
 body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
   background-color: var(--color-secondary-hover);
   border-color: var(--color-secondary-hover);
@@ -1117,7 +1119,8 @@ body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
 
 body.blur #fileModal #file_abort,
 body.blur .modal-actions > [id^="btnConfirmNo-"],
-body.blur.shelf #toggle_order_shelf {
+body.blur.shelf #toggle_order_shelf,
+body.blur.shelforder #shelf_back {
   background-color: hsla(0, 0%, 100%, .25);
   border-color: hsla(0, 0%, 100%, .25);
   color: #fff;
@@ -1127,7 +1130,8 @@ body.blur #fileModal #file_abort:hover,
 body.blur #fileModal #file_abort:focus,
 body.blur #fileModal #file_abort:active,
 body.blur .modal-actions > [id^="btnConfirmNo-"]:is(:hover, :focus, :active),
-body.blur.shelf #toggle_order_shelf:is(:hover, :focus, :active) {
+body.blur.shelf #toggle_order_shelf:is(:hover, :focus, :active),
+body.blur.shelforder #shelf_back:is(:hover, :focus, :active) {
   background-color: hsla(0, 0%, 100%, .3);
   border-color: hsla(0, 0%, 100%, .3);
   color: #fff;
@@ -1436,4 +1440,37 @@ body.blur.shelf .discover > .filterheader {
   body.blur.shelf .discover > #toggle_order_shelf {
     margin-bottom: 25px;
   }
+}
+
+/* shelf order: standard's col-sm-8 wrapper is caliBlur's panel; its content keeps the 20% offset of
+   caliBlur's inner wrapper, and Back comes before Save */
+body.blur.shelforder .col-sm-10 > .col-sm-8 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 10px;
+}
+
+body.blur.shelforder .col-sm-10 > .col-sm-8 > :not(h2, .btn) {
+  flex: 0 0 calc(80% - 30px);
+  margin-left: 20%;
+}
+
+body.blur.shelforder :is(#shelf_back, #ChangeOrder) {
+  margin: 30px 0 25px;
+}
+
+body.blur.shelforder #shelf_back {
+  order: 1;
+  margin-left: 20%;
+}
+
+body.blur.shelforder #ChangeOrder {
+  order: 2;
+}
+
+body.blur.shelforder .col-sm-10 > .col-sm-8::before {
+  content: "\f575";
+  font-family: bootstrap-icons;
+  line-height: 1;
 }

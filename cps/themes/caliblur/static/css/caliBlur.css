@@ -411,7 +411,7 @@ nav.navbar .navbar-nav .open .dropdown-menu > .active > a:hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
-.shelforder-icon {
+body.blur.shelforder .col-sm-10 > .col-sm-8::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -1557,7 +1557,7 @@ body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > f
     margin: 15px
 }
 
-.container-fluid .discover, .container-fluid .list-page, body.blur.usertable .container-fluid .user-edit-page, body:where(.mailset) .container-fluid .user-edit-page, .navbar {
+.container-fluid .discover, body.blur.shelforder .container-fluid .col-sm-8, .container-fluid .list-page, body.blur.usertable .container-fluid .user-edit-page, body:where(.mailset) .container-fluid .user-edit-page, .navbar {
     margin-bottom: 0
 }
 
@@ -1761,7 +1761,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
     grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)) !important
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
+body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
     height: auto;
     width: calc(100vw - 257px);
     margin: 40px 0 !important;
@@ -1779,7 +1779,7 @@ body.book .single > .row {
     --bs-gutter-x: 30px;
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
+body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
     margin-top: 0
 }
 
@@ -1830,7 +1830,7 @@ body > div.container-fluid > div > div.col-sm-10 > p, body.blur.stat > div.conta
     text-align: right
 }
 
-.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
+.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
     margin: 0;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -1877,7 +1877,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
     width: calc(100vw - 240px)
 }
 
-.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
+.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
     width: calc(100vw - 240px) !important;
     height: 60px !important;
     padding-left: 25px !important;
@@ -1909,7 +1909,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
     }
 }
 
-body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1 {
+body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1 {
     width: calc(100vw - 240px);
     height: 60px;
     padding-left: 25px;
@@ -6724,13 +6724,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         height: calc(100% - 42px)
     }
 
-    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid.admin-dashboard, body > div.container-fluid > div > div.col-sm-10 > div.discover, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
+    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid.admin-dashboard, body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
         width: 100%;
         margin: 0 !important;
         padding: 10px !important
     }
 
-    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
+    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
         top: 48px;
         left: 0;
         padding-left: 10px;
@@ -6819,7 +6819,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         height: 30px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, body.blur.authorlist .list-page::before, body.blur.catlist .list-page::before, body.blur.downloadlist .list-page::before, body.blur.langlist .list-page::before, body.blur.ratingslist .list-page::before, body.blur.serieslist .list-page::before, .shelforder-icon {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, body.blur.authorlist .list-page::before, body.blur.catlist .list-page::before, body.blur.downloadlist .list-page::before, body.blur.langlist .list-page::before, body.blur.ratingslist .list-page::before, body.blur.serieslist .list-page::before, body.blur.shelforder .col-sm-10 > .col-sm-8::before {
         position: fixed;
         top: 62px;
         right: 23px;
@@ -6907,7 +6907,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         margin: auto auto 15px
     }
 
-    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
+    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
         top: 48px !important;
         left: 0 !important;
         padding-left: 10px !important;
