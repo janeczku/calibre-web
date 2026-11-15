@@ -524,7 +524,7 @@ body.blur .schedule-form label {
 }
 
 body.admin select.form-control,
-body.blur:is(.mailset) select.form-select,
+body.blur:is(.mailset, .edituser, .newuser) select.form-select,
 body.blur .schedule-form select.form-control {
   appearance: auto;
 }
@@ -1073,7 +1073,8 @@ body.blur #InvalidDialog .modal-header span {
    confirm button orange and Cancel grey */
 body.blur #fileModal #file_confirm,
 body.blur #restrictModal #submit_allow,
-body.blur #btnConfirmYes-GeneralChangeModal {
+body.blur #btnConfirmYes-GeneralChangeModal,
+body.blur.me #user_submit {
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
   color: #fff;
@@ -1103,6 +1104,7 @@ body.blur #fileModal #file_confirm:hover,
 body.blur #fileModal #file_confirm:focus,
 body.blur #fileModal #file_confirm:active,
 body.blur #restrictModal #submit_allow:is(:hover, :focus, :active),
+body.blur.me #user_submit:is(:hover, :focus, :active),
 body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
   background-color: var(--color-secondary-hover);
   border-color: var(--color-secondary-hover);
@@ -1263,4 +1265,117 @@ body.blur.mailset #attachement_size {
 
 body.blur.mailset :is(#domain_add_allow, #domain_add_deny) > .mb-3 {
   margin-bottom: 15px !important;
+}
+
+/* user edit / new user / profile: standard's markup */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before {
+  content: "";
+  aspect-ratio: 1;
+  background: url("../../../static/css/img/user-icon.svg") center / contain no-repeat;
+}
+
+body.blur:is(.edituser, .newuser) .user-edit-page > h1 {
+  margin-bottom: 8px !important;
+}
+
+body.blur.me .user-edit-page > h1 {
+  margin-bottom: 0 !important;
+}
+
+/* the form and its two parts are Bootstrap rows/columns with g-3 gutters: lay them out as before,
+   fields col-md-10 col-lg-8 wide, no gutters */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+  display: block;
+  margin: 0;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > [class*="col-"] {
+  margin-top: 0;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > .col-lg-10 {
+    width: 83.33333333%;
+  }
+}
+
+@media (min-width: 992px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > .col-lg-10 {
+    width: 66.66666667%;
+  }
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > div > .row {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+/* the fields stack as plain blocks, so margins (e.g. of the password error list) collapse as before */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > div:first-of-type > .row {
+  display: block;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .form-check {
+  padding-left: 0;
+  margin-bottom: 15px !important;
+}
+
+/* the profile page (not an admin page) has no field spacing */
+body.blur.me .user-edit-page .form-check {
+  margin-bottom: 0 !important;
+}
+
+body.blur.me .user-edit-page .form-label {
+  margin-bottom: 0;
+}
+
+body.blur.me .user-edit-page > form > [class*="col-"] {
+  padding: 0;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .form-check-input {
+  float: none;
+  margin: 0;
+  vertical-align: -2px;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
+  margin-top: 0 !important;
+}
+
+/* phones: the tag buttons go below both checkbox lists, as before */
+@media (max-width: 767px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .row > div:has(> .d-flex > #get_user_tags) {
+    display: contents;
+  }
+
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .row > div:has(> .d-flex > #get_user_tags) > * {
+    width: 100%;
+  }
+
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
+    order: 1;
+  }
+}
+
+/* actions: Delete User left, Cancel and Save right */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #user_submit) {
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 10px !important;
+  margin-top: 0 !important;
+}
+
+body.blur:is(.edituser, .newuser) #btndeluser {
+  order: -1;
+  margin-right: auto;
+}
+
+body.blur:is(.edituser, .newuser) #user_submit {
+  order: 1;
+}
+
+body.blur.me .user-edit-page .d-flex:has(> #user_submit) {
+  justify-content: flex-start;
 }

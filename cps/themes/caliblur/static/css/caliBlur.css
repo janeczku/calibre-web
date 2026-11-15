@@ -1,4 +1,4 @@
-.form-control, body.blur:is(.mailset) select.form-select, .home-btn, .home-btn > a, body > nav.navbar > div > div.navbar-header > a {
+.form-control, body.blur:is(.mailset, .edituser, .newuser, .me) select.form-select, .home-btn, .home-btn > a, body > nav.navbar > div > div.navbar-header > a {
     font-variant-caps: normal;
     font-variant-numeric: normal;
     font-weight: 400;
@@ -689,7 +689,7 @@ body > nav.navbar > div > div.navbar-header > a {
     -webkit-user-select: none
 }
 
-.form-control, body.blur:is(.mailset) select.form-select, .home-btn, .home-btn > a {
+.form-control, body.blur:is(.mailset, .edituser, .newuser, .me) select.form-select, .home-btn, .home-btn > a {
     font-variant-east-asian: normal;
     font-stretch: 100%
 }
@@ -1028,7 +1028,7 @@ body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     border-radius: 50%
 }
 
-.form-control, body.blur:is(.mailset) select.form-select {
+.form-control, body.blur:is(.mailset, .edituser, .newuser, .me) select.form-select {
     background-image: none;
     display: block;
     width: 100%;
@@ -1051,7 +1051,7 @@ body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     transition: background-color .2s
 }
 
-.form-control:focus, body.blur:is(.mailset) select.form-select:focus {
+.form-control:focus, body.blur:is(.mailset, .edituser, .newuser, .me) select.form-select:focus {
     border-color: transparent;
     outline: 0;
     -webkit-box-shadow: none;
@@ -1220,7 +1220,7 @@ body.blur.remotelogin .card.card-body > h2 {
     margin-bottom: 30px
 }
 
-.btn, .form-group > label, body.blur:is(.dbconfig) .form-check > label, body.blur:is(.mailset) .user-edit-page .mb-3 > .form-label {
+.btn, .form-group > label, body.blur:is(.dbconfig, .edituser, .newuser, .me) .form-check > label, body.blur:is(.mailset) .user-edit-page .mb-3 > .form-label {
     font-size: 14px;
     font-weight: 400
 }
@@ -1301,7 +1301,7 @@ body.blur.login .login-card a#remote_login:hover {
     background-color: var(--color-secondary-hover)
 }
 
-.form-group > label, body.blur:is(.dbconfig) .form-check > label, body.blur:is(.mailset) .user-edit-page .mb-3 > .form-label {
+.form-group > label, body.blur:is(.dbconfig, .edituser, .newuser, .me) .form-check > label, body.blur:is(.mailset) .user-edit-page .mb-3 > .form-label {
     color: #eee;
     font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif
 }
@@ -4754,7 +4754,7 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     border: collapse;
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
     display: block;
     position: fixed;
     left: calc(240px + ((20% - 55px - 6vw) / 2));
@@ -4790,13 +4790,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     margin-left: 10px
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back, body.blur:is(.edituser, .newuser) .user-edit-page #back, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back {
     float: right;
     margin-left: 0;
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.blur:is(.edituser, .newuser) .user-edit-page #back:hover, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -4813,12 +4813,11 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     margin-left: 0
 }
 
-body.edituser.admin #get_user_tags, body.newuser.admin #get_user_tags,
 body.edituser.admin #btndeluser, body.newuser.admin #btndeluser {
     margin-left: 15px
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 {
+body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12, body.blur.edituser .user-edit-page > form > .col-12:last-child {
     margin-bottom: 60px
 }
 
@@ -6820,7 +6819,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding-left: 12px
     }
 
-    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
         position: absolute;
         top: 20px;
         left: 30px;
@@ -6867,7 +6866,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding-right: 15px
     }
 
-    .form-group > label, body.blur:is(.dbconfig) .form-check > label, body.blur:is(.mailset) .user-edit-page .mb-3 > .form-label {
+    .form-group > label, body.blur:is(.dbconfig, .edituser, .newuser, .me) .form-check > label, body.blur:is(.mailset) .user-edit-page .mb-3 > .form-label {
         font-size: 12px
     }
 
@@ -7424,7 +7423,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)) !important
     }
 
-    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 {
+    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12, body.blur.edituser .user-edit-page > form > .col-12:last-child {
         margin-bottom: 20px;
         padding-right: 15px
     }
