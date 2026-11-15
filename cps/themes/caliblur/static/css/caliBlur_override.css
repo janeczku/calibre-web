@@ -538,25 +538,33 @@ body.admin .discover > form > [class*="col-"] > .col-sm-6 {
   float: left;
 }
 
-.caliblur-config-actions {
+.config-actions {
   display: flex;
   gap: 10px;
   clear: both;
   padding-top: 20px;
+  margin-top: 0 !important;
 }
 
-body.admin .caliblur-config-actions .btn {
+/* standard's actions row is col-12; caliBlur keeps it as wide as the accordion */
+@media (min-width: 992px) {
+  body.blur .config-actions {
+    width: 66.66666667%;
+  }
+}
+
+body.admin .config-actions .btn {
   margin-bottom: 0;
 }
 
-body.admin .caliblur-config-actions .btn-outline-secondary {
+body.admin .config-actions .btn-outline-secondary {
   background: hsla(0, 0%, 100%, .25);
   border-color: transparent;
   color: #fff;
 }
 
-body.admin .caliblur-config-actions .btn-outline-secondary:hover,
-body.admin .caliblur-config-actions .btn-outline-secondary:focus {
+body.admin .config-actions .btn-outline-secondary:hover,
+body.admin .config-actions .btn-outline-secondary:focus {
   background: hsla(0, 0%, 100%, .3);
 }
 
@@ -574,11 +582,31 @@ body.shelfedit .discover form #submit:focus {
   border-color: var(--color-secondary-hover);
 }
 
-body.admin .caliblur-config-accordion {
+body.admin .config-accordion {
   padding: 0 15px;
   border: 0;
   --bs-accordion-bg: transparent;
   --bs-accordion-border-color: transparent;
+}
+
+/* style.css gives standard's .config-accordion a light grey surface */
+body.blur .config-accordion .accordion-button,
+body.blur .config-accordion .accordion-body {
+  background-color: transparent;
+}
+
+/* style.css sizes and swaps standard's accordion icon: keep caliBlur's inherited plus-lg */
+body.blur .config-accordion .accordion-button .bi-plus-lg {
+  font-size: inherit;
+  width: auto;
+}
+
+body.blur .config-accordion .accordion-button.collapsed .bi-plus-lg::before {
+  content: "\f64d";
+}
+
+body.blur .config-accordion .accordion-item:last-child {
+  margin-bottom: 5px;
 }
 
 body.admin .accordion-item {
@@ -909,12 +937,12 @@ body.mailset.admin .discover > form > div > .form-group {
     --bs-gutter-x: 20px;
   }
 
-  body.admin .caliblur-config-accordion {
+  body.admin .config-accordion {
     width: 100%;
     padding: 0;
   }
 
-  body.admin .caliblur-config-actions {
+  body.admin .config-actions {
     flex-wrap: wrap;
   }
 
