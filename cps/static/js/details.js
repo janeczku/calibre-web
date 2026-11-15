@@ -18,7 +18,7 @@
 /* global _ */
 
 function handleResponse (data) {
-    $(".row-fluid.text-center").remove();
+    $(".flash-row").remove();
     $("#flash_danger").remove();
     $("#flash_success").remove();
     if (!jQuery.isEmptyObject(data)) {
@@ -29,7 +29,7 @@ function handleResponse (data) {
             });
         } else {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center">' +
+                $(".navbar").after('<div class="flash-row text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });
@@ -60,7 +60,7 @@ $("#have_read_cb").on("change", function() {
             var data = [{type:"danger", message:response.responseText}]
             // $("#flash_success").parent().remove();
             $("#flash_danger").remove();
-            $(".row-fluid.text-center").remove();
+            $(".flash-row").remove();
             if (!jQuery.isEmptyObject(data)) {
                 $("#have_read_cb").prop("checked", !$("#have_read_cb").prop("checked"));
                 if($("#bookDetailsModal").is(":visible")) {
@@ -71,7 +71,7 @@ $("#have_read_cb").on("change", function() {
                 } else
                 {
                     data.forEach(function (item) {
-                        $(".navbar").after('<div class="row-fluid text-center" >' +
+                        $(".navbar").after('<div class="flash-row text-center" >' +
                             '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                             '</div>');
                     });

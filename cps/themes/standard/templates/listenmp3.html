@@ -15,10 +15,12 @@
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/soundmanager2.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/bar-ui.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/bootstrap5.bundle.min.js') }}"></script>
 
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='touch-icon.png') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='css/libs/bootstrap5.min.css') }}" rel="stylesheet" media="screen">
+  <link href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" rel="stylesheet" media="screen">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bar-ui.css') }}" />
 
   <script>
@@ -30,7 +32,7 @@
 <body>
 
   <div class="row" style="display: inline-block; width: 100%;">
-    <div class="col-sm-3 col-lg-3 col-xs-5">
+    <div class="col-sm-3 col-lg-3 col-5">
       
     </div>
     <div class="col-sm-6 col-lg-6 book-meta" style="margin-bottom: 2%;">
@@ -66,7 +68,7 @@
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+      <span class="badge text-bg-secondary">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
       </p>
       </div>
       {% endif %}
@@ -76,7 +78,7 @@
         <p>
         <span class="bi bi-link-45deg"></span>
         {% for identifier in entry.identifiers %}
-          <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.format_type()}}</a>
+          <a href="{{identifier}}" target="_blank" class="btn btn-sm btn-success" role="button">{{identifier.format_type()}}</a>
         {%endfor%}
       </p>
       </div>
@@ -89,7 +91,7 @@
         <span class="bi bi-tags"></span>
 
         {% for tag in entry.tags %}
-          <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('web.books_list', data='category', sort_param='stored', book_id=tag.id) }}" class="btn btn-sm btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </p>
 
@@ -188,7 +190,6 @@
         <div class="btn-group" role="group" aria-label="Add to shelves">
           <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="bi bi-list"></span> {{_('Add to shelf')}}
-            <span class="caret"></span>
           </button>
           <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
             {% for shelf in g.shelves_access %}
@@ -221,7 +222,7 @@
             {%endfor%}
           {% endif %}
         </div>
-        <div id="shelf-action-errors" class="pull-left" role="alert"></div>
+        <div id="shelf-action-errors" class="float-start" role="alert"></div>
       </div>
       {% endif %}
 

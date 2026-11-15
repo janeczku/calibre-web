@@ -1,6 +1,6 @@
 {% extends theme("layout.html") %}
 {% block flash %}
-<div id="spinning_success" class="row-fluid text-center" style="display:none;">
+<div id="spinning_success" class="flash-row text-center" style="display:none;">
     <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
   </div>
 {% endblock %}
@@ -9,7 +9,7 @@
   <h2>{{title}}</h2>
 <form role="form" method="POST" autocomplete="off">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-<div class="accordion col-12 col-lg-8 config-accordion" id="configAccordion">
+<div class="accordion col-12 col-lg-8 {% block config_accordion_class %}config-accordion{% endblock %}" id="configAccordion">
   <div class="accordion-item">
     <h2 class="accordion-header" id="heading-one">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseone" aria-expanded="false" aria-controls="collapseone">
@@ -225,23 +225,17 @@
           <label for="config_ldap_cacert_path" >{{_('LDAP CACertificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="config_ldap_cacert_path_b" data-bs-toggle="modal" data-link="config_ldap_cacert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
-            </span>
+            <button type="button" id="config_ldap_cacert_path_b" data-bs-toggle="modal" data-link="config_ldap_cacert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
           </div>
           <label for="config_ldap_cert_path">{{_('LDAP Certificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="config_ldap_cert_path_b" data-bs-toggle="modal" data-link="config_ldap_cert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
-            </span>
+            <button type="button" id="config_ldap_cert_path_b" data-bs-toggle="modal" data-link="config_ldap_cert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
           </div>
           <label for="config_ldap_key_path">{{_('LDAP Keyfile Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="config_ldap_key_path_b" data-bs-toggle="modal" data-link="config_ldap_key_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
-            </span>
+            <button type="button" id="config_ldap_key_path_b" data-bs-toggle="modal" data-link="config_ldap_key_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
           </div>
         </div>
         <div class="form-group">
@@ -418,7 +412,8 @@
     </div>
   </div>
     {% endif %}
-    <div class="col-12 mt-3">
+    </div>
+    <div class="config-actions {% block config_actions_class %}col-12 mt-3{% endblock %}">
       <button type="button" name="submit" id="config_submit" class="btn btn-primary">{{_('Save')}}</button>
       <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
     </div>

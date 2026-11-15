@@ -1,0 +1,113 @@
+import json
+import os
+import stat
+import sys
+import zipfile
+
+import flask_themes2
+import pytest
+from flask import Flask
+from flask_themes2 import Themes
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
+
+
+def make_theme(base_dir, identifier, templates=None, static=None, options=None, info_overrides=None):
+    """Write a valid theme folder <base_dir>/<identifier> and return its path."""
+    path = base_dir / identifier
+    path.mkdir(parents=True, exist_ok=True)
+    info = {"name": identifier, "identifier": identifier, "application": "cps", "author": "test"}
+    if options:
+        info["options"] = options
+    info.update(info_overrides or {})
+    (path / "info.json").write_text(json.dumps(info))
+    for folder, files in (("templates", templates or {}), ("static", static or {})):
+        for name, content in files.items():
+            target = path / folder / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(content)
+    return path
+
+
+def make_zip(path, entries, symlinks=None):
+    """Write a zip with the given {name: content} entries and {name: target} symlink entries."""
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for name, content in entries.items():
+            zf.writestr(name, content)
+        for name, target in (symlinks or {}).items():
+            info = zipfile.ZipInfo(name)
+            info.external_attr = (stat.S_IFLNK | 0o777) << 16
+            zf.writestr(info, target)
+    return path
+
+
+@pytest.fixture(autouse=True)
+def reusable_themes_blueprint():
+    # Flask-Themes2 uses one module-level blueprint and adds its URL rule on every
+    # init_themes() call; Flask refuses that once the blueprint was registered.
+    # The app does this once per process, the tests once per test app.
+    flask_themes2.themes_blueprint._got_registered_once = False
+
+
+@pytest.fixture
+def bundled_dir(tmp_path):
+    """Directory holding the bundled themes of the test app (app.root_path/themes)."""
+    path = tmp_path / "themes"
+    path.mkdir()
+    make_theme(path, "standard", info_overrides={"name": "Standard Theme"})
+    make_theme(path, "caliblur", info_overrides={"name": "caliBlur! Dark Theme"})
+    return path
+
+
+@pytest.fixture
+def bare_app(tmp_path, bundled_dir):
+    """Flask app whose bundled themes live in bundled_dir; themes not initialised."""
+    return Flask("cps", root_path=str(tmp_path))
+
+
+@pytest.fixture
+def theme_app(bare_app):
+    Themes().init_themes(bare_app, app_identifier="cps")
+    return bare_app
+
+
+def info(version="1.0", **extra):
+    """info.json text of the theme 'demo'; version=None leaves the key out."""
+    data = {"name": "Demo", "identifier": "demo", "application": "cps", "author": "t"}
+    if version is not None:
+        data["version"] = version
+    data.update(extra)
+    return json.dumps(data)
+
+
+@pytest.fixture
+def env(bare_app, tmp_path, monkeypatch):
+    """Test app with themes and theme installer initialised; yields (app, config dir)."""
+    from cps import theme_install, themes
+    monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
+    temp = tmp_path / "systemtemp"
+    temp.mkdir()
+    monkeypatch.setattr(theme_install.tempfile, "tempdir", str(temp))
+    cfg = tmp_path / "cfg"
+    cfg.mkdir()
+    themes.init_app_themes(bare_app, str(cfg / "app.db"))
+    theme_install.init_app(bare_app, str(cfg / "app.db"))
+    with bare_app.app_context():
+        yield bare_app, cfg
+
+
+def stage(entries, user_id=1, **kw):
+    """Zip entries into the staging folder and stage them (needs the env fixture)."""
+    from flask import current_app
+    from cps import theme_install
+    path = make_zip(os.path.join(current_app.config["CW_THEME_STAGING_DIR"], "up.zip"), entries)
+    return theme_install.stage_zip(str(path), user_id, "upload", "0" * 64, **kw)
+
+
+def install(version="1.0", extra=None, trust=False, confirm=None, user_id=1):
+    """Stage and commit theme 'demo'; confirm defaults to the version when already installed."""
+    from cps import theme_install
+    s = stage({"info.json": info(version=version), **(extra or {})}, user_id=user_id)
+    if confirm is None and s["installed"]:
+        confirm = s["version"] or ""
+    return theme_install.commit(s["token"], user_id, confirm, trust)

@@ -168,7 +168,7 @@ table .bg-dark-danger a { color: #fff; }
   flex-wrap: wrap;
 }
 
-.row-fluid.text-center {
+.flash-row {
     margin-top: -20px;
 }
 
@@ -413,9 +413,6 @@ span.glyphicon.glyphicon-tags {
 }
 
 .book-meta { padding-bottom: 20px; }
-
-.navbar-default .navbar-toggle .icon-bar { background-color: #000; }
-.navbar-default .navbar-toggle { border-color: #000; }
 
 .cover .badge {
   position: absolute;
@@ -683,10 +680,6 @@ body > div.container-fluid  {
   height: 40px;
 }
 
-.input-group-sm > .input-group-btn > .btn {
-    height: 40px;
-}
-
 .btn-file {
   height: 40px;
   display: inline-flex;
@@ -816,8 +809,16 @@ body > div.container-fluid  {
 
 .admin-dashboard .admin-actions .btn {
   min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .admin-modal .modal-header {
   align-items: center;
+}
+
+/* Theme list on UI configuration: the update action reads as a link, so rows keep their height */
+#theme-table .theme-update {
+  font: inherit;
 }

@@ -1,6 +1,6 @@
 {% extends theme("layout.html") %}
 {% block flash %}
-<div id="spinning_success" class="row-fluid text-center" style="display:none;">
+<div id="spinning_success" class="flash-row text-center" style="display:none;">
     <div class="alert alert-info"><img id="img-spinner" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/></div>
 </div>
 {% endblock %}
@@ -14,7 +14,7 @@
        <div class="form-group required input-group mb-3">
         <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
         <span class="input-group-text p-0 border-0 bg-transparent">
-          <button type="button" data-bs-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-bs-target="#fileModal" id="library_path" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
+          <button type="button" data-bs-toggle="modal" id="calibre_modal_path" data-link="config_calibre_dir" data-filefilter="metadata.db" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
         </span>
       </div>
       <div class="form-check mb-3">
@@ -25,7 +25,7 @@
        <div class="input-group mb-3">
         <input type="text" class="form-control" id="config_calibre_split_dir" name="config_calibre_split_dir" value="{% if config.config_calibre_split_dir != None %}{{ config.config_calibre_split_dir }}{% endif %}" autocomplete="off">
         <span class="input-group-text p-0 border-0 bg-transparent">
-          <button type="button" data-bs-toggle="modal" id="calibre_modal_split_path" data-link="config_calibre_split_dir" data-filefilter="" data-bs-target="#fileModal" id="book_path" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
+          <button type="button" data-bs-toggle="modal" id="calibre_modal_split_path" data-link="config_calibre_split_dir" data-filefilter="" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
         </span>
       </div>
       </div>
@@ -66,6 +66,7 @@
       <button id="db_submit" type="submit" class="btn btn-primary">{{_('Save')}}</button>
       <a href="{{ url_for('admin.admin') }}" id="config_back" class="btn btn-outline-secondary">{{_('Cancel')}}</a>
       </div>
+  </div>
   </form>
 </div>
 {% endblock %}

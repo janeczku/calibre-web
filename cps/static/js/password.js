@@ -32,7 +32,6 @@ $(document).ready(function() {
                 maxChar: -1
             }
             options.ui = {
-                bootstrap3: true,
                 showProgressBar: false,
                 showErrors: true,
                 showVerdicts: false,

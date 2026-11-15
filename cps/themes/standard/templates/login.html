@@ -2,7 +2,7 @@
 {% block body %}
 <div class="row justify-content-center">
   <div class="col-12 col-lg-8 col-xl-6">
-    <div class="card shadow-sm border-0 login-card well">
+    <div class="card shadow-sm border-0 login-card">
       <div class="card-body p-4 p-lg-5">
         <h2 class="mt-0 mb-4">{{_('Login')}}</h2>
         <form method="POST" role="form">
@@ -16,7 +16,7 @@
             <label for="password" class="form-label">{{_('Password')}}</label>
             <div class="input-group">
               <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}" value="{{ password }}">
-              <button type="button" class="btn btn-outline-secondary toggle-password" data-target="#password" data-bs-target="#password" data-password-show="{{_('Show password')}}" data-password-hide="{{_('Hide password')}}" aria-label="{{_('Show password')}}" title="{{_('Show password')}}">
+              <button type="button" class="btn btn-outline-secondary toggle-password" data-bs-target="#password" data-password-show="{{_('Show password')}}" data-password-hide="{{_('Hide password')}}" aria-label="{{_('Show password')}}" title="{{_('Show password')}}">
                 <span class="visually-hidden password-label">{{_('Show password')}}</span>
                 <i class="bi bi-eye password-toggle-icon password-icon-hidden" aria-hidden="true"></i>
                 <i class="bi bi-eye-slash password-toggle-icon password-icon-visible d-none" aria-hidden="true"></i>

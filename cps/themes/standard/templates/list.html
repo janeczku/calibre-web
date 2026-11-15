@@ -1,5 +1,6 @@
 {% extends theme("layout.html") %}
 {% block body %}
+<div class="list-page">
 <h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader d-none d-md-block mb-3">
@@ -54,6 +55,7 @@
     </div>
     </div>
   </div>
+</div>
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>

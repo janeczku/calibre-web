@@ -1,0 +1,1476 @@
+body.serieslist.grid-view div.container-fluid > div > div.col-sm-10::before {
+  display: none;
+}
+
+.cover .badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background-color: #cc7b19;
+  border-radius: 0;
+  padding: 0 8px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+  line-height: 24px;
+}
+
+.cover {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+}
+
+.cover .read {
+  padding: 0 0;
+  line-height: 15px;
+}
+
+/* standard's read badge (index): small square in the top-left corner, like .read */
+body.blur .cover .badge.cover-check-badge {
+  top: 0;
+  bottom: auto;
+  left: 0;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  line-height: 15px;
+  border-radius: 0 !important;
+}
+
+body.blur .discover > .row.g-3 .cover .badge.rounded-pill {
+  border-radius: 0 !important;
+}
+
+input.datepicker {color: transparent}
+input.datepicker:focus + input {color: #eee}
+
+.col-sm-3.col-lg-2.col-6.book.session,
+body.blur .discover > .row.g-3 > .book.session,
+body.blur:is(.search, .advsearch) .discover > .row > .book.session,
+body.blur.shelf .discover > .row > .book.session {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* standard's index grid uses g-3 gutters; caliBlur keeps the default row gutter */
+body.blur .discover > .row.g-3 {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+}
+
+body.blur .list-page > .filterheader,
+body.blur:not(.author) .discover.load-more > .filterheader,
+body.blur .discover > h1 + .filterheader {
+  margin: 40px 0 !important;
+  padding: 0 10px 0 40px;
+}
+
+body.blur .list-page > .filterheader .btn,
+body.blur:not(.author) .discover.load-more > .filterheader .btn,
+body.blur .discover > h1 + .filterheader .btn {
+  font-size: 14px;
+  color: #fff;
+}
+
+body.blur .discover > .row.g-3 .cover,
+body.blur .discover > .row.g-3 .cover img {
+  border-radius: 0 !important;
+}
+
+/* undo standard's spacing utilities on the index grid */
+body.blur .discover.random-books > h2,
+body.blur:not(.author) .discover.load-more > h2 {
+  margin-bottom: 0 !important;
+}
+
+body.blur .discover > .row.g-3 .cover {
+  margin-bottom: 10px !important;
+}
+
+/* standard's span.img is d-block: give it the cover height so the image keeps filling it */
+body.blur .discover > .row.g-3 .cover .img {
+  height: 100%;
+}
+
+body.blur .discover > .row.g-3 .meta > a > .title,
+body.blur .discover > .row.g-3 .meta > .author,
+body.blur .discover > .row.g-3 .meta > .series {
+  margin-bottom: 0 !important;
+}
+
+body.blur .discover > .row.g-3 .rating.small {
+  font-size: 1em;
+}
+
+nav.navbar .profileDrop.dropdown-toggle::after {
+  display: none;
+}
+
+#top_tasks > .bi,
+#top_admin > .bi {
+  font-size: 20px;
+}
+
+#form-upload .form-group .btn::before {
+  font-size: 20px;
+}
+
+.profileDropli > li > a {
+  display: block;
+  padding: 4px 20px;
+}
+
+.profileDropli > li > a > .bi {
+  display: none;
+}
+
+body > .container-fluid > .row {
+  --bs-gutter-x: 30px;
+}
+
+body > .container-fluid > .row > .col-sm-10 > .pagination {
+  display: flex !important;
+}
+
+@media only screen and (max-width: 767px) {
+  body > .container-fluid > .row > .col-sm-10 > .pagination .page-next > a,
+  body > .container-fluid > .row > .col-sm-10 > .pagination .page-previous > a,
+  body > .container-fluid > .row > .col-sm-10 > .pagination .page-next > a::before,
+  body > .container-fluid > .row > .col-sm-10 > .pagination .page-previous > a::before {
+    height: 42px;
+    line-height: 42px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  nav.navbar #mainNavbar {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  nav.navbar #main-nav {
+    display: block;
+  }
+
+  #top_admin > span.caliblur-nav-label,
+  #top_tasks > span.caliblur-nav-label,
+  .profileDrop + span.caliblur-nav-label {
+    display: none !important;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  #form-upload .form-group .btn::before {
+    font-size: 20px;
+  }
+
+  nav.navbar #main-nav {
+    float: none;
+  }
+
+  #top_admin > .bi,
+  #top_tasks > .bi {
+    margin-right: 10px;
+  }
+
+  body > .container-fluid > .row > .col-sm-2 {
+    visibility: hidden;
+  }
+
+  .col-sm-3.col-lg-2.col-6.book.session,
+  body.blur .discover > .row.g-3 > .book.session,
+  body.blur:is(.search, .advsearch) .discover > .row > .book.session,
+  body.blur.shelf .discover > .row > .book.session {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  body.blur .discover > .row.g-3 .cover {
+    margin-bottom: 0 !important;
+  }
+}
+
+body.blur.login .login-card > .card-body > form > div > .btn,
+body.blur.login .login-card #remote_login,
+body.blur.remotelogin .card.card-body .btn {
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+/* login: standard's .login-card is the old .well box, its .card-body only a wrapper */
+body.blur.login .login-card {
+  box-shadow: none !important;
+}
+
+/* style.css gives the standard login card its own font */
+body.blur.login .login-card,
+body.blur.login .login-card .form-control,
+body.blur.login .login-card .form-check-label {
+  font-family: inherit;
+}
+
+body.blur.login .login-card > .card-body {
+  padding: 0 !important;
+}
+
+/* undo standard's form spacing utilities; the button rows stack like the old flat form */
+body.blur.login .login-card > .card-body > form > .mb-3,
+body.blur.login .login-card .form-check {
+  margin-bottom: 0 !important;
+}
+
+body.blur.login .login-card .form-label {
+  margin-bottom: 0;
+}
+
+body.blur.login .login-card > .card-body > form > div:has(> .btn),
+body.blur.login .login-card .login-secondary-actions {
+  display: block !important;
+  margin-top: 0 !important;
+  min-height: 0;
+}
+
+body.blur.login .login-card #remote_login {
+  line-height: 1.71428571;
+  text-decoration: none;
+}
+
+body.blur .modal-footer .btn,
+body.blur .modal-body .btn {
+  margin-bottom: 0;
+}
+
+body.blur.advsearch #add-to-shelf {
+  height: 40px;
+}
+
+/* standard's search stars carry .text-warning (!important) */
+body.blur:is(.search, .advsearch) .rating .bi-star-fill.text-warning {
+  color: var(--color-primary) !important;
+}
+
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .twitter-typeahead .tt-hint {
+  background-color: hsla(0, 0%, 100%, .08) !important;
+}
+
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:first-child {
+  padding-left: 0;
+}
+
+body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .form-group > .row > .form-group.col-sm-6:last-child {
+  padding-right: 0;
+}
+
+body.blur .datepicker_delete.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  min-width: 40px;
+  margin-bottom: 0;
+  padding: 0 12px;
+}
+
+body.blur.editbook .rating-clear .glyphicon-remove {
+  color: #fff;
+}
+
+body.blur .datepicker table tr td.day:hover,
+body.blur .datepicker table tr td span:hover,
+body.blur .datepicker table tr td.active,
+body.blur .datepicker table tr td.active:hover,
+body.blur .datepicker table tr td span.active,
+body.blur .datepicker table tr td span.active:hover {
+  background-color: var(--color-secondary) !important;
+  background-image: none !important;
+  border-color: var(--color-secondary) !important;
+  color: #fff !important;
+}
+
+.book-meta > .author > .author-prefix {
+  color: hsla(0, 0%, 100%, .45);
+}
+
+.form-upload-label,
+.top-tasks-label {
+  display: none;
+}
+
+.admin-dashboard {
+  --bs-gutter-x: 30px;
+}
+
+.admin-dashboard > .row > .col > h2 {
+  margin: 20px 0 10px !important;
+}
+
+.admin-dashboard > .row {
+  margin: 0 !important;
+}
+
+.admin-dashboard > .row > .col {
+  padding: 0;
+}
+
+.admin-dashboard .admin-detail-list {
+  background: rgba(0, 0, 0, .2);
+  border-bottom: 2px solid rgba(0, 0, 0, .3);
+  margin-bottom: 20px;
+}
+
+.admin-dashboard .admin-detail-row {
+  margin: 0;
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+  padding: 0 !important;
+  border-top: 0 !important;
+}
+
+/* label/value always half and half, whatever column classes standard passes */
+.admin-dashboard .admin-detail-row > .col-6 {
+  width: 50%;
+  padding: 8px 15px;
+  border-top: 2px solid rgba(0, 0, 0, .3);
+  overflow-wrap: anywhere;
+  font-weight: inherit !important;
+}
+
+/* configuration: one list, not standard's two columns */
+body.blur .admin-dashboard .row.g-4 {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+body.blur .admin-dashboard .row.g-4 > .col-lg-6 {
+  width: 100%;
+}
+
+body.blur .admin-dashboard .row.g-4 > .col-lg-6:first-child > .admin-detail-list {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+body.blur .admin-dashboard .admin-actions {
+  margin-top: 0 !important;
+  gap: 4px !important;
+}
+
+body.blur .admin-dashboard .admin-actions .btn {
+  min-height: 0;
+}
+
+/* standard's status icons: caliBlur shows plain check/cross glyphs in the text colour */
+body.blur .admin-dashboard .status-indicator {
+  display: inline;
+  font-size: inherit;
+  color: inherit;
+}
+
+body.blur .admin-dashboard .status-indicator .bi-check-circle::before {
+  content: "\f26e";
+}
+
+body.blur .admin-dashboard .status-indicator .bi-x-circle::before {
+  content: "\f62a";
+}
+
+body.admin .table,
+body.book_table .table {
+  --bs-table-color: hsla(0, 0%, 100%, .65);
+  --bs-table-bg: transparent;
+  --bs-table-striped-color: hsla(0, 0%, 100%, .65);
+  --bs-table-striped-bg: transparent;
+  --bs-table-hover-color: #fff;
+  --bs-table-hover-bg: rgba(0, 0, 0, .08);
+}
+
+body.tasks #tasktable {
+  --bs-table-color: #eee;
+  --bs-table-bg: transparent;
+  --bs-table-striped-color: #eee;
+  --bs-table-striped-bg: rgba(255, 255, 255, .02);
+  --bs-table-hover-color: #fff;
+  --bs-table-hover-bg: rgba(255, 255, 255, .04);
+}
+
+body.tasks > .container-fluid > .row > .col-sm-10 > .container-fluid > h2 {
+  position: fixed;
+  top: 60px;
+  left: 240px;
+  width: calc(100vw - 240px);
+  max-width: calc(100vw - 550px);
+  height: 60px;
+  margin: 0 !important;
+  padding-left: 25px;
+  overflow: hidden;
+  color: hsla(0, 0%, 100%, .7);
+  font: 400 15px/60px "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* book edit: the page heading sits in the title bar */
+body.blur.editbook #book_edit_frm > h1 {
+  position: fixed;
+  top: 60px;
+  left: 240px;
+  width: calc(100vw - 240px);
+  height: 60px;
+  margin: 0 !important;
+  padding: 0 25px;
+  overflow: hidden;
+  color: hsla(0, 0%, 100%, .7);
+  font: 400 15px/60px "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media only screen and (max-width: 767px) {
+  body.tasks > .container-fluid > .row > .col-sm-10 > .container-fluid > h2 {
+    top: 48px;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 42px;
+    padding: 0 130px 0 10px;
+    background: rgba(0, 0, 0, .15);
+    font-size: 13px;
+    line-height: 42px;
+  }
+
+  body.blur.editbook #book_edit_frm > h1 {
+    top: 48px;
+    left: 0;
+    width: 100%;
+    height: 42px;
+    padding: 0 10px;
+    background: rgba(0, 0, 0, .15);
+    font-size: 13px;
+    line-height: 42px;
+  }
+}
+
+.admin-dashboard .table {
+  margin-bottom: 20px !important;
+}
+
+.admin-dashboard .table > :not(caption) > * > * {
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  border-bottom: 0;
+  line-height: 20px;
+}
+
+.admin-dashboard .table th {
+  font-family: "Open Sans Semibold", sans-serif;
+}
+
+.admin-dashboard .table-responsive {
+  overflow-x: auto;
+}
+
+body.admin .discover .form-group,
+body.admin .accordion .form-group,
+body.blur.me .user-edit-page .form-group,
+body.blur .schedule-form .form-group {
+  margin-bottom: 15px;
+}
+
+body.admin .discover label,
+body.blur:is(.usertable, .mailset, .me) .user-edit-page label,
+body.blur .schedule-form label {
+  margin-bottom: 5px;
+}
+
+body.admin select.form-control,
+body.blur:is(.mailset, .edituser, .newuser) select.form-select,
+body.blur .schedule-form select.form-control {
+  appearance: auto;
+}
+
+body.admin .discover > form > [class*="col-"],
+body.admin .discover > form[class*="col-"] {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+body.admin .discover > form > [class*="col-"] > .col-sm-6 {
+  float: left;
+}
+
+/* form actions: right-aligned, Cancel/Back before Save, 10px apart. Rows with their own container are
+   flex rows; on pages where the buttons are direct children of the form they float right (the first
+   button, Save, ends up rightmost) */
+body.blur :is(.config-actions, .col-12:has(> #db_submit), .d-flex:has(> #email_back), .d-flex:has(> #user_submit), .errorlink:has(> #back)) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px !important;
+}
+
+body.blur :is(.config-actions, .col-12:has(> #db_submit), .d-flex:has(> #email_back), .d-flex:has(> #user_submit)) > :is(a.btn-outline-secondary, #back) {
+  order: -1;
+}
+
+body.blur .schedule-form > .btn,
+body.blur:is(.shelfcreate, .shelfedit) .discover > form > .btn,
+body.blur #adv_submit {
+  float: right;
+  margin: 0 0 0 10px;
+}
+
+.config-actions {
+  clear: both;
+  padding-top: 20px;
+  margin-top: 0 !important;
+}
+
+/* standard's actions row is col-12; caliBlur keeps it as wide as the accordion */
+@media (min-width: 992px) {
+  body.blur .config-actions {
+    width: 66.66666667%;
+  }
+}
+
+body.admin .config-actions .btn {
+  margin-bottom: 0;
+}
+
+body.admin .config-actions .btn-outline-secondary {
+  background: hsla(0, 0%, 100%, .25);
+  border-color: transparent;
+  color: #fff;
+}
+
+body.admin .config-actions .btn-outline-secondary:hover,
+body.admin .config-actions .btn-outline-secondary:focus {
+  background: hsla(0, 0%, 100%, .3);
+}
+
+body.shelfcreate .discover form #submit,
+body.shelfedit .discover form #submit {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+body.shelfcreate .discover form #submit:hover,
+body.shelfcreate .discover form #submit:focus,
+body.shelfedit .discover form #submit:hover,
+body.shelfedit .discover form #submit:focus {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+}
+
+body.admin .config-accordion {
+  padding: 0 15px;
+  border: 0;
+  --bs-accordion-bg: transparent;
+  --bs-accordion-border-color: transparent;
+}
+
+/* style.css gives standard's .config-accordion a light grey surface */
+body.blur .config-accordion .accordion-button,
+body.blur .config-accordion .accordion-body {
+  background-color: transparent;
+}
+
+/* style.css sizes and swaps standard's accordion icon: keep caliBlur's inherited plus-lg */
+body.blur .config-accordion .accordion-button .bi-plus-lg {
+  font-size: inherit;
+  width: auto;
+}
+
+body.blur .config-accordion .accordion-button.collapsed .bi-plus-lg::before {
+  content: "\f64d";
+}
+
+body.blur .config-accordion .accordion-item:last-child {
+  margin-bottom: 5px;
+}
+
+body.admin .accordion-item {
+  margin-bottom: 5px;
+  border: 0;
+  border-radius: 0;
+  background: rgba(0, 0, 0, .15);
+}
+
+body.admin .accordion-header {
+  margin: 0;
+}
+
+body.admin .accordion-button {
+  padding: 10px 15px;
+  font-family: "Open Sans Semibold", sans-serif;
+  font-size: 16px;
+  line-height: 1.14375;
+  border-radius: 0 !important;
+  color: hsla(0, 0%, 100%, .65);
+  background: transparent;
+  box-shadow: none;
+}
+
+body.admin .accordion-button::after {
+  display: none;
+}
+
+body.admin .accordion-button:not(.collapsed) {
+  color: #eee;
+}
+
+body.admin .accordion-button .bi {
+  margin-right: 5px !important;
+  display: inline-flex;
+  line-height: 1;
+}
+
+body.admin .accordion-button .bi::before {
+  font-weight: bold !important;
+}
+
+body.admin .accordion-button:not(.collapsed) .bi-plus-lg::before {
+  content: "\f63b";
+}
+
+body.admin .accordion-body {
+  padding: 15px;
+  color: hsla(0, 0%, 100%, .65);
+}
+
+body.admin .accordion .input-group > .btn {
+  height: 36px;
+  margin-bottom: 10px;
+}
+
+body.admin .discover #config_back,
+body.blur.mailset #email_back,
+body.admin .discover #config_back:hover,
+body.blur.mailset #email_back:hover {
+  background: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.blur .schedule-form #email_back {
+  background: hsla(0, 0%, 100%, .25);
+}
+
+/* logviewer: undo standard's spacing utilities and the white log surface */
+body.blur.logfile #log_group {
+  gap: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+body.blur.logfile #log_group + .row {
+  margin-bottom: 0 !important;
+}
+
+body.blur.logfile #log_group + .row > div {
+  padding: 0 15px;
+}
+
+body.blur.logfile #renderer.log {
+  background-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+body.admin .col-sm-10 .btn-primary,
+body.blur .schedule-form .btn-primary {
+  background: var(--color-secondary);
+  color: #fff;
+}
+
+body.admin .col-sm-10 .btn-primary:hover,
+body.blur .schedule-form .btn-primary:hover {
+  background: var(--color-secondary-hover);
+}
+
+body.admin .bootstrap-table .pagination,
+body.book_table .bootstrap-table .pagination {
+  display: flex !important;
+  flex-direction: row;
+}
+
+body.admin .bootstrap-table .pagination .page-link,
+body.book_table .bootstrap-table .pagination .page-link {
+  font-size: 15px;
+  line-height: 1.42857143;
+}
+
+body.usertable.admin .bootstrap-table .btn-secondary,
+body.usertable.admin .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.usertable.admin .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn,
+body.book_table .bootstrap-table .btn-secondary,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group > .btn,
+body.book_table .bootstrap-table .fixed-table-toolbar .search .input-group .input-group-append > .btn,
+body.usertable.admin #user_delete_selection,
+body.mailset.admin .user-edit-page .btn-outline-secondary {
+  background: var(--color-secondary);
+  color: #fff;
+}
+
+body.blur.usertable .user-edit-page .ts-control,
+body.blur.usertable .user-edit-page .ts-dropdown {
+  background: #323232;
+  color: #eee;
+  border-color: transparent;
+}
+
+body.blur.usertable .user-edit-page .ts-control input {
+  color: #eee;
+}
+
+body.blur.usertable .user-edit-page select.multi_selector,
+body.blur.usertable .user-edit-page .header_select {
+  background: var(--color-secondary);
+  color: #fff;
+  border: 0;
+}
+
+body.blur.usertable .user-edit-page .header_select {
+  height: 36px;
+  padding: 0 16px;
+  font-family: "Open Sans Bold", sans-serif;
+  font-size: 14px;
+}
+
+body.blur.usertable .user-edit-page .fixed-table-container .table thead th .th-inner {
+  padding: 8px;
+}
+
+body.newuser.admin .discover > h1,
+body.edituser.admin .discover > h1 {
+  margin-top: 20px;
+}
+
+body.blur.usertable .user-edit-page > .col-12 {
+  padding: 40px 15px 60px;
+}
+
+/* undo standard's mb-3 on the button row and align-middle on the table */
+body.blur.usertable .user-edit-page > .col-12 > .row {
+  margin-bottom: 0 !important;
+}
+
+body.blur.usertable #user-table {
+  vertical-align: top !important;
+}
+
+body.blur.usertable .user-edit-page .table-responsive {
+  overflow: visible;
+}
+
+body.blur.usertable .user-edit-page .fixed-table-toolbar .btn {
+  margin-bottom: 0;
+}
+
+body.blur.usertable .user-edit-page .columns .dropdown-toggle::after,
+body.book_table .columns .dropdown-toggle::after {
+  display: none;
+}
+
+body.blur.usertable .user-edit-page .columns .dropdown-toggle > .caret,
+body.book_table .columns .dropdown-toggle > .caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+}
+
+body.blur.usertable .user-edit-page .page-list .dropdown-toggle > .caret,
+body.book_table .page-list .dropdown-toggle > .caret {
+  display: none;
+}
+
+.book-meta #add-to-shelf.dropdown-toggle::after {
+  display: inline-block;
+}
+
+.book-meta #add-to-shelves,
+.caliblur-download > .dropdown-menu,
+body.blur.usertable .user-edit-page .columns .dropdown-menu,
+body.book_table .columns .dropdown-menu,
+body.blur.usertable .user-edit-page .page-list .dropdown-menu,
+body.book_table .page-list .dropdown-menu {
+  transition: none;
+}
+
+body.book_table .discover > .col-sm-6 {
+  float: left;
+  padding: 0 15px;
+}
+
+body.book_table .discover > .col-sm-6 > .row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+body.book_table .discover > .col-sm-6 > .row > .btn,
+body.book_table .discover > .col-sm-6 > .row > label {
+  width: auto;
+}
+
+body.book_table .discover > .col-sm-6 > .row > input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+body.book_table .discover > .filterheader {
+  margin: 0;
+}
+
+body.book_table .discover > .bootstrap-table {
+  clear: both;
+}
+
+body.advanced_search .rating-input .glyphicon-star {
+  color: #fff;
+}
+
+body.advanced_search .rating-input .glyphicon-star::before {
+  content: "\EA10";
+  font-family: plex-icons-new, serif;
+}
+
+body.advanced_search .rating-input .glyphicon-star-empty {
+  color: hsla(0, 0%, 100%, .45);
+}
+
+body.advanced_search .rating-input i {
+  font-size: 18px;
+  line-height: 1;
+}
+
+body.advanced_search .rating-input .glyphicon-remove {
+  color: #fff;
+}
+
+body.advanced_search .rating-input .glyphicon-remove::before {
+  font-family: "bootstrap-icons";
+}
+
+body.advanced_search .ts-control,
+body.advanced_search .ts-dropdown {
+  background: #323232;
+  border-color: transparent;
+  color: #eee;
+}
+
+body.advanced_search select[data-style="btn-danger"] + .ts-wrapper .ts-control {
+  background: #ac3323;
+}
+
+body.advanced_search select[data-style="btn-danger"] + .ts-wrapper .ts-control:hover {
+  background: #ce3d2a;
+}
+
+body.advanced_search #adv_submit {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+}
+
+body.advanced_search #adv_submit:hover,
+body.advanced_search #adv_submit:focus {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+}
+
+body.advanced_search .ts-control input {
+  color: #eee;
+}
+
+body.advanced_search .ts-control .item {
+  background: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.advanced_search .ts-dropdown .active {
+  background: hsla(0, 0%, 100%, .08);
+  color: #fff;
+}
+
+body.blur .schedule-form {
+  padding: 0 15px 0 30px;
+}
+
+body.mailset.admin .user-edit-page > .row > form .mb-3 {
+  padding-left: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+  .admin-dashboard,
+  body.blur.usertable .user-edit-page {
+    --bs-gutter-x: 20px;
+  }
+
+  body.admin .config-accordion {
+    width: 100%;
+    padding: 0;
+  }
+
+  body.admin .discover > form > [class*="col-"] > .col-sm-6 {
+    width: 100%;
+    padding: 0 15px;
+  }
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-primary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #fff;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-primary:hover,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-primary:focus,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-primary:active {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+  color: #fff;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-outline-secondary {
+  background-color: hsla(0, 0%, 100%, .25);
+  border-color: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-outline-secondary:hover,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-outline-secondary:focus,
+body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page .editable-buttons .btn-outline-secondary:active {
+  background-color: hsla(0, 0%, 100%, .3);
+  border-color: hsla(0, 0%, 100%, .3);
+  color: #fff;
+}
+
+body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type {
+  width: calc(100vw - 240px);
+  height: 60px;
+  margin: 0;
+  padding-left: 25px;
+  position: fixed;
+  top: 60px;
+  left: 240px;
+  background: rgba(0, 0, 0, .15);
+  color: hsla(0, 0%, 100%, .7);
+  font-family: "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 60px;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type::before {
+  content: none;
+}
+
+body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover {
+  margin-bottom: 120px !important;
+  padding: 0 30px !important;
+}
+
+body.dbconfig.admin .discover > form .input-group {
+  margin-bottom: 15px !important;
+}
+
+/* standard wraps the folder button in a span.input-group-text: join it to the input as before */
+body.dbconfig.admin .discover > form .input-group .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  margin: 0 0 0 -1px;
+  padding: 0 16px;
+  border-radius: 0 3px 3px 0;
+}
+
+/* actions: standard keeps them inside the col-lg-6 column: at lg, stretch them to the form's right edge
+   (column width + its gutters) */
+@media (min-width: 992px) {
+  body.dbconfig.admin .discover > form .col-12:has(> #db_submit) {
+    width: auto;
+    margin-right: calc(-100% - 30px);
+  }
+}
+
+body.dbconfig.admin .discover > form .col-12:has(> #db_submit) > .btn {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+/* standard's checkbox rows: no form-check indent */
+body.blur.dbconfig .discover > form .form-check {
+  padding-left: 0;
+  margin-bottom: 15px !important;
+}
+
+body.blur .modal-header.bg-info,
+body.blur .modal-header.bg-danger,
+body.blur #InvalidDialog .modal-header {
+  background-color: #323232 !important;
+  border-bottom: 1px solid #222;
+  color: #eee;
+}
+
+body.blur .modal-header.bg-info .modal-title,
+body.blur .modal-header.bg-danger .modal-title,
+body.blur .modal-header.bg-info span,
+body.blur .modal-header.bg-danger span,
+body.blur #InvalidDialog .modal-header .modal-title,
+body.blur #InvalidDialog .modal-header span {
+  color: inherit;
+}
+
+/* standard marks the confirm button btn-primary and Cancel btn-outline-secondary: caliBlur shows the
+   confirm button orange and Cancel grey */
+body.blur #fileModal #file_confirm,
+body.blur #restrictModal #submit_allow,
+body.blur #btnConfirmYes-GeneralChangeModal,
+body.blur.me #user_submit,
+body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf),
+body.blur.shelforder #ChangeOrder,
+body.blur.editbook #submit {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #fff;
+}
+
+body.blur #fileModal .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+body.blur #fileModal #element_selected {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-right: auto;
+  overflow-wrap: anywhere;
+}
+
+body.blur #fileModal #file_abort,
+body.blur #fileModal #file_confirm {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+body.blur #fileModal #file_confirm:hover,
+body.blur #fileModal #file_confirm:focus,
+body.blur #fileModal #file_confirm:active,
+body.blur #restrictModal #submit_allow:is(:hover, :focus, :active),
+body.blur.me #user_submit:is(:hover, :focus, :active),
+body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf):is(:hover, :focus, :active),
+body.blur.shelforder #ChangeOrder:is(:hover, :focus, :active),
+body.blur.editbook #submit:is(:hover, :focus, :active),
+body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+  color: #fff;
+}
+
+body.blur #fileModal #file_abort,
+body.blur .modal-actions > [id^="btnConfirmNo-"],
+body.blur.shelf #toggle_order_shelf,
+body.blur.shelforder #shelf_back {
+  background-color: hsla(0, 0%, 100%, .25);
+  border-color: hsla(0, 0%, 100%, .25);
+  color: #fff;
+}
+
+body.blur #fileModal #file_abort:hover,
+body.blur #fileModal #file_abort:focus,
+body.blur #fileModal #file_abort:active,
+body.blur .modal-actions > [id^="btnConfirmNo-"]:is(:hover, :focus, :active),
+body.blur.shelf #toggle_order_shelf:is(:hover, :focus, :active),
+body.blur.shelforder #shelf_back:is(:hover, :focus, :active) {
+  background-color: hsla(0, 0%, 100%, .3);
+  border-color: hsla(0, 0%, 100%, .3);
+  color: #fff;
+}
+
+/* modal_dialogs: Cancel before the confirm button */
+body.blur .modal-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+body.blur #deleteModal .modal-footer > #delete_confirm {
+  order: 1;
+}
+
+/* restriction form: no spacing between input and buttons, as before */
+body.blur #add_restriction > div {
+  margin: 0 !important;
+  gap: 4px !important;
+}
+
+body.blur #add_restriction .form-label {
+  margin-bottom: 0;
+}
+
+/* stats: for admins caliBlur shows the "powered by" line below the system statistics */
+body.blur.stat .col-sm-10 > .container-fluid:has(#libs) {
+  display: flex;
+  flex-direction: column;
+}
+
+body.blur.stat .col-sm-10 > .container-fluid:has(#libs) > p {
+  order: 1;
+}
+
+/* stats: undo standard's spacing utilities and table striping */
+body.blur.stat .col-sm-10 > .container-fluid > h3:first-of-type,
+body.blur.stat .col-sm-10 > .container-fluid > .table-responsive {
+  margin-bottom: 0 !important;
+}
+
+body.blur.stat .col-sm-10 > .container-fluid > h3:not(:first-of-type) {
+  margin-bottom: 10px !important;
+}
+
+body.blur.stat .col-sm-10 > .container-fluid > p {
+  margin-bottom: 60px !important;
+}
+
+body.blur.stat #libs {
+  margin-bottom: 15px !important;
+}
+
+body.blur.stat .table {
+  vertical-align: top !important;
+}
+
+body.blur.stat .table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: transparent;
+  color: inherit;
+}
+
+@media only screen and (max-width: 767px) {
+  body.blur.stat .col-sm-10 > .container-fluid > p {
+    margin-bottom: 15px !important;
+  }
+
+  body.blur.stat #libs {
+    margin-bottom: 5px !important;
+  }
+}
+
+/* email settings: standard puts the form and the domain lists side by side and the port/encryption fields
+   in two columns; caliBlur stacks them */
+body.blur.mailset .user-edit-page > .row {
+  display: block;
+  margin: 0;
+}
+
+body.blur.mailset .user-edit-page > .row > * {
+  margin-top: 0 !important;
+  padding: 0;
+}
+
+body.blur.mailset .user-edit-page > .row > form {
+  padding: 0 15px;
+}
+
+body.blur.mailset .user-edit-page > .row > form .col-md-6 {
+  width: 100%;
+}
+
+body.blur.mailset .user-edit-page > .row > form .mb-3 {
+  margin-bottom: 15px !important;
+}
+
+body.blur.mailset .user-edit-page > .row > form .d-flex:has(> #email_back) {
+  align-items: flex-start;
+  margin-top: 0 !important;
+}
+
+/* domain lists */
+body.blur.mailset .user-edit-page > .row > div > h2 {
+  margin: 0 0 8px !important;
+  color: hsla(0, 0%, 100%, .7);
+  font-size: calc(1.325rem + .9vw);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+@media (min-width: 1200px) {
+  body.blur.mailset .user-edit-page > .row > div > h2 {
+    font-size: 2rem;
+  }
+}
+
+body.blur.mailset #domain_add_allow {
+  margin-bottom: 0 !important;
+}
+
+body.blur.mailset #domain_add_deny {
+  margin-top: 0 !important;
+}
+
+body.blur.mailset #attachement_size {
+  margin-bottom: 0;
+}
+
+body.blur.mailset :is(#domain_add_allow, #domain_add_deny) > .mb-3 {
+  margin-bottom: 15px !important;
+}
+
+/* user edit / new user / profile: standard's markup */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before {
+  content: "";
+  aspect-ratio: 1;
+  background: url("../../../static/css/img/user-icon.svg") center / contain no-repeat;
+}
+
+body.blur:is(.edituser, .newuser) .user-edit-page > h1 {
+  margin-bottom: 8px !important;
+}
+
+body.blur.me .user-edit-page > h1 {
+  margin-bottom: 0 !important;
+}
+
+/* the form and its two parts are Bootstrap rows/columns with g-3 gutters: lay them out as before,
+   fields col-md-10 col-lg-8 wide (--cb-fields: their share of the form), no gutters */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+  --cb-fields: 1;
+  display: block;
+  margin: 0;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > [class*="col-"] {
+  margin-top: 0;
+  padding: 0 15px;
+}
+
+@media (min-width: 768px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+    --cb-fields: .8333333333;
+  }
+}
+
+@media (min-width: 992px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page > form {
+    --cb-fields: .6666666667;
+  }
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > .col-lg-10 {
+  width: calc(var(--cb-fields) * 100%);
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > div > .row {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+/* the fields stack as plain blocks, so margins (e.g. of the password error list) collapse as before */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form > div:first-of-type > .row {
+  display: block;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .form-check {
+  padding-left: 0;
+  margin-bottom: 15px !important;
+}
+
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .form-check-input {
+  float: none;
+  margin: 0;
+  vertical-align: -2px;
+}
+
+/* the tag buttons form their own row below both checkbox lists, as in caliBlur's copy */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
+  gap: 0 4px !important;
+  margin-top: 0 !important;
+  margin-bottom: 20px;
+}
+
+/* it sits in the left checkbox column (the longer list), which is half of the fields part: widen it to
+   the form width minus the 15px column padding on both sides */
+@media (min-width: 768px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
+    width: calc((200% + 30px) / var(--cb-fields) - 30px);
+    margin-bottom: 60px;
+  }
+}
+
+/* phones: the tag buttons go below both checkbox lists, as before */
+@media (max-width: 767px) {
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .row > div:has(> .d-flex > #get_user_tags) {
+    display: contents;
+  }
+
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .row > div:has(> .d-flex > #get_user_tags) > * {
+    width: 100%;
+  }
+
+  body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_tags) {
+    order: 1;
+  }
+}
+
+/* actions: Delete User at the far left */
+body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #user_submit) {
+  align-items: flex-start;
+  margin-top: 0 !important;
+}
+
+body.blur:is(.edituser, .newuser) #btndeluser {
+  order: -2;
+  margin-right: auto;
+}
+
+body.blur.me .user-edit-page > form > .col-12:last-child {
+  margin-bottom: 60px;
+}
+
+@media (max-width: 767px) {
+  body.blur.me .user-edit-page > form > .col-12:last-child {
+    margin-bottom: 10px;
+  }
+}
+
+/* list pages: the page icon caliBlur's copy added as an <i> element */
+body.blur:is(.authorlist, .catlist, .downloadlist, .langlist, .publisherlist, .ratingslist, .formatslist, .serieslist) .list-page::before {
+  font-family: bootstrap-icons;
+  line-height: 1;
+}
+
+body.blur.authorlist .list-page::before { content: "\f4e1"; }
+body.blur.catlist .list-page::before { content: "\f5b2"; }
+body.blur.downloadlist .list-page::before { content: "\f30a"; }
+body.blur.langlist .list-page::before { content: "\f3cc"; }
+body.blur.publisherlist .list-page::before { content: "\f5f7"; }
+body.blur.ratingslist .list-page::before { content: "\f588"; }
+body.blur.formatslist .list-page::before { content: "\f392"; }
+body.blur.serieslist .list-page::before { content: "\f1a2"; }
+
+/* standard's extra .row around the list columns: let the columns sit in caliBlur's flex container */
+body.blur .list-page > .container-fluid > .row {
+  display: contents;
+}
+
+body.blur .list-page .badge {
+  background-color: rgba(0, 0, 0, .15) !important;
+  border-radius: 3px !important;
+}
+
+/* style.css's .discover .btn margin applied to the old wrapper */
+body.blur .list-page > .filterheader .btn {
+  margin-bottom: 5px;
+}
+
+body.blur .list-page .rating.small {
+  font-size: inherit;
+}
+
+/* shelf: standard's buttons are flat siblings; the order toggle starts its own line, as in caliBlur's
+   toolbar row */
+body.blur.shelf .discover > #toggle_order_shelf {
+  display: table;
+  margin-top: 12px;
+}
+
+/* caliBlur's controls wrapper added 20px below the sort buttons */
+body.blur.shelf .discover > .filterheader {
+  margin-bottom: 40px;
+}
+
+@media (max-width: 767.98px) {
+  body.blur.shelf .discover > #toggle_order_shelf {
+    margin-bottom: 25px;
+  }
+}
+
+/* shelf order: standard's col-sm-8 wrapper is caliBlur's panel; its content keeps the 20% offset of
+   caliBlur's inner wrapper; Back and Save are right-aligned under the list, Back first */
+body.blur.shelforder .col-sm-10 > .col-sm-8 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 10px;
+}
+
+body.blur.shelforder .col-sm-10 > .col-sm-8 > :not(h2, .btn) {
+  flex: 0 0 calc(80% - 30px);
+  margin-left: 20%;
+}
+
+body.blur.shelforder :is(#shelf_back, #ChangeOrder) {
+  margin: 30px 0 25px;
+}
+
+body.blur.shelforder #shelf_back {
+  order: 1;
+  margin-left: auto;
+}
+
+body.blur.shelforder #ChangeOrder {
+  order: 2;
+  margin-right: 30px;
+}
+
+body.blur.shelforder .col-sm-10 > .col-sm-8::before {
+  content: "\f575";
+  font-family: bootstrap-icons;
+  line-height: 1;
+}
+
+/* book edit: standard's rating widget keeps the plugin's glyphicon classes (style.css maps them to
+   Bootstrap Icons); caliBlur's old plex-font glyph rules for those classes must not win */
+body.blur.editbook .rating-input i:is(.glyphicon-star, .glyphicon-star-empty, .glyphicon-remove)::before {
+  font-family: bootstrap-icons;
+}
+
+body.blur.editbook .rating-input i.glyphicon-star::before {
+  content: "\f586";
+}
+
+body.blur.editbook .rating-input i.glyphicon-star-empty::before {
+  content: "\f588";
+}
+
+body.blur.editbook .rating-input .rating-clear i.glyphicon-remove::before {
+  content: "\f62a";
+}
+
+/* book edit: standard puts the cover column and the form in a .row; caliBlur positions them itself */
+body.blur.editbook .book-edit-layout {
+  display: flow-root;
+  margin: 0;
+}
+
+body.blur.editbook .book-edit-layout > form {
+  width: auto;
+  padding: 0;
+}
+
+/* the fixed cover column (cover, delete-formats list, convert form, upload button) can be taller
+   than the viewport: let it scroll */
+@media (min-width: 768px) {
+  body.blur.editbook .book-edit-layout > div.col-md-3 {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+}
+
+/* caliBlur's copy centred the Fetch Metadata title (text-center) */
+body.blur #metaModalLabel {
+  text-align: center;
+}

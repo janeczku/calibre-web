@@ -3,10 +3,10 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title hidden" id="h1">{{_('Select Allowed/Denied Tags')}}</h4>
-        <h4 class="modal-title hidden" id="h2">{{_('Select Allowed/Denied Custom Column Values')}}</h4>
-        <h4 class="modal-title hidden" id="h3">{{_('Select Allowed/Denied Tags of User')}}</h4>
-        <h4 class="modal-title hidden" id="h4">{{_('Select Allowed/Denied Custom Column Values of User')}}</h4>
+        <h4 class="modal-title d-none" id="h1">{{_('Select Allowed/Denied Tags')}}</h4>
+        <h4 class="modal-title d-none" id="h2">{{_('Select Allowed/Denied Custom Column Values')}}</h4>
+        <h4 class="modal-title d-none" id="h3">{{_('Select Allowed/Denied Tags of User')}}</h4>
+        <h4 class="modal-title d-none" id="h4">{{_('Select Allowed/Denied Custom Column Values of User')}}</h4>
       </div>
       <div class="modal-body">
           <table class="table table-no-bordered" id="restrict-elements-table" data-id-field="id" data-show-header="false" data-editable-mode="inline">
@@ -47,8 +47,8 @@
       </div>
         <div class="modal-body text-center">
           <p>
-          <span class="hidden" id="book_format">{{_('This book format will be permanently erased from database')}}</span>
-          <span class="hidden" id="book_complete">{{_('This book will be permanently erased from database and hard disk')}}</span>
+          <span class="d-none" id="book_format">{{_('This book format will be permanently erased from database')}}</span>
+          <span class="d-none" id="book_complete">{{_('This book will be permanently erased from database and hard disk')}}</span>
 		  </p>
           {% if config.config_kobo_sync %}
           <p>
@@ -85,7 +85,7 @@
                 </tr>
               </thead>
               <tbody id="tbody">
-                <tr class="tr-clickable hidden" id="parent" data-type="dir" data-path="..">
+                <tr class="tr-clickable d-none" id="parent" data-type="dir" data-path="..">
                   <td><i class="bi bi-folder2" aria-hidden="true"></i></td>
                   <td title="{{_('Parent Directory')}}"><span class="parentdir">..</span></td>
                   <td></td>
@@ -95,7 +95,7 @@
           </div>
         </div>
       <div class="modal-footer">
-        <div class="text-left" id="element_selected"></div>
+        <div class="text-start" id="element_selected"></div>
         <button type="button" id="file_abort" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
         <input type="button" class="btn btn-primary" data-path="" data-link=""  data-folderonly="" data-filefilter="" data-newfile="" value="{{_('Select')}}" name="file_confirm" id="file_confirm" data-bs-dismiss="modal">
       </div>
@@ -114,8 +114,10 @@
       <div class="modal-body text-center">
         <span id="text-GeneralDeleteModal"></span>
           <p></p>
-        <button id="btnConfirmYes-GeneralDeleteModal" type="button" class="btn btn-danger">{{_('Delete')}}</button>
-        <button id="btnConfirmNo-GeneralDeleteModal" type="button" class="btn btn-outline-secondary">{{_('Cancel')}}</button>
+        <div class="modal-actions">
+          <button id="btnConfirmYes-GeneralDeleteModal" type="button" class="btn btn-danger">{{_('Delete')}}</button>
+          <button id="btnConfirmNo-GeneralDeleteModal" type="button" class="btn btn-outline-secondary">{{_('Cancel')}}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -132,8 +134,10 @@
       <div class="modal-body text-center">
         <span id="text-GeneralChangeModal"></span>
           <p></p>
-        <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn-primary">{{_('Ok')}}</button>
-        <button id="btnConfirmNo-GeneralChangeModal" type="button" class="btn btn-outline-secondary">{{_('Cancel')}}</button>
+        <div class="modal-actions">
+          <button id="btnConfirmYes-GeneralChangeModal" type="button" class="btn btn-primary">{{_('Ok')}}</button>
+          <button id="btnConfirmNo-GeneralChangeModal" type="button" class="btn btn-outline-secondary">{{_('Cancel')}}</button>
+        </div>
       </div>
     </div>
   </div>

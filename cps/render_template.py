@@ -17,8 +17,6 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from flask import g, abort, request, render_template
-from flask_themes2 import render_theme_template
-from jinja2 import TemplateNotFound
 from flask_babel import gettext as _
 from werkzeug.local import LocalProxy
 from .cw_login import current_user
@@ -32,20 +30,12 @@ log = logger.create()
 
 
 def get_active_theme_identifier():
-    return themes.get_theme_identifier(config.config_theme, request.blueprint)
+    return themes.get_theme_identifier(config.config_theme_identifier, request.blueprint)
 
 
 def themed_render(template_name, **kwargs):
     active_theme = get_active_theme_identifier()
-    try:
-        return render_theme_template(active_theme, template_name, _fallback=False, **kwargs)
-    except TemplateNotFound:
-        default_theme = themes.get_default_theme()["identifier"]
-        if active_theme == default_theme:
-            raise
-        return render_template("_themes/{}/{}".format(default_theme, template_name),
-                               _theme=active_theme,
-                               **kwargs)
+    return render_template(themes.resolve_template(active_theme, template_name), _theme=active_theme, **kwargs)
 
 def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
