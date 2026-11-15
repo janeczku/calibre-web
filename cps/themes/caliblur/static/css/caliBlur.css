@@ -1825,7 +1825,7 @@ body > div.container-fluid > div > div.col-sm-10 > p {
     text-align: right
 }
 
-.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
     margin: 0;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -1872,7 +1872,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
     width: calc(100vw - 240px)
 }
 
-.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2 {
+.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
     width: calc(100vw - 240px) !important;
     height: 60px !important;
     padding-left: 25px !important;
@@ -6858,7 +6858,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         margin: auto auto 15px
     }
 
-    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2 {
+    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
         top: 48px !important;
         left: 0 !important;
         padding-left: 10px !important;

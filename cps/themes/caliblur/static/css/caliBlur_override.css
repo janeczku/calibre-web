@@ -35,6 +35,10 @@ body.blur .cover .badge.cover-check-badge {
   border-radius: 0 !important;
 }
 
+body.blur .discover > .row.g-3 .cover .badge.rounded-pill {
+  border-radius: 0 !important;
+}
+
 input.datepicker {color: transparent}
 input.datepicker:focus + input {color: #eee}
 
@@ -53,13 +57,15 @@ body.blur .discover > .row.g-3 {
 }
 
 .caliblur-filterheader,
-body.blur:not(.author) .discover.load-more > .filterheader {
+body.blur:not(.author) .discover.load-more > .filterheader,
+body.blur .discover > h1 + .filterheader {
   margin: 40px 0 !important;
   padding: 0 10px 0 40px;
 }
 
 .caliblur-filterheader .btn,
-body.blur:not(.author) .discover.load-more > .filterheader .btn {
+body.blur:not(.author) .discover.load-more > .filterheader .btn,
+body.blur .discover > h1 + .filterheader .btn {
   font-size: 14px;
   color: #fff;
 }
