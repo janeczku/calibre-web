@@ -268,11 +268,11 @@ body.blur .datepicker table tr td span.active:hover {
 }
 
 .admin-dashboard > .row > .col > h2 {
-  margin: 20px 0 10px;
+  margin: 20px 0 10px !important;
 }
 
 .admin-dashboard > .row {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .admin-dashboard > .row > .col {
@@ -287,12 +287,58 @@ body.blur .datepicker table tr td span.active:hover {
 
 .admin-dashboard .admin-detail-row {
   margin: 0;
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+  padding: 0 !important;
+  border-top: 0 !important;
 }
 
+/* label/value always half and half, whatever column classes standard passes */
 .admin-dashboard .admin-detail-row > .col-6 {
+  width: 50%;
   padding: 8px 15px;
   border-top: 2px solid rgba(0, 0, 0, .3);
   overflow-wrap: anywhere;
+  font-weight: inherit !important;
+}
+
+/* configuration: one list, not standard's two columns */
+body.blur .admin-dashboard .row.g-4 {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+}
+
+body.blur .admin-dashboard .row.g-4 > .col-lg-6 {
+  width: 100%;
+}
+
+body.blur .admin-dashboard .row.g-4 > .col-lg-6:first-child > .admin-detail-list {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+body.blur .admin-dashboard .admin-actions {
+  margin-top: 0 !important;
+  gap: 0 !important;
+}
+
+body.blur .admin-dashboard .admin-actions .btn {
+  min-height: 0;
+}
+
+/* standard's status icons: caliBlur shows plain check/cross glyphs in the text colour */
+body.blur .admin-dashboard .status-indicator {
+  display: inline;
+  font-size: inherit;
+  color: inherit;
+}
+
+body.blur .admin-dashboard .status-indicator .bi-check-circle::before {
+  content: "\f26e";
+}
+
+body.blur .admin-dashboard .status-indicator .bi-x-circle::before {
+  content: "\f62a";
 }
 
 body.admin .table,
@@ -409,7 +455,7 @@ body.me .discover form > .col-sm-12 > .pull-right {
 }
 
 .admin-dashboard .table {
-  margin-bottom: 20px;
+  margin-bottom: 20px !important;
 }
 
 .admin-dashboard .table > :not(caption) > * > * {

@@ -5794,6 +5794,7 @@ body.admin.modal-open .navbar {
 
 #RestartDialog > .modal-dialog, #ShutdownDialog > .modal-dialog, #StatusDialog > .modal-dialog, #deleteModal > .modal-dialog, #cancelTaskModal > .modal-dialog {
     width: 450px;
+    max-width: none;
     margin: auto
 }
 
@@ -5817,7 +5818,7 @@ body.admin.modal-open .navbar {
     font-weight: 400;
     color: #eee;
     border-bottom: 1px solid #222;
-    background-color: #323232;
+    background-color: #323232 !important;
     text-align: left
 }
 
@@ -5895,7 +5896,7 @@ body.admin.modal-open .navbar {
     background: #282828
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#restart), #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#shutdown), #deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary), #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary) {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body :is(.btn-default, .btn-outline-secondary):not(#restart), #ShutdownDialog > .modal-dialog > .modal-content > .modal-body :is(.btn-default, .btn-outline-secondary):not(#shutdown), #deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary), #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary) {
     float: right;
     z-index: 9;
     position: relative;
@@ -5907,7 +5908,13 @@ body.admin.modal-open .navbar {
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > #restart {
+/* standard wraps the OK/Cancel buttons in a flex div: let them float as before */
+#RestartDialog > .modal-dialog > .modal-content > .modal-body > div:has(> #restart),
+#ShutdownDialog > .modal-dialog > .modal-content > .modal-body > div:has(> #shutdown) {
+    display: block !important
+}
+
+#RestartDialog > .modal-dialog > .modal-content > .modal-body #restart {
     float: right;
     z-index: 9;
     position: relative;
@@ -5919,7 +5926,7 @@ body.admin.modal-open .navbar {
     border-radius: 3px
 }
 
-#ShutdownDialog > .modal-dialog > .modal-content > .modal-body > #shutdown, #StatusDialog > .modal-dialog > .modal-content > .modal-body > #updateFinished {
+#ShutdownDialog > .modal-dialog > .modal-content > .modal-body #shutdown, #StatusDialog > .modal-dialog > .modal-content > .modal-body > #updateFinished {
     float: right;
     z-index: 9;
     position: relative;
@@ -5929,6 +5936,15 @@ body.admin.modal-open .navbar {
     font-size: 16px;
     line-height: 1.33;
     border-radius: 3px
+}
+
+/* standard's OK buttons are btn-primary: keep caliBlur's orange */
+#RestartDialog > .modal-dialog > .modal-content > .modal-body #restart, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body #shutdown {
+    background-color: var(--color-secondary)
+}
+
+#RestartDialog > .modal-dialog > .modal-content > .modal-body #restart:hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body #shutdown:hover {
+    background-color: var(--color-secondary-hover)
 }
 
 #deleteModal > .modal-dialog > .modal-content > .modal-footer > .btn-danger {
@@ -5955,11 +5971,11 @@ body.admin.modal-open .navbar {
     border-radius: 3px
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#restart) {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body :is(.btn-default, .btn-outline-secondary):not(#restart) {
     margin: 25px 0 0 10px
 }
 
-#ShutdownDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#shutdown) {
+#ShutdownDialog > .modal-dialog > .modal-content > .modal-body :is(.btn-default, .btn-outline-secondary):not(#shutdown) {
     margin: 55px 0 0 10px
 }
 
@@ -5971,7 +5987,7 @@ body.admin.modal-open .navbar {
     margin: 0 0 0 10px
 }
 
-#RestartDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#restart):hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body > :is(.btn-default, .btn-outline-secondary):not(#shutdown):hover, #deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary):hover, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary):hover {
+#RestartDialog > .modal-dialog > .modal-content > .modal-body :is(.btn-default, .btn-outline-secondary):not(#restart):hover, #ShutdownDialog > .modal-dialog > .modal-content > .modal-body :is(.btn-default, .btn-outline-secondary):not(#shutdown):hover, #deleteModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary):hover, #cancelTaskModal > .modal-dialog > .modal-content > .modal-footer > :is(.btn-default, .btn-outline-secondary):hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
