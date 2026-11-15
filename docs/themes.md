@@ -32,7 +32,7 @@ A theme is a folder:
 
 ```
 mytheme/
-  info.json          required: name, identifier, settings
+  info.json          required: name, identifier, application, author
   static/            optional: CSS, JavaScript, fonts, images
   templates/         optional: HTML templates that replace the standard ones
 ```
@@ -123,7 +123,8 @@ Go to **Admin → Edit UI Configuration → Theme**. The table lists the install
 
 - **Upload theme** takes a `.zip` of a theme folder: `info.json` at the top of the archive, or inside one single
   top-level folder (as in a GitHub source download). Only `info.json`, `static/`, `templates/` and top-level
-  `LICENSE*`/`README*`/`COPYING*` files are installed; everything else in the archive is ignored.
+  `LICENSE*`/`README*`/`COPYING*` files (any letter case, so also `license.txt`) are installed; everything else in
+  the archive is ignored.
 - If a theme with the same identifier is already installed, you are asked to confirm the version change
   (*"Install version 1.2? You currently have version 1.1 installed."*). The same question appears for upgrades,
   reinstalls and downgrades.
@@ -140,13 +141,13 @@ files in `static/` are not allowed. Top-level `LICENSE*`, `README*` and `COPYING
 have no extension. An archive with any other kept file (for example a `LICENSE.html`), a symlink, or a path that
 leaves the theme folder is rejected as a whole. Limits: 20 MB per archive, 2000 entries, 100 MB unpacked.
 
-**Check for updates** looks up the latest GitHub release of every installed theme that has a `repository` in its
-`info.json` (bundled themes are never checked). When the release tag (`v1.3` or `1.3`) is a higher version number than
+**Check for updates** looks up the latest GitHub release of every installed theme that has `options.repository` in
+its `info.json` (bundled themes are never checked). When the release tag (`v1.3` or `1.3`) is a higher version number than
 the installed `version`, the row shows **Update to version 1.3**, which downloads and installs it with the same
 confirmations as an upload. If either version is not a plain number like `1.3` or `1.3.1`, only the latest release is
 shown and you can download and upload it yourself.
 
-For theme authors: give `info.json` a numeric `version` and a `repository`, tag releases `v<version>`, and attach the
+For theme authors: give `info.json` a numeric `version` and an `options.repository`, tag releases `v<version>`, and attach the
 theme as a `.zip` asset to the release. Without a `.zip` asset the release's source zip is used, which works as long
 as the repository root is the theme folder (only `info.json`, `static/`, `templates/` and licence/readme files are
 kept). Draft and pre-releases are ignored.
@@ -191,8 +192,9 @@ If a theme is skipped, the log says which folder and why.
 | `author` | yes | Your name. |
 | `description` | no | Short description. |
 | `version` | no | Your theme's version, e.g. `1.2`. Compared numerically with release tags (`v1.2`). |
-| `repository` | no | `https://github.com/<owner>/<repo>`. Enables *Check for updates* (see Installing a theme). |
-| `license`, `license_url`, `website` | no | Informational. |
+| `description_<lang>`, `license`, `license_url`, `website`, `preview`, `doctype` | no | Part of the Flask-Themes2 format; accepted, not used by Calibre-Web. A `license.txt` next to `info.json` is the format's licence file. |
+| `options` | no | Object holding the Calibre-Web settings below. In the Flask-Themes2 format, `options` is the place for application-specific settings, so Calibre-Web adds no top-level fields of its own. |
+| `options.repository` | no | `https://github.com/<owner>/<repo>`. Enables *Check for updates* (see Installing a theme). |
 | `options.parent` | no | Identifier of a theme to build on. See [Parent themes](#parent-themes). |
 | `options.css_files` | no | Stylesheets to load, relative to `static/`, in order. |
 | `options.js_files` | no | Scripts to load, relative to `static/`, in order. |

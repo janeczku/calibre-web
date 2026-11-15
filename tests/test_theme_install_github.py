@@ -206,10 +206,8 @@ def genv(env):
 
 def add_theme(cfg, ident, version="1.0", repo=None):
     from conftest import make_theme
-    extra = {"version": version}
-    if repo:
-        extra["repository"] = repo
-    make_theme(cfg / "themes", ident, info_overrides=extra)
+    make_theme(cfg / "themes", ident, options={"repository": repo} if repo else None,
+               info_overrides={"version": version})
 
 
 def reload(app):

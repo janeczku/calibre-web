@@ -32,12 +32,12 @@ def test_theme_at_root(tmp_path):
 def test_single_top_folder_and_repo_noise_skipped(tmp_path):
     r, dest = extract(tmp_path, {
         "o-demo-abc/info.json": ok_info, "o-demo-abc/static/js/a.js": "x",
-        "o-demo-abc/templates/layout.html": "x", "o-demo-abc/LICENSE": "MIT",
+        "o-demo-abc/templates/layout.html": "x", "o-demo-abc/LICENSE": "MIT", "o-demo-abc/license.txt": "MIT",
         "o-demo-abc/.github/workflows/ci.yml": "x", "o-demo-abc/package.json": "{}",
         "o-demo-abc/screenshot.png": "x", "__MACOSX/._info.json": "x"})
     assert r["has_templates"] and r["has_js"]
     assert sorted(p.relative_to(dest).as_posix() for p in dest.rglob("*") if p.is_file()) == \
-        ["LICENSE", "info.json", "static/js/a.js", "templates/layout.html"]
+        ["LICENSE", "info.json", "license.txt", "static/js/a.js", "templates/layout.html"]
 
 
 def test_directory_entries_allowed(tmp_path):

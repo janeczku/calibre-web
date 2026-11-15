@@ -47,7 +47,7 @@ def test_parse_repository(raw, expected):
 def test_installed_themes(bare_app, tmp_path, monkeypatch):
     cfg = tmp_path / "cfg"
     make_theme(cfg / "themes", "liquid",
-               info_overrides={"version": "1.1", "repository": "https://github.com/o/liquid"})
+               options={"repository": "https://github.com/o/liquid"}, info_overrides={"version": "1.1"})
     monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
     themes.init_app_themes(bare_app, str(cfg / "app.db"))
     with bare_app.app_context():
@@ -81,7 +81,7 @@ def test_is_newer_non_string():
 def test_installed_themes_invalid_repository_and_numeric_version(bare_app, tmp_path, monkeypatch):
     cfg = tmp_path / "cfg"
     make_theme(cfg / "themes", "bad_repo_theme",
-               info_overrides={"version": 1.5, "repository": "https://gitlab.com/o/r"})
+               options={"repository": "https://gitlab.com/o/r"}, info_overrides={"version": 1.5})
     monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
     themes.init_app_themes(bare_app, str(cfg / "app.db"))
     ti._warned_repository.clear()
@@ -101,3 +101,14 @@ def test_check_content_length():
             ti.check_content_length(bad)
         assert e.value.code == code
     ti.check_content_length(1000)
+
+
+def test_installed_themes_ignores_top_level_repository(bare_app, tmp_path, monkeypatch):
+    # Flask-Themes2 keeps application-specific keys in "options"; a top-level "repository" is not ours.
+    cfg = tmp_path / "cfg"
+    make_theme(cfg / "themes", "toplevel", info_overrides={"repository": "https://github.com/o/r"})
+    monkeypatch.delenv("CALIBRE_THEMES_DIR", raising=False)
+    themes.init_app_themes(bare_app, str(cfg / "app.db"))
+    with bare_app.app_context():
+        rows = {r["identifier"]: r for r in ti.installed_themes()}
+    assert rows["toplevel"]["repository"] is None

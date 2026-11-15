@@ -57,7 +57,7 @@ _REPOSITORY_RE = re.compile(r"https://github\.com/([A-Za-z0-9-]{1,39})/([A-Za-z0
 _VERSION_RE = re.compile(r"[0-9]+(\.[0-9]+)*")
 
 _DRIVE_RE = re.compile(r"[A-Za-z]:")
-_ROOT_DOC_RE = re.compile(r"(LICENSE|README|COPYING)[^/]*")
+_ROOT_DOC_RE = re.compile(r"(LICENSE|README|COPYING)[^/]*", re.IGNORECASE)
 _STATIC_EXTENSIONS = {".css", ".js", ".map", ".json", ".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico",
                       ".woff", ".woff2", ".ttf", ".otf", ".eot", ".txt"}
 _TEMPLATE_EXTENSIONS = {".html", ".xml", ".jinja"}
@@ -131,11 +131,11 @@ def installed_themes():
     bundled_path = os.path.join(current_app.root_path, "themes")
     rows = []
     for theme in themes.get_available_themes():
-        raw = theme.info.get("repository")
+        raw = theme.options.get("repository")
         parsed = parse_repository(raw)
         if raw is not None and parsed is None and theme.identifier not in _warned_repository:
             _warned_repository.add(theme.identifier)
-            log.warning("Theme '%s': invalid 'repository' in info.json, ignored", theme.identifier)
+            log.warning("Theme '%s': invalid 'options.repository' in info.json, ignored", theme.identifier)
         rows.append({
             "identifier": theme.identifier,
             "name": theme.name,
