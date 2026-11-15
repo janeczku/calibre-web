@@ -278,7 +278,7 @@ body.blur .datepicker_delete.btn {
   padding: 0 12px;
 }
 
-body.blur .rating-clear .bi-x {
+body.blur .rating-clear .glyphicon-remove {
   color: #fff;
 }
 
@@ -1078,7 +1078,8 @@ body.blur #restrictModal #submit_allow,
 body.blur #btnConfirmYes-GeneralChangeModal,
 body.blur.me #user_submit,
 body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf),
-body.blur.shelforder #ChangeOrder {
+body.blur.shelforder #ChangeOrder,
+body.blur.editbook #submit {
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
   color: #fff;
@@ -1111,6 +1112,7 @@ body.blur #restrictModal #submit_allow:is(:hover, :focus, :active),
 body.blur.me #user_submit:is(:hover, :focus, :active),
 body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf):is(:hover, :focus, :active),
 body.blur.shelforder #ChangeOrder:is(:hover, :focus, :active),
+body.blur.editbook #submit:is(:hover, :focus, :active),
 body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
   background-color: var(--color-secondary-hover);
   border-color: var(--color-secondary-hover);
@@ -1473,4 +1475,38 @@ body.blur.shelforder .col-sm-10 > .col-sm-8::before {
   content: "\f575";
   font-family: bootstrap-icons;
   line-height: 1;
+}
+
+/* book edit: standard's rating widget keeps the plugin's glyphicon classes (style.css maps them to
+   Bootstrap Icons); caliBlur's old plex-font glyph rules for those classes must not win */
+body.blur .rating-input i:is(.glyphicon-star, .glyphicon-star-empty, .glyphicon-remove)::before {
+  font-family: bootstrap-icons;
+}
+
+body.blur .rating-input i.glyphicon-star::before {
+  content: "\f586";
+}
+
+body.blur .rating-input i.glyphicon-star-empty::before {
+  content: "\f588";
+}
+
+body.blur .rating-input .rating-clear i.glyphicon-remove::before {
+  content: "\f62a";
+}
+
+/* book edit: standard puts the cover column and the form in a .row; caliBlur positions them itself */
+body.blur.editbook .book-edit-layout {
+  display: flow-root;
+  margin: 0;
+}
+
+body.blur.editbook .book-edit-layout > form {
+  width: auto;
+  padding: 0;
+}
+
+/* caliBlur's copy centred the Fetch Metadata title (text-center) */
+body.blur #metaModalLabel {
+  text-align: center;
 }

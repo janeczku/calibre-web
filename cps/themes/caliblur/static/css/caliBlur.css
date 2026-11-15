@@ -2468,12 +2468,12 @@ body > div.flash-row {
     background-color: rgba(0, 0, 0, .45)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.col-sm-3.col-lg-3.col-12, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3 {
+body > div.container-fluid > div > div.col-sm-10 > div.book-edit-layout > div.col-md-3, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3 {
     max-width: calc(25% - 75px);
     position: fixed
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.col-sm-3.col-lg-3.col-12 {
+body > div.container-fluid > div > div.col-sm-10 > div.book-edit-layout > div.col-md-3 {
     padding-top: 40px;
     padding-bottom: 40px
 }
@@ -2729,7 +2729,7 @@ input.pill + label:hover {
     margin: 0
 }
 
-#meta-info #book-list .media > .media-body {
+#meta-info #book-list > li > div {
     font-family: "Open Sans Regular", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     line-height: 24px;
@@ -2738,15 +2738,15 @@ input.pill + label:hover {
     padding-left: 15px
 }
 
-#meta-info #book-list .media > img {
+#meta-info #book-list > li > img {
     padding: 0
 }
 
-#meta-info #book-list .media > .media-body > h4 > a {
+#meta-info #book-list > li > div > h4 > a {
     color: #eee
 }
 
-#meta-info #book-list .media > .media-body > h4 > a:hover {
+#meta-info #book-list > li > div > h4 > a:hover {
     color: #fff
 }
 
@@ -2755,21 +2755,21 @@ input.pill + label:hover {
     margin: 0
 }
 
-#meta-info #book-list .media:nth-of-type(odd) {
+#meta-info #book-list > li:nth-of-type(odd) {
     background: hsla(0, 0%, 100%, .02)
 }
 
-#meta-info #book-list .media {
+#meta-info #book-list > li {
     margin-top: 0;
     padding: 20px 15px 5px
 }
 
-#meta-info #book-list .media > .media-body > p > a {
+#meta-info #book-list > li > div > p > a {
     color: var(--color-secondary);
     padding-left: 10px
 }
 
-#meta-info #book-list .media > .media-body > p > a:hover {
+#meta-info #book-list > li > div > p > a:hover {
     color: #fff
 }
 
@@ -2820,7 +2820,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-8 > form
     position: fixed
 }
 
-#meta-info #book-list .media > img:hover {
+#meta-info #book-list > li > img:hover {
     cursor: pointer;
     outline: solid var(--color-secondary);
     -webkit-filter: brightness(90%);
@@ -2835,7 +2835,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9
     pointer-events: none
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-12 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div {
     margin: 50px 0
 }
 
@@ -3514,17 +3514,17 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     margin-left: calc(100vw - 400px)
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9.col-12 > button#submit {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div > button#submit {
     float: right
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9.col-12 > a:last-of-type {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div > a:last-of-type {
     float: right;
     background: hsla(0, 0%, 100%, .25);
     margin-right: 10px
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9.col-12 > a:last-of-type:hover {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div > a:last-of-type:hover {
     background: hsla(0, 0%, 100%, .3)
 }
 
@@ -5184,7 +5184,7 @@ body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-s
     position: fixed
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
     margin-left: 25% !important;
     width: 75%
 }
@@ -5410,7 +5410,7 @@ body.login > nav.navbar > div > div.navbar-header > a:hover {
     pointer-events: none
 }
 
-#DeleteDomain:hover:before, #RestartDialog:hover:before, #ShutdownDialog:hover:before, #StatusDialog:hover:before,  #deleteButton, #deleteModal:hover:before, #cancelTaskModal:hover:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page td > a:hover {
+#DeleteDomain:hover:before, #RestartDialog:hover:before, #ShutdownDialog:hover:before, #StatusDialog:hover:before, #deleteModal:hover:before, #cancelTaskModal:hover:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page td > a:hover {
     cursor: pointer
 }
 
@@ -5517,7 +5517,7 @@ body.admin :is(.btn-default, .btn-outline-secondary) {
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
     max-width: calc(25% - 75px);
     position: fixed;
     padding-left: 30px;
@@ -5525,20 +5525,14 @@ body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3, bo
     z-index: 9
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-9 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-9 {
     margin-left: 25% !important;
     width: 75%
 }
 
-body.editbook #book_edit_frm > .col-sm-9 {
+body.editbook #book_edit_frm > div {
     padding: 0 15px;
     display: flow-root;
-}
-
-body.editbook #book_edit_frm h2 {
-    margin: 20px 0 10px;
-    font-size: 30px;
-    line-height: 1.1;
 }
 
 body.editbook .form-group {
@@ -5556,17 +5550,17 @@ body.editbook select.form-control {
     appearance: auto;
 }
 
-body.editbook .rating-input .bi {
+body.editbook .rating-input i {
     color: hsla(0, 0%, 100%, .45);
     font-size: 18px;
 }
 
-body.editbook .rating-input .bi-star-fill,
-body.editbook .rating-input .bi:hover {
+body.editbook .rating-input .glyphicon-star,
+body.editbook .rating-input i:hover {
     color: hsla(0, 0%, 100%, .7);
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
     position: fixed;
     top: 60px;
     right: 0;
@@ -5579,7 +5573,7 @@ body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > d
     border-radius: 0
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3 > div.text-center > #delete:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:before {
     content: "\EA6D";
     font-family: plex-icons-new, serif;
     font-size: 18px;
@@ -5592,11 +5586,11 @@ body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > d
     text-transform: uppercase
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3 > div.text-center > #delete:hover, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover {
     background: #ce3d2a
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3 > div.text-center > #delete:hover:before, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete:hover:before {
     color: #fff
 }
 
@@ -6044,19 +6038,6 @@ body.admin.modal-open .navbar {
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5)
 }
 
-#deleteButton {
-    position: fixed;
-    top: 60px;
-    right: 50px;
-    width: 50px;
-    height: 60px;
-    color: transparent;
-    background: 0 0;
-    overflow: hidden;
-    border-radius: 0;
-    border-right: 2px solid rgba(0, 0, 0, .3)
-}
-
 #deleteButton > span.glyphicon-remove {
     font-size: 18px;
     color: hsla(0, 0%, 100%, .7)
@@ -6068,13 +6049,6 @@ body.admin.modal-open .navbar {
 
 #deleteButton > span.glyphicon-remove:before {
     content: "\EA66"
-}
-
-.editbook .more-stuff > .dropdown-menu {
-    position: fixed;
-    top: 90px;
-    right: 17px;
-    left: auto !important
 }
 
 body.authorlist .blur-wrapper:after {
@@ -6730,7 +6704,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding: 10px !important
     }
 
-    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
+    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.shelforder > div.container-fluid > div > div.col-sm-10 > div.col-sm-8 > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
         top: 48px;
         left: 0;
         padding-left: 10px;
@@ -7443,7 +7417,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         background: 0 0
     }
 
-    body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
+    body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 {
         position: relative;
         max-width: unset;
         width: 100%;
@@ -7451,13 +7425,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding: 15px;
     }
 
-    body.editbook > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
+    body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > form > div, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > form > div.col-sm-9 {
         padding: 15px;
         margin: 0 !important;
         width: 100%
     }
 
-    #deleteButton, body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
+    body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3 > div.text-center > #delete, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center > #delete {
         top: 48px;
         height: 42px
     }
@@ -7487,7 +7461,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         display: none
     }
 
-    #meta-info #book-list .media > .media-body {
+    #meta-info #book-list > li > div {
         font-size: 12px;
         line-height: 16px
     }
