@@ -200,9 +200,9 @@
         top: 60px !important
     }
 
-    body.login .well,
     body.register .well,
-    body.blur:is(.register, .remotelogin) .card.card-body {
+    body.blur:is(.register, .remotelogin) .card.card-body,
+    body.blur.login .login-card {
         padding: 0 60px !important
     }
 }
@@ -1019,7 +1019,7 @@ body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     font-size: 20px
 }
 
-.btn, .navigation .create-shelf a, .navigation .nav-head, .well > form, body.blur:is(.register, .remotelogin) .card.card-body > form, body > div.container-fluid > div > div.col-sm-10 > div.discover > h1:first-letter {
+.btn, .navigation .create-shelf a, .navigation .nav-head, .well > form, body.blur:is(.register, .remotelogin) .card.card-body > form, body.blur.login .login-card > .card-body > form, body > div.container-fluid > div > div.col-sm-10 > div.discover > h1:first-letter {
     text-transform: uppercase
 }
 
@@ -1250,13 +1250,15 @@ body.blur.remotelogin .card.card-body > h2 {
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div > form > a,
-body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn {
+body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn,
+body.blur.login .login-card a#remote_login {
     background-color: hsla(0, 0%, 100%, .25);
     color: #fff
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover,
-body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn:hover {
+body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn:hover,
+body.blur.login .login-card a#remote_login:hover {
     background-color: hsla(0, 0%, 100%, .3);
     color: #fff
 }
@@ -1304,7 +1306,7 @@ body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn:hover {
     font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif
 }
 
-.login .form-group > label {
+.login .login-card .form-label {
     font-weight: 400;
     color: hsla(0, 0%, 100%, .45);
     font-family: Open Sans bold, Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -2160,7 +2162,8 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
 }
 
 .well > form > .btn,
-body.blur:is(.register, .remotelogin) .card.card-body > form > .btn {
+body.blur:is(.register, .remotelogin) .card.card-body > form > .btn,
+body.blur.login .login-card > .card-body > form > div > .btn, body.blur.login .login-card #remote_login {
     vertical-align: middle;
     -o-transition: background-color .2s, color .2s
 }
@@ -2288,7 +2291,8 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 
 .well,
 body.blur:is(.register, .remotelogin) .card.card-body,
-.modal .card.card-body {
+.modal .card.card-body,
+body.blur.login .login-card {
     max-height: 520px;
     height: auto;
     background-color: transparent;
@@ -2324,19 +2328,22 @@ body.blur:is(.register, .remotelogin) .card.card-body,
 }
 
 .well > form,
-body.blur:is(.register, .remotelogin) .card.card-body > form {
+body.blur:is(.register, .remotelogin) .card.card-body > form,
+body.blur.login .login-card > .card-body > form {
     background: rgba(0, 0, 0, .4);
     color: hsla(0, 0%, 100%, .45);
     padding: 60px;
     margin-top: 60px
 }
 
-.checkbox {
+.checkbox,
+body.blur.login .login-card .form-check {
     text-transform: none
 }
 
 .well > form > .btn,
-body.blur:is(.register, .remotelogin) .card.card-body > form > .btn {
+body.blur:is(.register, .remotelogin) .card.card-body > form > .btn,
+body.blur.login .login-card > .card-body > form > div > .btn, body.blur.login .login-card #remote_login {
     display: inline-block;
     overflow: hidden;
     border-radius: 4px;
@@ -2362,7 +2369,8 @@ body.blur:is(.register, .remotelogin) .card.card-body > form > .btn {
 }
 
 .well > form > .btn:hover,
-body.blur:is(.register, .remotelogin) .card.card-body > form > .btn:hover {
+body.blur:is(.register, .remotelogin) .card.card-body > form > .btn:hover,
+body.blur.login .login-card > .card-body > form > div > .btn:hover, body.blur.login .login-card #remote_login:hover {
     background-color: var(--color-secondary-hover)
 }
 
@@ -3844,16 +3852,16 @@ body.advsearch .discover::before {
     color: #fff
 }
 
-.login .well > h2 {
+body.blur.login .login-card > .card-body > h2 {
     display: none
 }
 
-.login .well > form {
+body.blur.login .login-card > .card-body > form {
     max-width: 480px;
     margin: auto
 }
 
-.login .well > form input {
+body.blur.login .login-card > .card-body > form input {
     background-color: hsla(0, 0%, 100%, .25)
 }
 
@@ -6970,7 +6978,8 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     }
 
     .well,
-    body.blur:is(.register, .remotelogin) .card.card-body {
+    body.blur:is(.register, .remotelogin) .card.card-body,
+    body.blur.login .login-card {
         padding: 60px 0;
         max-width: calc(100% - 30px);
         min-width: auto
@@ -7755,7 +7764,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 }
 
 @media only screen and (max-width: 500px) {
-    .login .well > form {
+    body.blur.login .login-card > .card-body > form {
         padding: 30px 15px
     }
 
@@ -7773,7 +7782,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 }
 
 @media only screen and (max-width: 500px) and (max-height: 600px) {
-    body.login .well {
+    body.blur.login .login-card {
         padding: 0 !important
     }
 }

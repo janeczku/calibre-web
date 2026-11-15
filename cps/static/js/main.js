@@ -206,7 +206,7 @@ $("#form-upload-format").uploadprogress({
 $(document).on('click', '.toggle-password', function (event) {
     event.preventDefault();
     var button = $(this);
-    var selector = button.data('bsTarget') || button.data('target');
+    var selector = button.data('bsTarget');
     var passwordInput = $(selector);
     if (!passwordInput.length) {
         return;

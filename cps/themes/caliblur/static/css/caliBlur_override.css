@@ -192,10 +192,49 @@ body > .container-fluid > .row > .col-sm-10 > .pagination {
   }
 }
 
-.caliblur-login-panel .btn,
+body.blur.login .login-card > .card-body > form > div > .btn,
+body.blur.login .login-card #remote_login,
 body.blur.remotelogin .card.card-body .btn {
   margin-right: 6px;
   margin-bottom: 6px;
+}
+
+/* login: standard's .login-card is the old .well box, its .card-body only a wrapper */
+body.blur.login .login-card {
+  box-shadow: none !important;
+}
+
+/* style.css gives the standard login card its own font */
+body.blur.login .login-card,
+body.blur.login .login-card .form-control,
+body.blur.login .login-card .form-check-label {
+  font-family: inherit;
+}
+
+body.blur.login .login-card > .card-body {
+  padding: 0 !important;
+}
+
+/* undo standard's form spacing utilities; the button rows stack like the old flat form */
+body.blur.login .login-card > .card-body > form > .mb-3,
+body.blur.login .login-card .form-check {
+  margin-bottom: 0 !important;
+}
+
+body.blur.login .login-card .form-label {
+  margin-bottom: 0;
+}
+
+body.blur.login .login-card > .card-body > form > div:has(> .btn),
+body.blur.login .login-card .login-secondary-actions {
+  display: block !important;
+  margin-top: 0 !important;
+  min-height: 0;
+}
+
+body.blur.login .login-card #remote_login {
+  line-height: 1.71428571;
+  text-decoration: none;
 }
 
 body.blur .modal-footer .btn,
