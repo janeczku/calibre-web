@@ -3581,14 +3581,6 @@ body.shelf-down .btn-group button#btnGroupDrop1 {
     -webkit-font-smoothing: antialiased
 }
 
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-controls {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 20px
-}
-
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-action-row,
 body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row {
     width: 100%;

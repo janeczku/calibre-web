@@ -44,7 +44,8 @@ input.datepicker:focus + input {color: #eee}
 
 .col-sm-3.col-lg-2.col-6.book.session,
 body.blur .discover > .row.g-3 > .book.session,
-body.blur:is(.search, .advsearch) .discover > .row > .book.session {
+body.blur:is(.search, .advsearch) .discover > .row > .book.session,
+body.blur.shelf .discover > .row > .book.session {
     margin-left: 0;
     margin-right: 0;
     padding-left: 15px;
@@ -180,7 +181,8 @@ body > .container-fluid > .row > .col-sm-10 > .pagination {
 
   .col-sm-3.col-lg-2.col-6.book.session,
   body.blur .discover > .row.g-3 > .book.session,
-  body.blur:is(.search, .advsearch) .discover > .row > .book.session {
+  body.blur:is(.search, .advsearch) .discover > .row > .book.session,
+  body.blur.shelf .discover > .row > .book.session {
     padding-left: 5px;
     padding-right: 5px;
   }
@@ -1074,7 +1076,8 @@ body.blur #InvalidDialog .modal-header span {
 body.blur #fileModal #file_confirm,
 body.blur #restrictModal #submit_allow,
 body.blur #btnConfirmYes-GeneralChangeModal,
-body.blur.me #user_submit {
+body.blur.me #user_submit,
+body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf) {
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
   color: #fff;
@@ -1105,6 +1108,7 @@ body.blur #fileModal #file_confirm:focus,
 body.blur #fileModal #file_confirm:active,
 body.blur #restrictModal #submit_allow:is(:hover, :focus, :active),
 body.blur.me #user_submit:is(:hover, :focus, :active),
+body.blur.shelf :is(#shelf_down, #edit_shelf, #order_shelf):is(:hover, :focus, :active),
 body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
   background-color: var(--color-secondary-hover);
   border-color: var(--color-secondary-hover);
@@ -1112,7 +1116,8 @@ body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
 }
 
 body.blur #fileModal #file_abort,
-body.blur .modal-actions > [id^="btnConfirmNo-"] {
+body.blur .modal-actions > [id^="btnConfirmNo-"],
+body.blur.shelf #toggle_order_shelf {
   background-color: hsla(0, 0%, 100%, .25);
   border-color: hsla(0, 0%, 100%, .25);
   color: #fff;
@@ -1121,7 +1126,8 @@ body.blur .modal-actions > [id^="btnConfirmNo-"] {
 body.blur #fileModal #file_abort:hover,
 body.blur #fileModal #file_abort:focus,
 body.blur #fileModal #file_abort:active,
-body.blur .modal-actions > [id^="btnConfirmNo-"]:is(:hover, :focus, :active) {
+body.blur .modal-actions > [id^="btnConfirmNo-"]:is(:hover, :focus, :active),
+body.blur.shelf #toggle_order_shelf:is(:hover, :focus, :active) {
   background-color: hsla(0, 0%, 100%, .3);
   border-color: hsla(0, 0%, 100%, .3);
   color: #fff;
@@ -1412,4 +1418,22 @@ body.blur .list-page > .filterheader .btn {
 
 body.blur .list-page .rating.small {
   font-size: inherit;
+}
+
+/* shelf: standard's buttons are flat siblings; the order toggle starts its own line, as in caliBlur's
+   toolbar row */
+body.blur.shelf .discover > #toggle_order_shelf {
+  display: table;
+  margin-top: 12px;
+}
+
+/* caliBlur's controls wrapper added 20px below the sort buttons */
+body.blur.shelf .discover > .filterheader {
+  margin-bottom: 40px;
+}
+
+@media (max-width: 767.98px) {
+  body.blur.shelf .discover > #toggle_order_shelf {
+    margin-bottom: 25px;
+  }
 }
