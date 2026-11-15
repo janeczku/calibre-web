@@ -192,7 +192,8 @@ body > .container-fluid > .row > .col-sm-10 > .pagination {
   }
 }
 
-.caliblur-login-panel .btn {
+.caliblur-login-panel .btn,
+body.blur.remotelogin .card.card-body .btn {
   margin-right: 6px;
   margin-bottom: 6px;
 }

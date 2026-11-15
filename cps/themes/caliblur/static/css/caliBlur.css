@@ -202,7 +202,7 @@
 
     body.login .well,
     body.register .well,
-    body.blur.register .card.card-body {
+    body.blur:is(.register, .remotelogin) .card.card-body {
         padding: 0 60px !important
     }
 }
@@ -1019,7 +1019,7 @@ body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     font-size: 20px
 }
 
-.btn, .navigation .create-shelf a, .navigation .nav-head, .well > form, body.blur.register .card.card-body > form, body > div.container-fluid > div > div.col-sm-10 > div.discover > h1:first-letter {
+.btn, .navigation .create-shelf a, .navigation .nav-head, .well > form, body.blur:is(.register, .remotelogin) .card.card-body > form, body > div.container-fluid > div > div.col-sm-10 > div.discover > h1:first-letter {
     text-transform: uppercase
 }
 
@@ -1210,7 +1210,8 @@ body > nav.navbar > div > div.navbar-collapse.collapse > ul > li > #top_admin > 
     margin: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div > form > h2 {
+body > div.container-fluid > div > div.col-sm-10 > div > form > h2,
+body.blur.remotelogin .card.card-body > h2 {
     font-size: 15px;
     color: var(--color-primary);
     border-top: 1px solid rgba(0, 0, 0, .3);
@@ -1248,12 +1249,14 @@ body > div.container-fluid > div > div.col-sm-10 > div > form > h2 {
     background-color: var(--color-secondary-hover)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div > form > a {
+body > div.container-fluid > div > div.col-sm-10 > div > form > a,
+body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn {
     background-color: hsla(0, 0%, 100%, .25);
     color: #fff
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover {
+body > div.container-fluid > div > div.col-sm-10 > div > form > a:hover,
+body.blur:is(.register, .remotelogin) .card.card-body > form > a.btn:hover {
     background-color: hsla(0, 0%, 100%, .3);
     color: #fff
 }
@@ -2157,7 +2160,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
 }
 
 .well > form > .btn,
-body.blur.register .card.card-body > form > .btn {
+body.blur:is(.register, .remotelogin) .card.card-body > form > .btn {
     vertical-align: middle;
     -o-transition: background-color .2s, color .2s
 }
@@ -2284,7 +2287,7 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 }
 
 .well,
-body.blur.register .card.card-body,
+body.blur:is(.register, .remotelogin) .card.card-body,
 .modal .card.card-body {
     max-height: 520px;
     height: auto;
@@ -2321,7 +2324,7 @@ body.blur.register .card.card-body,
 }
 
 .well > form,
-body.blur.register .card.card-body > form {
+body.blur:is(.register, .remotelogin) .card.card-body > form {
     background: rgba(0, 0, 0, .4);
     color: hsla(0, 0%, 100%, .45);
     padding: 60px;
@@ -2333,7 +2336,7 @@ body.blur.register .card.card-body > form {
 }
 
 .well > form > .btn,
-body.blur.register .card.card-body > form > .btn {
+body.blur:is(.register, .remotelogin) .card.card-body > form > .btn {
     display: inline-block;
     overflow: hidden;
     border-radius: 4px;
@@ -2359,7 +2362,7 @@ body.blur.register .card.card-body > form > .btn {
 }
 
 .well > form > .btn:hover,
-body.blur.register .card.card-body > form > .btn:hover {
+body.blur:is(.register, .remotelogin) .card.card-body > form > .btn:hover {
     background-color: var(--color-secondary-hover)
 }
 
@@ -4011,9 +4014,8 @@ body.remotelogin > nav.navbar > div > div.navbar-header > a:hover {
 }
 
 body.register .well > form > h2,
-body.blur.register .card.card-body > form > h2,
-body.remotelogin .well > form > h2,
-body.remotelogin .caliblur-remote-login-form > h2 {
+body.blur:is(.register, .remotelogin) .card.card-body > form > h2,
+body.blur.remotelogin .card.card-body > h2 {
     position: static !important;
     width: 100% !important;
     max-width: none !important;
@@ -4032,19 +4034,39 @@ body.remotelogin .caliblur-remote-login-form > h2 {
 }
 
 body.register .well > form,
-body.blur.register .card.card-body > form,
-body.remotelogin .well > form,
-body.remotelogin .caliblur-remote-login-form {
+body.blur:is(.register, .remotelogin) .card.card-body > form {
     margin-top: 0;
     padding-top: 0;
 }
 
-body.remotelogin .well > form.caliblur-remote-login-form,
-body.remotelogin .well > .caliblur-remote-login-form {
+body.blur.remotelogin .card.card-body > form {
     background: rgba(0, 0, 0, .4);
     border-radius: 4px;
     padding: 20px 25px 10px;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+}
+
+/* remote_login has no <form> in the card: the card itself is the panel, 60px below the box top */
+body.blur.remotelogin .card.card-body:not(:has(> form)) {
+    display: block;
+    top: 60px;
+    bottom: auto;
+    min-width: 480px;
+    max-width: 580px;
+    padding: 20px 25px 10px;
+    background: rgba(0, 0, 0, .4);
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08);
+    color: hsla(0, 0%, 100%, .45);
+    text-transform: uppercase
+}
+
+@media only screen and (max-width: 767px) {
+    body.blur.remotelogin .card.card-body:not(:has(> form)) {
+        min-width: auto;
+        max-width: calc(100% - 30px);
+        padding: 20px 25px 10px
+    }
 }
 
 .book-meta > .bookinfo > .comments[aria-expanded=true] + a:after, .book-meta > .description[aria-expanded=true] + a:after {
@@ -6948,7 +6970,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     }
 
     .well,
-    body.blur.register .card.card-body {
+    body.blur:is(.register, .remotelogin) .card.card-body {
         padding: 60px 0;
         max-width: calc(100% - 30px);
         min-width: auto
