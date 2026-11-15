@@ -1557,7 +1557,7 @@ body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > f
     margin: 15px
 }
 
-.container-fluid .discover, body.blur.usertable .container-fluid .user-edit-page, body:where(.mailset) .container-fluid .user-edit-page, .navbar {
+.container-fluid .discover, .container-fluid .list-page, body.blur.usertable .container-fluid .user-edit-page, body:where(.mailset) .container-fluid .user-edit-page, .navbar {
     margin-bottom: 0
 }
 
@@ -1761,7 +1761,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
     grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)) !important
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
+body > div.container-fluid > div > div.col-sm-10 > div.discover, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
     height: auto;
     width: calc(100vw - 257px);
     margin: 40px 0 !important;
@@ -1779,7 +1779,7 @@ body.book .single > .row {
     --bs-gutter-x: 30px;
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
+body > div.container-fluid > div > div.col-sm-10 > div.discover, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
     margin-top: 0
 }
 
@@ -1830,7 +1830,7 @@ body > div.container-fluid > div > div.col-sm-10 > p, body.blur.stat > div.conta
     text-align: right
 }
 
-.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
+.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
     margin: 0;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -1877,7 +1877,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
     width: calc(100vw - 240px)
 }
 
-.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
+.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
     width: calc(100vw - 240px) !important;
     height: 60px !important;
     padding-left: 25px !important;
@@ -1909,7 +1909,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
     }
 }
 
-body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1 {
+body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1 {
     width: calc(100vw - 240px);
     height: 60px;
     padding-left: 25px;
@@ -2069,7 +2069,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1 > d
     width: 100%
 }
 
-.serieslist-icon {
+body.blur.serieslist .list-page::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -2079,7 +2079,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1 > d
 }
 
 @media screen and (max-width: 992px) {
-  .serieslist-icon {
+  body.blur.serieslist .list-page::before {
       top: 180px;
   }
 }
@@ -2120,7 +2120,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row >
 }
 
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid {
     display: flex;
     flex-wrap: wrap;
     width: calc(80% - 30px);
@@ -2131,11 +2131,11 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
     max-width: calc(80% - 30px)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div {
     padding: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row {
+body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
     padding: 4px 0
 }
 
@@ -2168,7 +2168,7 @@ body.blur.login .login-card > .card-body > form > div > .btn, body.blur.login .l
     -o-transition: background-color .2s, color .2s
 }
 
-.catlist-icon {
+body.blur.catlist .list-page::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -2177,17 +2177,17 @@ body.blur.login .login-card > .card-body > form > div > .btn, body.blur.login .l
     text-align: center
 }
 
-.catlist-icon.bi::before {
+body.blur.catlist .list-page::before {
     color: #999;
 }
 
 @media screen and (max-width: 992px) {
-  .catlist-icon {
+  body.blur.catlist .list-page::before {
       top: 180px;
   }
 }
 
-.authorlist-icon, .langlist-icon {
+body.blur.authorlist .list-page::before, body.blur.langlist .list-page::before {
     font-size: 6vw;
     left: 240px;
     top: 300px;
@@ -2197,7 +2197,7 @@ body.blur.login .login-card > .card-body > form > div > .btn, body.blur.login .l
 }
 
 @media screen and (max-width: 992px) {
-  .authorlist-icon {
+  body.blur.authorlist .list-page::before {
       top: 180px;
   }
 }
@@ -2230,7 +2230,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
   }
 }
 
-.downloadlist-icon {
+body.blur.downloadlist .list-page::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -2241,7 +2241,7 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
 
 
 @media screen and (max-width: 992px) {
-  .downloadlist-icon {
+  body.blur.downloadlist .list-page::before {
       top: 180px;
   }
 }
@@ -6732,13 +6732,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         height: calc(100% - 42px)
     }
 
-    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid.admin-dashboard, body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
+    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid.admin-dashboard, body > div.container-fluid > div > div.col-sm-10 > div.discover, body > div.container-fluid > div > div.col-sm-10 > div.list-page, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page, body:where(.mailset) > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
         width: 100%;
         margin: 0 !important;
         padding: 10px !important
     }
 
-    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
+    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page > h1, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
         top: 48px;
         left: 0;
         padding-left: 10px;
@@ -6827,7 +6827,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         height: 30px
     }
 
-    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, .authorlist-icon, .catlist-icon, .downloadlist-icon, .langlist-icon, .ratingslist-icon, .serieslist-icon, .shelforder-icon {
+    body.advanced_search > div.container-fluid > div > div.col-sm-10 > div.col-sm-8:before, body.author:not(.authorlist) .undefined-img:before, body.blur.authorlist .list-page::before, body.blur.catlist .list-page::before, body.blur.downloadlist .list-page::before, body.blur.langlist .list-page::before, body.blur.ratingslist .list-page::before, body.blur.serieslist .list-page::before, .shelforder-icon {
         position: fixed;
         top: 62px;
         right: 23px;
@@ -6915,7 +6915,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         margin: auto auto 15px
     }
 
-    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
+    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.list-page:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1 {
         top: 48px !important;
         left: 0 !important;
         padding-left: 10px !important;
@@ -6974,7 +6974,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         margin-bottom: 5px
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
         padding: 0
     }
 
@@ -7712,7 +7712,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         max-width: 500px
     }
 
-    .container1 > .col-12 > .row > .col-2 {
+    .list-page > .container-fluid > .row > .col-12 > .row > .col-2 {
         position: absolute;
         padding: 15px 0 0;
         text-align: center;
@@ -7720,7 +7720,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         pointer-events: none;
     }
 
-    .container1 > .col-12 > .row > .col-10 {
+    .list-page > .container-fluid > .row > .col-12 > .row > .col-10 {
         padding: 0;
         width: 100%;
         height: 100%;
@@ -7728,27 +7728,27 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         max-width: calc(100vw - 40px)
     }
 
-    .container1 > .col-12 > .row > .col-10 > a {
+    .list-page > .container-fluid > .row > .col-12 > .row > .col-10 > a {
         padding: 15px 15px 15px 16.66666667%;
         display: block;
         color: #eee
     }
 
-    .container1 > .col-12 > .row > .col-10 > a:hover {
+    .list-page > .container-fluid > .row > .col-12 > .row > .col-10 > a:hover {
         color: #eee;
         text-decoration: none
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row:nth-of-type(even) {
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row:nth-of-type(even), body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row:nth-of-type(even) {
         background: 0 0
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
         position: relative;
         border-bottom: 1px solid hsla(0, 0%, 78%, .15)
     }
 
-    .container1 > .col-12 > .row > .col-10:after {
+    .list-page > .container-fluid > .row > .col-12 > .row > .col-10:after {
         content: '';
         position: absolute;
         width: 0;
@@ -7827,7 +7827,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     text-overflow: ellipsis
 }
 
-.publisherlist-icon {
+body.blur.publisherlist .list-page::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -7837,12 +7837,12 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 }
 
 @media screen and (max-width: 992px) {
-  .publisherlist-icon {
+  body.blur.publisherlist .list-page::before {
       top: 180px;
   }
 }
 
-.ratingslist-icon {
+body.blur.ratingslist .list-page::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -7852,18 +7852,18 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 }
 
 @media screen and (max-width: 992px) {
-  .ratingslist-icon {
+  body.blur.ratingslist .list-page::before {
       top: 180px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .ratingslist-icon {
+  body.blur.ratingslist .list-page::before {
       display: none;
   }
 }
 
-.formatslist-icon {
+body.blur.formatslist .list-page::before {
     font-size: 6vw;
     position: fixed;
     left: 240px;
@@ -7873,13 +7873,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 }
 
 @media screen and (max-width: 992px) {
-  .formatslist-icon {
+  body.blur.formatslist .list-page::before {
       top: 180px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .formatslist-icon {
+  body.blur.formatslist .list-page::before {
       display: none;
   }
 }
@@ -7981,7 +7981,7 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1 
 }
 
 @media only screen and (max-width: 767px) {
-    .publisherlist-icon {
+    body.blur.publisherlist .list-page::before {
         position: fixed;
         top: 62px;
         right: 23px;

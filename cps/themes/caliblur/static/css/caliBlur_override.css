@@ -57,14 +57,14 @@ body.blur .discover > .row.g-3 {
   --bs-gutter-y: 0;
 }
 
-.caliblur-filterheader,
+body.blur .list-page > .filterheader,
 body.blur:not(.author) .discover.load-more > .filterheader,
 body.blur .discover > h1 + .filterheader {
   margin: 40px 0 !important;
   padding: 0 10px 0 40px;
 }
 
-.caliblur-filterheader .btn,
+body.blur .list-page > .filterheader .btn,
 body.blur:not(.author) .discover.load-more > .filterheader .btn,
 body.blur .discover > h1 + .filterheader .btn {
   font-size: 14px;
@@ -1378,4 +1378,38 @@ body.blur:is(.edituser, .newuser) #user_submit {
 
 body.blur.me .user-edit-page .d-flex:has(> #user_submit) {
   justify-content: flex-start;
+}
+
+/* list pages: the page icon caliBlur's copy added as an <i> element */
+body.blur:is(.authorlist, .catlist, .downloadlist, .langlist, .publisherlist, .ratingslist, .formatslist, .serieslist) .list-page::before {
+  font-family: bootstrap-icons;
+  line-height: 1;
+}
+
+body.blur.authorlist .list-page::before { content: "\f4e1"; }
+body.blur.catlist .list-page::before { content: "\f5b2"; }
+body.blur.downloadlist .list-page::before { content: "\f30a"; }
+body.blur.langlist .list-page::before { content: "\f3cc"; }
+body.blur.publisherlist .list-page::before { content: "\f5f7"; }
+body.blur.ratingslist .list-page::before { content: "\f588"; }
+body.blur.formatslist .list-page::before { content: "\f392"; }
+body.blur.serieslist .list-page::before { content: "\f1a2"; }
+
+/* standard's extra .row around the list columns: let the columns sit in caliBlur's flex container */
+body.blur .list-page > .container-fluid > .row {
+  display: contents;
+}
+
+body.blur .list-page .badge {
+  background-color: rgba(0, 0, 0, .15) !important;
+  border-radius: 3px !important;
+}
+
+/* style.css's .discover .btn margin applied to the old wrapper */
+body.blur .list-page > .filterheader .btn {
+  margin-bottom: 5px;
+}
+
+body.blur .list-page .rating.small {
+  font-size: inherit;
 }
