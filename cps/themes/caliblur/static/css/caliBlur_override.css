@@ -1007,31 +1007,51 @@ body.dbconfig.admin > div.container-fluid > div > div.col-sm-10 > div.discover {
   padding: 0 30px !important;
 }
 
-body.dbconfig.admin .caliblur-dbconfig-form .input-group > .btn {
+body.dbconfig.admin .discover > form .input-group {
+  margin-bottom: 15px !important;
+}
+
+/* standard wraps the folder button in a span.input-group-text: join it to the input as before */
+body.dbconfig.admin .discover > form .input-group .btn {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 40px;
-  margin-bottom: 0;
+  margin: 0 0 0 -1px;
   padding: 0 16px;
+  border-radius: 0 3px 3px 0;
 }
 
-body.dbconfig.admin .caliblur-dbconfig-actions {
+/* actions: right-aligned, Cancel before Save. Standard leaves them inside the col-lg-6 column (it is
+   never closed): at lg, stretch them to the form's right edge (column width + its gutters) */
+body.dbconfig.admin .discover > form .col-12:has(> #db_submit) {
   display: flex;
   justify-content: flex-end;
-  padding-right: 15px;
-}
-
-body.dbconfig.admin .caliblur-dbconfig-actions .pull-right {
-  display: flex;
   gap: 10px;
 }
 
-body.dbconfig.admin .caliblur-dbconfig-actions .btn {
+@media (min-width: 992px) {
+  body.dbconfig.admin .discover > form .col-12:has(> #db_submit) {
+    width: auto;
+    margin-right: calc(-100% - 30px);
+  }
+}
+
+body.dbconfig.admin .discover > form .col-12:has(> #db_submit) > .btn {
   display: flex;
   align-items: center;
   height: 40px;
   margin-bottom: 0;
+}
+
+body.dbconfig.admin #config_back {
+  order: -1;
+}
+
+/* standard's checkbox rows: no form-check indent */
+body.blur.dbconfig .discover > form .form-check {
+  padding-left: 0;
+  margin-bottom: 15px !important;
 }
 
 body.blur .modal-header.bg-info,

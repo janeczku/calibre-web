@@ -1220,7 +1220,7 @@ body.blur.remotelogin .card.card-body > h2 {
     margin-bottom: 30px
 }
 
-.btn, .form-group > label {
+.btn, .form-group > label, body.blur:is(.dbconfig) .form-check > label {
     font-size: 14px;
     font-weight: 400
 }
@@ -1301,7 +1301,7 @@ body.blur.login .login-card a#remote_login:hover {
     background-color: var(--color-secondary-hover)
 }
 
-.form-group > label {
+.form-group > label, body.blur:is(.dbconfig) .form-check > label {
     color: #eee;
     font-family: Open Sans Regular, Helvetica Neue, Helvetica, Arial, sans-serif
 }
@@ -6867,7 +6867,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding-right: 15px
     }
 
-    .form-group > label {
+    .form-group > label, body.blur:is(.dbconfig) .form-check > label {
         font-size: 12px
     }
 
