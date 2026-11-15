@@ -680,8 +680,9 @@ def do_edit_book(book_id, upload_formats=None):
             book.has_cover = 1
             modify_date = True
 
-        # upload new covers or new file formats to google drive
-        if config.config_use_google_drive:
+        # upload new file formats to google drive (covers are uploaded directly), on plain edits the local library
+        # folder only contains the not yet committed metadata.db, which is synced after the commit below
+        if config.config_use_google_drive and upload_formats:
             gdriveutils.updateGdriveCalibreFromLocal()
 
         if to_save.get("cover_url",):

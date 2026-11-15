@@ -36,6 +36,7 @@ from cps.kobo_sync_status import remove_synced_book
 from cps.ub import init_db_thread
 from cps.file_helper import get_temp_dir
 from cps.binary_helper import resolve_binary_path, SUPPORTED_KEPUBIFY_BINARIES
+from cps.embed_helper import run_calibredb
 
 from cps.tasks.mail import TaskEmail
 from cps import gdriveutils, helper
@@ -278,19 +279,14 @@ class TaskConvert(CalibreTask):
 
                 opf_command = [calibredb_binarypath, 'show_metadata', '--as-opf', str(self.book_id),
                                '--with-library', library_path]
-                p = process_open(opf_command, quotes, my_env, newlines=False)
-                lines = list()
-                while p.poll() is None:
-                    lines.append(p.stdout.readline())
-                check = p.returncode
-                calibre_traceback = p.stderr.readlines()
+                check, opf_content, calibre_traceback = run_calibredb(opf_command, quotes, my_env, newlines=False)
                 if check == 0:
                     path_tmp_opf = os.path.join(tmp_dir, "metadata_" + str(uuid4()) + ".opf")
                     with open(path_tmp_opf, 'wb') as fd:
-                        fd.write(b''.join(lines))
+                        fd.write(opf_content)
                 else:
                     error_message = ""
-                    for ele in calibre_traceback:
+                    for ele in calibre_traceback.splitlines():
                         ele = ele.decode('utf-8', errors="ignore").strip('\n')
                         log.debug(ele)
                         if not ele.startswith('Traceback') and not ele.startswith('  File'):

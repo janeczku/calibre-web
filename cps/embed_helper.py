@@ -17,6 +17,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 from uuid import uuid4
 import os
+import time
 
 from .file_helper import get_temp_dir
 from .subproc_wrapper import process_open
@@ -24,6 +25,34 @@ from . import logger, config
 from .constants import SUPPORTED_CALIBRE_BINARIES
 
 log = logger.create()
+
+# calibredb refuses to work while any other calibre program of the same user holds calibre's (user-wide, not
+# per library) 'db' single-instance lock, e.g. a parallel calibredb call from a conversion, download or e-mail task
+CALIBREDB_LOCK_RETRY_TIMEOUT = 30
+CALIBREDB_LOCK_RETRY_DELAY = 1
+
+
+def _calibredb_lock_busy(returncode, err):
+    if returncode == 0 or not err:
+        return False
+    if isinstance(err, bytes):
+        err = err.decode('utf-8', errors='ignore')
+    # The (translatable) error message always contains the untranslated program name "calibre-server"
+    return 'calibre-server' in err and 'Traceback' not in err
+
+
+def run_calibredb(command, quotes, env, newlines=True):
+    """Run calibredb and wait for its result, retry for a limited time while another calibre program holds
+    calibre's database lock. Returns returncode, stdout, stderr of the last run"""
+    deadline = time.monotonic() + CALIBREDB_LOCK_RETRY_TIMEOUT
+    while True:
+        # process_open modifies the command on Windows (quoting), so always hand over a copy
+        p = process_open(list(command), quotes, env, newlines=newlines)
+        out, err = p.communicate()
+        if not _calibredb_lock_busy(p.returncode, err) or time.monotonic() >= deadline:
+            return p.returncode, out, err
+        log.debug("calibredb is blocked by another running calibre program, retrying")
+        time.sleep(CALIBREDB_LOCK_RETRY_DELAY)
 
 
 def do_calibre_export(book_id, book_format):
@@ -40,9 +69,8 @@ def do_calibre_export(book_id, book_format):
                        '--with-library', library_path,
                        '--to-dir', tmp_dir, '--formats', book_format, "--template", "{}".format(temp_file_name),
                        str(book_id)]
-        p = process_open(opf_command, quotes, my_env)
-        _, err = p.communicate()
-        if p.returncode != 0:
+        returncode, _, err = run_calibredb(opf_command, quotes, my_env)
+        if returncode != 0:
             if isinstance(err, str):
                 error_message = err.strip()
             elif err is not None:
@@ -50,7 +78,7 @@ def do_calibre_export(book_id, book_format):
             else:
                 error_message = ''
             if not error_message:
-                error_message = 'calibredb export failed with return code %s' % p.returncode
+                error_message = 'calibredb export failed with return code %s' % returncode
             log.error('Metadata embedder encountered an error: %s', error_message)
             return None, error_message
         if err:
