@@ -43,7 +43,8 @@ input.datepicker {color: transparent}
 input.datepicker:focus + input {color: #eee}
 
 .col-sm-3.col-lg-2.col-6.book.session,
-body.blur .discover > .row.g-3 > .book.session {
+body.blur .discover > .row.g-3 > .book.session,
+body.blur:is(.search, .advsearch) .discover > .row > .book.session {
     margin-left: 0;
     margin-right: 0;
     padding-left: 15px;
@@ -180,7 +181,8 @@ body > .container-fluid > .row > .col-sm-10 > .pagination {
   }
 
   .col-sm-3.col-lg-2.col-6.book.session,
-  body.blur .discover > .row.g-3 > .book.session {
+  body.blur .discover > .row.g-3 > .book.session,
+  body.blur:is(.search, .advsearch) .discover > .row > .book.session {
     padding-left: 5px;
     padding-right: 5px;
   }
@@ -200,8 +202,13 @@ body.blur .modal-body .btn {
   margin-bottom: 0;
 }
 
-.advsearch-addtoshelf {
+body.blur.advsearch #add-to-shelf {
   height: 40px;
+}
+
+/* standard's search stars carry .text-warning (!important) */
+body.blur .rating .bi-star-fill.text-warning {
+  color: var(--color-primary) !important;
 }
 
 body.advanced_search > div.container-fluid > div.row > div.col-sm-10 > div.col-md-10.col-lg-6 .twitter-typeahead .tt-hint {

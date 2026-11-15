@@ -3713,7 +3713,17 @@ body > nav.navbar > div > div.navbar-header > a:hover {
     -webkit-background-size: auto !important
 }
 
-.blur-wrapper {
+/* advanced search results: flat background with noise (was an empty .blur-wrapper div) */
+body.advsearch .discover::before {
+    content: '';
+    background-image: url(images/caliblur/blur-noise.png);
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: auto
+}
+
+.blur-wrapper, body.advsearch .discover::before {
     position: fixed;
     top: 0;
     right: 0;
@@ -7141,7 +7151,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         border-left: 0
     }
 
-    .blur-wrapper {
+    .blur-wrapper, body.advsearch .discover::before {
         display: none;
         -o-transition: none;
         transition: none;
