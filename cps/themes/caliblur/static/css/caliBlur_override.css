@@ -998,7 +998,11 @@ body.blur #InvalidDialog .modal-header span {
   color: inherit;
 }
 
-body.blur #fileModal #file_confirm {
+/* standard marks the confirm button btn-primary and Cancel btn-outline-secondary: caliBlur shows the
+   confirm button orange and Cancel grey */
+body.blur #fileModal #file_confirm,
+body.blur #restrictModal #submit_allow,
+body.blur #btnConfirmYes-GeneralChangeModal {
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
   color: #fff;
@@ -1026,13 +1030,16 @@ body.blur #fileModal #file_confirm {
 
 body.blur #fileModal #file_confirm:hover,
 body.blur #fileModal #file_confirm:focus,
-body.blur #fileModal #file_confirm:active {
+body.blur #fileModal #file_confirm:active,
+body.blur #restrictModal #submit_allow:is(:hover, :focus, :active),
+body.blur #btnConfirmYes-GeneralChangeModal:is(:hover, :focus, :active) {
   background-color: var(--color-secondary-hover);
   border-color: var(--color-secondary-hover);
   color: #fff;
 }
 
-body.blur #fileModal #file_abort {
+body.blur #fileModal #file_abort,
+body.blur .modal-actions > [id^="btnConfirmNo-"] {
   background-color: hsla(0, 0%, 100%, .25);
   border-color: hsla(0, 0%, 100%, .25);
   color: #fff;
@@ -1040,8 +1047,32 @@ body.blur #fileModal #file_abort {
 
 body.blur #fileModal #file_abort:hover,
 body.blur #fileModal #file_abort:focus,
-body.blur #fileModal #file_abort:active {
+body.blur #fileModal #file_abort:active,
+body.blur .modal-actions > [id^="btnConfirmNo-"]:is(:hover, :focus, :active) {
   background-color: hsla(0, 0%, 100%, .3);
   border-color: hsla(0, 0%, 100%, .3);
   color: #fff;
+}
+
+/* modal_dialogs: Cancel before the confirm button */
+body.blur .modal-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+body.blur #deleteModal .modal-footer > #delete_confirm {
+  order: 1;
+}
+
+/* restriction form: no spacing between input and buttons, as before */
+body.blur #add_restriction > div {
+  margin: 0 !important;
+  gap: 4px !important;
+}
+
+body.blur #add_restriction .form-label {
+  margin-bottom: 0;
 }
