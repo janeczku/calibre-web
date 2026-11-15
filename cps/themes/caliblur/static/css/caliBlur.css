@@ -2151,8 +2151,6 @@ body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
     font-weight: 400
 }
 
-
-
 body.blur.downloadlist .list-page::before {
     font-size: 6vw;
     position: fixed;
@@ -2162,14 +2160,11 @@ body.blur.downloadlist .list-page::before {
     text-align: center
 }
 
-
 @media screen and (max-width: 992px) {
   body.blur.downloadlist .list-page::before {
       top: 180px;
   }
 }
-
-
 
 body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
     padding: 15px 10px 15px 40px;
@@ -7567,14 +7562,6 @@ body.blur.formatslist .list-page::before {
 #btnConfirmYes-GeneralDeleteModal {
     margin-bottom:10px;
 }
-
-
-
-
-
-
-
-
 
 #have_read_cb + label:before, #have_read_cb:checked + label:before, div[aria-label="Edit/Delete book"] > .btn-warning > span:before {
     line-height: 1.1
