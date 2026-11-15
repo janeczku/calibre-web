@@ -505,9 +505,28 @@ body.admin .discover > form > [class*="col-"] > .col-sm-6 {
   float: left;
 }
 
-.config-actions {
+/* form actions: right-aligned, Cancel/Back before Save, 10px apart. Rows with their own container are
+   flex rows; on pages where the buttons are direct children of the form they float right (the first
+   button, Save, ends up rightmost) */
+body.blur :is(.config-actions, .col-12:has(> #db_submit), .d-flex:has(> #email_back), .d-flex:has(> #user_submit), .errorlink:has(> #back)) {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px !important;
+}
+
+body.blur :is(.config-actions, .col-12:has(> #db_submit), .d-flex:has(> #email_back), .d-flex:has(> #user_submit)) > :is(a.btn-outline-secondary, #back) {
+  order: -1;
+}
+
+body.blur .schedule-form > .btn,
+body.blur:is(.shelfcreate, .shelfedit) .discover > form > .btn,
+body.blur #adv_submit {
+  float: right;
+  margin: 0 0 0 10px;
+}
+
+.config-actions {
   clear: both;
   padding-top: 20px;
   margin-top: 0 !important;
@@ -636,11 +655,6 @@ body.admin .discover #config_back:hover,
 body.blur.mailset #email_back:hover {
   background: hsla(0, 0%, 100%, .25);
   color: #fff;
-}
-
-body.blur .schedule-form .btn {
-  float: right;
-  margin-left: 10px;
 }
 
 body.blur .schedule-form #email_back {
@@ -902,10 +916,6 @@ body.mailset.admin .user-edit-page > .row > form .mb-3 {
     padding: 0;
   }
 
-  body.admin .config-actions {
-    flex-wrap: wrap;
-  }
-
   body.admin .discover > form > [class*="col-"] > .col-sm-6 {
     width: 100%;
     padding: 0 15px;
@@ -982,14 +992,8 @@ body.dbconfig.admin .discover > form .input-group .btn {
   border-radius: 0 3px 3px 0;
 }
 
-/* actions: right-aligned, Cancel before Save. Standard keeps them inside the col-lg-6 column: at lg,
-   stretch them to the form's right edge (column width + its gutters) */
-body.dbconfig.admin .discover > form .col-12:has(> #db_submit) {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
+/* actions: standard keeps them inside the col-lg-6 column: at lg, stretch them to the form's right edge
+   (column width + its gutters) */
 @media (min-width: 992px) {
   body.dbconfig.admin .discover > form .col-12:has(> #db_submit) {
     width: auto;
@@ -1002,10 +1006,6 @@ body.dbconfig.admin .discover > form .col-12:has(> #db_submit) > .btn {
   align-items: center;
   height: 40px;
   margin-bottom: 0;
-}
-
-body.dbconfig.admin #config_back {
-  order: -1;
 }
 
 /* standard's checkbox rows: no form-check indent */
@@ -1193,19 +1193,9 @@ body.blur.mailset .user-edit-page > .row > form .mb-3 {
   margin-bottom: 15px !important;
 }
 
-/* email actions: right-aligned under the form */
 body.blur.mailset .user-edit-page > .row > form .d-flex:has(> #email_back) {
-  justify-content: flex-end;
   align-items: flex-start;
-  gap: 4px !important;
   margin-top: 0 !important;
-}
-
-@media (max-width: 767px) {
-  body.blur.mailset .user-edit-page > .row > form .d-flex:has(> #email_back) {
-    justify-content: flex-start;
-    row-gap: 0 !important;
-  }
 }
 
 /* domain lists */
@@ -1335,21 +1325,15 @@ body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #get_user_t
   }
 }
 
-/* actions: Delete User left, Cancel and Save right */
+/* actions: Delete User at the far left */
 body.blur:is(.edituser, .newuser, .me) .user-edit-page .d-flex:has(> #user_submit) {
-  justify-content: flex-end;
   align-items: flex-start;
-  gap: 10px !important;
   margin-top: 0 !important;
 }
 
 body.blur:is(.edituser, .newuser) #btndeluser {
-  order: -1;
+  order: -2;
   margin-right: auto;
-}
-
-body.blur:is(.edituser, .newuser) #user_submit {
-  order: 1;
 }
 
 body.blur.me .user-edit-page > form > .col-12:last-child {
@@ -1415,7 +1399,7 @@ body.blur.shelf .discover > .filterheader {
 }
 
 /* shelf order: standard's col-sm-8 wrapper is caliBlur's panel; its content keeps the 20% offset of
-   caliBlur's inner wrapper, and Back comes before Save */
+   caliBlur's inner wrapper; Back and Save are right-aligned under the list, Back first */
 body.blur.shelforder .col-sm-10 > .col-sm-8 {
   display: flex;
   flex-wrap: wrap;
@@ -1434,11 +1418,12 @@ body.blur.shelforder :is(#shelf_back, #ChangeOrder) {
 
 body.blur.shelforder #shelf_back {
   order: 1;
-  margin-left: 20%;
+  margin-left: auto;
 }
 
 body.blur.shelforder #ChangeOrder {
   order: 2;
+  margin-right: 30px;
 }
 
 body.blur.shelforder .col-sm-10 > .col-sm-8::before {
