@@ -1091,3 +1091,50 @@ body.blur #add_restriction > div {
 body.blur #add_restriction .form-label {
   margin-bottom: 0;
 }
+
+/* stats: for admins caliBlur shows the "powered by" line below the system statistics */
+body.blur.stat .col-sm-10 > .container-fluid:has(#libs) {
+  display: flex;
+  flex-direction: column;
+}
+
+body.blur.stat .col-sm-10 > .container-fluid:has(#libs) > p {
+  order: 1;
+}
+
+/* stats: undo standard's spacing utilities and table striping */
+body.blur.stat .col-sm-10 > .container-fluid > h3:first-of-type,
+body.blur.stat .col-sm-10 > .container-fluid > .table-responsive {
+  margin-bottom: 0 !important;
+}
+
+body.blur.stat .col-sm-10 > .container-fluid > h3:not(:first-of-type) {
+  margin-bottom: 10px !important;
+}
+
+body.blur.stat .col-sm-10 > .container-fluid > p {
+  margin-bottom: 60px !important;
+}
+
+body.blur.stat #libs {
+  margin-bottom: 15px !important;
+}
+
+body.blur.stat .table {
+  vertical-align: top !important;
+}
+
+body.blur.stat .table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: transparent;
+  color: inherit;
+}
+
+@media only screen and (max-width: 767px) {
+  body.blur.stat .col-sm-10 > .container-fluid > p {
+    margin-bottom: 15px !important;
+  }
+
+  body.blur.stat #libs {
+    margin-bottom: 5px !important;
+  }
+}

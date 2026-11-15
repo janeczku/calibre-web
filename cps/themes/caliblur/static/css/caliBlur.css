@@ -1815,7 +1815,7 @@ body > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > form
     height: auto
 }
 
-body > div.container-fluid > div > div.col-sm-10 > h3:not(:first-of-type) {
+body > div.container-fluid > div > div.col-sm-10 > h3:not(:first-of-type), body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:not(:first-of-type) {
     color: #eee;
     width: calc(100% - 30px);
     max-width: 800px;
@@ -1823,14 +1823,14 @@ body > div.container-fluid > div > div.col-sm-10 > h3:not(:first-of-type) {
     text-align: left
 }
 
-body > div.container-fluid > div > div.col-sm-10 > p {
+body > div.container-fluid > div > div.col-sm-10 > p, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > p {
     margin: auto auto 60px;
     width: calc(100% - 30px);
     max-width: 800px;
     text-align: right
 }
 
-.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
     margin: 0;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -1842,15 +1842,15 @@ body > div.container-fluid > div > div.col-sm-10 > p {
     -webkit-margin-after: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > p > a {
+body > div.container-fluid > div > div.col-sm-10 > p > a, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > p > a {
     color: var(--color-secondary)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > p > a:hover {
+body > div.container-fluid > div > div.col-sm-10 > p > a:hover, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > p > a:hover {
     color: #fff
 }
 
-.book .book-meta > h2 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+.book .book-meta > h2 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
     height: 60px;
     padding-left: 25px;
     color: hsla(0, 0%, 100%, .7);
@@ -1864,7 +1864,7 @@ body > div.container-fluid > div > div.col-sm-10 > p > a:hover {
     left: 240px
 }
 
-body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
     width: calc(100vw - 240px);
     text-align: left
 }
@@ -6737,7 +6737,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding: 10px !important
     }
 
-    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
         top: 48px;
         left: 0;
         padding-left: 10px;
@@ -6905,12 +6905,12 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         width: calc(100%)
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > h3:not(:first-of-type) {
+    body > div.container-fluid > div > div.col-sm-10 > h3:not(:first-of-type), body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:not(:first-of-type) {
         margin: 15px auto 10px;
         font-size: 14px
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > p {
+    body > div.container-fluid > div > div.col-sm-10 > p, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > p {
         margin: auto auto 15px
     }
 
