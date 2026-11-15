@@ -653,8 +653,23 @@ body.blur .schedule-form #email_back {
   background: hsla(0, 0%, 100%, .25);
 }
 
-.caliblur-log-downloads > div {
+/* logviewer: undo standard's spacing utilities and the white log surface */
+body.blur.logfile #log_group {
+  gap: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+body.blur.logfile #log_group + .row {
+  margin-bottom: 0 !important;
+}
+
+body.blur.logfile #log_group + .row > div {
   padding: 0 15px;
+}
+
+body.blur.logfile #renderer.log {
+  background-color: transparent !important;
+  border-radius: 0 !important;
 }
 
 body.admin .col-sm-10 .btn-primary,
