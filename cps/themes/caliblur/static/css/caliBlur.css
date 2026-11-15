@@ -202,7 +202,7 @@
 
     body.login .well,
     body.register .well,
-    body.register .card.card-body {
+    body.blur.register .card.card-body {
         padding: 0 60px !important
     }
 }
@@ -1019,7 +1019,7 @@ body > nav.navbar > div > form.search-focus > div > span.input-group-btn {
     font-size: 20px
 }
 
-.btn, .navigation .create-shelf a, .navigation .nav-head, .well > form, .card.card-body > form, body > div.container-fluid > div > div.col-sm-10 > div.discover > h1:first-letter {
+.btn, .navigation .create-shelf a, .navigation .nav-head, .well > form, body.blur.register .card.card-body > form, body > div.container-fluid > div > div.col-sm-10 > div.discover > h1:first-letter {
     text-transform: uppercase
 }
 
@@ -1825,7 +1825,7 @@ body > div.container-fluid > div > div.col-sm-10 > p {
     text-align: right
 }
 
-.book .book-meta > h2 > h2, .well > h2, .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
+.book .book-meta > h2 > h2, .well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type {
     margin: 0;
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
@@ -1872,7 +1872,7 @@ body > div.container-fluid > div > div.col-sm-10 > div:nth-of-type(2) > h2 {
     width: calc(100vw - 240px)
 }
 
-.well > h2, .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2 {
+.well > h2, body.blur.register .card.card-body > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2 {
     width: calc(100vw - 240px) !important;
     height: 60px !important;
     padding-left: 25px !important;
@@ -2157,7 +2157,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
 }
 
 .well > form > .btn,
-.card.card-body > form > .btn {
+body.blur.register .card.card-body > form > .btn {
     vertical-align: middle;
     -o-transition: background-color .2s, color .2s
 }
@@ -2284,7 +2284,8 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 }
 
 .well,
-.card.card-body {
+body.blur.register .card.card-body,
+.modal .card.card-body {
     max-height: 520px;
     height: auto;
     background-color: transparent;
@@ -2320,7 +2321,7 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 }
 
 .well > form,
-.card.card-body > form {
+body.blur.register .card.card-body > form {
     background: rgba(0, 0, 0, .4);
     color: hsla(0, 0%, 100%, .45);
     padding: 60px;
@@ -2332,7 +2333,7 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 }
 
 .well > form > .btn,
-.card.card-body > form > .btn {
+body.blur.register .card.card-body > form > .btn {
     display: inline-block;
     overflow: hidden;
     border-radius: 4px;
@@ -2358,7 +2359,7 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
 }
 
 .well > form > .btn:hover,
-.card.card-body > form > .btn:hover {
+body.blur.register .card.card-body > form > .btn:hover {
     background-color: var(--color-secondary-hover)
 }
 
@@ -4000,7 +4001,7 @@ body.remotelogin > nav.navbar > div > div.navbar-header > a:hover {
 }
 
 body.register .well > form > h2,
-body.register .card.card-body > form > h2,
+body.blur.register .card.card-body > form > h2,
 body.remotelogin .well > form > h2,
 body.remotelogin .caliblur-remote-login-form > h2 {
     position: static !important;
@@ -4021,7 +4022,7 @@ body.remotelogin .caliblur-remote-login-form > h2 {
 }
 
 body.register .well > form,
-body.register .card.card-body > form,
+body.blur.register .card.card-body > form,
 body.remotelogin .well > form,
 body.remotelogin .caliblur-remote-login-form {
     margin-top: 0;
@@ -6857,7 +6858,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         margin: auto auto 15px
     }
 
-    .well > h2, .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2 {
+    .well > h2, body.blur.register .card.card-body > h2, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover:only-of-type > h2 {
         top: 48px !important;
         left: 0 !important;
         padding-left: 10px !important;
@@ -6921,7 +6922,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     }
 
     .well,
-    .card.card-body {
+    body.blur.register .card.card-body {
         padding: 60px 0;
         max-width: calc(100% - 30px);
         min-width: auto

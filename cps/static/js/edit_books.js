@@ -62,7 +62,7 @@ $(".datepicker").datepicker({
 }).trigger("change");
 
 $(".datepicker_delete").click(function() {
-    var inputs = $(this).parent().siblings('input');
+    var inputs = $(this).closest('.input-group').find('input');
     $(inputs[0]).data('datepicker').clearDates();
     $(inputs[1]).addClass('d-none');
 });

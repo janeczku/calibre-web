@@ -328,7 +328,7 @@ standard markup.
 | `flash_messages` | success/error messages | standard alerts |
 | `flash` | after the messages (pages add spinners here) | empty |
 | `before_content` | between the navbar and the page | empty |
-| `content_row_class` | `class` of the main row | `row row-fluid` |
+| `content_row_class` | `class` of the main row | `row` |
 | `sidebar_column_class` | `class` of the sidebar column | `col-md-2 sidebar-column d-none d-md-block` |
 | `scnd_nav_attrs` | extra attributes on `#scnd-nav` | empty |
 | `nav_head_class` | visibility class of sidebar headings | `d-md-block` |
