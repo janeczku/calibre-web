@@ -416,6 +416,22 @@ body.tasks > .container-fluid > .row > .col-sm-10 > .container-fluid > h2 {
   white-space: nowrap;
 }
 
+/* book edit: the page heading sits in the title bar */
+body.blur.editbook #book_edit_frm > h1 {
+  position: fixed;
+  top: 60px;
+  left: 240px;
+  width: calc(100vw - 240px);
+  height: 60px;
+  margin: 0 !important;
+  padding: 0 25px;
+  overflow: hidden;
+  color: hsla(0, 0%, 100%, .7);
+  font: 400 15px/60px "Open Sans Semibold", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media only screen and (max-width: 767px) {
   body.tasks > .container-fluid > .row > .col-sm-10 > .container-fluid > h2 {
     top: 48px;
@@ -424,6 +440,17 @@ body.tasks > .container-fluid > .row > .col-sm-10 > .container-fluid > h2 {
     max-width: 100%;
     height: 42px;
     padding: 0 130px 0 10px;
+    background: rgba(0, 0, 0, .15);
+    font-size: 13px;
+    line-height: 42px;
+  }
+
+  body.blur.editbook #book_edit_frm > h1 {
+    top: 48px;
+    left: 0;
+    width: 100%;
+    height: 42px;
+    padding: 0 10px;
     background: rgba(0, 0, 0, .15);
     font-size: 13px;
     line-height: 42px;

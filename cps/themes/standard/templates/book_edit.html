@@ -67,6 +67,7 @@
 </div>
 <form class="col-12 col-md-9" role="form" action="{{ url_for('edit-book.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <h1 class="h3 mb-4">{{_('Edit Metadata')}}</h1>
   <div>
     <div class="form-group">
       <label for="title">{{_('Book Title')}}</label>
