@@ -2065,10 +2065,6 @@ body.user_table .bootstrap-table .fixed-table-pagination .pagination > .active >
     color: #fff;
 }
 
-body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-xs-12, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6 {
-    width: 100%
-}
-
 body.blur.serieslist .list-page::before {
     font-size: 6vw;
     position: fixed;
@@ -2084,43 +2080,7 @@ body.blur.serieslist .list-page::before {
   }
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.container1 {
-    width: calc(80% - 30px);
-    margin: 120px 0 30px 20%;
-    border-top: 2px solid rgba(0, 0, 0, .3);
-    border-bottom: 2px solid rgba(0, 0, 0, .3);
-    padding: 0;
-    max-width: calc(80% - 30px)
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.container1 > div {
-    padding: 0
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row {
-    padding: 4px 0
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row > .col-xs-6 {
-    width: calc(91.666% - 30px);
-    overflow: hidden;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    color: hsla(0, 0%, 100%, .45);
-    padding-left: 60px
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row > .col-xs-6 > a {
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    -webkit-transition: all 0s;
-    -o-transition: all 0s;
-    transition: all 0s
-}
-
-
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid {
+body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid {
     display: flex;
     flex-wrap: wrap;
     width: calc(80% - 30px);
@@ -2131,34 +2091,12 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1
     max-width: calc(80% - 30px)
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div {
+body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div {
     padding: 0
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
+body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
     padding: 4px 0
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.container1 > div > .row:nth-of-type(even) {
-    background: hsla(0, 0%, 100%, .02)
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row > .col-xs-6 {
-    width: calc(91.666% - 30px);
-    overflow: hidden;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    color: hsla(0, 0%, 100%, .45);
-    padding-left: 60px
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row > .col-xs-6 > a {
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    -webkit-transition: all 0s;
-    -o-transition: all 0s;
-    transition: all 0s
 }
 
 .well > form > .btn,
@@ -2202,7 +2140,7 @@ body.blur.authorlist .list-page::before, body.blur.langlist .list-page::before {
   }
 }
 
-body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
+body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
     top: 60px;
     font-size: 24px;
     color: #eee;
@@ -2213,21 +2151,10 @@ body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:bef
     font-weight: 400
 }
 
-body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
+@media screen and (max-width: 992px) {
 }
 
 @media screen and (max-width: 992px) {
-  body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
-}
-
-@media screen and (max-width: 992px) {
-  body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
 }
 
 body.blur.downloadlist .list-page::before {
@@ -2246,37 +2173,10 @@ body.blur.downloadlist .list-page::before {
   }
 }
 
-body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
-}
-
-
-body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
+@media screen and (max-width: 992px) {
 }
 
 @media screen and (max-width: 992px) {
-  body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
-}
-
-body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
-}
-
-@media screen and (max-width: 992px) {
-  body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
-}
-
-body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    display: table;
 }
 
 body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
@@ -3581,117 +3481,6 @@ body.shelf-down .btn-group button#btnGroupDrop1 {
     -webkit-font-smoothing: antialiased
 }
 
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-action-row,
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    position: relative;
-    z-index: 1
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-action-row {
-    justify-content: space-between
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group {
-    margin-left: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row {
-    justify-content: space-between;
-    align-items: center
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-toolbar-row > .filterheader {
-    flex: 1 1 auto;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"], body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit], body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order] {
-    float: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    height: auto;
-    min-width: 0;
-    border-radius: 4px;
-    background: rgba(0, 0, 0, .2);
-    color: #fff;
-    overflow: visible;
-    padding: 8px 14px;
-    margin: 0;
-    font-size: 13px;
-    line-height: 1.4
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"] {
-    position: relative;
-    width: auto;
-    height: auto;
-    border-radius: 4px;
-    background: rgba(206, 61, 42, .8);
-    color: #fff;
-    overflow: visible;
-    padding: 8px 14px
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:before,
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before,
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:before {
-    display: none
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:hover {
-    background: #ce3d2a
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:hover:before {
-    color: #fff
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit],
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order] {
-    position: relative;
-    float: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    height: auto;
-    min-width: 0;
-    border-radius: 4px;
-    background: rgba(0, 0, 0, .2);
-    color: #fff;
-    overflow: visible;
-    margin: 0;
-    padding: 8px 14px;
-    font-size: 13px;
-    line-height: 1.4
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before,
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:before {
-    display: none
-}
-
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:hover,
-body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:hover {
-    background: rgba(0, 0, 0, .3)
-}
-
 body > nav.navbar > div > div.navbar-header > a:hover {
     color: #fff !important;
     -webkit-transition: color .2s;
@@ -4746,7 +4535,7 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     border: collapse;
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
+body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before {
     display: block;
     position: fixed;
     left: calc(240px + ((20% - 55px - 6vw) / 2));
@@ -4790,19 +4579,6 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 
 body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.blur:is(.edituser, .newuser) .user-edit-page #back:hover, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
     background-color: hsla(0, 0%, 100%, .3)
-}
-
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px
-}
-
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #back,
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > .pull-right #user_submit {
-    float: none;
-    margin-left: 0
 }
 
 body.edituser.admin #btndeluser, body.newuser.admin #btndeluser {
@@ -5540,7 +5316,6 @@ body.editbook .form-group {
 }
 
 body.editbook .form-group > label,
-body.editbook .control-label,
 body.editbook label[for="pubdate"] {
     display: inline-block;
     margin-bottom: 5px;
@@ -6036,19 +5811,6 @@ body.admin.modal-open .navbar {
     border-top: 1px solid #222;
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5)
-}
-
-#deleteButton > span.glyphicon-remove {
-    font-size: 18px;
-    color: hsla(0, 0%, 100%, .7)
-}
-
-#deleteButton:hover span.glyphicon-remove {
-    color: #fff
-}
-
-#deleteButton > span.glyphicon-remove:before {
-    content: "\EA66"
 }
 
 body.authorlist .blur-wrapper:after {
@@ -6688,7 +6450,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         display: none !important
     }
 
-    .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.authorlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.catlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.langlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.downloadlist > div.container-fluid > div > div.col-sm-10 > div.container1:before, body.login .navbar > .container-fluid > .navbar-header > button.navbar-toggler, body.serieslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
+    .shelforder > .container-fluid > .row-fluid > .col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2:before, body.advsearch > div.container-fluid > div > div.col-sm-10:before, body.login .navbar > .container-fluid > .navbar-header > button.navbar-toggler {
         display: none
     }
 
@@ -6785,7 +6547,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding-left: 12px
     }
 
-    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before, body.me > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > .admin-user-background {
+    body.blur:is(.edituser, .newuser, .me) .user-edit-page > form::before {
         position: absolute;
         top: 20px;
         left: 30px;
@@ -6811,15 +6573,6 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         padding: 20px 0 !important;
         max-width: 100% !important;
         border-top: 1px solid hsla(0, 0%, 78%, .15)
-    }
-
-    body > div.container-fluid > div > div.col-sm-10 > div.container1 {
-        left: 0;
-        width: auto;
-        margin: 0 !important;
-        padding: 0 !important;
-        max-width: 100% !important;
-        border: 0
     }
 
     body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
@@ -6940,7 +6693,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         margin-bottom: 5px
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
         padding: 0
     }
 
@@ -6954,15 +6707,6 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
 
     body.author .undefined-img {
         background: var(--color-background-mobile) !important
-    }
-
-    body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group {
-        position: relative;
-        top: 0;
-        right: auto;
-        left: auto;
-        width: 210px;
-        margin: auto
     }
 
     #DeleteShelfDialog > .modal-dialog {
@@ -7604,23 +7348,6 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         color: hsla(0, 0%, 100%, .25)
     }
 
-    body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group {
-        height: 60px
-    }
-
-    body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"], body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit], body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order] {
-        height: 40px;
-        width: 40px;
-        padding: 0;
-        margin: 10px 15px;
-        border-radius: 50%
-    }
-
-    body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [data-target="#DeleteShelfDialog"]:before, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=edit]:before, body.shelf > div.container-fluid > div > div.col-sm-10 > div.discover > .shelf-btn-group > [href*=order]:before {
-        padding: 0 0 0 10px;
-        line-height: 40px
-    }
-
     .collapsing {
         -webkit-transition: all 0s;
         transition: all 0s
@@ -7705,11 +7432,11 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         text-decoration: none
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row:nth-of-type(even), body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row:nth-of-type(even) {
+    body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row:nth-of-type(even) {
         background: 0 0
     }
 
-    body > div.container-fluid > div > div.col-sm-10 > div.discover > div.container1 > div > .row, body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
+    body > div.container-fluid > div > div.col-sm-10 > div.list-page > div.container-fluid > .row > div > .row {
         position: relative;
         border-bottom: 1px solid hsla(0, 0%, 78%, .15)
     }
@@ -7854,73 +7581,19 @@ body.blur.formatslist .list-page::before {
     margin-bottom:10px;
 }
 
-body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    font-size: 24px;
-    color: #eee;
-    line-height: 1;
-    padding-left: 15px;
-    position: absolute;
-    display: table;
-    font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-weight: 400
+@media screen and (max-width: 992px) {
 }
 
 @media screen and (max-width: 992px) {
-  body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
-}
-
-body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    font-size: 24px;
-    color: #eee;
-    line-height: 1;
-    padding-left: 15px;
-    position: absolute;
-    display: table;
-    font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-weight: 400
-}
-
-@media screen and (max-width: 992px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
 }
 
 @media screen and (max-width: 768px) {
-  body.ratingslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      display: none;
-  }
-}
-
-body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-    top: 115px;
-    font-size: 24px;
-    color: #eee;
-    line-height: 1;
-    padding-left: 15px;
-    position: absolute;
-    font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-weight: 400
 }
 
 @media screen and (max-width: 992px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      top: 60px;
-  }
 }
 
 @media screen and (max-width: 768px) {
-  body.formatslist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-      display: none;
-  }
-}
-
-body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1 > div.col-sm-6 {
-    width: 100%
 }
 
 #have_read_cb + label:before, #have_read_cb:checked + label:before, div[aria-label="Edit/Delete book"] > .btn-warning > span:before {
@@ -7958,9 +7631,6 @@ body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1 
         color: hsla(0, 0%, 100%, .7)
     }
 
-    body.publisherlist > div.container-fluid > div > div.col-sm-10 > div.container1:before {
-        display: none !important
-    }
 }
 
 body.advanced_search > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-8 > form > div .twitter-typeahead .tt-hint {

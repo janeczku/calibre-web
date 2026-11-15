@@ -666,10 +666,6 @@ body.admin .accordion .input-group > .btn {
   margin-bottom: 10px;
 }
 
-body.admin .discover .pull-right {
-  float: right;
-}
-
 body.admin .discover #config_back,
 body.blur.mailset #email_back,
 body.admin .discover #config_back:hover,
