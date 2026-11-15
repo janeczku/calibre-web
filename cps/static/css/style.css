@@ -168,7 +168,7 @@ table .bg-dark-danger a { color: #fff; }
   flex-wrap: wrap;
 }
 
-.row-fluid.text-center {
+.flash-row {
     margin-top: -20px;
 }
 
@@ -413,9 +413,6 @@ span.glyphicon.glyphicon-tags {
 }
 
 .book-meta { padding-bottom: 20px; }
-
-.navbar-default .navbar-toggle .icon-bar { background-color: #000; }
-.navbar-default .navbar-toggle { border-color: #000; }
 
 .cover .badge {
   position: absolute;

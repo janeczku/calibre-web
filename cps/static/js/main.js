@@ -206,18 +206,13 @@ $("#form-upload-format").uploadprogress({
 $(document).on('click', '.toggle-password', function (event) {
     event.preventDefault();
     var button = $(this);
-    var selector = button.data('target');
+    var selector = button.data('bsTarget') || button.data('target');
     var passwordInput = $(selector);
     if (!passwordInput.length) {
         return;
     }
     var isPasswordHidden = passwordInput.attr('type') === 'password';
     passwordInput.attr('type', isPasswordHidden ? 'text' : 'password');
-    var icon = button.find('.glyphicon');
-    if (icon.length) {
-        icon.toggleClass('glyphicon-eye-open', isPasswordHidden);
-        icon.toggleClass('glyphicon-eye-close', !isPasswordHidden);
-    }
     var showLabel = button.attr('data-password-show') || button.attr('aria-label') || button.attr('title');
     var hideLabel = button.attr('data-password-hide') || showLabel;
     var passwordVisible = passwordInput.attr('type') === 'text';
@@ -305,9 +300,9 @@ $("#delete_confirm").click(function(event) {
                     data.forEach(function(item) {
                         if (!jQuery.isEmptyObject(item)) {
                             if (item.format != "") {
-                                $("button[data-delete-format='"+item.format+"']").addClass('hidden');
+                                setVisibilityState($("button[data-delete-format='"+item.format+"']"), true);
                             }
-                            $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                            $( ".navbar" ).after( '<div class="flash-row text-center" >' +
                                 '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                 '</div>');
                         }
@@ -332,11 +327,11 @@ $("#deleteModal").on("show.bs.modal", function(e) {
     var bookId = $(e.relatedTarget).data("delete-id");
     var bookfomat = $(e.relatedTarget).data("delete-format");
     if (bookfomat) {
-        $("#book_format").removeClass('hidden');
-        $("#book_complete").addClass('hidden');
+        setVisibilityState($("#book_format"), false);
+        setVisibilityState($("#book_complete"), true);
     } else {
-        $("#book_complete").removeClass('hidden');
-        $("#book_format").addClass('hidden');
+        setVisibilityState($("#book_complete"), false);
+        setVisibilityState($("#book_format"), true);
     }
     $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
     $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
@@ -445,9 +440,9 @@ $(function() {
                     }
                 });
                 if (data.parentdir !== "") {
-                    $("#parent").removeClass('hidden')
+                    setVisibilityState($("#parent"), false)
                 } else {
-                    $("#parent").addClass('hidden')
+                    setVisibilityState($("#parent"), true)
                 }
                 data.files.forEach(function(entry) {
                     if(entry.type === "dir") {
@@ -482,10 +477,6 @@ $(function() {
         });
         $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
             hideElements($(".pagination")).html(() => $(response).find(".pagination").html());
-            if ($("body").hasClass("blur")) {
-                $(" a:not(.dropdown-toggle) ")
-                  .removeAttr("data-toggle");
-            }
             $(".load-more .row.display-flex").isotope( "appended", $(data), null );
         });
 
@@ -569,7 +560,7 @@ $(function() {
                 message = "<div id=\"message\" class=\"alert " + cssClass
                     + " alert-dismissible fade show\" role=\"alert\">"
                     + data.message
-                    + "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" data-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
+                    + "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button></div>";
 
                 $(message).insertAfter($("#update_table"));
             }
@@ -764,7 +755,7 @@ $(function() {
                     success:function(data) {
                         data.forEach(function(item) {
                             if (!jQuery.isEmptyObject(item)) {
-                                $( ".navbar" ).after( '<div class="row-fluid text-center" >' +
+                                $( ".navbar" ).after( '<div class="flash-row text-center" >' +
                                     '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
                                     '</div>');
                             }
@@ -782,18 +773,12 @@ $(function() {
     function handle_response(data) {
         if (!jQuery.isEmptyObject(data)) {
             data.forEach(function (item) {
-                $(".navbar").after('<div class="row-fluid text-center">' +
+                $(".navbar").after('<div class="flash-row text-center">' +
                     '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                     '</div>');
             });
         }
     }
-
-    $('.collapse').on('shown.bs.collapse', function(){
-        $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-    }).on('hidden.bs.collapse', function(){
-    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
-    });
 
     function changeDbSettings() {
         $("#db_submit").closest('form').submit();

@@ -39,7 +39,6 @@
                                     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="bi bi-download"></span> {{ _('Download') }}
-                                        <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         {% for format in entry.data %}
@@ -64,7 +63,6 @@
                                     <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="bi bi-send"></span>{{ _('Send to eReader') }}
-                                        <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="sendbtn2">
                                         {% for format in entry.email_share_list %}
@@ -83,7 +81,6 @@
                                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="bi bi-book"></span> {{ _('Read in Browser') }}
-                                    <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                                     {% for format in entry.reader_list %}
@@ -106,7 +103,6 @@
                             {% if entry.audio_entries|length > 1 %}
                                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="bi bi-music-note-beamed"></span> {{ _('Listen in Browser') }}
-                                    <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
 
@@ -296,7 +292,6 @@
                                         class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                     <span class="bi bi-list"></span> {{ _('Add to shelf') }}
-                                    <span class="caret"></span>
                                 </button>
                                 <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                                     {% for shelf in g.shelves_access %}

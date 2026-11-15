@@ -14,7 +14,6 @@
             <div class="btn-group" role="group" aria-label="Add to shelves">
               <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="bi bi-list"></span> {{_('Add to shelf')}}
-                <span class="caret"></span>
               </button>
               <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                 {% for shelf in g.shelves_access %}
@@ -27,7 +26,6 @@
             <div class="btn-group" role="group" aria-label="Remove from shelves">
               <button id="remove-from-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="bi bi-list"></span> {{_('Remove from shelf')}}
-                <span class="caret"></span>
               </button>
               <ul id="remove-from-shelves" class="dropdown-menu" aria-labelledby="remove-from-shelf">
                 {% for shelf in g.shelves_access %}

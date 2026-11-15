@@ -2362,7 +2362,7 @@ body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-l
     background-color: var(--color-secondary-hover)
 }
 
-body > div.row-fluid {
+body > div.flash-row {
     margin-top: 0 !important
 }
 

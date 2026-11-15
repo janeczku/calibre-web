@@ -273,7 +273,7 @@ $(function() {
                         } else {
                             result = "danger";
                         }
-                        $(".navbar").after('<div class="row-fluid text-center">' +
+                        $(".navbar").after('<div class="flash-row text-center">' +
                             '<div id="flash_' + result + '" class="alert alert-' + result + '">' + item.msg + '</div>' +
                             '</div>');
                     });
@@ -725,10 +725,10 @@ $(function() {
         $("#restrict-elements-table").unbind();
         $("#restrict-elements-table").bootstrapTable("destroy");
         $("[id^=submit_]").unbind();
-        $("#h1").addClass("hidden");
-        $("#h2").addClass("hidden");
-        $("#h3").addClass("hidden");
-        $("#h4").addClass("hidden");
+        setVisibilityState($("#h1"), true);
+        setVisibilityState($("#h2"), true);
+        setVisibilityState($("#h3"), true);
+        setVisibilityState($("#h4"), true);
         $("#add_element").val("");
     });
 
@@ -737,43 +737,43 @@ $(function() {
         switch(target) {
             case "get_column_values":
                 type = 1;
-                $("#h2").removeClass("hidden");
+                setVisibilityState($("#h2"), false);
                 break;
             case "get_tags":
                 type = 0;
-                $("#h1").removeClass("hidden");
+                setVisibilityState($("#h1"), false);
                 break;
             case "get_user_column_values":
                 type = 3;
-                $("#h4").removeClass("hidden");
+                setVisibilityState($("#h4"), false);
                 break;
             case "get_user_tags":
                 type = 2;
-                $("#h3").removeClass("hidden");
+                setVisibilityState($("#h3"), false);
                 break;
             case "denied_tags":
                 type = 2;
-                $("#h2").removeClass("hidden");
-                $("#submit_allow").addClass("hidden");
-                $("#submit_restrict").removeClass("hidden");
+                setVisibilityState($("#h2"), false);
+                setVisibilityState($("#submit_allow"), true);
+                setVisibilityState($("#submit_restrict"), false);
                 break;
             case "allowed_tags":
                 type = 2;
-                $("#h2").removeClass("hidden");
-                $("#submit_restrict").addClass("hidden");
-                $("#submit_allow").removeClass("hidden");
+                setVisibilityState($("#h2"), false);
+                setVisibilityState($("#submit_restrict"), true);
+                setVisibilityState($("#submit_allow"), false);
                 break;
             case "allowed_column_value":
                 type = 3;
-                $("#h2").removeClass("hidden");
-                $("#submit_restrict").addClass("hidden");
-                $("#submit_allow").removeClass("hidden");
+                setVisibilityState($("#h2"), false);
+                setVisibilityState($("#submit_restrict"), true);
+                setVisibilityState($("#submit_allow"), false);
                 break;
             case "denied_column_value":
                 type = 3;
-                $("#h2").removeClass("hidden");
-                $("#submit_allow").addClass("hidden");
-                $("#submit_restrict").removeClass("hidden");
+                setVisibilityState($("#h2"), false);
+                setVisibilityState($("#submit_allow"), true);
+                setVisibilityState($("#submit_restrict"), false);
                 break;
         }
 
@@ -787,8 +787,8 @@ $(function() {
                 }
             },
             onLoadSuccess: function () {
-                $(".no-records-found").addClass("hidden");
-                $(".fixed-table-loading").addClass("hidden");
+                setVisibilityState($(".no-records-found"), true);
+                setVisibilityState($(".fixed-table-loading"), true);
             },
             onClickCell: function (field, value, row) {
                 if (field === 3) {
@@ -970,7 +970,7 @@ function handle_header_buttons () {
         $(".button_head").attr("aria-disabled", true);
         $(".button_head").addClass("disabled");
         $(".multi_head").attr("aria-disabled", true);
-        $(".multi_head").addClass("hidden");
+        setVisibilityState($(".multi_head"), true);
         $("select.multi_selector").attr("aria-disabled", true);
         $("select.multi_selector").attr("disabled", true);
         $(".header_select").attr("disabled", true);
@@ -983,7 +983,7 @@ function handle_header_buttons () {
         $(".button_head").attr("aria-disabled", false);
         $(".button_head").removeClass("disabled");
         $(".multi_head").attr("aria-disabled", false);
-        $(".multi_head").removeClass("hidden");
+        setVisibilityState($(".multi_head"), false);
         $("select.multi_selector").attr("aria-disabled", false);
         $("select.multi_selector").removeAttr("disabled");
         $(".header_select").removeAttr("disabled");
@@ -1224,7 +1224,7 @@ function handleListServerResponse (data) {
     $("#flash_danger").remove();
     if (!jQuery.isEmptyObject(data)) {
         data.forEach(function(item) {
-            $(".navbar").after('<div class="row-fluid text-center">' +
+            $(".navbar").after('<div class="flash-row text-center">' +
                 '<div id="flash_' + item.type + '" class="alert alert-' + item.type + '">' + item.message + '</div>' +
                 '</div>');
         });

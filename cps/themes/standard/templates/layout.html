@@ -29,12 +29,12 @@
   </head>
   <body class="{{ page }} {{ bodyClass }} {{ theme_body_class() }}{% block body_class %}{% endblock %}"{% block body_attrs %}{% endblock %}>
     <!-- Static navbar -->
-    <nav class="{% block navbar_class %}navbar navbar-default navbar-static-top navbar-expand-md navbar-light bg-body-tertiary border-bottom{% endblock %}" role="navigation">
+    <nav class="{% block navbar_class %}navbar navbar-expand-md navbar-light bg-body-tertiary border-bottom{% endblock %}" role="navigation">
       <div class="container-fluid">
         {% block nav_header %}
         <div class="navbar-header d-flex align-items-center">
           <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
-          <button type="button" class="navbar-toggle collapsed navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="{{_('Toggle Navigation')}}">
+          <button type="button" class="collapsed navbar-toggler" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="{{_('Toggle Navigation')}}">
             <span class="visually-hidden">{{_('Toggle Navigation')}}</span>
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -43,7 +43,7 @@
         {% block nav_after_header %}{% endblock %}
         {% if current_user.is_authenticated or g.allow_anonymous %}
           {% block nav_search %}
-          <form class="navbar-form navbar-left d-flex me-auto" role="search" action="{{url_for('search.simple_search')}}" method="GET">
+          <form class="navbar-form d-flex me-auto" role="search" action="{{url_for('search.simple_search')}}" method="GET">
             <div class="form-group input-group input-group-sm flex-nowrap">
               <label for="query" class="visually-hidden">{{_('Search')}}</label>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
@@ -61,7 +61,7 @@
           </ul>
           {% endblock %}
           {% endif %}
-          <ul class="{% block main_nav_class %}nav navbar-nav navbar-right ms-auto align-items-lg-center{% endblock %}" id="main-nav">
+          <ul class="{% block main_nav_class %}nav navbar-nav ms-auto align-items-lg-center{% endblock %}" id="main-nav">
             {% if current_user.is_authenticated or g.allow_anonymous %}
               {% block nav_main_start %}{% endblock %}
               {% block nav_upload %}
@@ -72,7 +72,7 @@
                       <div class="form-group">
                         <span class="btn btn-outline-secondary btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
                         type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
-                        <input class="hide d-none" id="btn-upload2" name="btn-upload2" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}">
+                        <input class="d-none" id="btn-upload2" name="btn-upload2" type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}">
                       </div>
                     </form>
                   </li>
@@ -109,22 +109,22 @@
     {% block flash_messages %}
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
-      <div class="row row-fluid text-center" >
+      <div class="row flash-row text-center" >
         <div id="flash_danger" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
-      <div class="row row-fluid text-center">
+      <div class="row flash-row text-center">
         <div id="flash_info" class="alert alert-info">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "warning" %}
-      <div class="row row-fluid text-center">
+      <div class="row flash-row text-center">
         <div id="flash_warning" class="alert alert-warning">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "success" %}
-      <div class="row row-fluid text-center">
+      <div class="row flash-row text-center">
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
       </div>
       {%endif%}
@@ -133,7 +133,7 @@
     {% block flash %}{% endblock %}
     {% block before_content %}{% endblock %}
     <div class="container-fluid">
-      <div class="{% block content_row_class %}row row-fluid{% endblock %}">
+      <div class="{% block content_row_class %}row{% endblock %}">
         {% if current_user.is_authenticated or g.allow_anonymous %}
         <div class="{% block sidebar_column_class %}col-md-2 sidebar-column d-none d-md-block{% endblock %}">
           <nav class="navigation">

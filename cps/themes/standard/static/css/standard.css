@@ -50,7 +50,7 @@ body > .container-fluid {
   padding-left: 15px;
 }
 
-body > .container-fluid > .row-fluid {
+body > .container-fluid > .row {
   margin-inline: 0;
 }
 
