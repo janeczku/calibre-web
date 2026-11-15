@@ -225,23 +225,17 @@
           <label for="config_ldap_cacert_path" >{{_('LDAP CACertificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cacert_path" name="config_ldap_cacert_path" value="{% if config.config_ldap_cacert_path != None %}{{ config.config_ldap_cacert_path }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="config_ldap_cacert_path_b" data-bs-toggle="modal" data-link="config_ldap_cacert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
-            </span>
+            <button type="button" id="config_ldap_cacert_path_b" data-bs-toggle="modal" data-link="config_ldap_cacert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
           </div>
           <label for="config_ldap_cert_path">{{_('LDAP Certificate Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="config_ldap_cert_path_b" data-bs-toggle="modal" data-link="config_ldap_cert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
-            </span>
+            <button type="button" id="config_ldap_cert_path_b" data-bs-toggle="modal" data-link="config_ldap_cert_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
           </div>
           <label for="config_ldap_key_path">{{_('LDAP Keyfile Path (Only needed for Client Certificate Authentication)')}}</label>
           <div class="form-group input-group">
             <input type="text" class="form-control" id="config_ldap_key_path" name="config_ldap_key_path" value="{% if config.config_ldap_key_path != None %}{{ config.config_ldap_key_path }}{% endif %}" autocomplete="off">
-            <span class="input-group-btn">
-              <button type="button" id="config_ldap_key_path_b" data-bs-toggle="modal" data-link="config_ldap_key_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
-            </span>
+            <button type="button" id="config_ldap_key_path_b" data-bs-toggle="modal" data-link="config_ldap_key_path" data-bs-target="#fileModal" class="btn btn-outline-secondary"><span class="bi bi-folder2-open"></span></button>
           </div>
         </div>
         <div class="form-group">

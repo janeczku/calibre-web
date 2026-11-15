@@ -153,13 +153,13 @@
       </div>
         <div class="modal-body">
           <p></p>
-            <div class="text-left">{{_('Books with Title will be merged from:')}}</div>
+            <div class="text-start">{{_('Books with Title will be merged from:')}}</div>
           <p></p>
-            <div class="text-left" id="merge_from"></div>
+            <div class="text-start" id="merge_from"></div>
           <p></p>
-            <div class="text-left">{{_('Into Book with Title:')}}</div>
+            <div class="text-start">{{_('Into Book with Title:')}}</div>
           <p></p>
-            <div class="text-left" id="merge_to"></div>
+            <div class="text-start" id="merge_to"></div>
         </div>
       <div class="modal-footer">
         <input id="merge_confirm" type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" data-bs-dismiss="modal">
@@ -177,9 +177,9 @@
       </div>
       <div class="modal-body">
         <p></p>
-            <div class="text-left">{{_('The following books will be deleted:')}}</div>
+            <div class="text-start">{{_('The following books will be deleted:')}}</div>
         <p></p>
-            <div class="text-left" id="display-delete-selected-books"></div>
+            <div class="text-start" id="display-delete-selected-books"></div>
       <div class="modal-footer">
         <input id="delete_selected_confirm" type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_selected_confirm" data-bs-dismiss="modal">
         <button id="delete_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
@@ -197,9 +197,9 @@
       </div>
       <div class="modal-body">
         <p></p>
-            <div class="text-left">{{_('The following books will be archived:')}}</div>
+            <div class="text-start">{{_('The following books will be archived:')}}</div>
         <p></p>
-            <div class="text-left" id="display-archive-selected-books"></div>
+            <div class="text-start" id="display-archive-selected-books"></div>
       <div class="modal-footer">
         <input id="archive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Archive')}}" name="archive_selected_confirm" data-bs-dismiss="modal">
         <button id="archive_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
@@ -217,9 +217,9 @@
       </div>
       <div class="modal-body">
         <p></p>
-            <div class="text-left">{{_('The following books will be unarchived:')}}</div>
+            <div class="text-start">{{_('The following books will be unarchived:')}}</div>
         <p></p>
-            <div class="text-left" id="display-unarchive-selected-books"></div>
+            <div class="text-start" id="display-unarchive-selected-books"></div>
       <div class="modal-footer">
         <input id="unarchive_selected_confirm" type="button" class="btn btn-danger" value="{{_('Unarchive')}}" name="unarchive_selected_confirm" data-bs-dismiss="modal">
         <button id="unarchive_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
@@ -237,9 +237,9 @@
       </div>
       <div class="modal-body">
         <p></p>
-            <div class="text-left">{{_('The following books will be marked read:')}}</div>
+            <div class="text-start">{{_('The following books will be marked read:')}}</div>
         <p></p>
-            <div class="text-left" id="display-read-selected-books"></div>
+            <div class="text-start" id="display-read-selected-books"></div>
       <div class="modal-footer">
         <input id="read_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as read')}}" name="read_selected_confirm" data-bs-dismiss="modal">
         <button id="read_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
@@ -257,9 +257,9 @@
       </div>
       <div class="modal-body">
         <p></p>
-            <div class="text-left">{{_('The following books will be marked unread:')}}</div>
+            <div class="text-start">{{_('The following books will be marked unread:')}}</div>
         <p></p>
-            <div class="text-left" id="display-unread-selected-books"></div>
+            <div class="text-start" id="display-unread-selected-books"></div>
       <div class="modal-footer">
         <input id="unread_selected_confirm" type="button" class="btn btn-danger" value="{{_('Mark as unread')}}" name="unread_selected_confirm" data-bs-dismiss="modal">
         <button id="read_selected_abort" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{_('Cancel')}}</button>
@@ -276,7 +276,7 @@
           <span>{{_('Edit Metadata')}}</span>
       </div>
       <div class="modal-body">
-        <div class="text-left">{{_('Edit the fields you want changed. Blank fields will be ignored:')}}</div>
+        <div class="text-start">{{_('Edit the fields you want changed. Blank fields will be ignored:')}}</div>
             <br>
             Title:
             <input class="form-control" id="title_input">

@@ -683,10 +683,6 @@ body > div.container-fluid  {
   height: 40px;
 }
 
-.input-group-sm > .input-group-btn > .btn {
-    height: 40px;
-}
-
 .btn-file {
   height: 40px;
   display: inline-flex;

@@ -78,7 +78,7 @@ $(function () {
         var line = '<tr>';
         line += '<td><input type="text" class="form-control" name="identifier-type-'+ name +'" required="required" placeholder="' + _("Identifier Type") +'" value="'+ name +'"></td>';
         line += '<td><input type="text" class="form-control" name="identifier-val-'+ name +'" required="required" placeholder="' + _("Identifier Value") +'" value="'+ value +'"></td>';
-        line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">'+_("Remove")+'</a></td>';
+        line += '<td><a class="btn btn-outline-secondary" onclick="removeIdentifierLine(this)">'+_("Remove")+'</a></td>';
         line += '</tr>';
         $("#identifier-table").append(line);
     }

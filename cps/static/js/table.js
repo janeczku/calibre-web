@@ -1050,7 +1050,7 @@ function responseHandler(res) {
 }
 
 function singleUserFormatter(value, row) {
-    return '<a class="btn btn-default" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
+    return '<a class="btn btn-outline-secondary" onclick="storeLocation()" href="' + window.location.pathname + '/../../admin/user/' + row.id + '">' + this.buttontext + '</a>'
 }
 
 function checkboxFormatter(value, row){
