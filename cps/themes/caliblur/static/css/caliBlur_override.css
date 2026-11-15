@@ -518,6 +518,7 @@ body.blur .schedule-form .form-group {
 }
 
 body.admin .discover label,
+body.blur.usertable .user-edit-page label,
 body.blur .schedule-form label {
   margin-bottom: 5px;
 }
@@ -707,32 +708,32 @@ body.mailset.admin .discover .btn-outline-secondary {
   color: #fff;
 }
 
-.caliblur-user-table .ts-control,
-.caliblur-user-table .ts-dropdown {
+body.blur.usertable .user-edit-page .ts-control,
+body.blur.usertable .user-edit-page .ts-dropdown {
   background: #323232;
   color: #eee;
   border-color: transparent;
 }
 
-.caliblur-user-table .ts-control input {
+body.blur.usertable .user-edit-page .ts-control input {
   color: #eee;
 }
 
-.caliblur-user-table select.multi_selector,
-.caliblur-user-table .header_select {
+body.blur.usertable .user-edit-page select.multi_selector,
+body.blur.usertable .user-edit-page .header_select {
   background: var(--color-secondary);
   color: #fff;
   border: 0;
 }
 
-.caliblur-user-table .header_select {
+body.blur.usertable .user-edit-page .header_select {
   height: 36px;
   padding: 0 16px;
   font-family: "Open Sans Bold", sans-serif;
   font-size: 14px;
 }
 
-.caliblur-user-table .fixed-table-container .table thead th .th-inner {
+body.blur.usertable .user-edit-page .fixed-table-container .table thead th .th-inner {
   padding: 8px;
 }
 
@@ -741,19 +742,28 @@ body.edituser.admin .discover > h1 {
   margin-top: 20px;
 }
 
-.caliblur-user-table > .col-12 {
+body.blur.usertable .user-edit-page > .col-12 {
   padding: 40px 15px 60px;
 }
 
-.caliblur-user-table .table-responsive {
+/* undo standard's mb-3 on the button row and align-middle on the table */
+body.blur.usertable .user-edit-page > .col-12 > .row {
+  margin-bottom: 0 !important;
+}
+
+body.blur.usertable #user-table {
+  vertical-align: top !important;
+}
+
+body.blur.usertable .user-edit-page .table-responsive {
   overflow: visible;
 }
 
-.caliblur-user-table .fixed-table-toolbar .btn {
+body.blur.usertable .user-edit-page .fixed-table-toolbar .btn {
   margin-bottom: 0;
 }
 
-.caliblur-user-table .columns .dropdown-toggle::after,
+body.blur.usertable .user-edit-page .columns .dropdown-toggle::after,
 body.book_table .columns .dropdown-toggle::after {
   display: none;
 }
@@ -895,7 +905,7 @@ body.mailset.admin .discover > form > div > .form-group {
 
 @media only screen and (max-width: 767px) {
   .admin-dashboard,
-  .caliblur-user-table {
+  body.blur.usertable .user-edit-page {
     --bs-gutter-x: 20px;
   }
 

@@ -1557,7 +1557,7 @@ body.me > div.container-fluid > div.row-fluid > div.col-sm-10 > div.discover > f
     margin: 15px
 }
 
-.container-fluid .discover, .navbar {
+.container-fluid .discover, body.blur.usertable .container-fluid .user-edit-page, .navbar {
     margin-bottom: 0
 }
 
@@ -1761,7 +1761,7 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > div.isotope {
     grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)) !important
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover {
+body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
     height: auto;
     width: calc(100vw - 257px);
     margin: 40px 0 !important;
@@ -1779,7 +1779,7 @@ body.book .single > .row {
     --bs-gutter-x: 30px;
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.discover {
+body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
     margin-top: 0
 }
 
@@ -4661,7 +4661,7 @@ body.remotelogin .plexBack > a {
     }
 }
 
-body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before {
+body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before {
     width: calc(100vw - 240px);
     height: 60px;
     margin: 0;
@@ -4684,7 +4684,7 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
     font-weight: 400
 }
 
-body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before {
+body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before {
     position: fixed;
     left: 240px
 }
@@ -4699,14 +4699,14 @@ body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discove
     left: 240px
 }
 
-body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid {
+body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid.admin-dashboard {
     height: auto;
     width: calc(100vw - 257px);
     margin: 20px 0 30px !important;
     padding: 0 10px 0 40px !important
 }
 
-body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col > h2, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
+body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col > h2, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2 {
     font-size: 24px;
     font-family: Open Sans Bold, Helvetica Neue, Helvetica, Arial, sans-serif;
     color: #eee;
@@ -4715,6 +4715,7 @@ body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > d
 }
 
 body.usertable.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type,
+body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type,
 body.user_table.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type {
     position: fixed;
     top: 60px;
@@ -4735,6 +4736,7 @@ body.user_table.admin > div.container-fluid > div > div.col-sm-10 > div.discover
 }
 
 body.usertable.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type::before,
+body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type::before,
 body.user_table.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type::before {
     content: none;
 }
@@ -6731,13 +6733,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         height: calc(100% - 42px)
     }
 
-    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid, body > div.container-fluid > div > div.col-sm-10 > div.discover {
+    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid.admin-dashboard, body > div.container-fluid > div > div.col-sm-10 > div.discover, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page {
         width: 100%;
         margin: 0 !important;
         padding: 10px !important
     }
 
-    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
+    .author > .container-fluid > .row > .col-sm-10 > h2:before, body.admin.config > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin.uiconfig > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type, body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row:first-of-type > div.col > h2:before, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before, body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body.mailset > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > h1:before, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h1, body:not(.admin) > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-8 > form > #test:before, body > div.container-fluid > div.row > div.col-sm-10 > form > div.col-sm-9 > div:nth-child(10) > label:before, body > div.container-fluid > div > div.col-sm-10 > div.col-sm-6.col-lg-6.col-xs-6 > h2, body > div.container-fluid > div > div.col-sm-10 > h1, body > div.container-fluid > div > div.col-sm-10 > h3:first-of-type, body.blur.stat > div.container-fluid > div > div.col-sm-10 > div.container-fluid > h3:first-of-type {
         top: 48px;
         left: 0;
         padding-left: 10px;
@@ -6759,7 +6761,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         font-size: 16px
     }
 
-    body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before {
+    body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2:first-of-type:before, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2:first-of-type:before {
         text-transform: none
     }
 
@@ -7074,7 +7076,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         font-size: 13px
     }
 
-    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col > h2, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2 {
+    body.admin > div.container-fluid > div > div.col-sm-10 > div.container-fluid > div.row > div.col > h2, body.admin > div.container-fluid > div > div.col-sm-10 > div.discover > h2, body.blur.usertable > div.container-fluid > div > div.col-sm-10 > div.user-edit-page > h2 {
         font-size: 14px;
         text-transform: uppercase
     }
