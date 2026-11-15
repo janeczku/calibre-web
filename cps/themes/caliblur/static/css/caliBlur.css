@@ -2151,11 +2151,7 @@ body.me > div.container-fluid > div > div.col-sm-10 > div.discover:before {
     font-weight: 400
 }
 
-@media screen and (max-width: 992px) {
-}
 
-@media screen and (max-width: 992px) {
-}
 
 body.blur.downloadlist .list-page::before {
     font-size: 6vw;
@@ -2173,11 +2169,7 @@ body.blur.downloadlist .list-page::before {
   }
 }
 
-@media screen and (max-width: 992px) {
-}
 
-@media screen and (max-width: 992px) {
-}
 
 body.advsearch > div.container-fluid > div > div.col-sm-10 > div.col-md-10.col-lg-6 {
     padding: 15px 10px 15px 40px;
@@ -4566,18 +4558,13 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
     padding-left: 30px
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 > #submit {
-    float: right;
-    margin-left: 10px
-}
-
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back, body.blur:is(.edituser, .newuser) .user-edit-page #back, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back {
+body.blur:is(.edituser, .newuser) .user-edit-page #back {
     float: right;
     margin-left: 0;
     background-color: hsla(0, 0%, 100%, .25)
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover, body.blur:is(.edituser, .newuser) .user-edit-page #back:hover, body.newuser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12 #back:hover {
+body.blur:is(.edituser, .newuser) .user-edit-page #back:hover {
     background-color: hsla(0, 0%, 100%, .3)
 }
 
@@ -4585,7 +4572,7 @@ body.edituser.admin #btndeluser, body.newuser.admin #btndeluser {
     margin-left: 15px
 }
 
-body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12, body.blur.edituser .user-edit-page > form > .col-12:last-child {
+body.blur.edituser .user-edit-page > form > .col-12:last-child {
     margin-bottom: 60px
 }
 
@@ -5369,7 +5356,7 @@ body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-la
     color: #fff
 }
 
-body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4 {
+body.editbook > div.container-fluid > div.row > div.col-sm-10 > div.book-edit-layout > div.col-md-3 > div.text-center.more-stuff > h4, body.upload > div.container-fluid > div.row-fluid > div.col-sm-10 > div.col-sm-3 > div.text-center.more-stuff > h4 {
     color: #eee;
     margin: 20px;
     text-transform: uppercase;
@@ -7133,7 +7120,7 @@ body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discov
         grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)) !important
     }
 
-    body.edituser.admin > div.container-fluid > div.row > div.col-sm-10 > div.discover > form > div.col-sm-12, body.blur.edituser .user-edit-page > form > .col-12:last-child {
+    body.blur.edituser .user-edit-page > form > .col-12:last-child {
         margin-bottom: 20px;
         padding-right: 15px
     }
@@ -7581,20 +7568,13 @@ body.blur.formatslist .list-page::before {
     margin-bottom:10px;
 }
 
-@media screen and (max-width: 992px) {
-}
 
-@media screen and (max-width: 992px) {
-}
 
-@media screen and (max-width: 768px) {
-}
 
-@media screen and (max-width: 992px) {
-}
 
-@media screen and (max-width: 768px) {
-}
+
+
+
 
 #have_read_cb + label:before, #have_read_cb:checked + label:before, div[aria-label="Edit/Delete book"] > .btn-warning > span:before {
     line-height: 1.1

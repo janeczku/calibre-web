@@ -278,7 +278,7 @@ body.blur .datepicker_delete.btn {
   padding: 0 12px;
 }
 
-body.blur .rating-clear .glyphicon-remove {
+body.blur.editbook .rating-clear .glyphicon-remove {
   color: #fff;
 }
 
@@ -1018,8 +1018,8 @@ body.dbconfig.admin .discover > form .input-group .btn {
   border-radius: 0 3px 3px 0;
 }
 
-/* actions: right-aligned, Cancel before Save. Standard leaves them inside the col-lg-6 column (it is
-   never closed): at lg, stretch them to the form's right edge (column width + its gutters) */
+/* actions: right-aligned, Cancel before Save. Standard keeps them inside the col-lg-6 column: at lg,
+   stretch them to the form's right edge (column width + its gutters) */
 body.dbconfig.admin .discover > form .col-12:has(> #db_submit) {
   display: flex;
   justify-content: flex-end;
@@ -1475,19 +1475,19 @@ body.blur.shelforder .col-sm-10 > .col-sm-8::before {
 
 /* book edit: standard's rating widget keeps the plugin's glyphicon classes (style.css maps them to
    Bootstrap Icons); caliBlur's old plex-font glyph rules for those classes must not win */
-body.blur .rating-input i:is(.glyphicon-star, .glyphicon-star-empty, .glyphicon-remove)::before {
+body.blur.editbook .rating-input i:is(.glyphicon-star, .glyphicon-star-empty, .glyphicon-remove)::before {
   font-family: bootstrap-icons;
 }
 
-body.blur .rating-input i.glyphicon-star::before {
+body.blur.editbook .rating-input i.glyphicon-star::before {
   content: "\f586";
 }
 
-body.blur .rating-input i.glyphicon-star-empty::before {
+body.blur.editbook .rating-input i.glyphicon-star-empty::before {
   content: "\f588";
 }
 
-body.blur .rating-input .rating-clear i.glyphicon-remove::before {
+body.blur.editbook .rating-input .rating-clear i.glyphicon-remove::before {
   content: "\f62a";
 }
 
@@ -1500,6 +1500,15 @@ body.blur.editbook .book-edit-layout {
 body.blur.editbook .book-edit-layout > form {
   width: auto;
   padding: 0;
+}
+
+/* the fixed cover column (cover, delete-formats list, convert form, upload button) can be taller
+   than the viewport: let it scroll */
+@media (min-width: 768px) {
+  body.blur.editbook .book-edit-layout > div.col-md-3 {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
 }
 
 /* caliBlur's copy centred the Fetch Metadata title (text-center) */
