@@ -254,9 +254,15 @@ def edit_selected_books():
     languages = d.get('languages')
     publishers = d.get('publishers')
     comments = d.get('comments')
+    remove_fields = d.get('remove_fields', [])
+    removable_fields = ('categories', 'series', 'languages', 'publishers')
+    if (not isinstance(remove_fields, list)
+            or any(field not in removable_fields for field in remove_fields)
+            or any(d.get(field) for field in remove_fields)):
+        return _("Invalid request"), 400
 
     if not (
-      title or title_sort or authors or categories or series or languages or publishers or comments) or not selections:
+      title or title_sort or authors or categories or series or languages or publishers or comments or remove_fields) or not selections:
         return _("Parameter not found"), 400
     vals = {
         "pk": selections,
@@ -285,23 +291,23 @@ def edit_selected_books():
         out = edit_book_param('authors', vals, True)
         if out[0].get('success') != True:
             res.extend(out)
-    if categories:
-        vals['value'] = categories
+    if categories or 'categories' in remove_fields:
+        vals['value'] = categories or ''
         out = edit_book_param('tags', vals, True)
         if out[0].get('success') != True:
             res.extend(out)
-    if series:
-        vals['value'] = series
+    if series or 'series' in remove_fields:
+        vals['value'] = series or ''
         out = edit_book_param('series', vals, True)
         if out[0].get('success') != True:
             res.extend(out)
-    if languages:
-        vals['value'] = languages
+    if languages or 'languages' in remove_fields:
+        vals['value'] = languages or ''
         out = edit_book_param('languages', vals, True)
         if out[0].get('success') != True:
             res.extend(out)
-    if publishers:
-        vals['value'] = publishers
+    if publishers or 'publishers' in remove_fields:
+        vals['value'] = publishers or ''
         out = edit_book_param('publishers', vals, True)
         if out[0].get('success') != True:
             res.extend(out)
