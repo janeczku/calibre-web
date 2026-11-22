@@ -439,7 +439,27 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
                 os.rename(old_author_path, new_author_path)
             except OSError:
                 try:
-                    shutil.move(old_author_path, new_author_path)
+                    if os.path.exists(new_author_path) and os.path.samefile(old_author_path, new_author_path):
+                        temporary_path = old_author_path + "." + str(uuid4())
+                        os.rename(old_author_path, temporary_path)
+                        try:
+                            os.rename(temporary_path, new_author_path)
+                        except OSError:
+                            os.rename(temporary_path, old_author_path)
+                            raise
+                    elif os.path.isdir(new_author_path):
+                        # shutil.move would nest the old author folder inside the destination.
+                        for source_dir, _, files in os.walk(old_author_path, topdown=False):
+                            destination_dir = os.path.join(
+                                new_author_path, os.path.relpath(source_dir, old_author_path)
+                            )
+                            os.makedirs(destination_dir, exist_ok=True)
+                            for filename in files:
+                                shutil.move(os.path.join(source_dir, filename),
+                                            os.path.join(destination_dir, filename))
+                            os.rmdir(source_dir)
+                    else:
+                        shutil.move(old_author_path, new_author_path)
                 except OSError as ex:
                     log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
                     log.error_or_exception(ex)

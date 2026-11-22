@@ -250,7 +250,7 @@ def HandleSyncRequest():
 
     max_change = changed_entries.filter(ub.ArchivedBook.is_archived)\
         .filter(ub.ArchivedBook.user_id == current_user.id) \
-        .order_by(func.datetime(ub.ArchivedBook.last_modified).desc()).first()
+        .order_by(ub.ArchivedBook.last_modified.desc()).first()
 
     max_change = max_change.last_modified if max_change else new_archived_last_modified
 
@@ -272,7 +272,7 @@ def HandleSyncRequest():
             .filter(ub.Shelf.kobo_sync,
                     or_(
                         ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified,
-                        func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified
+                        ub.BookShelf.date_added > sync_token.books_last_modified
                     )).distinct()
     else:
         changed_reading_states = changed_reading_states.filter(
@@ -339,7 +339,7 @@ def HandleMetadataRequest(book_uuid):
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
     log.info("Kobo library metadata request received for book %s" % book_uuid)
-    book = calibre_db.get_book_by_uuid(book_uuid)
+    book = calibre_db.get_book_by_uuid(book_uuid, allow_show_archived=True)
     if not book or not book.data:
         log.info("Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
@@ -579,7 +579,7 @@ def add_items_to_shelf(items, shelf):
                 items_unknown_to_calibre.append(item)
                 continue
 
-            book = calibre_db.get_book_by_uuid(item["RevisionId"])
+            book = calibre_db.get_book_by_uuid(item["RevisionId"], allow_show_archived=True)
             if not book:
                 items_unknown_to_calibre.append(item)
                 continue
@@ -651,7 +651,7 @@ def HandleTagRemoveItem(tag_id):
                 items_unknown_to_calibre.append(item)
                 continue
 
-            book = calibre_db.get_book_by_uuid(item["RevisionId"])
+            book = calibre_db.get_book_by_uuid(item["RevisionId"], allow_show_archived=True)
             if not book:
                 items_unknown_to_calibre.append(item)
                 continue
@@ -688,10 +688,12 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
     extra_filters = []
     if only_kobo_shelves:
         for shelf in ub.session.query(ub.Shelf).filter(
-            func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
+            ub.Shelf.last_modified > sync_token.tags_last_modified,
+            ub.Shelf.created <= sync_token.tags_last_modified,
             ub.Shelf.user_id == current_user.id,
-            not ub.Shelf.kobo_sync
+            ub.Shelf.kobo_sync == False
         ):
+            new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
             sync_results.append({
                 "DeletedTag": {
                     "Tag": {
@@ -703,21 +705,23 @@ def sync_shelves(sync_token, sync_results, only_kobo_shelves=False):
         extra_filters.append(ub.Shelf.kobo_sync)
 
     shelflist = ub.session.query(ub.Shelf).outerjoin(ub.BookShelf).filter(
-        or_(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
-            func.datetime(ub.BookShelf.date_added) > sync_token.tags_last_modified),
+        or_(ub.Shelf.last_modified > sync_token.tags_last_modified,
+            ub.BookShelf.date_added > sync_token.tags_last_modified),
         ub.Shelf.user_id == current_user.id,
         *extra_filters
-    ).distinct().order_by(func.datetime(ub.Shelf.last_modified).asc())
+    ).distinct().order_by(ub.Shelf.last_modified.asc())
 
     for shelf in shelflist:
         if not shelf_lib.check_shelf_view_permissions(shelf):
             continue
 
-        new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
-
         tag = create_kobo_tag(shelf)
         if not tag:
             continue
+        new_tags_last_modified = max(
+            new_tags_last_modified, shelf.last_modified,
+            max((item.date_added for item in shelf.books), default=shelf.last_modified)
+        )
 
         if shelf.created > sync_token.tags_last_modified:
             sync_results.append({
@@ -759,7 +763,7 @@ def create_kobo_tag(shelf):
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
 @requires_kobo_auth
 def HandleStateRequest(book_uuid):
-    book = calibre_db.get_book_by_uuid(book_uuid)
+    book = calibre_db.get_book_by_uuid(book_uuid, allow_show_archived=True)
     if not book or not book.data:
         log.info("Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
@@ -954,7 +958,7 @@ def TopLevelEndpoint():
 @requires_kobo_auth
 def HandleBookDeletionRequest(book_uuid):
     log.info("Kobo book delete request received for book %s" % book_uuid)
-    book = calibre_db.get_book_by_uuid(book_uuid)
+    book = calibre_db.get_book_by_uuid(book_uuid, allow_show_archived=True)
     if not book:
         log.info("Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()

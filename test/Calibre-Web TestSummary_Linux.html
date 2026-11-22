@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2026-08-10T16:13:52.000001</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2026-11-22T10:22:02.000001</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-08-10T18:05:55.000001</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2026-11-22T20:47:46.000001</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>6h 4 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>6h 10 min</p>
         </div>
       </div>
       </div>
@@ -1721,11 +1721,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditAdditionalBooks</td>
         <td class="text-center">18</td>
-        <td class="text-center">18</td>
-        <td class="text-center">0</td>
+        <td class="text-center">14</td>
+        <td class="text-center">4</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1780,38 +1780,124 @@
     
     
     
-        <tr id='pt16.6' class='hiddenRow bg-success'>
+        <tr id="ft16.6" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 413, in test_edit_book_identifier
+    self.assertEqual(reference_length + 1, len(result[&#39;identifier&#39;]))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt16.7' class='hiddenRow bg-success'>
+        <tr id="ft16.7" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_capital</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 528, in test_edit_book_identifier_capital
+    self.assertEqual(reference_length + 1, len(result[&#39;identifier&#39;]))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt16.8' class='hiddenRow bg-success'>
+        <tr id="ft16.8" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_book_identifier_standard</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 567, in test_edit_book_identifier_standard
+    self.check_identifier(result, &#39;url&#39;, &#39;&#39;, &#39;987654&#39;, True)
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 47, in check_identifier
+    self.assertTrue(len(identifier))
+AssertionError: 0 is not true
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt16.9' class='hiddenRow bg-success'>
+        <tr id="ft16.9" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestEditAdditionalBooks - test_edit_special_book_identifier</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft16.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft16.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_additional_books.py&#34;, line 493, in test_edit_special_book_identifier
+    self.assertEqual(reference_length + 1, len(result[&#39;identifier&#39;]))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1900,13 +1986,13 @@
 
     <tr id="su" class="passClass">
         <td>TestEditAuthors</td>
-        <td class="text-center">10</td>
-        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">11</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 10)">Detail</a>
+            <a onclick="showClassDetail('c17', 11)">Detail</a>
         </td>
     </tr>
 
@@ -1977,7 +2063,7 @@
     
         <tr id='pt17.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthors - test_rename_capital_on_upload</div>
+                <div class='testcase'>TestEditAuthors - test_rename_author_with_null_author_sort</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1986,7 +2072,7 @@
     
         <tr id='pt17.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestEditAuthors - test_rename_tag_emphasis_mark_onupload</div>
+                <div class='testcase'>TestEditAuthors - test_rename_capital_on_upload</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1994,6 +2080,15 @@
     
     
         <tr id='pt17.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestEditAuthors - test_rename_tag_emphasis_mark_onupload</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestEditAuthors - test_xss_author_edit</div>
             </td>
@@ -2081,11 +2176,11 @@
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestEditAuthorsSmb</td>
         <td class="text-center">9</td>
-        <td class="text-center">9</td>
-        <td class="text-center">0</td>
+        <td class="text-center">8</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -2131,11 +2226,32 @@
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id="ft19.5" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestEditAuthorsSmb - test_change_capital_rename_co_author</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft19.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft19.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_author_smb.py&#34;, line 259, in test_change_capital_rename_co_author
+    self.assertEqual(200, ret_code)
+AssertionError: 200 != 404
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2755,12 +2871,12 @@
     
 
 
-    <tr id="su" class="failClass">
+    <tr id="su" class="errorClass">
         <td>TestEditBooksOnGdrive</td>
         <td class="text-center">20</td>
-        <td class="text-center">19</td>
+        <td class="text-center">18</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c22', 20)">Detail</a>
@@ -2868,11 +2984,33 @@
     
     
     
-        <tr id='pt22.12' class='hiddenRow bg-success'>
+        <tr id="et22.12" class="hiddenRow bg-info">
             <td>
                 <div class='testcase'>TestEditBooksOnGdrive - test_edit_language</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et22.12')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et22.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et22.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 535, in test_edit_language
+    self.assertEqual(len(values[&#39;languages&#39;]), 1)
+                         ~~~~~~^^^^^^^^^^^^^
+KeyError: &#39;languages&#39;
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -2959,7 +3097,7 @@
                         <pre class="text-left">Traceback (most recent call last):
   File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_ebooks_gdrive.py&#34;, line 911, in test_watch_metadata
     self.assertNotIn(&#39;series&#39;, book)
-AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1786369888&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}
+AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;reader&#39;: [], &#39;title&#39;: &#39;testbook&#39;, &#39;author&#39;: [&#39;John Döe&#39;], &#39;rating&#39;: 0, &#39;languages&#39;: [&#39;English&#39;], &#39;identifier&#39;: [], &#39;cover&#39;: &#39;/cover/5/og?c=1795341536&#39;, &#39;tag&#39;: [], &#39;publisher&#39;: [&#39;Randomhäus&#39;], &#39;pubdate&#39;: &#39;Jan 19, 2017&#39;, &#39;comment&#39;: &#39;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.Aenean commodo ligula eget dolor.Aenean massa.Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.Nulla consequat massa quis enim.Donec pede justo, fringilla vel, aliquet nec, vulputate&#39;, &#39;add_shelf&#39;: [], &#39;del_shelf&#39;: [], &#39;edit_enable&#39;: True, &#39;kindle&#39;: None, &#39;kindlebtn&#39;: None, &#39;download&#39;: [&#39;EPUB\n                                            (6.7 kB)&#39;], &#39;read&#39;: False, &#39;archived&#39;: False, &#39;series_all&#39;: &#39;Book 1 of test&#39;, &#39;series_index&#39;: &#39;1&#39;, &#39;series&#39;: &#39;test&#39;, &#39;cust_columns&#39;: []}
 </pre>
                     </div>
                     <div class="clearfix"></div>
@@ -3225,12 +3363,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestKoboSync</td>
         <td class="text-center">12</td>
-        <td class="text-center">12</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">4</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c28', 12)">Detail</a>
@@ -3275,29 +3413,93 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt28.5' class='hiddenRow bg-success'>
+        <tr id="et28.5" class="hiddenRow bg-info">
             <td>
                 <div class='testcase'>TestKoboSync - test_kobo_sync_selected_shelfs</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et28.5" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et28.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 633, in test_kobo_sync_selected_shelfs
+    self.assertIn(&#34;NewTag&#34;, data3[1])
+                            ~~~~~^^^
+IndexError: list index out of range
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt28.6' class='hiddenRow bg-success'>
+        <tr id="ft28.6" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_shelves_add_remove_books</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft28.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft28.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft28.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 485, in test_shelves_add_remove_books
+    self.assertEqual(1, len(books))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt28.7' class='hiddenRow bg-success'>
+        <tr id="ft28.7" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_changed_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft28.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft28.7" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft28.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 285, in test_sync_changed_book
+    self.assertEqual(1, len(data))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3311,20 +3513,63 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt28.9' class='hiddenRow bg-success'>
+        <tr id="et28.9" class="hiddenRow bg-info">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_reading_state</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et28.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et28.9" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et28.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 532, in test_sync_reading_state
+    self.assertEqual(&#39;8f1b72c1-e9a4-4212-b538-8e4f4837d201&#39;, data[0][&#39;EntitlementId&#39;])
+                                                             ~~~~^^^
+KeyError: 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt28.10' class='hiddenRow bg-success'>
+        <tr id="ft28.10" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft28.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft28.10" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft28.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 306, in test_sync_shelf
+    self.assertEqual(1, len(data))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3338,21 +3583,42 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt28.12' class='hiddenRow bg-success'>
+        <tr id="ft28.12" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestKoboSync - test_sync_upload</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft28.12')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft28.12" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft28.12').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync.py&#34;, line 270, in test_sync_upload
+    self.assertEqual(1, len(data))
+AssertionError: 1 != 0
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestKoboSyncBig</td>
         <td class="text-center">6</td>
-        <td class="text-center">6</td>
-        <td class="text-center">0</td>
+        <td class="text-center">5</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3407,11 +3673,32 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt29.6' class='hiddenRow bg-success'>
+        <tr id="ft29.6" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestKoboSyncBig - test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft29.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft29.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft29.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_kobo_sync_big.py&#34;, line 220, in test_sync_shelf
+    self.assertEqual(len(data[0][0][&#39;ChangedTag&#39;][&#39;Tag&#39;][&#39;Items&#39;]), 105)
+AssertionError: 104 != 105
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3419,13 +3706,13 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     <tr id="su" class="passClass">
         <td>TestLdapLogin</td>
-        <td class="text-center">13</td>
-        <td class="text-center">13</td>
+        <td class="text-center">14</td>
+        <td class="text-center">14</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c30', 13)">Detail</a>
+            <a onclick="showClassDetail('c30', 14)">Detail</a>
         </td>
     </tr>
 
@@ -3547,13 +3834,22 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
         </tr>
     
     
+    
+        <tr id='pt30.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_opds_rejects_empty_password_with_unauthenticated_bind</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadata</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3563,21 +3859,42 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     
     
-        <tr id='pt31.1' class='hiddenRow bg-success'>
+        <tr id="ft31.1" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadata - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft31.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft31.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft31.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_books_metadata.py&#34;, line 52, in test_load_metadata
+    self.assertTrue(len(results) &gt; 0, &#34;Error, No results for metadata query&#34;)
+AssertionError: False is not true : Error, No results for metadata query
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestLoadMetadataScholar</td>
         <td class="text-center">1</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -3587,11 +3904,32 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     
     
-        <tr id='pt32.1' class='hiddenRow bg-success'>
+        <tr id="ft32.1" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestLoadMetadataScholar - test_load_metadata</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft32.1')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft32.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft32.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_edit_metadata_scholar.py&#34;, line 48, in test_load_metadata
+    self.assertTrue(google_scholar)
+AssertionError: False is not true
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -3916,13 +4254,13 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     <tr id="su" class="passClass">
         <td>TestMassEditBooksList</td>
-        <td class="text-center">11</td>
-        <td class="text-center">11</td>
+        <td class="text-center">12</td>
+        <td class="text-center">12</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c35', 11)">Detail</a>
+            <a onclick="showClassDetail('c35', 12)">Detail</a>
         </td>
     </tr>
 
@@ -4002,7 +4340,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt35.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestMassEditBooksList - test_protected_author_title</div>
+                <div class='testcase'>TestMassEditBooksList - test_mass_remove_metadata</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4011,7 +4349,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt35.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_multi</div>
+                <div class='testcase'>TestMassEditBooksList - test_protected_author_title</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4019,6 +4357,15 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
         <tr id='pt35.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_multi</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt35.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestMassEditBooksList - test_wrong_parameter_single</div>
             </td>
@@ -4096,13 +4443,13 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     <tr id="su" class="passClass">
         <td>TestOPDSFeed</td>
-        <td class="text-center">26</td>
-        <td class="text-center">26</td>
+        <td class="text-center">27</td>
+        <td class="text-center">27</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c38', 26)">Detail</a>
+            <a onclick="showClassDetail('c38', 27)">Detail</a>
         </td>
     </tr>
 
@@ -4164,7 +4511,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.7' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_calibre_companion_restricted</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4173,7 +4520,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_colon_password</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4182,7 +4529,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_cover</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4191,7 +4538,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_download_book</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4200,7 +4547,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_formats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4209,7 +4556,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.12' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_guest_user</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4218,7 +4565,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.13' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_language</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_hot</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4227,7 +4574,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.14' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_language</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4236,7 +4583,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.15' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_non_admin</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4245,7 +4592,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.16' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_random</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_publisher</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4254,7 +4601,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.17' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_random</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4263,7 +4610,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.18' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_ratings</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4272,7 +4619,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.19' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_search</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_read_unread</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4281,7 +4628,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.20' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_series</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_search</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4290,7 +4637,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.21' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_series</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4299,7 +4646,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.22' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_shelf_access</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4308,7 +4655,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.23' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_stats</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4317,7 +4664,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.24' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_tags</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4326,7 +4673,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt38.25' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+                <div class='testcase'>TestOPDSFeed - test_opds_top_rated</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4334,6 +4681,15 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
         <tr id='pt38.26' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestOPDSFeed - test_opds_unicode_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt38.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestOPDSFeed - test_recently_added</div>
             </td>
@@ -4594,13 +4950,13 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     <tr id="su" class="passClass">
         <td>TestReverseProxy</td>
-        <td class="text-center">12</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c43', 12)">Detail</a>
+            <a onclick="showClassDetail('c43', 13)">Detail</a>
         </td>
     </tr>
 
@@ -4671,7 +5027,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt43.8' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReverseProxy - test_proxy_auth_05_shared_secret_enabled_missing_secret_denied</div>
+                <div class='testcase'>TestReverseProxy - test_proxy_auth_04a_ipv6_trusted_proxy_without_shared_secret_allows_login</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4680,7 +5036,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt43.9' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReverseProxy - test_proxy_auth_06_shared_secret_enabled_wrong_secret_denied</div>
+                <div class='testcase'>TestReverseProxy - test_proxy_auth_05_shared_secret_enabled_missing_secret_denied</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4689,7 +5045,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt43.10' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReverseProxy - test_proxy_auth_07_shared_secret_enabled_correct_secret_allows_login</div>
+                <div class='testcase'>TestReverseProxy - test_proxy_auth_06_shared_secret_enabled_wrong_secret_denied</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4698,7 +5054,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
         <tr id='pt43.11' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>TestReverseProxy - test_proxy_auth_08_direct_access_with_secret_still_denied</div>
+                <div class='testcase'>TestReverseProxy - test_proxy_auth_07_shared_secret_enabled_correct_secret_allows_login</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -4706,6 +5062,15 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
         <tr id='pt43.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestReverseProxy - test_proxy_auth_08_direct_access_with_secret_still_denied</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt43.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>TestReverseProxy - test_reverse_about</div>
             </td>
@@ -5113,12 +5478,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="errorClass">
         <td>TestSocket</td>
         <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c49', 1)">Detail</a>
@@ -5127,11 +5492,43 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 
     
     
-        <tr id='pt49.1' class='hiddenRow bg-success'>
+        <tr id="et49.1" class="hiddenRow bg-info">
             <td>
                 <div class='testcase'>TestSocket - test_socket_communication</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et49.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_et49.1" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_et49.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_socket.py&#34;, line 64, in test_socket_communication
+    server = SocketForwardServer(&#39;localhost&#39;, int(self.port), socket_file)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &#34;/home/ozzie/Development/calibre-web-test/test/helper_port_forward.py&#34;, line 36, in __init__
+    self.server.bind((host, port))
+OSError: [Errno 98] Address already in use
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_socket.py&#34;, line 89, in test_socket_communication
+    server.stop_server()
+    ^^^^^^
+UnboundLocalError: cannot access local variable &#39;server&#39; where it is not associated with a value
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5282,11 +5679,11 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestThumbnails</td>
         <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -5359,11 +5756,32 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt52.8' class='hiddenRow bg-success'>
+        <tr id="ft52.8" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestThumbnails - test_sideloaded_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft52.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft52.8" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft52.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_thumbnails.py&#34;, line 306, in test_sideloaded_book
+    self.assertAlmostEqual(diff(BytesIO(list_cover), BytesIO(old_list_cover), delete_diff_file=True), 0.0,
+AssertionError: 0.010586597444336284 != 0.0 within 0.0001 delta (0.010586597444336284 difference)
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -5629,11 +6047,11 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
 
 
-    <tr id="su" class="passClass">
+    <tr id="su" class="failClass">
         <td>TestUploadEPubs</td>
         <td class="text-center">7</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
+        <td class="text-center">6</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -5688,11 +6106,39 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
     
-        <tr id='pt56.6' class='hiddenRow bg-success'>
+        <tr id="ft56.6" class="hiddenRow bg-danger">
             <td>
                 <div class='testcase'>TestUploadEPubs - test_upload_epub_identifier</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft56.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id="div_ft56.6" class="popup_window test_output" style="display:block;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus="this.blur();"
+                                onclick="document.getElementById('div_ft56.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File &#34;/home/ozzie/Development/calibre-web-test/test/test_upload_epubs.py&#34;, line 268, in test_upload_epub_identifier
+    self.assertListEqual([{&#34;bookid&#34;: &#34;test&#34;}], ci[&#39;identifier&#39;])
+AssertionError: Lists differ: [{&#39;bookid&#39;: &#39;test&#39;}] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+{&#39;bookid&#39;: &#39;test&#39;}
+
+- [{&#39;bookid&#39;: &#39;test&#39;}]
++ []
+</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -6144,12 +6590,60 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
     
     
 
+
+    <tr id="su" class="passClass">
+        <td>TestZZDebug</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c61', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt61.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestZZDebug - test_c</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr id="su" class="passClass">
+        <td>TestZZPwTheme</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c62', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt62.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestZZPwTheme - test_caliblur_password_rules</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>554</td>
-        <td>542</td>
-        <td>1</td>
-        <td>0</td>
+        <td>561</td>
+        <td>531</td>
+        <td>15</td>
+        <td>4</td>
         <td>11</td>
         <td>&nbsp;</td>
     </tr>
@@ -6184,13 +6678,31 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
           
             <tr>
               <th>Python</th>
-              <td>3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]</td>
+              <td>3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]</td>
               <td></td>
+            </tr>
+          
+            <tr>
+              <th>Wand</th>
+              <td>0.7.2</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>pypdf</th>
+              <td>6.21.4</td>
+              <td>Basic</td>
             </tr>
           
             <tr>
               <th>httplib2</th>
               <td>0.22.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-HTTPAuth</th>
+              <td>4.8.1</td>
               <td>Basic</td>
             </tr>
           
@@ -6203,6 +6715,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
             <tr>
               <th>SQLAlchemy</th>
               <td>2.0.49</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>APScheduler</th>
+              <td>3.11.3</td>
               <td>Basic</td>
             </tr>
           
@@ -6237,6 +6755,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
             </tr>
           
             <tr>
+              <th>Flask-Limiter</th>
+              <td>4.1.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>Flask-Themes2</th>
               <td>1.0.1</td>
               <td>Basic</td>
@@ -6267,6 +6791,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
             </tr>
           
             <tr>
+              <th>netifaces-plus</th>
+              <td>0.12.5</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>google-api-python-client</th>
               <td>2.175.0</td>
               <td>Basic</td>
@@ -6281,6 +6811,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
             <tr>
               <th>iso-639</th>
               <td>0.4.5</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>pycountry</th>
+              <td>26.2.16</td>
               <td>Basic</td>
             </tr>
           
@@ -6321,6 +6857,18 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
             </tr>
           
             <tr>
+              <th>Flask-WTF</th>
+              <td>1.3.0</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>python-magic</th>
+              <td>0.4.27</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>beautifulsoup4</th>
               <td>4.14.3</td>
               <td>Basic</td>
@@ -6356,6 +6904,12 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
               <td>Basic</td>
             </tr>
           
+            <tr>
+              <th>nh3</th>
+              <td>0.3.8</td>
+              <td>Basic</td>
+            </tr>
+          
           </tbody>
         </table>
       </div>
@@ -6364,7 +6918,7 @@ AssertionError: &#39;series&#39; unexpectedly found in {&#39;id&#39;: 5, &#39;re
 </div>
 
 <script>
-    drawCircle(542, 1, 0, 11);
+    drawCircle(531, 15, 4, 11);
     showCase(5);
 </script>
 
