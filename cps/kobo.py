@@ -144,12 +144,19 @@ def HandleSyncRequest():
     if not current_user.role_download():
         log.info("Users need download permissions for syncing library to Kobo reader")
         return abort(403)
+
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received")
     log.debug("SyncToken: {}".format(sync_token))
     log.debug("Download link format {}".format(get_download_url_for_book('[bookid]', '[bookformat]')))
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to external server port')
+
+    # Produce an equivalent curl command to assist with debugging
+    #curl = f"curl -X{request.method} '{request.url}'"
+    #for key, value in request.headers.items():
+    #    curl += f" -H'{key}: {value}'"
+    #log.debug(f"curl: {curl}")
 
     # if no books synced don't respect sync_token
     if not ub.session.query(ub.KoboSyncedBooks).filter(ub.KoboSyncedBooks.user_id == current_user.id).count():
@@ -170,6 +177,8 @@ def HandleSyncRequest():
 
     only_kobo_shelves = current_user.kobo_only_shelves_sync
 
+    log.debug("Kobo Sync: books last modified: {}".format(sync_token.books_last_modified))
+
     if only_kobo_shelves:
         changed_entries = calibre_db.session.query(db.Books,
                                                    ub.ArchivedBook.last_modified,
@@ -180,11 +189,14 @@ def HandleSyncRequest():
                                                                           ub.ArchivedBook.user_id == current_user.id))
                            .filter(db.Books.id.notin_(calibre_db.session.query(ub.KoboSyncedBooks.book_id)
                                                       .filter(ub.KoboSyncedBooks.user_id == current_user.id)))
-                           .filter(ub.BookShelf.date_added > sync_token.books_last_modified)
+                           .filter(or_(
+                                ub.BookShelf.date_added > sync_token.books_last_modified,
+                                db.Books.last_modified > sync_token.books_last_modified,
+                           ))
                            .filter(db.Data.format.in_(KOBO_FORMATS))
                            .filter(calibre_db.common_filters(allow_show_archived=True))
+                           .order_by(db.Books.last_modified)
                            .order_by(db.Books.id)
-                           .order_by(ub.ArchivedBook.last_modified)
                            .join(ub.BookShelf, db.Books.id == ub.BookShelf.book_id)
                            .join(ub.Shelf)
                            .filter(ub.Shelf.user_id == current_user.id)
@@ -203,10 +215,11 @@ def HandleSyncRequest():
                            .filter(db.Data.format.in_(KOBO_FORMATS))
                            .order_by(db.Books.last_modified)
                            .order_by(db.Books.id))
+    log.debug("Kobo Sync: changed entries: {}".format(changed_entries.count()))
 
     reading_states_in_new_entitlements = []
     books = changed_entries.limit(SYNC_ITEM_LIMIT)
-    log.debug("Books to Sync: {}".format(len(books.all())))
+    log.debug("Kobo Sync: selected to sync: {}".format(len(books.all())))
     for book in books:
         formats = [data.format for data in book.Books.data]
         if 'KEPUB' not in formats and config.config_kepubifypath and 'EPUB' in formats:
@@ -238,12 +251,6 @@ def HandleSyncRequest():
         new_books_last_modified = max(
             book.Books.last_modified.replace(tzinfo=None), new_books_last_modified
         )
-        try:
-            new_books_last_modified = max(
-                new_books_last_modified, book.date_added
-            )
-        except AttributeError:
-            pass
 
         new_books_last_created = max(ts_created, new_books_last_created)
         kobo_sync_status.add_synced_books(book.Books.id)
@@ -260,20 +267,19 @@ def HandleSyncRequest():
     book_count = changed_entries.count()
     # last entry:
     cont_sync = bool(book_count)
-    log.debug("Remaining books to Sync: {}".format(book_count))
+    log.debug("Kobo Sync: remaining books to sync: {}".format(book_count))
     # generate reading state data
     changed_reading_states = ub.session.query(ub.KoboReadingState)
 
+    log.debug("Kobo Sync: rstate last modified: {}".format(sync_token.reading_state_last_modified))
     if only_kobo_shelves:
         changed_reading_states = changed_reading_states.join(ub.BookShelf,
                                                              ub.KoboReadingState.book_id == ub.BookShelf.book_id)\
             .join(ub.Shelf)\
             .filter(current_user.id == ub.Shelf.user_id)\
             .filter(ub.Shelf.kobo_sync,
-                    or_(
-                        ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified,
-                        func.datetime(ub.BookShelf.date_added) > sync_token.books_last_modified
-                    )).distinct()
+                    ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified)\
+            .distinct()
     else:
         changed_reading_states = changed_reading_states.filter(
             ub.KoboReadingState.last_modified > sync_token.reading_state_last_modified)
@@ -282,6 +288,7 @@ def HandleSyncRequest():
         and_(ub.KoboReadingState.user_id == current_user.id,
              ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements)))\
         .order_by(ub.KoboReadingState.last_modified)
+    log.debug("Kobo Sync: changed states: {}".format(changed_reading_states.count()))
     cont_sync |= bool(changed_reading_states.count() > SYNC_ITEM_LIMIT)
     for kobo_reading_state in changed_reading_states.limit(SYNC_ITEM_LIMIT).all():
         book = calibre_db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
