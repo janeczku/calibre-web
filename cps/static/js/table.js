@@ -228,7 +228,14 @@ $(function() {
         }
     });
 
+    $(".remove-metadata").change(function() {
+        $("#" + $(this).data("field") + "_input").prop("disabled", this.checked);
+    });
+
     $("#edit_selected_confirm").click(function(event) {
+        let removeFields = $(".remove-metadata:checked").map(function() {
+            return $(this).data("field");
+        }).get();
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",
@@ -240,10 +247,11 @@ $(function() {
                 "title_sort": $("#title_sort_input").val(),
                 "author_sort": $("#author_sort_input").val(),
                 "authors": $("#authors_input").val(),
-                "categories": $("#categories_input").val(),
-                "series": $("#series_input").val(),
-                "languages": $("#languages_input").val(),
-                "publishers": $("#publishers_input").val(),
+                "categories": removeFields.includes("categories") ? "" : $("#categories_input").val(),
+                "series": removeFields.includes("series") ? "" : $("#series_input").val(),
+                "languages": removeFields.includes("languages") ? "" : $("#languages_input").val(),
+                "publishers": removeFields.includes("publishers") ? "" : $("#publishers_input").val(),
+                "remove_fields": removeFields,
                 "comments": $("#comments_input").val().toString(),
                 "checkA": $('#autoupdate_authorsort').prop('checked'),
                 "checkT": $('#autoupdate_titlesort').prop('checked')
@@ -262,6 +270,7 @@ $(function() {
                 $("#languages_input").val("");
                 $("#publishers_input").val("");
                 $("#comments_input").val("");
+                $(".remove-metadata").prop("checked", false).trigger("change");
 
                 $("#flash_success").remove();
                 $("#flash_danger").remove();
@@ -280,6 +289,9 @@ $(function() {
                 }
                 $(".table.table-striped").bootstrapTable("refresh");
                 // handleListServerResponse(data);
+            },
+            error: function(data) {
+                handleListServerResponse([{type: "danger", message: data.responseText}]);
             }
         });
     });

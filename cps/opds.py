@@ -448,7 +448,7 @@ def opds_download_link(book_id, book_format):
 @opds.route("/ajax/book/<string:uuid>", defaults={'library': ""})
 @requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid, library):
-    entry = calibre_db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
+    entry = calibre_db.get_book_by_uuid(uuid)
     if entry is not None:
         js = render_template('json.txt', entry=entry)
         response = make_response(js)

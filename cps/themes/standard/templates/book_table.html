@@ -277,6 +277,7 @@
       </div>
       <div class="modal-body">
         <div class="text-left">{{_('Edit the fields you want changed. Blank fields will be ignored:')}}</div>
+        <div class="text-left">{{_('Remove clears all values from the selected books.')}}</div>
             <br>
             Title:
             <input class="form-control" id="title_input">
@@ -296,18 +297,22 @@
 
             Categories:
             <input class="form-control" id="categories_input">
+            <label><input type="checkbox" class="remove-metadata" id="categories_remove" data-field="categories"> {{_('Remove from selected books')}}</label>
             <p></p>
 
             Series:
             <input class="form-control" id="series_input">
+            <label><input type="checkbox" class="remove-metadata" id="series_remove" data-field="series"> {{_('Remove from selected books')}}</label>
             <p></p>
 
             Languages:
             <input class="form-control" id="languages_input">
+            <label><input type="checkbox" class="remove-metadata" id="languages_remove" data-field="languages"> {{_('Remove from selected books')}}</label>
             <p></p>
 
             Publishers:
             <input class="form-control" id="publishers_input">
+            <label><input type="checkbox" class="remove-metadata" id="publishers_remove" data-field="publishers"> {{_('Remove from selected books')}}</label>
             <p></p>
 
             Comments:
