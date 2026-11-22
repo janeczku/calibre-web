@@ -1262,7 +1262,7 @@ def download_link(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def send_to_ereader(book_id, book_format, convert):
-    book = calibre_db.get_book(book_id)
+    book = calibre_db.get_filtered_book(book_id)
     allowed_formats = check_send_to_ereader(book) if book else []
     is_allowed = any(
         option.get('format', '').lower() == book_format.lower() and int(option.get('convert', -1)) == convert

@@ -12,7 +12,7 @@
                 {% if entry['visible'] %}
                   <img title="{{entry['Books']['title']}}" class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['Books']['id']) }}">
                 {% else %}
-                  <img title="{{entry['Books']['title']}}" class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
+                  <img class="cover-height" src="{{ url_for('static', filename='generic_cover.jpg') }}">
                 {% endif %}
               </div>
               <div class="col-lg-10 col-sm-8 col-xs-12">
