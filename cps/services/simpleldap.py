@@ -158,6 +158,9 @@ def bind_user(username, password):
 
     :returns: True if login succeeded, False if login failed, None if server unavailable.
     '''
+    # An empty password can produce a successful unauthenticated LDAP bind.
+    if not password:
+        return False, None
     # Escape LDAP special characters to prevent LDAP injection in search filters
     safe_username = _escape_ldap_filter(username)
     try:
