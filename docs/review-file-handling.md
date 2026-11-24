@@ -1,15 +1,15 @@
 # Dosya işleme ve harici süreç incelemesi (4. kişi — Hasan Kurt)
 
 İncelenen commit: `6e840acbda8d62fdd159bf3855c01872d629a914` (`docs/baseline-commit.txt`)
-Tarih: 28 Ekim 2026
-Yöntem: kod okuma; uygulama çalıştırılmadı (K2). İki noktada uygulama dışı, yalıtılmış kütüphane davranışı doğrulandı: `nh3.clean()` (A7) ve standart kütüphane `urllib.request.urlopen()` (E4). Bu çağrılar Calibre-Web kodunu çalıştırmaz, yalnızca kodun dayandığı kütüphanenin davranışını gösterir.
+Tarih: 28 Ekim 2026 (E5 eki: 31 Ekim 2026)
+Yöntem: kod okuma; uygulama çalıştırılmadı (K2). İki noktada uygulama dışı, yalıtılmış kütüphane davranışı doğrulandı: `nh3.clean()` (A7) ve standart kütüphane `urllib.request.urlopen()` (E3). Bu çağrılar Calibre-Web kodunu çalıştırmaz, yalnızca kodun dayandığı kütüphanenin davranışını gösterir.
 Rehber: `docs/guides/rol-4-dosya-surec.md`. Satır numaraları baseline commit'e aittir.
 
 ## Özet
 
-- İncelenen kontrol noktası: 22 (A 7, B 5, C 3, D 4, E 3) ve 1 bağlam notu (E5, B113)
-- Gerçek sorun: 3 · Düşük öncelikli: 7 · Sorun yok: 12
-- Kayda eklenen bulgular: FIND-150 … FIND-158 (`kaynak = Manuel`)
+- İncelenen kontrol noktası: 23 (A 7, B 5, C 3, D 4, E 4) ve 1 bağlam notu (E4, B113)
+- Gerçek sorun: 3 · Düşük öncelikli: 8 · Sorun yok: 12
+- Kayda eklenen bulgular: FIND-150 … FIND-159 (`kaynak = Manuel`)
 
 | ID | Konum | Konu | Sonuç | Ekip önemi |
 | --- | --- | --- | --- | --- |
@@ -22,6 +22,7 @@ Rehber: `docs/guides/rol-4-dosya-surec.md`. Satır numaraları baseline commit'e
 | FIND-156 | `cps/clean_html.py:44-46` | Yorum HTML'inde `style` ve dış `img src` serbest | Düşük öncelikli | Düşük |
 | FIND-157 | `cps/updater.py:82-91` | Güncelleme paketi için imza/özet doğrulaması yok | Düşük öncelikli | Düşük |
 | FIND-158 | `cps/subproc_wrapper.py:28-32` | Windows'ta çalıştırılabilir dosya yolu (0. eleman) tırnaklanmıyor | Düşük öncelikli | Düşük |
+| FIND-159 | `cps/gdrive.py:48, 121-156` | Drive bildirim geri çağrısı sabit, gizli olmayan bir başlıkla korunuyor; MD5 karşılaştırması dosya yerine yolu özetliyor | Düşük öncelikli | Düşük |
 
 ## A. Yükleme
 
@@ -107,7 +108,7 @@ Akış: `POST /upload` (`cps/editbooks.py:105`) → `file_handling_on_upload()` 
 ### A7. Yorum alanının HTML temizliği (FIND-002…005 ile ilişkili)
 - **Konum:** `cps/clean_html.py:40-46, 53-66`. Çağıran `editbooks.py:1281-1285` (`edit_book_comments`). Çıktıda şablonlar ayrıca `|clean_string|safe` uyguluyor (`themes/standard/templates/detail.html:290`).
 - **Kontrol:** `review-bandit.md` tarafından bırakılan soru: nh3'ün izin verdiği etiketler ve öznitelikler yeterli mi?
-- **Gözlem:** İzin listesi nh3 varsayılanlarına `p, span, div, pre, br, h1-h6, img` etiketlerini, tüm etiketler için `class, style` özniteliklerini, `a` için `href, title, rel` ve `img` için `src, alt, title, width, height` özniteliklerini ekliyor. Aynı ayarlarla `nh3 0.3.7` üzerinde yalıtılmış deneme yapıldı:
+- **Gözlem:** İzin listesi nh3 varsayılanlarına `p, span, div, pre, br, h1-h6, img` etiketlerini, tüm etiketler için `class, style` özniteliklerini, `a` için `href, title, rel` ve `img` için `src, alt, title, width, height` özniteliklerini ekliyor. Aynı ayarlarla `nh3 0.3.7` üzerinde yalıtılmış deneme ile doğrulandı (K9):
 
   | Girdi | Çıktı |
   | --- | --- |
@@ -307,12 +308,45 @@ Akış: `POST /upload` (`cps/editbooks.py:105`) → `file_handling_on_upload()` 
   stream = urlopen(web_content_link)                               # thumbnail.py:386
   ```
   - Kitap küçük resmi (`thumbnail.py:187`) aynı fonksiyonun dönüşünü doğru biçimde içerik olarak kullanıyor. Seri küçük resmi ise onu URL sanıp `urlopen()`'a veriyor.
-  - Standart kütüphanede yalıtılmış deneme: `urllib.request.urlopen(b'...')` → `AttributeError: 'bytes' object has no attribute 'timeout'`.
+  - Yalıtılmış deneme ile doğrulandı (K9): standart kütüphanede `urllib.request.urlopen(b'...')` → `AttributeError: 'bytes' object has no attribute 'timeout'`.
   - Hata `thumbnail.py:405-407`'de yakalanıp loglanıyor ve yeniden fırlatılıyor. Google Drive kullanılan kurulumlarda seri küçük resimleri hiç oluşmuyor.
 - **Sonuç:** Gerçek sorun (işlev hatası, güvenlik değil). FIND-008'in B310 "yanlış pozitif" kararı değişmiyor, çünkü `urlopen()` URL şemasıyla ilgili bir risk taşımıyor. — **FIND-152**
 
 ### E4. Dış isteklerde zaman aşımı (bağlam notu)
 B113 bulguları (FIND-010…014) ve düzeltme planı Dilara Yıldırım'da (`review-bandit.md`, B113 planı). Bu inceleme kapsamında görülen dış istekler (`helper.py:831-833` kapak indirme, `updater.py:82, 359, 385, 620`) zaman aşımı tanımlıyor. Bu satırlar B113 bulgusu değil.
+
+### E5. Google Drive değişiklik bildirimi geri çağrısı (3. kişinin D1 notu)
+- **Konum:** `cps/gdrive.py:48`, `cps/gdrive.py:121-156` (`on_received_watch_confirmation`), `cps/gdriveutils.py:519-527` (`getChangeById`)
+- **Kontrol:** `review-auth.md` D1'de 4. kişiye bırakılan not: geri çağrının yalnızca sabit bir başlıkla korunması dosya işleme açısından ne sonuç doğuruyor?
+- **Gözlem:**
+  ```python
+  gdrive_watch_callback_token = 'target=calibreweb-watch_files'  # nosec        # gdrive.py:48
+
+  @csrf.exempt
+  @gdrive.route("/watch/callback", methods=['GET', 'POST'])
+  def on_received_watch_confirmation():
+      if not config.config_google_drive_watch_changes_response:
+          return ''
+      if request.headers.get('X-Goog-Channel-Token') != gdrive_watch_callback_token \
+              or request.headers.get('X-Goog-Resource-State') != 'change' \
+              or not request.data:
+          return ''
+      ...
+      response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
+      ...
+      if not response['deleted'] and response['file']['title'] == 'metadata.db' \
+        and response['file']['md5Checksum'] != hashlib.md5(dbpath).hexdigest():  # nosec
+          copyfile(dbpath, os.path.join(tmp_dir, "metadata.db_" + str(current_milli_time())))
+          gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmp_dir, "tmp_metadata.db"))
+          move(os.path.join(tmp_dir, "tmp_metadata.db"), dbpath)
+          calibre_db.reconnect_db(config, ub.app_DB_path)
+  ```
+  1. **Kimlik doğrulama yok:** Route'ta giriş dekoratörü yok ve CSRF'ten muaf. Bu, Google'ın sunucudan sunucuya bildirimi için gerekli. Tek koruma `X-Goog-Channel-Token` başlığı, ama değeri kaynak kodda sabit yazılı (`gdrive.py:48`), yani gizli değil. Bildirim kaydı (`/watch/subscribe`, `gdrive.py:79-91`) yönetici korumalı. Geri çağrı yalnızca yönetici izlemeyi açtıysa (`config_google_drive_watch_changes_response` doluysa) çalışıyor.
+  2. **İstekteki kimlik doğrudan Drive API'ye gidiyor:** Gövdedeki `id`, yöneticinin Drive yetkisiyle `changes().get(changeId=...)` sorgusuna veriliyor. Saldırgan dosya içeriği belirleyemiyor. İndirilen dosya her zaman sahibin Drive'ındaki `metadata.db` (`downloadFile(None, "metadata.db", ...)`).
+  3. **MD5 karşılaştırması yanlış nesneyi özetliyor:** `hashlib.md5(dbpath)` dosyanın içeriğini değil, **yol metnini** (`.../metadata.db`) özetliyor. Drive'daki dosyanın içerik MD5'i bununla hiçbir zaman eşleşmez. Bu yüzden "dosya değişmedi" dalı hiç çalışmıyor: `metadata.db`'ye ait her bildirim, dosya aynı olsa bile yerel veritabanını yedekleyip yeniden indiriyor ve bağlantıyı yeniden kuruyor.
+  4. **Yedekler birikiyor:** Her tetiklemede `metadata.db_<zaman>` adıyla geçici dizine tam bir kopya yazılıyor (`gdrive.py:147`). Yedekler bir sonraki başarılı geçici dizin temizliğine kadar birikiyor (`cps/tasks/clean.py:37` → `file_helper.py:58–60`; `schedule.py:36` ve `:97` günlük ve başlangıçta).
+  5. **Sonuç olarak:** Sabit başlığı ve `metadata.db`'ye ait geçerli bir değişiklik kimliğini bilen (veya tahmin eden) biri, isteği tekrarlayarak sunucuda gereksiz indirme, veritabanı yeniden bağlantısı ve geçici dizinde disk birikimi oluşturabilir. Veri sızıntısı veya içerik enjeksiyonu yok. Önkoşullar: Google Drive kullanılması, izlemenin açık olması ve değişiklik kimliğinin bilinmesi.
+- **Sonuç:** Düşük öncelikli. Kimlik doğrulama tarafı tasarım kaynaklı (Google'ın bildirim kanalı her kurulum için rastgele bir belirteç desteklediği hâlde sabit değer kullanılmış). MD5 karşılaştırması ise bir işlev hatası. Önerilen düzeltme: (a) belirteci kurulum başına rastgele üretip ayarlarda saklamak, (b) karşılaştırmayı `hashlib.md5(open(dbpath, 'rb').read())` ile dosya içeriği üzerinden yapmak. Düzeltme önerilmiyor; kapsam ve davranış değişikliği riski. — **FIND-159**
 
 ## Bandit bulgularıyla ilişki
 
@@ -323,6 +357,7 @@ B113 bulguları (FIND-010…014) ve düzeltme planı Dilara Yıldırım'da (`rev
 | FIND-008 (B310) | Yanlış pozitif | Güvenlik kararı değişmiyor. Yan gözlem doğrulandı, işlev hatası olarak FIND-152'ye taşındı (E3). |
 | FIND-016 (B112, `pathchooser`) | Düşük öncelikli, kabul edildi | Yalnızca yönetici erişiyor, karar uyumlu (B5). |
 | FIND-028 (B404) ve B603 | Yanlış pozitif | Not sonuçlandı (D1, D2). Enjeksiyon yok. Windows'ta 0. eleman tırnaklanmıyor: FIND-158. |
+| `# nosec` satırları (`gdrive.py:48` B105, `gdrive.py:143` B324) | Upstream'de susturulmuş, Bandit raporunda yok | Sabit belirteç ve yol MD5'i birlikte değerlendirildi: FIND-159 (E5). Kural kodları `python -m bandit --ignore-nosec cps/gdrive.py` ile doğrulandı (48: B105 LOW, 143: B324 HIGH); bu çalıştırma yalnızca doğrulama içindir, rapor olarak kaydedilmedi ve baseline'ı değiştirmez. |
 
 Mevcut FIND-001…044 satırlarında değişiklik yapılmadı. Yeni gözlemler kendi ID bloğumdan (FIND-150–174) yeni satır olarak açıldı.
 
@@ -334,4 +369,4 @@ K5 kapsamında güvenlik düzeltmesi adayları, küçükten büyüğe:
 2. **FIND-151 (önerilen, Düşük):** `upload_required` dekoratörüne `config.config_uploading` koşulu eklemek: `if current_user.role_upload() and config.config_uploading:`. Arayüzdeki koşulla aynı.
 3. **FIND-152 (işlev):** `thumbnail.py:384-386` satırlarında `urlopen(web_content_link)` yerine `io.BytesIO(web_content_link)` kullanmak (`thumbnail.py:187`'deki kitap küçük resmi yoluyla aynı). Güvenlik değil, kod kalitesi ve işlev düzeltmesi.
 4. **FIND-158:** Windows dalında `subprocess.list2cmdline()`. Yalnızca Windows'ta gözlemlenebilir; davranış değişikliği riski nedeniyle öncelik düşük.
-5. FIND-153, 154, 155, 156 ve 157 için düzeltme önerilmiyor (düşük etki ve davranış değişikliği riski). Raporda sınırlılık olarak anılabilir.
+5. FIND-153, 154, 155, 156, 157 ve 159 için düzeltme önerilmiyor (düşük etki ve davranış değişikliği riski). Raporda sınırlılık olarak anılabilir.
