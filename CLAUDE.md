@@ -20,7 +20,7 @@ Bu dosya **kurallar ve kararlar** için tek kaynaktır. Rehberler "nasıl yapıl
 ## Proje özeti
 
 - **Amaç:** Calibre-Web'i sıfırdan geliştirmek değil. Seçilen Python kodunu Bandit (güvenlik), Pylint (kod kalitesi) ve flake8 (PEP 8) ile analiz etmek, önemli bulguları elle doğrulamak, seçilmiş sorunları güvenli biçimde düzeltmek ve başlangıç/son taramalarını karşılaştırıp raporlamak.
-- **Dönem:** 24 Ekim – 10 Kasım 2026. **8 Kasım sonunda kod dondurulur**; 9–10 Kasım yalnızca rapor, sunum ve prova içindir.
+- **Dönem:** 24 Ekim – 26 Kasım 2026. **24 Kasım 16:00'da kod dondurulur (K10)**; 24–25 Kasım rapor, sunum ve prova içindir.
 - **Ekip deposu (fork):** https://github.com/sseydaltin/calibre-web
 - **Resmî kaynak (upstream):** https://github.com/janeczku/calibre-web
 - **Lisans:** GPL v3. `LICENSE` dosyasını ve kaynak koddaki lisans/telif bildirimlerini asla silme veya değiştirme.
@@ -56,6 +56,7 @@ Ders: **"Güvenlik İçin Statik Kod Analizi"**. Kodlar **çalıştırılmadan**
 - **K7 — Gömülü üçüncü taraf kod:** `cps/cw_login/` ve `cps/cw_advocate/` gömülü üçüncü taraf koddur. Kapsamda kalır (başlangıç taraması bunları içeriyor), bulgu kaydında "Gömülü üçüncü taraf (K7): kapsamda, incelendi, düzeltme yapılmaz." olarak işaretlenir, bu klasörlerde düzeltme yapılmaz; yalnızca incelenir.
 - **K8 — Bandit baseline sürüm düzeltmesi:** Başlangıç Bandit raporları yanlışlıkla 1.8.6 ile üretildi (kök neden: Windows dışı (macOS) ortamda sürüm belirtilmeden kurulum; o anki Python sürümü kayıtlı değil). Kod değişikliği yapılmadan önce aynı commit ve aynı parametrelerle 1.9.4 ile yeniden üretildi. Orijinaller `evidence/bandit-1.8.6-original/` altında. Bu, "baseline yeniden üretilmez" kuralına tek seferlik istisnadır (ekip onayı 28 Ekim).
 - **K9 — Yalıtılmış davranış denemeleri:** Bir bulgunun doğrulanması için uygulamayı başlatmadan, tek bir kütüphane ya da fonksiyon davranışını küçük bir Python parçasıyla denemek serbesttir (ör. zipfile'ın bozuk arşivde hangi istisnayı fırlattığı, SQLAlchemy istisna öznitelikleri). Bu durumda gerekçeye "yalıtılmış deneme ile doğrulandı" yazılır ve yöntem raporda belirtilir. Uygulama, veritabanı veya ağ servisleri çalıştırılmaz (K2).
+- **K10 — Takvim güncellemesi:** Teslim 26 Kasım 2026. Kod dondurma 24 Kasım 16:00'ya alındı (ekip kararı). Bu tarihe kadar açık olan PR #16, #17, #18, #20 ve 1. kişinin FIND-078/081/056/069 ile jinjia.py PEP 8 düzeltmeleri ve B113 düzeltmesi kabul edilir; amazon.py PEP 8 ve R1732 kapsam dışı bırakıldı.
 
 ## Ekip ve sorumluluklar
 
@@ -84,7 +85,7 @@ Not: Bandit başlangıç envanteri ve `review-bandit.md` 3. kişi (Emre Bulut) t
 9. Pylint'in import/bağımlılık hatalarını (`E0401 import-error` vb.) güvenlik bulgusu sayma; ortam sorunu olarak `docs/environment-notes.md` dosyasına ayrı kaydet.
 10. Commit, push, PR açma ve dal silme gibi geri alınması zor işlemlerden önce kullanıcıdan onay al.
 11. `reports/baseline/` içindeki dosyaları asla değiştirme veya yeniden üretme (tek istisna K8, kapandı).
-12. 8 Kasım kod dondurmasından sonra `cps/` veya `cps.py` değiştiren PR birleştirilmez.
+12. 24 Kasım 16:00 kod dondurmasından (K10) sonra `cps/` veya `cps.py` değiştiren PR birleştirilmez.
 
 ## Dosya yapısı
 
@@ -265,8 +266,8 @@ Karşılaştırma raporlarında ayrı ayrı belirt: **kapanan**, **devam eden** 
 | 1 Kas | Önceliklendirilmiş düzeltme listesi (toplantı) | |
 | 2–5 Kas | Düzeltme PR'ları ve incelemeler | |
 | 6 Kas | Düzeltilen dosyalarda `py_compile` + dosya bazlı tekrar tarama (K2) | |
-| 7 Kas | Son taramalar (`reports/final/`) | |
-| 8 Kas | Önce-sonra karşılaştırması, **kod dondurma** | |
-| 9–10 Kas | Rapor, sunum, prova, teslim | |
+| 24 Kas | Son düzeltmeler, **kod dondurma (16:00)**, son taramalar (`reports/final/`), önce-sonra karşılaştırması | |
+| 24–25 Kas | Rapor, sunum, prova | |
+| 26 Kas | **Teslim** | |
 
 Gecikmede öncelik: bulgu değerlendirmesi → en anlamlı düzeltmeler → tekrar tarama → rapor/sunum.
