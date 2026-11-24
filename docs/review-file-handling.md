@@ -22,7 +22,7 @@ Rehber: `docs/guides/rol-4-dosya-surec.md`. Satır numaraları baseline commit'e
 | FIND-156 | `cps/clean_html.py:44-46` | Yorum HTML'inde `style` ve dış `img src` serbest | Düşük öncelikli | Düşük |
 | FIND-157 | `cps/updater.py:82-91` | Güncelleme paketi için imza/özet doğrulaması yok | Düşük öncelikli | Düşük |
 | FIND-158 | `cps/subproc_wrapper.py:28-32` | Windows'ta çalıştırılabilir dosya yolu (0. eleman) tırnaklanmıyor | Düşük öncelikli | Düşük |
-| FIND-159 | `cps/gdrive.py:48, 121-153` | Drive bildirim geri çağrısı sabit, gizli olmayan bir başlıkla korunuyor; MD5 karşılaştırması dosya yerine yolu özetliyor | Düşük öncelikli | Düşük |
+| FIND-159 | `cps/gdrive.py:48, 121-156` | Drive bildirim geri çağrısı sabit, gizli olmayan bir başlıkla korunuyor; MD5 karşılaştırması dosya yerine yolu özetliyor | Düşük öncelikli | Düşük |
 
 ## A. Yükleme
 
@@ -316,7 +316,7 @@ Akış: `POST /upload` (`cps/editbooks.py:105`) → `file_handling_on_upload()` 
 B113 bulguları (FIND-010…014) ve düzeltme planı Dilara Yıldırım'da (`review-bandit.md`, B113 planı). Bu inceleme kapsamında görülen dış istekler (`helper.py:831-833` kapak indirme, `updater.py:82, 359, 385, 620`) zaman aşımı tanımlıyor. Bu satırlar B113 bulgusu değil.
 
 ### E5. Google Drive değişiklik bildirimi geri çağrısı (3. kişinin D1 notu)
-- **Konum:** `cps/gdrive.py:48`, `cps/gdrive.py:121-158` (`on_received_watch_confirmation`), `cps/gdriveutils.py:519-527` (`getChangeById`)
+- **Konum:** `cps/gdrive.py:48`, `cps/gdrive.py:121-156` (`on_received_watch_confirmation`), `cps/gdriveutils.py:519-527` (`getChangeById`)
 - **Kontrol:** `review-auth.md` D1'de 4. kişiye bırakılan not: geri çağrının yalnızca sabit bir başlıkla korunması dosya işleme açısından ne sonuç doğuruyor?
 - **Gözlem:**
   ```python
@@ -344,7 +344,7 @@ B113 bulguları (FIND-010…014) ve düzeltme planı Dilara Yıldırım'da (`rev
   1. **Kimlik doğrulama yok:** Route'ta giriş dekoratörü yok ve CSRF'ten muaf. Bu, Google'ın sunucudan sunucuya bildirimi için gerekli. Tek koruma `X-Goog-Channel-Token` başlığı, ama değeri kaynak kodda sabit yazılı (`gdrive.py:48`), yani gizli değil. Bildirim kaydı (`/watch/subscribe`, `gdrive.py:79-91`) yönetici korumalı. Geri çağrı yalnızca yönetici izlemeyi açtıysa (`config_google_drive_watch_changes_response` doluysa) çalışıyor.
   2. **İstekteki kimlik doğrudan Drive API'ye gidiyor:** Gövdedeki `id`, yöneticinin Drive yetkisiyle `changes().get(changeId=...)` sorgusuna veriliyor. Saldırgan dosya içeriği belirleyemiyor. İndirilen dosya her zaman sahibin Drive'ındaki `metadata.db` (`downloadFile(None, "metadata.db", ...)`).
   3. **MD5 karşılaştırması yanlış nesneyi özetliyor:** `hashlib.md5(dbpath)` dosyanın içeriğini değil, **yol metnini** (`.../metadata.db`) özetliyor. Drive'daki dosyanın içerik MD5'i bununla hiçbir zaman eşleşmez. Bu yüzden "dosya değişmedi" dalı hiç çalışmıyor: `metadata.db`'ye ait her bildirim, dosya aynı olsa bile yerel veritabanını yedekleyip yeniden indiriyor ve bağlantıyı yeniden kuruyor.
-  4. **Yedekler birikiyor:** Her tetiklemede `metadata.db_<zaman>` adıyla geçici dizine tam bir kopya yazılıyor (`gdrive.py:147`). Bu kopyaları silen bir kod yolu bulamadım.
+  4. **Yedekler birikiyor:** Her tetiklemede `metadata.db_<zaman>` adıyla geçici dizine tam bir kopya yazılıyor (`gdrive.py:147`). Yedekler bir sonraki başarılı geçici dizin temizliğine kadar birikiyor (`cps/tasks/clean.py:37` → `file_helper.py:58–60`; `schedule.py:36` ve `:97` günlük ve başlangıçta).
   5. **Sonuç olarak:** Sabit başlığı ve `metadata.db`'ye ait geçerli bir değişiklik kimliğini bilen (veya tahmin eden) biri, isteği tekrarlayarak sunucuda gereksiz indirme, veritabanı yeniden bağlantısı ve geçici dizinde disk birikimi oluşturabilir. Veri sızıntısı veya içerik enjeksiyonu yok. Önkoşullar: Google Drive kullanılması, izlemenin açık olması ve değişiklik kimliğinin bilinmesi.
 - **Sonuç:** Düşük öncelikli. Kimlik doğrulama tarafı tasarım kaynaklı (Google'ın bildirim kanalı her kurulum için rastgele bir belirteç desteklediği hâlde sabit değer kullanılmış). MD5 karşılaştırması ise bir işlev hatası. Önerilen düzeltme: (a) belirteci kurulum başına rastgele üretip ayarlarda saklamak, (b) karşılaştırmayı `hashlib.md5(open(dbpath, 'rb').read())` ile dosya içeriği üzerinden yapmak. Düzeltme önerilmiyor; kapsam ve davranış değişikliği riski. — **FIND-159**
 
