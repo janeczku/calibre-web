@@ -221,11 +221,11 @@
                         <i class="bi bi-link-45deg"></i>
                         {% for identifier in entry.identifiers %}
                             {% set identifier_link = identifier.__repr__() %}
-                            {% if identifier_link != identifier.val %}
+                            {% if identifier_link != identifier.val or identifier_link.lower().startswith(('http://', 'https://')) %}
                                 <a href="{{ identifier_link|escape }}" target="_blank" class="btn btn-xs btn-success"
                                    role="button">{{ identifier.format_type() }}</a>
                             {% else %}
-                                <span class="btn btn-xs btn-success" role="button" title="{{ identifier_link }}">{{ identifier.format_type() }}</span>
+                                <span class="btn btn-xs btn-success" role="button" data-identifier-value="{{ identifier.val }}" title="{{ identifier.val }}">{{ identifier.format_type() }}</span>
                             {% endif %}
                         {% endfor %}
                     </p>

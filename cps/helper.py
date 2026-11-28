@@ -414,7 +414,7 @@ def rename_all_files_on_change(one_book, new_path, old_path, all_new_name, gdriv
                 gd.moveGdriveFileRemote(g_file, all_new_name + '.' + file_format.format.lower())
                 gd.updateDatabaseOnEdit(g_file['id'], all_new_name + '.' + file_format.format.lower())
             else:
-                log.error("File {} not found on gdrive"
+                log.error("File {}/{} not found on gdrive"
                           .format(old_path, file_format.name + '.' + file_format.format.lower()))
 
         # change name in Database
@@ -439,7 +439,27 @@ def rename_author_path(first_author, old_author_dir, renamed_author, calibre_pat
                 os.rename(old_author_path, new_author_path)
             except OSError:
                 try:
-                    shutil.move(old_author_path, new_author_path)
+                    if os.path.exists(new_author_path) and os.path.samefile(old_author_path, new_author_path):
+                        temporary_path = old_author_path + "." + str(uuid4())
+                        os.rename(old_author_path, temporary_path)
+                        try:
+                            os.rename(temporary_path, new_author_path)
+                        except OSError:
+                            os.rename(temporary_path, old_author_path)
+                            raise
+                    elif os.path.isdir(new_author_path):
+                        # shutil.move would nest the old author folder inside the destination.
+                        for source_dir, _, files in os.walk(old_author_path, topdown=False):
+                            destination_dir = os.path.join(
+                                new_author_path, os.path.relpath(source_dir, old_author_path)
+                            )
+                            os.makedirs(destination_dir, exist_ok=True)
+                            for filename in files:
+                                shutil.move(os.path.join(source_dir, filename),
+                                            os.path.join(destination_dir, filename))
+                            os.rmdir(source_dir)
+                    else:
+                        shutil.move(old_author_path, new_author_path)
                 except OSError as ex:
                     log.error("Rename author from: %s to %s: %s", old_author_path, new_author_path, ex)
                     log.error_or_exception(ex)
@@ -546,6 +566,8 @@ def move_files_on_change(calibre_path, new_author_dir, new_titledir, localbook, 
         else:
             # Check new path is not valid path
             if not os.path.exists(new_path):
+                # Ensure destination author folder exists before moving
+                os.makedirs(os.path.dirname(new_path), exist_ok=True)
                 # move original path to new path
                 log.debug("Moving title: %s to %s", path, new_path)
                 shutil.move(path, new_path)

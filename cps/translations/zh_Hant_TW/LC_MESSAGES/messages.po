@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-09-20 09:04+0200\n"
+"POT-Creation-Date: 2026-11-28 08:18+0100\n"
 "PO-Revision-Date: 2025-09-10 03:46+0000\n"
 "Last-Translator: finrodchen <me@finrod.xyz>\n"
 "Language: zh_TW\n"
@@ -42,8 +42,8 @@ msgstr "未知命令"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr ""
 
-#: cps/admin.py:213 cps/editbooks.py:825 cps/editbooks.py:875
-#: cps/editbooks.py:1564
+#: cps/admin.py:213 cps/editbooks.py:831 cps/editbooks.py:885
+#: cps/editbooks.py:1574
 #: cps/themes/caliblur/templates/remote_login_verify.html:9
 #: cps/themes/caliblur/templates/remote_login_verify.html:11
 #: cps/themes/standard/templates/remote_login_verify.html:9
@@ -140,8 +140,8 @@ msgstr "無可用本地化"
 msgid "No Valid Book Language Given"
 msgstr "無有效書籍語言"
 
-#: cps/admin.py:546 cps/editbooks.py:260 cps/editbooks.py:445
-#: cps/editbooks.py:447
+#: cps/admin.py:546 cps/editbooks.py:266 cps/editbooks.py:451
+#: cps/editbooks.py:453
 msgid "Parameter not found"
 msgstr "參數未找到"
 
@@ -333,7 +333,7 @@ msgstr "已連上Gmail帳號"
 
 #: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1970
 #: cps/admin.py:2068 cps/admin.py:2189 cps/editbooks.py:170
-#: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
+#: cps/editbooks.py:778 cps/editbooks.py:1528 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
 #, python-format
@@ -531,7 +531,7 @@ msgstr ""
 msgid "Password length has to be between 1 and 40"
 msgstr "密碼長度必須介於 1 到 40 字元之間"
 
-#: cps/admin.py:1962 cps/helper.py:1017
+#: cps/admin.py:1962 cps/helper.py:1037
 msgid "Please specify a valid UnRar directory"
 msgstr ""
 
@@ -606,7 +606,7 @@ msgstr "未安裝"
 msgid "Execution permissions missing"
 msgstr "缺少執行權限"
 
-#: cps/db.py:1129 cps/themes/caliblur/templates/email_edit.html:43
+#: cps/db.py:1131 cps/themes/caliblur/templates/email_edit.html:43
 #: cps/themes/standard/templates/config_edit.html:229
 #: cps/themes/standard/templates/config_view_edit.html:63
 #: cps/themes/standard/templates/email_edit.html:41 cps/web.py:567
@@ -642,110 +642,114 @@ msgstr "書籍已經被成功加入到 %(book_format)s 格式轉換隊列"
 msgid "There was an error converting this book: %(res)s"
 msgstr "轉換此書籍時出現錯誤： %(res)s"
 
-#: cps/editbooks.py:314
+#: cps/editbooks.py:262
+msgid "Invalid request"
+msgstr ""
+
+#: cps/editbooks.py:320
 msgid "Changes successfully applied"
 msgstr ""
 
-#: cps/editbooks.py:334
+#: cps/editbooks.py:340
 msgid "Value is missing on request"
 msgstr "請求中缺少必要的值"
 
-#: cps/editbooks.py:336 cps/editbooks.py:343 cps/editbooks.py:644
-#: cps/editbooks.py:1170 cps/web.py:534 cps/web.py:1577 cps/web.py:1623
+#: cps/editbooks.py:342 cps/editbooks.py:349 cps/editbooks.py:650
+#: cps/editbooks.py:1180 cps/web.py:534 cps/web.py:1577 cps/web.py:1623
 #: cps/web.py:1673
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "糟糕！選擇書名無法打開。文件不存在或者文件不可訪問"
 
-#: cps/editbooks.py:690 cps/editbooks.py:1547
+#: cps/editbooks.py:696 cps/editbooks.py:1557
 msgid "User has no rights to upload cover"
 msgstr "使用者沒有封面上傳權限"
 
-#: cps/editbooks.py:711 cps/editbooks.py:961
+#: cps/editbooks.py:717 cps/editbooks.py:971
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "標識符不區分大小寫，覆蓋舊標識符"
 
-#: cps/editbooks.py:726 cps/editbooks.py:935 cps/editbooks.py:1306
+#: cps/editbooks.py:732 cps/editbooks.py:945 cps/editbooks.py:1316
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr ""
 
-#: cps/editbooks.py:754
+#: cps/editbooks.py:760
 msgid "Metadata successfully updated"
 msgstr "已成功更新元數據"
 
-#: cps/editbooks.py:777
+#: cps/editbooks.py:783
 #, python-brace-format
 msgid "Error editing book: {}"
 msgstr "編輯書籍時發生錯誤：{}"
 
-#: cps/editbooks.py:879
+#: cps/editbooks.py:889
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "上傳的書籍可能已經存在，建議修改後重新上傳： "
 
-#: cps/editbooks.py:973 cps/editbooks.py:1464
+#: cps/editbooks.py:983 cps/editbooks.py:1474
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr ""
 
-#: cps/editbooks.py:979 cps/editbooks.py:1475
+#: cps/editbooks.py:989 cps/editbooks.py:1485
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "不能上傳文件附檔名為“%(ext)s”的文件到此伺服器"
 
-#: cps/editbooks.py:983 cps/editbooks.py:1480
+#: cps/editbooks.py:993 cps/editbooks.py:1490
 msgid "File to be uploaded must have an extension"
 msgstr "要上傳的文件必須具有附檔名"
 
-#: cps/editbooks.py:992
+#: cps/editbooks.py:1002
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "文件 %(filename)s 無法保存到臨時目錄"
 
-#: cps/editbooks.py:1012
+#: cps/editbooks.py:1022
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "移動封面文件失敗 %(file)s：%(error)s"
 
-#: cps/editbooks.py:1065
+#: cps/editbooks.py:1075
 msgid "Book Format Successfully Deleted"
 msgstr "書籍格式已成功刪除"
 
-#: cps/editbooks.py:1068 cps/editbooks.py:1085
+#: cps/editbooks.py:1078 cps/editbooks.py:1095
 msgid "Book Successfully Deleted"
 msgstr "書籍已成功刪除"
 
-#: cps/editbooks.py:1089
+#: cps/editbooks.py:1099
 msgid "You are missing permissions to delete books"
 msgstr "您沒有刪除書籍的權限"
 
-#: cps/editbooks.py:1163
+#: cps/editbooks.py:1173
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
 msgstr "無法刪除 ID 為「{}」的書籍：未找到此書籍"
 
-#: cps/editbooks.py:1205
+#: cps/editbooks.py:1215
 msgid "edit metadata"
 msgstr "編輯元數據"
 
-#: cps/editbooks.py:1267
+#: cps/editbooks.py:1277
 #, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
 msgstr ""
 
-#: cps/editbooks.py:1469
+#: cps/editbooks.py:1479
 msgid "User has no rights to upload additional file formats"
 msgstr "使用者沒有其他檔案格式上傳權限"
 
-#: cps/editbooks.py:1493
+#: cps/editbooks.py:1503
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "創建路徑 %(path)s 失敗(權限拒絕)。"
 
-#: cps/editbooks.py:1500
+#: cps/editbooks.py:1510
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "保存文件 %(file)s 失敗。"
 
-#: cps/editbooks.py:1525
+#: cps/editbooks.py:1535
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "已添加 %(ext)s 格式到 %(book)s"
@@ -893,113 +897,113 @@ msgstr "僅從數據庫中刪除書籍 %(id)s，數據庫中的書籍路徑無�
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:446
+#: cps/helper.py:466
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:516 cps/helper.py:525
+#: cps/helper.py:536 cps/helper.py:545
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive上找不到文件 %(file)s"
 
-#: cps/helper.py:567
+#: cps/helper.py:587
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "將標題從“%(src)s”改為“%(dest)s”時失敗，錯誤錯信息：%(error)s"
 
-#: cps/helper.py:586
+#: cps/helper.py:606
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive上找不到書籍路徑 %(path)s"
 
-#: cps/helper.py:646
+#: cps/helper.py:666
 msgid "Found an existing account for this Email address"
 msgstr "此電子郵件地址已註冊"
 
-#: cps/helper.py:654
+#: cps/helper.py:674
 msgid "This username is already taken"
 msgstr "此用戶名已被使用"
 
-#: cps/helper.py:668
+#: cps/helper.py:688
 msgid "Invalid Email address format"
 msgstr ""
 
-#: cps/helper.py:690
+#: cps/helper.py:710
 msgid "Password doesn't comply with password validation rules"
 msgstr "密碼不符合密碼驗證規則"
 
-#: cps/helper.py:836
+#: cps/helper.py:856
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "Python 模組 'advocate' 未安裝，封面上傳功能需要此模組"
 
-#: cps/helper.py:846
+#: cps/helper.py:866
 msgid "Error Downloading Cover"
 msgstr "下載封面時出錯"
 
-#: cps/helper.py:849
+#: cps/helper.py:869
 msgid "Cover Format Error"
 msgstr "封面格式出錯"
 
-#: cps/helper.py:852
+#: cps/helper.py:872
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "您無權使用本地端或區域網路進行封面上傳"
 
-#: cps/helper.py:862
+#: cps/helper.py:882
 msgid "Failed to create path for cover"
 msgstr "創建封面路徑失敗"
 
-#: cps/helper.py:878
+#: cps/helper.py:898
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "封面文件不是有效的圖片文件，或者無法儲存"
 
-#: cps/helper.py:889
+#: cps/helper.py:909
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "封面文件只支持jpg/jpeg/png/webp/bmp格式文件"
 
-#: cps/helper.py:901
+#: cps/helper.py:921
 msgid "Invalid cover file content"
 msgstr "無效的封面檔案"
 
-#: cps/helper.py:905
+#: cps/helper.py:925
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "僅將jpg、jpeg文件作為封面文件"
 
-#: cps/helper.py:999 cps/helper.py:1162
+#: cps/helper.py:1019 cps/helper.py:1182
 msgid "Cover"
 msgstr ""
 
-#: cps/helper.py:1027
+#: cps/helper.py:1047
 msgid "Error executing UnRar"
 msgstr ""
 
-#: cps/helper.py:1035
+#: cps/helper.py:1055
 msgid "Could not find the specified directory"
 msgstr "找不到指定的目錄"
 
-#: cps/helper.py:1038
+#: cps/helper.py:1058
 msgid "Please specify a directory, not a file"
 msgstr "請指定資料夾目錄，而非檔案"
 
-#: cps/helper.py:1052
+#: cps/helper.py:1072
 msgid "Calibre binaries not viable"
 msgstr ""
 
-#: cps/helper.py:1061
+#: cps/helper.py:1081
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "缺少 Calibre 執行檔：%(missing)s"
 
-#: cps/helper.py:1063
+#: cps/helper.py:1083
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr ""
 
-#: cps/helper.py:1068
+#: cps/helper.py:1088
 msgid "Error executing Calibre"
 msgstr ""
 
-#: cps/helper.py:1164 cps/themes/standard/templates/admin.html:232
+#: cps/helper.py:1184 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr "將所有書籍排入元數據備份佇列"
 
@@ -1743,15 +1747,15 @@ msgstr "下一個"
 #: cps/templates/feed.xml:131 cps/themes/caliblur/templates/detail.html:44
 #: cps/themes/caliblur/templates/detail.html:63
 #: cps/themes/caliblur/templates/layout.html:143
-#: cps/themes/caliblur/templates/listenmp3.html:201
-#: cps/themes/caliblur/templates/listenmp3.html:218
+#: cps/themes/caliblur/templates/listenmp3.html:206
+#: cps/themes/caliblur/templates/listenmp3.html:223
 #: cps/themes/caliblur/templates/search.html:25
 #: cps/themes/caliblur/templates/search.html:38
 #: cps/themes/standard/templates/detail.html:316
 #: cps/themes/standard/templates/detail.html:335
 #: cps/themes/standard/templates/layout.html:124
-#: cps/themes/standard/templates/listenmp3.html:201
-#: cps/themes/standard/templates/listenmp3.html:218
+#: cps/themes/standard/templates/listenmp3.html:206
+#: cps/themes/standard/templates/listenmp3.html:223
 #: cps/themes/standard/templates/search.html:22
 #: cps/themes/standard/templates/search.html:35
 msgid "(Public)"
@@ -1972,13 +1976,13 @@ msgstr "出版日期"
 #: cps/themes/caliblur/templates/book_edit.html:281
 #: cps/themes/caliblur/templates/book_edit.html:298
 #: cps/themes/caliblur/templates/detail.html:270
-#: cps/themes/caliblur/templates/listenmp3.html:102
+#: cps/themes/caliblur/templates/listenmp3.html:107
 #: cps/themes/standard/templates/basic_detail.html:61
 #: cps/themes/standard/templates/book_edit.html:102
 #: cps/themes/standard/templates/book_edit.html:279
 #: cps/themes/standard/templates/book_edit.html:296
 #: cps/themes/standard/templates/detail.html:205
-#: cps/themes/standard/templates/listenmp3.html:102
+#: cps/themes/standard/templates/listenmp3.html:107
 #: cps/themes/standard/templates/search_form.html:16
 msgid "Publisher"
 msgstr "出版社"
@@ -2114,7 +2118,7 @@ msgstr "儲存"
 #: cps/themes/standard/templates/book_table.html:223
 #: cps/themes/standard/templates/book_table.html:243
 #: cps/themes/standard/templates/book_table.html:263
-#: cps/themes/standard/templates/book_table.html:318
+#: cps/themes/standard/templates/book_table.html:323
 #: cps/themes/standard/templates/config_db.html:66
 #: cps/themes/standard/templates/config_edit.html:453
 #: cps/themes/standard/templates/config_view_edit.html:176
@@ -2220,22 +2224,22 @@ msgstr "確定"
 
 #: cps/themes/caliblur/templates/detail.html:29
 #: cps/themes/caliblur/templates/detail.html:32
-#: cps/themes/caliblur/templates/listenmp3.html:190
+#: cps/themes/caliblur/templates/listenmp3.html:195
 #: cps/themes/caliblur/templates/search.html:18
 #: cps/themes/caliblur/templates/search.html:19
 #: cps/themes/standard/templates/detail.html:304
-#: cps/themes/standard/templates/listenmp3.html:190
+#: cps/themes/standard/templates/listenmp3.html:195
 #: cps/themes/standard/templates/search.html:16
 msgid "Add to shelf"
 msgstr "添加到書架"
 
 #: cps/themes/caliblur/templates/detail.html:79
-#: cps/themes/caliblur/templates/listenmp3.html:158
+#: cps/themes/caliblur/templates/listenmp3.html:163
 msgid "Mark As Unread"
 msgstr "標為未讀"
 
 #: cps/themes/caliblur/templates/detail.html:79
-#: cps/themes/caliblur/templates/listenmp3.html:158
+#: cps/themes/caliblur/templates/listenmp3.html:163
 msgid "Mark As Read"
 msgstr "標為已讀"
 
@@ -2245,9 +2249,9 @@ msgid "Mark Book as Read or Unread"
 msgstr ""
 
 #: cps/themes/caliblur/templates/detail.html:82
-#: cps/themes/caliblur/templates/listenmp3.html:159
+#: cps/themes/caliblur/templates/listenmp3.html:164
 #: cps/themes/standard/templates/detail.html:266
-#: cps/themes/standard/templates/listenmp3.html:159
+#: cps/themes/standard/templates/listenmp3.html:164
 msgid "Read"
 msgstr "已讀"
 
@@ -2278,18 +2282,18 @@ msgid "Book %(index)s of %(range)s"
 msgstr "%(range)s 第%(index)s冊"
 
 #: cps/themes/caliblur/templates/detail.html:279
-#: cps/themes/caliblur/templates/listenmp3.html:111
+#: cps/themes/caliblur/templates/listenmp3.html:116
 #: cps/themes/standard/templates/basic_detail.html:70
 #: cps/themes/standard/templates/detail.html:214
-#: cps/themes/standard/templates/listenmp3.html:111
+#: cps/themes/standard/templates/listenmp3.html:116
 msgid "Published"
 msgstr "出版日期"
 
 #: cps/themes/caliblur/templates/detail.html:336
-#: cps/themes/caliblur/templates/listenmp3.html:177
+#: cps/themes/caliblur/templates/listenmp3.html:182
 #: cps/themes/standard/templates/basic_detail.html:76
 #: cps/themes/standard/templates/detail.html:289
-#: cps/themes/standard/templates/listenmp3.html:177
+#: cps/themes/standard/templates/listenmp3.html:182
 msgid "Description:"
 msgstr "簡介:"
 
@@ -2646,16 +2650,16 @@ msgstr "書籍詳情"
 msgid "Grid"
 msgstr "網格"
 
-#: cps/themes/caliblur/templates/listenmp3.html:166
+#: cps/themes/caliblur/templates/listenmp3.html:171
 msgid "Restore from archive"
 msgstr "從歸檔檔案還原"
 
-#: cps/themes/caliblur/templates/listenmp3.html:166
+#: cps/themes/caliblur/templates/listenmp3.html:171
 msgid "Add to archive"
 msgstr "添加到歸檔"
 
-#: cps/themes/caliblur/templates/listenmp3.html:167
-#: cps/themes/standard/templates/listenmp3.html:167
+#: cps/themes/caliblur/templates/listenmp3.html:172
+#: cps/themes/standard/templates/listenmp3.html:172
 msgid "Archived"
 msgstr "歸檔"
 
@@ -3116,7 +3120,7 @@ msgid "View Books"
 msgstr "查看書籍"
 
 #: cps/themes/standard/templates/admin.html:24
-#: cps/themes/standard/templates/book_table.html:317
+#: cps/themes/standard/templates/book_table.html:322
 #: cps/themes/standard/templates/user_table.html:132
 #: cps/themes/standard/templates/user_table.html:149
 msgid "Edit"
@@ -3534,6 +3538,17 @@ msgstr ""
 #: cps/themes/standard/templates/book_table.html:277
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
 msgstr "請編輯您想修改的欄位，空白欄位將被忽略："
+
+#: cps/themes/standard/templates/book_table.html:278
+msgid "Remove clears all values from the selected books."
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:298
+#: cps/themes/standard/templates/book_table.html:303
+#: cps/themes/standard/templates/book_table.html:308
+#: cps/themes/standard/templates/book_table.html:313
+msgid "Remove from selected books"
+msgstr ""
 
 #: cps/themes/standard/templates/config_edit.html:18
 msgid "Server Configuration"
