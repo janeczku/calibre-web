@@ -48,7 +48,7 @@ $(function () {
         $("#languages").val(uniqueLanguages.join(", "));
         $("#rating").data("rating").setValue(Math.round(book.rating));
         if(book.cover && $("#cover_url").length){
-            $(".cover img").attr("src", book.cover);
+            $(".cover img").attr("src", book.cover_display || book.cover);
             $("#cover_url").val(book.cover);
         }
         $("#pubdate").val(book.publishedDate);

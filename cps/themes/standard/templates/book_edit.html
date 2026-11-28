@@ -267,7 +267,7 @@
     <img class="pull-left img-responsive"
          data-toggle="modal"
          data-target="#metaModal"
-         src="<%- cover || '{{ url_for('static', filename='img/academicpaper.svg') }}' %>"
+         src="<%- cover_display || cover || '{{ url_for('static', filename='img/academicpaper.svg') }}' %>"
          alt="Cover"
     >
     <div class="media-body">
