@@ -80,6 +80,14 @@
         </div>
       {% endif %}
     {% endfor %}
+    {% if cc_visibility %}
+      {% for option in cc_visibility %}
+        <div class="form-group">
+          <input type="checkbox" name="show_cc_{{option.id}}" id="show_cc_{{option.id}}" {% if option.visible %}checked{% endif %}>
+          <label for="show_cc_{{option.id}}">{{_('Show %(name)s Section', name=option.name)}}</label>
+        </div>
+      {% endfor %}
+    {% endif %}
       <div class="form-group">
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>

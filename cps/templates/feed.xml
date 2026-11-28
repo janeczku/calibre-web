@@ -143,4 +143,11 @@
     <link rel="subsection" type="application/atom+xml;profile=opds-catalog" href="{{url_for(folder, book_id=entry['id'])}}"/>
   </entry>
   {% endfor %}
+  {% for entry in hierarchyelements %}
+  <entry>
+    <title>{{entry['name']}}</title>
+    <id>{{ url_for('opds.feed_cc_category', column_id=entry['column_id'], category_path=entry['path']) }}</id>
+    <link rel="subsection" type="application/atom+xml;profile=opds-catalog" href="{{url_for('opds.feed_cc_category', column_id=entry['column_id'], category_path=entry['path'])}}"/>
+  </entry>
+  {% endfor %}
 </feed>
