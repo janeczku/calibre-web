@@ -104,6 +104,15 @@
       <label for="config_unicode_filename">{{_('Convert non-English characters in title and author while saving to disk')}}</label>
     </div>
     <div class="form-group">
+      <label for="config_download_name_format">{{_('File Name Format for Downloads')}}</label>
+      <select name="config_download_name_format" id="config_download_name_format" class="form-control">
+        <option value="0" {% if not config.config_download_name_format %}selected{% endif %}>{{_('Title - Author')}}</option>
+        <option value="1" {% if config.config_download_name_format == 1 %}selected{% endif %}>{{_('Sorted Title - Author')}}</option>
+        <option value="2" {% if config.config_download_name_format == 2 %}selected{% endif %}>{{_('Author - Title')}}</option>
+        <option value="3" {% if config.config_download_name_format == 3 %}selected{% endif %}>{{_('Author - Sorted Title')}}</option>
+      </select>
+    </div>
+    <div class="form-group">
       <input type="checkbox" id="config_embed_metadata" name="config_embed_metadata" {% if config.config_embed_metadata %}checked{% endif %}>
       <label for="config_embed_metadata">{{_('Embed Metadata to Ebook File on Download/Conversion/e-mail (needs Calibre/Kepubify binaries)')}}</label>
     </div>
