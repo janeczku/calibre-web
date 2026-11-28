@@ -1,0 +1,204 @@
+@import url("common.css");
+@import url("toolbar.css");
+@import url("sidebar.css");
+@import url("notedlg.css");
+
+@font-face {
+	font-family: 'fontello';
+	src: url('../font/fontello.eot?60518104');
+	src: url('../font/fontello.eot?60518104#iefix') format('embedded-opentype'),
+		url('../font/fontello.woff?60518104') format('woff'),
+		url('../font/fontello.ttf?60518104') format('truetype'),
+		url('../font/fontello.svg?60518104#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+#content {
+	top: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	position: absolute;
+	overflow: hidden;
+	background: #fff;
+	align-items: center;
+}
+
+#viewer {
+    color: inherit;
+	margin: 0 auto;
+    display: flex;
+	z-index: 2;
+	overflow: hidden;
+	align-items: center;
+	vertical-align: middle;
+}
+
+#viewer.paginated {
+    width: calc(100% - 116px);
+    height: calc(100% - 116px);
+}
+
+#viewer.scrolled {
+    top: 58px;
+    width: calc(100% - 116px);
+    height: calc(100% - 58px);
+    position: sticky;
+}
+
+#viewer .epub-view {
+    width: auto !important;
+}
+
+#viewer iframe {
+	border: none;
+}
+
+#prev {
+	text-align: start;
+}
+
+#next {
+	text-align: end;
+}
+
+.arrow {
+	flex: 1;
+	padding: 0 10px;
+}
+
+.arrow:disabled,
+.arrow.disabled {
+	visibility: hidden;
+}
+
+.arrow span {
+	color: #E2E2E2;
+	cursor: pointer;
+	overflow: hidden;
+	font-size: 64px;
+	font-family: arial, sans-serif;
+	font-weight: bold;
+	vertical-align: middle;
+
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.arrow span:hover {
+	color: #777;
+}
+
+.arrow:active > span,
+.arrow.active > span {
+	color: #000;
+}
+
+#divider {
+	left: 50%;
+	height: calc(100% - 116px);
+	margin: 0;
+	padding: 0;
+	display: none;
+	position: absolute;
+	border-left: 1px dotted #777;
+}
+
+#overlay {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	display: none;
+	position: fixed;
+	background: rgba(0, 0, 0, 0.4);
+	transition: all 0.25s;
+}
+
+#loader {
+	top: calc(50% - 32px);
+	left: calc(50% - 32px);
+	width: 64px;
+	height: 64px;
+	position: absolute;
+	background-size: 64px;
+	background-image: url("../img/loader.gif");
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+/**
+ * iPhone 5 : 320 x 568
+ */
+@media
+only screen and (max-width: 320px) and (orientation: portrait),
+only screen and (max-width: 568px) and (orientation: landscape) {
+    #viewer.scrolled {
+        height: calc(100% - 52px);
+    }
+
+	.arrow span {
+		font-size: 32px;
+	}
+}
+
+/**
+ * iPhone 5             : 320 x 568
+ * iPhone 6/7/8         : 375 x 667
+ * iPhone 11 Pro        : 375 x 812
+ * Pixel 7              : 412 x 915
+ * iPhone 6/7/8 Plus    : 414 x 736
+ * iPhone 11            : 414 x 896
+ * iPhone 12/14         : 390 x 844
+ * iPhone 14/15 Pro Max : 430 x 932
+ */
+@media
+only screen and (min-width: 320px) and (max-width: 430px) and (orientation: portrait),
+only screen and (min-width: 568px) and (max-width: 932px) and (orientation: landscape) {
+    #viewer.paginated {
+        width: calc(100% - 32px);
+    }
+
+    #viewer.scrolled {
+        width: 100%;
+    }
+
+	.arrow span {
+		font-size: 40px;
+	}
+}
+
+/**
+ * iPad Mini       :  768 x 1024
+ * iPad 10.2       :  810 x 1080
+ * iPad Air (2020) :  820 x 1180
+ * iPad Air        :  834 x 1112
+ * iPad Pro 11     :  834 x 1194
+ * iPad Pro 12.9   : 1024 x 1366
+ */
+@media
+only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+    #viewer.paginated {
+        width: calc(100% - 116px);
+    }
+
+    #viewer.scrolled {
+        width: 100%;
+    }
+
+	.arrow span {
+		font-size: 50px;
+	}
+}

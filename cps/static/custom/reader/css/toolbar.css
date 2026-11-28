@@ -1,0 +1,46 @@
+#toolbar {
+	height: 58px;
+	margin: 0;
+	padding: 0;
+	z-index: 10;
+	display: grid;
+	position: relative;
+}
+
+#toolbar .menu-1 {
+	display: flex;
+	grid-column: 1;
+	justify-content: left;
+}
+
+#toolbar .menu-2 {
+	display: flex;
+	grid-column: 2;
+	justify-content: right;
+}
+
+#toolbar .box {
+	width: 58px;
+	height: 36px;
+}
+
+#toolbar #btn-p.box,
+#toolbar #btn-n.box {
+	display: none;
+}
+
+/**
+ * iPhone 5 : 320 x 568
+ */
+@media
+only screen and (width: 320px) and (orientation: portrait),
+only screen and (height: 320px) and (orientation: landscape) {
+	#toolbar {
+		height: 52px;
+	}
+
+	#toolbar .box {
+		width: 52px;
+		height: 30px;
+	}
+}
