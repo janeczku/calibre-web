@@ -53,7 +53,9 @@ def feed_index():
 @opds.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
-    return render_xml_template('osd.xml', lang='en-EN')
+    response = render_xml_template('osd.xml', lang='en-EN')
+    response.headers["Content-Type"] = "application/opensearchdescription+xml; charset=utf-8"
+    return response
 
 
 # @opds.route("/opds/search", defaults={'query': ""})
