@@ -55,7 +55,7 @@ except ImportError as ex:
             from pypdf.generic import NullObject
             use_pdf_meta = True
         except ImportError as e:
-            log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s / %s', e)
+            log.debug('Cannot import PyPDF3/PyPDF2, extracting pdf metadata will not work: %s', e)
             use_pdf_meta = False
 
 try:
