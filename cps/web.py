@@ -22,8 +22,8 @@ import os
 import json
 import mimetypes
 import chardet  # dependency of requests
-import copy
 from importlib.metadata import metadata
+from types import SimpleNamespace
 
 from flask import Blueprint, jsonify, request, redirect, send_from_directory, make_response, flash, abort, url_for
 from flask import session as flask_session
@@ -948,9 +948,8 @@ def author_list():
         char_list = query_char_list(db.Authors.sort, db.books_authors_link)
         # If not creating a copy, readonly databases can not display authornames with "|" in it as changing the name
         # starts a change session
-        author_copy = copy.deepcopy(entries)
-        for entry in author_copy:
-            entry.Authors.name = entry.Authors.name.replace('|', ',')
+        author_copy = [(SimpleNamespace(id=author.id, name=author.name.replace('|', ','), sort=author.sort), count)
+                       for author, count in entries]
         return render_title_template('list.html', entries=author_copy, folder='web.books_list', charlist=char_list,
                                      title="Authors", page="authorlist", data='author', order=order_no)
     else:
