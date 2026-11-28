@@ -114,6 +114,19 @@
             <input type="checkbox" id="showPagesCount" name="showPagesCount"/>{{_('Show pages count')}}
           </p>
         </div>
+        <div class="form-group" id="navigationMode">
+          <label class="item">{{ _('Navigation') }}:</label>
+          <button type="button" id="navSides" onclick="selectNavMode('sides')">
+            <span id="navSidesTick"> </span>{{_('Sides')}}
+          </button>
+          <button
+            type="button"
+            id="navGestures"
+            onclick="selectNavMode('gestures')"
+          >
+            <span id="navGesturesTick"> </span>{{_('Gestures (mobile)')}}
+          </button>
+        </div>
         <div class="form-group fontSizeWrapper">
           <label>{{ _('Font Size') }}</label>
           <div class="font-size-controls" style="display: flex;align-items: center;gap: 10px;margin-top: 2px;">
@@ -152,11 +165,15 @@
             useBookmarks: "{{ current_user.is_authenticated | tojson }}"
         };
 
-      // load custom theme color from localStorage (if any)
+      // load custom theme colors (background and contrasting text) from localStorage (if any)
       var _savedCustomThemeColor = null;
+      var _savedCustomThemeTextColor = null;
       try {
         _savedCustomThemeColor = localStorage.getItem(
           "calibre.reader.customTheme"
+        );
+        _savedCustomThemeTextColor = localStorage.getItem(
+          "calibre.reader.customThemeText"
         );
       } catch (e) {}
 
@@ -186,9 +203,16 @@
                 "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}",
                 "title-color": "#fff"
             },
+            "customTheme": {
+                "bgColor": _savedCustomThemeColor || "#ffffff",
+                "css_path": "{{ url_for('static', filename='css/epub_themes.css') }}",
+                "title-color": _savedCustomThemeTextColor || "#4f4f4f"
+            },
         };
 
         function selectTheme (id) {
+            // Fall back to the default theme for an unknown (e.g. stale saved) theme id
+            if (!themes[id]) id = "lightTheme";
             let tickSpans = document.getElementById("themes").querySelectorAll("span");
             tickSpans.forEach(function (tickSpan) {
                try {
@@ -212,11 +236,13 @@
             // If selecting custom theme, ensure epubjs theme is registered with chosen bg color
             if (id === "customTheme") {
                 let customColor = window.themes.customTheme.bgColor || "#ffffff";
+                let customTextColor = window.themes.customTheme["title-color"];
                 try {
                     if (reader && reader.rendition && reader.rendition.themes) {
                         reader.rendition.themes.register("customTheme", {
                             body: {
                                background: customColor,
+                               color: customTextColor,
                             },
                         });
                         reader.rendition.themes.select("customTheme");
@@ -303,8 +329,57 @@
             spans[i].textContent = "";
           }
           document.getElementById(id).querySelector("span").textContent = "✓";
+          // Save spread selection to localStorage
+          localStorage.setItem("calibre.reader.spread", id);
           reader.rendition.spread(id==="spread" ? true : "none");
         }
+
+        // Initialize spread/columns setting on load
+        (function () {
+          var savedSpread = localStorage.getItem("calibre.reader.spread");
+          if (
+            savedSpread &&
+            (savedSpread === "spread" || savedSpread === "nonespread")
+          ) {
+            // Restore UI state (checkmarks) immediately
+            var spans = document
+              .getElementById("layout")
+              .querySelectorAll("span");
+            for (var i = 0; i < spans.length; i++) {
+              spans[i].textContent = "";
+            }
+            var btn = document.getElementById(savedSpread);
+            if (btn) {
+              var sp = btn.querySelector("span");
+              if (sp) sp.textContent = "✓";
+            }
+            // The spread itself is applied by epub.js once the book is ready:
+            // `reader` does not exist yet while this inline script runs.
+          }
+        })();
+
+        function selectNavMode(mode) {
+          var tickSides = document.getElementById("navSidesTick");
+          var tickGest = document.getElementById("navGesturesTick");
+          if (tickSides) tickSides.textContent = mode === "sides" ? "✓" : "";
+          if (tickGest) tickGest.textContent = mode === "gestures" ? "✓" : "";
+          localStorage.setItem("calibre.reader.navMode", mode);
+          if (window.applyNavigationMode) {
+            window.applyNavigationMode(mode);
+          }
+        }
+        // Default navigation: swipe gestures on touch screens, side arrows otherwise
+        window.cwDefaultNavMode = function () {
+          return window.matchMedia && window.matchMedia("(pointer: coarse)").matches
+            ? "gestures"
+            : "sides";
+        };
+        // Initialize nav mode on load
+        (function () {
+          var savedMode =
+            localStorage.getItem("calibre.reader.navMode") || window.cwDefaultNavMode();
+          selectNavMode(savedMode);
+        })();
 
         // Pages counter visibility setting
         (function () {
@@ -320,11 +395,14 @@
                     var val = checkbox.checked;
                     localStorage.setItem(key, String(val));
                     var target = document.getElementById("pages-count");
-                    if (target) target.style.visibility = val ? "visible" : "hidden";
+                    if (target) target.style.display = val ? "" : "none";
                 });
             }
         })();
     </script>
+    <!-- Pickr color picker for the custom theme -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/libs/pickr/pickr.min.css') }}">
+    <script src="{{ url_for('static', filename='js/libs/pickr/pickr.min.js') }}"></script>
     <script type="text/javascript">
       // Initialize custom theme UI and Pickr once Pickr is available
       (function () {
@@ -417,6 +495,7 @@
           // Persist title-color in themes map so selectTheme reads a consistent value
           try {
             window.themes.customTheme["title-color"] = titleColor;
+            localStorage.setItem("calibre.reader.customThemeText", titleColor);
           } catch (e) {}
 
           // Register and select theme in epub rendition (include text color)
@@ -432,12 +511,15 @@
           }
         }
 
-        // Delay init until Pickr is available
+        // Delay init until Pickr is available (give up after ~3 s if it failed to load)
+        var pickrAttempts = 0;
         function ensurePickrAndInit() {
           if (window.Pickr) {
             try {
               var pickr = Pickr.create({
                 el: "#customThemeSwatch",
+                // keep our swatch as the button instead of letting Pickr replace it
+                useAsButton: true,
                 theme: "classic",
                 default: saved,
                 components: {
@@ -470,25 +552,20 @@
                   pickr.hide();
                 } catch (e) {}
               });
-
-              // Clicking swatch opens pickr
-              if (swatch)
-                swatch.addEventListener("click", function () {
-                  pickr.show();
-                });
             } catch (e) {
               console.error("Pickr init failed", e);
             }
             return;
           }
           // wait a bit
-          setTimeout(ensurePickrAndInit, 150);
+          if (++pickrAttempts < 20) setTimeout(ensurePickrAndInit, 150);
         }
 
         ensurePickrAndInit();
       })();
       </script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/hammer.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
     </body>
