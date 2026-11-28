@@ -133,6 +133,16 @@ def _has_valid_reverse_proxy_shared_secret(req):
     return is_shared_secret_valid(req.headers.get(secret_header_name), expected_secret)
 
 
+def _has_valid_cloudflare_access_token(req, rp_header_username):
+    if not config.config_reverse_proxy_access_team_domain and not config.config_reverse_proxy_access_aud:
+        return True
+    if not services.cloudflare_access:
+        log.error("Cloudflare Access verification is configured but PyJWT is not installed, "
+                  "rejecting reverse proxy login")
+        return False
+    return services.cloudflare_access.header_login_permitted(req, rp_header_username, config)
+
+
 def load_user_from_reverse_proxy_header(req):
     rp_header_name = config.config_reverse_proxy_login_header_name
     if rp_header_name:
@@ -144,6 +154,8 @@ def load_user_from_reverse_proxy_header(req):
                 return None
             if not _has_valid_reverse_proxy_shared_secret(req):
                 log.warning('Rejected reverse proxy authentication header due to missing or invalid shared secret')
+                return None
+            if not _has_valid_cloudflare_access_token(req, rp_header_username):
                 return None
             user = ub.session.query(ub.User).filter(func.lower(ub.User.name) == rp_header_username.lower()).first()
             if user:

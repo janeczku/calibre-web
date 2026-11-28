@@ -69,7 +69,8 @@ feature_support = {
     'updater': constants.UPDATER_AVAILABLE,
     'gmail': bool(services.gmail),
     'scheduler': schedule.use_APScheduler,
-    'gdrive': gdrive_support
+    'gdrive': gdrive_support,
+    'cloudflare_access': bool(services.cloudflare_access)
 }
 
 try:
@@ -1926,6 +1927,29 @@ def _configuration_update_helper():
         if config.config_allow_reverse_proxy_header_login and not trusted_proxy_ips:
             return _configuration_result(_('Please configure at least one trusted reverse proxy IP or CIDR'))
         _config_string(to_save, "config_reverse_proxy_trusted_ips")
+
+        # Validate before applying, a refused save would otherwise leave the new values active in memory
+        access_team_domain = strip_whitespaces(to_save.get("config_reverse_proxy_access_team_domain",
+                                                           config.config_reverse_proxy_access_team_domain) or "")
+        access_aud = strip_whitespaces(to_save.get("config_reverse_proxy_access_aud",
+                                                   config.config_reverse_proxy_access_aud) or "")
+        if access_team_domain or access_aud:
+            if not services.cloudflare_access:
+                return _configuration_result(_('Cloudflare Access verification needs the PyJWT package, '
+                                               'please install it or clear both Cloudflare Access fields'))
+            if not (access_team_domain and access_aud):
+                return _configuration_result(_('Cloudflare Access verification needs both a team domain and an '
+                                               'AUD tag'))
+            # A wrong team domain would refuse every header login, so check it serves signing keys
+            # before saving. Only when it changed, so other saves don't call out to Cloudflare
+            if access_team_domain != (config.config_reverse_proxy_access_team_domain or ""):
+                problem = services.cloudflare_access.team_domain_problem(access_team_domain)
+                if problem:
+                    return _configuration_result(
+                        _('Could not get signing keys from that Cloudflare Access team domain: %(error)s',
+                          error=problem))
+        _config_string(to_save, "config_reverse_proxy_access_team_domain")
+        _config_string(to_save, "config_reverse_proxy_access_aud")
 
         # OAuth configuration
         if config.config_login_type == constants.LOGIN_OAUTH:

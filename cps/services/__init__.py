@@ -48,3 +48,9 @@ try:
 except ImportError as err:
     log.debug("Cannot import gmail, sending books via Gmail Oauth2 Verification will not work: %s", err)
     gmail = None
+
+try:
+    from . import cloudflare_access
+except ImportError as err:
+    log.debug("Cannot import PyJWT, verifying Cloudflare Access tokens on reverse proxy login will not work: %s", err)
+    cloudflare_access = None
