@@ -124,12 +124,21 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension, no
 
     identifiers = []
     for node in p.xpath('dc:identifier', namespaces=ns):
-        try:
-            identifier_name = node.attrib.values()[-1]
-        except IndexError:
-            continue
         identifier_value = node.text
-        if identifier_name in ('uuid', 'calibre') or identifier_value is None:
+        if identifier_value is None:
+            continue
+        # EPUB 2 names the type in opf:scheme; EPUB 3 has only an id attribute,
+        # and the type is in the value (urn:isbn:978..., or isbn:978... as calibre writes it)
+        identifier_name = node.get('{http://www.idpf.org/2007/opf}scheme')
+        if not identifier_name:
+            value = identifier_value.strip()
+            if value.lower().startswith('urn:'):
+                value = value[4:]
+            identifier_name, __, identifier_value = value.partition(':')
+            if not identifier_value or identifier_name.lower() in ('http', 'https'):
+                continue
+        identifier_name = identifier_name.lower()
+        if identifier_name in ('uuid', 'calibre'):
             continue
         identifiers.append([identifier_name, identifier_value])
 
