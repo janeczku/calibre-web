@@ -348,6 +348,12 @@ class ConfigSQL(object):
     def load(self):
         """Load all configuration values from the underlying storage."""
         s = self._read_from_storage()  # type: _Settings
+        # After a commit, SQLAlchemy expires all ORM object attributes
+        # (expire_on_commit). Iterating s.__dict__ would then see only
+        # _sa_instance_state and skip every column, leaving any in-memory
+        # changes made before a refused save permanently active. Refreshing
+        # forces a SELECT so the column values are present in __dict__.
+        self._session.refresh(s)
         for k, v in s.__dict__.items():
             if k[0] != '_':
                 if v is None:
