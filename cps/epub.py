@@ -195,14 +195,23 @@ def parse_epub_cover(ns, tree, epub_zip, cover_path, tmp_file_path):
 
 def parse_epub_series(ns, tree, epub_metadata):
     series = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series']/@content", namespaces=ns)
+    if len(series) == 0:
+        series = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@property='belongs-to-collection']/text()", namespaces=ns)
+
     if len(series) > 0:
-        epub_metadata['series'] = series[0]
+        epub_metadata['series'] = series[0].strip()
     else:
         epub_metadata['series'] = ''
 
     series_id = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series_index']/@content", namespaces=ns)
+    if len(series_id) == 0:
+        series_id = tree.xpath(
+            "/pkg:package/pkg:metadata/pkg:meta[@property='group-position' and @refines="
+            "concat('#', /pkg:package/pkg:metadata/pkg:meta"
+            "[@property='belongs-to-collection']/@id)]/text()",
+            namespaces=ns)
     if len(series_id) > 0:
-        epub_metadata['series_id'] = series_id[0]
+        epub_metadata['series_id'] = series_id[0].strip()
     else:
         epub_metadata['series_id'] = '1'
     return epub_metadata
