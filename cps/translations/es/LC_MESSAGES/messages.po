@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2026-09-20 09:04+0200\n"
+"POT-Creation-Date: 2026-11-28 08:16+0100\n"
 "PO-Revision-Date: 2024-10-29 15:26+0100\n"
 "Last-Translator: adruki <adruki@gmail.com>\n"
 "Language: es\n"
@@ -45,8 +45,8 @@ msgstr "Comando desconocido"
 msgid "Success! Books queued for Metadata Backup, please check Tasks for result"
 msgstr "Libros en cola para la copia de seguridad de metadatos, por favor verifica las tareas para ver el resultado"
 
-#: cps/admin.py:213 cps/editbooks.py:825 cps/editbooks.py:875
-#: cps/editbooks.py:1564
+#: cps/admin.py:213 cps/editbooks.py:831 cps/editbooks.py:885
+#: cps/editbooks.py:1574
 #: cps/themes/caliblur/templates/remote_login_verify.html:9
 #: cps/themes/caliblur/templates/remote_login_verify.html:11
 #: cps/themes/standard/templates/remote_login_verify.html:9
@@ -143,8 +143,8 @@ msgstr "No hay un idioma válido"
 msgid "No Valid Book Language Given"
 msgstr "No se ha indicado un idioma válido para el libro"
 
-#: cps/admin.py:546 cps/editbooks.py:260 cps/editbooks.py:445
-#: cps/editbooks.py:447
+#: cps/admin.py:546 cps/editbooks.py:266 cps/editbooks.py:451
+#: cps/editbooks.py:453
 msgid "Parameter not found"
 msgstr "Parámetro no encontrado"
 
@@ -336,7 +336,7 @@ msgstr "Cuenta de Gmail verificada."
 
 #: cps/admin.py:1374 cps/admin.py:1377 cps/admin.py:1762 cps/admin.py:1970
 #: cps/admin.py:2068 cps/admin.py:2189 cps/editbooks.py:170
-#: cps/editbooks.py:772 cps/editbooks.py:1518 cps/shelf.py:90 cps/shelf.py:144
+#: cps/editbooks.py:778 cps/editbooks.py:1528 cps/shelf.py:90 cps/shelf.py:144
 #: cps/shelf.py:194 cps/shelf.py:237 cps/shelf.py:287 cps/shelf.py:327
 #: cps/shelf.py:401 cps/shelf.py:523 cps/tasks/convert.py:161 cps/web.py:1536
 #, python-format
@@ -534,7 +534,7 @@ msgstr ""
 msgid "Password length has to be between 1 and 40"
 msgstr "La longitud de la contraseña debe estar entre 1 y 40 caracteres"
 
-#: cps/admin.py:1962 cps/helper.py:1017
+#: cps/admin.py:1962 cps/helper.py:1037
 msgid "Please specify a valid UnRar directory"
 msgstr ""
 
@@ -609,7 +609,7 @@ msgstr "no instalado"
 msgid "Execution permissions missing"
 msgstr "Faltan permisos de ejecución"
 
-#: cps/db.py:1129 cps/themes/caliblur/templates/email_edit.html:43
+#: cps/db.py:1131 cps/themes/caliblur/templates/email_edit.html:43
 #: cps/themes/standard/templates/config_edit.html:229
 #: cps/themes/standard/templates/config_view_edit.html:63
 #: cps/themes/standard/templates/email_edit.html:41 cps/web.py:567
@@ -645,110 +645,114 @@ msgstr "Libro puesto a la cola para su conversión a %(book_format)s"
 msgid "There was an error converting this book: %(res)s"
 msgstr "Ocurrió un error al convertir este libro: %(res)s"
 
-#: cps/editbooks.py:314
+#: cps/editbooks.py:262
+msgid "Invalid request"
+msgstr ""
+
+#: cps/editbooks.py:320
 msgid "Changes successfully applied"
 msgstr "Cambios aplicados con éxito"
 
-#: cps/editbooks.py:334
+#: cps/editbooks.py:340
 msgid "Value is missing on request"
 msgstr "Falta el valor en la solicitud"
 
-#: cps/editbooks.py:336 cps/editbooks.py:343 cps/editbooks.py:644
-#: cps/editbooks.py:1170 cps/web.py:534 cps/web.py:1577 cps/web.py:1623
+#: cps/editbooks.py:342 cps/editbooks.py:349 cps/editbooks.py:650
+#: cps/editbooks.py:1180 cps/web.py:534 cps/web.py:1577 cps/web.py:1623
 #: cps/web.py:1673
 msgid "Oops! Selected book is unavailable. File does not exist or is not accessible"
 msgstr "El libro seleccionado no está disponible. El archivo no existe o no es accesible"
 
-#: cps/editbooks.py:690 cps/editbooks.py:1547
+#: cps/editbooks.py:696 cps/editbooks.py:1557
 msgid "User has no rights to upload cover"
 msgstr "El usuario no tiene derechos para subir la portada"
 
-#: cps/editbooks.py:711 cps/editbooks.py:961
+#: cps/editbooks.py:717 cps/editbooks.py:971
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
 msgstr "Los identificadores no distinguen entre mayúsculas y minúsculas, sobrescribiendo el identificador antiguo"
 
-#: cps/editbooks.py:726 cps/editbooks.py:935 cps/editbooks.py:1306
+#: cps/editbooks.py:732 cps/editbooks.py:945 cps/editbooks.py:1316
 #, python-format
 msgid "'%(langname)s' is not a valid language"
 msgstr "'%(langname)s' no es un idioma válido"
 
-#: cps/editbooks.py:754
+#: cps/editbooks.py:760
 msgid "Metadata successfully updated"
 msgstr "Metadatos actualizados con éxito"
 
-#: cps/editbooks.py:777
+#: cps/editbooks.py:783
 #, python-brace-format
 msgid "Error editing book: {}"
 msgstr "Error al editar el libro: {}"
 
-#: cps/editbooks.py:879
+#: cps/editbooks.py:889
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "El libro subido probablemente ya existe en la biblioteca, considera cambiarlo antes de subir uno nuevo: "
 
-#: cps/editbooks.py:973 cps/editbooks.py:1464
+#: cps/editbooks.py:983 cps/editbooks.py:1474
 msgid "File type isn't allowed to be uploaded to this server"
 msgstr "No se permite subir este tipo de archivo a este servidor"
 
-#: cps/editbooks.py:979 cps/editbooks.py:1475
+#: cps/editbooks.py:989 cps/editbooks.py:1485
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "No se permite subir archivos con la extensión '%(ext)s' a este servidor"
 
-#: cps/editbooks.py:983 cps/editbooks.py:1480
+#: cps/editbooks.py:993 cps/editbooks.py:1490
 msgid "File to be uploaded must have an extension"
 msgstr "El archivo a subir debe tener una extensión"
 
-#: cps/editbooks.py:992
+#: cps/editbooks.py:1002
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "El archivo %(filename)s no pudo salvarse en el directorio temporal (Temp Dir)"
 
-#: cps/editbooks.py:1012
+#: cps/editbooks.py:1022
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr "Fallo al mover el archivo de portada %(file)s: %(error)s"
 
-#: cps/editbooks.py:1065
+#: cps/editbooks.py:1075
 msgid "Book Format Successfully Deleted"
 msgstr "Formato de libro eliminado con éxito"
 
-#: cps/editbooks.py:1068 cps/editbooks.py:1085
+#: cps/editbooks.py:1078 cps/editbooks.py:1095
 msgid "Book Successfully Deleted"
 msgstr "Libro eliminado con éxito"
 
-#: cps/editbooks.py:1089
+#: cps/editbooks.py:1099
 msgid "You are missing permissions to delete books"
 msgstr "Te faltan permisos para eliminar libros"
 
-#: cps/editbooks.py:1163
+#: cps/editbooks.py:1173
 #, python-brace-format
 msgid "Book with id \"{}\" could not be deleted: not found"
 msgstr "El libro con id \"{}\" no pudo ser eliminado: no encontrado"
 
-#: cps/editbooks.py:1205
+#: cps/editbooks.py:1215
 msgid "edit metadata"
 msgstr "editar metadatos"
 
-#: cps/editbooks.py:1267
+#: cps/editbooks.py:1277
 #, python-format
 msgid "Seriesindex: %(seriesindex)s is not a valid number, skipping"
 msgstr "Seriesindex: %(seriesindex)s no es un número válido, saltando"
 
-#: cps/editbooks.py:1469
+#: cps/editbooks.py:1479
 msgid "User has no rights to upload additional file formats"
 msgstr "El usuario no tiene derechos para subir formatos de archivo adicionales"
 
-#: cps/editbooks.py:1493
+#: cps/editbooks.py:1503
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Error al crear la ruta %(path)s (permiso denegado)"
 
-#: cps/editbooks.py:1500
+#: cps/editbooks.py:1510
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Error al guardar el archivo %(file)s."
 
-#: cps/editbooks.py:1525
+#: cps/editbooks.py:1535
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Archivo con formato %(ext)s añadido a %(book)s"
@@ -896,113 +900,113 @@ msgstr "Eliminando el libro %(id)s solo de la base de datos, la ruta del libro e
 msgid "Moving book path of Book %(book_id)s to: '%(src)s' failed with error: %(error)s"
 msgstr "Fallo al mover la ruta del libro %(book_id)s a: '%(src)s' con el error: %(error)s"
 
-#: cps/helper.py:446
+#: cps/helper.py:466
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "El cambio de nombre del autor de '%(src)s' a '%(dest)s' falló con el error: %(error)s"
 
-#: cps/helper.py:516 cps/helper.py:525
+#: cps/helper.py:536 cps/helper.py:545
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Archivo %(file)s no encontrado en Google Drive"
 
-#: cps/helper.py:567
+#: cps/helper.py:587
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "El cambio de nombre del título de '%(src)s' a '%(dest)s' falló con el error: %(error)s"
 
-#: cps/helper.py:586
+#: cps/helper.py:606
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "La ruta %(path)s del libro no fue encontrada en Google Drive"
 
-#: cps/helper.py:646
+#: cps/helper.py:666
 msgid "Found an existing account for this Email address"
 msgstr "Se encontró una cuenta existente para esta dirección de correo electrónico"
 
-#: cps/helper.py:654
+#: cps/helper.py:674
 msgid "This username is already taken"
 msgstr "Este nombre de usuario ya está en uso"
 
-#: cps/helper.py:668
+#: cps/helper.py:688
 msgid "Invalid Email address format"
 msgstr "Formato de dirección de correo electrónico no válido"
 
-#: cps/helper.py:690
+#: cps/helper.py:710
 msgid "Password doesn't comply with password validation rules"
 msgstr "La contraseña no cumple con las reglas de validación de contraseñas"
 
-#: cps/helper.py:836
+#: cps/helper.py:856
 msgid "Python module 'advocate' is not installed but is needed for cover uploads"
 msgstr "El módulo de Python 'advocate' no está instalado, pero se necesita para subir portadas"
 
-#: cps/helper.py:846
+#: cps/helper.py:866
 msgid "Error Downloading Cover"
 msgstr "Error al descargar la portada"
 
-#: cps/helper.py:849
+#: cps/helper.py:869
 msgid "Cover Format Error"
 msgstr "Error en el formato de la portada"
 
-#: cps/helper.py:852
+#: cps/helper.py:872
 msgid "You are not allowed to access localhost or the local network for cover uploads"
 msgstr "No tienes permiso para acceder a localhost o a la red local para subir portadas"
 
-#: cps/helper.py:862
+#: cps/helper.py:882
 msgid "Failed to create path for cover"
 msgstr "Error al crear una ruta para la portada"
 
-#: cps/helper.py:878
+#: cps/helper.py:898
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "El archivo de la portada no es una imagen válida o no se pudo almacenar"
 
-#: cps/helper.py:889
+#: cps/helper.py:909
 msgid "Only jpg/jpeg/png/webp/bmp files are supported as coverfile"
 msgstr "Sólo se admiten como portada los archivos jpg/jpeg/png/webp/bmp"
 
-#: cps/helper.py:901
+#: cps/helper.py:921
 msgid "Invalid cover file content"
 msgstr "Contenido del archivo de la portada no válido"
 
-#: cps/helper.py:905
+#: cps/helper.py:925
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Sólo se admiten como portada los archivos jpg/jpeg"
 
-#: cps/helper.py:999 cps/helper.py:1162
+#: cps/helper.py:1019 cps/helper.py:1182
 msgid "Cover"
 msgstr "Portada"
 
-#: cps/helper.py:1027
+#: cps/helper.py:1047
 msgid "Error executing UnRar"
 msgstr "Error ejecutando UnRar"
 
-#: cps/helper.py:1035
+#: cps/helper.py:1055
 msgid "Could not find the specified directory"
 msgstr "No se pudo encontrar el directorio especificado"
 
-#: cps/helper.py:1038
+#: cps/helper.py:1058
 msgid "Please specify a directory, not a file"
 msgstr "Por favor, especifica un directorio, no un archivo"
 
-#: cps/helper.py:1052
+#: cps/helper.py:1072
 msgid "Calibre binaries not viable"
 msgstr "Los binarios de Calibre no son viables"
 
-#: cps/helper.py:1061
+#: cps/helper.py:1081
 #, python-format
 msgid "Missing calibre binaries: %(missing)s"
 msgstr "Faltan los binarios de Calibre: %(missing)s"
 
-#: cps/helper.py:1063
+#: cps/helper.py:1083
 #, python-format
 msgid "Missing executable permissions: %(missing)s"
 msgstr "Faltan permisos de ejecución: %(missing)s"
 
-#: cps/helper.py:1068
+#: cps/helper.py:1088
 msgid "Error executing Calibre"
 msgstr "Error ejecutando Calibre"
 
-#: cps/helper.py:1164 cps/themes/standard/templates/admin.html:232
+#: cps/helper.py:1184 cps/themes/standard/templates/admin.html:232
 msgid "Queue all books for metadata backup"
 msgstr "Poner en cola todos los libros para la copia de seguridad de metadatos"
 
@@ -1746,15 +1750,15 @@ msgstr "Siguiente"
 #: cps/templates/feed.xml:131 cps/themes/caliblur/templates/detail.html:44
 #: cps/themes/caliblur/templates/detail.html:63
 #: cps/themes/caliblur/templates/layout.html:143
-#: cps/themes/caliblur/templates/listenmp3.html:201
-#: cps/themes/caliblur/templates/listenmp3.html:218
+#: cps/themes/caliblur/templates/listenmp3.html:206
+#: cps/themes/caliblur/templates/listenmp3.html:223
 #: cps/themes/caliblur/templates/search.html:25
 #: cps/themes/caliblur/templates/search.html:38
 #: cps/themes/standard/templates/detail.html:316
 #: cps/themes/standard/templates/detail.html:335
 #: cps/themes/standard/templates/layout.html:124
-#: cps/themes/standard/templates/listenmp3.html:201
-#: cps/themes/standard/templates/listenmp3.html:218
+#: cps/themes/standard/templates/listenmp3.html:206
+#: cps/themes/standard/templates/listenmp3.html:223
 #: cps/themes/standard/templates/search.html:22
 #: cps/themes/standard/templates/search.html:35
 msgid "(Public)"
@@ -1975,13 +1979,13 @@ msgstr "Fecha de publicación"
 #: cps/themes/caliblur/templates/book_edit.html:281
 #: cps/themes/caliblur/templates/book_edit.html:298
 #: cps/themes/caliblur/templates/detail.html:270
-#: cps/themes/caliblur/templates/listenmp3.html:102
+#: cps/themes/caliblur/templates/listenmp3.html:107
 #: cps/themes/standard/templates/basic_detail.html:61
 #: cps/themes/standard/templates/book_edit.html:102
 #: cps/themes/standard/templates/book_edit.html:279
 #: cps/themes/standard/templates/book_edit.html:296
 #: cps/themes/standard/templates/detail.html:205
-#: cps/themes/standard/templates/listenmp3.html:102
+#: cps/themes/standard/templates/listenmp3.html:107
 #: cps/themes/standard/templates/search_form.html:16
 msgid "Publisher"
 msgstr "Editor"
@@ -2117,7 +2121,7 @@ msgstr "Guardar"
 #: cps/themes/standard/templates/book_table.html:223
 #: cps/themes/standard/templates/book_table.html:243
 #: cps/themes/standard/templates/book_table.html:263
-#: cps/themes/standard/templates/book_table.html:318
+#: cps/themes/standard/templates/book_table.html:323
 #: cps/themes/standard/templates/config_db.html:66
 #: cps/themes/standard/templates/config_edit.html:453
 #: cps/themes/standard/templates/config_view_edit.html:176
@@ -2223,22 +2227,22 @@ msgstr "OK"
 
 #: cps/themes/caliblur/templates/detail.html:29
 #: cps/themes/caliblur/templates/detail.html:32
-#: cps/themes/caliblur/templates/listenmp3.html:190
+#: cps/themes/caliblur/templates/listenmp3.html:195
 #: cps/themes/caliblur/templates/search.html:18
 #: cps/themes/caliblur/templates/search.html:19
 #: cps/themes/standard/templates/detail.html:304
-#: cps/themes/standard/templates/listenmp3.html:190
+#: cps/themes/standard/templates/listenmp3.html:195
 #: cps/themes/standard/templates/search.html:16
 msgid "Add to shelf"
 msgstr "Agregar a la estantería"
 
 #: cps/themes/caliblur/templates/detail.html:79
-#: cps/themes/caliblur/templates/listenmp3.html:158
+#: cps/themes/caliblur/templates/listenmp3.html:163
 msgid "Mark As Unread"
 msgstr "Marcar como no leido"
 
 #: cps/themes/caliblur/templates/detail.html:79
-#: cps/themes/caliblur/templates/listenmp3.html:158
+#: cps/themes/caliblur/templates/listenmp3.html:163
 msgid "Mark As Read"
 msgstr "Marcar como leido"
 
@@ -2248,9 +2252,9 @@ msgid "Mark Book as Read or Unread"
 msgstr "Marcar como leído o no leido"
 
 #: cps/themes/caliblur/templates/detail.html:82
-#: cps/themes/caliblur/templates/listenmp3.html:159
+#: cps/themes/caliblur/templates/listenmp3.html:164
 #: cps/themes/standard/templates/detail.html:266
-#: cps/themes/standard/templates/listenmp3.html:159
+#: cps/themes/standard/templates/listenmp3.html:164
 msgid "Read"
 msgstr "Leído"
 
@@ -2281,18 +2285,18 @@ msgid "Book %(index)s of %(range)s"
 msgstr "Libro %(index)s de %(range)s"
 
 #: cps/themes/caliblur/templates/detail.html:279
-#: cps/themes/caliblur/templates/listenmp3.html:111
+#: cps/themes/caliblur/templates/listenmp3.html:116
 #: cps/themes/standard/templates/basic_detail.html:70
 #: cps/themes/standard/templates/detail.html:214
-#: cps/themes/standard/templates/listenmp3.html:111
+#: cps/themes/standard/templates/listenmp3.html:116
 msgid "Published"
 msgstr "Publicado"
 
 #: cps/themes/caliblur/templates/detail.html:336
-#: cps/themes/caliblur/templates/listenmp3.html:177
+#: cps/themes/caliblur/templates/listenmp3.html:182
 #: cps/themes/standard/templates/basic_detail.html:76
 #: cps/themes/standard/templates/detail.html:289
-#: cps/themes/standard/templates/listenmp3.html:177
+#: cps/themes/standard/templates/listenmp3.html:182
 msgid "Description:"
 msgstr "Descripción:"
 
@@ -2649,16 +2653,16 @@ msgstr "Detalles del libro"
 msgid "Grid"
 msgstr "Cuadricula"
 
-#: cps/themes/caliblur/templates/listenmp3.html:166
+#: cps/themes/caliblur/templates/listenmp3.html:171
 msgid "Restore from archive"
 msgstr "Restarurar desde el archivo"
 
-#: cps/themes/caliblur/templates/listenmp3.html:166
+#: cps/themes/caliblur/templates/listenmp3.html:171
 msgid "Add to archive"
 msgstr "Añadir a archivo"
 
-#: cps/themes/caliblur/templates/listenmp3.html:167
-#: cps/themes/standard/templates/listenmp3.html:167
+#: cps/themes/caliblur/templates/listenmp3.html:172
+#: cps/themes/standard/templates/listenmp3.html:172
 msgid "Archived"
 msgstr "Archivado"
 
@@ -3119,7 +3123,7 @@ msgid "View Books"
 msgstr "Ver libros"
 
 #: cps/themes/standard/templates/admin.html:24
-#: cps/themes/standard/templates/book_table.html:317
+#: cps/themes/standard/templates/book_table.html:322
 #: cps/themes/standard/templates/user_table.html:132
 #: cps/themes/standard/templates/user_table.html:149
 msgid "Edit"
@@ -3537,6 +3541,17 @@ msgstr "Marcar como no leído"
 #: cps/themes/standard/templates/book_table.html:277
 msgid "Edit the fields you want changed. Blank fields will be ignored:"
 msgstr "Edita los campos que quieras cambiar. Los campos en blanco serán ignorados:"
+
+#: cps/themes/standard/templates/book_table.html:278
+msgid "Remove clears all values from the selected books."
+msgstr ""
+
+#: cps/themes/standard/templates/book_table.html:298
+#: cps/themes/standard/templates/book_table.html:303
+#: cps/themes/standard/templates/book_table.html:308
+#: cps/themes/standard/templates/book_table.html:313
+msgid "Remove from selected books"
+msgstr ""
 
 #: cps/themes/standard/templates/config_edit.html:18
 msgid "Server Configuration"
