@@ -70,14 +70,9 @@ from .epub_helper import get_content_opf, create_new_metadata_backup, updateEpub
 from .embed_helper import do_calibre_export
 
 log = logger.create()
-try:
-    from wand.image import Image
-    from wand.exceptions import MissingDelegateError, BlobError
-    use_IM = True
-except (ImportError, RuntimeError) as e:
-    log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', e)
-    use_IM = False
-    MissingDelegateError = BaseException
+from .imagemagick import Image, MissingDelegateError, BlobError, use_IM, import_error as im_import_error
+if not use_IM:
+    log.debug('Cannot import Image, generating covers from non jpg files will not work: %s', im_import_error)
 
 
 # Convert existing book entry to new format

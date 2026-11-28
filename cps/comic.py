@@ -22,11 +22,7 @@ import tempfile
 from . import logger, isoLanguages, cover
 from .constants import BookMeta
 
-try:
-    from wand.image import Image
-    use_IM = True
-except (ImportError, RuntimeError) as e:
-    use_IM = False
+from .imagemagick import Image, use_IM
 
 log = logger.create()
 

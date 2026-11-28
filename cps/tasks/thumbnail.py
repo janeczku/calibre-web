@@ -28,11 +28,7 @@ from cps.services.worker import CalibreTask, STAT_CANCELLED, STAT_ENDED
 from sqlalchemy import func, text, or_
 from flask_babel import lazy_gettext as N_
 
-try:
-    from wand.image import Image
-    use_IM = True
-except (ImportError, RuntimeError) as e:
-    use_IM = False
+from ..imagemagick import Image, use_IM
 
 
 def get_resize_height(resolution):
