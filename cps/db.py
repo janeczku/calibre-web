@@ -979,7 +979,7 @@ class CalibreDB:
         if not hasattr(self, '_fts_available'):
             try:
                 result = self.session.execute(
-                    text("SELECT name FROM sqlite_master WHERE type='table' AND name='books_fts'")
+                    text("SELECT name FROM calibre.sqlite_master WHERE type='table' AND name='books_fts'")
                 ).fetchone()
                 self._fts_available = result is not None
             except Exception:
@@ -989,10 +989,15 @@ class CalibreDB:
             try:
                 # Escape FTS5 special characters to prevent query errors
                 term_fts = term.replace('"', '""')
-                # Wrap in quotes for phrase matching and better accuracy
+                # AND of quoted tokens: matches the traditional search
+                # semantics (e.g. "First Last" finds an author stored as
+                # "Last, First"), unlike a phrase query which requires
+                # the tokens in order. The table name left of MATCH must
+                # stay unqualified or SQLite parses it as a column.
+                fts_query = " AND ".join('"' + t + '"' for t in term_fts.split())
                 fts_results = self.session.execute(
-                    text("SELECT DISTINCT rowid FROM books_fts WHERE books_fts MATCH :term"),
-                    {"term": f'"{term_fts}"'}
+                    text("SELECT DISTINCT rowid FROM calibre.books_fts WHERE books_fts MATCH :term"),
+                    {"term": fts_query}
                 ).fetchall()
                 if fts_results:
                     fts_ids = [r[0] for r in fts_results]
